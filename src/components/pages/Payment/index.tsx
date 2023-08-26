@@ -9,7 +9,7 @@ import {
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
-const index = () => {
+const Index = () => {
   const [selectedPayment, setSelectedPayment] = useState("Carte");
   const router = useRouter();
   const items = [
@@ -116,4 +116,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Index;

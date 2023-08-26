@@ -25,7 +25,7 @@ const Bot = () => {
     },
     {
       title: "Optimisez votre attractivité avec le descriptif",
-      desc: "Descriptif du salon manquant : Décrivez votre salon avec passion et précision pour attirer les clients. Exemple : 'Salon moderne offrant des coupes tendance, colorations éclatantes et styles personnalisés. Expérience capillaire exceptionnelle dans une ambiance conviviale. Rejoignez-nous pour briller avec style !'",
+      desc: "Descriptif du salon manquant : Décrivez votre salon avec passion et précision pour attirer les clients. Exemple : Salon moderne offrant des coupes tendance, colorations éclatantes et styles personnalisés. Expérience capillaire exceptionnelle dans une ambiance conviviale. Rejoignez-nous pour briller avec style !'",
     },
   ];
   return (
@@ -57,7 +57,7 @@ const Bot = () => {
           </div>
           <div>
             <p className="text-xl text-[#434343] font-bold text-center mt-5 md:mt-0 mb-6 md:mb-2">
-              Opportunités d'optimisation
+              Opportunités d&apos;optimisation
             </p>
             {items2.map((item, index) => {
               return (
