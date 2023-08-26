@@ -1,0 +1,10 @@
+.text-gradient {
+    background: linear-gradient(90deg, #ff2769 0%, #ff8438 100%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .icon-bg{
+    background: linear-gradient(133deg, #3DA000 0%, #FFF 100%);
+  }

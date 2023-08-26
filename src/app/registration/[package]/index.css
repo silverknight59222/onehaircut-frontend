@@ -1,0 +1,20 @@
+.video .video-js{
+    width: 500px;
+    height: 350px;
+    border-radius: 20px;
+  }
+  
+  .video .video-js .vjs-poster{
+    border-radius: 20px;
+  }
+  
+  .video .video-js .vjs-big-play-button{
+    width: 70px;
+    height: 70px;
+    background-color: rgba(223, 218, 218, 0.76);
+    border-radius: 100%;
+  }
+  
+  .video .video-js .vjs-icon-placeholder:before{
+    margin-top: 12px;
+  }

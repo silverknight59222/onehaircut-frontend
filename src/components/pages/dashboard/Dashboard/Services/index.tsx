@@ -1,0 +1,177 @@
+import React, { useEffect, useState } from "react";
+import "./index.css";
+import userLoader from "@/hooks/useLoader";
+import BaseMultiSelectbox from "@/components/UI/BaseMultiSelectbox";
+import { EditIcon } from "@/components/utilis/Icons";
+import { dashboard } from "@/api/dashboard";
+import { getLocalStorage } from "@/api/storage";
+import AddServiceModal, { Service } from "./addServiceModal";
+import EditServiceModal from "./editServiceModal";
+export interface SalonService {
+  id: number;
+  services_id: number;
+  price: string;
+  duration: string;
+  service: Service;
+}
+const Services = () => {
+  const { loadingView } = userLoader();
+  const [allServices, setAllServices] = useState<SalonService[]>([]);
+  const [filteredServices, setFilteredServices] = useState<SalonService[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showAddServiceModal, setShowAddServiceModal] = useState(false);
+  const [showEditServiceModal, setShowEditServiceModal] = useState(false);
+  const [editServiceInfo, setEditServiceInfo] = useState<SalonService>();
+  const dropdown = [
+    {
+      name: "Nom ( A à Z )",
+    },
+    {
+      name: "Nom ( Z à A )",
+    },
+    {
+      name: "Prix ( Croissant )",
+    },
+    {
+      name: "Prix ( Décroissant )",
+    },
+    {
+      name: "Durée ( Croissante )",
+    },
+    {
+      name: "Durée ( Décroissante )",
+    },
+  ];
+  const getActiveFilters = (filters:string[]) => {
+    let list:SalonService[] = [];
+    let services = allServices;
+    if(filters.includes('Nom ( A à Z )')) {
+      list = allServices?.sort((a, b) => (a.service.name.toLowerCase() > b.service.name.toLowerCase() ? 1 : -1))
+    }
+    if(filters.includes('Nom ( Z à A )')) {
+      list = allServices?.sort((a, b) => (a.service.name.toLowerCase() > b.service.name.toLowerCase() ? -1 : 1))
+    }
+
+    if(filters.includes('Prix ( Croissant )')) {
+      list = allServices?.sort((a, b) => (Number(a.price) > Number(b.price) ? 1 : -1))
+    }
+    if(filters.includes('Prix ( Décroissant )')) {
+      list = allServices?.sort((a, b) => (Number(a.price) > Number(b.price) ? -1 : 1))
+    }
+
+    if(filters.includes('Durée ( Croissante )')) {
+      list = allServices?.sort((a, b) => (Number(a.price) > Number(b.price) ? 1 : -1))
+    }
+    if(filters.includes('Durée ( Décroissante )')) {
+      list = allServices?.sort((a, b) => (Number(a.price) > Number(b.price) ? -1 : 1))
+    }
+    if(filters.length) {
+      setFilteredServices(list);
+    } else {
+      setFilteredServices([]);
+      fetchAllServices();
+    }
+  }
+  const fetchAllServices = () => {
+    const salon_id = Number(getLocalStorage("salon_id"));
+    setIsLoading(true);
+    dashboard
+      .getAllSalonServices(salon_id)
+      .then((res) => {
+        setAllServices(res.data.data);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+  const getServices = () => {
+    if (filteredServices.length) {
+      return filteredServices;
+    } else {
+      return allServices;
+    }
+  }
+  useEffect(() => {
+    fetchAllServices();
+  }, []);
+
+  return (
+    <div>
+      {isLoading && loadingView()}
+      <p className="text-4xl font-medium text-center">
+        Ajoutez vos{" "}
+        <span className="font-bold text-gradient">prestations !</span>
+      </p>
+      <div className="flex w-full items-center justify-between ">
+        <div className="my-7">
+          <BaseMultiSelectbox dropdownItems={dropdown} getActiveFilters={getActiveFilters}/>
+        </div>
+        <div
+          className="cursor-pointer h-10 flex items-center text-white px-4 py-1 gap-4 rounded-md bg-gradient-to-r from-pink-500 to-orange-500 shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+          onClick={() => setShowAddServiceModal(true)}
+        >
+          Add Service
+        </div>
+      </div>
+      {showAddServiceModal && (
+        <div className="fixed top-0 left-0 overflow-hidden bg-black bg-opacity-40 flex items-center justify-center w-full h-full z-50">
+          <AddServiceModal setShowAddServiceModal={setShowAddServiceModal} fetchAllServices={fetchAllServices} />
+        </div>
+      )}
+      <div className="flex items-center justify-center">
+        <div className="gap-9 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+          {getServices().map((item, index) => {
+            return (
+              <div key={index} className="flex items-center gap-9">
+                <div className="w-64 border border-grey rounded-[21px] py-6 px-5 shadow-[0px_4px_18px_0px_rgba(132,132,132,0.25)]">
+                  <div className="flex items-center justify-between">
+                    <div className="text-black font-medium">
+                      {item.service ? item.service.name : '-'}
+                    </div>
+                    <div
+                      className="cursor-pointer my-2 py-1 px-2 rounded-md w-7 h-6 bg-gradient-to-r from-pink-500 to-orange-500 shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+                      onClick={() => {setShowEditServiceModal(true); setEditServiceInfo(item)}}
+                    >
+                      <EditIcon />
+                    </div>
+                    {(showEditServiceModal && editServiceInfo) && (
+                      <div className="fixed top-0 left-0 overflow-hidden bg-black bg-opacity-10 flex items-center justify-center w-full h-full z-50">
+                        <EditServiceModal
+                          setShowEditServiceModal={setShowEditServiceModal}
+                          fetchAllServices={fetchAllServices}
+                          service={editServiceInfo}
+                        />
+                      </div>
+                    )}
+                  </div>
+                  <p className="text-sm text-[#A0A0A0] mt-2 h-9">
+                    {item.service ? item.service.description : '-'}
+                  </p>
+                  <div className="flex items-center gap-6 mt-5">
+                    <div>
+                      <p className="text-sm font-medium text-black">Durée</p>
+                      <div className="w-[74px] flex items-center justify-between border border-[#CACACA] rounded py-1 px-1.5">
+                        <p className="text-xs text-[#6F6F6F]">
+                          {item.duration} min
+                        </p>
+                      </div>
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium text-black">Prix</p>
+                      <div className="w-[74px] flex items-center justify-between border border-[#CACACA] rounded py-1 px-1.5">
+                        <p className="text-xs text-[#6F6F6F]">$ {item.price}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+        <div></div>
+      </div>
+    </div>
+  );
+};
+
+export default Services;
