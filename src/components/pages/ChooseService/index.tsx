@@ -22,7 +22,7 @@ const ServiceChoose = () => {
     ]
     const onServiceclick=(index: number)=>{
         setSelectedService(index)
-        router.push('/search-salon')
+        router.push(`/salon/${index}/profile`)
     }
     return (
         <div>

@@ -10,14 +10,18 @@ import {
   HelpIcon,
 } from "@/components/utilis/Icons";
 import React, { useEffect, useState } from "react";
-import { getLocalStorage } from "@/api/storage";
+import { getLocalStorage, removeFromLocalStorage } from "@/api/storage";
 import { usePathname, useRouter } from "next/navigation";
+import { Auth } from "@/api/auth";
 
 interface Navbar{
   isWelcomePage?: boolean
+  onSearch?: (arg0: string)=>void
+  onGenderFilter?: (arg0: string)=>void
+  onEthnicityFilters?: (arg0: string[])=>void
 }
 
-const Navbar = ({isWelcomePage}: Navbar) => {
+const Navbar = ({isWelcomePage, onSearch, onGenderFilter, onEthnicityFilters}: Navbar) => {
   const [isDropdown, setIsDropdown] = useState(false);
   const [showDesktopGender, setShowDesktopGender] = useState(false);
   const [showDesktopEthnicity, setShowDesktopEthnicity] = useState(false);
@@ -25,7 +29,7 @@ const Navbar = ({isWelcomePage}: Navbar) => {
   const [showMobileGender, setShowMobileGender] = useState(false);
   const [showMobileEthnicity, setShowMobileEthnicity] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [genderFilters, setGenderFilters] = useState<string[]>([]);
+  const [genderFilters, setGenderFilters] = useState<string>('');
   const [ethnicityFilters, setEthnicityFilters] = useState<string[]>([]);
   const path=usePathname()
   const router=useRouter()
@@ -58,16 +62,19 @@ const Navbar = ({isWelcomePage}: Navbar) => {
   };
   const Ethnicity = [
     {
-      name: "European",
+      name: "Afro",
     },
     {
-      name: "African",
+      name: "Asiat",
     },
     {
-      name: "Asian",
+      name: "Indien",
     },
     {
-      name: "British",
+      name: "Maghreb",
+    },
+    {
+      name: "Occidental",
     },
   ];
   const Gender = [
@@ -88,10 +95,11 @@ const Navbar = ({isWelcomePage}: Navbar) => {
   ]
 
   const onClickGenderCheckbox = (gender: string) => {
-    if (genderFilters.includes(gender)) {
-      setGenderFilters(genderFilters.filter((item) => item !== gender));
+    onGenderFilter && onGenderFilter(gender === 'Homme' ? 'men' : gender === 'Femme' ? 'women' : 'Mix')
+    if (genderFilters === gender) {
+      setGenderFilters("");
     } else {
-      setGenderFilters((prev) => [...prev, gender]);
+      setGenderFilters(gender);
     }
   };
   const onClickEthnicityCheckbox = (ethnicity: string) => {
@@ -102,12 +110,23 @@ const Navbar = ({isWelcomePage}: Navbar) => {
     } else {
       setEthnicityFilters((prev) => [...prev, ethnicity]);
     }
+    onEthnicityFilters && onEthnicityFilters(ethnicityFilters)
   };
 
-  const onItemClick=(route: string)=>{
+  const onDropdownItemClick=(route: string)=>{
     if(route){
       router.push(route)
     }
+  }
+
+  const onLogout=()=>{
+    Auth.logout()
+    .then(response=>{
+      removeFromLocalStorage("AuthToken")
+      removeFromLocalStorage("User")
+      router.push("/login");
+    })
+    .catch(error => console.log(error))
   }
 
   useEffect(() => {
@@ -128,9 +147,9 @@ const Navbar = ({isWelcomePage}: Navbar) => {
         </div>
         <div className="hidden xl:flex items-center pr-2 rounded-xl bg-[#F7F7F7] h-[52px] overflow-auto">
           <div
-            className="flex items-center justify-center "
+            className="flex items-center justify-center"
           >
-            <div ref={EthnicityDesktopRef} className="border-r border-grey px-6 last:border-r-0 cursor-pointer">
+            <div ref={EthnicityDesktopRef} className="border-r border-grey px-3 2xl:px-6 last:border-r-0 cursor-pointer">
               <p
                 className={showDesktopEthnicity ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7"}
                 onClick={() => {
@@ -141,7 +160,7 @@ const Navbar = ({isWelcomePage}: Navbar) => {
                 Ethinicity
               </p>
               {showDesktopEthnicity && (
-                <div className="absolute top-20 z-20 flex flex-col items-center justify-center w-52 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                <div className="absolute top-20 z-20 flex flex-col items-center justify-center w-44 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
                   {Ethnicity.map((item, index) => {
                     return (
                       <div
@@ -165,7 +184,7 @@ const Navbar = ({isWelcomePage}: Navbar) => {
                 </div>
               )}
             </div>
-            <div ref={GenderDesktopRef} className="border-r border-grey px-6 last:border-r-0 cursor-pointer">
+            <div ref={GenderDesktopRef} className="border-r border-grey px-3 2xl:px-6 last:border-r-0 cursor-pointer">
               <p
                 className={showDesktopGender ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7"}
                 onClick={() => {
@@ -176,7 +195,7 @@ const Navbar = ({isWelcomePage}: Navbar) => {
                 Gender
               </p>
               {showDesktopGender && (
-                <div className="absolute top-20 z-20 flex flex-col items-center justify-center w-48 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                <div className="absolute top-20 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
                   {Gender.map((item, index) => {
                     return (
                       <div
@@ -205,6 +224,7 @@ const Navbar = ({isWelcomePage}: Navbar) => {
                 type="text"
                 placeholder="Search"
                 className="text-base px-4 p-2 rounded-full outline-none"
+                onChange={onSearch ? (e)=>onSearch(e.target.value) : ()=>{}}
               />
             </div>
           </div>
@@ -217,19 +237,18 @@ const Navbar = ({isWelcomePage}: Navbar) => {
           className="relative flex items-center justify-center md:justify-end gap-4 sm:px-6"
         >
           {(path === '/' && isLoggedIn) &&
-          <button className="w-52 2xl:w-60 h-11 text-white font-semibold bg-background-gradient rounded-3xl">
+          <button onClick={()=>router.push('/signup')} className="w-52 2xl:w-60 h-11 text-white font-semibold bg-background-gradient rounded-3xl">
             Enregistre mon salon
           </button>}
-          {isLoggedIn ? (
-            <div onClick={()=>router.push('/wishlist')} className="cursor-pointer">
+          {/* {isLoggedIn ? (
+            <div className="cursor-pointer">
               <HeartIcon />
             </div>
           ) : (
-            <></>
-            // <div className="cursor-pointer">
-            //   <GiftIcon />
-            // </div>
-          )}
+            <div className="cursor-pointer">
+              <GiftIcon />
+            </div>
+          )} */}
           {/* <div className="cursor-pointer">
             <Hamburger />
           </div> */}
@@ -241,15 +260,15 @@ const Navbar = ({isWelcomePage}: Navbar) => {
           </div>
           {isDropdown && (
             <div className="absolute top-14 -mr-32 sm:-mr-44 md:mr-0 z-20 pt-3 pb-2 flex flex-col items-center justify-center text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
-              <div className="flex flex-col gap-x-4 border-b w-52 border-[#D4CBCB] pb-3">
+              <div className="flex flex-col gap-x-4 border-b w-44 border-[#D4CBCB] pb-3">
                 {dropdownItems.map((item, index) => {
-                  return <div key={index} onClick={()=>onItemClick(item.route)} className="flex gap-x-5 px-6 py-3 hover:bg-[#F5F5F5] cursor-pointer">
+                  return <div key={index} onClick={()=>onDropdownItemClick(item.route)} className="flex gap-x-5 px-6 py-3 hover:bg-[#F5F5F5] cursor-pointer">
                     {item.icon}
                     <p>{item.name}</p>
                   </div>
                 })}
               </div>
-              <div className="w-full flex flex-col items-center justify-center mt-2 px-6 py-3 hover:bg-[#F5F5F5] cursor-pointer">
+              <div onClick={onLogout} className="w-full flex flex-col items-center justify-center mt-2 px-6 py-3 hover:bg-[#F5F5F5] cursor-pointer">
                 <p>Logout</p>
               </div>
             </div>

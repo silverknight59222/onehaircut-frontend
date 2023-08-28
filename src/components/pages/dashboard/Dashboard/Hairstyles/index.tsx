@@ -268,6 +268,7 @@ const Hairstyles = () => {
         .then((res) => {
           setHaircutList(res.data.data.all_haircuts_without_salon_haircuts);
           setSalonHaircutList(res.data.data.salon_haircuts);
+          console.log(res.data.data.salon_haircuts)
         })
         .finally(() => {
           setIsLoading(false);
