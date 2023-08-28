@@ -28,6 +28,9 @@ const Auth = {
   login: async (params: LoginParams) => {
     return await request.post<LoginResponse>(`/login`, params);
   },
+  logout: async () => {
+    return await request.post(`/logout`);
+  },
   signup: async (params: SignupParams) => {
     return await request.post<ResponseType>(`/user`, params);
   },

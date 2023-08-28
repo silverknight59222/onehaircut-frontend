@@ -53,6 +53,14 @@ export type Haircut = {
 	length: string;
 };
 
+export type WishlistHaircuts={
+	haircut: Haircut
+}
+
+export type SalonWishlist={
+	hairsalon: SalonDetails
+}
+
 export type SalonHaircut = {
 	id: number;
 	image: string;

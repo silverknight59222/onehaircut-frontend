@@ -284,6 +284,7 @@ const Hairstyles = () => {
             })
           );
           setSalonHaircutList(res.data.data.salon_haircuts);
+          console.log(res.data.data.salon_haircuts)
         })
         .finally(() => {
           setIsLoading(false);
