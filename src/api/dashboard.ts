@@ -3,6 +3,12 @@ export interface ResponseType {
   message: string;
   status: number;
 }
+
+interface WishlistParams{
+  user_id: number,
+  haircut_id: number
+}
+
 const dashboard = {
   getHairSalon: async (id: number) => {
     return await request.get<any>(`/hair_salon/${id}`);
@@ -63,6 +69,12 @@ const dashboard = {
   },
   deleteSalonServices: async (id:number) => {
     return await request.delete<any>(`salon_service/${id}`);
+  },
+  getWishlistHaircuts: async (id: number) => {
+    return await request.get<any>(`/wishlist/${id}`);
+  },
+  addWishList: async (params: WishlistParams) => {
+    return await request.post(`/wishlist`, params);
   }
 };
 

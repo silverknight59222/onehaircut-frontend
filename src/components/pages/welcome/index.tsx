@@ -1,3 +1,4 @@
+'use client';
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Like } from "@/components/utilis/Icons";
@@ -12,32 +13,59 @@ const Welcome = () => {
   const [salonHaircut, setSalonHaircut] = useState<Haircut[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [selectedWhishlist,setSelectedWhishlist]=useState<number | null>()
   const router=useRouter()
-  useEffect(() => {
+  const userId=Number(getLocalStorage("User"))
+
+  const getAllHaircuts=()=>{
     setIsLoading(true);
-    dashboard.getAllHaircuts().then((res) => {
+    dashboard.getAllHaircuts()
+    .then((res) => {
+      console.log(res.data.data)
       if (res.data.data.length > 0) {
         setSalonHaircut(res.data.data);
       }
       setIsLoading(false);
-    });
+    })
+    .catch(error => console.log(error))
+  }
+
+  const onWishlist=(e: any, haircutId: number)=>{
+    e.stopPropagation()
+    const data={
+      user_id: userId,
+      haircut_id: haircutId
+    }
+    if(selectedWhishlist !== haircutId){
+      setSelectedWhishlist(haircutId)
+      dashboard.addWishList(data)
+      .catch(err => console.log(err))
+    }
+    else{
+      setSelectedWhishlist(null)
+    }
+  }
+
+  useEffect(() => {
+    getAllHaircuts()
     if (!getLocalStorage("User")) {
       setIsLoggedIn(true);
     }
   }, []);
+
   return (
     <>
       <Navbar isWelcomePage={true} />
       <div className="flex flex-col items-center justify-center w-full overflow-hidden">
         {isLoading && loadingView()}
-        <div className="mt-10 sm:mt-16 mb-16 sm:mb-20  md:w-[1112px] text-black text-center font-semibold text-4xl sm:text-5xl md:text-6xl px-2 md:px-10">
+        <p className="mt-10 sm:mt-14 mb-10  md:w-[700px] text-black text-center font-semibold text-3xl px-2 md:px-10">
           Des doutes sur la finition? prévisualiser votre style
-        </div>
-        <div className="flex flex-col md:flex-row gap-10 md:gap-20 mb-16 sm:mb-24">
-          <div className="px-5 py-10 rounded-2xl font-medium text-2xl cursor-pointer border-[#FE3462] border-2">
+        </p>
+        <div className="flex flex-col md:flex-row gap-4 mb-10 sm:mb-16">
+          <div className="px-4 py-6 rounded-2xl font-medium text-2xl cursor-pointer border-[#FE3462] border-2">
             Prestation Unique / soins
           </div>
-          <div className="px-5 py-10 rounded-2xl font-medium text-2xl cursor-pointer border-[#FE3462] border-2">
+          <div className="px-4 py-6 rounded-2xl font-medium text-2xl cursor-pointer border-[#FE3462] border-2">
             Coiffure pour Evennement
           </div>
         </div>
@@ -46,8 +74,8 @@ const Welcome = () => {
             return (
               <div key={index} onClick={() => router.push('/choose-salon')}>
                 <div className="px-4 pt-4 bg-[#F5F5F5] rounded-t-2xl relative cursor-pointer">
-                  <div className="absolute right-7 top-7 cursor-pointer">
-                    <Like />
+                  <div onClick={(e)=>onWishlist(e,item.id)} className="absolute right-7 top-7 cursor-pointer">
+                    <Like color={selectedWhishlist === item.id ? "#FF0000" : ""} />
                   </div>
                   <Image
                     src={item.image}
