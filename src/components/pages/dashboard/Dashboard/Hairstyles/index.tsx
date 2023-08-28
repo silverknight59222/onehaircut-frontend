@@ -65,15 +65,13 @@ const Hairstyles = () => {
   };
   const [form, setForm] = useState<HaircutDetails>(defaultFormDetails);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedHaircutsMapping, setSelectedHaircutsMapping] = useState<
-    HaircutMapping[]
-  >([]);
+  const [selectedHaircutsMapping, setSelectedHaircutsMapping] = useState<Haircut[]>([]);
   const [activeMenu, setActiveMenu] = useState<string>("new");
   const [ethnicityFilters, setEthnicityFilters] = useState<string[]>([]);
   const [genderFilters, setGenderFilters] = useState<string>("");
   const [lengthFilters, setLengthFilters] = useState<string[]>([]);
   const [filteredHaircuts, setFilteredHaircuts] = useState<Haircut[]>([]);
-  const [search, setSearch] = useState<string>('');
+  const [search, setSearch] = useState<string>("");
 
   const [error, setError] = useState({
     base_price: "",
@@ -86,13 +84,10 @@ const Hairstyles = () => {
       name: "Afro",
     },
     {
-      name: "Asiat",
+      name: "Asian",
     },
     {
-      name: "Indien",
-    },
-    {
-      name: "Maghreb",
+      name: "Oriental",
     },
     {
       name: "Occidental",
@@ -100,10 +95,10 @@ const Hairstyles = () => {
   ];
   const Gender = [
     {
-      name: "Homme",
+      name: "Men",
     },
     {
-      name: "Femme",
+      name: "Women",
     },
     {
       name: "Mix",
@@ -112,10 +107,10 @@ const Hairstyles = () => {
 
   const Length = [
     {
-      name: "Court",
+      name: "Short",
     },
     {
-      name: "Moyen",
+      name: "Medium",
     },
     {
       name: "Long",
@@ -237,21 +232,17 @@ const Hairstyles = () => {
         break;
     }
   };
-  const selectHaircut = (index: number) => {
-    const transformedSelectedHaircutsMapping: HaircutMapping[] =
-      selectedHaircutsMapping.map((item, i) => {
-        if (i === index) {
-          return {
-            ...item,
-            isSelected: !item.isSelected,
-          };
-        } else {
-          return {
-            ...item,
-          };
-        }
+  const selectHaircut = (item: Haircut) => {
+    let added = false;
+    selectedHaircutsMapping.map((haircut) => {
+      if(haircut.id === item.id) {
+        setSelectedHaircutsMapping(selectedHaircutsMapping.filter((item) => item.id !== haircut.id));
+        added = true;
+        } 
       });
-    setSelectedHaircutsMapping(transformedSelectedHaircutsMapping);
+      if(!added) {
+        setSelectedHaircutsMapping((prev) => [...prev, item]);
+      }
   };
 
   const selectSalonHaircut = (index: number) => {
@@ -276,13 +267,6 @@ const Hairstyles = () => {
         .getAllHaircutBySalon(id)
         .then((res) => {
           setHaircutList(res.data.data.all_haircuts_without_salon_haircuts);
-          setSelectedHaircutsMapping(
-            res.data.data.all_haircuts_without_salon_haircuts.map(() => {
-              return {
-                isSelected: false,
-              };
-            })
-          );
           setSalonHaircutList(res.data.data.salon_haircuts);
         })
         .finally(() => {
@@ -299,8 +283,10 @@ const Hairstyles = () => {
     } else {
       list = salonHaircutList;
     }
-    if(search) {
-      list = list.filter((haircut)=> haircut.name.toLowerCase().includes(search.toLowerCase()) ); 
+    if (search) {
+      list = list.filter((haircut) =>
+        haircut.name.toLowerCase().includes(search.toLowerCase())
+      );
     }
     if (
       ethnicityFilters.length > 0 &&
@@ -310,9 +296,12 @@ const Hairstyles = () => {
       list.forEach((haircut) => {
         ethnicityFilters.forEach((filter) => {
           if (haircut?.group && haircut.group.group === filter) {
-            if (haircut.type === genderFilters || genderFilters === 'Mix') {
+            if (
+              haircut.type === genderFilters.toLowerCase() ||
+              genderFilters === "Mix"
+            ) {
               lengthFilters.forEach((filter) => {
-                if (haircut.length === filter) {
+                if (haircut.length === filter.toLowerCase()) {
                   haircuts.push(haircut);
                 }
               });
@@ -324,7 +313,10 @@ const Hairstyles = () => {
       list.forEach((haircut) => {
         ethnicityFilters.forEach((filter) => {
           if (haircut?.group && haircut.group.group === filter) {
-            if (haircut.type === genderFilters || genderFilters === 'Mix') {
+            if (
+              haircut.type === genderFilters.toLowerCase() ||
+              genderFilters === "Mix"
+            ) {
               haircuts.push(haircut);
             }
           }
@@ -335,7 +327,7 @@ const Hairstyles = () => {
         ethnicityFilters.forEach((filter) => {
           if (haircut?.group && haircut.group.group === filter) {
             lengthFilters.forEach((filter) => {
-              if (haircut.length === filter) {
+              if (haircut.length === filter.toLowerCase()) {
                 haircuts.push(haircut);
               }
             });
@@ -345,8 +337,11 @@ const Hairstyles = () => {
     } else if (lengthFilters.length > 0 && genderFilters) {
       list.forEach((haircut) => {
         lengthFilters.forEach((filter) => {
-          if (haircut.length === filter) {
-            if (haircut.type === genderFilters || genderFilters === 'Mix') {
+          if (haircut.length === filter.toLowerCase()) {
+            if (
+              haircut.type === genderFilters.toLowerCase() ||
+              genderFilters === "Mix"
+            ) {
               haircuts.push(haircut);
             }
           }
@@ -363,22 +358,30 @@ const Hairstyles = () => {
     } else if (lengthFilters.length > 0) {
       list.forEach((haircut) => {
         lengthFilters.forEach((filter) => {
-          if (haircut.length === filter) {
+          if (haircut.length === filter.toLowerCase()) {
             haircuts.push(haircut);
           }
         });
       });
     } else if (genderFilters) {
       list.forEach((haircut) => {
-        if (haircut.type === genderFilters || genderFilters === 'Mix') {
+        if (
+          haircut.type === genderFilters.toLowerCase() ||
+          genderFilters === "Mix"
+        ) {
           haircuts.push(haircut);
         }
       });
     }
-    if(search && (!(ethnicityFilters.length > 0) && !genderFilters && !(lengthFilters.length > 0))) {
-    setFilteredHaircuts(list);
+    if (
+      search &&
+      !(ethnicityFilters.length > 0) &&
+      !genderFilters &&
+      !(lengthFilters.length > 0)
+    ) {
+      setFilteredHaircuts(list);
     } else {
-    setFilteredHaircuts(haircuts);
+      setFilteredHaircuts(haircuts);
     }
   };
   const onToggleHairstyle = () => {
@@ -408,8 +411,7 @@ const Hairstyles = () => {
       });
     }
     if (
-      selectedHaircutsMapping.filter((item) => item.isSelected === true)
-        .length == 0
+      selectedHaircutsMapping.length == 0
     ) {
       setError((prev) => {
         return {
@@ -425,23 +427,15 @@ const Hairstyles = () => {
     }
     let data: any = form;
     const selectedHaircuts: number[] = [];
-    selectedHaircutsMapping.map((item, id) => {
-      if (item.isSelected) {
-        selectedHaircuts.push(haircutList[id].id);
-      }
+    selectedHaircutsMapping.map((item) => {
+        selectedHaircuts.push(item.id);
     });
     data.hair_salon_id = Number(getLocalStorage("salon_id"));
     data.haircut_ids = selectedHaircuts;
     await dashboard
       .addSalonHaircut(data)
       .then((res) => {
-        setSelectedHaircutsMapping(
-          haircutList.map(() => {
-            return {
-              isSelected: false,
-            };
-          })
-        );
+        setSelectedHaircutsMapping([]);
         setForm(defaultFormDetails);
         showSnackbar("success", "Haircuts added successfully");
         getHaircuts();
@@ -500,13 +494,21 @@ const Hairstyles = () => {
         showSnackbar("error", "Failed to deleted haircut");
       });
   };
-
+  const getSelectedImage = () => {
+    let url = "";
+    if (activeMenu === "new" && selectedHaircutsMapping[selectedHaircutsMapping.length - 1]) {
+      url = selectedHaircutsMapping[selectedHaircutsMapping.length - 1].image;
+    } else {
+      url = selectedSalonHaircut.image;
+    }
+    return url;
+  };
   const haircuts = () => {
     if (
       ethnicityFilters.length > 0 ||
       genderFilters ||
-      lengthFilters.length > 0 || 
-      search !== ''
+      lengthFilters.length > 0 ||
+      search !== ""
     ) {
       return filteredHaircuts;
     } else if (activeMenu === "new") {
@@ -517,6 +519,14 @@ const Hairstyles = () => {
       return [];
     }
   };
+
+  const selectAllHaircuts = () => {
+    if(haircutList.length && selectedHaircutsMapping.length === haircutList.length) {
+      setSelectedHaircutsMapping([]);
+    }else {
+      setSelectedHaircutsMapping(haircutList);
+    }
+  }
   useEffect(() => {
     getHaircuts();
   }, []);
@@ -638,13 +648,25 @@ const Hairstyles = () => {
               </div>
             </div>
           </div>
+            <div className="relative">
+              <div
+                className={
+                  (haircutList.length && selectedHaircutsMapping.length === haircutList.length)
+                    ? "flex gap-4 rounded-full bg-gray-500 border border-[#EDEDED] p-1 text-sm text-white"
+                    : "flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373]"
+                }
+                onClick={selectAllHaircuts}
+              >
+                <div className="px-4 cursor-pointer">Select All</div>
+              </div>
+            </div>
           <div className="relative flex">
             <input
               type="text"
               className="min-w-[300px] text-sm py-2 px-4 outline-none rounded-full bg-white border border-[#EDEDED] shadow-[0px_11px_26px_0px_rgba(176,176,176,0.25)]"
               placeholder="Nom coiffure"
               value={search}
-              onChange={(e)=>setSearch(e.target.value)}
+              onChange={(e) => setSearch(e.target.value)}
             />
             <div className="absolute right-1 top-[3px] cursor-pointer p-2 rounded-full bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
               <SearcIcon />
@@ -674,42 +696,64 @@ const Hairstyles = () => {
       </div>
       <div className="flex flex-col md:flex-row gap-8">
         <div className="bg-lightGrey rounded-3xl p-4 md:sticky md:top-0 h-max">
-          <h2 className="text-lg font-semibold">Coiffures dispensees</h2>
+          <h2 className="text-lg font-semibold text-center">
+            Configurations des coiffures
+          </h2>
+          <div className="flex items-center justify-center">
+            {getSelectedImage() ? (
+              <div className="relative w-36 h-36">
+                <Image
+                  src={getSelectedImage()}
+                  fill={true}
+                  alt=""
+                  className="rounded-2xl mt-2"
+                />
+              </div>
+            ) : (
+              <div className="mt-2 flex items-center justify-center w-36 h-36 bg-darkGrey border-2 border-black rounded-2xl">
+                Select Haircut
+              </div>
+            )}
+          </div>
           <div className="flex flex-col items-center w-max gap-y-2 mt-4">
-            <div className="flex flex-col items-center gap-2 w-max">
-              <label htmlFor="prix" className="text-sm font-medium">
-                Prix de base
-              </label>
-              <input
-                type="number"
-                name="prix"
-                placeholder="40"
-                className="w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)]"
-                value={form.base_price}
-                onChange={(e) => onChangeInput(e.target.value, "base_price")}
-              />
-              {error.base_price && (
-                <p className="text-xs text-red-700 ml-3 mt-1">
-                  {error.base_price}*
-                </p>
-              )}
-            </div>
-            <div className="flex flex-col items-center gap-2 w-max mt-2">
-              <label htmlFor="duration" className="text-sm font-medium">
-                Durée d’exécution de base
-              </label>
-              <input
-                type="number"
-                placeholder="35 min"
-                className="w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)]"
-                value={form.base_duration}
-                onChange={(e) => onChangeInput(e.target.value, "base_duration")}
-              />
-              {error.base_duration && (
-                <p className="text-xs text-red-700 ml-3 mt-1">
-                  {error.base_duration}*
-                </p>
-              )}
+            <div className="flex gap-3 flex-col md:flex-row items-baseline justify-center">
+              <div className="flex flex-col items-start gap-2 w-max">
+                <label htmlFor="prix" className="text-sm font-medium">
+                  Prix de base
+                </label>
+                <input
+                  type="number"
+                  name="prix"
+                  placeholder="40"
+                  className="w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)]"
+                  value={form.base_price}
+                  onChange={(e) => onChangeInput(e.target.value, "base_price")}
+                />
+                {error.base_price && (
+                  <p className="text-xs text-red-700 ml-3 mt-1">
+                    {error.base_price}*
+                  </p>
+                )}
+              </div>
+              <div className="flex flex-col items-start gap-2 w-max mt-2">
+                <label htmlFor="duration" className="text-sm font-medium">
+                  Durée d’exécution de base
+                </label>
+                <input
+                  type="number"
+                  placeholder="35 min"
+                  className="w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)]"
+                  value={form.base_duration}
+                  onChange={(e) =>
+                    onChangeInput(e.target.value, "base_duration")
+                  }
+                />
+                {error.base_duration && (
+                  <p className="text-xs text-red-700 ml-3 mt-1">
+                    {error.base_duration}*
+                  </p>
+                )}
+              </div>
             </div>
             <div className="mt-2">
               <div>
@@ -920,14 +964,14 @@ const Hairstyles = () => {
                 <div
                   key={index}
                   className="shadow-md rounded-xl my-2 cursor-pointer"
-                  onClick={() => selectHaircut(index)}
+                  onClick={() => selectHaircut(item)}
                 >
                   <div className="relative w-max px-4 pt-4 bg-[#F5F5F5] rounded-t-xl">
                     <div className="relative w-32 h-32">
                       <Image src={item.image} fill={true} alt="" />
                     </div>
                     <div className="absolute top-5 right-5 w-6 h-6 rounded-full bg-[#D9D9D9]">
-                      {selectedHaircutsMapping[index].isSelected && (
+                      {selectedHaircutsMapping.filter(haircut=> haircut.id === item.id).length > 0 && (
                         <SelectedIcon />
                       )}
                     </div>

@@ -1365,7 +1365,7 @@ export const BgDashboardPricingTable = () => {
       <path
         d="M0.5 20C0.5 9.23043 9.23045 0.5 20 0.5H639C649.77 0.5 658.5 9.23045 658.5 20V626C658.5 636.77 649.77 645.5 639 645.5H20C9.23045 645.5 0.5 636.77 0.5 626V20Z"
         fill="url(#paint0_linear_2494_305)"
-        fill-opacity="0.03"
+        fillOpacity="0.03"
         stroke="#FF2769"
       />
       <defs>
@@ -1377,8 +1377,8 @@ export const BgDashboardPricingTable = () => {
           y2="646"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FE2F65" />
-          <stop offset="1" stop-color="#FE3064" stop-opacity="0" />
+          <stop stopColor="#FE2F65" />
+          <stop offset="1" stopColor="#FE3064" stopOpacity="0" />
         </linearGradient>
       </defs>
     </svg>
@@ -2358,7 +2358,7 @@ export const HeartFill = () => {
       <path
         d="M12.5 4.15051L12.0847 3.53079C11.6396 2.86673 11.1386 2.30361 10.5914 1.84701L10.5914 1.84699C9.51312 0.947139 8.30357 0.5 6.98376 0.5C5.20467 0.5 3.56586 1.26604 2.36324 2.67347L12.5 4.15051ZM12.5 4.15051L12.9153 3.53081M12.5 4.15051L12.9153 3.53081M12.9153 3.53081C13.3606 2.86652 13.8614 2.30358 14.4085 1.84696C15.4869 0.947118 16.6965 0.5 18.0162 0.5C19.7953 0.5 21.434 1.26604 22.6366 2.6735C23.8283 4.06839 24.5 5.99364 24.5 8.10688C24.5 10.2561 23.7636 12.2402 22.1241 14.3747L22.1241 14.3747C20.6428 16.3035 18.5046 18.2717 15.9757 20.5971L15.9756 20.5971L15.9536 20.6173C15.0989 21.4035 14.1292 22.2954 13.1229 23.2449L13.1227 23.2451C12.9451 23.4129 12.7234 23.5 12.5 23.5C12.2765 23.5 12.055 23.413 11.877 23.2448L11.8767 23.2444C10.8628 22.2879 9.88658 21.3902 9.0274 20.6L9.02491 20.5977L9.02488 20.5977M12.9153 3.53081L9.02488 20.5977M9.02488 20.5977C6.49564 18.272 4.35741 16.3035 2.8761 14.3749M9.02488 20.5977L2.3632 2.67352C1.17164 4.06842 0.5 5.99365 0.5 8.10709C0.5 10.2561 1.23658 12.2402 2.8761 14.3749M2.8761 14.3749L2.47955 14.6795L2.8761 14.3749Z"
         fill="url(#paint0_linear_1075_134)"
-        fill-opacity="0.94"
+        fillOpacity="0.94"
         stroke="white"
       />
       <defs>
@@ -2370,8 +2370,8 @@ export const HeartFill = () => {
           y2="24"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FF2868" />
-          <stop offset="1" stop-color="#FF8339" />
+          <stop stopColor="#FF2868" />
+          <stop offset="1" stopColor="#FF8339" />
         </linearGradient>
       </defs>
     </svg>
@@ -2428,9 +2428,9 @@ export const SmallLogo = () => {
           y2="15.8672"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#E83667" />
-          <stop offset="0.49" stop-color="#EB5B53" />
-          <stop offset="1" stop-color="#FFE90B" />
+          <stop stopColor="#E83667" />
+          <stop offset="0.49" stopColor="#EB5B53" />
+          <stop offset="1" stopColor="#FFE90B" />
         </linearGradient>
       </defs>
     </svg>
@@ -2463,9 +2463,9 @@ export const Instagram = () => {
           y2="5.09375"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFDD55" />
-          <stop offset="0.5" stop-color="#FF543E" />
-          <stop offset="1" stop-color="#C837AB" />
+          <stop stopColor="#FFDD55" />
+          <stop offset="0.5" stopColor="#FF543E" />
+          <stop offset="1" stopColor="#C837AB" />
         </linearGradient>
       </defs>
     </svg>
@@ -2519,9 +2519,9 @@ export const QuotationFillIcon = () => {
           y2="24.1647"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FE2C66" />
-          <stop offset="0.510417" stop-color="#FE4C56" />
-          <stop offset="1" stop-color="#FF803A" />
+          <stop stopColor="#FE2C66" />
+          <stop offset="0.510417" stopColor="#FE4C56" />
+          <stop offset="1" stopColor="#FF803A" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_956_374"
@@ -2531,9 +2531,9 @@ export const QuotationFillIcon = () => {
           y2="24.163"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FE2C66" />
-          <stop offset="0.510417" stop-color="#FE4C56" />
-          <stop offset="1" stop-color="#FF803A" />
+          <stop stopColor="#FE2C66" />
+          <stop offset="0.510417" stopColor="#FE4C56" />
+          <stop offset="1" stopColor="#FF803A" />
         </linearGradient>
       </defs>
     </svg>
@@ -2562,8 +2562,8 @@ export const CalenderIcon = () => {
           y2="71.5"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0.294623" stop-color="#FE2A67" />
-          <stop offset="1" stop-color="#FF7F3B" />
+          <stop offset="0.294623" stopColor="#FE2A67" />
+          <stop offset="1" stopColor="#FF7F3B" />
         </linearGradient>
       </defs>
     </svg>
@@ -2668,8 +2668,8 @@ export const PaidIcon = () => {
           y2="67"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FF266A" />
-          <stop offset="1" stop-color="#FF8637" />
+          <stop stopColor="#FF266A" />
+          <stop offset="1" stopColor="#FF8637" />
         </linearGradient>
       </defs>
     </svg>

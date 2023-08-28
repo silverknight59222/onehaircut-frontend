@@ -11,14 +11,14 @@ const DashboardLayout = ({ children }: DashboardLayout) => {
   const [tab, setTab] = useState("Dashboard");
   const sidebarItems = [
     { icon: "DashboardIcon", title: "Dashboard", route: "/dashboard" },
-    { icon: "ClientActivityIcon", title: "Client Activité", route: "/client-activity" },
-    { icon: "StatsIcon", title: "Visites / Stats", route: "/visites" },
-    { icon: "RevenueIcon", title: "Revenue", route: "/revenue" },
-    { icon: "MessageIcon", title: "Message", route: "/messages" },
-    { icon: "SettingsIcon", title: "Réglages", route: "/settings" },
-    { icon: "PersonalizationIcon", title: "Abonnement", route: "/subscription" },
+    { icon: "ClientActivityIcon", title: "Client Activité", route: "/dashboard/client-activity" },
+    { icon: "StatsIcon", title: "Visites / Stats", route: "/dashboard/visites" },
+    { icon: "RevenueIcon", title: "Revenue", route: "/dashboard/revenue" },
+    { icon: "MessageIcon", title: "Message", route: "/dashboard/messages" },
+    { icon: "SettingsIcon", title: "Réglages", route: "/dashboard/settings" },
+    { icon: "PersonalizationIcon", title: "Abonnement", route: "/dashboard/subscription" },
     { icon: "BoostIcon", title: "Boost", route: "" },
-    { icon: "BotIcon", title: "OnehairBot", route: "/bot" },
+    { icon: "BotIcon", title: "OnehairBot", route: "/dashboard/bot" },
   ];
   const SidebarHandler = () => {
     setIsSidebar(!isSidebar);

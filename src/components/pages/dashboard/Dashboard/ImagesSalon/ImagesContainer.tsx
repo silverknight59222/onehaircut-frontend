@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { getLocalStorage } from "@/api/storage";
 import { dashboard } from "@/api/dashboard";
@@ -30,6 +30,7 @@ const ImagesContainer = ({ title, type, salonImages, setIsLoading, getAllSalonIm
 	};
 	const hiddenFileInput = React.useRef<any>(null);
 	const [selectedImage, setSelectedImage] = useState<string>("");
+	const [images, setImages] = useState<ImageSalon[]>(salonImages);
 	const [uploadedImage, setUploadedImage] = useState<FileDetails>(defaultUploadedImage);
 	const [updateMode, setUpdateMode] = useState<ImageSalon | null>(null);
 	const [validationErrors, setValidationErrors] = useState<ValidationErrorType>({
@@ -98,6 +99,10 @@ const ImagesContainer = ({ title, type, salonImages, setIsLoading, getAllSalonIm
 			});
 		}
 	}
+	useEffect(() => {
+	  setImages(salonImages)
+	}, [salonImages])
+	
 	return (
 		<>
 			<h2 className='text-3xl font-medium'>{title}</h2>
@@ -155,7 +160,7 @@ const ImagesContainer = ({ title, type, salonImages, setIsLoading, getAllSalonIm
 				</div>
 				<div className='flex-1 flex justify-center sm:justify-end gap-4'>
 					<div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-max">
-						{salonImages.filter((item) => {
+						{images.filter((item) => {
 							return item.type === type
 						}).map((item, index) => {
 							return (
