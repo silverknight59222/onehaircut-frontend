@@ -1295,7 +1295,7 @@ export const RegistrationCheckedIcon = ({ width, height }: IconType) => {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={width ? width : "30px"}
-      height={width ? width : "30px"}
+      height={height ? height : "30px"}
       viewBox="0 0 34 35"
       fill="none"
     >

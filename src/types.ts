@@ -51,6 +51,7 @@ export type Haircut = {
 	type: string;
 	group?: EthnicGroup;
 	length: string;
+	is_added_to_wishlist: boolean
 };
 
 export type WishlistHaircuts={
@@ -75,10 +76,17 @@ export type EthnicGroup = {
 	id: number;
 	group: string;
 }
-interface Package {
-	package: string;
+
+interface Color{
+	id: string,
+	color: string
 }
 
-export type Params = {
-	params: Package;
+export type Services={
+	id: number
+	name: string,
+	description: string,
+	type: string,
+	colors: Color[],
+	requirements: string[]
 }

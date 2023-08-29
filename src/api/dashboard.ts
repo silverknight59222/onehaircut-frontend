@@ -14,6 +14,11 @@ interface SalonWishlistParams{
   hair_salon_id: number
 }
 
+interface SalonHaircut {
+  haircut_id: number,
+  servicesIDs: number[]
+}
+
 const dashboard = {
   getHairSalon: async (id: number) => {
     return await request.get<any>(`/hair_salon/${id}`);
@@ -87,8 +92,14 @@ const dashboard = {
   addSalonWishList: async (params: SalonWishlistParams) => {
     return await request.post(`/salon_wishlist`, params);
   },
-  getSalonsByHaircut: async (id: number) => {
-    return await request.get<any>(`/hair_salon_by_haircut/${id}`);
+  getSalonsByHaircut: async (params: SalonHaircut) => {
+    return await request.post(`/hair_salon_by_haircut_and_services/`, params);
+  },
+  getServicesByHaircut: async () => {
+    return await request.get<any>(`/service`);
+  },
+  getSalonsDetail: async (id: number) => {
+    return await request.get<any>(`/hair_salon_by_id/${id}`);
   },
 };
 

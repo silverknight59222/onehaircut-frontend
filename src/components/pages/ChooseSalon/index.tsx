@@ -17,21 +17,25 @@ const SalonChoice = () => {
     const [salons,setSalons]=useState<SalonDetails[]>([])
     const router = useRouter()
     const userId=Number(getLocalStorage("User"))
+    const haircutId=Number(getLocalStorage("HaircutId"))
     const [isLoading, setIsLoading] = useState(false);
     const { loadingView } = userLoader();
-    const numbers = Array.from({ length: 9 }, (_, index) => index + 1);
 
     const getAllHaircuts=()=>{
+        const services=getLocalStorage('ServiceIds')
         setIsLoading(true);
-        dashboard.getSalonsByHaircut(1)
+        const data={
+            haircut_id: haircutId,
+            servicesIDs: services && JSON.parse(services)
+        } 
+        dashboard.getSalonsByHaircut(data)
         .then((res) => {
-          console.log(res.data.data)
           if (res.data.data.length > 0) {
             setSalons(res.data.data);
           }
-          setIsLoading(false);
         })
         .catch(error => console.log(error))
+        setIsLoading(false);
       }
 
     const onWishlist=(e: any, haircutId: number)=>{

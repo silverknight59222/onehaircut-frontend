@@ -32,7 +32,6 @@ const Favorites = () => {
         setIsLoading(true);
         dashboard.getSalonsWishlist(userId)
             .then((res) => {
-                console.log(res.data.data)
                 if (res.data.data.length > 0) {
                     setSalons(res.data.data);
                 }
@@ -53,17 +52,19 @@ const Favorites = () => {
                     <p className="text-black font-medium text-3xl text-center mb-10 static">
                         Gestion des favoris
                     </p>
-                    <div className="relative flex flex-col items-center justify-center my-28">
-                        <div>
+                    <div className="w-full lg:w-auto relative flex flex-col items-center justify-center my-28">
+                        <div className="w-full">
                             <p className="text-black text-3xl mb-3">Coiffures</p>
-                            <div className="w-[750px] xl:w-[950px] 2xl:w-[1090px] h-7 flex items-center rounded-xl text-white px-5 bg-gradient-to-r from-pink-500 via-orange-500 to-yellow-200">
+                            <div className="w-full lg:w-[750px] xl:w-[950px] 2xl:w-[1090px] h-7 flex items-center rounded-xl text-white px-5 bg-gradient-to-r from-pink-500 via-orange-500 to-yellow-200">
                                 3 / 10
                             </div>
                         </div>
-                        <div className="absolute -top-10 right-10 2xl:right-auto flex items-center justify-center gap-8 w-[600px] lg:w-[750px] overflow-auto">
-                            {haircuts.map((item, index) => {
+                        <div className="lg:absolute -top-10 right-7 2xl:right-auto w-full md:w-[600px] lg:w-[550px] xl:w-[750px] overflow-auto mt-3">
+                            <table>
+                                <tbody className="flex items-center justify-center gap-8 pb-2">
+                                {haircuts.map((item, index) => {
                                 return (
-                                    <div key={index} className="flex flex-col items-center justify-center">
+                                    <tr key={index} className="flex flex-col items-center justify-center">
                                         <div
 
                                             className="shadow-md rounded-xl my-2"
@@ -80,12 +81,14 @@ const Favorites = () => {
                                             </div>
                                         </div>
                                         <RegistrationCheckedIcon />
-                                    </div>
+                                    </tr>
                                 );
                             })}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                    <div className="mt-16">
+                    <div className="mt-14">
                         <p className="text-black text-3xl mb-3">Salons</p>
                         <div className="w-full lg:w-[750px] xl:w-[950px] 2xl:w-[1090px] overflow-auto">
                             <table className="w-full">
