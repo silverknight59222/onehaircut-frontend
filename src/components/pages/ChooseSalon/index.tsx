@@ -13,25 +13,30 @@ import userLoader from "@/hooks/useLoader";
 
 const SalonChoice = () => {
     const [selectedTab, setSelectedTab] = useState(0)
+    const [selectedSalon, setSelectedSalon] = useState<number| null>()
     const [selectedWhishlist,setSelectedWhishlist]=useState<number | null>()
     const [salons,setSalons]=useState<SalonDetails[]>([])
     const router = useRouter()
     const userId=Number(getLocalStorage("User"))
+    const haircutId=Number(getLocalStorage("HaircutId"))
     const [isLoading, setIsLoading] = useState(false);
     const { loadingView } = userLoader();
-    const numbers = Array.from({ length: 9 }, (_, index) => index + 1);
 
     const getAllHaircuts=()=>{
+        const services=getLocalStorage('ServiceIds')
         setIsLoading(true);
-        dashboard.getSalonsByHaircut(1)
+        const data={
+            haircut_id: haircutId,
+            servicesIDs: services && JSON.parse(services)
+        } 
+        dashboard.getSalonsByHaircut(data)
         .then((res) => {
-          console.log(res.data.data)
           if (res.data.data.length > 0) {
             setSalons(res.data.data);
           }
-          setIsLoading(false);
         })
         .catch(error => console.log(error))
+        setIsLoading(false);
       }
 
     const onWishlist=(e: any, haircutId: number)=>{
@@ -59,7 +64,7 @@ const SalonChoice = () => {
             <div className='flex flex-col items-center justify-center px-6'>
             {isLoading && loadingView()}
                 <p className='text-4xl font-medium text-black text-center mt-14'>87 <span className='font-bold text-gradient'>Salons</span> correspondent à vos critères</p>
-                <div className='flex flex-col md:flex-row items-center justify-center gap-8  mt-6'>
+                {/* <div className='flex flex-col md:flex-row items-center justify-center gap-8  mt-6'>
                     <div onClick={() => setSelectedTab(0)} className='flex items-center justify-center gap-7 w-[350px] h-14 border border-[#BDBDBD] rounded-xl cursor-pointer'>
                         <p className='text-xl font-semibold'>Selection d’une coiffure</p>
                         {selectedTab === 0 ? <RegistrationCheckedIcon /> : <div className='w-7 h-7 bg-[#D9D9D9] rounded-full' />}
@@ -68,13 +73,16 @@ const SalonChoice = () => {
                         <p className='text-xl font-semibold'>Selection d’une prestation</p>
                         {selectedTab === 1 ? <RegistrationCheckedIcon /> : <div className='w-7 h-7 bg-[#D9D9D9] rounded-full' />}
                     </div>
+                </div> */}
+                <div className='w-full flex items-end justify-end mt-12'>
+                    <button disabled={!selectedSalon} onClick={()=>router.push(`salon/${selectedSalon}/profile`)} className={`flex items-center justify-center text-lg text-white font-medium w-full md:w-52 h-14 rounded-xl px-4 ${selectedSalon ? 'bg-background-gradient' : 'bg-[#D9D9D9]'}`}>Continue</button>
                 </div>
                 <div className='mt-14 mb-5'>
                     <div className='w-full flex flex-col lg:flex-row items-center justify-center gap-6'>
                         <div className='md:h-[1100px] md:overflow-y-auto'>
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                                 {salons.map((salon, index) => {
-                                    return <div key={index} onClick={() => router.push('/services')} className='bg-[rgba(242,242,242,0.66)] rounded-2xl pb-3 cursor-pointer'>
+                                    return <div key={index} onClick={()=>setSelectedSalon(salon.id)} className={`bg-[rgba(242,242,242,0.66)] rounded-2xl pb-3 border hover:border-secondary cursor-pointer ${selectedSalon===salon.id && 'border-secondary'}`}>
                                         <div className="px-4 pt-4 relative">
                                         <div onClick={(e) => onWishlist(e, 3)} className="absolute right-6 top-6 cursor-pointer">
                                             <Like color={selectedWhishlist === index ? "#FF0000" : ""}  />

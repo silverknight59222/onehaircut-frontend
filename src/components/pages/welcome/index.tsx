@@ -6,7 +6,7 @@ import { dashboard } from "@/api/dashboard";
 import userLoader from "@/hooks/useLoader";
 import { Haircut } from "@/types";
 import Navbar from "@/components/shared/Navbar";
-import { getLocalStorage } from "@/api/storage";
+import { getLocalStorage, setLocalStorage } from "@/api/storage";
 import { useRouter } from "next/navigation";
 const Welcome = () => {
   const { loadingView } = userLoader();
@@ -25,7 +25,6 @@ const Welcome = () => {
     setIsLoading(true);
     dashboard.getAllHaircuts()
     .then((res) => {
-      console.log(res.data.data)
       if (res.data.data.length > 0) {
         setSalonHaircut(res.data.data);
       }
@@ -43,6 +42,9 @@ const Welcome = () => {
     if(selectedWhishlist !== haircutId){
       setSelectedWhishlist(haircutId)
       dashboard.addWishList(data)
+      .then(response=>{
+        getAllHaircuts()
+      })
       .catch(err => console.log(err))
     }
     else{
@@ -52,7 +54,6 @@ const Welcome = () => {
 
 
   const getFilteredCuts = () => {
-    console.log(genderFilters)
     const haircuts: Haircut[] = [];
     let list=salonHaircut
 
@@ -101,7 +102,6 @@ const Welcome = () => {
     } else {
     setFilteredHaircuts(haircuts);
     }
-    console.log(haircuts)
   };
 
   const haircuts = () => {
@@ -115,6 +115,11 @@ const Welcome = () => {
       return salonHaircut;
     }
   };
+
+  const onClickHaircut=(id: number)=>{
+    setLocalStorage("HaircutId", id)
+    router.push(`/services`)
+  }
 
   useEffect(() => {
     getFilteredCuts();
@@ -145,12 +150,12 @@ const Welcome = () => {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 mb-24">
           {haircuts().map((item, index) => {
-            return <div key={index} onClick={() => router.push('/salons')} className="shadow-md rounded-xl my-2 cursor-pointer border hover:border-secondary">
+            return <div key={index} onClick={() => onClickHaircut(item.id)} className="shadow-md rounded-xl my-2 cursor-pointer border hover:border-secondary">
               <div className="relative w-max px-4 pt-4 bg-[#F5F5F5] rounded-t-xl">
                 <div className="relative w-48 h-48">
                   <Image src={item.image} fill={true} alt="" className="rounded-t-xl" />
                   <div onClick={(e) => onWishlist(e, item.id)} className="absolute right-2 top-2 cursor-pointer">
-                    <Like color={selectedWhishlist === item.id ? "#FF0000" : ""} />
+                    <Like color={item.is_added_to_wishlist ? "#FF0000" : ""} />
                   </div>
                 </div>
               </div>

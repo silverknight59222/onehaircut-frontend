@@ -505,7 +505,9 @@ export const EditIcon = () => {
         strokeLinejoin="round"
       ></g>
       <g id="SVGRepo_iconCarrier">
+        
         <g>
+          
           <path d="M328.883,89.125l107.59,107.589l-272.34,272.34L56.604,361.465L328.883,89.125z M518.113,63.177l-47.981-47.981 c-18.543-18.543-48.653-18.543-67.259,0l-45.961,45.961l107.59,107.59l53.611-53.611 C532.495,100.753,532.495,77.559,518.113,63.177z M0.3,512.69c-1.958,8.812,5.998,16.708,14.811,14.565l119.891-29.069 L27.473,390.597L0.3,512.69z"></path>
         </g>
       </g>
@@ -537,11 +539,7 @@ export const DownArrow = (IconType: IconType) => {
       viewBox="0 0 22 12"
       fill="none"
     >
-      <path
-        d="M1 1L11.1628 10L21 1"
-        stroke={IconType.color ? IconType.color : "black"}
-        strokeWidth="2"
-      />
+      <path d="M1 1L11.1628 10L21 1" stroke={IconType.color ? IconType.color :"black"} strokeWidth="2" />
     </svg>
   );
 };
@@ -1297,7 +1295,7 @@ export const RegistrationCheckedIcon = ({ width, height }: IconType) => {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       width={width ? width : "30px"}
-      height={width ? width : "30px"}
+      height={height ? height : "30px"}
       viewBox="0 0 34 35"
       fill="none"
     >
@@ -2063,21 +2061,18 @@ export const RegistrationUnCheckedIcon = () => {
   );
 };
 
-export const Like = (IconStyle: IconType) => {
+export const Like = (IconStyle :IconType) => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
+    <svg xmlns="http://www.w3.org/2000/svg" 
       width="32"
       height="32"
-      fill={IconStyle.color ? IconStyle.color : "none"}
-      viewBox="0 0 24 24"
-      strokeWidth="1.5"
+      fill={IconStyle.color ? IconStyle.color : 'none'} 
+      viewBox="0 0 24 24" 
+      strokeWidth="1.5"  
     >
-      <path
-        stroke={IconStyle.color ? IconStyle.color : "white"}
-        d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"
-      />
+      <path stroke={IconStyle.color ? IconStyle.color : 'white'}  d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
     </svg>
+
   );
 };
 export const PaypalIcon = () => {

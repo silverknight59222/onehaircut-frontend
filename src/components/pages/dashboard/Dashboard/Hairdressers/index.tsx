@@ -211,8 +211,9 @@ const Hairdressers = () => {
       .getAllAvatars(Number(getLocalStorage("User")))
       .then((resp) => {
         setAvatars(resp.data.data);
-        setIsLoading(false);
-      });
+      })
+      .catch(error=>console.log(error))
+      setIsLoading(false);
   };
   const onDeleteHairDresser = async () => {
     await dashboard.deleteHairDresser(hairDresser.id).then((res) => {
@@ -266,6 +267,15 @@ const Hairdressers = () => {
       return avatars.woman.concat(avatars.man);
     }
   };
+
+  useEffect(()=>{
+    if(!showMaleAvatar && showFemaleAvatar){
+      setAvatarIndex(avatars.woman[0].id)
+    }
+    if(showMaleAvatar && !showFemaleAvatar){
+      setAvatarIndex(avatars.man[0].id)
+    }
+  },[showMaleAvatar, showFemaleAvatar])
   useEffect(() => {
     getAllHairDresser();
     getAllAvatars();
