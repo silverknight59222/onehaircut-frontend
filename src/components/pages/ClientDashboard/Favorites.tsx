@@ -23,9 +23,13 @@ const Favorites = () => {
                 if (res.data.data.length > 0) {
                     setHaircuts(res.data.data);
                 }
+                setIsLoading(false);
             })
-            .catch(error => console.log(error))
-        setIsLoading(false);
+            .catch(error => {
+                setIsLoading(false);
+                console.log(error)
+            })
+        
     }
 
     const getSalonsWishlist = () => {
@@ -35,9 +39,13 @@ const Favorites = () => {
                 if (res.data.data.length > 0) {
                     setSalons(res.data.data);
                 }
+                setIsLoading(false);
             })
-            .catch(error => console.log(error))
-        setIsLoading(false);
+            .catch(error => {
+                setIsLoading(false);
+                console.log(error)
+            })
+       
     }
 
       useEffect(()=>{
