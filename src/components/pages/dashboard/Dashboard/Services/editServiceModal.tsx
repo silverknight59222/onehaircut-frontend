@@ -159,7 +159,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
       });
   }
   return (
-    <div className="relative bg-white   rounded-xl px-1 pb-5">
+    <div className="relative bg-white rounded-xl px-5 pb-5">
       {isLoading && loadingView()}
       <div className="w-full flex items-center justify-end pt-2">
         <div
@@ -171,7 +171,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
       </div>
       <div>
         <div className="flex flex-col gap-4 h-full items-start">
-          <div className="mb-2 w-96 max-h-[150px] overflow-auto px-2">
+          <div className="mb-2 max-w-[300px] max-h-[150px] overflow-auto px-2">
             <div className="text-base font-semibold">{props.service.service.name}</div>
             <div className="text-sm text-[#737373]">{props.service.service.description}</div>
           </div>
