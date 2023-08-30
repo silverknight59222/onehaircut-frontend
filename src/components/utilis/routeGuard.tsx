@@ -7,7 +7,7 @@ export const RouteGuard = ({ children }:any) => {
     const router = useRouter();
     const pathname = usePathname()
     const isAuthenticated = getLocalStorage('AuthToken');
-    let unprotectedRoutes = ['/','/signup' ,'/welcome'];
+    let unprotectedRoutes = ['/','/signup' ,'/services', '/salons'];
 
     let pathIsProtected = unprotectedRoutes.indexOf(pathname) === -1;
   if (isBrowser() && !isAuthenticated && pathIsProtected) {

@@ -121,7 +121,7 @@ const ServiceChoose = () => {
                     <button className='flex items-center justify-center text-lg text-white bg-background-gradient font-medium w-full md:w-80 h-14 rounded-xl px-4'>Rechercher un professionnel</button>
                 </div> */}
                 <div className='w-full flex items-end justify-end mt-12'>
-                    <button onClick={onContinue} className='flex items-center justify-center text-lg text-white bg-background-gradient font-medium w-full md:w-52 h-14 rounded-xl px-4'>Continue</button>
+                    <button onClick={onContinue} className={`flex items-center justify-center text-lg text-white font-medium w-full md:w-52 h-14 rounded-xl px-4 bg-background-gradient`}>Continue</button>
                 </div>
                 <div className='flex items-center'>
                     <div className='mt-8 mb-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-x-9 gap-y-5'>

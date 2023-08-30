@@ -88,7 +88,7 @@ const SalonChoice = () => {
                                             <Like color={selectedWhishlist === index ? "#FF0000" : ""}  />
                                         </div>
                                             <Image
-                                                src='/assets/img1.png'
+                                                src={salon.logo}
                                                 width={200}
                                                 height={200}
                                                 alt="image"
