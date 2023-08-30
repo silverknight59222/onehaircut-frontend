@@ -43,6 +43,7 @@ export type ImageSalon = {
 	id: number;
 	image: string;
 	type: string;
+	is_cover: number;
 };
 
 export type Haircut = {
@@ -70,6 +71,7 @@ export type SalonHaircut = {
 	type: string;
 	group: EthnicGroup;
 	length: string;
+	is_added_to_wishlist: boolean
 	salon_haircuts : HaircutDetails[];
 }
 

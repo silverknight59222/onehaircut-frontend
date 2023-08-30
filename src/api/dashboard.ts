@@ -47,6 +47,9 @@ const dashboard = {
   deleteSalonImage: async (id: number) => {
     return await request.delete<ResponseType>(`/hair_salon_image/${id}`);
   },
+  makeSalonImageCover: async (id: number) => {
+    return await request.post<ResponseType>(`/hair_salon_image_cover/${id}`);
+  },
   addSalonHaircut: async (params: any) => {
     return await request.post<ResponseType>(`/salon_haircut`, params);
   },
