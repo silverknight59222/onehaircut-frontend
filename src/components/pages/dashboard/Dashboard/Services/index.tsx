@@ -13,6 +13,8 @@ export interface SalonService {
   price: string;
   duration: string;
   service: Service;
+  age: string;
+  percent: string;
 }
 const Services = () => {
   const { loadingView } = userLoader();
@@ -129,7 +131,7 @@ const Services = () => {
                       {item.service ? item.service.name : '-'}
                     </div>
                     <div
-                      className="cursor-pointer my-2 py-1 px-2 rounded-md w-7 h-6 bg-gradient-to-r from-pink-500 to-orange-500 shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+                      className="flex cursor-pointer my-2 py-1 px-2 rounded-md w-7 h-6 bg-gradient-to-r from-pink-500 to-orange-500 shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
                       onClick={() => {setShowEditServiceModal(true); setEditServiceInfo(item)}}
                     >
                       <EditIcon />

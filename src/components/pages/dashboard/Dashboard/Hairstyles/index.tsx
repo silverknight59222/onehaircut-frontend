@@ -28,9 +28,6 @@ export interface HaircutDetails {
   epais_price_type: string;
   epais_duration_type: string;
 }
-interface HaircutMapping {
-  isSelected: boolean;
-}
 
 const Hairstyles = () => {
   const showSnackbar = useSnackbar();
@@ -41,6 +38,7 @@ const Hairstyles = () => {
     name: "",
     type: "",
     length: "",
+    is_added_to_wishlist: false,
   };
   const [haircutList, setHaircutList] = useState<Haircut[]>([]);
   const [salonHaircutList, setSalonHaircutList] = useState<SalonHaircut[]>([]);
@@ -65,7 +63,9 @@ const Hairstyles = () => {
   };
   const [form, setForm] = useState<HaircutDetails>(defaultFormDetails);
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedHaircutsMapping, setSelectedHaircutsMapping] = useState<Haircut[]>([]);
+  const [selectedHaircutsMapping, setSelectedHaircutsMapping] = useState<
+    Haircut[]
+  >([]);
   const [activeMenu, setActiveMenu] = useState<string>("new");
   const [ethnicityFilters, setEthnicityFilters] = useState<string[]>([]);
   const [genderFilters, setGenderFilters] = useState<string>("");
@@ -235,14 +235,16 @@ const Hairstyles = () => {
   const selectHaircut = (item: Haircut) => {
     let added = false;
     selectedHaircutsMapping.map((haircut) => {
-      if(haircut.id === item.id) {
-        setSelectedHaircutsMapping(selectedHaircutsMapping.filter((item) => item.id !== haircut.id));
+      if (haircut.id === item.id) {
+        setSelectedHaircutsMapping(
+          selectedHaircutsMapping.filter((item) => item.id !== haircut.id)
+        );
         added = true;
-        } 
-      });
-      if(!added) {
-        setSelectedHaircutsMapping((prev) => [...prev, item]);
       }
+    });
+    if (!added) {
+      setSelectedHaircutsMapping((prev) => [...prev, item]);
+    }
   };
 
   const selectSalonHaircut = (index: number) => {
@@ -268,7 +270,7 @@ const Hairstyles = () => {
         .then((res) => {
           setHaircutList(res.data.data.all_haircuts_without_salon_haircuts);
           setSalonHaircutList(res.data.data.salon_haircuts);
-          console.log(res.data.data.salon_haircuts)
+          console.log(res.data.data.salon_haircuts);
         })
         .finally(() => {
           setIsLoading(false);
@@ -411,9 +413,7 @@ const Hairstyles = () => {
         return { ...prev, base_duration: "" };
       });
     }
-    if (
-      selectedHaircutsMapping.length == 0
-    ) {
+    if (selectedHaircutsMapping.length == 0) {
       setError((prev) => {
         return {
           ...prev,
@@ -429,7 +429,7 @@ const Hairstyles = () => {
     let data: any = form;
     const selectedHaircuts: number[] = [];
     selectedHaircutsMapping.map((item) => {
-        selectedHaircuts.push(item.id);
+      selectedHaircuts.push(item.id);
     });
     data.hair_salon_id = Number(getLocalStorage("salon_id"));
     data.haircut_ids = selectedHaircuts;
@@ -497,7 +497,10 @@ const Hairstyles = () => {
   };
   const getSelectedImage = () => {
     let url = "";
-    if (activeMenu === "new" && selectedHaircutsMapping[selectedHaircutsMapping.length - 1]) {
+    if (
+      activeMenu === "new" &&
+      selectedHaircutsMapping[selectedHaircutsMapping.length - 1]
+    ) {
       url = selectedHaircutsMapping[selectedHaircutsMapping.length - 1].image;
     } else {
       url = selectedSalonHaircut.image;
@@ -522,12 +525,15 @@ const Hairstyles = () => {
   };
 
   const selectAllHaircuts = () => {
-    if(haircutList.length && selectedHaircutsMapping.length === haircutList.length) {
+    if (
+      haircutList.length &&
+      selectedHaircutsMapping.length === haircutList.length
+    ) {
       setSelectedHaircutsMapping([]);
-    }else {
+    } else {
       setSelectedHaircutsMapping(haircutList);
     }
-  }
+  };
   useEffect(() => {
     getHaircuts();
   }, []);
@@ -649,18 +655,19 @@ const Hairstyles = () => {
               </div>
             </div>
           </div>
-            <div className="relative">
-              <div
-                className={
-                  (haircutList.length && selectedHaircutsMapping.length === haircutList.length)
-                    ? "flex gap-4 rounded-full bg-gray-500 border border-[#EDEDED] p-1 text-sm text-white"
-                    : "flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373]"
-                }
-                onClick={selectAllHaircuts}
-              >
-                <div className="px-4 cursor-pointer">Select All</div>
-              </div>
+          <div className="relative">
+            <div
+              className={
+                haircutList.length &&
+                selectedHaircutsMapping.length === haircutList.length
+                  ? "flex gap-4 rounded-full bg-gray-500 border border-[#EDEDED] p-1 text-sm text-white"
+                  : "flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373]"
+              }
+              onClick={selectAllHaircuts}
+            >
+              <div className="px-4 cursor-pointer">Select All</div>
             </div>
+          </div>
           <div className="relative flex">
             <input
               type="text"
@@ -972,9 +979,9 @@ const Hairstyles = () => {
                       <Image src={item.image} fill={true} alt="" />
                     </div>
                     <div className="absolute top-5 right-5 w-6 h-6 rounded-full bg-[#D9D9D9]">
-                      {selectedHaircutsMapping.filter(haircut=> haircut.id === item.id).length > 0 && (
-                        <SelectedIcon />
-                      )}
+                      {selectedHaircutsMapping.filter(
+                        (haircut) => haircut.id === item.id
+                      ).length > 0 && <SelectedIcon />}
                     </div>
                   </div>
                   <div className="rounded-b-xl bg-gradient-to-r from-pinkGradientFrom via-pinkGradientVia to-pinkGradientTo">
