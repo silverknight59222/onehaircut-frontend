@@ -8,6 +8,7 @@ export type SalonDetails = {
 	rating: number;
 	type: string;
 	user_id: number;
+	logo: string
 };
 
 export type FileDetails = {

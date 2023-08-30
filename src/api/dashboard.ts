@@ -93,7 +93,7 @@ const dashboard = {
     return await request.post(`/salon_wishlist`, params);
   },
   getSalonsByHaircut: async (params: SalonHaircut) => {
-    return await request.post(`/hair_salon_by_haircut_and_services/`, params);
+    return await request.post(`/hair_salon_by_haircut_and_services`, params);
   },
   getServicesByHaircut: async () => {
     return await request.get<any>(`/service`);

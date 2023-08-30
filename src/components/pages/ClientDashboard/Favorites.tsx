@@ -88,7 +88,7 @@ const Favorites = () => {
                             </table>
                         </div>
                     </div>
-                    <div className="mt-14">
+                    <div className="w-full lg:w-auto mt-14">
                         <p className="text-black text-3xl mb-3">Salons</p>
                         <div className="w-full lg:w-[750px] xl:w-[950px] 2xl:w-[1090px] overflow-auto">
                             <table className="w-full">
@@ -110,7 +110,7 @@ const Favorites = () => {
                                         {salons.map((salon,index)=>{
                                             return <td key={index} className="px-3 py-4">
                                             <div className="flex flex-col items-center justify-center">
-                                                <Image src='/assets/salon1.png' width={120} height={120} alt="" />
+                                                <Image src={salon.hairsalon.logo} width={120} height={120} alt="" />
                                                 <p className="mb-2 mt-1 text-center">{salon.hairsalon.name}</p>
                                                 <RegistrationCheckedIcon />
                                             </div>

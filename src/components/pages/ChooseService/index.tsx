@@ -2,7 +2,7 @@
 import Navbar from '@/components/shared/Navbar'
 import React, { useEffect, useState } from 'react'
 import '../dashboard/Dashboard/Services/index.css'
-import { RegistrationCheckedIcon, SmallLogo } from '@/components/utilis/Icons';
+import { CheckedIcon, RegistrationCheckedIcon, SmallLogo } from '@/components/utilis/Icons';
 import { useRouter } from 'next/navigation';
 import { dashboard } from '@/api/dashboard';
 import userLoader from "@/hooks/useLoader";
@@ -23,6 +23,7 @@ const ServiceChoose = () => {
     const [services, setServices] = useState<Services[]>([])
     const [isLoading, setIsLoading] = useState(false);
     const [isModal, setIsModal] = useState(false)
+    const [isCorrectInfo,setIsCorrectInfo]=useState(false)
     const { loadingView } = userLoader();
     const router = useRouter()
     const dropdownRef = React.useRef() as React.MutableRefObject<HTMLInputElement>
@@ -166,10 +167,15 @@ const ServiceChoose = () => {
                                     </div>
                                     })}
                                 </div>
-                                <p className='text-center mt-7 mb-6'>Je certifie sur l’honneur que ces informations sont correctes</p>
+                                <div onClick={()=>setIsCorrectInfo(!isCorrectInfo)} className='flex items-center justify-center gap-5 cursor-pointer'>
+                                    <p className='text-center mt-7 mb-6'>Je certifie sur l’honneur que ces informations sont correctes</p>
+                                    <div className={`flex justify-center items-center bg-checkbox rounded-sm w-5 h-5 border  ${isCorrectInfo ? "bg-gradient-to-b from-pink-500 to-orange-500" : "border-[#CCC] bg-white"}`}>
+                                        <CheckedIcon />
+                                    </div>
+                                </div>
                                 <div className='flex items-center justify-center gap-6'>
                                     <button onClick={() => setIsModal(false)} className='w-32 h-12 flex items-center justify-center border border-black rounded-xl'>Annuler</button>
-                                    <button onClick={onValidateRequirement} disabled={requirements.arr.length !== selectedRequirements.length} className={`w-32 h-12 flex items-center justify-center rounded-xl text-white ${requirements.arr.length === selectedRequirements.length ? 'bg-background-gradient' : 'bg-[#D9D9D9] cursor-default'}`}>Valider</button>
+                                    <button onClick={onValidateRequirement} disabled={(requirements.arr.length !== selectedRequirements.length) && isCorrectInfo} className={`w-32 h-12 flex items-center justify-center rounded-xl text-white ${(requirements.arr.length === selectedRequirements.length) && isCorrectInfo ? 'bg-background-gradient' : 'bg-[#D9D9D9] cursor-default'}`}>Valider</button>
                                 </div>
                             </div>
                         </BaseModal>
