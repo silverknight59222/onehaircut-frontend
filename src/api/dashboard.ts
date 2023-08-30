@@ -104,6 +104,9 @@ const dashboard = {
   getSalonsDetail: async (id: number) => {
     return await request.get<any>(`/hair_salon_by_id/${id}`);
   },
+  getSalonsImages: async (id: number) => {
+    return await request.get<any>(`/hair_salon_images/${id}`);
+  },
 };
 
 export { dashboard };

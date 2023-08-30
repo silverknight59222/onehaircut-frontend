@@ -11,7 +11,7 @@ import {
 } from "@/components/utilis/Icons";
 import React, { useEffect, useState } from "react";
 import { getLocalStorage, removeFromLocalStorage } from "@/api/storage";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Auth } from "@/api/auth";
 
 interface Navbar{
@@ -31,7 +31,6 @@ const Navbar = ({isWelcomePage, onSearch, onGenderFilter, onEthnicityFilters}: N
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [genderFilters, setGenderFilters] = useState<string>('');
   const [ethnicityFilters, setEthnicityFilters] = useState<string[]>([]);
-  const path=usePathname()
   const router=useRouter()
   const dropdownRef =
     React.useRef() as React.MutableRefObject<HTMLInputElement>;
@@ -65,16 +64,13 @@ const Navbar = ({isWelcomePage, onSearch, onGenderFilter, onEthnicityFilters}: N
       name: "Afro",
     },
     {
-      name: "Asiat",
-    },
-    {
-      name: "Indien",
-    },
-    {
-      name: "Maghreb",
+      name: "Asian",
     },
     {
       name: "Occidental",
+    },
+    {
+      name: "Oriental",
     },
   ];
   const Gender = [
@@ -141,15 +137,15 @@ const Navbar = ({isWelcomePage, onSearch, onGenderFilter, onEthnicityFilters}: N
   }, []);
   return (
     <div className="w-full flex flex-col items-center justify-between border-b border-[#EBF0F2] pb-3 xl:pb-0">
-      <div className="w-full flex flex-col md:flex-row items-center justify-between">
-        <div className="px-14 py-5">
+      <div className={`w-full flex items-center justify-between px-4 md:px-14 ${!isLoggedIn ? 'flex-col sm:flex-row' : 'flex-row'}`}>
+        <div onClick={()=>router.push('/')} className="py-5 cursor-pointer">
           <LogoIcon />
         </div>
         <div className="hidden xl:flex items-center pr-2 rounded-xl bg-[#F7F7F7] h-[52px] overflow-auto">
           <div
             className="flex items-center justify-center"
           >
-            <div ref={EthnicityDesktopRef} className="border-r border-grey px-3 2xl:px-6 last:border-r-0 cursor-pointer">
+            <div ref={EthnicityDesktopRef} className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
               <p
                 className={showDesktopEthnicity ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7"}
                 onClick={() => {
@@ -160,7 +156,7 @@ const Navbar = ({isWelcomePage, onSearch, onGenderFilter, onEthnicityFilters}: N
                 Ethinicity
               </p>
               {showDesktopEthnicity && (
-                <div className="absolute top-20 z-20 flex flex-col items-center justify-center w-44 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                <div className="absolute top-[75px] -ml-2 z-20 flex flex-col items-center justify-center w-44 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
                   {Ethnicity.map((item, index) => {
                     return (
                       <div
@@ -184,7 +180,7 @@ const Navbar = ({isWelcomePage, onSearch, onGenderFilter, onEthnicityFilters}: N
                 </div>
               )}
             </div>
-            <div ref={GenderDesktopRef} className="border-r border-grey px-3 2xl:px-6 last:border-r-0 cursor-pointer">
+            <div ref={GenderDesktopRef} className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
               <p
                 className={showDesktopGender ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7"}
                 onClick={() => {
@@ -195,7 +191,7 @@ const Navbar = ({isWelcomePage, onSearch, onGenderFilter, onEthnicityFilters}: N
                 Gender
               </p>
               {showDesktopGender && (
-                <div className="absolute top-20 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                <div className="absolute top-[75px] -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
                   {Gender.map((item, index) => {
                     return (
                       <div
@@ -234,9 +230,9 @@ const Navbar = ({isWelcomePage, onSearch, onGenderFilter, onEthnicityFilters}: N
         </div>
         <div
           ref={dropdownRef}
-          className="relative flex items-center justify-center md:justify-end gap-4 sm:px-6"
+          className="relative flex items-center justify-center md:justify-end gap-4"
         >
-          {(path === '/' && isLoggedIn) &&
+          {!isLoggedIn &&
           <button onClick={()=>router.push('/signup')} className="w-52 2xl:w-60 h-11 text-white font-semibold bg-background-gradient rounded-3xl">
             Enregistre mon salon
           </button>}
@@ -252,6 +248,8 @@ const Navbar = ({isWelcomePage, onSearch, onGenderFilter, onEthnicityFilters}: N
           {/* <div className="cursor-pointer">
             <Hamburger />
           </div> */}
+          {isLoggedIn &&
+          <>
           <div
             className="w-12 h-12 flex items-center justify-center pb-1 border-2 border-secondary rounded-full cursor-pointer"
             onClick={() => setIsDropdown(!isDropdown)}
@@ -259,7 +257,7 @@ const Navbar = ({isWelcomePage, onSearch, onGenderFilter, onEthnicityFilters}: N
             <UserIcon />
           </div>
           {isDropdown && (
-            <div className="absolute top-14 -mr-32 sm:-mr-44 md:mr-0 z-20 pt-3 pb-2 flex flex-col items-center justify-center text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+            <div className="absolute top-14 right-0 z-20 pt-3 pb-2 flex flex-col items-center justify-center text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
               <div className="flex flex-col gap-x-4 border-b w-44 border-[#D4CBCB] pb-3">
                 {dropdownItems.map((item, index) => {
                   return <div key={index} onClick={()=>onDropdownItemClick(item.route)} className="flex gap-x-5 px-6 py-3 hover:bg-[#F5F5F5] cursor-pointer">
@@ -273,6 +271,8 @@ const Navbar = ({isWelcomePage, onSearch, onGenderFilter, onEthnicityFilters}: N
               </div>
             </div>
           )}
+             </>
+          }
         </div>
       </div>
       <div className="flex flex-col xl:hidden items-center pr-2 rounded-xl bg-[#F7F7F7] overflow-auto mt-7">

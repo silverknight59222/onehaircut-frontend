@@ -89,7 +89,12 @@ const Login = () => {
 				setLocalStorage("AuthToken", res.token);
 				const token = getLocalStorage("AuthToken");
 				if (token) {
-					router.push("/dashboard");
+					if(res.user.role==='salon_professional'){
+						router.push("/dashboard");
+					}
+					else{
+						router.push("/client/dashboard");
+					}
 				}
 				setLocalStorage("User", res.user.id);
 			})
