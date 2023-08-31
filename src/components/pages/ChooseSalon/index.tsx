@@ -15,6 +15,7 @@ const SalonChoice = () => {
     const [selectedTab, setSelectedTab] = useState(0)
     const [selectedSalon, setSelectedSalon] = useState<number| null>()
     const [selectedWhishlist,setSelectedWhishlist]=useState<number | null>()
+    const [salonImage,setSalonImage]=useState<string[]>([])
     const [salons,setSalons]=useState<SalonDetails[]>([])
     const router = useRouter()
     const userId=Number(getLocalStorage("User"))
@@ -31,12 +32,31 @@ const SalonChoice = () => {
         } 
         dashboard.getSalonsByHaircut(data)
         .then((res) => {
+        setIsLoading(false);
           if (res.data.data.length > 0) {
             setSalons(res.data.data);
+            for(let i=0 ; i<res.data.data.length; i++){
+                dashboard.getSalonsImages(res.data.data[i].id)
+                .then(response=>{
+                    for(let j=0 ; j<response.data.data.length; j++){
+                        if(response.data.data[i].is_cover){
+                            setSalonImage(prev=>[
+                                ...prev,
+                                response.data.data[i].image
+                            ])
+                        }
+                    }
+                })
+                .catch(error=>{
+                    console.log(error)
+                })
+            }
           }
         })
-        .catch(error => console.log(error))
-        setIsLoading(false);
+        .catch(error => {
+            setIsLoading(false);
+            console.log(error)
+        })
       }
 
     const onWishlist=(e: any, haircutId: number)=>{
@@ -87,12 +107,13 @@ const SalonChoice = () => {
                                         <div onClick={(e) => onWishlist(e, 3)} className="absolute right-6 top-6 cursor-pointer">
                                             <Like color={selectedWhishlist === index ? "#FF0000" : ""}  />
                                         </div>
+                                        <div className='relative w-48 h-48'>
                                             <Image
-                                                src='/assets/img1.png'
-                                                width={200}
-                                                height={200}
+                                                src={salonImage.length ? salonImage[index] : salon.logo}
+                                                fill={true}
                                                 alt="image"
                                             />
+                                        </div>
                                         </div>
                                         <div className="flex items-start justify-between text-black text-lg font-semibold px-3 pt-2">
                                             <p className='w-36'>{salon.name}</p>
