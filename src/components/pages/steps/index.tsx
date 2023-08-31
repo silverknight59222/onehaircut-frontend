@@ -60,7 +60,7 @@ const Steps = () => {
         </div>
       </div>
       <div className="flex items-center justify-center mb-5">
-        <button onClick={()=>route.push('/steps/1')} className="w-52 h-14 text-white text-xl font-semibold rounded-xl bg-background-gradient shadow-[0px_17px_36px_0px_rgba(255,125,60,0.25)]">
+        <button onClick={()=>route.push('/registration/steps/1')} className="w-52 h-14 text-white text-xl font-semibold rounded-xl bg-background-gradient shadow-[0px_17px_36px_0px_rgba(255,125,60,0.25)]">
           Allons-y!
         </button>
       </div>

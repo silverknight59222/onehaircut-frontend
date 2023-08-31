@@ -69,9 +69,8 @@ const PricingTable = () => {
                 79 $<span className="text-2xl">/ mois</span>
               </p>
               <div className="flex items-center gap-10 mt-1">
-                <p className={activePlan === "pro" ? "text-white font-semibold" : "text-black font-semibold"} >à partir de </p>
                 <p className={activePlan === "pro" ? "text-white font-semibold" : "text-black font-semibold"} >
-                  *1 % de tax de service{" "}
+                  *5 % de tax de service{" "}
                 </p>
               </div>
             </div>
@@ -102,7 +101,7 @@ const PricingTable = () => {
             </div>
             <div className="w-full h-[100px] flex flex-col items-center justify-center border-r-2 border-[#E4E8E9] py-4">
               <p className={activePlan === "standard" ? "text-white font-medium text-4xl": "text-black font-medium text-4xl" }>Gratuit</p>
-              <p className={activePlan === "standard" ? "text-white font-medium ml-32": "text-black font-medium ml-32" }>
+              <p className={activePlan === "standard" ? "text-white font-medium ": "text-black font-medium " }>
                 *5 % de tax de service
               </p>
             </div>
@@ -110,21 +109,17 @@ const PricingTable = () => {
               Aperçu de l’Abo
             </div>}
           </div>
-          <div  onClick={()=>setActivePlan("concorrent")} 
-          style={{
-            background: activePlan === "concorrent" ? "linear-gradient(162deg, #FE2569 0%, #FD4C55 42.71%, #FF8637 86.46%, #FFE30F 100%)" : "none",
-          }}
-          className="w-[347px] absolute -top-24 left-[880px] flex flex-col items-center justify-center py-6 rounded-[20px]">
-            <div className={activePlan === "concorrent" ? "text-3xl font-semibold text-white w-48 text-center mb-[132px]" : "text-3xl font-semibold text-black w-48 text-center mb-[132px]"}>
+          <div className="w-[347px] absolute -top-24 left-[880px] flex flex-col items-center justify-center py-6 rounded-[20px]">
+            <div className="text-3xl font-semibold text-black w-48 text-center mb-[132px]">
               Concurrents
             </div>
             {packageNames.map((_,index) => {
               return (
                 <div key={index} className="flex items-center justify-center w-full h-[100px] border-b-2 border-[#E4E8E9] py-4">
                   {index === 0 || index === 8 ?
-                     (activePlan === "concorrent" ? <PackageCheckedIcon /> : <RegistrationCheckedIcon />)
+                     <RegistrationCheckedIcon />
                      :
-                     (activePlan === "concorrent" ? <PackageSelectedUnCheckedIcon /> : <PackageUnCheckedIcon />)
+                     <PackageUnCheckedIcon />
                     }
                 </div>
               );

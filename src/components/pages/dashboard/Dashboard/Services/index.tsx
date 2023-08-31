@@ -120,7 +120,7 @@ const Services = () => {
           <AddServiceModal setShowAddServiceModal={setShowAddServiceModal} fetchAllServices={fetchAllServices} />
         </div>
       )}
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-start">
         <div className="gap-9 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
           {getServices().map((item, index) => {
             return (
@@ -146,7 +146,7 @@ const Services = () => {
                       </div>
                     )}
                   </div>
-                  <p className="text-sm text-[#A0A0A0] mt-2 h-9">
+                  <p className="text-sm text-[#A0A0A0] mt-2 line-clamp-2 overflow-hidden h-auto">
                     {item.service ? item.service.description : '-'}
                   </p>
                   <div className="flex items-center gap-6 mt-5">

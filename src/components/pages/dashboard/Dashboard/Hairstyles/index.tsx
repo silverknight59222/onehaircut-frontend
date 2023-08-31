@@ -270,7 +270,6 @@ const Hairstyles = () => {
         .then((res) => {
           setHaircutList(res.data.data.all_haircuts_without_salon_haircuts);
           setSalonHaircutList(res.data.data.salon_haircuts);
-          console.log(res.data.data.salon_haircuts);
         })
         .finally(() => {
           setIsLoading(false);
@@ -531,7 +530,16 @@ const Hairstyles = () => {
     ) {
       setSelectedHaircutsMapping([]);
     } else {
-      setSelectedHaircutsMapping(haircutList);
+      if(
+        ethnicityFilters.length > 0 ||
+        genderFilters ||
+        lengthFilters.length > 0 ||
+        search !== ""
+      ) {
+      setSelectedHaircutsMapping(filteredHaircuts);
+      } else {
+        setSelectedHaircutsMapping(haircutList);
+      }
     }
   };
   useEffect(() => {

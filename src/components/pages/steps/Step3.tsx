@@ -15,16 +15,10 @@ const Step3 = () => {
   return (
     <div>
       <div className="flex flex-col md:flex-row items-center justify-center border-b border-[#EBF0F2] pb-3">
-        <div className="w-full flex items-center justify-center md:justify-start gap-5 px-14 py-5">
+        <div className="absolute top-1 flex items-center justify-start sm:justify-center w-full gap-5 px-10 sm:px-14 py-5">
           <LogoIcon />
         </div>
-        <div className="w-full flex items-center justify-center md:justify-end gap-4 sm:px-14">
-          <button className="w-52 sm:w-60 h-11 text-white font-semibold bg-gradient-to-r from-pink-500 to-yellow-500 rounded-3xl">
-            Enregistre mon salon
-          </button>
-          <div className="cursor-pointer">
-            <Hamburger />
-          </div>
+        <div className="w-full flex items-center justify-end gap-4 px-4 sm:px-14 mt-5">
           <div className="w-14 h-14 flex items-center justify-center pb-1 border-2 border-secondary rounded-full cursor-pointer">
             <UserIcon />
           </div>
@@ -115,7 +109,7 @@ const Step3 = () => {
           </div>
         </div>
         <div className="w-full flex items-center justify-center mb-5">
-          <button onClick={()=>route.push('/steps/4')} className="w-56 h-14 text-white text-xl font-semibold rounded-xl bg-background-gradient shadow-[0px_17px_36px_0px_rgba(255,125,60,0.25)]">
+          <button onClick={()=>route.push('/registration/steps/4')} className="w-56 h-14 text-white text-xl font-semibold rounded-xl bg-background-gradient shadow-[0px_17px_36px_0px_rgba(255,125,60,0.25)]">
             Vers le paiement
           </button>
         </div>

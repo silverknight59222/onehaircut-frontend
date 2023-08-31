@@ -1297,7 +1297,7 @@ export const RegistrationCheckedIcon = ({ width, height }: IconType) => {
       width={width ? width : "30px"}
       height={height ? height : "30px"}
       viewBox="0 0 34 35"
-      fill="none"
+      fill="#fff"
     >
       <path
         d="M17 0C7.62626 0 0 7.85033 0 17.4999C0 27.1495 7.62626 35 17 35C26.3737 35 34 27.1495 34 17.4999C34 7.85033 26.3739 0 17 0ZM26.7617 14.544L16.0815 25.5383C15.6273 26.0058 15.0237 26.2631 14.3815 26.2631C13.7394 26.2631 13.1357 26.0058 12.6816 25.5383L7.2383 19.935C6.78418 19.4675 6.53405 18.8461 6.53405 18.1851C6.53405 17.5238 6.78418 16.9024 7.2383 16.4349C7.69225 15.9675 8.29591 15.71 8.93825 15.71C9.58041 15.71 10.1842 15.9675 10.6382 16.4351L14.3813 20.2882L23.3615 11.044C23.8156 10.5765 24.4192 10.3192 25.0614 10.3192C25.7036 10.3192 26.3072 10.5765 26.7613 11.044C27.699 12.0092 27.699 13.5791 26.7617 14.544Z"
@@ -1432,7 +1432,7 @@ export const RoomTypeIcon = () => {
         d="M52.0907 25.041H90.0743V36.7295H19.9487V25.041H28.7137"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1440,7 +1440,7 @@ export const RoomTypeIcon = () => {
         d="M66.5223 7.50879H52.0889"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1448,7 +1448,7 @@ export const RoomTypeIcon = () => {
         d="M72.6718 7.50879H84.2286V24.7924H52.2728"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1456,7 +1456,7 @@ export const RoomTypeIcon = () => {
         d="M90.0743 69.0218V95.1662H19.9487V48.416"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1464,7 +1464,7 @@ export const RoomTypeIcon = () => {
         d="M90.0742 62.8718V48.416"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1472,7 +1472,7 @@ export const RoomTypeIcon = () => {
         d="M19.9895 48.416H19.907C16.7024 48.416 14.1045 45.8182 14.1045 42.6136V36.7285H25.792V42.6136C25.792 45.8182 23.1941 48.416 19.9895 48.416Z"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1480,7 +1480,7 @@ export const RoomTypeIcon = () => {
         d="M31.677 48.416H31.5945C28.3899 48.416 25.792 45.8182 25.792 42.6136V36.7285H37.4795V42.6136C37.4795 45.8182 34.8816 48.416 31.677 48.416Z"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1488,7 +1488,7 @@ export const RoomTypeIcon = () => {
         d="M43.3645 48.416H43.282C40.0774 48.416 37.4795 45.8182 37.4795 42.6136V36.7285H49.167V42.6136C49.167 45.8182 46.5691 48.416 43.3645 48.416Z"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1496,7 +1496,7 @@ export const RoomTypeIcon = () => {
         d="M55.052 48.416H54.9695C51.7649 48.416 49.167 45.8182 49.167 42.6136V36.7285H60.8545V42.6136C60.8545 45.8182 58.2566 48.416 55.052 48.416Z"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1504,7 +1504,7 @@ export const RoomTypeIcon = () => {
         d="M66.7395 48.416H66.657C63.4524 48.416 60.8545 45.8182 60.8545 42.6136V36.7285H72.542V42.6136C72.542 45.8182 69.9441 48.416 66.7395 48.416Z"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1512,7 +1512,7 @@ export const RoomTypeIcon = () => {
         d="M78.427 48.416H78.3445C75.1399 48.416 72.542 45.8182 72.542 42.6136V36.7285H84.2295V42.6136C84.2295 45.8182 81.6316 48.416 78.427 48.416Z"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1520,7 +1520,7 @@ export const RoomTypeIcon = () => {
         d="M90.1145 48.416H90.032C86.8274 48.416 84.2295 45.8182 84.2295 42.6136V36.7285H95.917V42.6136C95.917 45.8182 93.3191 48.416 90.1145 48.416Z"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1528,7 +1528,7 @@ export const RoomTypeIcon = () => {
         d="M43.3239 80.708V95.1657H25.792V54.2588H43.3239V74.56"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1536,7 +1536,7 @@ export const RoomTypeIcon = () => {
         d="M31.6357 71.791V77.6347"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1544,7 +1544,7 @@ export const RoomTypeIcon = () => {
         d="M84.2295 54.2588H49.167V89.3211H84.2295V54.2588Z"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1552,7 +1552,7 @@ export const RoomTypeIcon = () => {
         d="M14.1045 54.2588H2.41699V83.4775H14.1045V54.2588Z"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1560,7 +1560,7 @@ export const RoomTypeIcon = () => {
         d="M2.41699 63.0253L14.1045 57.1816"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1568,7 +1568,7 @@ export const RoomTypeIcon = () => {
         d="M2.41699 71.7901L14.1045 65.9463"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1576,7 +1576,7 @@ export const RoomTypeIcon = () => {
         d="M2.41699 80.5566L14.1045 74.7129"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1584,7 +1584,7 @@ export const RoomTypeIcon = () => {
         d="M8.28139 89.3222H8.24019C6.6379 89.3222 5.33887 88.0233 5.33887 86.421V83.4785H11.1825V86.421C11.1827 88.0232 9.88369 89.3222 8.28139 89.3222Z"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1592,7 +1592,7 @@ export const RoomTypeIcon = () => {
         d="M8.28139 48.416H8.24019C6.6379 48.416 5.33887 49.7149 5.33887 51.3172V54.2597H11.1825V51.3172C11.1827 49.7149 9.88369 48.416 8.28139 48.416Z"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1600,7 +1600,7 @@ export const RoomTypeIcon = () => {
         d="M19.9485 77.6338H14.1045"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1608,7 +1608,7 @@ export const RoomTypeIcon = () => {
         d="M14.1045 60.1035H19.9485"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1616,7 +1616,7 @@ export const RoomTypeIcon = () => {
         d="M14.1045 95.165H19.9483"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1624,7 +1624,7 @@ export const RoomTypeIcon = () => {
         d="M90.0732 95.165H95.9169"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1632,7 +1632,7 @@ export const RoomTypeIcon = () => {
         d="M35.9202 7.75684L43.2248 20.4089C44.0317 21.8063 43.5529 23.5933 42.1553 24.4002C40.7579 25.2071 38.9709 24.7283 38.164 23.3307C37.3571 21.9333 37.8359 20.1463 39.2335 19.3394L41.7638 17.8784"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1640,7 +1640,7 @@ export const RoomTypeIcon = () => {
         d="M31.8837 11.7939L44.5357 19.0986C45.9331 19.9055 47.7202 19.4267 48.5271 18.0291C49.3339 16.6317 48.8552 14.8446 47.4575 14.0378C46.0601 13.2309 44.2731 13.7097 43.4662 15.1073L42.0052 17.6376"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1648,7 +1648,7 @@ export const RoomTypeIcon = () => {
         d="M40.4013 30.8847C48.4699 30.8847 55.0107 24.3439 55.0107 16.2754C55.0107 8.20684 48.4699 1.66602 40.4013 1.66602C32.3328 1.66602 25.792 8.20684 25.792 16.2754C25.792 24.3439 32.3328 30.8847 40.4013 30.8847Z"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1656,7 +1656,7 @@ export const RoomTypeIcon = () => {
         d="M60.8545 13.3535H78.3857"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1664,7 +1664,7 @@ export const RoomTypeIcon = () => {
         d="M60.8545 19.1973H78.3857"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1672,7 +1672,7 @@ export const RoomTypeIcon = () => {
         d="M60.8308 89.3221H54.9872V68.8484C54.9872 67.2461 56.286 65.9473 57.8885 65.9473H57.9297C59.532 65.9473 60.831 67.2461 60.831 68.8484V89.3221H60.8308Z"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1680,7 +1680,7 @@ export const RoomTypeIcon = () => {
         d="M78.3623 89.3214H60.8309V83.4775H75.4405L78.3623 89.3214Z"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1688,7 +1688,7 @@ export const RoomTypeIcon = () => {
         d="M69.597 83.4774V77.6338"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1696,7 +1696,7 @@ export const RoomTypeIcon = () => {
         d="M75.6931 77.6338H60.8309"
         stroke="black"
         strokeWidth="3"
-        stroke-miterlimit="10"
+        strokeMiterlimit="10"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
@@ -1779,7 +1779,7 @@ export const AccountIcon = () => {
           d="M38.1979 40.3506L38.4222 44.5507C38.4688 45.4244 37.6553 46.3163 36.5961 46.3728L6.53352 47.9777C5.47437 48.0342 4.57056 47.2341 4.51485 46.1905L2.58137 9.97202C2.52566 8.92835 3.33914 8.0365 4.39829 7.97996L13.5018 7.49398"
           stroke="black"
           strokeWidth="2"
-          stroke-miterlimit="10"
+          strokeMiterlimit="10"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
@@ -1787,7 +1787,7 @@ export const AccountIcon = () => {
           d="M26.3584 6.80752L34.4608 6.37498C35.5201 6.31843 36.4239 7.11861 36.4796 8.16218L37.1805 21.2922"
           stroke="black"
           strokeWidth="2"
-          stroke-miterlimit="10"
+          strokeMiterlimit="10"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
@@ -1795,7 +1795,7 @@ export const AccountIcon = () => {
           d="M34.0195 39.5393L34.1738 42.4314L8.52222 43.8008L6.82034 11.9208L32.472 10.5514L33.1066 22.4389"
           stroke="black"
           strokeWidth="2"
-          stroke-miterlimit="10"
+          strokeMiterlimit="10"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
@@ -1803,7 +1803,7 @@ export const AccountIcon = () => {
           d="M23.3305 6.96944C23.3643 6.72757 23.3755 6.47907 23.362 6.22635C23.2467 4.06715 21.375 2.4116 19.1815 2.5287C16.9878 2.64581 15.3031 4.49121 15.4184 6.65041C15.4319 6.90313 15.4694 7.14903 15.5288 7.38592L11.0553 7.62473L11.272 11.6836L28.0206 10.7895L27.8039 6.73063L23.3305 6.96944Z"
           stroke="black"
           strokeWidth="2"
-          stroke-miterlimit="10"
+          strokeMiterlimit="10"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
@@ -1811,7 +1811,7 @@ export const AccountIcon = () => {
           d="M15.9843 19.1413C16.0533 20.4339 15.0458 21.5385 13.7339 21.6086C12.4221 21.6786 11.3027 20.6875 11.2337 19.3949C11.1647 18.1024 12.1722 16.9978 13.484 16.9277C14.7959 16.8577 15.9153 17.8488 15.9843 19.1413Z"
           stroke="black"
           strokeWidth="2"
-          stroke-miterlimit="10"
+          strokeMiterlimit="10"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
@@ -1819,7 +1819,7 @@ export const AccountIcon = () => {
           d="M16.9045 36.3796C16.9735 37.6722 15.9659 38.7768 14.6541 38.8468C13.3423 38.9169 12.2229 37.9258 12.1539 36.6332C12.0849 35.3406 13.0924 34.236 14.4042 34.166C15.7161 34.096 16.8355 35.087 16.9045 36.3796Z"
           stroke="black"
           strokeWidth="2"
-          stroke-miterlimit="10"
+          strokeMiterlimit="10"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
@@ -1827,7 +1827,7 @@ export const AccountIcon = () => {
           d="M16.4445 27.7605C16.5135 29.0531 15.506 30.1577 14.1941 30.2277C12.8823 30.2977 11.7629 29.3067 11.6939 28.0141C11.6249 26.7215 12.6324 25.6169 13.9442 25.5469C15.2561 25.4768 16.3755 26.4679 16.4445 27.7605Z"
           stroke="black"
           strokeWidth="2"
-          stroke-miterlimit="10"
+          strokeMiterlimit="10"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
@@ -1835,7 +1835,7 @@ export const AccountIcon = () => {
           d="M19.5137 18.9521L28.8333 18.4546"
           stroke="black"
           strokeWidth="2"
-          stroke-miterlimit="10"
+          strokeMiterlimit="10"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
@@ -1843,7 +1843,7 @@ export const AccountIcon = () => {
           d="M19.9739 27.5723L28.8558 27.0981"
           stroke="black"
           strokeWidth="2"
-          stroke-miterlimit="10"
+          strokeMiterlimit="10"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
@@ -1851,7 +1851,7 @@ export const AccountIcon = () => {
           d="M20.4343 36.1904L29.4417 35.7096"
           stroke="black"
           strokeWidth="2"
-          stroke-miterlimit="10"
+          strokeMiterlimit="10"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
@@ -1859,7 +1859,7 @@ export const AccountIcon = () => {
           d="M47.0817 30.3913C47.3555 35.5203 43.3741 39.9027 38.1889 40.1795C33.0037 40.4563 28.5783 36.5227 28.3045 31.3937C28.0307 26.2647 32.0122 21.8824 37.1974 21.6056C42.3825 21.3288 46.8079 25.2623 47.0817 30.3913Z"
           stroke="black"
           strokeWidth="2"
-          stroke-miterlimit="10"
+          strokeMiterlimit="10"
           strokeLinecap="round"
           strokeLinejoin="round"
         />
@@ -1867,7 +1867,7 @@ export const AccountIcon = () => {
           d="M37.5642 28.4854L37.7153 31.3174L39.4331 31.2257"
           stroke="black"
           strokeWidth="2"
-          stroke-miterlimit="10"
+          strokeMiterlimit="10"
           strokeLinecap="round"
           strokeLinejoin="round"
         />

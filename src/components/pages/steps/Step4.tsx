@@ -7,7 +7,6 @@ import {
   PaypalIcon,
   UserIcon,
 } from "@/components/utilis/Icons";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
 
@@ -15,26 +14,20 @@ const Step4 = () => {
   const router=useRouter()
   return (
     <div>
-      <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
+      <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 -z-10">
         <CircleRight />
       </div>
       <div className="flex flex-col md:flex-row items-center justify-center border-b border-[#EBF0F2] pb-3">
-        <div className="w-full flex items-center justify-center md:justify-start gap-5 px-14 py-5">
+      <div className="absolute top-1 flex items-center justify-start sm:justify-center w-full gap-5 px-10 sm:px-14 py-5">
           <LogoIcon />
         </div>
-        <div className="w-full flex items-center justify-center md:justify-end gap-4 sm:px-14">
-          <div className="cursor-pointer">
-            <BellIcon />
-          </div>
-          <div className="cursor-pointer">
-            <Hamburger />
-          </div>
+        <div className="w-full flex items-center justify-end gap-4 px-4 sm:px-14 mt-5">
           <div className="w-14 h-14 flex items-center justify-center pb-1 border-2 border-secondary rounded-full cursor-pointer">
             <UserIcon />
           </div>
         </div>
       </div>
-      <div className="z-50 flex flex-col items-center justify-center">
+      <div className="z-50 flex flex-col items-center justify-center mx-4">
         <p className="text-black font-medium text-5xl mt-10">Checkout</p>
         <div className="flex flex-col lg:flex-row items-start justify-center gap-12 mt-7 px-5">
           <div className="w-full lg:w-7/12">
