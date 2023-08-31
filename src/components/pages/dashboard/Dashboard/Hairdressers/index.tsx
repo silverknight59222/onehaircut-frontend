@@ -111,7 +111,7 @@ const Hairdressers = () => {
     if (showAvatar === "men") {
       setAvatarIndex(newIndex < 1 ? avatars.man.length - 1 : newIndex);
     } else if (showAvatar === "women") {
-      setAvatarIndex(newIndex < 1 ? avatars.woman.length - 1 : newIndex);
+      setAvatarIndex(newIndex <  avatars.woman.length - 1 ? avatars.woman[avatars.woman.length - 1].id : newIndex);
     }
   };
   const handleAvatarNext = () => {
@@ -121,8 +121,9 @@ const Hairdressers = () => {
         newIndex > avatars.man.length - 1 ? avatars.man[0].id : newIndex
       );
     } else if (showAvatar === "women") {
+      const totalLength=avatars.woman.length - 1 + avatars.woman.length - 1
       setAvatarIndex(
-        newIndex > avatars.woman.length - 1 ? avatars.woman[0].id : newIndex
+        newIndex > totalLength ? avatars.woman[0].id : newIndex
       );
     }
   };
@@ -277,7 +278,6 @@ const Hairdressers = () => {
 
   useEffect(() => {
     if (showAvatar === "women" && avatars.woman.length) {
-      console.log(avatars.woman[0].id);
       setAvatarIndex(avatars.woman[0].id);
     }
     if (showAvatar === "men" && avatars.man.length) {
