@@ -8,7 +8,7 @@ import { SalonService } from "./index";
 interface EditServiceModalType {
   setShowEditServiceModal: (value: boolean) => void;
   service: SalonService;
-  fetchAllServices:()=>void;
+  fetchAllServices: () => void;
 }
 interface Color {
   id: number;
@@ -25,6 +25,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
   const showSnackbar = useSnackbar();
   const { loadingView } = userLoader();
   const [isLoading, setIsLoading] = useState(false);
+  const [showColors, setShowColors] = useState<number>(-1);
   const [service, setService] = useState({
     duration: props.service.duration,
     price: props.service.price,
@@ -35,7 +36,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
     duration: "",
     price: "",
     service: "",
-       age: "",
+    age: "",
     percent: "",
   });
   const onChangeDuration = (value: string) => {
@@ -125,7 +126,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
     data.service_id = props.service.services_id;
     data.price = service.price;
     data.duration = service.duration;
-     if (props.service.age && props.service.percent) {
+    if (props.service.age && props.service.percent) {
       data.age = service.age;
       data.percent = service.percent;
     }
@@ -157,7 +158,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
         setIsLoading(false);
         props.setShowEditServiceModal(false);
       });
-  }
+  };
   return (
     <div className="relative bg-white rounded-xl px-5 pb-5">
       {isLoading && loadingView()}
@@ -172,85 +173,146 @@ const EditServiceModal = (props: EditServiceModalType) => {
       <div>
         <div className="flex flex-col gap-4 h-full items-start">
           <div className="mb-2 max-w-[300px] max-h-[150px] overflow-auto px-2">
-            <div className="text-base font-semibold">{props.service.service.name}</div>
-            <div className="text-sm text-[#737373]">{props.service.service.description}</div>
-          </div>
-          <div  className="flex gap-4 items-center justify-center w-full">
-          <div className="flex flex-col gap-4 items-center">
-          <div className={(props.service.age && props.service.percent) ? "max-w-[300px] w-[150px]": "max-w-[300px] w-[350px]"}>
-            <input
-              type="number"
-              placeholder="Durée"
-              className="w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
-              value={service.duration}
-              onChange={(e) => onChangeDuration(e.target.value)}
-            />
-            {error.duration && (
-              <p className="text-xs text-red-700 ml-3 mt-1">
-                {error.duration}*
-              </p>
-            )}
-          </div>
-          <div className={(props.service.age && props.service.percent) ? "max-w-[300px] w-[150px]": "max-w-[300px] w-[350px]"}>
-            <input
-              type="number"
-              placeholder="Prix"
-              className="w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
-              value={service.price}
-              onChange={(e) => onChangePrice(e.target.value)}
-            />
-            {error.price && (
-              <p className="text-xs text-red-700 ml-3 mt-1">{error.price}*</p>
-            )}
-          </div>
-          </div>
-          {(props.service.age && props.service.percent) && (<div className="flex flex-col gap-4 items-center">
-          <div className="max-w-[300px] w-[150px]">
-            <input
-              type="number"
-              placeholder="Age"
-              className="w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
-              value={service.age}
-              onChange={(e) => onChangeAge(e.target.value)}
-            />
-            {error.age && (
-              <p className="text-xs text-red-700 ml-3 mt-1">{error.age}*</p>
-            )}
-          </div>
-          <div className="max-w-[300px] w-[150px]">
-            <input
-              type="number"
-              placeholder="Percent"
-              className="w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
-              value={service.percent}
-              onChange={(e) => onChangePercent(e.target.value)}
-            />
-            {error.percent && (
-              <p className="text-xs text-red-700 ml-3 mt-1">{error.percent}*</p>
-            )}
-          </div>
-          </div>)}
-          </div>
-            <div className="mt-4 flex gap-4 items-center justify-center w-full">
-              <button
-                className="text-white font-medium text-lg rounded-md py-2 px-4 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
-                onClick={() => props.setShowEditServiceModal(false)}
-              >
-                Cancel
-              </button>
-              <button
-                className="text-white font-medium text-lg rounded-md py-2 px-4 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
-                onClick={() => deleteService()}
-              >
-                Delete
-              </button>
-              <button
-                className="text-white font-medium text-lg rounded-md py-2 px-4 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
-                onClick={() => onSubmit()}
-              >
-                Update
-              </button>
+            <div className="text-base font-semibold">
+              {props.service.service.name}
             </div>
+            <div className="text-sm text-[#737373]">
+              {props.service.service.description}
+            </div>
+          </div>
+          <div
+            onMouseLeave={() => {
+              setShowColors(-1);
+            }}
+          >
+            {props.service.service.colors?.length && (
+              <div className="relative pl-2">
+                <div className=" relative flex justify-start w-full flex-col">
+                  <p className="text-xs font-semibold text-black">Color</p>
+                  <div
+                    className="text-xs mt-1 py-1 px-2 border-2 border-gray-400 rounded-lg"
+                    onMouseEnter={(e) => {
+                      e.stopPropagation();
+                      setShowColors(props.service.service.id);
+                    }}
+                  >
+                    {props.service.service.colors[0].color}
+                  </div>
+                </div>
+                {showColors === props.service.service.id && (
+                  <div className="absolute top-12 z-50 max-h-[150px] overflow-auto bg-white rounded-lg p-1 border-2">
+                    <div className="w-[90px] flex items-center justify-between rounded py-1 px-1.5 mt-1 overflow-hidden">
+                      <p className="text-xs text-[#6F6F6F]">
+                        {props.service.service.colors.map((color, index) => {
+                          return (
+                            <p key={index} className="my-1">
+                              {color.color}.
+                            </p>
+                          );
+                        })}
+                      </p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+          <div className="flex gap-4 items-center justify-center w-full">
+            <div className="flex flex-col gap-4 items-center">
+              <div
+                className={
+                  props.service.age && props.service.percent
+                    ? "max-w-[300px] w-[150px]"
+                    : "max-w-[300px] w-[350px]"
+                }
+              >
+                <input
+                  type="number"
+                  placeholder="Durée"
+                  className="w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
+                  value={service.duration}
+                  onChange={(e) => onChangeDuration(e.target.value)}
+                />
+                {error.duration && (
+                  <p className="text-xs text-red-700 ml-3 mt-1">
+                    {error.duration}*
+                  </p>
+                )}
+              </div>
+              <div
+                className={
+                  props.service.age && props.service.percent
+                    ? "max-w-[300px] w-[150px]"
+                    : "max-w-[300px] w-[350px]"
+                }
+              >
+                <input
+                  type="number"
+                  placeholder="Prix"
+                  className="w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
+                  value={service.price}
+                  onChange={(e) => onChangePrice(e.target.value)}
+                />
+                {error.price && (
+                  <p className="text-xs text-red-700 ml-3 mt-1">
+                    {error.price}*
+                  </p>
+                )}
+              </div>
+            </div>
+            {props.service.age && props.service.percent && (
+              <div className="flex flex-col gap-4 items-center">
+                <div className="max-w-[300px] w-[150px]">
+                  <input
+                    type="number"
+                    placeholder="Age"
+                    className="w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
+                    value={service.age}
+                    onChange={(e) => onChangeAge(e.target.value)}
+                  />
+                  {error.age && (
+                    <p className="text-xs text-red-700 ml-3 mt-1">
+                      {error.age}*
+                    </p>
+                  )}
+                </div>
+                <div className="max-w-[300px] w-[150px]">
+                  <input
+                    type="number"
+                    placeholder="Percent"
+                    className="w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
+                    value={service.percent}
+                    onChange={(e) => onChangePercent(e.target.value)}
+                  />
+                  {error.percent && (
+                    <p className="text-xs text-red-700 ml-3 mt-1">
+                      {error.percent}*
+                    </p>
+                  )}
+                </div>
+              </div>
+            )}
+          </div>
+          <div className="mt-4 flex gap-4 items-center justify-center w-full">
+            <button
+              className="text-white font-medium text-lg rounded-md py-2 px-4 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+              onClick={() => props.setShowEditServiceModal(false)}
+            >
+              Cancel
+            </button>
+            <button
+              className="text-white font-medium text-lg rounded-md py-2 px-4 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+              onClick={() => deleteService()}
+            >
+              Delete
+            </button>
+            <button
+              className="text-white font-medium text-lg rounded-md py-2 px-4 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+              onClick={() => onSubmit()}
+            >
+              Update
+            </button>
+          </div>
         </div>
       </div>
     </div>

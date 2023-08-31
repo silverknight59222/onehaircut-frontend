@@ -14,7 +14,7 @@ const Step2 = () => {
         <LogoIcon />
       </div>
       <div className="flex flex-col items-center justify-center mt-16">
-        <p className="text-black text-3xl text-center px-6 w-full md:w-[800px] xl:w-[1100px]">
+        <p className="text-black font-semibold text-xl md:text-2xl lg:text-3xl text-center px-6 w-full md:w-[800px] xl:w-[1100px]">
           Où est situé ton salon ? si tu es mobile, renseigne la zone dans
           laquelle tu peux exercer !
         </p>
@@ -49,13 +49,13 @@ const Step2 = () => {
           </div>
           <div className="w-full flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-7 mb-5">
             <button
-              onClick={() => route.push("/steps/1")}
+              onClick={() => route.push("/registration/steps/1")}
               className="border border-secondary w-96 sm:w-64 h-14 rounded-xl text-secondary font-semibold text-xl"
             >
               Etape précédente
             </button>
             <button
-              onClick={() => route.push("/steps/3")}
+              onClick={() => route.push("/registration/steps/3")}
               className="text-white font-medium text-xl rounded-xl w-96 sm:w-64 h-14 bg-background-gradient shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
             >
               Continuons !

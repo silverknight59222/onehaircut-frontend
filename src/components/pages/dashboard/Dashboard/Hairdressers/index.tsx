@@ -43,8 +43,7 @@ const Hairdressers = () => {
   const [hairDressers, setHairDressers] = useState<Hairdresser[]>([]);
   const [hairDresser, setHairDresser] = useState(defaultHairDresser);
   const [avatarIndex, setAvatarIndex] = useState(1);
-  const [showMaleAvatar, setShowMaleAvatars] = useState(true);
-  const [showFemaleAvatar, setShowFemaleAvatars] = useState(true);
+  const [showAvatar, setShowAvatars] = useState("men");
   const [avatars, setAvatars] = useState<AllAvatars>(defaultAvatars);
   const [profileImage, setProfileImage] = useState<string | null>("");
   const [isLoading, setIsLoading] = useState(false);
@@ -54,12 +53,10 @@ const Hairdressers = () => {
     email: "",
   });
   let totalAvatars: number;
-  if (showFemaleAvatar && !showMaleAvatar) {
+  if (showAvatar === "women") {
     totalAvatars = avatars.woman.length;
-  } else if (!showFemaleAvatar && showMaleAvatar) {
+  } else if (showAvatar === "men") {
     totalAvatars = avatars.man.length;
-  } else {
-    totalAvatars = avatars.woman.length + avatars.man.length;
   }
   const handleClick = () => {
     if (hiddenFileInput.current) {
@@ -111,11 +108,24 @@ const Hairdressers = () => {
   };
   const handleAvatarPrevious = () => {
     const newIndex = avatarIndex - 1;
-    setAvatarIndex(newIndex < 1 ? totalAvatars : newIndex);
+    if (showAvatar === "men") {
+      setAvatarIndex(newIndex < 1 ? avatars.man.length - 1 : newIndex);
+    } else if (showAvatar === "women") {
+      setAvatarIndex(newIndex <  avatars.woman.length - 1 ? avatars.woman[avatars.woman.length - 1].id : newIndex);
+    }
   };
   const handleAvatarNext = () => {
     const newIndex = avatarIndex + 1;
-    setAvatarIndex(newIndex > totalAvatars ? 1 : newIndex);
+    if (showAvatar === "men") {
+      setAvatarIndex(
+        newIndex > avatars.man.length - 1 ? avatars.man[0].id : newIndex
+      );
+    } else if (showAvatar === "women") {
+      const totalLength=avatars.woman.length - 1 + avatars.woman.length - 1
+      setAvatarIndex(
+        newIndex > totalLength ? avatars.woman[0].id : newIndex
+      );
+    }
   };
   const validateForm = () => {
     let isValidated = true;
@@ -212,8 +222,8 @@ const Hairdressers = () => {
       .then((resp) => {
         setAvatars(resp.data.data);
       })
-      .catch(error=>console.log(error))
-      setIsLoading(false);
+      .catch((error) => console.log(error));
+    setIsLoading(false);
   };
   const onDeleteHairDresser = async () => {
     await dashboard.deleteHairDresser(hairDresser.id).then((res) => {
@@ -259,23 +269,21 @@ const Hairdressers = () => {
     }
   };
   const getAvatars = () => {
-    if (showMaleAvatar && !showFemaleAvatar) {
+    if (showAvatar === "men") {
       return avatars.man;
-    } else if (!showMaleAvatar && showFemaleAvatar) {
-      return avatars.woman;
     } else {
-      return avatars.woman.concat(avatars.man);
+      return avatars.woman;
     }
   };
 
-  useEffect(()=>{
-    if(!showMaleAvatar && showFemaleAvatar){
-      setAvatarIndex(avatars.woman[0].id)
+  useEffect(() => {
+    if (showAvatar === "women" && avatars.woman.length) {
+      setAvatarIndex(avatars.woman[0].id);
     }
-    if(showMaleAvatar && !showFemaleAvatar){
-      setAvatarIndex(avatars.man[0].id)
+    if (showAvatar === "men" && avatars.man.length) {
+      setAvatarIndex(avatars.man[0].id);
     }
-  },[showMaleAvatar, showFemaleAvatar])
+  }, [showAvatar]);
   useEffect(() => {
     getAllHairDresser();
     getAllAvatars();
@@ -355,19 +363,19 @@ const Hairdressers = () => {
           <div className="flex items-center justify-center gap-3">
             <div
               className="flex items-center justify-center gap-1 cursor-pointer"
-              onClick={() => setShowMaleAvatars(!showMaleAvatar)}
+              onClick={() => setShowAvatars("men")}
             >
               <div className="w-6 h-6 rounded-full bg-[#D9D9D9]">
-                {showMaleAvatar && <SelectedIcon />}
+                {showAvatar === "men" && <SelectedIcon />}
               </div>
               <div>Male</div>
             </div>
             <div
               className="flex items-center justify-center gap-1 cursor-pointer"
-              onClick={() => setShowFemaleAvatars(!showFemaleAvatar)}
+              onClick={() => setShowAvatars("women")}
             >
               <div className="w-6 h-6 rounded-full bg-[#D9D9D9]">
-                {showFemaleAvatar && <SelectedIcon />}
+                {showAvatar === "women" && <SelectedIcon />}
               </div>
               <div>Female</div>
             </div>
