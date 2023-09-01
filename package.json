@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@stripe/react-stripe-js": "^2.1.2",
+    "@stripe/stripe-js": "^2.1.0",
     "@tailwindcss/line-clamp": "^0.4.4",
     "@types/node": "20.4.6",
     "@types/react": "18.2.18",
