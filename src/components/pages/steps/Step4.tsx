@@ -1,24 +1,48 @@
 "use client";
+import { registration } from "@/api/registration";
+import userLoader from "@/hooks/useLoader";
 import {
-  BellIcon,
-  CircleRight,
-  Hamburger,
   LogoIcon,
-  PaypalIcon,
+  SelectedPaymentIcon,
+  StarIcon,
   UserIcon,
 } from "@/components/utilis/Icons";
 import { useRouter } from "next/navigation";
-import React from "react";
-
+import React, { useEffect, useState } from "react";
+interface PlanDetails {
+  plan_id: string;
+  name: string;
+  price: string;
+  description: string;
+}
 const Step4 = () => {
-  const router=useRouter()
+  const route = useRouter();
+  const { loadingView } = userLoader();
+  const [selectedBox, setSelectedBox] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const defaultPlan: PlanDetails[] = [
+    {
+      plan_id: "",
+      name: "",
+      price: "",
+      description: "",
+    },
+  ];
+  const [plans, setPlans] = useState<PlanDetails[]>(defaultPlan);
+  useEffect(() => {
+    setIsLoading(true);
+    registration
+      .getAllPlans()
+      .then((res) => {
+        setPlans(res.data.data);
+      })
+      .finally(() => setIsLoading(false));
+  }, []);
   return (
     <div>
-      <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 -z-10">
-        <CircleRight />
-      </div>
+      {isLoading && loadingView()}
       <div className="flex flex-col md:flex-row items-center justify-center border-b border-[#EBF0F2] pb-3">
-      <div className="absolute top-1 flex items-center justify-start sm:justify-center w-full gap-5 px-10 sm:px-14 py-5">
+        <div className="absolute top-1 flex items-center justify-start sm:justify-center w-full gap-5 px-10 sm:px-14 py-5">
           <LogoIcon />
         </div>
         <div className="w-full flex items-center justify-end gap-4 px-4 sm:px-14 mt-5">
@@ -27,128 +51,97 @@ const Step4 = () => {
           </div>
         </div>
       </div>
-      <div className="z-50 flex flex-col items-center justify-center mx-4">
-        <p className="text-black font-medium text-5xl mt-10">Checkout</p>
-        <div className="flex flex-col lg:flex-row items-start justify-center gap-12 mt-7 px-5">
-          <div className="w-full lg:w-7/12">
-            <div className="bg-[#FAFAFA] rounded-3xl py-8 px-6 sm:px-10">
-              <div className="bg-white px-4 py-8">
-                <p className="text-lg font-semibold text-black">
-                  Billing address
-                </p>
-                <div className="text-black text-lg mt-5">
-                  <p>Mike John</p>
-                  <p>243 high road</p>
-                  <p>12456 Atlanta</p>
-                </div>
-              </div>
-              <div className="bg-white px-4 py-8 mt-7">
-                <p className="text-lg font-semibold text-black">
-                  Payment Method
-                </p>
-                <button className="w-full flex items-center justify-center rounded-md h-14 bg-[#FFC107] mt-8">
-                  <PaypalIcon/>
-                </button>
-                <div className="flex items-center justify-center gap-5 my-5">
-                  <div className="w-36 border-t-2 border-[#F5F5F5]"/>
-                  <p>or</p>
-                  <div className="w-36 border-t-2 border-[#F5F5F5]"/>
-                </div>
-                <div>
-                  <div className="relative">
-                    <input
-                      placeholder="Card Number"
-                      className="w-full p-3 border-2 border-[#F5F5F5] rounded-sm outline-none"
-                    />
-                    <div className="absolute top-1 right-2 bg-white flex items-center justify-end gap-1">
-                      <img
-                        src="/assets/visa.jpg"
-                        alt=""
-                        width={56}
-                        height={48}
-                        className="-mr-1.5"
-                      />
-                      <img
-                        src="/assets/amex.png"
-                        alt=""
-                        width={48}
-                        height={36}
-                        className="w-12 h-9"
-                      />
-                      <img
-                        src="/assets/mastercard.png"
-                        alt=""
-                        width={56}
-                        height={40}
-                        className="w-14 h-10"
-                      />
-                      <img
-                        src="/assets/discovery.jpeg"
-                        alt=""
-                        width={56}
-                        height={28}
-                        className="w-14 h-7"
-                      />
-                    </div>
-                  </div>
-                  <div className="flex items-center justify-center gap-3 my-3">
-                    <input
-                      placeholder="Expiration"
-                      className="w-6/12 p-3 border-2 border-[#F5F5F5] rounded-sm outline-none"
-                    />
-                    <input
-                      placeholder="CVV"
-                      className="w-6/12 p-3 border-2 border-[#F5F5F5] rounded-sm outline-none"
-                    />
-                  </div>
-                  <div className="flex items-center justify-center gap-3 my-3">
-                    <input
-                      placeholder="First Name"
-                      className="w-6/12 p-3 border-2 border-[#F5F5F5] rounded-sm outline-none"
-                    />
-                    <input
-                      placeholder="Last Name"
-                      className="w-6/12 p-3 border-2 border-[#F5F5F5] rounded-sm outline-none"
-                    />
-                  </div>
-                  <input
-                    placeholder="Billing zip code"
-                    className="w-full p-3 border-2 border-[#F5F5F5] rounded-sm outline-none"
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="w-full flex items-center justify-center my-5">
-              <button onClick={()=>router.push('/confirm-payment')} className="w-full h-14 text-white text-xl font-semibold rounded-xl bg-background-gradient shadow-[0px_17px_36px_0px_rgba(255,125,60,0.25)]">
-                Vers le paiement
-              </button>
-            </div>
+      <div className="flex flex-col items-center justify-center px-5">
+        <p className="text-black font-medium text-4xl mt-16">
+          Confirmer et payer
+        </p>
+        <div className="w-full lg:w-[1000px] bg-[#F5F5F5] rounded-3xl my-10">
+          <div className="flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-12 bg-background-gradient rounded-tl-3xl rounded-tr-3xl text-white py-9 px-14">
+            <p className="text-3xl text-center lg:text-start">
+              Votre abonnement :{" "}
+              <span className="font-semibold">OneHaircut Pro</span>{" "}
+            </p>
+            <button className="flex items-center justify-center font-semibold text-2xl w-52 h-16 border border-white rounded-xl">
+              Modifier
+            </button>
           </div>
-          <div className="w-full lg:w-5/12 bg-[#FAFAFA] rounded-3xl py-8 px-6 sm:px-10">
-            <p className="text-lg font-semibold text-black">Order</p>
-            <div className="text-black text-lg mt-5">
-              <div className="flex items-center justify-between">
-                <p>Abonnement Onehaircut Pro</p>
-                <p>89,00 €</p>
+          <div className="flex flex-col items-center justify-center">
+            <p className="text-black mt-6 mb-4">
+              Choisissez comment vous souhaitez payer
+            </p>
+            <div className="flex flex-col lg:flex-row mt-5 lg:mt-0 items-center justify-center gap-8 mb-14">
+              <div
+                onClick={() => setSelectedBox(0)}
+                className={`relative pb-6 flex flex-col items-start justify-center bg-white px-7 border-2 rounded-2xl cursor-pointer ${
+                  selectedBox === 0 ? "border-secondary" : "border-[DBDBDB]"
+                }`}
+              >
+                {selectedBox === 0 && (
+                  <div className="absolute top-0 right-0">
+                    <SelectedPaymentIcon />
+                  </div>
+                )}
+                {selectedBox === 0 && (
+                  <div className="absolute top-2 right-2">
+                    <StarIcon />
+                  </div>
+                )}
+                <div className="flex flex-col sm:flex-row items-start justify-center gap-3 sm:gap-12 text-black mt-10 mb-2">
+                  <div>
+                    <p className="font-semibold text-xl">{plans.length > 1 && plans[1].name}</p>
+                    <p>{plans.length > 1 && plans[1].description}</p>
+                  </div>
+                  <p className="text-2xl font-semibold">{plans.length > 1 && plans[1].price}$/mois</p>
+                </div>
+                <div
+                  className={`w-6 h-6 rounded-full  ${
+                    selectedBox === 0
+                      ? "border-[5px] border-[#537EED]"
+                      : "border-[3px] border-[#C5C5C5]"
+                  }`}
+                />
               </div>
-              <div className="flex items-center justify-between">
-                <p className="w-[317px]">Parrainage</p>
-                <p>-20,00&nbsp;€</p>
-              </div>
-            </div>
-            <div className="flex items-center justify-between mt-5">
-              <p className="text-black font-bold text-lg">Order total</p>
-              <p>69,00 €</p>
-            </div>
-            <div className="mt-10">
-              <p className="text-lg font-semibold text-black">Salon</p>
-              <div className="text-black text-lg mt-5">
-                <p>Golden Blabla</p>
-                <p>2 rue de la Victoire</p>
-                <p>75000 Paris</p>
+              <div
+                onClick={() => setSelectedBox(1)}
+                className={`relative flex flex-col items-start justify-center bg-white px-7 border-2 rounded-2xl cursor-pointer pb-6 ${
+                  selectedBox === 1 ? "border-secondary" : "border-[DBDBDB]"
+                }`}
+              >
+                {selectedBox === 1 && (
+                  <div className="absolute top-0 right-0">
+                    <SelectedPaymentIcon />
+                  </div>
+                )}
+                {selectedBox === 1 && (
+                  <div className="absolute top-2 right-2">
+                    <StarIcon />
+                  </div>
+                )}
+                <div className="flex flex-col sm:flex-row items-start justify-center gap-3 sm:gap-12 text-black mt-10 mb-2">
+                  <div>
+                    <p className="font-semibold text-xl">{plans.length > 1 && plans[2].name}</p>
+                    <p>{plans.length > 1 && plans[2].description}</p>
+                  </div>
+                  <p className="text-2xl font-semibold">{plans.length > 1 && plans[2].price}$/mois</p>
+                </div>
+                <div
+                  className={`w-6 h-6 rounded-full  ${
+                    selectedBox === 1
+                      ? "border-[5px] border-[#537EED]"
+                      : "border-[3px] border-[#C5C5C5]"
+                  }`}
+                />
               </div>
             </div>
           </div>
+        </div>
+        <div className="w-full flex items-center justify-center mb-5">
+          <button
+            onClick={() => route.push("/registration/steps/5")}
+            className="w-56 h-14 text-white text-xl font-semibold rounded-xl bg-background-gradient shadow-[0px_17px_36px_0px_rgba(255,125,60,0.25)]"
+          >
+            Vers le paiement
+          </button>
         </div>
       </div>
     </div>

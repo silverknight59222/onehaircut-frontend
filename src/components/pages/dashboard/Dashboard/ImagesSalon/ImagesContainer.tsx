@@ -144,7 +144,6 @@ const ImagesContainer = ({
   };
   useEffect(() => {
     setImages(salonImages);
-    console.log(salonImages);
   }, [salonImages]);
   return (
     <>
@@ -245,7 +244,7 @@ const ImagesContainer = ({
                           className="cursor-pointer h-8 mt-2 text-sm flex items-center justify-center text-white px-4 py-1 gap-4 rounded-md bg-gradient-to-r from-pink-500 to-orange-500 shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
                           onClick={() => makeCover(item.id)}
                         >
-                          Add Service
+                          Make Cover
                         </div>
                       )}
                     </div>

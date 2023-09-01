@@ -64,7 +64,7 @@ const Step1 = () => {
                   className={`relative flex flex-col items-center justify-center cursor-pointer
                   ${
                     item.name === selectedType
-                      ? "border-4 border-secondary rounded-xl"
+                      ? "border-4 border-secondary rounded-2xl"
                       : "border-4 border-white rounded-xl"
                   }`}
                   onClick={() => setSelectedType(item.name)}
@@ -76,7 +76,7 @@ const Step1 = () => {
                     height={240}
                     className="rounded-t-xl"
                   />
-                  <p className="flex items-center justify-center text-black font-semibold text-xl md:text-2xl xl:text-3xl text-center w-64 h-[60px] mt-2 mb-3">
+                  <p className="flex items-center justify-center text-black font-semibold text-lg md:text-xl xl:text-2xl text-center w-64 h-[60px] mt-2 mb-3">
                     {item.name}
                   </p>
                   {item.name === selectedType && (

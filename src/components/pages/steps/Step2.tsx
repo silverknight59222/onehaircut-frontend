@@ -1,13 +1,15 @@
 "use client";
 import { AddIcon, LogoIcon, MinusIcon } from "@/components/utilis/Icons";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useState } from "react";
 import GoogleMapReact from "google-map-react";
 
 const Step2 = () => {
   const route = useRouter();
+  const [location, setLocation] = useState('');
   const mapCenter = { lat: 37.7749, lng: -122.4194 };
   const mapZoom = 10;
+  
   return (
     <div>
       <div className="flex items-center justify-center border-b border-[#EBF0F2] mt-5 pb-3">
@@ -22,6 +24,8 @@ const Step2 = () => {
           <div className="w-full flex flex-col md:flex-row items-center justify-between">
             <input
               placeholder="Adresse"
+              value={location}
+              onChange={(e)=>setLocation(e.target.value)}
               className="rounded-xl w-96 sm:w-[500px] mt-7 py-4 px-6 bg-[#F7F7F7] outline-none shadow-[0px_4px_4px_0px_rgba(154,154,154,0.00)]"
             />
             <div className="mt-5 md:mt-0">
