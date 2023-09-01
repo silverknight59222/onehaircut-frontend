@@ -151,12 +151,12 @@ const Registration = () => {
             return (
               <div
                 key={index}
-                className={`w-full lg:w-[900px] ${
+                onClick={()=>questionToggle(index)}
+                className={`w-full lg:w-[900px] cursor-pointer  ${
                   openQuestion === index ? "h-40" : "h-[72px]"
                 } py-5 pl-6 md:pl-12 pr-6 md:pr-7 mb-9 rounded-xl bg-[#ECECEC] shadow-[0px_8px_9px_0px_rgba(179,184,185,0.15)]`}
               >
                 <div
-                  onClick={()=>questionToggle(index)}
                   className="flex items-center justify-between cursor-pointer"
                 >
                   <p className="font-medium text-xl sm:text-2xl lg:text-3xl text-center text-black">
@@ -183,7 +183,7 @@ const Registration = () => {
       </div>
     </div>
     </div>
-    <img src="/assets/registration_bg_bottom.png" className="absolute -bottom-24"/>
+    <img src="/assets/registration_bg_bottom.png" className="absolute -bottom-24 -z-20"/>
     </div>
   );
 };

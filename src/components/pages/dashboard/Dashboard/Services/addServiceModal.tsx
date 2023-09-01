@@ -336,7 +336,7 @@ const AddServiceModal = (props: AddServiceModalType) => {
             return (
               <div key={index} className="flex items-center gap-3">
                 <div
-                  className="flex flex-col justify-around w-48 h-[170px] border border-grey rounded-[21px] py-3 px-3 shadow-[0px_4px_18px_0px_rgba(132,132,132,0.25)] cursor-pointer"
+                  className="flex flex-col justify-start gap-2 w-48 h-[170px] border border-grey rounded-[21px] py-3 px-3 shadow-[0px_4px_18px_0px_rgba(132,132,132,0.25)] cursor-pointer"
                   onClick={() => selectService(item.id)}
                 >
                   <div className="flex items-center justify-between">
