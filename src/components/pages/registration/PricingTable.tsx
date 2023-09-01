@@ -74,7 +74,7 @@ const PricingTable = () => {
                 </p>
               </div>
             </div>
-            {activePlan === "pro" && <div onClick={()=>router.push('registration/pro')} className="flex items-center justify-center text-white rounded-xl -mb-12 w-44 h-12 bg-[#070E06]">
+            {activePlan === "pro" && <div onClick={()=>router.push('registration/plans?plan=pro')} className="flex items-center justify-center text-white rounded-xl -mb-12 w-44 h-12 bg-[#070E06]">
               Aperçu de l’Abo
             </div>}
           </div>
@@ -105,7 +105,7 @@ const PricingTable = () => {
                 *5 % de tax de service
               </p>
             </div>
-            {activePlan === "standard" && <div onClick={()=>router.push('registration/regular')} className="flex items-center justify-center text-white rounded-xl absolute -bottom-8 w-44 h-12 bg-[#070E06]">
+            {activePlan === "standard" && <div onClick={()=>router.push('registration/plans?plan=standard')} className="flex items-center justify-center text-white rounded-xl absolute -bottom-8 w-44 h-12 bg-[#070E06]">
               Aperçu de l’Abo
             </div>}
           </div>

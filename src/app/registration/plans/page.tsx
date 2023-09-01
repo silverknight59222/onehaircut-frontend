@@ -1,8 +1,7 @@
 "use client";
-import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import {
-  Hamburger,
   LogoCircle,
   LogoIcon,
   RegistrationCheckedIcon,
@@ -10,7 +9,11 @@ import {
   UserIcon,
 } from "@/components/utilis/Icons";
 import ReactPlayer from "react-player";
+import userLoader from "@/hooks/useLoader";
 import "./index.css";
+import Link from "next/link";
+import { registration } from "@/api/registration";
+import { setLocalStorage } from "@/api/storage";
 
 interface Package {
   package: string;
@@ -19,11 +22,25 @@ interface Package {
 interface Params {
   params: Package;
 }
-
+interface PlanDetails {
+  plan_id: string;
+  name: string;
+  price: string;
+  description: string;
+}
 const Page = ({ params }: Params) => {
-  const [selectedPlan, setSelectedPlan] = useState(params.package);
-  const router = useRouter();
-
+  const searchParams = useSearchParams()
+  const router = useRouter()
+  const { loadingView } = userLoader();
+  const [selectedPlan, setSelectedPlan] = useState(searchParams.get('plan'));
+  const [isLoading, setIsLoading] = useState(false);
+  const defaultPlan:PlanDetails[] = [{
+    plan_id: "",
+    name: "",
+    price: "",
+    description: ""
+  }]
+  const [plans, setPlans] = useState<PlanDetails[]>(defaultPlan);
   const packages = [
     {
       name: "Agenda dynamique",
@@ -63,8 +80,20 @@ const Page = ({ params }: Params) => {
     },
   ];
 
+  const onSubmit = () => {
+    setLocalStorage('planType', selectedPlan);
+    router.push("/registration/steps");
+  }
+  useEffect( () => {
+    setIsLoading(true);
+    registration.getAllPlans().then(res=>{
+      setPlans(res.data.data);
+    }).finally(()=>setIsLoading(false))
+  }, [])
+  
   return (
     <div>
+      {isLoading && loadingView()}
       <div>
         <div className="fixed -z-40 -left-32 md:-left-28 -bottom-32 md:-bottom-28 overflow-hidden hidden md:block">
           <LogoCircle />
@@ -85,41 +114,43 @@ const Page = ({ params }: Params) => {
               <p className="text-black font-medium text-3xl text-center md:text-left">
                 Abonnement
               </p>
-              <div
+              <Link
                 className={`w-[350px] cursor-pointer sm:w-[600px] h-44 sm:h-[130px] px-8 flex flex-col sm:flex-row items-start sm:items-center justify-center sm:justify-between my-7 rounded-xl ${
-                  selectedPlan === "regular"
+                  selectedPlan === "standard"
                     ? "bg-background-gradient text-white shadow-[0px_13px_38px_0px_rgba(180,180,180,0.42)]"
                     : "bg-white text-black border border-[#D7D5D5]"
                 }`}
-                onClick={() => setSelectedPlan("regular")}
+                href={'/registration/plans?plan=standard'}
+                onClick={() => setSelectedPlan("standard")}
               >
                 <div>
-                  <p className="font-semibold text-2xl">OneHaircut Regular</p>
+                  <p className="font-semibold text-2xl">{plans.length > 1 && plans[0].name}</p>
                   <p className="w-80">
-                    Le parfait abonnement pour un business flexible{" "}
+                  {plans.length > 1 && plans[0].description}
                   </p>
                 </div>
-                <p className="font-semibold text-3xl mt-5">$ 0</p>
-              </div>
-              <div
+                <p className="font-semibold text-3xl mt-5">$ {plans.length > 1 && plans[0].price}</p>
+              </Link>
+              <Link
                 className={`w-[350px] cursor-pointer sm:w-[600px] h-44 sm:h-[130px] px-8 flex flex-col sm:flex-row items-start sm:items-center justify-center sm:justify-between rounded-xl ${
                   selectedPlan === "pro"
                     ? "bg-background-gradient text-white shadow-[0px_13px_38px_0px_rgba(180,180,180,0.42)]"
                     : "bg-white text-black border border-[#D7D5D5]"
                 }`}
+                href={'/registration/plans?plan=pro'}
                 onClick={() => setSelectedPlan("pro")}
               >
                 <div>
-                  <p className="font-semibold text-2xl">OneHaircut Pro</p>
+                  <p className="font-semibold text-2xl">{plans.length > 1 && plans[1].name}</p>
                   <p className="w-96">
-                    Pour un business stable et en recherche d’évolution{" "}
+                  {plans.length > 1 && plans[1].description}
                   </p>
                 </div>
                 <div className="mt-3">
                   <p className="">à partir de</p>
-                  <p className="font-semibold text-3xl">$ 79</p>
+                  <p className="font-semibold text-3xl">$ {plans.length > 1 && plans[1].price}</p>
                 </div>
-              </div>
+              </Link>
             </div>
             <div className="flex flex-col gap-5 w-full xl:w-8/12 p-5 pr-2 sm:pr-5 rounded-xl bg-[#F7F7F7]">
               {packages.map((item, index) => {
@@ -158,7 +189,7 @@ const Page = ({ params }: Params) => {
             </p>
           </div>
           <button
-            onClick={() => router.push("/registration/steps")}
+            onClick={() => onSubmit()}
             className="text-white py-4 px-11 mb-9 xl:ml-52 font-semibold bg-background-gradient rounded-xl shadow-[0px_17px_36px_0px_rgba(255,125,60,0.25)]"
           >
             Choisir cette offre
