@@ -3,6 +3,7 @@ import { AddIcon, LogoIcon, MinusIcon } from "@/components/utilis/Icons";
 import { useRouter } from "next/navigation";
 import React from "react";
 import GoogleMapReact from "google-map-react";
+import Autocomplete from "react-google-autocomplete";
 
 const Step2 = () => {
   const route = useRouter();
@@ -20,9 +21,18 @@ const Step2 = () => {
         </p>
         <div className="w-[600px] md:w-[800px] xl:w-[1050px] flex flex-col items-center justify-center mt-5 sm:mt-7">
           <div className="w-full flex flex-col md:flex-row items-center justify-between">
-            <input
+            {/* <input
               placeholder="Adresse"
               className="rounded-xl w-96 sm:w-[500px] mt-7 py-4 px-6 bg-[#F7F7F7] outline-none shadow-[0px_4px_4px_0px_rgba(154,154,154,0.00)]"
+            /> */}
+            <Autocomplete
+              className="border"
+              apiKey={"AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E"}
+              style={{ width: "90%" }}
+              onPlaceSelected={(place) => {
+                console.log(place);
+              }}
+              defaultValue="Amsterdam"
             />
             <div className="mt-5 md:mt-0">
               <p className="text-black mb-1">Zone de mobilité</p>

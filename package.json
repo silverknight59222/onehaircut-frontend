@@ -24,6 +24,7 @@
     "react": "18.2.0",
     "react-circular-progressbar": "^2.1.0",
     "react-dom": "18.2.0",
+    "react-google-autocomplete": "^2.7.3",
     "react-loader-spinner": "^5.3.4",
     "react-minimal-pie-chart": "^8.4.0",
     "react-move": "^6.5.0",
