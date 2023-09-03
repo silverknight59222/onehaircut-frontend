@@ -17,7 +17,10 @@ import StripePayment from "../StripePayment";
 const Step5 = () => {
   const router = useRouter();
   const [stripePromise, setStripePromise] = useState<string>("pk_test_51IkzH1ExivflHCSmgQfNoQAWOnOcfKopp26Ct493No4QtWa8Cv6HEf9933YbMXcrs6wVR7YjWslQV58IikPujC5U006Imw8zpO");  
-
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+      setMounted(true)
+  }, [])
 
   const options = {
     clientSecret: getLocalStorage("secret_key")?.toString()
@@ -64,7 +67,7 @@ const Step5 = () => {
                   <p>or</p>
                   <div className="w-36 border-t-2 border-[#F5F5F5]" />
                 </div>
-                {options.clientSecret && (
+                {options.clientSecret && mounted && (
                   <Elements
                     stripe={loadStripe(stripePromise)}
                     options={options}
