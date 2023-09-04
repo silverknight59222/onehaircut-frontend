@@ -1,16 +1,13 @@
 "use client";
 import {
-  BellIcon,
   CircleRight,
-  Hamburger,
   LogoIcon,
-  PaypalIcon,
   UserIcon,
 } from "@/components/utilis/Icons";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Elements } from "@stripe/react-stripe-js";
-import { StripeElementsOptions, loadStripe } from "@stripe/stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 import { getLocalStorage } from "@/api/storage";
 import StripePayment from "../StripePayment";
 
@@ -45,7 +42,7 @@ const Step5 = () => {
         <div className="flex flex-col lg:flex-row items-start justify-center gap-12 mt-7 px-5">
           <div className="w-full lg:w-7/12">
             <div className="bg-[#FAFAFA] rounded-3xl py-8 px-6 sm:px-10">
-              <div className="bg-white px-4 py-8">
+              <div className="bg-white px-4 py-8 w-full">
                 <p className="text-lg font-semibold text-black">
                   Billing address
                 </p>
@@ -55,18 +52,10 @@ const Step5 = () => {
                   <p>12456 Atlanta</p>
                 </div>
               </div>
-              <div className="bg-white px-4 py-8 mt-7">
+              <div className="bg-white px-4 py-8 mt-7 w-full">
                 <p className="text-lg font-semibold text-black">
                   Payment Method
                 </p>
-                <button className="w-full flex items-center justify-center rounded-md h-14 bg-[#FFC107] mt-8">
-                  <PaypalIcon />
-                </button>
-                <div className="flex items-center justify-center gap-5 my-5">
-                  <div className="w-36 border-t-2 border-[#F5F5F5]" />
-                  <p>or</p>
-                  <div className="w-36 border-t-2 border-[#F5F5F5]" />
-                </div>
                 {options.clientSecret && mounted && (
                   <Elements
                     stripe={loadStripe(stripePromise)}
@@ -78,7 +67,7 @@ const Step5 = () => {
               </div>
             </div>
           </div>
-          <div className="w-full lg:w-5/12 bg-[#FAFAFA] rounded-3xl py-8 px-6 sm:px-10">
+          <div className="w-full lg:w-6/12 bg-[#FAFAFA] rounded-3xl py-8 px-6 sm:px-8">
             <p className="text-lg font-semibold text-black">Order</p>
             <div className="text-black text-lg mt-5">
               <div className="flex items-center justify-between">

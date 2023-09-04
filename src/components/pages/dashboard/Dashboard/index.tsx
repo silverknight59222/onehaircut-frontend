@@ -1,4 +1,4 @@
-import { ProjectIncomeIcon } from "@/components/utilis/Icons";
+import { CompletedHairStyleIcon, DashboardHeartIcon, DashboardUsersIcon, ProjectIncomeIcon } from "@/components/utilis/Icons";
 import React from "react";
 
 const Dashboard = () => {
@@ -8,28 +8,28 @@ const Dashboard = () => {
       text: "Revenue projetés",
       gradient: "bg-gradient-to-t from-red-700 via-red-500 to-red-500",
       borderClr: "bg-[#FE5352]",
-      icon: "revenueProjects",
+      icon: <ProjectIncomeIcon/>,
     },
     {
       numbers: "325",
       text: "Nouveaux clients",
       gradient: "bg-gradient-to-b from-blue-400 to-blue-600",
       borderClr: "bg-[#15BAF2]",
-      icon: "clients",
+      icon: <DashboardUsersIcon/>,
     },
     {
       numbers: "3,567",
       text: "Coiffures effectuées",
       gradient: "bg-gradient-to-b from-[#7ABF50] to-[#629E3E]",
       borderClr: "bg-[#7ABF50]",
-      icon: "hairstyleDone",
+      icon: <CompletedHairStyleIcon/>,
     },
     {
       numbers: "4,7/5",
       text: "",
       gradient: "bg-gradient-to-b from-[#FF266A] to-[#DE235E]",
       borderClr: "bg-[#FF266A]",
-      icon: "heart",
+      icon: <DashboardHeartIcon/>,
     },
   ];
   const messages = [
@@ -69,7 +69,7 @@ const Dashboard = () => {
               <div key={index} className="flex flex-col">
                 <div className="flex p-8 bg-[rgba(255,255,255,0.69)] rounded-[20px] shadow-[0px_26px_31px_0px_rgba(176, 176, 176, 0.10)]">
                   <div className={`flex items-center justify-center w-14 h-14 rounded-full ${item.gradient}`}>
-                    <ProjectIncomeIcon/>
+                  {item.icon}
                   </div>
                   <div className="ml-8 flex flex-col justify-center">
                     <p className="text-black text-3xl font-semibold">
