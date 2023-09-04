@@ -154,36 +154,7 @@ const Login = () => {
 							<p>Connexion</p>
 						</button>
 					</div>
-					<div className="h-[1px] bg-[#d4cbcb69] mb-8"></div>
-					<div className="w-full flex items-center justify-center gap-4">
-						<div className="w-full h-[60px] p-[1px] rounded-xl bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo">
-							<div className="flex-1 h-[58px] rounded-[11px] bg-white flex items-center justify-center">
-								<button className="w-full h-[58px] rounded-[11px] px-4 flex items-center justify-center gap-1.5 text-black">
-									<Image
-										width={25}
-										height={25}
-										src="/assets/google_logo.png"
-										alt="Google"
-									/>
-									<p>Continuer avec Google</p>
-								</button>
-							</div>
-						</div>
-						<div className="w-full h-[60px] p-[1px] rounded-xl bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo">
-							<div className="flex-1 h-[58px] rounded-[11px] bg-white flex items-center justify-center">
-								<button className="w-full h-[58px] rounded-[11px] px-4 flex items-center justify-center gap-1.5 text-black">
-									<Image
-										width={25}
-										height={25}
-										src="/assets/apple_logo.png"
-										alt="Apple"
-									/>
-									<p>Continuer avec Google</p>
-								</button>
-							</div>
-						</div>
-					</div>
-					<div className="w-full flex flex-row items-end justify-end gap-2 mt-12 md:mt-16 mb-4">
+					<div className="w-full flex flex-row items-end justify-end gap-2 mt-10 mb-4">
 						<p className="text-xs text-black mb-[3px]">Pas encore de compte ? </p>
 						<p className="text-black text-base border-b border-black transition duration-150 hover:border-secondary hover:text-secondary">
 							<Link href={{ pathname: '/signup' }}>Enregistrez-vous</Link>

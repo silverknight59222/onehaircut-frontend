@@ -1,4 +1,5 @@
 "use client";
+import DatePicker from "@/components/UI/DatePicker";
 import Navbar from "@/components/shared/Navbar";
 import {
   CalenderIcon,
@@ -12,6 +13,9 @@ import React, { useState } from "react";
 const BookSalon = () => {
   const [selectedSlot, setSelectedSlot] = useState(4);
   const [selectedHairdresser, setSelectedHairdresser] = useState(0);
+  const [dayIndex,setDayIndex]=useState(0)
+  const [showCalender,setShowCalender]=useState(false)
+  const [selectedDate,setSelectedDate]=useState<Date>()
   const route=useRouter()
   const items = [
     { name: "Type de coiffure", desc: "Curly" },
@@ -39,6 +43,33 @@ const BookSalon = () => {
     { rating: "5.0", img: "/assets/hairdresser3.png" },
     { rating: "5.0", img: "/assets/hairdresser4.png" },
   ];
+  const sliderData=['Tuesday April 2023', 'Wednesday April 2023', 'Thursday April 2023']
+  const totalDays=sliderData.length
+  const handleDayNext = () => {
+    const newIndex = dayIndex + 1;
+    setDayIndex(
+      newIndex > totalDays - 1 ? 0 : newIndex
+    );
+  }
+  const handleDayPrevious = () => {
+    const newIndex = dayIndex - 1;
+    setDayIndex(newIndex < 0 ? totalDays - 1 : newIndex);
+  }
+  interface Days{
+    item: string,
+    index: number
+  }
+  const Days=({item, index}: Days)=>{
+    if (dayIndex === index) {
+      return <p className="text-2xl font-medium text-center">
+        {item}
+      </p>
+    }
+  }
+  const onSelectedDate=(date: Date)=>{
+    setSelectedDate(date)
+    console.log(date)
+  }
   return (
     <div>
       <Navbar />
@@ -48,15 +79,15 @@ const BookSalon = () => {
             <Image src="/assets/salon9.png" alt="" fill={true} />
           </div>
           <div>
-            <p className="w-80 lg:w-[400px] xl:w-[500px] text-4xl font-bold text-black border-b-2 border-[#696969] pb-3">
+            <p className="w-80 lg:w-[400px] xl:w-[500px] text-3xl font-bold text-black border-b-2 border-[#696969] pb-3">
               Golden Barber
             </p>
-            <div className="flex flex-col gap-3 text-2xl font-medium text-black mt-6">
+            <div className="flex flex-col gap-3 text-xl font-medium text-black mt-6">
               {items.map((item, index) => {
                 return (
                   <div
                     key={index}
-                    className="flex items-center gap-2 text-black text-2xl"
+                    className="flex items-center gap-2 text-black text-xl"
                   >
                     <p className="font-semibold">{item.name}: </p>
                     <p>{item.desc}</p>
@@ -64,30 +95,41 @@ const BookSalon = () => {
                 );
               })}
             </div>
-            <button className="w-80 h-20 text-white text-xl font-semibold mt-6 bg-background-gradient rounded-[22px]">
+            <button className="w-80 h-16 text-xl text-white font-semibold mt-4 bg-background-gradient rounded-[22px]">
               Revenir au choix de coiffure
             </button>
           </div>
         </div>
         <div className="w-full md:w-[750px] lg:w-[1000px] xl:w-[1250px] border-2 border-[#D0D0D0] py-10 rounded-[54px] mt-20 md:mt-28">
           <div className="flex flex-col sm:flex-row items-center justify-between px-4 sm:px-10">
-            <CalenderIcon />
+            <div className="relative">
+              <div className="cursor-pointer" onClick={() => setShowCalender(!showCalender)}>
+                <CalenderIcon />
+              </div>
+              {showCalender &&
+                <DatePicker close={()=>setShowCalender(false)} onSelectedDate={onSelectedDate}/>
+              }
+            </div>
             <div className="flex items-center gap-2 mt-10 sm:mt-0">
+            <div className="cursor-pointer" onClick={handleDayPrevious}>
               <LeftArrowIcon />
-              <p className="text-2xl font-medium text-center">
-                Tuesday April 2023
-              </p>
-              <RightArrowIcon />
+            </div>
+              {sliderData.map((item,index)=>{
+                return <Days key={index} item={item} index={index}/>
+              })}
+              <div className="cursor-pointer" onClick={handleDayNext}>
+                <RightArrowIcon />
+              </div>
             </div>
           </div>
           <div className="flex items-center justify-center mt-12 mb-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-14">
               {slots.map((slot, index) => {
                 return (
                   <div
                     key={index}
                     onClick={() => setSelectedSlot(index)}
-                    className={`w-56 lg:w-64 h-20 flex items-center justify-center text-3xl font-semibold border rounded-[20px] cursor-pointer ${
+                    className={`w-44 h-16 flex items-center justify-center text-2xl font-semibold border rounded-[20px] cursor-pointer ${
                       slot.isDisable ? "text-[#AEAEAE]" : "text-black"
                     } ${
                       selectedSlot === index
@@ -103,10 +145,10 @@ const BookSalon = () => {
           </div>
         </div>
         <div className="flex flex-col items-center justify-center mt-16">
-          <p className="text-5xl text-black font-semibold text-center">
+          <p className="text-4xl text-black font-semibold text-center">
             Choisissez de votre coiffeur
           </p>
-          <p className="text-5xl text-black font-semibold text-center">
+          <p className="text-4xl text-black font-semibold text-center">
             (optionnel)
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-4 2xl:gap-12 mt-8">
@@ -115,7 +157,7 @@ const BookSalon = () => {
                 <div
                   key={index}
                   onClick={() => setSelectedHairdresser(index)}
-                  className={`flex items-center justify-center w-[311px] h-[376px] border rounded-2xl cursor-pointer ${
+                  className={`flex items-center justify-center w-[311px] h-[376px] border rounded-2xl cursor-pointer hover:border-secondary ${
                     selectedHairdresser === index
                       ? "border-secondary"
                       : "border-white"
