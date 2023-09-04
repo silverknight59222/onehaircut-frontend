@@ -1,20 +1,74 @@
-import React, { useState } from "react";
-import {
-  useStripe,
-  useElements,
-  CardElement,
-} from "@stripe/react-stripe-js";
+import React, { useMemo, useState } from "react";
+import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import userLoader from "@/hooks/useLoader";
 import { getLocalStorage } from "@/api/storage";
-import { StripeCardNumberElement } from "@stripe/stripe-js";
+import { SalonRegisterParams, registration } from "@/api/registration";
+import useSnackbar from "@/hooks/useSnackbar";
+
+const useOptions = () => {
+  const options = useMemo(
+    () => ({
+      style: {
+        base: {
+          display: "block",
+          fontSize: "16px",
+          margin: "10px",
+        },
+        invalid: {
+          color: "#9e2146",
+        },
+      },
+    }),
+    []
+  );
+
+  return options;
+};
 
 function StripePayment() {
   const { loadingView } = userLoader();
+  const showSnackbar = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
 
   const stripe = useStripe();
   const elements = useElements();
+  const options = useOptions();
 
+  const registerSalon = async (paymentMethod?: string) => {
+    let data: SalonRegisterParams = {
+      user_id: "",
+      salon_name: "",
+      salon_address: "",
+      salon_type: "",
+      payment_method: "",
+      plan_id: "",
+      plan_name: "",
+    };
+    const userInfo = JSON.parse(getLocalStorage("user_Info") as string);
+    const salonName = getLocalStorage("salon_name") as string;
+    const salonAddress = getLocalStorage("salon_address") as string;
+    const salonType = getLocalStorage("salon_type") as string;
+    const planType = JSON.parse(getLocalStorage("plan_type") as string);
+    data.user_id = userInfo?.id;
+    data.salon_name = salonName;
+    data.salon_address = salonAddress;
+    data.salon_type = salonType;
+    data.payment_method = paymentMethod || "";
+    data.plan_id = planType.plan_id;
+    if (planType.name === "OneHaircut Regular") {
+      data.plan_name = "Standard";
+    } else if (planType.name === "OneHaircut Pro") {
+      data.plan_name = "Pro";
+    }
+    await registration
+      .registerSalon(data)
+      .then((res) => {
+        showSnackbar("success", "Salon successfully created");
+      })
+      .catch((err) => {
+        showSnackbar("error", "Error Occured!");
+      });
+  };
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (!stripe || !elements) {
@@ -33,70 +87,34 @@ function StripePayment() {
           },
         })
         .then(function (result) {
-          console.log(result)
+          registerSalon(result.paymentMethod?.id);
         })
         .catch(function (error) {
-          console.log(error)
-        })
+          console.log(error);
+        });
     }
     setIsLoading(false);
   };
 
-  const CARD_OPTIONS = {
-    // iconStyle: 'solid',
-    style: {
-      // base: {
-      //   iconColor: '#c4f0ff',
-      //   color: '#000',
-      //   fontWeight: 500,
-      //   fontFamily: 'Roboto, Open Sans, Segoe UI, sans-serif',
-      //   fontSize: '16px',
-      //   fontSmoothing: 'antialiased',
-      //   ':-webkit-autofill': {
-      //     color: '#fce883',
-      //   },
-      //   '::placeholder': {
-      //     color: '#87bbfd',
-      //   },
-      // },
-      // invalid: {
-      //   iconColor: '#ffc7ee',
-      //   color: '#ffc7ee',
-      // },
-      base: {
-        fontSize: '16px',
-        color: '#424770',
-        '::placeholder': {
-          color: '#aab7c4',
-        },
-      },
-      invalid: {
-        color: '#9e2146',
-      },
-    },
-  };
-
   return (
-    // <div>
-    //   {isLoading && loadingView()}
-    //   {/* <PaymentElement /> */}
-    //   <div className="w-full flex items-center justify-center my-5">
-    //     <button
-    //       onClick={(e) => onSubmit(e)}
-    //       className="w-full h-14 text-white text-xl font-semibold rounded-xl bg-background-gradient shadow-[0px_17px_36px_0px_rgba(255,125,60,0.25)]"
-    //     >
-    //       Vers le paiement
-    //     </button>
-    //   </div>
-    // </div>
-    <form onSubmit={handleSubmit}>
-      <CardElement options={CARD_OPTIONS} />
-      <button className="w-full h-14 text-white text-xl font-semibold rounded-xl bg-background-gradient shadow-[0px_17px_36px_0px_rgba(255,125,60,0.25)]" type="submit" disabled={!stripe || !elements}>
-        Pay
-      </button>
-      {/* Show error message to your customers */}
-      {/* {errorMessage && <div>{errorMessage}</div>} */}
-    </form>
+    <div>
+      {isLoading && loadingView()}
+      <form onSubmit={handleSubmit}>
+        <div className="text-sm font-semibold mb-2">
+          Enter your card details here:
+        </div>
+        <CardElement options={options} />
+        <button
+          className="w-full h-14 mt-3 text-white text-xl font-semibold rounded-xl bg-background-gradient shadow-[0px_17px_36px_0px_rgba(255,125,60,0.25)]"
+          type="submit"
+          disabled={!stripe || !elements}
+        >
+          Pay
+        </button>
+        {/* Show error message to your customers */}
+        {/* {errorMessage && <div>{errorMessage}</div>} */}
+      </form>
+    </div>
   );
 }
 

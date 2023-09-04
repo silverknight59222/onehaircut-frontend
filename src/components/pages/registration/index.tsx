@@ -48,20 +48,51 @@ const Registration = () => {
   ];
   const questions = [
     {
-      title: "Question 1",
-      answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
+      title:
+        "Comment OneHaircut peut-il améliorer la gestion de mon salon de coiffure ou mon activité de coiffure à domicile ?",
+      answer:
+        "OneHaircut est une plateforme tout-en-un conçue pour simplifier et optimiser la gestion de votre salon de coiffure ou de votre activité de coiffure à domicile. Grâce à ses fonctionnalités telles que la gestion des réservations, la visibilité accrue en ligne, la communication client-coiffeur, la gestion de la comptabilité, et bien plus encore, vous pouvez améliorer considérablement l'efficacité de votre entreprise.",
     },
     {
-      title: "Question 2",
-      answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
+      title:
+        "Comment puis-je gérer les réservations de mes clients avec OneHaircut ?",
+      answer:
+        "Avec OneHaircut, la gestion des réservations est un jeu d'enfant. Les clients peuvent réserver en ligne, et vous recevez instantanément des notifications. Vous avez un contrôle total sur les rendez-vous, avec la possibilité de gérer les modifications et les annulations directement depuis votre tableau de bord.",
     },
     {
-      title: "Question 3",
-      answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
+      title: "Est-ce que OneHaircut offre un support en cas de besoin ?",
+      answer:
+        "Oui, nous avons une équipe de support dédiée prête à répondre à toutes vos questions et à vous aider en cas de problème. Vous pouvez nous contacter via notre chat en direct ou par e-mail à tout moment.",
     },
     {
-      title: "Question 4",
-      answer: "Lorem ipsum dolor sit amet, consectetur adipiscing elit,",
+      title:
+        "Comment puis-je obtenir des avis et des commentaires de mes clients ?",
+      answer:
+        "OneHaircut propose une fonctionnalité de feedback intégrée qui vous permet de recueillir facilement les avis de vos clients. Cela vous aide à améliorer vos services en fonction de leurs retours et à renforcer la confiance de votre clientèle.",
+    },
+    {
+      title:
+        " Puis-je personnaliser les offres pour mes clients réguliers avec OneHaircut ?",
+      answer:
+        "Certainement. OneHaircut vous permet de créer des offres sur mesure pour vos clients réguliers, renforçant ainsi leur fidélité et les incitant à revenir.",
+    },
+    {
+      title:
+        "Est-ce que je peux utiliser OneHaircut pour gérer plusieurs salons ?",
+      answer:
+        "Oui, OneHaircut vous permet de gérer facilement plusieurs salons depuis un seul tableau de bord, centralisant ainsi toutes les informations importantes.",
+    },
+    {
+      title:
+        "Comment puis-je visualiser les coiffures souhaitées par mes clients avec OneHaircut ?",
+      answer:
+        "OneHaircut affiche directement la coiffure souhaitée par le client. Si une personnalisation est nécessaire, vous pouvez discuter des préférences de style avec les clients grâce à notre système de messagerie intégré.",
+    },
+    {
+      title:
+        "Est-ce que OneHaircut garantit la sécurité de mes données et des transactions financières ?",
+      answer:
+        "La sécurité de vos données est notre priorité. OneHaircut utilise des protocoles de sécurité avancés pour protéger vos informations et garantir des transactions financières sécurisées.",
     },
   ];
   const [openQuestion, setOpenQuestion] = useState<number | null>(0);
@@ -74,116 +105,115 @@ const Registration = () => {
   };
   return (
     <div className="relative">
-    <div>
-      <img src="/assets/registration_bg_top.png" className="absolute top-0 w-full"/>
-    <div className="overflow-hidden px-8 sm:px-14 lg:px-20">
-      <div className="flex flex-col items-center justify-center mt-14">
-        <div className="relative z-10">
-          <p className="font-semibold text-2xl sm:text-3xl lg:text-5xl text-black text-center">
-            Bien plus qu’un booker !
-          </p>
-          <p className="font-semibold text-2xl sm:text-3xl lg:text-5xl text-black text-center mt-1">
-            <span className="text-gradient">OneHaircut</span> devient votre
-            associer
-          </p>
-        </div>
-        <img
-          src="/assets/hero_img.png"
-          alt=""
-          width={1600}
-          height={1090}
-          className="w-full sm:w-10/12 xl:w-full -mt-6 sm:-mt-16 lg:-mt-24 xl:-mt-32 md:-mb-10 xl:-mb-16"
-        />
-        <p className="font-semibold text-2xl sm:text-3xl lg:text-5xl text-black text-center">
-          Créé pour vous et pour eux !
-        </p>
-        <img width={858} height={431} src="/assets/img3.png" alt="" className="mt-7 lg:w-auto rounded-[60px] shadow-xl" />
-      </div>
-      <div className="mt-28 mb-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10">
-          {items.map((item, index) => {
-            return (
-              <div
-                key={index}
-                className={`w-full flex items-center justify-betweeen gap-4 bg-white rounded-tr-[14px] rounded-br-[14px] py-12 pl-6 sm:pl-12 pr-4 sm:pr-8 shadow-[0px_8px_24px_rgba(149,157,165,0.2)] border-l-8 ${item.borderClr}`}
-              >
-                <p className="w-full text-black font-semibold text-xl sm:text-2xl">
-                  {item.text}
-                </p>
-                <div className="flex items-center justify-end">
-                  <div
-                    className={`${
-                      index === 3 &&
-                      "flex items-center justify-center icon-bg w-20 h-20 rounded-xl"
-                    }`}
-                  >
-                    {item.icon}
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
-      <div className="hidden sm:flex items-center justify-center w-full overflow-auto">
-        <PricingTable />
-      </div>
-      <div className="flex items-center justify-center w-full sm:hidden">
-        <MobilePricingTable/>
-      </div>
-      <div className="flex flex-col lg:flex-row items-center justify-center text-2xl gap-16 mt-4 lg:mt-14 mb-24">
-          <div className="font-semibold cursor-pointer py-14 px-10 border-4 border-[#EFEFEF] rounded-lg">
-          Avis Salon sponsorisé
-          </div>
-          <div className="font-semibold cursor-pointer py-14 px-10 border-4 border-[#EFEFEF] rounded-lg">
-          Avis Salon sponsorisé
-          </div>
-          <div className="font-semibold cursor-pointer py-14 px-10 border-4 border-[#EFEFEF] rounded-lg">
-          Avis Salon sponsorisé
-          </div>
-      </div>
       <div>
-        <p className="font-semibold text-3xl lg:text-4xl text-center text-black mb-12">
-          Questions fréquentes
-        </p>
-        <div className="flex flex-col items-center justify-center">
-          {questions.map((question, index) => {
-            return (
-              <div
-                key={index}
-                onClick={()=>questionToggle(index)}
-                className={`w-full lg:w-[900px] cursor-pointer  ${
-                  openQuestion === index ? "h-36" : "h-16"
-                } py-5 pl-6 md:pl-12 pr-6 md:pr-7 mb-9 rounded-xl bg-[#ECECEC] shadow-[0px_8px_9px_0px_rgba(179,184,185,0.15)]`}
-              >
-                <div
-                  className="flex items-center justify-between cursor-pointer"
-                >
-                  <p className="font-medium text-xl sm:text-2xl text-center text-black">
-                    {question.title}
-                  </p>
-                  {openQuestion !== index ? (
-                    <DropdownCloseArrow />
-                  ) : (
-                    <DropdownOpenArrow />
-                  )}
-                </div>
-                {openQuestion === index && (
-                  <p className="font-medium text-[#C6C6C6] text-sm mt-6 transition ease-in-out duration-100">
-                    {question.answer}
-                  </p>
-                )}
-              </div>
-            );
-          })}
+        <img
+          src="/assets/registration_bg_top.png"
+          className="absolute top-0 w-full"
+        />
+        <div className="overflow-hidden px-8 sm:px-14 lg:px-20">
+          <div className="flex flex-col items-center justify-center mt-14">
+            <div className="relative z-10">
+              <p className="font-semibold text-2xl sm:text-3xl lg:text-5xl text-black text-center">
+                Bien plus qu’un booker !
+              </p>
+              <p className="font-semibold text-2xl sm:text-3xl lg:text-5xl text-black text-center mt-1">
+                <span className="text-gradient">OneHaircut</span> devient votre
+                associer
+              </p>
+            </div>
+            <img
+              src="/assets/hero_img.png"
+              alt=""
+              width={1600}
+              height={1090}
+              className="w-full sm:w-10/12 xl:w-full -mt-6 sm:-mt-16 lg:-mt-24 xl:-mt-32 md:-mb-10 xl:-mb-16"
+            />
+            <p className="font-semibold text-2xl sm:text-3xl lg:text-5xl text-black text-center">
+              Créé pour vous et pour eux !
+            </p>
+            <img
+              width={858}
+              height={431}
+              src="/assets/registration_people.png"
+              alt=""
+              className="mt-7 lg:w-auto rounded-[60px] shadow-xl"
+            />
+          </div>
+          <div className="mt-28 mb-10">
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-10">
+              {items.map((item, index) => {
+                return (
+                  <div
+                    key={index}
+                    className={`w-full flex items-center justify-betweeen gap-2 bg-white rounded-tr-[14px] rounded-br-[14px] py-12 pl-6 sm:pl-12 pr-4 sm:pr-8 shadow-[0px_8px_24px_rgba(149,157,165,0.2)] border-l-8 ${item.borderClr}`}
+                  >
+                    <p className="w-full text-black font-semibold text-xl sm:text-2xl">
+                      {item.text}
+                    </p>
+                    <div className="flex items-center justify-end">
+                      <div
+                        className={`${
+                          index === 3 &&
+                          "flex items-center justify-center icon-bg w-20 h-20 rounded-xl"
+                        }`}
+                      >
+                        {item.icon}
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div className="hidden sm:flex items-center justify-center w-full overflow-auto">
+            <PricingTable />
+          </div>
+          <div className="flex items-center justify-center w-full sm:hidden">
+            <MobilePricingTable />
+          </div>
+          <div className="mt-5">
+            <p className="font-semibold text-3xl sm:text-4xl lg:text-5xl text-center text-black mb-12">
+              Questions fréquentes
+            </p>
+            <div className="flex flex-col items-center justify-center">
+              {questions.map((question, index) => {
+                return (
+                  <div
+                    key={index}
+                    onClick={() => questionToggle(index)}
+                    className={`w-full lg:w-[900px] cursor-pointer  ${
+                      openQuestion === index ? "max-h-full" : "max-h-full"
+                    } py-5 pl-6 md:pl-12 pr-6 md:pr-7 mb-9 rounded-xl bg-[#ECECEC] shadow-[0px_8px_9px_0px_rgba(179,184,185,0.15)]`}
+                  >
+                    <div className="flex items-center justify-between cursor-pointer">
+                      <p className="font-medium text-base sm:text-lg xl:text-xl text-black">
+                        {question.title}
+                      </p>
+                      {openQuestion !== index ? (
+                        <DropdownCloseArrow />
+                      ) : (
+                        <DropdownOpenArrow />
+                      )}
+                    </div>
+                    {openQuestion === index && (
+                      <p className="font-medium text-[#C6C6C6] mt-6 transition ease-in-out duration-100">
+                        {question.answer}
+                      </p>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          <div className="mt-16">
+            <LogoIcon />
+          </div>
         </div>
       </div>
-      <div className="mt-16">
-        <LogoIcon />
-      </div>
-    </div>
-    </div>
-    <img src="/assets/registration_bg_bottom.png" className="absolute -bottom-24 -z-20"/>
+      <img
+        src="/assets/registration_bg_bottom.png"
+        className="absolute -bottom-24 -z-20"
+      />
     </div>
   );
 };

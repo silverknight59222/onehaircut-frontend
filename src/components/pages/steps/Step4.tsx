@@ -9,6 +9,7 @@ import {
 } from "@/components/utilis/Icons";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import { setLocalStorage } from "@/api/storage";
 interface PlanDetails {
   plan_id: string;
   name: string;
@@ -29,6 +30,15 @@ const Step4 = () => {
     },
   ];
   const [plans, setPlans] = useState<PlanDetails[]>(defaultPlan);
+
+  const onClickNext = () => {
+    if(selectedBox === 0) {
+      setLocalStorage('plan_type', JSON.stringify(plans[1]));
+    } else {
+      setLocalStorage('plan_type', JSON.stringify(plans[2]));
+    }
+    route.push("/registration/steps/5");
+  }
   useEffect(() => {
     setIsLoading(true);
     registration
@@ -137,7 +147,7 @@ const Step4 = () => {
         </div>
         <div className="w-full flex items-center justify-center mb-5">
           <button
-            onClick={() => route.push("/registration/steps/5")}
+            onClick={() => onClickNext()}
             className="w-56 h-14 text-white text-xl font-semibold rounded-xl bg-background-gradient shadow-[0px_17px_36px_0px_rgba(255,125,60,0.25)]"
           >
             Vers le paiement
