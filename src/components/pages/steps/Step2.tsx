@@ -3,14 +3,23 @@ import { AddIcon, LogoIcon, MinusIcon } from "@/components/utilis/Icons";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import GoogleMapReact from "google-map-react";
-import Autocomplete from "react-google-autocomplete";
+import Autocomplete, { usePlacesWidget } from "react-google-autocomplete";
+import { setLocalStorage } from "@/api/storage";
 
 const Step2 = () => {
   const route = useRouter();
   const [location, setLocation] = useState('');
   const mapCenter = { lat: 37.7749, lng: -122.4194 };
   const mapZoom = 10;
-  
+  const { ref } = usePlacesWidget({
+  apiKey: 'AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E',
+  onPlaceSelected: (place) => console.log(place)
+})
+
+const onClickNext = () => {
+  setLocalStorage('salon_address', location);
+  route.push("/registration/steps/3");
+}
   return (
     <div>
       <div className="flex items-center justify-center border-b border-[#EBF0F2] mt-5 pb-3">
@@ -23,21 +32,21 @@ const Step2 = () => {
         </p>
         <div className="w-[600px] md:w-[800px] xl:w-[1050px] flex flex-col items-center justify-center mt-5 sm:mt-7">
           <div className="w-full flex flex-col md:flex-row items-center justify-between">
-            {/* <input
+            <input
               placeholder="Adresse"
               value={location}
               onChange={(e)=>setLocation(e.target.value)}
               className="rounded-xl w-96 sm:w-[500px] mt-7 py-4 px-6 bg-[#F7F7F7] outline-none shadow-[0px_4px_4px_0px_rgba(154,154,154,0.00)]"
-            /> */}
-            <Autocomplete
+            />
+            {/* <Autocomplete
               className="border"
               apiKey={"AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E"}
-              style={{ width: "90%" }}
+              style={{ width: "384px", borderRadius: '12px', marginTop:'28px', padding:'16px 24px', outline: 'none',  }}
               onPlaceSelected={(place) => {
-                console.log(place);
+                setLocation(place);
               }}
               defaultValue="Amsterdam"
-            />
+            />  */}
             <div className="mt-5 md:mt-0">
               <p className="text-black mb-1">Zone de mobilité</p>
               <div className="flex items-center justify-center gap-7">
@@ -69,7 +78,7 @@ const Step2 = () => {
               Etape précédente
             </button>
             <button
-              onClick={() => route.push("/registration/steps/3")}
+              onClick={() => {onClickNext()}}
               className="text-white font-medium text-xl rounded-xl w-96 sm:w-64 h-14 bg-background-gradient shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
             >
               Continuons !
