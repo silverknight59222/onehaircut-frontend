@@ -24,16 +24,16 @@ const Index = () => {
       <Navbar />
       <div className="flex flex-col items-center justify-center mt-16 mb-5 px-6">
         <div className="flex md:block flex-col items-center justify-center">
-          <p className="text-4xl sm:text-5xl text-black font-medium text-center md:text-start mb-4">
+          <p className="text-4xl text-black font-medium text-center md:text-start mb-4">
             Confirmer et payer
           </p>
           <div className="w-full md:w-[750px] lg:w-[940px] pt-10 pb-10 px-6 sm:px-14 bg-[#F8F8F8] rounded-[22px] border border-[#ECECEC]">
-            <div className="flex flex-col gap-3 text-2xl font-medium text-black">
+            <div className="flex flex-col gap-3 text-xl font-medium text-black">
               {items.map((item, index) => {
                 return (
                   <div
                     key={index}
-                    className="flex items-center gap-2 text-black text-2xl"
+                    className="flex items-center gap-2 text-black"
                   >
                     <p className="font-semibold">{item.name}: </p>
                     <p>{item.desc}</p>
@@ -45,7 +45,7 @@ const Index = () => {
               <button className="w-36 h-14 flex items-center justify-center border border-secondary rounded-xl text-xl text-black font-semibold">
                 Modifier
               </button>
-              <p className="text-5xl md:text-7xl text-black font-semibold">
+              <p className="text-5xl md:text-6xl text-black font-semibold">
                 35$
               </p>
             </div>
@@ -56,7 +56,7 @@ const Index = () => {
           <div className="flex items-center justify-center md:justify-start flex-wrap gap-10">
             <button
               onClick={() => setSelectedPayment("Carte")}
-              className={`relative w-52 lg:w-64 h-16 flex items-center justify-center gap-4 border rounded-xl text-2xl font-medium ${
+              className={`relative w-52 lg:w-64 h-16 flex items-center justify-center gap-4 border rounded-xl text-2xl font-medium hover:border-secondary ${
                 selectedPayment === "Carte"
                   ? "border-secondary"
                   : "border-[#C1C1C1]"
@@ -72,7 +72,7 @@ const Index = () => {
             </button>
             <button
               onClick={() => setSelectedPayment("Paypal")}
-              className={`relative w-52 lg:w-64 h-16 flex items-center justify-center gap-4 border rounded-xl text-2xl font-medium ${
+              className={`relative w-52 lg:w-64 h-16 flex items-center justify-center gap-4 border rounded-xl text-2xl font-medium hover:border-secondary ${
                 selectedPayment === "Paypal"
                   ? "border-secondary"
                   : "border-[#C1C1C1]"
@@ -88,7 +88,7 @@ const Index = () => {
             </button>
             <button
               onClick={() => setSelectedPayment("Pay")}
-              className={`relative w-52 lg:w-64 h-16 flex items-center justify-center gap-4 border rounded-xl text-2xl font-medium ${
+              className={`relative w-52 lg:w-64 h-16 flex items-center justify-center gap-4 border rounded-xl text-2xl font-medium hover:border-secondary ${
                 selectedPayment === "Pay"
                   ? "border-secondary"
                   : "border-[#C1C1C1]"

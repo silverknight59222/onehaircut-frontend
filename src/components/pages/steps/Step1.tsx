@@ -3,9 +3,11 @@ import { LogoIcon } from "@/components/utilis/Icons";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { RegistrationCheckedIcon } from "@/components/utilis/Icons";
+import { setLocalStorage } from "@/api/storage";
 const Step1 = () => {
   const route = useRouter();
   const [selectedType, setSelectedType] = useState("Barber Shop");
+  const [salonName, setSalonName] = useState("");
   const items = [
     { name: "Barber Shop", img: "/assets/salon_types/BarberShop.png" },
     {
@@ -18,7 +20,7 @@ const Step1 = () => {
     },
     {
       name: "Coiffeuse indépendante",
-      img: "/assets/salon_types/Coiffeuse indépendante.png",
+      img: "/assets/salon_types/Coiffeuse indépendante.png",
     },
     {
       name: "Salon de coiffure mixte",
@@ -29,6 +31,26 @@ const Step1 = () => {
       img: "/assets/salon_types/Coiffeur Independant.png",
     },
   ];
+
+  const onClickNext = () => {
+    let salonType = '';
+    if (selectedType === "Barber Shop") {
+      salonType = "barber_shop";
+    } else if (selectedType === "Salon de coiffure pour femme") {
+      salonType = "women_hair_salon";
+    } else if (selectedType === "Salon de coiffure pour homme") {
+      salonType = "men_hair_salon";
+    } else if (selectedType === "Salon de coiffure mixte") {
+      salonType = "unisex_hair_salon";
+    } else if (selectedType === "Coiffeuse indépendante") {
+      salonType = "independent_woman_mobile_hairdresser";
+    } else if (selectedType === "Coiffeur Independant") {
+      salonType = "independent_man_mobile_hairdresser";
+    } 
+    setLocalStorage('salon_type', salonType);
+    setLocalStorage('salon_name', salonName);
+    route.push("/registration/steps/2")
+  }
   return (
     <div className="px-7 mb-8">
       <div className="flex items-center justify-center border-b border-[#EBF0F2] mt-5 pb-3">
@@ -42,12 +64,14 @@ const Step1 = () => {
           <div>
             <input
               placeholder="Nom du salon"
+              onChange={(e)=>setSalonName(e.target.value)}
+              value={salonName}
               className="border border-secondary rounded-xl w-80 sm:w-[500px] mt-7 py-4 px-6 md:px-10 outline-none"
             />
           </div>
           <div className="flex items-center justify-end mb-5 mt-10">
             <button
-              onClick={() => route.push("/registration/steps/2")}
+              onClick={() => onClickNext()}
               disabled={selectedType ? false : true}
               className="w-56 h-14 text-white text-xl font-semibold rounded-xl bg-background-gradient shadow-[0px_17px_36px_0px_rgba(255,125,60,0.25)]"
             >

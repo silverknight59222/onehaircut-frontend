@@ -1,44 +1,119 @@
-import React, { useState } from "react";
-import { PaymentElement } from "@stripe/react-stripe-js";
-import { useStripe, useElements } from "@stripe/react-stripe-js";
+import React, { useMemo, useState } from "react";
+import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import userLoader from "@/hooks/useLoader";
+import { getLocalStorage } from "@/api/storage";
+import { SalonRegisterParams, registration } from "@/api/registration";
+import useSnackbar from "@/hooks/useSnackbar";
+
+const useOptions = () => {
+  const options = useMemo(
+    () => ({
+      style: {
+        base: {
+          display: "block",
+          fontSize: "16px",
+          margin: "10px",
+        },
+        invalid: {
+          color: "#9e2146",
+        },
+      },
+    }),
+    []
+  );
+
+  return options;
+};
 
 function StripePayment() {
   const { loadingView } = userLoader();
+  const showSnackbar = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
 
   const stripe = useStripe();
   const elements = useElements();
-  const onSubmit = async (e:any) => {
+  const options = useOptions();
+
+  const registerSalon = async (paymentMethod?: string) => {
+    let data: SalonRegisterParams = {
+      user_id: "",
+      salon_name: "",
+      salon_address: "",
+      salon_type: "",
+      payment_method: "",
+      plan_id: "",
+      plan_name: "",
+    };
+    const userInfo = JSON.parse(getLocalStorage("user_Info") as string);
+    const salonName = getLocalStorage("salon_name") as string;
+    const salonAddress = getLocalStorage("salon_address") as string;
+    const salonType = getLocalStorage("salon_type") as string;
+    const planType = JSON.parse(getLocalStorage("plan_type") as string);
+    data.user_id = userInfo?.id;
+    data.salon_name = salonName;
+    data.salon_address = salonAddress;
+    data.salon_type = salonType;
+    data.payment_method = paymentMethod || "";
+    data.plan_id = planType.plan_id;
+    if (planType.name === "OneHaircut Regular") {
+      data.plan_name = "Standard";
+    } else if (planType.name === "OneHaircut Pro") {
+      data.plan_name = "Pro";
+    }
+    await registration
+      .registerSalon(data)
+      .then((res) => {
+        showSnackbar("success", "Salon successfully created");
+      })
+      .catch((err) => {
+        showSnackbar("error", "Error Occured!");
+      });
+  };
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (!stripe || !elements) {
       return;
     }
     setIsLoading(true);
-     await stripe.confirmSetup({
-      elements,
-      confirmParams: {
-        return_url: `http://localhost:3000/registration`,
-      },
-    }).then(res=>{
-        console.log(res)
-    }).catch(err => {
-        console.log(err)
-    });
+    const clientSecret = getLocalStorage("secret_key")?.toString();
+    const cardElement = elements.getElement(CardElement);
+    if (clientSecret && cardElement) {
+      await stripe
+        .createPaymentMethod({
+          type: "card",
+          card: cardElement,
+          billing_details: {
+            name: "Mohid khan",
+          },
+        })
+        .then(function (result) {
+          registerSalon(result.paymentMethod?.id);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
     setIsLoading(false);
   };
+
   return (
     <div>
       {isLoading && loadingView()}
-      <PaymentElement />
-      <div className="w-full flex items-center justify-center my-5">
+      <form onSubmit={handleSubmit}>
+        <div className="text-sm font-semibold mb-2">
+          Enter your card details here:
+        </div>
+        <CardElement options={options} />
         <button
-          onClick={(e) => onSubmit(e)}
-          className="w-full h-14 text-white text-xl font-semibold rounded-xl bg-background-gradient shadow-[0px_17px_36px_0px_rgba(255,125,60,0.25)]"
+          className="w-full h-14 mt-3 text-white text-xl font-semibold rounded-xl bg-background-gradient shadow-[0px_17px_36px_0px_rgba(255,125,60,0.25)]"
+          type="submit"
+          disabled={!stripe || !elements}
         >
-          Vers le paiement
+          Pay
         </button>
-      </div>
+        {/* Show error message to your customers */}
+        {/* {errorMessage && <div>{errorMessage}</div>} */}
+      </form>
     </div>
   );
 }

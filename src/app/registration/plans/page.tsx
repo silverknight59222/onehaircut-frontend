@@ -81,7 +81,11 @@ const Page = ({ params }: Params) => {
   ];
 
   const onSubmit = () => {
-    setLocalStorage('planType', selectedPlan);
+    if(selectedPlan === 'standard') {
+      setLocalStorage('plan_type', JSON.stringify(plans[0]));
+    } else {
+      setLocalStorage('plan_type', JSON.stringify(plans[1]));
+    }
     router.push("/registration/steps");
   }
   useEffect( () => {
@@ -109,7 +113,7 @@ const Page = ({ params }: Params) => {
           </div>
         </div>
         <div className="flex flex-col items-center justify-center mt-12 px-6 w-full overflow-hidden">
-          <div className="flex flex-col xl:flex-row items-center md:items-start gap-11 w-full md:w-auto">
+          {plans.length > 1 && ( <div className="flex flex-col xl:flex-row items-center md:items-start gap-11 w-full md:w-auto">
             <div className="mx-4">
               <p className="text-black font-medium text-3xl text-center md:text-left">
                 Abonnement
@@ -121,7 +125,7 @@ const Page = ({ params }: Params) => {
                     : "bg-white text-black border border-[#D7D5D5]"
                 }`}
                 href={'/registration/plans?plan=standard'}
-                onClick={() => setSelectedPlan("standard")}
+                onClick={() =>setSelectedPlan("standard")}
               >
                 <div>
                   <p className="font-semibold text-2xl">{plans.length > 1 && plans[0].name}</p>
@@ -176,8 +180,8 @@ const Page = ({ params }: Params) => {
                 );
               })}
             </div>
-          </div>
-          <div className="relative video my-9 xl:ml-[350px] rounded-xl">
+          </div>)}
+          <div className="relative video my-9 xl:ml-[390px] rounded-xl">
             <ReactPlayer
               url="https://www.youtube.com/watch?v=OxgXJqyxlZA&pp=ygUFc2Fsb24%3D"
               poster="assets/poster.jpg"
@@ -190,7 +194,7 @@ const Page = ({ params }: Params) => {
           </div>
           <button
             onClick={() => onSubmit()}
-            className="text-white py-4 px-11 mb-9 xl:ml-52 font-semibold bg-background-gradient rounded-xl shadow-[0px_17px_36px_0px_rgba(255,125,60,0.25)]"
+            className="text-white py-4 px-11 mb-9 xl:ml-64 font-semibold bg-background-gradient rounded-xl shadow-[0px_17px_36px_0px_rgba(255,125,60,0.25)]"
           >
             Choisir cette offre
           </button>

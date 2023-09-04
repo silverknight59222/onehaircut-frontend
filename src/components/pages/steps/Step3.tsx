@@ -136,12 +136,14 @@ const Step3 = () => {
     }
     setIsLoading(true);
     await registration.createIntent(userDetails).then(res=>{
-      console.log(res.data.intent.client_secret)
+      let data:any ={};
+      data.id = res.data.user.id;
+      setLocalStorage('user_Info', JSON.stringify(data));
       if(res.data.intent.client_secret) {
         setLocalStorage('secret_key', res.data.intent.client_secret);
       }
-      const planType = getLocalStorage('planType');
-      if(planType && planType === 'standard') {
+      const planType = JSON.parse(getLocalStorage('plan_type') as string);
+      if(planType && planType.name === 'OneHaircut Regular') {
         route.push("/registration/steps/5");
       } else {
         route.push("/registration/steps/4");

@@ -61,10 +61,10 @@ const SearchSalon = () => {
               </div>
             </div>
             <div>
-              <p className="text-black font-bold text-3xl 2xl:text-4xl">
+              <p className="text-black font-bold text-2xl 2xl:text-3xl">
                 Golden Barber
               </p>
-              <div className="flex items-center gap-2 border-b-2 border-[#DBDBDB] text-2xl 2xl:text-3xl font-semibold text-black pb-3 mt-1">
+              <div className="flex items-center gap-2 border-b-2 border-[#DBDBDB] text-xl 2xl:text-2xl font-semibold text-black pb-3 mt-1">
                 <StarRatings
                   rating={1}
                   starRatedColor="#FEDF10"
@@ -77,7 +77,7 @@ const SearchSalon = () => {
                 <p>(346 avis)</p>
               </div>
               <div className="flex items-center justify-center w-[300px] lg:w-[360px] 2xl:w-[483px] h-44 rounded-3xl my-4 bg-gradient-to-b from-gray-200 to-transparent">
-                <p className="text-3xl font-medium text-black">
+                <p className="text-2xl font-medium text-black">
                   Description salon
                 </p>
               </div>
