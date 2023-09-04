@@ -38,7 +38,7 @@ const SearchSalon = () => {
   return (
     <div className="relative">
       <img src="/assets/registration_bg_bottom.png" className="absolute -bottom-5 w-full"/>
-      <Navbar />
+      <Navbar isSalonPage={true}/>
       <div className="mt-16 mb-5 px-10 2xl:px-14">
         <div className="flex flex-col xl:flex-row items-center md:items-start xl:justify-between gap-11">
           <div className="w-full flex flex-col md:flex-row items-center md:items-start gap-20 xl:gap-8 2xl:gap-12">

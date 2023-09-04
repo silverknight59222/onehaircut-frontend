@@ -48,6 +48,7 @@ const Hairdressers = () => {
   const [profileImage, setProfileImage] = useState<string | null>("");
   const [isLoading, setIsLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const regex=/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
   const [error, setError] = useState({
     name: "",
     email: "",
@@ -127,6 +128,7 @@ const Hairdressers = () => {
       );
     }
   };
+
   const validateForm = () => {
     let isValidated = true;
     if (!hairDresser.name) {
@@ -144,7 +146,14 @@ const Hairdressers = () => {
         return { ...prev, email: "Un e-mail est requis" };
       });
       isValidated = false;
-    } else {
+    }
+    else if(!regex.test(hairDresser.email)){
+      setError((prev) => {
+        return { ...prev, email: "Invalid Email" };
+      });
+      isValidated = false;
+    } 
+    else {
       setError((prev) => {
         return { ...prev, email: "" };
       });
