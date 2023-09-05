@@ -80,7 +80,7 @@ const SalonChoice = () => {
       },[])
     return (
         <div>
-            <Navbar />
+            <Navbar isSalonPage={true}/>
             <div className='flex flex-col items-center justify-center px-6'>
             {isLoading && loadingView()}
                 <p className='text-4xl font-medium text-black text-center mt-14'>87 <span className='font-bold text-gradient'>Salons</span> correspondent à vos critères</p>

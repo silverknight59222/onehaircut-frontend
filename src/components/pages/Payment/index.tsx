@@ -21,7 +21,7 @@ const Index = () => {
   ];
   return (
     <div>
-      <Navbar />
+      <Navbar isBookSalon={true} />
       <div className="flex flex-col items-center justify-center mt-16 mb-5 px-6">
         <div className="flex md:block flex-col items-center justify-center">
           <p className="text-4xl text-black font-medium text-center md:text-start mb-4">
