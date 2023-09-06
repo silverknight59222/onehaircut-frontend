@@ -20,152 +20,118 @@ function MobilePricingTable() {
     <div className='w-full relative'>
          <CarouselProvider
         naturalSlideWidth={100}
-        naturalSlideHeight={380}
+        naturalSlideHeight={160}
         totalSlides={3}
         infinite={true}
       >
-        <Slider>
+        <Slider style={{height: '950px'}}>
           <Slide index={0}>
-            <div>
-            <div className="absolute top-[135px]">
-            {packageNames.map((name,index) => {
-              return (
-                <p key={index} className="flex items-center text-black font-medium text-xl w-[150px] h-[100px] border-b-2 border-[#E4E8E9] pl-3 pr-9 ">
-                  {name}
-                </p>
-              );
-            })}
-            <div className="font-bold text-black text-center mt-10 text-2xl">
-              Prix
-            </div>
-          </div>
-          <div
+            <div className='w-full'>
+            <div className="h-28 flex flex-col items-center justify-center text-3xl font-semibold text-white text-center py-5 rounded-t-xl" 
             style={{
               background:"linear-gradient(162deg, #FE2569 0%, #FD4C55 42.71%, #FF8637 86.46%, #FFE30F 100%)"
-            }}
-            className="w-[150px] absolute -top-1 left-[170px] flex flex-col items-center justify-center py-6 rounded-[20px] cursor-pointer"
-          >
-            <div className="text-2xl font-semibold text-white w-36 text-center px-2">
-              OneHaircut Pro
-            </div>
-            <div className="flex items-center justify-center bg-[rgba(255,255,255,0.53)] mb-2 rounded-lg w-36 h-10 text-white font-semibold">
+            }}>
+            OneHaircut Pro
+            <div className='flex items-center justify-center w-full'>
+            <div className="mt-1 bg-[rgba(255,255,255,0.53)] p-2 rounded-lg w-36 text-white font-medium text-base">
               recommandé
             </div>
-            {packageNames.map((_,index) => {
-              return (
-                <div key={index} className="flex items-center justify-center w-full h-[100px] border-b-2 border-[#E4E8E9] py-4">
-                  <PackageCheckedIcon />
-                </div>
-              );
-            })}
-            <div className="mt-5 h-[100px] px-2">
-              <p className= "text-white font-medium text-4xl text-center">
-                79 $<span className="text-2xl">/ mois</span>
-              </p>
-              <div className="flex items-center mt-1">
-                <p className= "text-white font-semibold" >à partir de </p>
-                <p className= "text-white font-semibold" >
-                  *1 % de tax de service{" "}
-                </p>
-              </div>
             </div>
-            <div onClick={()=>router.push('registration/pro')} className="flex items-center justify-center text-white rounded-xl -mb-12 w-32 h-9 bg-[#070E06]">
-              Aperçu de l’Abo
             </div>
-          </div>
-            </div>
-          </Slide>
-          <Slide index={1}>
-          <div>
-            <div className="absolute top-[121px]">
+            <div>
             {packageNames.map((name,index) => {
               return (
-                <p key={index} className="flex items-center text-black font-medium text-xl w-[150px] h-[100px] border-b-2 border-[#E4E8E9] pl-3 pr-9 ">
+                <div key={index} className='flex w-full border-b-2 border-[#E4E8E9] items-center justify-between px-4'>
+                <div className="flex items-center text-black font-medium text-xl py-5 ">
                   {name}
-                </p>
-              );
-            })}
-            <div className="font-bold text-black text-center mt-10 text-2xl">
-              Prix
-            </div>
-          </div>
-          <div
-            style={{
-              background:"linear-gradient(162deg, #FE2569 0%, #FD4C55 42.71%, #FF8637 86.46%, #FFE30F 100%)"
-            }}
-            className="w-[150px] absolute -top-1 left-[170px] flex flex-col items-center justify-center py-6 rounded-[20px] cursor-pointer"
-          >
-            <div className="text-2xl font-semibold text-white w-36 text-center">
-            OneHaircut standard
-            </div>
-            {packageNames.map((_,index) => {
-              return (
-                <div key={index} className="flex items-center justify-center w-full h-[100px] border-b-2 border-[#E4E8E9] py-4">
-                    {index < 6 ?
-                     <PackageCheckedIcon />
-                    :
-                     <PackageSelectedUnCheckedIcon />
-                    }
+                </div>
+                 <div className="flex items-center justify-center py-5">
+                     <PackageCheckedIcon color='#FD4C55'/>
+                  </div>
                   </div>
               );
             })}
-            <div className="mt-5 h-[100px] px-2">
-              <div className="w-full h-[100px] flex flex-col items-center justify-center  py-4">
-              <p className="text-white font-medium text-4xl">Gratuit</p>
-              <p className="text-white font-medium my-2">
-                *5 % de tax de service
-              </p>
-              </div>
             </div>
-            <div onClick={()=>router.push('registration/pro')} className="flex items-center justify-center text-white rounded-xl -mb-12 w-32 h-9 bg-[#070E06]">
+            <div className='relative py-3 flex flex-col items-center justify-center rounded-b-xl' style={{
+              background:"linear-gradient(162deg, #FE2569 0%, #FD4C55 42.71%, #FF8637 86.46%, #FFE30F 100%)"
+            }}>
+              <div className='text-white font-medium text-4xl text-center'>79 $<span className="text-2xl">/ mois</span></div>
+              <div className="text-white font-medium my-2"> *5 % de tax de service</div>
+              <div onClick={()=>router.push('registration/plans?plan=pro')} className="absolute z-20 -bottom-5 flex items-center justify-center text-white rounded-xl w-32 h-9 bg-[#070E06]">
               Aperçu de l’Abo
             </div>
-          </div>
+            </div>
+            </div>
+          </Slide>
+          <Slide index={1}>
+          <div className='w-full'>
+            <div className="h-28 flex flex-col items-center justify-center text-3xl font-semibold text-white text-center py-5 rounded-t-xl" 
+            style={{
+              background:"linear-gradient(162deg, #FE2569 0%, #FD4C55 42.71%, #FF8637 86.46%, #FFE30F 100%)"
+            }}>
+            OneHaircut standard
+            </div>
+            <div>
+            {packageNames.map((name,index) => {
+              return (
+                <div key={index} className='flex w-full border-b-2 border-[#E4E8E9] items-center justify-between px-4'>
+                <div className="flex items-center text-black font-medium text-xl py-5 ">
+                  {name}
+                </div>
+                 <div className="flex items-center justify-center py-5">
+                    {index < 6 ?
+                     <PackageCheckedIcon color='#FD4C55'/>
+                    :
+                     <PackageSelectedUnCheckedIcon color='#FD4C55'/>
+                    }
+                  </div>
+                  </div>
+              );
+            })}
+            </div>
+            <div className='relative py-3 flex flex-col items-center justify-center rounded-b-xl' style={{
+              background:"linear-gradient(162deg, #FE2569 0%, #FD4C55 42.71%, #FF8637 86.46%, #FFE30F 100%)"
+            }}>
+              <div className='text-white font-medium text-4xl text-center'>79 $<span className="text-2xl">/ mois</span></div>
+              <div className="text-white font-medium my-2"> *5 % de tax de service</div>
+              <div onClick={()=>router.push('registration/plans?plan=standard')} className="absolute z-20 -bottom-5 flex items-center justify-center text-white rounded-xl w-32 h-9 bg-[#070E06]">
+              Aperçu de l’Abo
+            </div>
+            </div>
             </div>
           </Slide>
           <Slide index={2}>
-          <div>
-            <div className="absolute top-[55px]">
-            {packageNames.map((name,index) => {
-              return (
-                <p key={index} className="flex items-center text-black font-medium text-xl w-[150px] h-[100px] border-b-2 border-[#E4E8E9] pl-3 pr-9 ">
-                  {name}
-                </p>
-              );
-            })}
-            <div className="font-bold text-black text-center mt-10 text-2xl">
-              Prix
-            </div>
-          </div>
-          <div
+          <div className='w-full'>
+            <div className="h-28 flex flex-col items-center justify-center text-3xl font-semibold text-white text-center py-5 rounded-t-xl" 
             style={{
               background:"linear-gradient(162deg, #FE2569 0%, #FD4C55 42.71%, #FF8637 86.46%, #FFE30F 100%)"
-            }}
-            className="w-[150px] absolute -top-1 left-[170px] flex flex-col items-center justify-center py-6 rounded-[20px] cursor-pointer"
-          >
-            <div className="text-2xl font-semibold text-white w-36 text-center">
-              Concurrent
+            }}>
+            Concurrents
             </div>
-            {packageNames.map((_,index) => {
+            <div>
+            {packageNames.map((name,index) => {
               return (
-                <div key={index} className="flex items-center justify-center w-full h-[100px] border-b-2 border-[#E4E8E9] py-4">
-                {index === 0 || index === 8 ?
-                   <PackageCheckedIcon /> 
-                   :
-                   <PackageSelectedUnCheckedIcon /> 
-                  }
-              </div>
+                <div key={index} className='flex w-full border-b-2 border-[#E4E8E9] items-center justify-between px-4'>
+                <div className="flex items-center text-black font-medium text-xl py-5 ">
+                  {name}
+                </div>
+                 <div className="flex items-center justify-center py-5">
+                    {index === 0 || index === 8 ?
+                     <PackageCheckedIcon color='#FD4C55'/>
+                    :
+                     <PackageSelectedUnCheckedIcon color='#FD4C55'/>
+                    }
+                  </div>
+                  </div>
               );
             })}
-            <div className="mt-7 h-[100px]">
-              <p className= "text-white font-medium text-4xl text-center">
-                79 $<span className="text-2xl">/ mois</span>
-              </p>
             </div>
-            <div onClick={()=>router.push('registration/pro')} className="flex items-center justify-center text-white rounded-xl -mb-12 w-32 h-9 bg-[#070E06]">
-              Aperçu de l’Abo
+            <div className='relative py-3 flex flex-col items-center justify-center rounded-b-xl' style={{
+              background:"linear-gradient(162deg, #FE2569 0%, #FD4C55 42.71%, #FF8637 86.46%, #FFE30F 100%)"
+            }}>
+              <div className='text-white font-medium text-4xl text-center'>79 $<span className="text-2xl">/ mois</span></div>
+              <div className="text-white font-medium my-2"> *5 % de tax de service</div>
             </div>
-          </div>
             </div>
             </Slide>
         </Slider>
