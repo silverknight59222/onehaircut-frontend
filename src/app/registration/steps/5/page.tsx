@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { getLocalStorage } from "@/api/storage";
-import StripePayment from "../StripePayment";
+import StripePayment from "@/components/pages/StripePayment";
 
 const Step5 = () => {
   const router = useRouter();
