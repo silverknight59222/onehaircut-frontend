@@ -4,18 +4,14 @@ import {
     Hamburger,
     LogoIcon,
     SearcIcon,
-    UserIcon,
-    HeartIcon,
-    MessageIcon,
-    HelpIcon,
   } from "@/components/utilis/Icons";
-  import React, { useEffect, useState } from "react";
-  import { getLocalStorage, removeFromLocalStorage } from "@/api/storage";
-  import { useRouter } from "next/navigation";
-  import { Auth } from "@/api/auth";
+import React, { useEffect, useState } from "react";
+import { getLocalStorage } from "@/api/storage";
+import { useRouter } from "next/navigation";
 import ServicesFilter from "./ServicesFilter";
 import HairsalonFilter from "./HairsalonFilters";
 import BooksalonFilter from "./BookingSalonFilter";
+import UserProfile from "@/components/UI/UserProfile";
   
   interface Navbar{
     isWelcomePage?: boolean,
@@ -40,8 +36,6 @@ import BooksalonFilter from "./BookingSalonFilter";
     const [genderFilters, setGenderFilters] = useState<string>('');
     const [ethnicityFilters, setEthnicityFilters] = useState<string[]>([]);
     const router=useRouter()
-    const dropdownRef =
-      React.useRef() as React.MutableRefObject<HTMLInputElement>;
     const EthnicityDesktopRef =
       React.useRef() as React.MutableRefObject<HTMLInputElement>;
     const GenderDesktopRef =
@@ -51,9 +45,6 @@ import BooksalonFilter from "./BookingSalonFilter";
     const GenderMobileRef =
       React.useRef() as React.MutableRefObject<HTMLInputElement>;
     const closeSelectBox = ({ target }: MouseEvent): void => {
-      if (!dropdownRef.current?.contains(target as Node)) {
-        setIsDropdown(false);
-      }
       if (!EthnicityDesktopRef.current?.contains(target as Node)) {
         setShowDesktopEthnicity(false);
       }
@@ -92,11 +83,6 @@ import BooksalonFilter from "./BookingSalonFilter";
         name: "Mix",
       },
     ];
-    const dropdownItems=[
-      {name: 'Messages', icon: <MessageIcon width="25" height="25"/>, route: '/client/messages'},
-      {name: 'Favoris', icon: <HeartIcon width="25" height="25"/>, route: '/client/favorites'},
-      {name: 'Aide', icon: <HelpIcon width="25" height="25"/>, route: ''},
-    ]
   
     const onClickGenderCheckbox = (gender: string) => {
       onGenderFilter && onGenderFilter(gender === 'Homme' ? 'men' : gender === 'Femme' ? 'women' : 'Mix')
@@ -119,22 +105,6 @@ import BooksalonFilter from "./BookingSalonFilter";
     useEffect(()=>{
       onEthnicityFilters && onEthnicityFilters(ethnicityFilters)
     },[ethnicityFilters])
-  
-    const onDropdownItemClick=(route: string)=>{
-      if(route){
-        router.push(route)
-      }
-    }
-  
-    const onLogout=()=>{
-      Auth.logout()
-      .then(response=>{
-        removeFromLocalStorage("AuthToken")
-        removeFromLocalStorage("User")
-        router.push("/login");
-      })
-      .catch(error => console.log(error))
-    }
   
     useEffect(() => {
       if (getLocalStorage("User")) {
@@ -241,20 +211,12 @@ import BooksalonFilter from "./BookingSalonFilter";
                 }
                 {(isWelcomePage || isServicesPage) &&
               <div className="border-r border-grey px-6 last:border-r-0 cursor-pointer">
-                {isWelcomePage &&
                 <input
                   type="text"
                   placeholder="Search"
                   className="text-base px-4 p-2 rounded-full outline-none"
-                  onChange={onSearch ? (e)=>onSearch(e.target.value) : ()=>{}}
-                />}
-                {isServicesPage &&
-                <input
-                  type="text"
-                  placeholder="Search"
-                  className="text-base px-4 p-2 rounded-full outline-none"
-                  onChange={onServiceSearch ? (e)=>onServiceSearch(e.target.value) : ()=>{}}
-                />}
+                  onChange={onSearch && isWelcomePage ? (e)=>onSearch(e.target.value) : onServiceSearch && isServicesPage ? (e)=>onServiceSearch(e.target.value) : ()=>{}}
+                />
               </div>}
             </div>
             <div className="cursor-pointer p-3 rounded-full bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
@@ -262,7 +224,6 @@ import BooksalonFilter from "./BookingSalonFilter";
             </div>
           </div>
           <div
-            ref={dropdownRef}
             className="relative flex items-center justify-center md:justify-end gap-4"
           >
             {!isLoggedIn &&
@@ -282,29 +243,9 @@ import BooksalonFilter from "./BookingSalonFilter";
               <Hamburger />
             </div> */}
             {isLoggedIn &&
-            <>
-            <div
-              className="w-12 h-12 flex items-center justify-center pb-1 border-2 border-secondary rounded-full cursor-pointer"
-              onClick={() => setIsDropdown(!isDropdown)}
-            >
-              <UserIcon />
+            <div>
+              <UserProfile/>
             </div>
-            {isDropdown && (
-              <div className="absolute top-14 right-0 z-20 pt-3 pb-2 flex flex-col items-center justify-center text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
-                <div className="flex flex-col gap-x-4 border-b w-44 border-[#D4CBCB] pb-3">
-                  {dropdownItems.map((item, index) => {
-                    return <div key={index} onClick={()=>onDropdownItemClick(item.route)} className="flex gap-x-5 px-6 py-3 hover:bg-[#F5F5F5] cursor-pointer">
-                      {item.icon}
-                      <p>{item.name}</p>
-                    </div>
-                  })}
-                </div>
-                <div onClick={onLogout} className="w-full flex flex-col items-center justify-center mt-2 px-6 py-3 hover:bg-[#F5F5F5] cursor-pointer">
-                  <p>Logout</p>
-                </div>
-              </div>
-            )}
-               </>
             }
           </div>
         </div>
@@ -393,8 +334,9 @@ import BooksalonFilter from "./BookingSalonFilter";
               <div className="px-6 cursor-pointer">
                 <input
                   type="text"
-                  className="text-base px-4 p-2 rounded-full outline-none"
                   placeholder="Search"
+                  className="text-base px-4 p-2 rounded-full outline-none"
+                  onChange={onSearch && isWelcomePage ? (e)=>onSearch(e.target.value) : onServiceSearch && isServicesPage ? (e)=>onServiceSearch(e.target.value) : ()=>{}}
                 />
               </div>
               <div className="cursor-pointer p-3 rounded-full bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">

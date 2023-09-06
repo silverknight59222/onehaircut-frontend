@@ -14,6 +14,7 @@ import "./index.css";
 import Link from "next/link";
 import { registration } from "@/api/registration";
 import { setLocalStorage } from "@/api/storage";
+import UserProfile from "@/components/UI/UserProfile";
 
 interface Package {
   package: string;
@@ -102,14 +103,12 @@ const Page = ({ params }: Params) => {
         <div className="fixed -z-40 -left-32 md:-left-28 -bottom-32 md:-bottom-28 overflow-hidden hidden md:block">
           <LogoCircle />
         </div>
-        <div className="flex flex-col md:flex-row items-center justify-center border-b border-[#EBF0F2] pb-3">
-          <div className="w-full flex items-center justify-center md:justify-start gap-5 px-14 py-5">
+        <div className="flex flex-row items-center justify-center border-b border-[#EBF0F2]">
+          <div onClick={()=>router.push('/')} className="w-full flex items-center justify-start gap-5 px-6 md:px-14 py-5 cursor-pointer">
             <LogoIcon />
           </div>
           <div className="w-full flex items-center justify-center md:justify-end gap-4 sm:px-14">
-            <div className="w-14 h-14 flex items-center justify-center pb-1 border-2 border-secondary rounded-full cursor-pointer">
-              <UserIcon />
-            </div>
+           <UserProfile/>
           </div>
         </div>
         <div className="flex flex-col items-center justify-center mt-12 px-6 w-full overflow-hidden">

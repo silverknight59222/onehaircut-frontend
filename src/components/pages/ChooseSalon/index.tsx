@@ -10,6 +10,7 @@ import { dashboard } from '@/api/dashboard';
 import { getLocalStorage } from '@/api/storage';
 import { SalonDetails } from '@/types';
 import userLoader from "@/hooks/useLoader";
+import useSnackbar from '@/hooks/useSnackbar';
 
 const SalonChoice = () => {
     const [selectedTab, setSelectedTab] = useState(0)
@@ -22,8 +23,9 @@ const SalonChoice = () => {
     const haircutId=Number(getLocalStorage("HaircutId"))
     const [isLoading, setIsLoading] = useState(false);
     const { loadingView } = userLoader();
+    const showSnackbar = useSnackbar();
 
-    const getAllHaircuts=()=>{
+    const getAllSalons=()=>{
         const services=getLocalStorage('ServiceIds')
         setIsLoading(true);
         const data={
@@ -59,24 +61,42 @@ const SalonChoice = () => {
         })
       }
 
-    const onWishlist=(e: any, haircutId: number)=>{
+    const onWishlist=(e: any, haircutId: number, isDelete?: boolean)=>{
         e.stopPropagation()
-        const data={
-          user_id: userId,
-          hair_salon_id: haircutId
-        }
-        if(selectedWhishlist !== haircutId){
-          setSelectedWhishlist(haircutId)
-          dashboard.addSalonWishList(data)
-          .catch(err => console.log(err))
-        }
-        else{
-          setSelectedWhishlist(null)
+        let data
+        if(isDelete){
+            dashboard.removeFromSalonWishList(haircutId)
+            .then(response=>{
+                getAllSalons()
+              showSnackbar('success', 'Remove From Wishlist Successfully!')
+            })
+            .catch(error=>{
+              console.log(error)
+              showSnackbar('error', 'Error Occured!')
+            })
+          }
+        else {
+            data = {
+                user_id: userId,
+                hair_salon_id: haircutId
+            }
+            if (selectedWhishlist !== haircutId) {
+                setSelectedWhishlist(haircutId)
+                dashboard.addSalonWishList(data)
+                    .then(response => {
+                        showSnackbar('success', 'Added To Wishlist Successfully!')
+                    })
+                    .catch(err => console.log(err))
+            }
+            else {
+                setSelectedWhishlist(null)
+                showSnackbar('error', 'Error Occured!')
+            }
         }
       }
 
       useEffect(()=>{
-        getAllHaircuts()
+        getAllSalons()
       },[])
     return (
         <div>

@@ -8,18 +8,19 @@ import { Haircut } from "@/types";
 import Navbar from "@/components/shared/Navbar";
 import { getLocalStorage, setLocalStorage } from "@/api/storage";
 import { useRouter } from "next/navigation";
+import useSnackbar from "@/hooks/useSnackbar";
 const Welcome = () => {
   const { loadingView } = userLoader();
   const [salonHaircut, setSalonHaircut] = useState<Haircut[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [selectedWhishlist,setSelectedWhishlist]=useState<number | null>()
   const router=useRouter()
   const userId=Number(getLocalStorage("User"))
   const [ethnicityFilters, setEthnicityFilters] = useState<string[]>([]);
   const [genderFilters, setGenderFilters] = useState<string>("");
   const [filteredHaircuts, setFilteredHaircuts] = useState<Haircut[]>([]);
   const [search, setSearch] = useState<string>('');
+  const showSnackbar = useSnackbar();
 
   const getAllHaircuts=()=>{
     setIsLoading(true);
@@ -33,23 +34,36 @@ const Welcome = () => {
     .catch(error => console.log(error))
   }
 
-  const onWishlist=(e: any, haircutId: number)=>{
+  const onWishlist=(e: any, haircutId: number, isDelete: boolean)=>{
+    console.log(isDelete)
     e.stopPropagation()
-    const data={
+    let data
+    if(isDelete){
+      dashboard.removeFromWishList(haircutId)
+      .then(response=>{
+        getAllHaircuts()
+        showSnackbar('success', 'Removed From Wishlist Successfully!')
+      })
+      .catch(error=>{
+        console.log(error)
+        showSnackbar('error', 'Error Occured!')
+      })
+    }
+    else{
+    data={
       user_id: userId,
       haircut_id: haircutId
     }
-    if(selectedWhishlist !== haircutId){
-      setSelectedWhishlist(haircutId)
-      dashboard.addWishList(data)
-      .then(response=>{
-        getAllHaircuts()
-      })
-      .catch(err => console.log(err))
-    }
-    else{
-      setSelectedWhishlist(null)
-    }
+    dashboard.addWishList(data)
+    .then(response=>{
+      getAllHaircuts()
+      showSnackbar('success', 'Added To Wishlist Successfully!')
+    })
+    .catch(err => {
+      console.log(err)
+      showSnackbar('error', 'Error Occured!')
+    })
+  }
   }
 
 
@@ -154,7 +168,7 @@ const Welcome = () => {
               <div className="relative w-max px-4 pt-4 bg-[#F5F5F5] rounded-t-xl">
                 <div className="relative w-48 h-48">
                   <Image src={item.image} fill={true} alt="" className="rounded-t-xl" />
-                  <div onClick={(e) => onWishlist(e, item.id)} className="absolute right-2 top-2 cursor-pointer">
+                  <div onClick={(e) => onWishlist(e, item.id, item.is_added_to_wishlist)} className="absolute right-2 top-2 cursor-pointer">
                     <Like color={item.is_added_to_wishlist ? "#FF0000" : ""} />
                   </div>
                 </div>

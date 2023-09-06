@@ -6,6 +6,7 @@ import React, { useState } from "react";
 import userLoader from "@/hooks/useLoader";
 import useSnackbar from "@/hooks/useSnackbar";
 import { getLocalStorage, setLocalStorage } from "@/api/storage";
+import UserProfile from "@/components/UI/UserProfile";
 
 const Step3 = () => {
   const showSnackbar = useSnackbar();
@@ -157,14 +158,12 @@ const Step3 = () => {
   return (
     <div>
       {isLoading && loadingView()}
-      <div className="flex flex-col md:flex-row items-center justify-center border-b border-[#EBF0F2] pb-3">
+      <div className="flex flex-col md:flex-row items-center justify-center border-b border-[#EBF0F2] pb-4">
         <div className="absolute top-1 flex items-center justify-start sm:justify-center w-full gap-5 px-10 sm:px-14 py-5">
-          <LogoIcon />
+        <div onClick={()=>route.push('/')} className='relative z-30 cursor-pointer'><LogoIcon /></div>
         </div>
-        <div className="w-full flex items-center justify-end gap-4 px-4 sm:px-14 mt-5">
-          <div className="w-14 h-14 flex items-center justify-center pb-1 border-2 border-secondary rounded-full cursor-pointer">
-            <UserIcon />
-          </div>
+        <div className="relative z-20 w-full flex items-center justify-end gap-4 px-4 sm:px-14 mt-6">
+          <UserProfile/>
         </div>
       </div>
       <div className="w-full flex-col gap-10 flex items-center justify-center px-3">
