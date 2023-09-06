@@ -92,8 +92,14 @@ const dashboard = {
   addWishList: async (params: WishlistParams) => {
     return await request.post(`/wishlist`, params);
   },
+  removeFromWishList: async (id: number) => {
+    return await request.delete(`/wishlist/${id}`);
+  },
   addSalonWishList: async (params: SalonWishlistParams) => {
     return await request.post(`/salon_wishlist`, params);
+  },
+  removeFromSalonWishList: async (id: number) => {
+    return await request.delete(`/salon_wishlist/${id}`);
   },
   getSalonsByHaircut: async (params: SalonHaircut) => {
     return await request.post(`/hair_salon_by_haircut_and_services`, params);
