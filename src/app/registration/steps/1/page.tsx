@@ -60,7 +60,7 @@ const Step1 = () => {
         <p className="text-black font-semibold text-3xl md:text-4xl xl:text-5xl text-center">
           Quel type de salon souhaites-tu enregistrer ?{" "}
         </p>
-        <div className="flex items-center lg:items-baseline justify-center gap-1 lg:gap-36 flex-col lg:flex-row">
+        <div className="flex items-center lg:items-baseline justify-center gap-1 lg:gap-48 flex-col lg:flex-row">
           <div>
             <input
               placeholder="Nom du salon"
@@ -69,11 +69,11 @@ const Step1 = () => {
               className="border border-secondary rounded-xl w-80 sm:w-[500px] mt-7 py-4 px-6 md:px-10 outline-none"
             />
           </div>
-          <div className="flex items-center justify-end mb-5 mt-10">
+          <div className="flex items-center justify-end mb-5 mt-10 w-full sm:w-auto">
             <button
               onClick={() => onClickNext()}
               disabled={selectedType ? false : true}
-              className="w-56 h-14 text-white text-xl font-semibold rounded-xl bg-background-gradient shadow-[0px_17px_36px_0px_rgba(255,125,60,0.25)]"
+              className="w-full sm:w-56 h-14 text-white text-xl font-semibold rounded-xl bg-background-gradient shadow-[0px_17px_36px_0px_rgba(255,125,60,0.25)]"
             >
               Continuons !
             </button>
