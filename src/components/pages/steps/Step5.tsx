@@ -28,11 +28,11 @@ const Step5 = () => {
       <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 -z-10">
         <CircleRight />
       </div>
-      <div className="flex flex-col md:flex-row items-center justify-center border-b border-[#EBF0F2] pb-3">
-        <div className="absolute top-1 flex items-center justify-start sm:justify-center w-full gap-5 px-10 sm:px-14 py-5">
+      <div className="flex flex-col md:flex-row items-center justify-center border-b border-[#EBF0F2] pb-4">
+        <div className="absolute top-1 flex items-center justify-start sm:justify-center w-full gap-5 px-4 sm:px-14 py-5">
         <div onClick={()=>router.push('/')} className='relative z-30 cursor-pointer'><LogoIcon /></div>
         </div>
-        <div className="relative z-20 w-full flex items-center justify-end gap-4 px-4 sm:px-14 mt-5">
+        <div className="relative z-20 w-full flex items-center justify-end gap-4 px-4 sm:px-14 mt-6">
           <UserProfile/>
         </div>
       </div>

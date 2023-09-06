@@ -104,10 +104,10 @@ const Page = ({ params }: Params) => {
           <LogoCircle />
         </div>
         <div className="flex flex-row items-center justify-center border-b border-[#EBF0F2]">
-          <div onClick={()=>router.push('/')} className="w-full flex items-center justify-start gap-5 px-6 md:px-14 py-5 cursor-pointer">
+          <div onClick={()=>router.push('/')} className="w-full flex items-center justify-start gap-5 px-4 md:px-14 py-5 cursor-pointer">
             <LogoIcon />
           </div>
-          <div className="w-full flex items-center justify-center md:justify-end gap-4 sm:px-14">
+          <div className="w-full flex items-center justify-center sm:justify-end gap-4 sm:px-14">
            <UserProfile/>
           </div>
         </div>
