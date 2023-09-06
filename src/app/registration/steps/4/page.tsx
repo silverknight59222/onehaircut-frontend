@@ -73,8 +73,8 @@ const Step4 = () => {
               Modifier
             </button>
           </div>
-          <div className="flex flex-col items-center justify-center">
-            <p className="text-black mt-6 mb-4">
+          <div className="flex flex-col items-center justify-center px-5 sm:px-0 lg:px-10">
+            <p className="text-black text-center mt-6 mb-4">
               Choisissez comment vous souhaitez payer
             </p>
             <div className="flex flex-col lg:flex-row mt-5 lg:mt-0 items-center justify-center gap-8 mb-14">
@@ -94,7 +94,7 @@ const Step4 = () => {
                     <StarIcon />
                   </div>
                 )}
-                <div className="flex flex-col sm:flex-row items-start justify-center gap-3 sm:gap-12 text-black mt-10 mb-2">
+                <div className="flex flex-col sm:flex-row items-start justify-center gap-3 sm:gap-10 text-black mt-10 mb-2">
                   <div>
                     <p className="font-semibold text-xl">{plans.length > 1 && plans[1].name}</p>
                     <p>{plans.length > 1 && plans[1].description}</p>
@@ -125,7 +125,7 @@ const Step4 = () => {
                     <StarIcon />
                   </div>
                 )}
-                <div className="flex flex-col sm:flex-row items-start justify-center gap-3 sm:gap-12 text-black mt-10 mb-2">
+                <div className="flex flex-col sm:flex-row items-start justify-center gap-3 sm:gap-10 text-black mt-10 mb-2">
                   <div>
                     <p className="font-semibold text-xl">{plans.length > 1 && plans[2].name}</p>
                     <p>{plans.length > 1 && plans[2].description}</p>

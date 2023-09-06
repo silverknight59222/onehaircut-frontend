@@ -100,12 +100,12 @@ function StripePayment() {
     <div>
       {isLoading && loadingView()}
       <form onSubmit={handleSubmit}>
-        <div className="text-sm font-semibold mb-2">
+        <div className="text-sm font-semibold mb-8">
           Enter your card details here:
         </div>
         <CardElement options={options} />
         <button
-          className="w-full h-14 mt-3 text-white text-xl font-semibold rounded-xl bg-background-gradient shadow-[0px_17px_36px_0px_rgba(255,125,60,0.25)]"
+          className="w-full h-14 mt-8 text-white text-xl font-semibold rounded-xl bg-background-gradient shadow-[0px_17px_36px_0px_rgba(255,125,60,0.25)]"
           type="submit"
           disabled={!stripe || !elements}
         >
