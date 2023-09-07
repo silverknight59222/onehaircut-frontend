@@ -51,11 +51,11 @@ const Step4 = () => {
   return (
     <div>
       {isLoading && loadingView()}
-      <div className="flex flex-col md:flex-row items-center justify-center border-b border-[#EBF0F2] pb-3">
-        <div className="absolute top-1 flex items-center justify-start sm:justify-center gap-5 px-10 sm:px-14 py-5">
+      <div className="flex flex-col md:flex-row items-center justify-center border-b border-[#EBF0F2] pb-4">
+        <div className="absolute top-1 left-0 md:left-auto flex items-center justify-start sm:justify-center gap-5 px-4 sm:px-14 py-5">
           <div onClick={()=>route.push('/')} className='relative z-30 cursor-pointer'><LogoIcon /></div>
         </div>
-        <div className="relative z-20 w-full flex items-center justify-end gap-4 px-4 sm:px-14 mt-5">
+        <div className="relative z-20 md:z-40 w-full flex items-center justify-end gap-4 px-4 sm:px-14 mt-6">
           <UserProfile/>
         </div>
       </div>
@@ -73,8 +73,8 @@ const Step4 = () => {
               Modifier
             </button>
           </div>
-          <div className="flex flex-col items-center justify-center">
-            <p className="text-black mt-6 mb-4">
+          <div className="flex flex-col items-center justify-center px-5 sm:px-0 lg:px-10">
+            <p className="text-black text-center mt-6 mb-4">
               Choisissez comment vous souhaitez payer
             </p>
             <div className="flex flex-col lg:flex-row mt-5 lg:mt-0 items-center justify-center gap-8 mb-14">
@@ -94,7 +94,7 @@ const Step4 = () => {
                     <StarIcon />
                   </div>
                 )}
-                <div className="flex flex-col sm:flex-row items-start justify-center gap-3 sm:gap-12 text-black mt-10 mb-2">
+                <div className="flex flex-col sm:flex-row items-start justify-center gap-3 sm:gap-10 text-black mt-10 mb-2">
                   <div>
                     <p className="font-semibold text-xl">{plans.length > 1 && plans[1].name}</p>
                     <p>{plans.length > 1 && plans[1].description}</p>
@@ -125,7 +125,7 @@ const Step4 = () => {
                     <StarIcon />
                   </div>
                 )}
-                <div className="flex flex-col sm:flex-row items-start justify-center gap-3 sm:gap-12 text-black mt-10 mb-2">
+                <div className="flex flex-col sm:flex-row items-start justify-center gap-3 sm:gap-10 text-black mt-10 mb-2">
                   <div>
                     <p className="font-semibold text-xl">{plans.length > 1 && plans[2].name}</p>
                     <p>{plans.length > 1 && plans[2].description}</p>

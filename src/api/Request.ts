@@ -14,7 +14,10 @@ request.interceptors.response.use(
     let alertPresent = false;
 
     console.error({ error });
-
+    if (response.status === 401) {
+      // window.location.replace(`/login`);
+      // return;
+    }
     throw error.response.data.status;
   }
 );

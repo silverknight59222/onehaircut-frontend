@@ -1,10 +1,10 @@
-import Step4 from '@/components/pages/steps/Step4'
+import Checkout from '@/components/pages/Checkout'
 import React from 'react'
 
 const page = () => {
   return (
     <div>
-        <Step4/>
+        <Checkout/>
     </div>
   )
 }

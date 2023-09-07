@@ -104,31 +104,31 @@ const Page = ({ params }: Params) => {
           <LogoCircle />
         </div>
         <div className="flex flex-row items-center justify-center border-b border-[#EBF0F2]">
-          <div onClick={()=>router.push('/')} className="w-full flex items-center justify-start gap-5 px-6 md:px-14 py-5 cursor-pointer">
+          <div onClick={()=>router.push('/')} className="w-full flex items-center justify-start gap-5 px-4 md:px-14 py-5 cursor-pointer">
             <LogoIcon />
           </div>
-          <div className="w-full flex items-center justify-center md:justify-end gap-4 sm:px-14">
+          <div className="w-full flex items-center justify-center sm:justify-end gap-4 sm:px-14">
            <UserProfile/>
           </div>
         </div>
         {plans.length > 1 && ( <div className="flex flex-col items-center justify-center mt-12 px-6 w-full overflow-hidden">
-            <div className="flex sm:flex-row flex-col gap-2 sm:gap-0 w-full items-center justify-center px-7 mb-6 max-w-[1340px] ">
-              <div className="flex sm:flex-row flex-col gap-2 items-center justify-between w-full">
-              <div className="text-black font-medium text-3xl ml-4">
+            <div className="flex sm:flex-row flex-col gap-2 sm:gap-0 w-full items-center justify-center mb-6 max-w-[1300px] 2xl:max-w-[1340px]">
+              <div className="flex sm:flex-row flex-col items-center justify-between w-full">
+              <div className="text-black font-medium text-3xl ml-5">
                 Abonnement
               </div>
               <button
-            onClick={() => onSubmit()}
-            className="text-white py-4 px-11 font-semibold bg-background-gradient rounded-xl shadow-[0px_17px_36px_0px_rgba(255,125,60,0.25)]"
-          >
-            Choisir cette offre
-          </button>
+                onClick={() => onSubmit()}
+                className="w-full sm:w-auto text-white py-4 px-11 mt-5 mb-3 md:m-0 font-semibold bg-background-gradient rounded-xl shadow-[0px_17px_36px_0px_rgba(255,125,60,0.25)]"
+              >
+                Choisir cette offre
+              </button>
             </div>
             </div>
-          <div className="flex flex-col xl:flex-row items-center md:items-start gap-11 w-full md:w-auto">
-            <div className="mx-4">
+          <div className="flex flex-col xl:flex-row items-center md:items-start gap-6 2xl:gap-11 w-full md:w-auto">
+            <div className="w-full lg:w-auto sm:mx-4">
               <Link
-                className={`w-[350px] cursor-pointer sm:w-[600px] h-44 sm:h-[130px] px-8 flex flex-col sm:flex-row items-start sm:items-center justify-center sm:justify-between mb-7 rounded-xl ${
+                className={`w-full cursor-pointer sm:w-[600px] h-44 sm:h-[130px] px-8 flex flex-col sm:flex-row items-start sm:items-center justify-center sm:justify-between mb-7 rounded-xl ${
                   selectedPlan === "standard"
                     ? "bg-background-gradient text-white shadow-[0px_13px_38px_0px_rgba(180,180,180,0.42)]"
                     : "bg-white text-black border border-[#D7D5D5]"
@@ -138,14 +138,14 @@ const Page = ({ params }: Params) => {
               >
                 <div>
                   <p className="font-semibold text-2xl">{plans.length > 1 && plans[0].name}</p>
-                  <p className="w-80">
+                  <p className="sm:w-80">
                   {plans.length > 1 && plans[0].description}
                   </p>
                 </div>
                 <p className="font-semibold text-3xl mt-5">$ {plans.length > 1 && plans[0].price}</p>
               </Link>
               <Link
-                className={`w-[350px] cursor-pointer sm:w-[600px] h-44 sm:h-[130px] px-8 flex flex-col sm:flex-row items-start sm:items-center justify-center sm:justify-between rounded-xl ${
+                className={`w-full cursor-pointer sm:w-[600px] h-44 sm:h-[130px] px-8 flex flex-col sm:flex-row items-start sm:items-center justify-center sm:justify-between rounded-xl ${
                   selectedPlan === "pro"
                     ? "bg-background-gradient text-white shadow-[0px_13px_38px_0px_rgba(180,180,180,0.42)]"
                     : "bg-white text-black border border-[#D7D5D5]"
@@ -155,7 +155,7 @@ const Page = ({ params }: Params) => {
               >
                 <div>
                   <p className="font-semibold text-2xl">{plans.length > 1 && plans[1].name}</p>
-                  <p className="w-96">
+                  <p className="sm:w-96">
                   {plans.length > 1 && plans[1].description}
                   </p>
                 </div>
@@ -165,32 +165,36 @@ const Page = ({ params }: Params) => {
                 </div>
               </Link>
             </div>
-            <div className="flex flex-col gap-5 w-full xl:w-8/12 p-5 pr-2 sm:pr-5 rounded-xl bg-[#F7F7F7]">
+            <div className="flex flex-col gap-5 w-full xl:w-8/12 p-5 rounded-xl bg-[#F7F7F7] mt-5 xl:mt-0">
               {packages.map((item, index) => {
                 return (
                   <div
                     key={index}
-                    className="flex items-center justify-start gap-2"
                   >
-                    <p className="text-black w-6/12 sm:w-8/12">{item.name}</p>
-                    <p className="w-full text-black text-xs text-start">
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="text-black w-full sm:w-8/12">{item.name}</p>
+                      <p className="hidden md:block w-full text-black text-xs text-start">
+                        {item.desc}
+                      </p>
+                      <div className="w-2/12 flex items-end justify-end">
+                        {selectedPlan === "pro" ? (
+                          <RegistrationCheckedIcon width="22px" height="23px" />
+                        ) : index < 5 ? (
+                          <RegistrationCheckedIcon width="22px" height="23px" />
+                        ) : (
+                          <RegistrationUnCheckedIcon />
+                        )}
+                      </div>
+                    </div>
+                    <p className="md:hidden w-9/12 sm:w-full text-black text-xs text-start mt-1">
                       {item.desc}
                     </p>
-                    <div className="w-2/12 flex items-end justify-end">
-                      {selectedPlan === "pro" ? (
-                        <RegistrationCheckedIcon width="22px" height="23px" />
-                      ) : index < 5 ? (
-                        <RegistrationCheckedIcon width="22px" height="23px" />
-                      ) : (
-                        <RegistrationUnCheckedIcon />
-                      )}
-                    </div>
                   </div>
                 );
               })}
             </div>
           </div>
-          <div className="relative video my-9 xl:ml-[500px] rounded-xl max-w-[502px]">
+          <div className="relative video my-9 xl:ml-[520px] rounded-xl w-full md:max-w-[502px]">
             <ReactPlayer
               url="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
               poster="assets/poster.jpg"
