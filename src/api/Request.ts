@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { getLocalStorage} from './storage';
+import { toast } from 'react-toastify';
 
 const request = axios.create({
   baseURL: 'https://api-server.onehaircut.com/public/api/web/',
@@ -11,18 +12,20 @@ request.interceptors.response.use(
   (response) => response,
   async (error) => {
     const { response } = error;
-    let alertPresent = false;
 
     console.error({ error });
     if (response.status === 401) {
       // window.location.replace(`/login`);
       // return;
     }
+    if (response.status >= 400 || response.status === 401) {
+      toast.error(error.message)
+    }
     throw error.response.data.status;
   }
 );
 
-const token = getLocalStorage('AuthToken');
+const token = getLocalStorage('salon-auth-token');
 
 if (token) {
   request.defaults.headers.common['Authorization'] = `Bearer ${token}`;
