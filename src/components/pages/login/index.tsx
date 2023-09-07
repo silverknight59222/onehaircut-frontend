@@ -86,8 +86,8 @@ const Login = () => {
 		Auth.login(userInfo)
 			.then((resp) => {
 				const res = resp.data;
-				setLocalStorage("AuthToken", res.token);
-				const token = getLocalStorage("AuthToken");
+				setLocalStorage("salon-auth-token", res.token);
+				const token = getLocalStorage("salon-auth-token");
 				if (token) {
 					if(res.user.role==='salon_professional'){
 						router.push("/dashboard");
