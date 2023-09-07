@@ -1,4 +1,5 @@
 "use client";
+import { client } from "@/api/clientSide";
 import Navbar from "@/components/shared/Navbar";
 import {
   Instagram,
@@ -8,23 +9,34 @@ import {
 } from "@/components/utilis/Icons";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import StarRatings from "react-star-ratings";
+import userLoader from "@/hooks/useLoader";
 
-const SearchSalon = () => {
-  const [selectedImage, setSelectedImage] = useState("/assets/salon5.png");
-  const numbers = Array.from({ length: 6 }, (_, index) => index + 1);
+interface SearchSalonProps{
+  salonId: string
+}
+interface SalonImages{
+  image: string,
+  is_cover: boolean
+}
+interface SalonHairdressers{
+  profile_image: string,
+  name: string
+}
+interface SalonProfile{
+  name: string,
+  rating: string,
+  salon_images: SalonImages[],
+  salon_hairdressers: SalonHairdressers[],
+}
+const SearchSalon = ({salonId}: SearchSalonProps) => {
+  const [selectedImage, setSelectedImage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [salonProfile,setSalonProfile]=useState<SalonProfile>({name: '', rating: '', salon_images:[{image: '', is_cover: true}], salon_hairdressers: [{name: '', profile_image: ''}]})
   const router=useRouter()
-  const hairdressers = [
-    { name: "Wissem", img: "/assets/img1.png" },
-    { name: "Denna", img: "/assets/img2.png" },
-    { name: "Dyone", img: "/assets/img3.png" },
-  ];
-  const images = [
-    "/assets/salon6.png",
-    "/assets/salon7.png",
-    "/assets/salon8.png",
-  ];
+  const { loadingView } = userLoader();
+
   const hours = [
     { title: "Lundi", hours: "Fermé" },
     { title: "Mardi", hours: "10:00 - 19:00" },
@@ -34,9 +46,30 @@ const SearchSalon = () => {
     { title: "Samedi", hours: "10:00 - 19:00" },
     { title: "Dimanche", hours: "10:00 - 19:00" },
   ];
+  const getAllHairDresser = async () => {
+    setIsLoading(true);
+    await client.getSalonDetail(salonId)
+      .then((resp) => {
+        setSalonProfile(resp.data.data[0])
+        setIsLoading(false);
+    }).catch(error=>{
+      console.log(error)
+    })
+  };
+  useEffect(()=>{
+    getAllHairDresser()
+  },[])
+  useEffect(()=>{
+    salonProfile.salon_images.forEach((img)=>{
+      if(img.is_cover){
+        setSelectedImage(img.image)
+      }
+    })
+  },[salonProfile])
 
   return (
     <div className="relative">
+      {isLoading && loadingView()}
       <img src="/assets/registration_bg_bottom.png" className="absolute -bottom-5 w-full"/>
       <Navbar isSalonPage={true}/>
       <div className="mt-16 mb-5 px-10 2xl:px-14">
@@ -44,17 +77,17 @@ const SearchSalon = () => {
           <div className="w-full flex flex-col md:flex-row items-center md:items-start gap-20 xl:gap-8 2xl:gap-12">
             <div>
               <div className="w-[320px] lg:w-[400px] 2xl:w-[483px] h-64 lg:h-80 relative">
-                <Image src={selectedImage} alt="" fill={true} />
+                    <Image src={selectedImage} alt="" fill={true} />
               </div>
               <div className="flex items-center gap-3 mt-3">
-                {images.map((image, index) => {
+                {salonProfile.salon_images.map((img, index) => {
                   return (
                     <div
                       key={index}
-                      onClick={() => setSelectedImage(image)}
+                      onClick={() => setSelectedImage(img.image)}
                       className="relative w-24 lg:w-32 2xl:w-36 h-24 lg:h-32 2xl:h-36 cursor-pointer"
                     >
-                      <Image src={image} alt="" fill={true} />
+                      <Image src={img.image} alt="" fill={true} />
                     </div>
                   );
                 })}
@@ -62,7 +95,7 @@ const SearchSalon = () => {
             </div>
             <div>
               <p className="text-black font-bold text-2xl 2xl:text-3xl">
-                Golden Barber
+                {salonProfile.name}
               </p>
               <div className="flex items-center gap-2 border-b-2 border-[#DBDBDB] text-xl 2xl:text-2xl font-semibold text-black pb-3 mt-1">
                 <StarRatings
@@ -73,7 +106,7 @@ const SearchSalon = () => {
                   numberOfStars={1}
                   name="rating"
                 />
-                <p>4.8</p>
+                <p>{salonProfile.rating}</p>
                 <p>(346 avis)</p>
               </div>
               <div className="flex items-center justify-center w-[300px] lg:w-[360px] 2xl:w-[483px] h-44 rounded-3xl my-4 bg-gradient-to-b from-gray-200 to-transparent">
@@ -119,16 +152,14 @@ const SearchSalon = () => {
           </div>
         </div>
         <div className="flex items-center justify-center">
-          <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 xl:gap-10 2xl:gap-14 mt-20">
-            {numbers.map((_, index) => {
+          <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 2xl:gap-12 mt-20">
+            {salonProfile.salon_images.map((img, index) => {
               return (
                 <div
                   key={index}
                   className="relative w-full sm:w-[280px] md:w-[315px] xl:w-[390px] 2xl:w-[487px] h-60 md:h-64 xl:h-72 2xl:h-80 bg-[#D9D9D9] rounded-3xl"
                 >
-                  {index === 0 && (
-                    <Image src="/assets/salon5.png" alt="" fill={true} />
-                  )}
+                    <Image src={img.image} alt="" fill={true} className="rounded-3xl" />
                 </div>
               );
             })}
@@ -140,18 +171,18 @@ const SearchSalon = () => {
           </p>
           <div className="flex items-center justify-center mt-8">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 lg:gap-20 ">
-              {hairdressers.map((hairdresser, index) => {
+              {salonProfile.salon_hairdressers.map((hairdresser, index) => {
                 return (
                   <div key={index}>
                     <div className="relative w-52 lg:w-64 h-52 lg:h-64 rounded-[20px]">
                       <Image
-                        src={hairdresser.img}
+                        src={hairdresser.profile_image}
                         alt=""
                         fill={true}
                         className="rounded-[20px]"
                       />
                     </div>
-                    <p className="text-2xl text-black font-medium text-center sm:text-start mt-1">
+                    <p className="text-2xl text-black font-medium text-center mt-1">
                       {hairdresser.name}
                     </p>
                   </div>

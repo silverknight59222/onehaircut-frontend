@@ -1,16 +1,13 @@
 "use client";
 import Navbar from "@/components/shared/Navbar";
 import {
-  AppleIcon,
   CardIcon,
-  PayPal,
   RegistrationCheckedIcon,
 } from "@/components/utilis/Icons";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const Index = () => {
-  const [selectedPayment, setSelectedPayment] = useState("Carte");
   const router = useRouter();
   const items = [
     { name: "Salon", desc: "Le Bon Coiffeur" },
@@ -50,62 +47,24 @@ const Index = () => {
               </p>
             </div>
           </div>
-          <p className="text-2xl text-black md:text-start text-center mb-4 mt-14">
+          <div className="flex flex-col items-center justify-center">
+          <p className="text-2xl text-black md:text-start text-center mb-4 mt-10">
             Choisissez comment vous souhaitez payer
           </p>
-          <div className="flex items-center justify-center md:justify-start flex-wrap gap-10">
-            <button
-              onClick={() => setSelectedPayment("Carte")}
-              className={`relative w-52 lg:w-64 h-16 flex items-center justify-center gap-4 border rounded-xl text-2xl font-medium hover:border-secondary ${
-                selectedPayment === "Carte"
-                  ? "border-secondary"
-                  : "border-[#C1C1C1]"
-              }`}
-            >
-              <CardIcon />
-              <p>Carte</p>
-              {selectedPayment === "Carte" && (
-                <div className="absolute -top-1 -right-2">
-                  <RegistrationCheckedIcon width="18px" />
-                </div>
-              )}
-            </button>
-            <button
-              onClick={() => setSelectedPayment("Paypal")}
-              className={`relative w-52 lg:w-64 h-16 flex items-center justify-center gap-4 border rounded-xl text-2xl font-medium hover:border-secondary ${
-                selectedPayment === "Paypal"
-                  ? "border-secondary"
-                  : "border-[#C1C1C1]"
-              }`}
-            >
-              <PayPal />
-              <p>Paypal</p>
-              {selectedPayment === "Paypal" && (
-                <div className="absolute -top-1 -right-2">
-                  <RegistrationCheckedIcon width="18px" />
-                </div>
-              )}
-            </button>
-            <button
-              onClick={() => setSelectedPayment("Pay")}
-              className={`relative w-52 lg:w-64 h-16 flex items-center justify-center gap-4 border rounded-xl text-2xl font-medium hover:border-secondary ${
-                selectedPayment === "Pay"
-                  ? "border-secondary"
-                  : "border-[#C1C1C1]"
-              }`}
-            >
-              <AppleIcon />
-              {selectedPayment === "Pay" && (
-                <div className="absolute -top-1 -right-2">
-                  <RegistrationCheckedIcon width="18px" />
-                </div>
-              )}
-            </button>
+          <button
+            className='relative w-52 lg:w-64 h-16 flex items-center justify-center gap-4 border rounded-xl text-2xl font-medium hover:border-secondary border-secondary'
+          >
+            <CardIcon />
+            <p>Carte</p>
+            <div className="absolute -top-1 -right-2">
+              <RegistrationCheckedIcon width="18px" />
+            </div>
+          </button>
           </div>
           <div className="flex items-center justify-center">
             <button
               onClick={() => router.push("/checkout")}
-              className="w-60 h-14 rounded-xl text-xl text-white font-semibold bg-background-gradient shadow-[0px_17px_36px_0px_rgba(255,125,60,0.25)] mt-14"
+              className="w-60 h-14 rounded-xl text-xl text-white font-semibold bg-background-gradient shadow-[0px_17px_36px_0px_rgba(255,125,60,0.25)] mt-10"
             >
               Vers le paiement{" "}
             </button>
