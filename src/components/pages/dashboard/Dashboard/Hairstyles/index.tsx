@@ -969,7 +969,7 @@ const Hairstyles = () => {
                 >
                   <div className="relative w-max px-4 pt-4 bg-[#F5F5F5] rounded-t-xl">
                     <div className="relative w-32 h-32">
-                      <Image src={item.image} fill={true} alt="" />
+                    <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public/${item.image}`} fill={true} alt="" />
                     </div>
                     <div className="absolute top-5 right-5 w-6 h-6 rounded-full bg-[#D9D9D9]">
                       {selectedHaircutsMapping.filter(
@@ -998,7 +998,7 @@ const Hairstyles = () => {
                 >
                   <div className="relative w-max px-4 pt-4 bg-[#F5F5F5] rounded-t-xl">
                     <div className="relative w-32 h-32">
-                      <Image src={item.image} fill={true} alt="" />
+                      <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public/${item.image}`} fill={true} alt="" />
                     </div>
                     <div className="absolute top-5 right-5 w-6 h-6 rounded-full bg-[#D9D9D9]">
                       {selectedSalonHaircut?.id === item.id && <SelectedIcon />}
