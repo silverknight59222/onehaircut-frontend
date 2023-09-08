@@ -16,6 +16,8 @@ const Step5 = () => {
   const router = useRouter();
   const [stripePromise, setStripePromise] = useState<string>("pk_test_51IkzH1ExivflHCSmgQfNoQAWOnOcfKopp26Ct493No4QtWa8Cv6HEf9933YbMXcrs6wVR7YjWslQV58IikPujC5U006Imw8zpO");  
   const [mounted, setMounted] = useState(false);
+  const salonAddress = getLocalStorage("salon_address") as string;
+  const planType = JSON.parse(getLocalStorage("plan_type") as string);
   useEffect(() => {
       setMounted(true)
   }, [])
@@ -46,9 +48,7 @@ const Step5 = () => {
                   Billing address
                 </p>
                 <div className="text-black text-lg mt-5">
-                  <p>Mike John</p>
-                  <p>243 high road</p>
-                  <p>12456 Atlanta</p>
+                  <p>{salonAddress ? salonAddress : '-'}</p>
                 </div>
               </div>
               <div className="bg-white px-4 py-8 mt-7 w-full">
@@ -70,24 +70,18 @@ const Step5 = () => {
             <p className="text-lg font-semibold text-black">Order</p>
             <div className="text-black text-lg mt-5">
               <div className="flex items-center justify-between gap-3">
-                <p>Abonnement Onehaircut Pro</p>
-                <p className="whitespace-nowrap">89,00 €</p>
-              </div>
-              <div className="flex items-center justify-between">
-                <p className="sm:w-[317px]">Parrainage</p>
-                <p>-20,00&nbsp;€</p>
+                <p>{planType ? planType.name : '-'}</p>
+                <p className="whitespace-nowrap">{planType ? planType.price : '-'} €</p>
               </div>
             </div>
             <div className="flex items-center justify-between mt-5">
               <p className="text-black font-bold text-lg">Order total</p>
-              <p>69,00 €</p>
+              <p>{planType ? planType.price : '-'} €</p>
             </div>
             <div className="mt-10">
               <p className="text-lg font-semibold text-black">Salon</p>
               <div className="text-black text-lg mt-5">
-                <p>Golden Blabla</p>
-                <p>2 rue de la Victoire</p>
-                <p>75000 Paris</p>
+                <p>{salonAddress ? salonAddress : '-'}</p>
               </div>
             </div>
           </div>
