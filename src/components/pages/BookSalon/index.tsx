@@ -95,7 +95,7 @@ const BookSalon = () => {
                 );
               })}
             </div>
-            <button className="w-80 h-16 text-xl text-white font-semibold mt-4 bg-background-gradient rounded-[22px]">
+            <button className="w-80 h-16 text-xl text-white font-semibold mt-4 bg-background-gradient rounded-2xl">
               Revenir au choix de coiffure
             </button>
           </div>

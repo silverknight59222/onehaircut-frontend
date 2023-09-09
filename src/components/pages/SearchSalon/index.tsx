@@ -72,9 +72,9 @@ const SearchSalon = ({salonId}: SearchSalonProps) => {
       {isLoading && loadingView()}
       <img src="/assets/registration_bg_bottom.png" className="absolute -bottom-5 w-full"/>
       <Navbar isSalonPage={true}/>
-      <div className="mt-16 mb-5 px-10 2xl:px-14">
-        <div className="flex flex-col xl:flex-row items-center md:items-start xl:justify-between gap-11">
-          <div className="w-full flex flex-col md:flex-row items-center md:items-start gap-20 xl:gap-8 2xl:gap-12">
+      <div className="mt-16 mb-5 px-5 md:px-10 2xl:px-14">
+        <div className="flex flex-col lg:flex-row items-center md:items-start xl:justify-between gap-11">
+          <div className="w-full flex flex-col md:flex-row items-center md:items-start gap-8 2xl:gap-12">
             <div>
               <div className="w-[320px] lg:w-[400px] 2xl:w-[483px] h-64 lg:h-80 relative">
                     <Image src={selectedImage} alt="" fill={true} />
@@ -93,47 +93,26 @@ const SearchSalon = ({salonId}: SearchSalonProps) => {
                 })}
               </div>
             </div>
-            <div>
+            <div className="md:mt-5">
               <p className="text-black font-bold text-2xl 2xl:text-3xl">
                 {salonProfile.name}
               </p>
-              <div className="flex items-center gap-2 border-b-2 border-[#DBDBDB] text-xl 2xl:text-2xl font-semibold text-black pb-3 mt-1">
+              <div className="flex items-center gap-1 border-b-2 border-[#DBDBDB] text-xl 2xl:text-2xl font-semibold text-black pb-3 mt-1">
                 <StarRatings
                   rating={1}
                   starRatedColor="#FEDF10"
                   starSpacing="4px"
-                  starDimension="42px"
+                  starDimension="25px"
                   numberOfStars={1}
                   name="rating"
                 />
-                <p>{salonProfile.rating}</p>
-                <p>(346 avis)</p>
-              </div>
-              <div className="flex items-center justify-center w-[300px] lg:w-[360px] 2xl:w-[483px] h-44 rounded-3xl my-4 bg-gradient-to-b from-gray-200 to-transparent">
-                <p className="text-2xl font-medium text-black">
-                  Description salon
-                </p>
-              </div>
-              <p className="text-xs text-black font-medium mb-3">
-                Offres promotionnelles dispo !
-              </p>
-              <div className="flex items-center gap-4 mb-4">
-                <Instagram />
-                <p className="text-xl text-black font-medium">Golden_b</p>
-              </div>
-              <div className="flex items-center gap-4">
-                <Image
-                  src="/assets/facebook.png"
-                  alt=""
-                  width={32}
-                  height={32}
-                />
-                <p className="text-xl text-black font-medium">Golden barber</p>
+                <p className="-mb-2">{salonProfile.rating}</p>
+                {/* <p>(346 avis)</p> */}
               </div>
             </div>
           </div>
-          <div className="flex flex-col items-center justify-center">
-            <div className="flex flex-col gap-6 w-[350px] 2xl:w-[420px] border border-[#E1E1E1] rounded-3xl py-6 px-8 2xl:px-10 shadow-[0px_4px_24px_0px_rgba(183,183,183,0.25)]">
+          <div className="w-full md:w-auto flex flex-col items-center justify-center">
+            <div className="flex flex-col gap-6 w-full md:w-[350px] xl:w-[420px] 2xl:w-[470px] border border-[#E1E1E1] rounded-3xl py-6 px-8 2xl:px-10 shadow-[0px_4px_24px_0px_rgba(183,183,183,0.25)]">
               {hours.map((item, index) => {
                 return (
                   <div
@@ -202,7 +181,7 @@ const SearchSalon = ({salonId}: SearchSalonProps) => {
                   return (
                     <div
                       key={index}
-                      className="relative w-[359px] lg:w-[300px] xl:w-[359px] h-[334px] border border-secondary rounded-2xl"
+                      className="relative w-full md:w-[359px] lg:w-[300px] xl:w-[359px] h-[334px] border border-secondary rounded-2xl"
                     >
                       <div className="flex items-center justify-between px-5 mt-5">
                         <div>
@@ -239,7 +218,7 @@ const SearchSalon = ({salonId}: SearchSalonProps) => {
                         }`}
                       >
                         <div
-                          className={`w-20 h-20 rounded-full ${
+                          className={`w-16 sm:w-20 h-16 sm:h-20 rounded-full ${
                             index === 0 ? "bg-[#616161]" : "bg-[#D9D9D9]"
                           }`}
                         />

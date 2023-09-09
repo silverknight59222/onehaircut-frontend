@@ -134,7 +134,7 @@ const SalonChoice = () => {
                                 {salons.map((salon, index) => {
                                     return <div key={index} onClick={()=>setSelectedSalon(salon.id)} className={`bg-[rgba(242,242,242,0.66)] rounded-2xl pb-3 border hover:border-secondary cursor-pointer ${selectedSalon===salon.id && 'border-secondary'}`}>
                                         <div className="px-4 pt-4 relative">
-                                        <div onClick={(e) => onWishlist(e, 3)} className="absolute right-6 top-6 cursor-pointer">
+                                        <div onClick={(e) => onWishlist(e, 3)} className="absolute right-6 top-6 z-20 cursor-pointer">
                                             <Like color={selectedWhishlist === index ? "#FF0000" : ""}  />
                                         </div>
                                         <div className='relative w-48 h-48'>
