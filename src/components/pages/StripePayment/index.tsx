@@ -4,6 +4,7 @@ import userLoader from "@/hooks/useLoader";
 import { getLocalStorage } from "@/api/storage";
 import { SalonRegisterParams, registration } from "@/api/registration";
 import useSnackbar from "@/hooks/useSnackbar";
+import { useRouter } from "next/navigation";
 
 const useOptions = () => {
   const options = useMemo(
@@ -33,8 +34,10 @@ function StripePayment() {
   const stripe = useStripe();
   const elements = useElements();
   const options = useOptions();
+  const router = useRouter();
 
   const registerSalon = async (paymentMethod?: string) => {
+    setIsLoading(true);
     let data: SalonRegisterParams = {
       user_id: "",
       salon_name: "",
@@ -64,9 +67,12 @@ function StripePayment() {
       .registerSalon(data)
       .then((res) => {
         showSnackbar("success", "Salon successfully created");
+        router.push('/confirm-payment');
       })
       .catch((err) => {
         showSnackbar("error", "Error Occured!");
+      }).finally(()=>{
+        setIsLoading(false);
       });
   };
   const handleSubmit = async (e: any) => {
@@ -111,8 +117,6 @@ function StripePayment() {
         >
           Pay
         </button>
-        {/* Show error message to your customers */}
-        {/* {errorMessage && <div>{errorMessage}</div>} */}
       </form>
     </div>
   );

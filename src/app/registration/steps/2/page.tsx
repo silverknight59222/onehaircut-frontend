@@ -13,6 +13,8 @@ import {
 
 const Step2 = () => {
   const [location, setLocation] = useState({lat: 48.8584, lng: 2.2945});
+  const [address, setAddress] = useState<string>();
+
   const { loadingView } = userLoader();
   const route = useRouter();
   const { isLoaded } = useJsApiLoader({
@@ -26,7 +28,7 @@ if (!isLoaded) {
 }
 
 const onClickNext = () => {
-  setLocalStorage('salon_address', location);
+  setLocalStorage('salon_address', address);
   route.push("/registration/steps/3");
 }
   return (
@@ -46,6 +48,7 @@ const onClickNext = () => {
               apiKey={"AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E"}
               style={{ width: "384px", borderRadius: '12px', marginTop:'28px', padding:'16px 24px', outline: 'none',  }}
               onPlaceSelected={(place) => {
+                setAddress(place?.formatted_address);
                 setLocation({lat: place.geometry?.location?.lat() ? place.geometry?.location?.lat() : 0, lng: place.geometry?.location?.lng() ? place.geometry?.location?.lng() : 0})
               }}
               defaultValue="Amsterdam"
