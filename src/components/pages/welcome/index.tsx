@@ -164,7 +164,7 @@ const Welcome = () => {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 mb-24">
           {haircuts().map((item, index) => {
-            return <div key={index} onClick={() => onClickHaircut(item.id, item.name)} className={`shadow-md rounded-xl my-2 cursor-pointer border hover:border-secondary ${item.id===haircut.id && 'border-secondary'}`}>
+            return <div key={index} onClick={() => onClickHaircut(item.id, item.name)} className={`shadow-md rounded-xl my-2 cursor-pointer border hover:border-secondary ${item.id===haircut?.id && 'border-secondary'}`}>
               <div className="relative w-max px-4 pt-4 bg-[#F5F5F5] rounded-t-xl">
                 <div className="relative w-48 h-48">
                   <Image src={item.image} fill={true} alt="" className="rounded-t-xl" />

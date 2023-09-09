@@ -165,11 +165,14 @@ const SalonChoice = () => {
                                 })}
                             </div>
                         </div>
+                        {salons.length ?
                         <div className='hidden lg:block w-[300pxw] lg:w-[400px] 2xl:w-[725px]'>
                             <GoogleMap center={location} zoom={10} mapContainerStyle={{ width: '100%', height: '100vh' }}>
                                 <Marker position={location} />
                             </GoogleMap>
                         </div>
+                    :''    
+                    }
                     </div>
                 </div>
             </div>
