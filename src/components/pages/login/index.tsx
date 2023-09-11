@@ -78,12 +78,12 @@ const Login = () => {
 		}
 		return isValidated;
 	}
-	const onLogin = () => {
+	const onLogin = async () => {
 		if (!validateLogin()) {
 			return;
 		}
 		setIsLoading(true);
-		Auth.login(userInfo)
+		await Auth.login(userInfo)
 			.then((resp) => {
 				const res = resp.data;
 				setLocalStorage("salon-auth-token", res.token);
