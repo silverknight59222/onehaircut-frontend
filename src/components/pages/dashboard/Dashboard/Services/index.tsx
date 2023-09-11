@@ -24,7 +24,7 @@ const Services = () => {
   const [showAddServiceModal, setShowAddServiceModal] = useState(false);
   const [showEditServiceModal, setShowEditServiceModal] = useState(false);
   const [editServiceInfo, setEditServiceInfo] = useState<SalonService>();
-  const dropdown = [
+  const sortDropdown = [
     {
       name: "Nom ( A à Z )",
     },
@@ -44,36 +44,93 @@ const Services = () => {
       name: "Durée ( Décroissante )",
     },
   ];
-  const getActiveFilters = (filters:string[]) => {
+   const typeDropdown = [
+    {
+      name: "Coloration",
+      // value: "coloration",
+    },
+    {
+      name: "Discount",
+      // value: "discount",
+    },
+    {
+      name: "Care",
+      // value: "care",
+    },
+    {
+      name: "Special treatment",
+      // value: "special_treatment",
+    },
+    {
+      name: "Men",
+      // value: "men",
+    },
+    {
+      name: "Styling",
+      // value: "styling",
+    },
+  ];
+  
+  const getActiveFilters = (filter:string) => {
     let list:SalonService[] = [];
-    let services = allServices;
-    if(filters.includes('Nom ( A à Z )')) {
+    if(filter === 'Nom ( A à Z )') {
       list = allServices?.sort((a, b) => (a.service.name.toLowerCase() > b.service.name.toLowerCase() ? 1 : -1))
     }
-    if(filters.includes('Nom ( Z à A )')) {
+    if(filter === 'Nom ( Z à A )') {
       list = allServices?.sort((a, b) => (a.service.name.toLowerCase() > b.service.name.toLowerCase() ? -1 : 1))
     }
 
-    if(filters.includes('Prix ( Croissant )')) {
+    if(filter === 'Prix ( Croissant )') {
       list = allServices?.sort((a, b) => (Number(a.price) > Number(b.price) ? 1 : -1))
     }
-    if(filters.includes('Prix ( Décroissant )')) {
+    if(filter === 'Prix ( Décroissant )') {
       list = allServices?.sort((a, b) => (Number(a.price) > Number(b.price) ? -1 : 1))
     }
 
-    if(filters.includes('Durée ( Croissante )')) {
+    if(filter === 'Durée ( Croissante )') {
       list = allServices?.sort((a, b) => (Number(a.price) > Number(b.price) ? 1 : -1))
     }
-    if(filters.includes('Durée ( Décroissante )')) {
+    if(filter === 'Durée ( Décroissante )') {
       list = allServices?.sort((a, b) => (Number(a.price) > Number(b.price) ? -1 : 1))
     }
-    if(filters.length) {
+    if(filter) {
       setFilteredServices(list);
     } else {
       setFilteredServices([]);
       fetchAllServices();
     }
   }
+
+  const getActiveTypeFilter = (filter:string) => {
+    let list:SalonService[] = [];
+    if(filter === 'Coloration') {
+      list = allServices?.filter(service=> service.service.type === 'coloration')
+    }
+    if(filter === 'Discount') {
+      list = allServices?.filter(service=> service.service.type === 'discount')
+    }
+
+    if(filter === 'Care') {
+      list = allServices?.filter(service=> service.service.type === 'care')
+    }
+    if(filter === 'Special Treatment') {
+      list = allServices?.filter(service=> service.service.type === 'special_treatment')
+    }
+
+    if(filter === 'Men') {
+      list = allServices?.filter(service=> service.service.type === 'men')
+    }
+    if(filter === 'Styling') {
+      list = allServices?.filter(service=> service.service.type === 'styling')
+    }
+    if(filter.length) {
+      setFilteredServices(list);
+    } else {
+      setFilteredServices([]);
+      fetchAllServices();
+    }
+  }
+
   const fetchAllServices = () => {
     const salon_id = Number(getLocalStorage("salon_id"));
     setIsLoading(true);
@@ -105,8 +162,9 @@ const Services = () => {
         <span className="font-bold text-gradient">prestations !</span>
       </p>
       <div className="flex w-full items-center justify-between ">
-        <div className="my-7">
-          <BaseMultiSelectbox dropdownItems={dropdown} getActiveFilters={getActiveFilters}/>
+        <div className="flex gap-4 my-7">
+          <BaseMultiSelectbox dropdownItems={sortDropdown} dropdownTitle='Trier par : Nom' getActiveFilters={getActiveFilters}/>
+          <BaseMultiSelectbox dropdownItems={typeDropdown} dropdownTitle='Trier par : Group' getActiveFilters={getActiveTypeFilter}/>
         </div>
         <div
           className="cursor-pointer h-10 flex items-center text-white px-4 py-1 gap-4 rounded-md bg-gradient-to-r from-pink-500 to-orange-500 shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"

@@ -7,23 +7,20 @@ interface dropdown {
 
 export type BaseDropdown = {
     dropdownItems: dropdown[];
-    getActiveFilters?:(value:string[])=>void;
+    dropdownTitle: string;
+    getActiveFilters?:(value:string)=>void;
 }
 
 const BaseMultiSelectbox = (props: BaseDropdown) => {
     const [isDropdown, setIsDropdown] = useState(false);
-    const [selectedItems,setSelectedItems]=useState<string[]>([])
+    const [selectedItems,setSelectedItems]=useState<string>('')
     const dropdownRef=React.useRef() as React.MutableRefObject<HTMLInputElement>
 
     const checkboxClickHandler = (value: string) => {
-        if (selectedItems.includes(value)) {
-            const tempArray = [...selectedItems];
-            const index = tempArray.indexOf(value);
-            tempArray.splice(index, 1);
-            setSelectedItems(() => tempArray);
+        if (selectedItems === value) {
+            setSelectedItems(() => '');
           } else {
-                setSelectedItems((prevState) => [...prevState, value]);
-            
+                setSelectedItems(value);
           }
       };
       const closeSelectBox = ({ target }: MouseEvent): void => {
@@ -46,7 +43,7 @@ const BaseMultiSelectbox = (props: BaseDropdown) => {
     return (
         <div ref={dropdownRef} className="relative w-52">
             <button onClick={()=>setIsDropdown(!isDropdown)} className={selectedItems.length ? "flex items-center justify-center gap-8 font-medium rounded-xl h-[52px] pl-3 pr-4 bg-gray-400 text-white shadow-[0px_15px_18px_0px_rgba(0, 0, 0, 0.14)]" : "flex items-center justify-center gap-8 bg-[#F7F7F7] font-medium rounded-xl h-[52px] pl-3 pr-4 shadow-[0px_15px_18px_0px_rgba(0, 0, 0, 0.14)]"}>
-                Trier par : Nom
+                {props.dropdownTitle}
                 <DownArrow color={selectedItems.length ? 'white' : '#000'}/>
             </button>
             {isDropdown && (
