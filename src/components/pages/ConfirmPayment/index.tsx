@@ -40,7 +40,7 @@ const Index = () => {
             <p className="text-3xl text-black font-medium text-center md:text-start mb-4 mt-14 lg:mt-28">
               Récapitulatif de votre reservation
             </p>
-            <div className="w-full 2xl:w-[940px] pt-10 pb-10 px-6 sm:px-14 bg-[#F8F8F8] rounded-[22px] border border-[#ECECEC]">
+            <div className="w-full md:w-[800px] xl:w-[930px] pt-10 pb-10 px-6 sm:px-14 bg-[#F8F8F8] rounded-[22px] border border-[#ECECEC]">
               <div className="flex flex-col-reverse md:flex-row items-center md:items-start justify-between gap-5 md:gap-0">
                 <div className="flex flex-col gap-3 sm:gap-1 text-xl font-medium text-black">
                   {items.map((item, index) => {

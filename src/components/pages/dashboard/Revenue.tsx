@@ -57,7 +57,7 @@ const Revenue = () => {
   return (
     <div>
       <DashboardLayout>
-        <div className="mt-16 sm:px-4 lg:px-10 text-[]">
+        <div>
           <div>
             <div className="flex items-center justify-between mb-4">
               <p className="text-2xl text-[#727272] font-semibold">
@@ -154,13 +154,13 @@ const Revenue = () => {
           <div className="w-full flex flex-col 2xl:flex-row items-start justify-center gap-10 mt-10">
             <div className="w-full">
               <div className="flex items-center justify-between gap-3 mb-4">
-                <p className="text-2xl text-[#727272] font-semibold">
+                <p className="text-xl sm:text-2xl text-[#727272] font-semibold">
                   Objectifs
                 </p>
                 <BaseDropdown
                   dropdownItems={["Ce mois"]}
                   width="w-36"
-                  height="h-11"
+                  height="h-10 sm:h-11"
                   rounded="rounded-[48px]"
                   borderClr="border-[rgba(254,49,100,0.56)]"
                   backgroundClr="bg-gradient-to-b from-[rgba(254,49,100,0.08)] via-transparent to-[rgba(254,49,100,0.00)]"
@@ -197,20 +197,20 @@ const Revenue = () => {
               </div>
             </div>
             <div className="w-full">
-              <div className="flex items-center justify-between gap-3 mb-4">
-                <p className="text-2xl text-[#727272] font-semibold">
+              <div className="flex items-center justify-between gap-5 mb-4">
+                <p className="text-xl sm:text-2xl text-[#727272] font-semibold">
                   Occupation du personnel
                 </p>
                 <BaseDropdown
                   dropdownItems={["Ce mois"]}
                   width="w-36"
-                  height="h-11"
+                  height="h-10 sm:h-11"
                   rounded="rounded-[48px]"
                   borderClr="border-[rgba(254,49,100,0.56)]"
                   backgroundClr="bg-gradient-to-b from-[rgba(254,49,100,0.08)] via-transparent to-[rgba(254,49,100,0.00)]"
                 />
               </div>
-              <div className="flex flex-col sm:flex-row items-center justify-center 2xl:h-[425px] gap-10 sm:gap-20 md:gap-36 2xl:gap-24 pt-7 pb-4 px-6 bg-white rounded-lg shadow-[0px_4px_33px_0px_rgba(176,176,176,0.25)]">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-10 sm:gap-20 md:gap-36 2xl:gap-24 pt-7 pb-4 px-6 bg-white rounded-lg shadow-[0px_4px_33px_0px_rgba(176,176,176,0.25)]">
                 <div className="w-80">
                 <PieChart
                   data={items}

@@ -19,7 +19,7 @@ const [isSidebar, setIsSidebar] = useState(true);
         { icon: "RevenueIcon", title: "Revenue", route:"/dashboard/revenue" },
         { icon: "MessageIcon", title: "Message", route:"/dashboard/messages" },
         { icon: "SettingsIcon", title: "Réglages", route:"/dashboard/settings" },
-        { icon: "Abonnement", title: "Personalisation", route:"/dashboard/subscription" },
+        { icon: "PersonalizationIcon", title: "Abonnement", route:"/dashboard/subscription" },
         { icon: "BoostIcon", title: "Boost", route:"" },
         { icon: "BotIcon", title: "OnehairBot", route:"/dashboard/bot" },
       ];

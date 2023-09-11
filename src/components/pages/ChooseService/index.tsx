@@ -190,7 +190,7 @@ const ServiceChoose = () => {
                     <button className='flex items-center justify-center text-lg text-white bg-background-gradient font-medium w-full md:w-80 h-14 rounded-xl px-4'>Rechercher un professionnel</button>
                 </div> */}
                 <div className='flex flex-col items-center'>
-                <div className='w-full flex flex-col md:flex-row items-center justify-between mt-12'>
+                <div className='w-full flex flex-col md:flex-row items-center justify-between mt-14'>
                     <div className='flex flex-col sm:flex-row items-center gap-5 mb-5 md:mb-0'>
                         <p className='text-[#A0A0A0] text-lg font-medium bg-[#F7F7F7] rounded-lg px-7 py-3'>{haircut.name}</p>
                         {selectedService.length ? <p className='text-xl text-[#A0A0A0]'><span className='font-semibold'>Number of Services:</span> {selectedService.length}</p> : <p></p>}

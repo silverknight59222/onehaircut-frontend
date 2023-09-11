@@ -58,7 +58,7 @@ const Dashboard = () => {
   ];
   
   return (
-        <div>
+    <div className="px-4 lg:px-6">
       <div>
         <p className="text-primary text-2xl font-semibold mb-3">
           Analytical Overview
@@ -69,7 +69,7 @@ const Dashboard = () => {
               <div key={index} className="flex flex-col">
                 <div className="flex p-8 bg-[rgba(255,255,255,0.69)] rounded-[20px] shadow-[0px_26px_31px_0px_rgba(176, 176, 176, 0.10)]">
                   <div className={`flex items-center justify-center w-14 h-14 rounded-full ${item.gradient}`}>
-                  {item.icon}
+                    {item.icon}
                   </div>
                   <div className="ml-8 flex flex-col justify-center">
                     <p className="text-black text-3xl font-semibold">
@@ -112,8 +112,8 @@ const Dashboard = () => {
                 </tr>
               </thead>
               <tbody>
-                {activity.map((item,index)=>{
-                    return <tr key={index} className="text-black font-semibold border-b-2 border-[#F4F4F6] pb-2">
+                {activity.map((item, index) => {
+                  return <tr key={index} className="text-black font-semibold border-b-2 border-[#F4F4F6] pb-2">
                     <th scope="row" className="pr-6 py-4 flex items-center gap-4">
                       <img
                         src="/assets/user_img.png"
@@ -143,23 +143,23 @@ const Dashboard = () => {
               2
             </div>
           </div>
-          {messages.map((item,index)=>{
+          {messages.map((item, index) => {
             return <div key={index} className="flex items-center gap-7 border-t-2 border-[#F4F4F6] pt-2 pb-3 mt-4">
-            <img
-              src="/assets/user_img.png"
-              alt=""
-              width={60}
-              height={60}
-              className="rounded-full"
-            />
-            <div className="-mb-5">
-              <div className="flex items-center gap-1.5">
-                <p className="text-black font-semibold">{item.name} </p>
-                <p className="text-grey text-xs">{item.time} </p>
+              <img
+                src="/assets/user_img.png"
+                alt=""
+                width={60}
+                height={60}
+                className="rounded-full"
+              />
+              <div className="-mb-5">
+                <div className="flex items-center gap-1.5">
+                  <p className="text-black font-semibold">{item.name} </p>
+                  <p className="text-grey text-xs">{item.time} </p>
+                </div>
+                <p className="text-black font-semibold">{item.text}</p>
               </div>
-              <p className="text-black font-semibold">{item.text}</p>
             </div>
-          </div>
           })}
         </div>
       </div>

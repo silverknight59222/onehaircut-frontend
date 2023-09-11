@@ -16,7 +16,7 @@ const Visites = () => {
   return (
     <div>
       <DashboardLayout>
-        <div className="flex items-center justify-center mt-16 sm:px-4 lg:px-11">
+        <div className="flex items-center justify-center">
           <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6">
             <div className="w-full  sm:h-[332px] py-5 px-4 sm:px-6 bg-white rounded-lg shadow-[0px_4px_33px_0px_rgba(176,176,176,0.25)]">
               <div className="flex items-center justify-between">
@@ -29,7 +29,7 @@ const Visites = () => {
               <p className="text-xl font-medium text-center text-[#656565] mt-8">
                 Conversion: <span className="text-[#F44336]">31%</span>
               </p>
-              <div className="flex items-center justify-center gap-5 mt-5">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-5 mt-5">
                 <ProgressBar
                   value={65}
                   name="Client"
@@ -89,7 +89,7 @@ const Visites = () => {
               <p className="text-xl font-medium text-center text-[#656565] mt-8">
                 Conversion: <span className="text-[#F44336]">9%</span>
               </p>
-              <div className="flex items-center justify-center gap-5 mt-5">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-5 mt-5">
                 <ProgressBar
                   value={65}
                   name="total clients"

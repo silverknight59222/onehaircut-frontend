@@ -23,7 +23,7 @@ const Messages = () => {
         <CircleRight />
       </div>
       <DashboardLayout>
-        <div className="flex flex-col sm:flex-row items-start justify-center gap-10 2xl:gap-20 mt-16 px-4 lg:px-11">
+        <div className="flex flex-col sm:flex-row items-start justify-center gap-10 2xl:gap-20">
           <div className="w-full sm:w-4/12 xl:w-4/12 h-[360px] sm:h-[680px] overflow-auto rounded-3xl bg-white py-4 px-8 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)]">
             {messages.map((message, index) => {
               return (
@@ -46,7 +46,7 @@ const Messages = () => {
               );
             })}
           </div>
-          <div className="relative z-10 w-full sm:w-8/12 xl:w-7/12 rounded-3xl bg-white py-4 px-8 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)]">
+          <div className="relative z-10 w-full sm:w-8/12 xl:w-8/12 rounded-3xl bg-white py-4 px-8 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)]">
             <div className="overflow-auto h-[350px] sm:h-[490px]">
               <div className="mt-6">
                 <p className="text-black">

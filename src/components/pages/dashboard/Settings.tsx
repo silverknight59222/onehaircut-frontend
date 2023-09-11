@@ -54,7 +54,7 @@ const Settings = () => {
         <CircleRight />
       </div>
       <DashboardLayout>
-        <div className="flex flex-col lg:flex-row items-start justify-center gap-6 2xl:gap-12 mt-16 px-4 2xl:px-11">
+        <div className="flex flex-col lg:flex-row items-start justify-center gap-6 2xl:gap-12">
           <div className="w-80 2xl:w-72 flex flex-col items-center justify-center text-center px-9 py-10 gap-8 rounded-2xl bg-white text-xl font-medium text-[#ABABAB] shadow-[3px_3px_10px_-1px_rgba(0,0,0,0.30)]">
             <p className="text-black">Horaires d’ouverture</p>
             <p>Disponibilité de l’équipe</p>
