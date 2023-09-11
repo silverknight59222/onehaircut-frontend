@@ -95,12 +95,44 @@ const BookSalon = () => {
                 );
               })}
             </div>
-            <button className="w-80 h-16 text-xl text-white font-semibold mt-4 bg-background-gradient rounded-[22px]">
+            <button className="w-80 h-16 text-xl text-white font-semibold mt-4 bg-background-gradient rounded-2xl">
               Revenir au choix de coiffure
             </button>
           </div>
         </div>
-        <div className="w-full md:w-[750px] lg:w-[1000px] xl:w-[1250px] border-2 border-[#D0D0D0] py-10 rounded-[54px] mt-20 md:mt-28">
+        <div className="flex flex-col items-center justify-center mt-20">
+          <p className="text-4xl text-black font-semibold text-center">
+            Choisissez de votre coiffeur
+          </p>
+          <p className="text-4xl text-black font-semibold text-center">
+            (optionnel)
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-4 2xl:gap-12 mt-10">
+            {hairdressers.map((hairdresser, index) => {
+              return (
+                <div
+                  key={index}
+                  onClick={() => setSelectedHairdresser(index)}
+                  className={`flex items-center justify-center w-[311px] h-[376px] border rounded-2xl cursor-pointer hover:border-secondary ${
+                    selectedHairdresser === index
+                      ? "border-secondary"
+                      : "border-white"
+                  }`}
+                >
+                  <div className="relative">
+                    <div className="relative w-[263px] h-[334px] rounded-2xl">
+                      <Image src={hairdresser.img} alt="" fill={true} />
+                    </div>
+                    <p className="absolute top-5 right-3 w-14 h-8 flex items-center justify-center rounded-[26px] text-lg text-white font-semibold bg-[rgba(0,0,0,0.24)]">
+                      {hairdresser.rating}
+                    </p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        <div className="w-full md:w-[750px] lg:w-[1000px] xl:w-[1250px] border-2 border-[#D0D0D0] py-10 rounded-[54px] mt-20">
           <div className="flex flex-col sm:flex-row items-center justify-between px-4 sm:px-10">
             <div className="relative">
               <div className="cursor-pointer" onClick={() => setShowCalender(!showCalender)}>
@@ -144,45 +176,13 @@ const BookSalon = () => {
             </div>
           </div>
         </div>
-        <div className="flex flex-col items-center justify-center mt-16">
-          <p className="text-4xl text-black font-semibold text-center">
-            Choisissez de votre coiffeur
-          </p>
-          <p className="text-4xl text-black font-semibold text-center">
-            (optionnel)
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-4 2xl:gap-12 mt-8">
-            {hairdressers.map((hairdresser, index) => {
-              return (
-                <div
-                  key={index}
-                  onClick={() => setSelectedHairdresser(index)}
-                  className={`flex items-center justify-center w-[311px] h-[376px] border rounded-2xl cursor-pointer hover:border-secondary ${
-                    selectedHairdresser === index
-                      ? "border-secondary"
-                      : "border-white"
-                  }`}
-                >
-                  <div className="relative">
-                    <div className="relative w-[263px] h-[334px] rounded-2xl">
-                      <Image src={hairdresser.img} alt="" fill={true} />
-                    </div>
-                    <p className="absolute top-5 right-3 w-14 h-8 flex items-center justify-center rounded-[26px] text-lg text-white font-semibold bg-[rgba(0,0,0,0.24)]">
-                      {hairdresser.rating}
-                    </p>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-        <div className="w-full lg:w-[940px] h-64 flex flex-col items-center justify-center border border-[#DFDFDF] bg-[#F8F8F8] text-xl sm:text-2xl rounded-[22px] mt-10 lg:mt-20 text-black text-center px-2 shadow-[0px_1px_46px_0px_rgba(121,121,121,0.06) inset]">
+        <div className="w-full lg:w-[940px] h-64 flex flex-col items-center justify-center border border-[#DFDFDF] bg-[#F8F8F8] text-xl sm:text-2xl rounded-[22px] mt-10 lg:mt-14 text-black text-center px-2 shadow-[0px_1px_46px_0px_rgba(121,121,121,0.06) inset]">
           <p className="font-bold mb-2">Récapitulatif de la prestation</p>
             <p className="font-medium">Vous avez choisi: <span className="font-normal">Lundi 15 à 17h, à domicile</span></p>
             <p className="font-medium my-2">par: <span className="font-normal">Nom du coiffeur</span></p>
             <p className="font-medium">Temps d’éxécution : <span className="font-normal">2 heures</span></p>
         </div>
-        <button onClick={()=>route.push('/payment')} className="w-72 h-14 rounded-xl text-xl font-semibold text-white bg-background-gradient mt-10 lg:mt-16">Réservez ce créneau</button>
+        <button onClick={()=>route.push('/payment')} className="w-72 h-14 rounded-xl text-xl font-semibold text-white bg-background-gradient mt-10">Réservez ce créneau</button>
       </div>
     </div>
   );

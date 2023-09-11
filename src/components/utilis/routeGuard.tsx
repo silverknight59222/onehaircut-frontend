@@ -6,11 +6,11 @@ const isBrowser = () => typeof window !== "undefined";
 export const RouteGuard = ({ children }:any) => {
     const router = useRouter();
     const pathname = usePathname()
-    const isAuthenticated = getLocalStorage('AuthToken');
+    const isSalonAuthenticated = getLocalStorage('salon-auth-token');
     let unprotectedRoutes = ['/','/signup' ,'/services', '/salons'];
 
     let pathIsProtected = unprotectedRoutes.indexOf(pathname) === -1;
-  if (isBrowser() && !isAuthenticated && pathIsProtected) {
+  if (isBrowser() && !isSalonAuthenticated && pathIsProtected) {
     router.push('/login');
   }
     return children;

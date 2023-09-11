@@ -2,12 +2,12 @@
 import Navbar from '@/components/shared/Navbar'
 import React, { useEffect, useState } from 'react'
 import '../dashboard/Dashboard/Services/index.css'
-import { CheckedIcon, RegistrationCheckedIcon, SmallLogo } from '@/components/utilis/Icons';
+import { BackArrow, CheckedIcon, RegistrationCheckedIcon, SmallLogo } from '@/components/utilis/Icons';
 import { useRouter } from 'next/navigation';
 import { dashboard } from '@/api/dashboard';
 import userLoader from "@/hooks/useLoader";
 import { Services } from '@/types';
-import { setLocalStorage } from '@/api/storage';
+import { getLocalStorage, setLocalStorage } from '@/api/storage';
 import BaseModal from '@/components/UI/BaseModal';
 
 interface Requirements{
@@ -47,6 +47,7 @@ const ServiceChoose = () => {
     const { loadingView } = userLoader();
     const router = useRouter()
     const dropdownRef = React.useRef() as React.MutableRefObject<HTMLInputElement>
+    const haircut=JSON.parse(String(getLocalStorage("Haircut")))
 
     const getAllServices = () => {
         setIsLoading(true);
@@ -177,18 +178,25 @@ const ServiceChoose = () => {
     return (
         <div>
             <Navbar isServicesPage={true} onTypeSelect={(type)=>setFilteredType(type)} onServiceSearch={(value: string)=>setSearch(value)} />
+            <div className='flex items-center cursor-pointer mt-10 mb-8 sm:mx-10 2xl:mx-14' onClick={() => router.push('/')}>
+                <BackArrow />
+                <p className='text-xl text-[#A0A0A0]'>Haircuts</p>
+            </div>
             <div className='flex flex-col items-center justify-center px-4 sm:px-12'>
-                {/* {isLoading && loadingView()} */}
-                <p className='text-4xl font-medium text-black text-center mt-14'> Choisissez une ou plusieurs <span className='font-bold text-gradient'>prestations !</span></p>
+                {isLoading && loadingView()}
+                <p className='text-4xl font-medium text-black text-center'> Choisissez une ou plusieurs <span className='font-bold text-gradient'>prestations !</span></p>
                 {/* <div className='flex flex-col md:flex-row items-center justify-center gap-8  mt-6'>
                     <button className='flex items-center justify-center text-lg text-black font-medium w-full md:w-64 h-14 border border-black rounded-xl'>Retour au coiffure</button>
                     <button className='flex items-center justify-center text-lg text-white bg-background-gradient font-medium w-full md:w-80 h-14 rounded-xl px-4'>Rechercher un professionnel</button>
                 </div> */}
-                <div className='w-full flex items-center justify-between mt-12'>
-                    {selectedService.length ? <p className='text-xl text-[#A9A8A8]'><span className='font-semibold'>Number of Services:</span> {selectedService.length}</p> : <p></p>}
+                <div className='flex flex-col items-center'>
+                <div className='w-full flex flex-col md:flex-row items-center justify-between mt-14'>
+                    <div className='flex flex-col sm:flex-row items-center gap-5 mb-5 md:mb-0'>
+                        <p className='text-[#A0A0A0] text-lg font-medium bg-[#F7F7F7] rounded-lg px-7 py-3'>{haircut.name}</p>
+                        {selectedService.length ? <p className='text-xl text-[#A0A0A0]'><span className='font-semibold'>Number of Services:</span> {selectedService.length}</p> : <p></p>}
+                    </div>
                     <button onClick={onContinue} className={`flex items-center justify-center text-lg text-white font-medium w-full md:w-52 h-14 rounded-xl px-4 bg-background-gradient`}>Continue</button>
                 </div>
-                <div className='flex items-center'>
                     <div className='mt-8 mb-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-x-9 gap-y-5'>
                         {showServices().map((service, index) => {
                             return <div key={index} onClick={() => onServiceclick(service.name, service.id, service.requirements)} className={`relative 2xl:w-[250px] h-40 border rounded-[20px] py-6 px-5 cursor-pointer ${selectedService.includes(String(service.id)) ? 'bg-gradient-to-r from-pink-500 to-orange-500' : 'bg-white border-[#408D1C] '}`}>

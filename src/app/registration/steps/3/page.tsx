@@ -137,7 +137,7 @@ const Step3 = () => {
     }
     setIsLoading(true);
     await registration.createIntent(userDetails).then(res=>{
-      let data:any ={};
+      let data:any = userDetails;
       data.id = res.data.user.id;
       setLocalStorage('user_Info', JSON.stringify(data));
       if(res.data.intent.client_secret) {

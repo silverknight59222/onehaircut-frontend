@@ -2,7 +2,7 @@
 import Navbar from '@/components/shared/Navbar'
 import React, { useEffect, useState } from 'react'
 import '../dashboard/Dashboard/Services/index.css'
-import { Like, RegistrationCheckedIcon } from '@/components/utilis/Icons';
+import { Like } from '@/components/utilis/Icons';
 import Image from 'next/image';
 import StarRatings from 'react-star-ratings';
 import { useRouter } from 'next/navigation';
@@ -11,6 +11,7 @@ import { getLocalStorage } from '@/api/storage';
 import { SalonDetails } from '@/types';
 import userLoader from "@/hooks/useLoader";
 import useSnackbar from '@/hooks/useSnackbar';
+import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 
 const SalonChoice = () => {
     const [selectedTab, setSelectedTab] = useState(0)
@@ -20,16 +21,21 @@ const SalonChoice = () => {
     const [salons,setSalons]=useState<SalonDetails[]>([])
     const router = useRouter()
     const userId=Number(getLocalStorage("User"))
-    const haircutId=Number(getLocalStorage("HaircutId"))
+    const haircut=JSON.parse(String(getLocalStorage("Haircut")))
     const [isLoading, setIsLoading] = useState(false);
     const { loadingView } = userLoader();
     const showSnackbar = useSnackbar();
+    const [location, setLocation] = useState({lat: 48.8584, lng: 2.2945});
+      const { isLoaded } = useJsApiLoader({
+        googleMapsApiKey: 'AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E',
+        libraries: ['places'],
+      })
 
     const getAllSalons=()=>{
         const services=getLocalStorage('ServiceIds')
         setIsLoading(true);
         const data={
-            haircut_id: haircutId,
+            haircut_id: haircut.id,
             servicesIDs: services && JSON.parse(services)
         } 
         dashboard.getSalonsByHaircut(data)
@@ -98,10 +104,14 @@ const SalonChoice = () => {
       useEffect(()=>{
         getAllSalons()
       },[])
+    
+    if (!isLoaded) {
+        return loadingView()
+    }
     return (
-        <div>
+        <div className='w-full'>
             <Navbar isSalonPage={true}/>
-            <div className='flex flex-col items-center justify-center px-6'>
+            <div className='w-full flex flex-col items-center justify-center px-6'>
             {isLoading && loadingView()}
                 <p className='text-4xl font-medium text-black text-center mt-14'>87 <span className='font-bold text-gradient'>Salons</span> correspondent à vos critères</p>
                 {/* <div className='flex flex-col md:flex-row items-center justify-center gap-8  mt-6'>
@@ -117,14 +127,14 @@ const SalonChoice = () => {
                 <div className='w-full flex items-end justify-end mt-12'>
                     <button disabled={!selectedSalon} onClick={()=>router.push(`salon/${selectedSalon}/profile`)} className={`flex items-center justify-center text-lg text-white font-medium w-full md:w-52 h-14 rounded-xl px-4 ${selectedSalon ? 'bg-background-gradient' : 'bg-[#D9D9D9]'}`}>Continue</button>
                 </div>
-                <div className='mt-14 mb-5'>
-                    <div className='w-full flex flex-col lg:flex-row items-center justify-center gap-6'>
+                <div className='w-full mt-14 mb-5'>
+                    <div className='w-full flex flex-col lg:flex-row items-start justify-center gap-6'>
                         <div className='md:h-[1100px] md:overflow-y-auto'>
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                                 {salons.map((salon, index) => {
                                     return <div key={index} onClick={()=>setSelectedSalon(salon.id)} className={`bg-[rgba(242,242,242,0.66)] rounded-2xl pb-3 border hover:border-secondary cursor-pointer ${selectedSalon===salon.id && 'border-secondary'}`}>
                                         <div className="px-4 pt-4 relative">
-                                        <div onClick={(e) => onWishlist(e, 3)} className="absolute right-6 top-6 cursor-pointer">
+                                        <div onClick={(e) => onWishlist(e, 3)} className="absolute right-6 top-6 z-20 cursor-pointer">
                                             <Like color={selectedWhishlist === index ? "#FF0000" : ""}  />
                                         </div>
                                         <div className='relative w-48 h-48'>
@@ -155,9 +165,14 @@ const SalonChoice = () => {
                                 })}
                             </div>
                         </div>
+                        {salons.length ?
                         <div className='hidden lg:block w-[300pxw] lg:w-[400px] 2xl:w-[725px]'>
-                            {/* map */}
+                            <GoogleMap center={location} zoom={10} mapContainerStyle={{ width: '100%', height: '100vh' }}>
+                                <Marker position={location} />
+                            </GoogleMap>
                         </div>
+                    :''    
+                    }
                     </div>
                 </div>
             </div>

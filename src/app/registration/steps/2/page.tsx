@@ -2,22 +2,33 @@
 import { AddIcon, LogoIcon, MinusIcon } from "@/components/utilis/Icons";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import GoogleMapReact from "google-map-react";
 import Autocomplete, { usePlacesWidget } from "react-google-autocomplete";
 import { setLocalStorage } from "@/api/storage";
+import userLoader from "@/hooks/useLoader";
+import {
+  useJsApiLoader,
+  GoogleMap,
+  Marker,
+} from '@react-google-maps/api'
 
 const Step2 = () => {
+  const [location, setLocation] = useState({lat: 48.8584, lng: 2.2945});
+  const [address, setAddress] = useState<string>();
+
+  const { loadingView } = userLoader();
   const route = useRouter();
-  const [location, setLocation] = useState('');
-  const mapCenter = { lat: 37.7749, lng: -122.4194 };
-  const mapZoom = 10;
-  const { ref } = usePlacesWidget({
-  apiKey: 'AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E',
-  onPlaceSelected: (place) => console.log(place)
-})
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: 'AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E',
+    libraries: ['places'],
+  })
+
+if (!isLoaded) {
+   loadingView()
+   return
+}
 
 const onClickNext = () => {
-  setLocalStorage('salon_address', location);
+  setLocalStorage('salon_address', address);
   route.push("/registration/steps/3");
 }
   return (
@@ -32,21 +43,16 @@ const onClickNext = () => {
         </p>
         <div className="w-[600px] md:w-[800px] xl:w-[1050px] flex flex-col items-center justify-center mt-5 sm:mt-7">
           <div className="w-full flex flex-col md:flex-row items-center justify-between">
-            <input
-              placeholder="Adresse"
-              value={location}
-              onChange={(e)=>setLocation(e.target.value)}
-              className="rounded-xl w-96 sm:w-[500px] mt-7 py-4 px-6 bg-[#F7F7F7] outline-none shadow-[0px_4px_4px_0px_rgba(154,154,154,0.00)]"
-            />
-            {/* <Autocomplete
+            <Autocomplete
               className="border"
               apiKey={"AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E"}
               style={{ width: "384px", borderRadius: '12px', marginTop:'28px', padding:'16px 24px', outline: 'none',  }}
               onPlaceSelected={(place) => {
-                setLocation(place);
+                setAddress(place?.formatted_address);
+                setLocation({lat: place.geometry?.location?.lat() ? place.geometry?.location?.lat() : 0, lng: place.geometry?.location?.lng() ? place.geometry?.location?.lng() : 0})
               }}
               defaultValue="Amsterdam"
-            />  */}
+            /> 
             <div className="mt-5 md:mt-0">
               <p className="text-black mb-1">Zone de mobilité</p>
               <div className="flex items-center justify-center gap-7">
@@ -65,10 +71,9 @@ const onClickNext = () => {
             </div>
           </div>
           <div className="w-full h-96 my-12">
-            <GoogleMapReact
-              defaultCenter={mapCenter}
-              defaultZoom={mapZoom}
-            ></GoogleMapReact>
+            <GoogleMap center={location} zoom={10} mapContainerStyle={{ width: '100%', height: '100%' }}>
+              <Marker position={location}/>
+            </GoogleMap>
           </div>
           <div className="w-full flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-7 mb-5">
             <button

@@ -57,21 +57,10 @@ const ClientActivity = () => {
       discount: null,
     },
   ];
-  const Status=(status: string)=>{
-    if(status === 'Effectuée'){
-      return '#7ABF50'
-    }
-    else if(status === 'Demande de remboursement'){
-      return '#FEA463'
-    }
-    else if(status === 'Remboursé(e)'){
-      return '#ED4847'
-    }
-  }
   return (
     <div>
       <DashboardLayout>
-        <div className="mt-16 px-4 lg:px-11">
+        <div>
           <p className="text-primary text-2xl font-semibold">Client Activity</p>
           <div className="relative overflow-auto h-[calc(100vh-100px)] w-full px-6 pt-4 bg-[rgba(255,255,255,0.69)] rounded-[20px] mt-5 shadow-[0px_26px_31px_0px_rgba(176, 176, 176, 0.10)]">
             <table className="w-full text-sm">

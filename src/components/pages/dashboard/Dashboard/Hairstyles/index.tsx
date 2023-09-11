@@ -481,19 +481,6 @@ const Hairstyles = () => {
         showSnackbar("error", "Failed to update haircut");
       });
   };
-
-  const onDeleteHaircut = async () => {
-    await dashboard
-      .deleteSalonHaircut(selectedSalonHaircut.id)
-      .then((res) => {
-        setForm(defaultFormDetails);
-        showSnackbar("success", "Haircut deleted successfully");
-        getHaircuts();
-      })
-      .catch((err) => {
-        showSnackbar("error", "Failed to deleted haircut");
-      });
-  };
   const getSelectedImage = () => {
     let url = "";
     if (
@@ -712,9 +699,12 @@ const Hairstyles = () => {
       </div>
       <div className="flex flex-col md:flex-row gap-8">
         <div className="bg-lightGrey rounded-3xl p-4 md:sticky md:top-0 h-max">
+          <div className="flex items-center justify-center gap-2">
           <h2 className="text-lg font-semibold text-center">
             Configurations des coiffures
           </h2>
+          {(selectedHaircutsMapping.length > 0 && activeMenu === 'new') && <div className="text-sm py-1 px-[10px] rounded-full bg-black text-white">{selectedHaircutsMapping.length}</div>}
+          </div>
           <div className="flex items-center justify-center">
             {getSelectedImage() ? (
               <div className="relative w-36 h-36">
@@ -905,7 +895,7 @@ const Hairstyles = () => {
                 </div>
               </div>
               <div className="flex items-center gap-x-4 mt-2">
-                <p className="text-sm min-w-[50px]">Long</p>
+                <p className="text-sm min-w-[50px]">Epais</p>
                 <div>
                   <input
                     type="number"
@@ -942,9 +932,9 @@ const Hairstyles = () => {
                 </button>
               </div>
             ) : (
-              <div className="flex items-center justify-center gap-4 mt-4">
+              <div className="flex items-center justify-center gap-4 mt-4 w-full">
                 <button
-                  className="text-white font-medium text-sm rounded-md px-4 py-2 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+                  className="w-full text-white font-medium text-sm rounded-md px-4 py-2 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
                   onClick={() => {
                     setForm(defaultFormDetails);
                     setSelectedSalonHaircut(defaultHaircut);
@@ -954,15 +944,9 @@ const Hairstyles = () => {
                 </button>
                 <button
                   onClick={updateSalonHaircuts}
-                  className="text-white font-medium text-sm rounded-md px-4 py-2 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+                  className="w-full text-white font-medium text-sm rounded-md px-4 py-2 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
                 >
                   Update
-                </button>
-                <button
-                  onClick={onDeleteHaircut}
-                  className="text-white font-medium text-sm rounded-md px-4 py-2 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
-                >
-                  Delete
                 </button>
               </div>
             )}
@@ -974,9 +958,10 @@ const Hairstyles = () => {
           </div>
         </div>
         {activeMenu === "new" ? (
-          <div className="flex-1 flex flex-wrap h-max gap-8 overflow-scroll">
+          <div className=" relative flex-1 flex flex-wrap h-max gap-8">
             {haircuts().map((item, index) => {
               return (
+                <>
                 <div
                   key={index}
                   className="shadow-md rounded-xl my-2 cursor-pointer"
@@ -984,7 +969,7 @@ const Hairstyles = () => {
                 >
                   <div className="relative w-max px-4 pt-4 bg-[#F5F5F5] rounded-t-xl">
                     <div className="relative w-32 h-32">
-                      <Image src={item.image} fill={true} alt="" />
+                    <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public/${item.image}`} fill={true} alt="" />
                     </div>
                     <div className="absolute top-5 right-5 w-6 h-6 rounded-full bg-[#D9D9D9]">
                       {selectedHaircutsMapping.filter(
@@ -998,6 +983,7 @@ const Hairstyles = () => {
                     </p>
                   </div>
                 </div>
+                </>
               );
             })}
           </div>
@@ -1012,7 +998,7 @@ const Hairstyles = () => {
                 >
                   <div className="relative w-max px-4 pt-4 bg-[#F5F5F5] rounded-t-xl">
                     <div className="relative w-32 h-32">
-                      <Image src={item.image} fill={true} alt="" />
+                      <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public/${item.image}`} fill={true} alt="" />
                     </div>
                     <div className="absolute top-5 right-5 w-6 h-6 rounded-full bg-[#D9D9D9]">
                       {selectedSalonHaircut?.id === item.id && <SelectedIcon />}

@@ -15,7 +15,8 @@ const Welcome = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router=useRouter()
-  const userId=Number(getLocalStorage("User"))
+  const userId: number=Number(getLocalStorage("User"))
+  const haircut=JSON.parse(String(getLocalStorage("Haircut")))
   const [ethnicityFilters, setEthnicityFilters] = useState<string[]>([]);
   const [genderFilters, setGenderFilters] = useState<string>("");
   const [filteredHaircuts, setFilteredHaircuts] = useState<Haircut[]>([]);
@@ -129,9 +130,8 @@ const Welcome = () => {
       return salonHaircut;
     }
   };
-
-  const onClickHaircut=(id: number)=>{
-    setLocalStorage("HaircutId", id)
+  const onClickHaircut=(id: number, name: string)=>{
+    setLocalStorage("Haircut", JSON.stringify({id: id, name: name}))
     router.push(`/services`)
   }
 
@@ -164,7 +164,7 @@ const Welcome = () => {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 mb-24">
           {haircuts().map((item, index) => {
-            return <div key={index} onClick={() => onClickHaircut(item.id)} className="shadow-md rounded-xl my-2 cursor-pointer border hover:border-secondary">
+            return <div key={index} onClick={() => onClickHaircut(item.id, item.name)} className={`shadow-md rounded-xl my-2 cursor-pointer border hover:border-secondary ${item.id===haircut?.id && 'border-secondary'}`}>
               <div className="relative w-max px-4 pt-4 bg-[#F5F5F5] rounded-t-xl">
                 <div className="relative w-48 h-48">
                   <Image src={item.image} fill={true} alt="" className="rounded-t-xl" />
