@@ -176,13 +176,13 @@ const BookSalon = () => {
             </div>
           </div>
         </div>
-        <div className="w-full lg:w-[940px] h-64 flex flex-col items-center justify-center border border-[#DFDFDF] bg-[#F8F8F8] text-xl sm:text-2xl rounded-[22px] mt-10 lg:mt-20 text-black text-center px-2 shadow-[0px_1px_46px_0px_rgba(121,121,121,0.06) inset]">
+        <div className="w-full lg:w-[940px] h-64 flex flex-col items-center justify-center border border-[#DFDFDF] bg-[#F8F8F8] text-xl sm:text-2xl rounded-[22px] mt-10 lg:mt-14 text-black text-center px-2 shadow-[0px_1px_46px_0px_rgba(121,121,121,0.06) inset]">
           <p className="font-bold mb-2">Récapitulatif de la prestation</p>
             <p className="font-medium">Vous avez choisi: <span className="font-normal">Lundi 15 à 17h, à domicile</span></p>
             <p className="font-medium my-2">par: <span className="font-normal">Nom du coiffeur</span></p>
             <p className="font-medium">Temps d’éxécution : <span className="font-normal">2 heures</span></p>
         </div>
-        <button onClick={()=>route.push('/payment')} className="w-72 h-14 rounded-xl text-xl font-semibold text-white bg-background-gradient mt-10 lg:mt-16">Réservez ce créneau</button>
+        <button onClick={()=>route.push('/payment')} className="w-72 h-14 rounded-xl text-xl font-semibold text-white bg-background-gradient mt-10">Réservez ce créneau</button>
       </div>
     </div>
   );

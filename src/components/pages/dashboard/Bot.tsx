@@ -34,7 +34,7 @@ const Bot = () => {
         <CircleRight />
       </div>
       <DashboardLayout>
-        <div className="flex flex-col md:flex-row items-start justify-center gap-6 xl:gap-14 2xl:gap-28 mt-16 px-4 lg:px-11">
+        <div className="flex flex-col md:flex-row items-start justify-center gap-6 xl:gap-14 2xl:gap-28">
           <div>
             <p className="text-xl text-[#434343] font-bold text-center mb-2">
               OPTIMISATION
@@ -63,7 +63,7 @@ const Bot = () => {
               return (
                 <div
                   key={index}
-                  className="relative z-20 w-full md:w-[450px] xl:w-[670px] 2xl:w-[850px] py-6 flex flex-col xl:flex-row items-start xl:items-end justify-between rounded-xl bg-white mb-7 px-8 shadow-[3px_3px_10px_-1px-rgba(0,0,0,0.30)]"
+                  className="relative z-10 w-full md:w-[450px] xl:w-[690px] 2xl:w-[850px] py-6 flex flex-col xl:flex-row items-start xl:items-end justify-between rounded-xl bg-white mb-7 px-8 shadow-[3px_3px_10px_-1px-rgba(0,0,0,0.30)]"
                 >
                   <div className="absolute -top-3 -right-3 flex items-center justify-center w-6 h-6 text-darkBlue font-semibold cursor-pointer rounded-md bg-gradient-to-b from-pink-500 to-orange-500">
                         <CrossIcon width="9" height="9" />

@@ -28,7 +28,7 @@ const DashboardLayout = ({ children }: DashboardLayout) => {
   };
   return (
     <div>
-            <Sidebar
+        <Sidebar
         sidebarItems={sidebarItems}
         isSidebar={isSidebar}
         SidebarHandler={SidebarHandler}
@@ -41,7 +41,7 @@ const DashboardLayout = ({ children }: DashboardLayout) => {
           SidebarHandler={SidebarHandler}
           tabHandler={tabHandler}
         />
-				        <div>
+				  <div className="mt-12 px-4 lg:px-6">
             {children}
         </div>
       </div>

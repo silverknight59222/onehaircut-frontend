@@ -9,6 +9,7 @@ import {
   PackageUnCheckedIcon,
   RegistrationCheckedIcon,
 } from "@/components/utilis/Icons";
+import MobilePricingTable from "../registration/MobilePricingTable";
 
 const Subscription = () => {
   const [isAutomaticRenewal, setIsAutomaticRenewal] = useState(false);
@@ -40,8 +41,8 @@ const Subscription = () => {
               </p>
             </div>
           </div>
-          <div className="flex flex-col xl:flex-row items-center xl:items-start justify-center gap-4 2xl:gap-12 mt-52">
-            <div className="relative">
+          <div className="flex flex-col xl:flex-row items-center xl:items-start justify-center gap-4 2xl:gap-12 mt-10 lg:mt-52">
+            <div className="hidden lg:block relative">
               <BgDashboardPricingTable />
               <div className="rounded-xl py-4 px-5">
                 <div className="flex">
@@ -125,7 +126,10 @@ const Subscription = () => {
                 </div>
               </div>
             </div>
-            <div className="relative z-20 w-full sm:w-[415px] flex flex-col items-center justify-center mt-10 lg:mt-0">
+            <div className="relative z-10 flex items-center justify-center w-full lg:hidden">
+            <MobilePricingTable />
+          </div>
+            <div className="relative z-20 w-full sm:w-[415px] flex flex-col items-center justify-center sm:-mt-5 lg:mt-10 xl:mt-0">
               <div className="py-4 px-5 2xl:text-xl text-center text-black whitespace-nowrap bg-[#F4F4F6] font-medium border border-[#9B9B9B] rounded-xl">
                 <p>Renouvellement de l’abonnement le: </p>
                 <p className="text-center mt-1">12 / 07 / 2024</p>
