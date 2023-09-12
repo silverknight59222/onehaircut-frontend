@@ -237,7 +237,7 @@ const ImagesContainer = ({
                       }`}
                     >
                       <div className="relative w-32 h-32">
-                        <Image fill={true} src={item.image} alt="image" />
+                        <Image fill={true} src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public${item.image}`} alt="image" />
                       </div>
                       {!item.is_cover && type === "showcase" && (
                         <div

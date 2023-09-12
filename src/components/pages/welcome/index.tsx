@@ -167,7 +167,7 @@ const Welcome = () => {
             return <div key={index} onClick={() => onClickHaircut(item.id, item.name)} className={`shadow-md rounded-xl my-2 cursor-pointer border hover:border-secondary ${item.id===haircut?.id && 'border-secondary'}`}>
               <div className="relative w-max px-4 pt-4 bg-[#F5F5F5] rounded-t-xl">
                 <div className="relative w-48 h-48">
-                  <Image src={item.image} fill={true} alt="" className="rounded-t-xl" />
+                  <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public${item.image}`} fill={true} alt="" className="rounded-t-xl" />
                   <div onClick={(e) => onWishlist(e, item.id, item.is_added_to_wishlist)} className="absolute right-2 top-2 cursor-pointer">
                     <Like color={item.is_added_to_wishlist ? "#FF0000" : ""} />
                   </div>
