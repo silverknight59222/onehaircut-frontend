@@ -77,7 +77,7 @@ const SearchSalon = ({salonId}: SearchSalonProps) => {
           <div className="w-full flex flex-col md:flex-row items-center md:items-start gap-8 2xl:gap-12">
             <div>
               <div className="w-[320px] lg:w-[400px] 2xl:w-[483px] h-64 lg:h-80 relative">
-                    <Image src={selectedImage} alt="" fill={true} />
+                    <Image src={selectedImage.includes('https://api-server.onehaircut.com/public') ? selectedImage : `https://api-server.onehaircut.com/public${selectedImage}`} alt="" fill={true} />
               </div>
               <div className="flex items-center gap-3 mt-3">
                 {salonProfile.salon_images.map((img, index) => {
@@ -87,7 +87,7 @@ const SearchSalon = ({salonId}: SearchSalonProps) => {
                       onClick={() => setSelectedImage(img.image)}
                       className="relative w-24 lg:w-32 2xl:w-36 h-24 lg:h-32 2xl:h-36 cursor-pointer"
                     >
-                      <Image src={img.image} alt="" fill={true} />
+                      <Image src={img.image.includes('https://api-server.onehaircut.com/public') ? img.image : `https://api-server.onehaircut.com/public${img.image}`} alt="" fill={true} />
                     </div>
                   );
                 })}
@@ -138,7 +138,7 @@ const SearchSalon = ({salonId}: SearchSalonProps) => {
                   key={index}
                   className="relative w-full sm:w-[280px] md:w-[315px] xl:w-[390px] 2xl:w-[487px] h-60 md:h-64 xl:h-72 2xl:h-80 bg-[#D9D9D9] rounded-3xl"
                 >
-                    <Image src={img.image} alt="" fill={true} className="rounded-3xl" />
+                    <Image src={img.image.includes('https://api-server.onehaircut.com/public') ? img.image : `https://api-server.onehaircut.com/public${img.image}`} alt="" fill={true} className="rounded-3xl" />
                 </div>
               );
             })}
@@ -155,7 +155,7 @@ const SearchSalon = ({salonId}: SearchSalonProps) => {
                   <div key={index}>
                     <div className="relative w-52 lg:w-64 h-52 lg:h-64 rounded-[20px]">
                       <Image
-                        src={hairdresser.profile_image}
+                        src={hairdresser.profile_image.includes('https://api-server.onehaircut.com/public') ? hairdresser.profile_image : `https://api-server.onehaircut.com/public${hairdresser.profile_image}`}
                         alt=""
                         fill={true}
                         className="rounded-[20px]"

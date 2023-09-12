@@ -272,7 +272,7 @@ const Hairdressers = () => {
     if (id === avatarIndex) {
       return (
         <div className="relative shadow-[0px_6px_11px_0px_rgba(176,176,176,0.25)] rounded-xl bg-white w-32 h-32">
-          <Image src={image} alt="avatar" fill={true} className="rounded-xl" />
+          <Image src={image.includes('api-server') ? image : `https://api-server.onehaircut.com/public${image}`} alt="avatar" fill={true} className="rounded-xl" />
         </div>
       );
     }
@@ -435,9 +435,7 @@ const Hairdressers = () => {
                       <Image
                         fill={true}
                         src={
-                          item.profile_image
-                            ? item.profile_image
-                            : avatars.man[item.avatar_id - 1]?.image
+                          item.profile_image ? (item.profile_image.includes('https://api-server.onehaircut.com/public') ? item.profile_image : `https://api-server.onehaircut.com/public${item.profile_image}`) : avatars.man[item.avatar_id - 1]?.image
                         }
                         alt="image"
                       />
