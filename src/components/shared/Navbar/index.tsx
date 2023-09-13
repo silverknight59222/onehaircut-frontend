@@ -340,7 +340,7 @@ import UserProfile from "@/components/UI/UserProfile";
                   Ethinicity
                 </p>
                 {showMobileEthnicity && (
-                  <div className="absolute top-[235px] md:top-[180px] z-20 flex flex-col items-center justify-center w-44 px-7 pt-5 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                  <div className="absolute top-[180px] z-20 -ml-8 xl:ml-0 flex flex-col items-center justify-center w-44 px-7 pt-5 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
                     {Ethnicity.map((item, index) => {
                       return (
                         <div
@@ -375,7 +375,7 @@ import UserProfile from "@/components/UI/UserProfile";
                   Gender
                 </p>
                 {showMobileGender && (
-                  <div className="absolute top-[235px] md:top-[180px] z-20 flex flex-col items-center justify-center w-36 px-7 pt-5 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                  <div className="absolute top-[180px] z-20 -ml-5 xl:ml-0 flex flex-col items-center justify-center w-36 px-7 pt-5 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
                     {Gender.map((item, index) => {
                       return (
                         <div
@@ -399,9 +399,48 @@ import UserProfile from "@/components/UI/UserProfile";
                   </div>
                 )}
               </div>
+              <div ref={LengthDesktopRef} className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
+                <p
+                  className={showDesktopLength ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7"}
+                  onClick={() => {
+                    setShowDesktopEthnicity(false);
+                    setShowDesktopGender(false);
+                    setShowDesktopLength(!showDesktopLength);
+                  }}
+                >
+                  Length
+                </p>
+                {showDesktopLength && (
+                  <div className="absolute top-[180px] -ml-3 xl:ml-0 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                    {Length.map((item, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className="flex w-full cursor-pointer mb-[19px]"
+                          onClick={() => onClickLengthCheckbox(item.name)}
+                        >
+                          <div
+                            className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${
+                              lengthFilters.includes(item.name)
+                                ? "bg-gradient-to-b from-pink-500 to-orange-500"
+                                : "bg-[#D6D6D6]"
+                            }`}
+                          >
+                            <CheckedIcon />
+                          </div>
+                          <p className="ml-2">{item.name}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
               </>
             }
-              <ServicesFilter onTypeSelect={onTypeSelect ? onTypeSelect : ()=>{}}/>
+            
+            
+            {isServicesPage &&
+              <ServicesFilter onTypeSelect={onTypeSelect ? onTypeSelect : ()=>{}}/>}
             </div>
             <div className="flex">
               <div className="px-6 cursor-pointer">
