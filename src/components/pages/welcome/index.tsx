@@ -18,6 +18,7 @@ const Welcome = () => {
   const userId: number=Number(getLocalStorage("User"))
   const haircut=JSON.parse(String(getLocalStorage("Haircut")))
   const [ethnicityFilters, setEthnicityFilters] = useState<string[]>([]);
+  const [lengthFilters, setLengthFilters] = useState<string[]>([]);
   const [genderFilters, setGenderFilters] = useState<string>("");
   const [filteredHaircuts, setFilteredHaircuts] = useState<Haircut[]>([]);
   const [search, setSearch] = useState<string>('');
@@ -30,9 +31,9 @@ const Welcome = () => {
       if (res.data.data.length > 0) {
         setSalonHaircut(res.data.data);
       }
-      setIsLoading(false);
     })
     .catch(error => console.log(error))
+    .finally(()=>setIsLoading(false))
   }
 
   const onWishlist=(e: any, haircutId: number, isDelete: boolean)=>{
@@ -72,17 +73,28 @@ const Welcome = () => {
     const haircuts: Haircut[] = [];
     let list=salonHaircut
 
-    if(search) {
-      list = list.filter((haircut)=> haircut.name.toLowerCase().includes(search.toLowerCase()) ); 
+    if (search) {
+      list = list.filter((haircut) =>
+        haircut.name.toLowerCase().includes(search.toLowerCase())
+      );
     }
     if (
-      ethnicityFilters.length > 0 && genderFilters
+      ethnicityFilters.length > 0 &&
+      genderFilters &&
+      lengthFilters.length > 0
     ) {
       list.forEach((haircut) => {
         ethnicityFilters.forEach((filter) => {
           if (haircut?.group && haircut.group.group === filter) {
-            if (haircut.type === genderFilters || genderFilters === 'Mix') {
-              haircuts.push(haircut);
+            if (
+              haircut.type === genderFilters.toLowerCase() ||
+              genderFilters === "Mix"
+            ) {
+              lengthFilters.forEach((filter) => {
+                if (haircut.length === filter.toLowerCase()) {
+                  haircuts.push(haircut);
+                }
+              });
             }
           }
         });
@@ -91,7 +103,35 @@ const Welcome = () => {
       list.forEach((haircut) => {
         ethnicityFilters.forEach((filter) => {
           if (haircut?.group && haircut.group.group === filter) {
-            if (haircut.type === genderFilters || genderFilters === 'Mix') {
+            if (
+              haircut.type === genderFilters.toLowerCase() ||
+              genderFilters === "Mix"
+            ) {
+              haircuts.push(haircut);
+            }
+          }
+        });
+      });
+    } else if (ethnicityFilters.length > 0 && lengthFilters.length > 0) {
+      list.forEach((haircut) => {
+        ethnicityFilters.forEach((filter) => {
+          if (haircut?.group && haircut.group.group === filter) {
+            lengthFilters.forEach((filter) => {
+              if (haircut.length === filter.toLowerCase()) {
+                haircuts.push(haircut);
+              }
+            });
+          }
+        });
+      });
+    } else if (lengthFilters.length > 0 && genderFilters) {
+      list.forEach((haircut) => {
+        lengthFilters.forEach((filter) => {
+          if (haircut.length === filter.toLowerCase()) {
+            if (
+              haircut.type === genderFilters.toLowerCase() ||
+              genderFilters === "Mix"
+            ) {
               haircuts.push(haircut);
             }
           }
@@ -105,23 +145,41 @@ const Welcome = () => {
           }
         });
       });
+    } else if (lengthFilters.length > 0) {
+      list.forEach((haircut) => {
+        lengthFilters.forEach((filter) => {
+          if (haircut.length === filter.toLowerCase()) {
+            haircuts.push(haircut);
+          }
+        });
+      });
     } else if (genderFilters) {
       list.forEach((haircut) => {
-        if (haircut.type === genderFilters || genderFilters === 'Mix') {
+        if (
+          haircut.type === genderFilters.toLowerCase() ||
+          genderFilters === "Mix"
+        ) {
           haircuts.push(haircut);
         }
       });
     }
-    if(search && (!(ethnicityFilters.length > 0) && !genderFilters)) {
-    setFilteredHaircuts(list);
+    if (
+      search &&
+      !(ethnicityFilters.length > 0) &&
+      !genderFilters &&
+      !(lengthFilters.length > 0)
+    ) {
+      setFilteredHaircuts(list);
     } else {
-    setFilteredHaircuts(haircuts);
+      setFilteredHaircuts(haircuts);
     }
+
   };
 
   const haircuts = () => {
     if (
       ethnicityFilters.length > 0 ||
+      lengthFilters.length > 0 ||
       genderFilters ||
       search !== ''
     ) {
@@ -137,7 +195,7 @@ const Welcome = () => {
 
   useEffect(() => {
     getFilteredCuts();
-  }, [ethnicityFilters, genderFilters, search]);
+  }, [ethnicityFilters, genderFilters, lengthFilters, search]);
   
   useEffect(() => {
     getAllHaircuts()
@@ -148,7 +206,7 @@ const Welcome = () => {
 
   return (
     <>
-      <Navbar isWelcomePage={true} onSearch={(value: string)=>setSearch(value)} onGenderFilter={(gender)=>setGenderFilters(gender)} onEthnicityFilters={(groups)=>setEthnicityFilters(groups)} />
+      <Navbar isWelcomePage={true} onSearch={(value: string)=>setSearch(value)} onGenderFilter={(gender)=>setGenderFilters(gender)} onEthnicityFilters={(groups)=>setEthnicityFilters(groups)} onLengthFilters={(length)=>setLengthFilters(length)} />
       <div className="flex flex-col items-center justify-center w-full overflow-hidden">
         {isLoading && loadingView()}
         <p className="mt-10 sm:mt-14 mb-10  md:w-[700px] text-black text-center font-semibold text-3xl px-2 md:px-10">
@@ -157,9 +215,6 @@ const Welcome = () => {
         <div className="flex flex-col md:flex-row gap-4 mb-10 sm:mb-12">
           <div className="px-4 py-6 rounded-2xl font-medium text-2xl cursor-pointer border-[#FE3462] border-2">
             Prestation Unique / soins
-          </div>
-          <div className="px-4 py-6 rounded-2xl font-medium text-2xl cursor-pointer border-[#FE3462] border-2">
-            Coiffure pour Evennement
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 mb-24">
@@ -186,7 +241,7 @@ const Welcome = () => {
             <div className="p-2 sm:p-4 md:p-5 text-center border-[#FE3462] border-2 rounded-2xl cursor-pointer ml-3">
               Démonstration d’utilisation
             </div>
-            <div className="p-2 sm:p-4 md:p-5 text-white text-center rounded-2xl cursor-pointer bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo">
+            <div onClick={()=>router.push('/login')} className="p-2 sm:p-4 md:p-5 text-white text-center rounded-2xl cursor-pointer bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo">
               Connexion / Inscription
             </div>
             <div className="p-2 sm:p-4 md:p-5 text-center border-[#FE3462] border-2 rounded-2xl cursor-pointer mr-3">

@@ -22,27 +22,35 @@ import UserProfile from "@/components/UI/UserProfile";
     onServiceSearch?: (arg0: string)=>void
     onGenderFilter?: (arg0: string)=>void
     onEthnicityFilters?: (arg0: string[])=>void
+    onLengthFilters?: (arg0: string[])=>void
     onTypeSelect?: (arg0: string[])=>void
   }
   
-  const Navbar = ({isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTypeSelect, onSearch, onServiceSearch, onGenderFilter, onEthnicityFilters}: Navbar) => {
+  const Navbar = ({isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTypeSelect, onSearch, onServiceSearch, onGenderFilter, onEthnicityFilters, onLengthFilters}: Navbar) => {
     const [isDropdown, setIsDropdown] = useState(false);
     const [showDesktopGender, setShowDesktopGender] = useState(false);
+    const [showDesktopLength, setShowDesktopLength] = useState(false);
     const [showDesktopEthnicity, setShowDesktopEthnicity] = useState(false);
   
     const [showMobileGender, setShowMobileGender] = useState(false);
     const [showMobileEthnicity, setShowMobileEthnicity] = useState(false);
+    const [showMobileLength, setShowMobileLength] = useState(false);
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [genderFilters, setGenderFilters] = useState<string>('');
     const [ethnicityFilters, setEthnicityFilters] = useState<string[]>([]);
+    const [lengthFilters, setLengthFilters] = useState<string[]>([]);
     const router=useRouter()
     const EthnicityDesktopRef =
       React.useRef() as React.MutableRefObject<HTMLInputElement>;
     const GenderDesktopRef =
       React.useRef() as React.MutableRefObject<HTMLInputElement>;
+    const LengthDesktopRef =
+      React.useRef() as React.MutableRefObject<HTMLInputElement>;
     const EthicityMobileRef =
       React.useRef() as React.MutableRefObject<HTMLInputElement>;
     const GenderMobileRef =
+      React.useRef() as React.MutableRefObject<HTMLInputElement>;
+    const LengthMobileRef =
       React.useRef() as React.MutableRefObject<HTMLInputElement>;
     const closeSelectBox = ({ target }: MouseEvent): void => {
       if (!EthnicityDesktopRef.current?.contains(target as Node)) {
@@ -56,6 +64,12 @@ import UserProfile from "@/components/UI/UserProfile";
       }
       if (!GenderMobileRef.current?.contains(target as Node)) {
         setShowMobileGender(false);
+      }
+      if (!LengthDesktopRef.current?.contains(target as Node)) {
+        setShowDesktopLength(false);
+      }
+      if (!LengthMobileRef.current?.contains(target as Node)) {
+        setShowMobileLength(false);
       }
     };
     const Ethnicity = [
@@ -83,6 +97,17 @@ import UserProfile from "@/components/UI/UserProfile";
         name: "Mix",
       },
     ];
+    const Length = [
+      {
+        name: "Short",
+      },
+      {
+        name: "Medium",
+      },
+      {
+        name: "Long",
+      },
+    ];
   
     const onClickGenderCheckbox = (gender: string) => {
       onGenderFilter && onGenderFilter(gender === 'Homme' ? 'men' : gender === 'Femme' ? 'women' : 'Mix')
@@ -102,9 +127,19 @@ import UserProfile from "@/components/UI/UserProfile";
       }
       
     };
+    const onClickLengthCheckbox = (length: string) => {
+      if (lengthFilters.includes(length)) {
+        setLengthFilters(lengthFilters.filter((item) => item !== length));
+      } else {
+        setLengthFilters((prev) => [...prev, length]);
+      }
+    };
     useEffect(()=>{
       onEthnicityFilters && onEthnicityFilters(ethnicityFilters)
     },[ethnicityFilters])
+    useEffect(()=>{
+      onLengthFilters && onLengthFilters(lengthFilters)
+    },[lengthFilters])
   
     useEffect(() => {
       if (getLocalStorage("User")) {
@@ -133,6 +168,7 @@ import UserProfile from "@/components/UI/UserProfile";
                   className={showDesktopEthnicity ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7"}
                   onClick={() => {
                     setShowDesktopGender(false);
+                    setShowDesktopLength(false);
                     setShowDesktopEthnicity(!showDesktopEthnicity);
                   }}
                 >
@@ -168,6 +204,7 @@ import UserProfile from "@/components/UI/UserProfile";
                   className={showDesktopGender ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7"}
                   onClick={() => {
                     setShowDesktopEthnicity(false);
+                    setShowDesktopLength(false);
                     setShowDesktopGender(!showDesktopGender);
                   }}
                 >
@@ -185,6 +222,42 @@ import UserProfile from "@/components/UI/UserProfile";
                           <div
                             className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${
                               genderFilters.includes(item.name)
+                                ? "bg-gradient-to-b from-pink-500 to-orange-500"
+                                : "bg-[#D6D6D6]"
+                            }`}
+                          >
+                            <CheckedIcon />
+                          </div>
+                          <p className="ml-2">{item.name}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+              <div ref={LengthDesktopRef} className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
+                <p
+                  className={showDesktopLength ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7"}
+                  onClick={() => {
+                    setShowDesktopEthnicity(false);
+                    setShowDesktopGender(false);
+                    setShowDesktopLength(!showDesktopLength);
+                  }}
+                >
+                  Length
+                </p>
+                {showDesktopLength && (
+                  <div className="absolute top-[75px] -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                    {Length.map((item, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className="flex w-full cursor-pointer mb-[19px]"
+                          onClick={() => onClickLengthCheckbox(item.name)}
+                        >
+                          <div
+                            className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${
+                              lengthFilters.includes(item.name)
                                 ? "bg-gradient-to-b from-pink-500 to-orange-500"
                                 : "bg-[#D6D6D6]"
                             }`}
@@ -227,7 +300,7 @@ import UserProfile from "@/components/UI/UserProfile";
             className="relative flex items-center justify-center md:justify-end gap-4"
           >
             {!isLoggedIn &&
-            <button onClick={()=>router.push('/signup')} className="w-52 2xl:w-60 h-11 text-white font-semibold bg-background-gradient rounded-3xl">
+            <button onClick={()=>router.push('/registration')} className="w-52 2xl:w-60 h-11 text-white font-semibold bg-background-gradient rounded-3xl">
               Enregistre mon salon
             </button>}
             {/* {isLoggedIn ? (
