@@ -86,17 +86,14 @@ const Login = () => {
 		await Auth.login(userInfo)
 			.then((resp) => {
 				const res = resp.data;
-				setLocalStorage("salon-auth-token", res.token);
-				const token = getLocalStorage("salon-auth-token");
-				if (token) {
-					if(res.user.role==='salon_professional'){
-						router.push("/dashboard");
-					}
-					else{
-						router.push("/client/dashboard");
-					}
-				}
 				setLocalStorage("User", res.user.id);
+				if (res.user.role === 'salon_professional') {
+					setLocalStorage("salon-auth-token", res.token);
+					router.push("/dashboard");
+				} else {
+					setLocalStorage("client-auth-token", res.token);
+					router.push("/client/dashboard");
+				}
 			})
 			.catch((err) => {
 				showSnackbar('error', 'Le mot de passe et l\'adresse e-mail sont obligatoires.')
