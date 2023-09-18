@@ -29,8 +29,8 @@ request.interceptors.response.use(
 
     console.error({ error });
     if (response.status === 401) {
-      // window.location.replace(`/login`);
-      // return;
+      window.location.replace(`/login`);
+      return;
     }
     if (response.status >= 400 || response.status === 401) {
       toast.error(error.message);
