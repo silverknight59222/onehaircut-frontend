@@ -1,7 +1,7 @@
 "use client";
 import { AddIcon, LogoIcon, MinusIcon } from "@/components/utilis/Icons";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Autocomplete, { usePlacesWidget } from "react-google-autocomplete";
 import { setLocalStorage } from "@/api/storage";
 import userLoader from "@/hooks/useLoader";
@@ -11,9 +11,25 @@ import {
   Marker,
 } from '@react-google-maps/api'
 
+interface Address{
+    country?: string,
+    state?: string,
+    city?: string,
+    lat: number,
+    long: number,
+    zone: number
+}
 const Step2 = () => {
   const [location, setLocation] = useState({lat: 48.8584, lng: 2.2945});
-  const [address, setAddress] = useState<string>();
+  const [address, setAddress] = useState<Address>({
+    country: "Netherlands",
+    state: "North Holland",
+    city: "Amsterdam",
+    lat: 52.3675734,
+    long: 4.9041389,
+    zone: 25
+  });
+  const [zone,setZone]=useState(25)
 
   const { loadingView } = userLoader();
   const route = useRouter();
@@ -28,8 +44,40 @@ if (!isLoaded) {
 }
 
 const onClickNext = () => {
-  setLocalStorage('salon_address', address);
+  setLocalStorage('salon_address', JSON.stringify(address));
   route.push("/registration/steps/3");
+}
+const onPlaceSelected=(place: any)=>{
+  let data={
+    lat: place.geometry?.location?.lat(),
+    long: place.geometry?.location?.lng(),
+    zone: zone
+  }
+  for(let i=0; i<place?.address_components.length; i++){
+    if(place?.address_components[i].types[0]==='locality'){
+      Object.assign(data, {city: place?.address_components[i].long_name})
+    }
+    if(place?.address_components[i].types[0]==='country'){
+      Object.assign(data, {country: place?.address_components[i].long_name})
+    }
+    if(place?.address_components[i].types[0]==='administrative_area_level_1'){
+      Object.assign(data, {state: place?.address_components[i].long_name})
+    }
+  }
+  setAddress(data)
+  setLocation({lat: place.geometry?.location?.lat() ? place.geometry?.location?.lat() : 0, lng: place.geometry?.location?.lng() ? place.geometry?.location?.lng() : 0})
+}
+const zoneHandler=(operation: string)=>{
+  let temp
+  if(operation==='add'){
+    temp=zone+1
+  }else{
+    temp=zone-1
+  }
+  setZone(temp)
+  setAddress({...address,
+    zone: temp
+  })
 }
   return (
     <div>
@@ -47,23 +95,20 @@ const onClickNext = () => {
               className="border"
               apiKey={"AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E"}
               style={{ width: "384px", borderRadius: '12px', marginTop:'28px', padding:'16px 24px', outline: 'none',  }}
-              onPlaceSelected={(place) => {
-                setAddress(place?.formatted_address);
-                setLocation({lat: place.geometry?.location?.lat() ? place.geometry?.location?.lat() : 0, lng: place.geometry?.location?.lng() ? place.geometry?.location?.lng() : 0})
-              }}
+              onPlaceSelected={(place)=>onPlaceSelected(place)}
               defaultValue="Amsterdam"
             /> 
             <div className="mt-5 md:mt-0">
               <p className="text-black mb-1">Zone de mobilité</p>
               <div className="flex items-center justify-center gap-7">
                 <div className="w-[85px] h-9 flex items-center justify-center text-black border border-black shadow-[0px_4px_4px_0px_rgba(172,172,172,0.25)]">
-                  25 KM
+                  {zone} KM
                 </div>
                 <div className="flex items-center justify-center px-4 py-1 gap-4 w-24 rounded-md bg-gradient-to-r from-pink-500 to-orange-500 shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]">
-                  <div className="border-r border-white pr-3 py-3">
+                  <div onClick={()=>zoneHandler('minus')} className="border-r border-white pr-3 py-3 cursor-pointer">
                     <MinusIcon />
                   </div>
-                  <div className="py-1">
+                  <div onClick={()=>zoneHandler('add')} className="py-1 cursor-pointer">
                     <AddIcon />
                   </div>
                 </div>

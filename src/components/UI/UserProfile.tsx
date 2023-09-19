@@ -3,12 +3,18 @@ import { HeartIcon, HelpIcon, MessageIcon, UserIcon } from "../utilis/Icons";
 import { useRouter } from "next/navigation";
 import { Auth } from "@/api/auth";
 import { removeFromLocalStorage } from "@/api/storage";
+import userLoader from '@/hooks/useLoader';
 
-const UserProfile = () => {
+interface UserProfileProfile{
+  isDashboard?: Boolean
+}
+const UserProfile = ({isDashboard}: UserProfileProfile) => {
   const [isDropdown, setIsDropdown] = useState(false);
   const router = useRouter();
   const dropdownRef =
       React.useRef() as React.MutableRefObject<HTMLInputElement>;
+  const { loadingView } = userLoader();
+  const [isLoading, setIsLoading] = useState(false);
   const dropdownItems = [
     {
       name: "Messages",
@@ -28,13 +34,17 @@ const UserProfile = () => {
     }
   };
   const onLogout = () => {
+    setIsLoading(true);
     Auth.logout()
       .then((response) => {
         removeFromLocalStorage("auth-token");
         removeFromLocalStorage("user");
         router.push("/login");
       })
-      .catch((error) => console.log(error));
+      .catch((error) => console.log(error))
+      .finally(()=>{
+        setIsLoading(false);
+      })
   };
   const closeSelectBox = ({ target }: MouseEvent): void => {
     if (!dropdownRef.current?.contains(target as Node)) {
@@ -50,6 +60,7 @@ const UserProfile = () => {
   }, []);
   return (
     <div ref={dropdownRef} className="relative">
+      {isLoading && loadingView()}
       <div
         className="w-12 h-12 flex items-center justify-center pb-1 border-2 border-secondary rounded-full cursor-pointer"
         onClick={() => setIsDropdown(!isDropdown)}
@@ -57,24 +68,26 @@ const UserProfile = () => {
         <UserIcon />
       </div>
       {isDropdown && (
-        <div className={`absolute top-14 right-0 z-20 pt-3 pb-2 flex flex-col items-center justify-center text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]`}>
-          <div className="flex flex-col gap-x-4 border-b w-44 border-[#D4CBCB] pb-3">
-            {dropdownItems.map((item, index) => {
-              return (
-                <div
-                  key={index}
-                  onClick={() => onDropdownItemClick(item.route)}
-                  className="flex gap-x-5 px-6 py-3 hover:bg-[#F5F5F5] cursor-pointer"
-                >
-                  {item.icon}
-                  <p>{item.name}</p>
-                </div>
-              );
-            })}
-          </div>
+        <div className={`absolute top-[52px] right-0 z-20 pt-3 pb-2 flex flex-col items-center justify-center text-black bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)] ${!isDashboard ? 'rounded-3xl' : 'rounded-xl'}`}>
+          {!isDashboard &&
+            <div className="flex flex-col gap-x-4 border-b w-44 border-[#D4CBCB] pb-3">
+              {dropdownItems.map((item, index) => {
+                return (
+                  <div
+                    key={index}
+                    onClick={() => onDropdownItemClick(item.route)}
+                    className="flex gap-x-5 px-6 py-3 hover:bg-[#F5F5F5] cursor-pointer"
+                  >
+                    {item.icon}
+                    <p>{item.name}</p>
+                  </div>
+                );
+              })}
+            </div>
+          }
           <div
             onClick={onLogout}
-            className="w-full flex flex-col items-center justify-center mt-2 px-6 py-3 hover:bg-[#F5F5F5] cursor-pointer"
+            className={`w-full flex flex-col items-center justify-center hover:bg-[#F5F5F5] cursor-pointer ${!isDashboard ? 'mt-2 px-6 py-3' : 'px-6 pt-1 pb-2'}`}
           >
             <p>Logout</p>
           </div>
