@@ -12,7 +12,7 @@ request.interceptors.request.use(
   function (config) {
     const token = getLocalStorage("auth-token");
     if (token) {
-      request.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      config.headers['Authorization'] = 'Bearer ' + token
     }
     return config;
   },
