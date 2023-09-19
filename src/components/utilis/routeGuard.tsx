@@ -11,20 +11,20 @@ export const RouteGuard = ({ children }: any) => {
 	const user = userItem ? JSON.parse(userItem) : null;
 	let publicRoutes = ['/', '/signup', '/services', '/salons', '/registration'];
 	let professionalRoutes = ['/dashboard'];
-	let clientRoutes = ['/client/dashboard'];
+	let clientRoutes = ['/client/dashboard', '/client/favorites', '/client/filters', '/client/history', '/client/messages', '/client/portrait'];
 
 	let index = -1;
 	if (user && user.role === 'client') {
 		index = clientRoutes.indexOf(pathname)
 	} else if (user && user.role === 'salon_professional') {
-		index = professionalRoutes.indexOf(pathname)
+		index = professionalRoutes.indexOf(`/${pathname.split('/')[1]}`)
 	}
 
-	if(user && !index) {
+	if(user && index === -1) {
 		router.push('/login');
 	}
 
-	let pathIsProtected = publicRoutes.indexOf(pathname) === -1;
+	let pathIsProtected = publicRoutes.indexOf(`/${pathname.split('/')[1]}`) === -1;
 	if (isBrowser() && !isSalonAuthenticated && pathIsProtected) {
 		router.push('/login');
 	}
