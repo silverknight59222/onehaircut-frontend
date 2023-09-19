@@ -22,12 +22,12 @@ interface Address{
 const Step2 = () => {
   const [location, setLocation] = useState({lat: 48.8584, lng: 2.2945});
   const [address, setAddress] = useState<Address>({
-    country: "Netherlands",
-    state: "North Holland",
-    city: "Amsterdam",
-    lat: 52.3675734,
-    long: 4.9041389,
-    zone: 25
+    country: "",
+    state: "",
+    city: "",
+    lat: 0,
+    long: 0,
+    zone: 0
   });
   const [zone,setZone]=useState(25)
 
@@ -96,7 +96,6 @@ const zoneHandler=(operation: string)=>{
               apiKey={"AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E"}
               style={{ width: "384px", borderRadius: '12px', marginTop:'28px', padding:'16px 24px', outline: 'none',  }}
               onPlaceSelected={(place)=>onPlaceSelected(place)}
-              defaultValue="Amsterdam"
             /> 
             <div className="mt-5 md:mt-0">
               <p className="text-black mb-1">Zone de mobilité</p>
@@ -104,11 +103,11 @@ const zoneHandler=(operation: string)=>{
                 <div className="w-[85px] h-9 flex items-center justify-center text-black border border-black shadow-[0px_4px_4px_0px_rgba(172,172,172,0.25)]">
                   {zone} KM
                 </div>
-                <div className="flex items-center justify-center px-4 py-1 gap-4 w-24 rounded-md bg-gradient-to-r from-pink-500 to-orange-500 shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]">
-                  <div onClick={()=>zoneHandler('minus')} className="border-r border-white pr-3 py-3 cursor-pointer">
+                <div className="flex items-center justify-center py-1 rounded-md bg-gradient-to-r from-pink-500 to-orange-500 shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]">
+                  <div onClick={()=>zoneHandler('minus')} className="border-r border-white px-4 py-3 cursor-pointer">
                     <MinusIcon />
                   </div>
-                  <div onClick={()=>zoneHandler('add')} className="py-1 cursor-pointer">
+                  <div onClick={()=>zoneHandler('add')} className="py-1 px-4 cursor-pointer">
                     <AddIcon />
                   </div>
                 </div>
@@ -129,7 +128,8 @@ const zoneHandler=(operation: string)=>{
             </button>
             <button
               onClick={() => {onClickNext()}}
-              className="text-white font-medium text-xl rounded-xl w-96 sm:w-64 h-14 bg-background-gradient shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+              disabled={!address.country}
+              className={`text-white font-medium text-xl rounded-xl w-96 sm:w-64 h-14 shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)] ${!address.country ? 'bg-[#D9D9D9]' : 'bg-background-gradient '}`}
             >
               Continuons !
             </button>

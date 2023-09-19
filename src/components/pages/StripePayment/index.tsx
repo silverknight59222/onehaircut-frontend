@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import userLoader from "@/hooks/useLoader";
-import { getLocalStorage } from "@/api/storage";
+import { getLocalStorage, removeFromLocalStorage } from "@/api/storage";
 import { SalonRegisterParams, registration } from "@/api/registration";
 import useSnackbar from "@/hooks/useSnackbar";
 import { useRouter } from "next/navigation";
@@ -78,6 +78,12 @@ function StripePayment() {
       .then((res) => {
         showSnackbar("success", "Salon successfully created");
         router.push('/confirm-payment');
+        removeFromLocalStorage('user_Info')
+        removeFromLocalStorage('salon_name')
+        removeFromLocalStorage('salon_address')
+        removeFromLocalStorage('salon_type')
+        removeFromLocalStorage('plan_type')
+        removeFromLocalStorage('secret_key')
       })
       .catch((err) => {
         showSnackbar("error", "Error Occured!");
@@ -106,10 +112,10 @@ function StripePayment() {
           registerSalon(result.paymentMethod?.id);
         })
         .catch(function (error) {
+          setIsLoading(false)
           console.log(error);
-        });
+        })
     }
-    setIsLoading(false);
   };
 
   return (
