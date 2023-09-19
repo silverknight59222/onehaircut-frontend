@@ -72,8 +72,8 @@ const Step1 = () => {
           <div className="flex items-center justify-end mb-5 mt-10 w-full sm:w-auto">
             <button
               onClick={() => onClickNext()}
-              disabled={selectedType ? false : true}
-              className="w-full sm:w-56 h-14 text-white text-xl font-semibold rounded-xl bg-background-gradient shadow-[0px_17px_36px_0px_rgba(255,125,60,0.25)]"
+              disabled={selectedType && salonName ? false : true}
+              className={`w-full sm:w-56 h-14 text-white text-xl font-semibold rounded-xl shadow-[0px_17px_36px_0px_rgba(255,125,60,0.25)] ${selectedType && salonName ? 'bg-background-gradient' : 'bg-[#D9D9D9]'}`}
             >
               Continuons !
             </button>

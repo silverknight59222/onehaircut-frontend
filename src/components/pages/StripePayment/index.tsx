@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import userLoader from "@/hooks/useLoader";
-import { getLocalStorage } from "@/api/storage";
+import { getLocalStorage, removeFromLocalStorage } from "@/api/storage";
 import { SalonRegisterParams, registration } from "@/api/registration";
 import useSnackbar from "@/hooks/useSnackbar";
 import { useRouter } from "next/navigation";
@@ -41,7 +41,12 @@ function StripePayment() {
     let data: SalonRegisterParams = {
       user_id: "",
       salon_name: "",
-      salon_address: "",
+      country: '',
+      city: '',
+      state: '',
+      zone_radius: 0,
+      lat: 0,
+      long: 0,
       salon_type: "",
       payment_method: "",
       plan_id: "",
@@ -49,12 +54,17 @@ function StripePayment() {
     };
     const userInfo = JSON.parse(getLocalStorage("user_Info") as string);
     const salonName = getLocalStorage("salon_name") as string;
-    const salonAddress = getLocalStorage("salon_address") as string;
+    const salonAddress = JSON.parse(getLocalStorage("salon_address") as string);
     const salonType = getLocalStorage("salon_type") as string;
     const planType = JSON.parse(getLocalStorage("plan_type") as string);
     data.user_id = userInfo?.id;
     data.salon_name = salonName;
-    data.salon_address = salonAddress;
+    data.country=salonAddress.country
+    data.state=salonAddress.state
+    data.city=salonAddress.city
+    data.lat=salonAddress.lat
+    data.long=salonAddress.long
+    data.zone_radius=salonAddress.zone
     data.salon_type = salonType;
     data.payment_method = paymentMethod || "";
     data.plan_id = planType.plan_id;
@@ -68,6 +78,12 @@ function StripePayment() {
       .then((res) => {
         showSnackbar("success", "Salon successfully created");
         router.push('/confirm-payment');
+        removeFromLocalStorage('user_Info')
+        removeFromLocalStorage('salon_name')
+        removeFromLocalStorage('salon_address')
+        removeFromLocalStorage('salon_type')
+        removeFromLocalStorage('plan_type')
+        removeFromLocalStorage('secret_key')
       })
       .catch((err) => {
         showSnackbar("error", "Error Occured!");
@@ -96,10 +112,10 @@ function StripePayment() {
           registerSalon(result.paymentMethod?.id);
         })
         .catch(function (error) {
+          setIsLoading(false)
           console.log(error);
-        });
+        })
     }
-    setIsLoading(false);
   };
 
   return (

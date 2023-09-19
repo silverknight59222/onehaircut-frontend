@@ -11,6 +11,7 @@ import { SalonDetails } from "@/types";
 import { getLocalStorage, setLocalStorage } from "@/api/storage";
 import { dashboard } from "@/api/dashboard";
 import { usePathname } from "next/navigation";
+import UserProfile from "../UI/UserProfile";
 export type TopbarType = {
 	isDashboard: Boolean;
 	tabHandler: (tab: string) => void;
@@ -74,15 +75,13 @@ const Topbar = ({ isDashboard, tabHandler, SidebarHandler }: TopbarType) => {
 					</div>
 				)}
 				<div className="w-full flex items-center justify-end gap-4">
-					<div className="cursor-pointer">
+					{/* <div className="cursor-pointer">
 						<BellIcon />
 					</div>
 					<div className="cursor-pointer">
 						<Hamburger />
-					</div>
-					<div className="w-9 h-9 flex items-center justify-center pb-1  border-2 border-secondary rounded-full cursor-pointer">
-						<UserIcon />
-					</div>
+					</div> */}
+					<UserProfile isDashboard={true}/>
 				</div>
 			</div>
 			{path === '/dashboard' &&

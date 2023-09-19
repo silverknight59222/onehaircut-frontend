@@ -10,13 +10,13 @@ const Index = () => {
   const router = useRouter();
   const userInfo = JSON.parse(getLocalStorage("user_Info") as string);
   const salonName = getLocalStorage("salon_name") as string;
-  const salonAddress = getLocalStorage("salon_address") as string;
+  const salonAddress = JSON.parse(getLocalStorage("salon_address") as string);
   const salonType = getLocalStorage("salon_type") as string;
   const planType = JSON.parse(getLocalStorage("plan_type") as string);
   const items = [
     { name: "Nom", desc: userInfo ? userInfo.name : '-' },
     { name: "Nom du salon", desc: salonName ? salonName : '-' },
-    { name: "Adresse du salon", desc: salonAddress ? salonAddress : '-' },
+    { name: "Adresse du salon", desc: salonAddress ? `${salonAddress.city}, ${salonAddress.state}, ${salonAddress.country}` : '-' },
     { name: "Type de salon", desc: salonType ? salonType : '-' },
     { name: "Type de régime", desc: planType ? planType.name : '-' }
   ];
