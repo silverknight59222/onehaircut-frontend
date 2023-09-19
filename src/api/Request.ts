@@ -12,7 +12,7 @@ request.interceptors.request.use(
   function (config) {
     const token = getLocalStorage("auth-token");
     if (token) {
-      request.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      config.headers['Authorization'] = 'Bearer ' + token
     }
     return config;
   },
@@ -27,10 +27,10 @@ request.interceptors.response.use(
     const { response } = error;
 
     console.error({ error });
-    if (response.status === 401) {
-      window.location.replace(`/login`);
-      return;
-    }
+    // if (response.status === 401) {
+    //   window.location.replace(`/login`);
+    //   return;
+    // }
     if (response.status >= 400 || response.status === 401) {
       toast.error(error.message);
     }
