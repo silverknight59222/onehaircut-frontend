@@ -159,9 +159,10 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
   }
 
   useEffect(() => {
-    const id = getLocalStorage("User");
-    if (id)
-      dashboard.getHairSalon(Number(id)).then((res) => {
+    const user = getLocalStorage("user");
+    const userId = user ? Number(JSON.parse(user).id) : null;
+    if (userId)
+      dashboard.getHairSalon(Number(userId)).then((res) => {
           setSalonDetails(res.data.data);
           setSalon(res.data.data);
       });

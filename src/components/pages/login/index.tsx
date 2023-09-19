@@ -86,7 +86,7 @@ const Login = () => {
 		await Auth.login(userInfo)
 			.then((resp) => {
 				const res = resp.data;
-				setLocalStorage("User", res.user);
+				setLocalStorage("user", JSON.stringify(res.user));
 				setLocalStorage("auth-token", res.token);
 				if (res.user.role === 'salon_professional') {
 					router.push("/dashboard");

@@ -47,9 +47,10 @@ const Topbar = ({ isDashboard, tabHandler, SidebarHandler }: TopbarType) => {
 	};
 
 	useEffect(() => {
-		const id = getLocalStorage("User");
-		if (id)
-			dashboard.getHairSalon(Number(id)).then((res) => {
+		const user = getLocalStorage("user");
+		const userId = user ? Number(JSON.parse(user).id) : null;
+		if (userId) 
+			dashboard.getHairSalon(userId).then((res) => {
 				setSalonDetails(res.data.data);
 				setSalon(res.data.data);
 			});

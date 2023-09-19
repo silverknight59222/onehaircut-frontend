@@ -31,7 +31,7 @@ const UserProfile = () => {
     Auth.logout()
       .then((response) => {
         removeFromLocalStorage("auth-token");
-        removeFromLocalStorage("User");
+        removeFromLocalStorage("user");
         router.push("/login");
       })
       .catch((error) => console.log(error));

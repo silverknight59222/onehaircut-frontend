@@ -166,9 +166,11 @@ const Hairdressers = () => {
     }
     setIsLoading(true);
     const data = new FormData();
+    const user = getLocalStorage("user");
+    const userId = user ? Number(JSON.parse(user).id) : null;
     data.append(
       "hair_salon_id",
-      Number(getLocalStorage("User")) as unknown as Blob
+      userId as unknown as Blob
     );
     data.append("name", hairDresser.name);
     data.append("email", hairDresser.email);
@@ -214,25 +216,33 @@ const Hairdressers = () => {
     }
   };
   const getAllHairDresser = async () => {
-    setIsLoading(true);
-    await dashboard
-      .getAllHairDressers(Number(getLocalStorage("User")))
-      .then((resp) => {
-        if (resp.data.data.length) {
-          setHairDressers(resp.data.data);
-        }
-        setIsLoading(false);
-      });
+    const user = getLocalStorage("user");
+    const userId = user ? Number(JSON.parse(user).id) : null;
+    if (userId) {
+      setIsLoading(true);
+      await dashboard
+        .getAllHairDressers(userId)
+        .then((resp) => {
+          if (resp.data.data.length) {
+            setHairDressers(resp.data.data);
+          }
+          setIsLoading(false);
+        });
+    }
   };
   const getAllAvatars = async () => {
+     const user = getLocalStorage("user");
+    const userId = user ? Number(JSON.parse(user).id) : null;
+    if (userId) {
     setIsLoading(true);
     await dashboard
-      .getAllAvatars(Number(getLocalStorage("User")))
+      .getAllAvatars(userId)
       .then((resp) => {
         setAvatars(resp.data.data);
       })
       .catch((error) => console.log(error));
     setIsLoading(false);
+    }
   };
   const onDeleteHairDresser = async () => {
     await dashboard.deleteHairDresser(hairDresser.id).then((res) => {
