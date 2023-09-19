@@ -15,7 +15,8 @@ const Welcome = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router=useRouter()
-  const userId: number=Number(getLocalStorage("User"))
+  const user = getLocalStorage("user");
+  const userId = user ? Number(JSON.parse(user).id) : null;
   const haircut=JSON.parse(String(getLocalStorage("Haircut")))
   const [ethnicityFilters, setEthnicityFilters] = useState<string[]>([]);
   const [lengthFilters, setLengthFilters] = useState<string[]>([]);
@@ -52,6 +53,7 @@ const Welcome = () => {
       })
     }
     else{
+      if (userId) {
     data={
       user_id: userId,
       haircut_id: haircutId
@@ -65,6 +67,7 @@ const Welcome = () => {
       console.log(err)
       showSnackbar('error', 'Error Occured!')
     })
+  }
   }
   }
 
@@ -198,8 +201,10 @@ const Welcome = () => {
   }, [ethnicityFilters, genderFilters, lengthFilters, search]);
   
   useEffect(() => {
-    getAllHaircuts()
-    if (!getLocalStorage("User")) {
+    getAllHaircuts();
+    const user = getLocalStorage("user");
+    const userId = user ? Number(JSON.parse(user).id) : null;
+    if (!userId) {
       setIsLoggedIn(true);
     }
   }, []);

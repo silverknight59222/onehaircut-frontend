@@ -86,12 +86,11 @@ const Login = () => {
 		await Auth.login(userInfo)
 			.then((resp) => {
 				const res = resp.data;
-				setLocalStorage("User", res.user.id);
+				setLocalStorage("user", JSON.stringify(res.user));
+				setLocalStorage("auth-token", res.token);
 				if (res.user.role === 'salon_professional') {
-					setLocalStorage("salon-auth-token", res.token);
 					router.push("/dashboard");
 				} else {
-					setLocalStorage("client-auth-token", res.token);
 					router.push("/client/dashboard");
 				}
 			})

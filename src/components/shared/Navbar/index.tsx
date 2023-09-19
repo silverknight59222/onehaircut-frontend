@@ -142,7 +142,9 @@ import UserProfile from "@/components/UI/UserProfile";
     },[lengthFilters])
   
     useEffect(() => {
-      if (getLocalStorage("User")) {
+      const user = getLocalStorage("user");
+      const userId = user ? Number(JSON.parse(user).id) : null;
+      if (userId) {
         setIsLoggedIn(true);
       }
       document.addEventListener("click", closeSelectBox);

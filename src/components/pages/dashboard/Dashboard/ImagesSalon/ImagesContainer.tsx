@@ -70,7 +70,8 @@ const ImagesContainer = ({
       image: "",
     });
     const formData = new FormData();
-    const userID = getLocalStorage("User");
+     const user = getLocalStorage("user");
+    const userID = user ? JSON.parse(user).id : null;
     if (userID) {
       formData.append("hair_salon_id", userID);
     }

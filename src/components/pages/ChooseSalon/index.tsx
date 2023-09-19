@@ -19,8 +19,9 @@ const SalonChoice = () => {
     const [selectedWhishlist,setSelectedWhishlist]=useState<number | null>()
     const [salonImage,setSalonImage]=useState<string[]>([])
     const [salons,setSalons]=useState<SalonDetails[]>([])
-    const router = useRouter()
-    const userId=Number(getLocalStorage("User"))
+    const router = useRouter();
+    let user = getLocalStorage("user");
+    const userId = user ? Number(JSON.parse(user).id) : null;
     const haircut=JSON.parse(String(getLocalStorage("Haircut")))
     const [isLoading, setIsLoading] = useState(false);
     const { loadingView } = userLoader();
@@ -82,21 +83,23 @@ const SalonChoice = () => {
             })
           }
         else {
-            data = {
-                user_id: userId,
-                hair_salon_id: haircutId
-            }
-            if (selectedWhishlist !== haircutId) {
-                setSelectedWhishlist(haircutId)
-                dashboard.addSalonWishList(data)
-                    .then(response => {
-                        showSnackbar('success', 'Added To Wishlist Successfully!')
-                    })
-                    .catch(err => console.log(err))
-            }
-            else {
-                setSelectedWhishlist(null)
-                showSnackbar('error', 'Error Occured!')
+            if (userId) {
+                data = {
+                    user_id: userId,
+                    hair_salon_id: haircutId
+                }
+                if (selectedWhishlist !== haircutId) {
+                    setSelectedWhishlist(haircutId)
+                    dashboard.addSalonWishList(data)
+                        .then(response => {
+                            showSnackbar('success', 'Added To Wishlist Successfully!')
+                        })
+                        .catch(err => console.log(err))
+                }
+                else {
+                    setSelectedWhishlist(null)
+                    showSnackbar('error', 'Error Occured!')
+                }
             }
         }
       }

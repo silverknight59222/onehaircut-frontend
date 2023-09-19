@@ -14,25 +14,29 @@ const Favorites = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [haircuts, setHaircuts] = useState<WishlistHaircuts[]>([]);
     const [salons, setSalons] = useState<SalonWishlist[]>([]);
-    const userId=Number(getLocalStorage("User"))
+    const user = getLocalStorage("user");
+    const userId = user ? Number(JSON.parse(user).id) : null;
 
     const getWishlistHaircuts = () => {
-        setIsLoading(true);
-        dashboard.getWishlistHaircuts(userId)
-            .then((res) => {
-                if (res.data.data.length > 0) {
-                    setHaircuts(res.data.data);
-                }
-                setIsLoading(false);
-            })
-            .catch(error => {
-                setIsLoading(false);
-                console.log(error)
-            })
+        if (userId) {
+            setIsLoading(true);
+            dashboard.getWishlistHaircuts(userId)
+                .then((res) => {
+                    if (res.data.data.length > 0) {
+                        setHaircuts(res.data.data);
+                    }
+                    setIsLoading(false);
+                })
+                .catch(error => {
+                    setIsLoading(false);
+                    console.log(error)
+                })
+        }
         
     }
 
     const getSalonsWishlist = () => {
+        if (userId) {
         setIsLoading(true);
         dashboard.getSalonsWishlist(userId)
             .then((res) => {
@@ -45,7 +49,7 @@ const Favorites = () => {
                 setIsLoading(false);
                 console.log(error)
             })
-       
+        }
     }
 
       useEffect(()=>{
