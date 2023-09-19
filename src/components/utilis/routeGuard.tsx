@@ -14,7 +14,9 @@ export const RouteGuard = ({ children }: any) => {
 	let clientRoutes = ['/client/dashboard', '/client/favorites', '/client/filters', '/client/history', '/client/messages', '/client/portrait'];
 
 	let index = -1;
-	if (user && user.role === 'client') {
+	if(publicRoutes.includes(`/${pathname.split('/')[1]}`)) {
+		index = publicRoutes.indexOf(`/${pathname.split('/')[1]}`)
+	} else if (user && user.role === 'client') {
 		index = clientRoutes.indexOf(pathname)
 	} else if (user && user.role === 'salon_professional') {
 		index = professionalRoutes.indexOf(`/${pathname.split('/')[1]}`)
