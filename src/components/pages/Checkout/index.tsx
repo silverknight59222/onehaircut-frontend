@@ -16,7 +16,7 @@ const Step5 = () => {
   const router = useRouter();
   const [stripePromise, setStripePromise] = useState<string>("pk_test_51IkzH1ExivflHCSmgQfNoQAWOnOcfKopp26Ct493No4QtWa8Cv6HEf9933YbMXcrs6wVR7YjWslQV58IikPujC5U006Imw8zpO");  
   const [mounted, setMounted] = useState(false);
-  const salonAddress = getLocalStorage("salon_address") as string;
+  const salonAddress = JSON.parse(getLocalStorage("salon_address") as string)
   const planType = JSON.parse(getLocalStorage("plan_type") as string);
   useEffect(() => {
       setMounted(true)
@@ -48,7 +48,7 @@ const Step5 = () => {
                   Billing address
                 </p>
                 <div className="text-black text-lg mt-5">
-                  <p>{salonAddress ? salonAddress : '-'}</p>
+                  <p>{salonAddress ? `${salonAddress.city}, ${salonAddress.state}, ${salonAddress.country}` : '-'}</p>
                 </div>
               </div>
               <div className="bg-white px-4 py-8 mt-7 w-full">
@@ -81,7 +81,7 @@ const Step5 = () => {
             <div className="mt-10">
               <p className="text-lg font-semibold text-black">Salon</p>
               <div className="text-black text-lg mt-5">
-                <p>{salonAddress ? salonAddress : '-'}</p>
+                <p>{salonAddress ? `${salonAddress.city}, ${salonAddress.state}, ${salonAddress.country}`: '-'}</p>
               </div>
             </div>
           </div>
