@@ -30,7 +30,7 @@ const UserProfile = () => {
   const onLogout = () => {
     Auth.logout()
       .then((response) => {
-        removeFromLocalStorage("salon-auth-token");
+        removeFromLocalStorage("auth-token");
         removeFromLocalStorage("User");
         router.push("/login");
       })

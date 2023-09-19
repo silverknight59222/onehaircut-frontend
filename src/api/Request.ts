@@ -10,9 +10,8 @@ const request = axios.create({
 
 request.interceptors.request.use(
   function (config) {
-    if (getLocalStorage("salon-auth-token") || getLocalStorage("salon-auth-token") === null) {
-      const token = getLocalStorage("salon-auth-token");
-      if(token)
+    const token = getLocalStorage("auth-token");
+    if (token) {
       request.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     }
     return config;
