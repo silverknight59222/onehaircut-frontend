@@ -7,8 +7,8 @@ import { DownArrow } from "@/components/utilis/Icons";
 
 const Visites = () => {
   const clients = [
-    { user: "Angelina vitale", hairstyle: "Carré plongeant", orders: 89 },
-    { user: "Doppler", hairstyle: "Fondu court", orders: 77 },
+    { user: "Angelina vitale", hairstyle: "Carré plongeant", orders: 215 },
+    { user: "Doppleria", hairstyle: "Fondu court", orders: 77 },
     { user: "Marina", hairstyle: "Boucle court", orders: 68 },
     { user: "Kevin K", hairstyle: "Carré plongeant", orders: 62 },
     { user: "Bernardo", hairstyle: "Dread", orders: 61 },
@@ -35,12 +35,12 @@ const Visites = () => {
                   name="Client"
                   number={100}
                   rotation={0.25}
-                  color="rgb(254, 57, 95)"
+                  color="#FE5352"
                 />
                 <ProgressBar
-                  value={50}
+                  value={40}
                   name="Commandes"
-                  number={31}
+                  number={40}
                   rotation={0.25}
                   color="#15BAF2"
                 />
