@@ -716,7 +716,7 @@ const Hairstyles = () => {
                 />
               </div>
             ) : (
-              <div className="mt-2 flex items-center justify-center w-36 h-36 bg-darkGrey border-2 border-black rounded-2xl">
+              <div className="mt-2 flex items-center justify-center w-36 h-36 bg-darkGrey border-1 border-black rounded-2xl ">
                 Select Haircut
               </div>
             )}
@@ -764,7 +764,7 @@ const Hairstyles = () => {
             <div className="mt-2">
               <div>
                 <p className="text-medium text-sm text-grey italic text-center">
-                  Longueur de cheveux initiale
+                Ajustement selon la longueur initiale de cheveux
                 </p>
               </div>
               <div className="flex items-center gap-x-4 mt-4">
@@ -843,7 +843,7 @@ const Hairstyles = () => {
             <div className="mt-2">
               <div>
                 <p className="text-medium text-sm text-grey italic text-center">
-                  Type de cheveux
+                  Ajustement selon l'épaisseur initiale de cheveux
                 </p>
               </div>
               <div className="flex items-center gap-x-4 mt-4">
@@ -922,13 +922,7 @@ const Hairstyles = () => {
             {!(activeMenu === "added" && selectedSalonHaircut.id >= 0) ? (
               <div className="flex items-center justify-center gap-4 mt-4">
                 <button className="text-white font-medium text-sm rounded-md px-4 py-2 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]">
-                  Book recap
-                </button>
-                <button
-                  onClick={addSalonHaircuts}
-                  className="text-white font-medium text-sm rounded-md px-4 py-2 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
-                >
-                  Ajouter un coiffeur
+                  Ajouter
                 </button>
               </div>
             ) : (
