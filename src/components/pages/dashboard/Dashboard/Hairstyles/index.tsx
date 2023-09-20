@@ -565,11 +565,11 @@ const Hairstyles = () => {
                   return (
                     <div
                       key={index}
-                      className="flex gap-2 px-4 py-2.5 opacity-70 hover:opacity-100 cursor-pointer"
+                      className="flex gap-2 px-4 py-2.5 opacity-70 hover:opacity-100 cursor-pointer transform hover:scale-110 transition-transform"
                       onClick={() => onClickEthnicityCheckbox(item.name)}
                     >
                       <div
-                        className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${
+                        className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 ${
                           ethnicityFilters.includes(item.name)
                             ? "bg-gradient-to-b from-pink-500 to-orange-500"
                             : "bg-[#D6D6D6]"
@@ -598,7 +598,7 @@ const Hairstyles = () => {
                   return (
                     <div
                       key={index}
-                      className="flex gap-2 px-4 py-2.5 opacity-70 hover:opacity-100 cursor-pointer"
+                      className="flex gap-2 px-4 py-2.5 opacity-70 hover:opacity-100 cursor-pointer transform hover:scale-110 transition-transform"
                       onClick={() => onClickGenderCheckbox(item.name)}
                     >
                       <div
@@ -631,7 +631,7 @@ const Hairstyles = () => {
                   return (
                     <div
                       key={index}
-                      className="flex gap-2 px-4 py-2.5 opacity-70 hover:opacity-100 cursor-pointer"
+                      className="flex gap-2 px-4 py-2.5 opacity-70 hover:opacity-100 cursor-pointer transform hover:scale-110 transition-transform"
                       onClick={() => onClickLengthCheckbox(item.name)}
                     >
                       <div
@@ -660,7 +660,7 @@ const Hairstyles = () => {
               }
               onClick={selectAllHaircuts}
             >
-              <div className="px-4 cursor-pointer">Select All</div>
+              <div className="hover:bg-stone-800 hover:text-white rounded-full px-4 cursor-pointer transform hover:scale-110 transition-transform">Select All</div>
             </div>
           </div>
           <div className="relative flex">
@@ -703,11 +703,11 @@ const Hairstyles = () => {
           <h2 className="text-lg font-semibold text-center">
             Configurations des coiffures
           </h2>
-          {(selectedHaircutsMapping.length > 0 && activeMenu === 'new') && <div className="text-sm py-1 px-[10px] rounded-full bg-stone-800 text-white">{selectedHaircutsMapping.length}</div>}
+          {(selectedHaircutsMapping.length > 0 && activeMenu === 'new') && <div className="text-sm py-1 px-[10px] rounded-full text-white bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo">{selectedHaircutsMapping.length}</div>}
           </div>
           <div className="flex items-center justify-center">
             {getSelectedImage() ? (
-              <div className="relative w-36 h-36">
+              <div className="relative w-72 h-72">
                 <Image
                   src={getSelectedImage()}
                   fill={true}
@@ -921,10 +921,11 @@ const Hairstyles = () => {
             </div>
             {!(activeMenu === "added" && selectedSalonHaircut.id >= 0) ? (
               <div className="flex items-center justify-center gap-4 mt-4">
-                <button className="text-white font-medium text-sm rounded-md px-4 py-2 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-md">
+              <button className="text-white font-medium text-sm rounded-md px-4 py-2 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-md transform hover:scale-110 transition-transform">
                   Ajouter
-                </button>
-              </div>
+              </button>
+          </div>
+          
             ) : (
               <div className="flex items-center justify-center gap-4 mt-4 w-full">
                 <button
@@ -958,14 +959,14 @@ const Hairstyles = () => {
                 <>
                 <div
                   key={index}
-                  className="shadow-md rounded-xl my-2 cursor-pointer"
+                  className="shadow-md rounded-xl my-2 cursor-pointer hover:outline outline-1 outline-stone-400"
                   onClick={() => selectHaircut(item)}
                 >
-                  <div className="relative w-max px-4 pt-4 bg-gradient-to-r from-white via-stone-50 to-zinc-300 rounded-t-xl">
+                  <div className="relative w-max px-4 pt-4 bg-gradient-to-r from-white via-stone-50 to-zinc-300 rounded-t-xl ">
                     <div className="relative w-32 h-32">
                     <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public/${item.image}`} fill={true} alt="" />
                     </div>
-                    <div className="absolute top-5 right-5 w-6 h-6 rounded-full bg-zinc-50">
+                    <div className="transform hover:scale-125 transition-transform absolute top-5 right-5 w-6 h-6 rounded-full bg-zinc-50">
                       {selectedHaircutsMapping.filter(
                         (haircut) => haircut.id === item.id
                       ).length > 0 && <SelectedIcon />}
@@ -987,7 +988,7 @@ const Hairstyles = () => {
               return (
                 <div
                   key={index}
-                  className="shadow-md rounded-xl my-2 cursor-pointer"
+                  className="shadow-md rounded-xl my-2 cursor-pointer "
                   onClick={() => selectSalonHaircut(index)}
                 >
                   <div className="relative w-max px-4 pt-4 bg-[#F5F5F5] rounded-t-xl">
