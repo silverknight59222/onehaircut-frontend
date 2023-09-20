@@ -22,7 +22,8 @@ const SalonChoice = () => {
     const router = useRouter();
     let user = getLocalStorage("user");
     const userId = user ? Number(JSON.parse(user).id) : null;
-    const haircut=JSON.parse(String(getLocalStorage("Haircut")))
+    const getHaircut = getLocalStorage("haircut") as string;
+    const haircut = user ? JSON.parse(getHaircut) : null;
     const [isLoading, setIsLoading] = useState(false);
     const { loadingView } = userLoader();
     const showSnackbar = useSnackbar();
@@ -35,37 +36,39 @@ const SalonChoice = () => {
     const getAllSalons=()=>{
         const services=getLocalStorage('ServiceIds')
         setIsLoading(true);
-        const data={
-            haircut_id: haircut.id,
-            servicesIDs: services && JSON.parse(services)
-        } 
-        dashboard.getSalonsByHaircut(data)
-        .then((res) => {
-        setIsLoading(false);
-          if (res.data.data.length > 0) {
-            setSalons(res.data.data);
-            for(let i=0 ; i<res.data.data.length; i++){
-                dashboard.getSalonsImages(res.data.data[i].id)
-                .then(response=>{
-                    for(let j=0 ; j<response.data.data.length; j++){
-                        if(response.data.data[i].is_cover){
-                            setSalonImage(prev=>[
-                                ...prev,
-                                response.data.data[i].image
-                            ])
-                        }
-                    }
-                })
-                .catch(error=>{
-                    console.log(error)
-                })
-            }
-          }
-        })
-        .catch(error => {
+        if(haircut.id) {
+            const data={
+                haircut_id: haircut.id,
+                servicesIDs: services && JSON.parse(services)
+            } 
+            dashboard.getSalonsByHaircut(data)
+            .then((res) => {
             setIsLoading(false);
-            console.log(error)
-        })
+              if (res.data.data.length > 0) {
+                setSalons(res.data.data);
+                for(let i=0 ; i<res.data.data.length; i++){
+                    dashboard.getSalonsImages(res.data.data[i].id)
+                    .then(response=>{
+                        for(let j=0 ; j<response.data.data.length; j++){
+                            if(response.data.data[i].is_cover){
+                                setSalonImage(prev=>[
+                                    ...prev,
+                                    response.data.data[i].image
+                                ])
+                            }
+                        }
+                    })
+                    .catch(error=>{
+                        console.log(error)
+                    })
+                }
+              }
+            })
+            .catch(error => {
+                setIsLoading(false);
+                console.log(error)
+            })
+        }
       }
 
     const onWishlist=(e: any, haircutId: number, isDelete?: boolean)=>{
