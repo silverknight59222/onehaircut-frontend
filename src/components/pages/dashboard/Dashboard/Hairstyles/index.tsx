@@ -487,9 +487,9 @@ const Hairstyles = () => {
       activeMenu === "new" &&
       selectedHaircutsMapping[selectedHaircutsMapping.length - 1]
     ) {
-      url = selectedHaircutsMapping[selectedHaircutsMapping.length - 1].image;
-    } else {
-      url = selectedSalonHaircut.image;
+      url = `https://api-server.onehaircut.com/public${selectedHaircutsMapping[selectedHaircutsMapping.length - 1].image}`;
+    } else if (selectedSalonHaircut.image) {
+      url = `https://api-server.onehaircut.com/public${selectedSalonHaircut.image}`;
     }
     return url;
   };
@@ -843,7 +843,7 @@ const Hairstyles = () => {
             <div className="mt-2">
               <div>
                 <p className="text-medium text-sm text-grey italic text-center">
-                  Ajustement selon l'épaisseur initiale de cheveux
+                  {"Ajustement selon l'épaisseur initiale de cheveux"}
                 </p>
               </div>
               <div className="flex items-center gap-x-4 mt-4">

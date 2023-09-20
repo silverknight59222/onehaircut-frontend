@@ -113,6 +113,15 @@ const dashboard = {
   getSalonsImages: async (id: number) => {
     return await request.get<any>(`/hair_salon_images/${id}`);
   },
+  getAllHairSalons: async (id: number) => {
+    return await request.get<any>(`/hair_salon/${id}`);
+  },
+  updateSalonTiming: async (id: number, data:any) => {
+    return await request.post<any>(`hair_salon_open_times/${id}`, data);
+  },
+  updateSalonSlot: async (id: number, data:any) => {
+    return await request.post<any>(`update_slot/${id}`, data);
+  },
 };
 
 export { dashboard };

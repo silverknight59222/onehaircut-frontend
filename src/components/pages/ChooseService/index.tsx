@@ -47,7 +47,7 @@ const ServiceChoose = () => {
     const { loadingView } = userLoader();
     const router = useRouter()
     const dropdownRef = React.useRef() as React.MutableRefObject<HTMLInputElement>
-    const haircut=JSON.parse(String(getLocalStorage("Haircut")))
+    const haircut=JSON.parse(String(getLocalStorage("haircut")))
 
     const getAllServices = () => {
         setIsLoading(true);

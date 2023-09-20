@@ -1,0 +1,239 @@
+"use client";
+import { CheckedIcon, CircleRight } from "@/components/utilis/Icons";
+import DashboardLayout from "@/layout/DashboardLayout";
+import React, { useEffect, useState } from "react";
+import { HairdresserSlots } from "./HairdresserSlots";
+import userLoader from "@/hooks/useLoader";
+import useSnackbar from "@/hooks/useSnackbar";
+import { getLocalStorage } from "@/api/storage";
+import { dashboard } from "@/api/dashboard";
+import { SalonDetails } from "@/types";
+import SlotDropdown from "./SlotsDropdown";
+export interface OpenTimes {
+  available: boolean;
+  day: string;
+  end: string;
+  start: string;
+}
+[];
+interface SalonwithSlots extends SalonDetails {
+  openTimes: OpenTimes[];
+}
+const Settings = () => {
+  const { loadingView } = userLoader();
+  const showSnackbar = useSnackbar();
+  const [isLoading, setIsLoading] = useState(false);
+  const [activeMenu, setActiveMenu] = useState("salon-time");
+  const [avaiableDays, setAvailableDays] = useState<string[]>([]);
+  const [salonSlots, setSalonSlots] = useState<OpenTimes[]>([]);
+  const [updatedSlots, setUpdatedSlots] = useState<OpenTimes[]>([]);
+  const [salonId, setSalonId] = useState(0);
+  const [disableUpdate, setDisableUpdate] = useState(true);
+  const setHairSalonSlotList = (data: SalonwithSlots[]) => {
+    let hairSalon;
+    if (data.length > 1) {
+      data.forEach((salon) => {
+        if (salon.is_primary) {
+          hairSalon = salon;
+        }
+      });
+    } else {
+      hairSalon = data[0];
+    }
+
+    if (hairSalon) {
+      setSalonId(hairSalon.id);
+      setSalonSlots(hairSalon.openTimes);
+      setUpdatedSlots(hairSalon.openTimes);
+      hairSalon.openTimes.forEach((time) => {
+        if (time.available) {
+          setAvailableDays((prev) => [...prev, time.day]);
+        }
+      });
+    }
+  };
+  const getHairSalonSlot = async () => {
+    const user = getLocalStorage("user");
+    const userId = user ? Number(JSON.parse(user).id) : null;
+    if (userId) {
+      setIsLoading(true);
+      await dashboard.getAllHairSalons(userId).then((resp) => {
+        if (resp.data.data.length) {
+          setHairSalonSlotList(resp.data.data);
+        }
+        setIsLoading(false);
+      });
+    }
+  };
+  const checkboxClickHandler = (item: OpenTimes) => {
+    let updatedtime: OpenTimes[] = [];
+    updatedSlots.forEach((slot) => {
+      if (slot.day === item.day) {
+        let data: OpenTimes = {
+          day: "",
+          start: "",
+          end: "",
+          available: false,
+        };
+        data.day = item.day;
+        data.start = item.start;
+        data.end = item.end;
+        data.available = !item.available;
+        if (avaiableDays.includes(item.day) && data.available === false) {
+          setAvailableDays(() =>
+            avaiableDays.filter((day) => day !== item.day)
+          );
+        } else if (
+          !avaiableDays.includes(item.day) &&
+          data.available === true
+        ) {
+          setAvailableDays((prev) => [...prev, item.day]);
+        }
+        updatedtime.push(data);
+      } else {
+        updatedtime.push(slot);
+      }
+    });
+    setDisableUpdate(false);
+    setUpdatedSlots(updatedtime);
+  };
+  const updateSlots = async () => {
+    setIsLoading(true);
+    const data = {
+      openTimes: updatedSlots,
+    };
+    await dashboard
+      .updateSalonTiming(salonId, data)
+      .then((resp) => {
+        getHairSalonSlot();
+        setDisableUpdate(true);
+        showSnackbar("success", resp.data.message);
+      })
+      .catch((err) => {
+        showSnackbar("error", "Error Occured!");
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
+  useEffect(() => {
+    getHairSalonSlot();
+  }, []);
+  return (
+    <div>
+      {isLoading && loadingView()}
+      <div className="hidden sm:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
+        <CircleRight />
+      </div>
+      <DashboardLayout>
+        <div className="flex flex-col items-center lg:flex-row lg:items-start justify-center gap-6 2xl:gap-12">
+          {!isLoading && (
+            <div className="w-80 2xl:w-72 flex flex-col items-center justify-center text-center px-9 py-10 gap-8 rounded-2xl bg-white text-xl font-medium text-[#ABABAB] shadow-[3px_3px_10px_-1px_rgba(0,0,0,0.30)]">
+              <p
+                className={`cursor-pointer text-black ${
+                  activeMenu === "salon-time" &&
+                  "px-2 py-1 rounded-3xl bg-gray-200"
+                }`}
+                onClick={() => setActiveMenu("salon-time")}
+              >
+                Horaires d’ouverture
+              </p>
+              <p
+                className={`cursor-pointer text-black ${
+                  activeMenu === "salon-dressers" &&
+                  "px-2 py-1 rounded-3xl bg-gray-200"
+                }`}
+                onClick={() => setActiveMenu("salon-dressers")}
+              >
+                Hairdressers
+              </p>
+              <p className="cursor-pointer">Disponibilité de l’équipe</p>
+              <p className="cursor-pointer">Promotions clients</p>
+              <p className="cursor-pointer">Objectifs</p>
+              <p className="cursor-pointer">Autres </p>
+            </div>
+          )}
+          {activeMenu === "salon-time" && !isLoading && (
+            <>
+              <div className="relative flex items-center justify-center z-10 w-full pl-24 md:pl-auto overflow-auto py-12 px-7 bg-white rounded-2xl shadow-[3px_3px_10px_-1px_rgba(0,0,0,0.30)]">
+                <table>
+                  <tbody>
+                    <tr className="flex items-center justify-center">
+                      <td className="flex flex-col gap-16 pr-5">
+                        {updatedSlots.map((item, index) => {
+                          return (
+                            <div
+                              key={index}
+                              onClick={() => checkboxClickHandler(item)}
+                              className="flex items-center gap-5 cursor-pointer"
+                            >
+                              <div
+                                className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${
+                                  avaiableDays.includes(item.day)
+                                    ? "bg-gradient-to-b from-pink-500 to-orange-500 border-white"
+                                    : "border-[#767676]"
+                                }`}
+                              >
+                                <CheckedIcon width="15" height="10" />
+                              </div>
+                              <p className="text-xl text-[#767676] font-medium">
+                                {item.day}
+                              </p>
+                            </div>
+                          );
+                        })}
+                      </td>
+                      <td className="flex flex-col gap-12 border-l border-[rgba(171,171,171,0.20)] px-5">
+                        {updatedSlots.map((item, index) => {
+                          return (
+                            <div
+                              key={index}
+                              className="flex items-center justify-center gap-3"
+                            >
+                              <SlotDropdown
+                                disabled={!item.available}
+                                selectedItem={item.start}
+                              />
+                              <div className="w-5 border-t border-[#ABABAB]" />
+                              <SlotDropdown
+                                disabled={!item.available}
+                                selectedItem={item.end}
+                              />
+                            </div>
+                          );
+                        })}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td className="flex w-full items-center justify-end mt-3">
+                        <div className="flex items-center justify-center rounded-2xl text-lg">
+                          <p
+                            onClick={updateSlots}
+                            className={`py-2 px-3 rounded-2xl  text-sm ${
+                              !disableUpdate
+                                ? "bg-gradient-to-b from-pink-500 to-orange-500 text-white cursor-pointer"
+                                : "bg-gray-200 text-black cursor-default"
+                            }`}
+                          >
+                            Apply Change
+                          </p>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </>
+          )}
+          {(activeMenu === "salon-dressers" && !isLoading) && (
+            <div className="relative flex items-center justify-center w-full z-10 overflow-auto py-12 px-7 bg-white rounded-2xl shadow-[3px_3px_10px_-1px_rgba(0,0,0,0.30)]">
+              <HairdresserSlots />
+            </div>
+          )}
+        </div>
+      </DashboardLayout>
+    </div>
+  );
+};
+
+export default Settings;
