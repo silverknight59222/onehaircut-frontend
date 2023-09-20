@@ -554,13 +554,13 @@ const Hairstyles = () => {
               <div
                 className={
                   ethnicityFilters.length > 0
-                    ? "flex gap-4 rounded-full bg-stone-800 border border-[#EDEDED] p-1 text-sm text-white"
-                    : "flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373]"
+                    ? "flex gap-4 rounded-full bg-stone-800 border border-[#EDEDED] p-1 text-sm text-white shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)]"
+                    : "flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373] shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)]"
                 }
               >
                 <div className="px-4 cursor-pointer">Ethnic Groups</div>
               </div>
-              <div className="hidden group-hover:block absolute top-[30px] bg-white z-10 text-sm text-[#737373] rounded-lg border min-w-[134px]">
+              <div className="hidden group-hover:block absolute top-[30px] bg-white z-10 text-sm text-[#737373] rounded-lg border min-w-[134px] ">
                 {Ethnicity.map((item, index) => {
                   return (
                     <div
@@ -587,8 +587,8 @@ const Hairstyles = () => {
               <div
                 className={
                   genderFilters.length > 0
-                    ? "flex gap-4 rounded-full bg-stone-800 border border-[#EDEDED] p-1 text-sm text-white"
-                    : "flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373]"
+                    ? "flex gap-4 rounded-full bg-stone-800 border border-[#EDEDED] p-1 text-sm text-white shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)]"
+                    : "flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373] shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)]"
                 }
               >
                 <div className="px-4 cursor-pointer">Gender</div>
@@ -620,8 +620,8 @@ const Hairstyles = () => {
               <div
                 className={
                   lengthFilters.length > 0
-                    ? "flex gap-4 rounded-full bg-stone-800 border border-[#EDEDED] p-1 text-sm text-white"
-                    : "flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373]"
+                    ? "flex gap-4 rounded-full bg-stone-800 border border-[#EDEDED] p-1 text-sm text-white shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)]"
+                    : "flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373] shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)]"
                 }
               >
                 <div className="px-4 cursor-pointer">Length</div>
@@ -655,8 +655,8 @@ const Hairstyles = () => {
               className={
                 haircutList.length &&
                 selectedHaircutsMapping.length === haircutList.length
-                  ? "flex gap-4 rounded-full bg-stone-800 border border-[#EDEDED] p-1 text-sm text-white"
-                  : "flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373]"
+                  ? "flex gap-4 rounded-full bg-stone-800 border border-[#EDEDED] p-1 text-sm text-white shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)]"
+                  : "flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373] shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)]"
               }
               onClick={selectAllHaircuts}
             >
@@ -666,7 +666,7 @@ const Hairstyles = () => {
           <div className="relative flex">
             <input
               type="text"
-              className="min-w-[300px] text-sm py-2 px-4 outline-none rounded-full bg-white border border-[#EDEDED] shadow-[0px_11px_26px_0px_rgba(176,176,176,0.25)]"
+              className="min-w-[300px] text-sm py-2 px-4 outline-none rounded-full bg-white border border-[#EDEDED] shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)]"
               placeholder="Nom coiffure"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -703,7 +703,7 @@ const Hairstyles = () => {
           <h2 className="text-lg font-semibold text-center">
             Configurations des coiffures
           </h2>
-          {(selectedHaircutsMapping.length > 0 && activeMenu === 'new') && <div className="text-sm py-1 px-[10px] rounded-full bg-black text-white">{selectedHaircutsMapping.length}</div>}
+          {(selectedHaircutsMapping.length > 0 && activeMenu === 'new') && <div className="text-sm py-1 px-[10px] rounded-full bg-stone-800 text-white">{selectedHaircutsMapping.length}</div>}
           </div>
           <div className="flex items-center justify-center">
             {getSelectedImage() ? (
@@ -716,13 +716,13 @@ const Hairstyles = () => {
                 />
               </div>
             ) : (
-              <div className="mt-2 flex items-center justify-center w-36 h-36 bg-darkGrey border-1 border-black rounded-2xl ">
+              <div className="mt-2 flex items-center justify-center w-36 h-36 bg-zinc-200 border-1 border-black rounded-2xl shadow-md ">
                 Select Haircut
               </div>
             )}
           </div>
           <div className="flex flex-col items-center w-max gap-y-2 mt-4">
-            <div className="flex gap-3 flex-col md:flex-row items-baseline justify-center">
+            <div className="flex gap-3 flex-col md:flex-row items-baseline justify-begin">
               <div className="flex flex-col items-start gap-2 w-max">
                 <label htmlFor="prix" className="text-sm font-medium">
                   Prix de base
@@ -741,7 +741,7 @@ const Hairstyles = () => {
                   </p>
                 )}
               </div>
-              <div className="flex flex-col items-start gap-2 w-max mt-2">
+              <div className="flex flex-col items-start gap-2 w-max mt-2 flex space-x-11 ">
                 <label htmlFor="duration" className="text-sm font-medium">
                   Durée d’exécution de base
                 </label>
@@ -921,7 +921,7 @@ const Hairstyles = () => {
             </div>
             {!(activeMenu === "added" && selectedSalonHaircut.id >= 0) ? (
               <div className="flex items-center justify-center gap-4 mt-4">
-                <button className="text-white font-medium text-sm rounded-md px-4 py-2 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]">
+                <button className="text-white font-medium text-sm rounded-md px-4 py-2 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-md">
                   Ajouter
                 </button>
               </div>
@@ -961,17 +961,17 @@ const Hairstyles = () => {
                   className="shadow-md rounded-xl my-2 cursor-pointer"
                   onClick={() => selectHaircut(item)}
                 >
-                  <div className="relative w-max px-4 pt-4 bg-[#F5F5F5] rounded-t-xl">
+                  <div className="relative w-max px-4 pt-4 bg-gradient-to-r from-white via-stone-50 to-zinc-300 rounded-t-xl">
                     <div className="relative w-32 h-32">
                     <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public/${item.image}`} fill={true} alt="" />
                     </div>
-                    <div className="absolute top-5 right-5 w-6 h-6 rounded-full bg-[#D9D9D9]">
+                    <div className="absolute top-5 right-5 w-6 h-6 rounded-full bg-zinc-50">
                       {selectedHaircutsMapping.filter(
                         (haircut) => haircut.id === item.id
                       ).length > 0 && <SelectedIcon />}
                     </div>
                   </div>
-                  <div className="rounded-b-xl bg-gradient-to-r from-pinkGradientFrom via-pinkGradientVia to-pinkGradientTo">
+                  <div className="rounded-b-xl bg-gradient-to-r from-white via-stone-100 to-zinc-300">
                     <p className="rounded-b-xl flex items-center justify-center py-2 text-sm text-black font-medium">
                       {item.name}
                     </p>
@@ -991,7 +991,7 @@ const Hairstyles = () => {
                   onClick={() => selectSalonHaircut(index)}
                 >
                   <div className="relative w-max px-4 pt-4 bg-[#F5F5F5] rounded-t-xl">
-                    <div className="relative w-32 h-32">
+                    <div className=" ~ h-32">
                       <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public/${item.image}`} fill={true} alt="" />
                     </div>
                     <div className="absolute top-5 right-5 w-6 h-6 rounded-full bg-[#D9D9D9]">
