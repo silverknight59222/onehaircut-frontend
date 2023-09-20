@@ -17,7 +17,7 @@ const Welcome = () => {
   const router=useRouter()
   const user = getLocalStorage("user");
   const userId = user ? Number(JSON.parse(user).id) : null;
-  const haircut=JSON.parse(String(getLocalStorage("Haircut")))
+  const haircut=JSON.parse(String(getLocalStorage("haircut")))
   const [ethnicityFilters, setEthnicityFilters] = useState<string[]>([]);
   const [lengthFilters, setLengthFilters] = useState<string[]>([]);
   const [genderFilters, setGenderFilters] = useState<string>("");
@@ -192,7 +192,7 @@ const Welcome = () => {
     }
   };
   const onClickHaircut=(id: number, name: string)=>{
-    setLocalStorage("Haircut", JSON.stringify({id: id, name: name}))
+    setLocalStorage("haircut", JSON.stringify({id: id, name: name}))
     router.push(`/services`)
   }
 
