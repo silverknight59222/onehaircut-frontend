@@ -150,7 +150,7 @@ const Login = () => {
 							<p>Connexion</p>
 						</button>
 					</div>
-					<div className="w-full flex flex-row items-end justify-end gap-2 mt-10 mb-4">
+					<div className="w-full flex flex-row items-end justify-begin gap-2 mt-10 mb-4">
 						<p className="text-xs text-black mb-[3px]">Pas encore de compte ? </p>
 						<p className="text-black text-base border-b border-black transition duration-150 hover:border-secondary hover:text-secondary">
 							<Link href={{ pathname: '/signup' }}>Enregistrez-vous</Link>

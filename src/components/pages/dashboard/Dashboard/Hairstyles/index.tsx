@@ -554,7 +554,7 @@ const Hairstyles = () => {
               <div
                 className={
                   ethnicityFilters.length > 0
-                    ? "flex gap-4 rounded-full bg-gray-500 border border-[#EDEDED] p-1 text-sm text-white"
+                    ? "flex gap-4 rounded-full bg-stone-800 border border-[#EDEDED] p-1 text-sm text-white"
                     : "flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373]"
                 }
               >
@@ -587,7 +587,7 @@ const Hairstyles = () => {
               <div
                 className={
                   genderFilters.length > 0
-                    ? "flex gap-4 rounded-full bg-gray-500 border border-[#EDEDED] p-1 text-sm text-white"
+                    ? "flex gap-4 rounded-full bg-stone-800 border border-[#EDEDED] p-1 text-sm text-white"
                     : "flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373]"
                 }
               >
@@ -620,7 +620,7 @@ const Hairstyles = () => {
               <div
                 className={
                   lengthFilters.length > 0
-                    ? "flex gap-4 rounded-full bg-gray-500 border border-[#EDEDED] p-1 text-sm text-white"
+                    ? "flex gap-4 rounded-full bg-stone-800 border border-[#EDEDED] p-1 text-sm text-white"
                     : "flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373]"
                 }
               >
@@ -655,7 +655,7 @@ const Hairstyles = () => {
               className={
                 haircutList.length &&
                 selectedHaircutsMapping.length === haircutList.length
-                  ? "flex gap-4 rounded-full bg-gray-500 border border-[#EDEDED] p-1 text-sm text-white"
+                  ? "flex gap-4 rounded-full bg-stone-800 border border-[#EDEDED] p-1 text-sm text-white"
                   : "flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373]"
               }
               onClick={selectAllHaircuts}
@@ -678,16 +678,16 @@ const Hairstyles = () => {
           <div>
             <div className="flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373]">
               <div
-                className={`hover:bg-gray-500 hover:text-white rounded-full py-1 px-4 cursor-pointer transition duration-50 ${
-                  activeMenu === "added" && "bg-gray-500 text-white"
+                className={`hover:bg-stone-800 hover:text-white rounded-full py-1 px-4 cursor-pointer transition duration-50 ${
+                  activeMenu === "added" && "bg-stone-800 text-white"
                 }`}
                 onClick={() => setActiveMenu("added")}
               >
                 Show Added Haircuts
               </div>
               <div
-                className={`hover:bg-gray-500 hover:text-white rounded-full py-1 px-4 cursor-pointer transition duration-50 ${
-                  activeMenu === "new" && "bg-gray-500 text-white"
+                className={`hover:bg-stone-800 hover:text-white rounded-full py-1 px-4 cursor-pointer transition duration-50 ${
+                  activeMenu === "new" && "bg-stone-800 text-white"
                 }`}
                 onClick={onToggleHairstyle}
               >
