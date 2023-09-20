@@ -117,22 +117,26 @@ const Login = () => {
 							Connexion
 						</p>
 						<div className="w-full">
-							<div className="w-full h-[60px] p-[1px] flex items-center justify-center rounded-xl bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo">
-								<div className="w-full h-[58px] rounded-[11px] bg-white flex items-center justify-center">
-									<input
-										placeholder="Adresse email"
-										className="w-full h-[58px] rounded-[11px] outline-none px-4"
-										value={userInfo.email}
-										onChange={(e) => setUserMail(e.target.value)}
-									/>
-								</div>
-							</div>
-							{error.email && <p className="text-xs text-red-700 ml-4 mt-2">{error.email}*</p>}
+						    <label className="block text-left text-black mb-2 font-medium" htmlFor="emailInput">Adresse email</label>
+						    <div className="w-full h-[60px] p-[1px] flex items-center justify-center rounded-xl bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo">
+						        <div className="w-full h-[58px] rounded-[11px] bg-white flex items-center justify-center">
+						            <input
+						                id="emailInput"
+						                placeholder="Adresse email"
+						                className="w-full h-[58px] rounded-[11px] outline-none px-4"
+						                value={userInfo.email}
+						                onChange={(e) => setUserMail(e.target.value)}
+						            />
+						        </div>
+						    </div>
+						    {error.email && <p className="text-xs text-red-700 ml-4 mt-2">{error.email}*</p>}
 						</div>
-						<div className="w-full mt-8">
+						<div className="w-full mt-6">
+							<label className="block text-left text-black mb-2 font-medium" htmlFor="emailInput">Mot de passe</label>
 							<div className="w-full h-[60px] p-[1px] flex items-center justify-center rounded-xl bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo">
 								<div className="w-full h-[58px] rounded-[11px] bg-white flex items-center justify-center">
 									<input
+										id="passwordInput"
 										placeholder="Mot de passe"
 										type="password"
 										className="w-full h-[58px] rounded-[11px] outline-none px-4"
@@ -144,18 +148,37 @@ const Login = () => {
 							{error.password && <p className="text-xs text-red-700 ml-4 mt-2">{error.password}*</p>}
 						</div>
 						<button
-							className="text-white font-medium text-xl rounded-xl w-full h-14 my-8 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+							className="text-white font-medium text-xl rounded-xl w-full h-14 my-6 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)] transform hover:scale-105 transition-transform"
 							onClick={onLogin}
 						>
 							<p>Connexion</p>
 						</button>
 					</div>
-					<div className="w-full flex flex-row items-end justify-begin gap-2 mt-10 mb-4">
-						<p className="text-xs text-black mb-[3px]">Pas encore de compte ? </p>
-						<p className="text-black text-base border-b border-black transition duration-150 hover:border-secondary hover:text-secondary">
-							<Link href={{ pathname: '/signup' }}>Enregistrez-vous</Link>
-						</p>
+					<hr className="my-4"/>
+					<div className="w-full flex flex-row items-end justify-between gap-2 mt-4 mb-4">
+					    <div className="flex items-center gap-2">
+					        <p className="text-black text-base border-b border-black transition duration-150 hover:border-secondary hover:text-secondary">
+					            <Link href={{ pathname: '/signup' }}>Première connexion ?</Link>
+					        </p>
+					    </div>
+					    <div className="flex items-center gap-2">
+					        <p className="text-black text-base border-b border-black transition duration-150 hover:border-secondary hover:text-secondary">
+					            <Link href={{ pathname: '/forgot-password' }}>Mot de passe oublié ?</Link>
+					        </p>
+					    </div>
 					</div>
+					<div className="flex flex-col md:flex-row gap-4 mb-10 sm:mb-12 mt-10">
+					    <div className="w-full h-[120px] p-4 rounded-2xl bg-slate-50 flex flex-col justify-center items-center border-zinc-300 border-2">
+					        <div className="font-medium text-md mb-2" >
+					            Vous êtes un professionnel et n'avez pas encore de compte ? 
+					        </div>
+							<hr className="my-2 w-full"/>
+					        <p className="text-black text-lg font-semibold transition duration-150 hover:text-secondary transform hover:scale-110 transition-transform">
+					            <Link href={{ pathname: '/registration' }} className="border-b border-black hover:border-secondary ">Enregistrer mon salon ?</Link>
+					        </p>
+					    </div>
+					</div>
+
 				</div>
 			</div>
 		</>

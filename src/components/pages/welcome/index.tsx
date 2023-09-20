@@ -224,8 +224,8 @@ const Welcome = () => {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 mb-24 ">
           {haircuts().map((item, index) => {
-            return <div key={index} onClick={() => onClickHaircut(item.id, item.name)} className={`shadow-md rounded-xl my-2 cursor-pointer border hover:border-blue ${item.id===haircut?.id && 'border-secondary'}`}>
-              <div className="relative w-max px-4 pt-4 bg-gradient-to-r from-white via-stone-50 to-zinc-100 rounded-t-xl">
+            return <div key={index} onClick={() => onClickHaircut(item.id, item.name)} className={`shadow-md rounded-xl my-2 cursor-pointer border hover:outline outline-1 outline-stone-400 ${item.id===haircut?.id && 'border-secondary'}`}>
+              <div className="relative w-max px-4 pt-4 bg-gradient-to-r from-white via-stone-50 to-zinc-200 rounded-t-xl ">
                 <div className="relative w-48 h-48 ">
                   <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public${item.image}`} fill={true} alt="" className="rounded-t-xl" />
                   <div onClick={(e) => onWishlist(e, item.id, item.is_added_to_wishlist)} className="absolute right-2 top-2 cursor-pointer">
@@ -233,7 +233,7 @@ const Welcome = () => {
                   </div>
                 </div>
               </div>
-              <div className="rounded-b-xl bg-gradient-to-r from-white via-stone-50 to-zinc-100">
+              <div className="rounded-b-xl bg-gradient-to-r from-white via-stone-50 to-zinc-200">
                 <p className="rounded-b-xl flex items-center justify-center py-2 text-black font-medium">
                   {item.name}
                 </p>
