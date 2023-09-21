@@ -7,11 +7,13 @@ import userLoader from '@/hooks/useLoader';
 import useSnackbar from '@/hooks/useSnackbar';
 import { LogoCircle, LogoIcon } from "@/components/utilis/Icons";
 import Link from "next/link";
+import { EyeIcon, EyeClosedIcon } from "@/components/utilis/Icons";
 
 const Login = () => {
 	const router = useRouter();
 	const showSnackbar = useSnackbar();
 	const { loadingView } = userLoader();
+	const [showPassword, setShowPassword] = useState(false);
 
 	const defaultUserInfo = {
 		email: "",
@@ -111,7 +113,7 @@ const Login = () => {
 				<div className="mt-8">
 					<LogoIcon />
 				</div>
-				<div className="z-10 mt-8 md:mt-12 w-full md:w-[767px] md:rounded-3xl md:bg-white md:shadow-[0px_16px_58px_6px_rgba(172,172,172,0.15)] px-4 sm:px-16 md:px-24">
+				<div className="z-10 mt-8 md:mt-12 w-full md:w-[767px] md:rounded-3xl md:bg-white md:shadow-2xl px-4 sm:px-16 md:px-24">
 					<div className="flex flex-col items-center justify-center">
 						<p className="text-black font-medium text-3xl my-8 md:my-12">
 							Connexion
@@ -132,17 +134,20 @@ const Login = () => {
 						    {error.email && <p className="text-xs text-red-700 ml-4 mt-2">{error.email}*</p>}
 						</div>
 						<div className="w-full mt-6">
-							<label className="block text-left text-black mb-2 font-medium" htmlFor="emailInput">Mot de passe</label>
+							<label className="block text-left text-black mb-2 font-medium" htmlFor="passwordInput">Mot de passe</label>
 							<div className="w-full h-[60px] p-[1px] flex items-center justify-center rounded-xl bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo">
-								<div className="w-full h-[58px] rounded-[11px] bg-white flex items-center justify-center">
+								<div className="w-full h-[58px] rounded-[11px] bg-white flex items-center justify-between">
 									<input
 										id="passwordInput"
 										placeholder="Mot de passe"
-										type="password"
-										className="w-full h-[58px] rounded-[11px] outline-none px-4"
+										type={showPassword ? "text" : "password"}
+										className="w-full h-[58px] rounded-l-[11px] outline-none px-4"
 										value={userInfo.password}
 										onChange={(e) => setUserPassword(e.target.value)}
 									/>
+									<button onClick={() => setShowPassword(!showPassword)} className="p-4">
+										{showPassword ? <EyeClosedIcon /> : <EyeIcon />}
+									</button>
 								</div>
 							</div>
 							{error.password && <p className="text-xs text-red-700 ml-4 mt-2">{error.password}*</p>}
