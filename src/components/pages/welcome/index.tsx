@@ -222,7 +222,7 @@ const Welcome = () => {
         </p>
         <div className="flex flex-col md:flex-row gap-4 mb-10 sm:mb-10">
           <div className="px-4 py-6 rounded-2xl font-medium text-2xl cursor-pointer border-x-red-400 border-y-orange-400 shadow-md transform hover:scale-105 transition-transform hover:shadow-lg border-2 mt-8">
-            Prestation Unique / soins
+            Rechercher un soin / services uniquement
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 mb-24 ">
