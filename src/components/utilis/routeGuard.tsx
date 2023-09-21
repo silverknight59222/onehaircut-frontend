@@ -9,7 +9,7 @@ export const RouteGuard = ({ children }: any) => {
 	const isSalonAuthenticated = getLocalStorage('auth-token');
 	const userItem = getLocalStorage('user');
 	const user = userItem ? JSON.parse(userItem) : null;
-	let publicRoutes = ['/', '/signup', '/services', '/salons', '/registration'];
+	let publicRoutes = ['/', '/signup', '/services', '/salons', '/registration', '/book-salon', '/salon', '/payment', '/client-checkout'];
 	let professionalRoutes = ['/dashboard'];
 	let clientRoutes = ['/client/dashboard', '/client/favorites', '/client/filters', '/client/history', '/client/messages', '/client/portrait'];
 

@@ -47,7 +47,8 @@ const ServiceChoose = () => {
     const { loadingView } = userLoader();
     const router = useRouter()
     const dropdownRef = React.useRef() as React.MutableRefObject<HTMLInputElement>
-    const haircut=JSON.parse(String(getLocalStorage("haircut")))
+    const temp=getLocalStorage("haircut")
+    const haircut= temp ? JSON.parse(String(temp)) : null
 
     const getAllServices = () => {
         setIsLoading(true);
@@ -192,10 +193,10 @@ const ServiceChoose = () => {
                 <div className='flex flex-col items-center'>
                 <div className='w-full flex flex-col md:flex-row items-center justify-between mt-14'>
                     <div className='flex flex-col sm:flex-row items-center gap-5 mb-5 md:mb-0'>
-                        <p className='text-[#A0A0A0] text-lg font-medium bg-[#F7F7F7] rounded-lg px-7 py-3'>{haircut.name}</p>
+                    {haircut.name && <p className='text-[#A0A0A0] text-lg font-medium bg-[#F7F7F7] rounded-lg px-7 py-3'>{haircut.name}</p>}
                         {selectedService.length ? <p className='text-xl text-[#A0A0A0]'><span className='font-semibold'>Number of Services:</span> {selectedService.length}</p> : <p></p>}
                     </div>
-                    <button onClick={onContinue} className={`flex items-center justify-center text-lg text-white font-medium w-full md:w-52 h-14 rounded-xl px-4 bg-background-gradient`}>Continue</button>
+                    <button disabled={!haircut && !selectedService.length} onClick={onContinue} className={`flex items-center justify-center text-lg text-white font-medium w-full md:w-52 h-14 rounded-xl px-4 ${!haircut.id && !selectedService.length ? 'bg-[#D9D9D9]' : 'bg-background-gradient'}`}>Continue</button>
                 </div>
                     <div className='mt-8 mb-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-x-9 gap-y-5'>
                         {showServices().map((service, index) => {

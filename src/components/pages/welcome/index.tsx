@@ -17,13 +17,15 @@ const Welcome = () => {
   const router=useRouter()
   const user = getLocalStorage("user");
   const userId = user ? Number(JSON.parse(user).id) : null;
-  const haircut=JSON.parse(String(getLocalStorage("haircut")))
+  const temp=getLocalStorage("haircut")
+  const haircut= temp ? JSON.parse(String(temp)) : null
   const [ethnicityFilters, setEthnicityFilters] = useState<string[]>([]);
   const [lengthFilters, setLengthFilters] = useState<string[]>([]);
   const [genderFilters, setGenderFilters] = useState<string>("");
   const [filteredHaircuts, setFilteredHaircuts] = useState<Haircut[]>([]);
   const [search, setSearch] = useState<string>('');
   const showSnackbar = useSnackbar();
+  const [selectedHaircut,setSelectedHaircut]=useState<any>({id: '', name: ''})
 
   const getAllHaircuts=()=>{
     setIsLoading(true);
@@ -192,7 +194,17 @@ const Welcome = () => {
     }
   };
   const onClickHaircut=(id: number, name: string)=>{
-    setLocalStorage("haircut", JSON.stringify({id: id, name: name}))
+    if(id===selectedHaircut.id){
+      setSelectedHaircut({
+        id: null,
+        name: ''
+      })
+    }else{
+    setSelectedHaircut({id: id, name: name})
+    }
+  }
+  const onContinue=()=>{
+    setLocalStorage("haircut", JSON.stringify({id: selectedHaircut.id, name: selectedHaircut.name}))
     router.push(`/services`)
   }
 
@@ -208,6 +220,11 @@ const Welcome = () => {
       setIsLoggedIn(true);
     }
   }, []);
+  useEffect(()=>{
+    if(haircut){
+      setSelectedHaircut(haircut)
+    }
+  },[])
 
   return (
     <>
@@ -217,17 +234,17 @@ const Welcome = () => {
         <p className="mt-10 sm:mt-14 mb-6  md:w-[700px] text-black text-center font-semibold text-3xl px-2 md:px-10">
         Des doutes sur la finition ? prévisualisez{" "}
         </p>
-        <p className="text-4xl font-medium text-center mb-12">
+        <p className="text-4xl font-medium text-center">
         <span className=" font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-30 to-yellow-300">votre style !</span>
         </p>
-        <div className="flex flex-col md:flex-row gap-4 mb-10 sm:mb-10">
-          <div className="px-4 py-6 rounded-2xl font-medium text-2xl cursor-pointer border-x-red-400 border-y-orange-400 shadow-md transform hover:scale-105 transition-transform hover:shadow-lg border-2 mt-8">
+        <div className="flex flex-col md:flex-row gap-4 mb-10">
+          <div onClick={onContinue} className="px-4 py-6 rounded-2xl font-medium text-2xl cursor-pointer border-x-red-400 border-y-orange-400 shadow-md transform hover:scale-105 transition-transform hover:shadow-lg border-2 mt-8">
             Prestation Unique / soins
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 mb-24 ">
           {haircuts().map((item, index) => {
-            return <div key={index} onClick={() => onClickHaircut(item.id, item.name)} className={`shadow-md rounded-xl my-2 cursor-pointer border hover:outline outline-1 outline-stone-400 ${item.id===haircut?.id && 'border-secondary'}`}>
+            return <div key={index} onClick={() => onClickHaircut(item.id, item.name)} className={`shadow-md rounded-xl my-2 cursor-pointer border hover:outline outline-1 outline-stone-400 ${item.id===selectedHaircut.id && 'border-secondary'}`}>
               <div className="relative w-max px-4 pt-4 bg-gradient-to-r from-white via-stone-50 to-zinc-200 rounded-t-xl ">
                 <div className="relative w-48 h-48 ">
                   <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public${item.image}`} fill={true} alt="" className="rounded-t-xl" />

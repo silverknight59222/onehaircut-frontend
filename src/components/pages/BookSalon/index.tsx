@@ -3,17 +3,14 @@ import DatePicker from "@/components/UI/DatePicker";
 import Navbar from "@/components/shared/Navbar";
 import {
   CalenderIcon,
-  LeftArrowIcon,
-  RightArrowIcon,
 } from "@/components/utilis/Icons";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const BookSalon = () => {
   const [selectedSlot, setSelectedSlot] = useState(4);
   const [selectedHairdresser, setSelectedHairdresser] = useState(0);
-  const [dayIndex,setDayIndex]=useState(0)
   const [showCalender,setShowCalender]=useState(false)
   const [selectedDate,setSelectedDate]=useState<Date>()
   const route=useRouter()
@@ -43,33 +40,17 @@ const BookSalon = () => {
     { rating: "5.0", img: "/assets/hairdresser3.png" },
     { rating: "5.0", img: "/assets/hairdresser4.png" },
   ];
-  const sliderData=['Tuesday April 2023', 'Wednesday April 2023', 'Thursday April 2023']
-  const totalDays=sliderData.length
-  const handleDayNext = () => {
-    const newIndex = dayIndex + 1;
-    setDayIndex(
-      newIndex > totalDays - 1 ? 0 : newIndex
-    );
-  }
-  const handleDayPrevious = () => {
-    const newIndex = dayIndex - 1;
-    setDayIndex(newIndex < 0 ? totalDays - 1 : newIndex);
-  }
-  interface Days{
-    item: string,
-    index: number
-  }
-  const Days=({item, index}: Days)=>{
-    if (dayIndex === index) {
-      return <p className="text-2xl font-medium text-center">
-        {item}
-      </p>
-    }
+  const DateFormat=(date: Date)=>{
+    const day=`${String(date)[0]}${String(date)[1]}${String(date)[2]}`
+    const formattedDate=`${day} ${new Date(date).getDate()}-${new Date(date).getMonth()}-${new Date(date).getFullYear()}`
+    return formattedDate
   }
   const onSelectedDate=(date: Date)=>{
     setSelectedDate(date)
-    console.log(date)
   }
+  useEffect(()=>{
+    setSelectedDate(new Date())
+  },[])
   return (
     <div>
       <Navbar isBookSalon={true}/>
@@ -132,7 +113,7 @@ const BookSalon = () => {
             })}
           </div>
         </div>
-        <div className="w-full md:w-[750px] lg:w-[1000px] xl:w-[1250px] border-2 border-[#D0D0D0] py-10 rounded-[54px] mt-20">
+        <div className="w-full md:w-[750px] lg:w-[940px] border-2 border-[#D0D0D0] py-10 rounded-[54px] mt-20">
           <div className="flex flex-col sm:flex-row items-center justify-between px-4 sm:px-10">
             <div className="relative">
               <div className="cursor-pointer" onClick={() => setShowCalender(!showCalender)}>
@@ -142,26 +123,16 @@ const BookSalon = () => {
                 <DatePicker close={()=>setShowCalender(false)} onSelectedDate={onSelectedDate}/>
               }
             </div>
-            <div className="flex items-center gap-2 mt-10 sm:mt-0">
-            <div className="cursor-pointer" onClick={handleDayPrevious}>
-              <LeftArrowIcon />
-            </div>
-              {sliderData.map((item,index)=>{
-                return <Days key={index} item={item} index={index}/>
-              })}
-              <div className="cursor-pointer" onClick={handleDayNext}>
-                <RightArrowIcon />
-              </div>
-            </div>
+            <p className='text-[#A0A0A0] text-lg font-medium bg-[#F7F7F7] rounded-lg px-6 py-3'>{selectedDate && DateFormat(selectedDate)}</p>
           </div>
           <div className="flex items-center justify-center mt-12 mb-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-14">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-7">
               {slots.map((slot, index) => {
                 return (
                   <div
                     key={index}
                     onClick={() => setSelectedSlot(index)}
-                    className={`w-44 h-16 flex items-center justify-center text-2xl font-semibold border rounded-[20px] cursor-pointer ${
+                    className={`w-32 h-14 flex items-center justify-center text-xl font-semibold border rounded-[20px] cursor-pointer ${
                       slot.isDisable ? "text-[#AEAEAE]" : "text-black"
                     } ${
                       selectedSlot === index

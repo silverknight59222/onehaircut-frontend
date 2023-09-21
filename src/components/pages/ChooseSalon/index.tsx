@@ -145,7 +145,7 @@ const SalonChoice = () => {
                                         </div>
                                         <div className='relative w-48 h-48'>
                                             <Image
-                                                src={salonImage.length ? salonImage[index] : salon.logo}
+                                                src={salonImage.length ? salonImage[index].includes('api-server') ? salonImage[index] : `https://api-server.onehaircut.com/public${salonImage[index]}` : salon.logo.includes('api-server') ? salon.logo : `https://api-server.onehaircut.com/public${salon.logo}`}
                                                 fill={true}
                                                 alt="image"
                                             />

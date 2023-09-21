@@ -155,7 +155,7 @@ const SearchSalon = ({salonId}: SearchSalonProps) => {
                   <div key={index}>
                     <div className="relative w-52 lg:w-64 h-52 lg:h-64 rounded-[20px]">
                       <Image
-                        src={hairdresser.profile_image.includes('https://api-server.onehaircut.com/public') ? hairdresser.profile_image : `https://api-server.onehaircut.com/public${hairdresser.profile_image}`}
+                        src={hairdresser.profile_image && hairdresser.profile_image.includes('https://api-server.onehaircut.com/public') ? hairdresser.profile_image : `https://api-server.onehaircut.com/public${hairdresser.profile_image}`}
                         alt=""
                         fill={true}
                         className="rounded-[20px]"

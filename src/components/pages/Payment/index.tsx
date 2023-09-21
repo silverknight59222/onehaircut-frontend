@@ -63,7 +63,7 @@ const Index = () => {
           </div>
           <div className="flex items-center justify-center">
             <button
-              onClick={() => router.push("/checkout")}
+              onClick={() => router.push("/client-checkout")}
               className="w-60 h-14 rounded-xl text-xl text-white font-semibold bg-background-gradient shadow-[0px_17px_36px_0px_rgba(255,125,60,0.25)] mt-10"
             >
               Vers le paiement{" "}
