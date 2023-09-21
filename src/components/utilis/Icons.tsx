@@ -2797,3 +2797,11 @@ export const EyeIcon = () => {
   </svg>
   );
 };
+
+export const TotheTopIcon = () => {
+  return (
+    <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 16 10">
+      <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.086 7.293 8.5 1.707a1 1 0 0 0-1.414 0L1.5 7.293A1 1 0 0 0 2.207 9H13.38a1 1 0 0 0 .707-1.707Z"/>
+    </svg>
+  );
+};

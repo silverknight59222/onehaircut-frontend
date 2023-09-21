@@ -10,6 +10,7 @@ import {
   SearcIcon,
   SelectedIcon,
 } from "@/components/utilis/Icons";
+import ScrollToTopButton from "@/components/utilis/Helper";
 
 export interface HaircutDetails {
   id: number;
@@ -558,7 +559,7 @@ const Hairstyles = () => {
                     : "flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373] shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)]"
                 }
               >
-                <div className="px-4 cursor-pointer">Ethnic Groups</div>
+                <div className="px-4 cursor-pointer">Groupe Ethnique</div>
               </div>
               <div className="hidden group-hover:block absolute top-[30px] bg-white z-10 text-sm text-[#737373] rounded-lg border min-w-[134px] ">
                 {Ethnicity.map((item, index) => {
@@ -591,7 +592,7 @@ const Hairstyles = () => {
                     : "flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373] shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)]"
                 }
               >
-                <div className="px-4 cursor-pointer">Gender</div>
+                <div className="px-4 cursor-pointer">Genre</div>
               </div>
               <div className="hidden group-hover:block absolute top-[30px] bg-white z-10 text-sm text-[#737373] rounded-lg border min-w-[134px]">
                 {Gender.map((item, index) => {
@@ -624,7 +625,7 @@ const Hairstyles = () => {
                     : "flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373] shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)]"
                 }
               >
-                <div className="px-4 cursor-pointer">Length</div>
+                <div className="px-4 cursor-pointer">Longueur</div>
               </div>
               <div className="hidden group-hover:block absolute top-[30px] bg-white z-10 text-sm text-[#737373] rounded-lg border min-w-[134px]">
                 {Length.map((item, index) => {
@@ -660,7 +661,7 @@ const Hairstyles = () => {
               }
               onClick={selectAllHaircuts}
             >
-              <div className="hover:bg-stone-800 hover:text-white rounded-full px-4 cursor-pointer transform hover:scale-110 transition-transform">Select All</div>
+              <div className="hover:bg-stone-800 hover:text-white rounded-full px-4 cursor-pointer transform hover:scale-105 transition-transform">Select All</div>
             </div>
           </div>
           <div className="relative flex">
@@ -678,7 +679,7 @@ const Hairstyles = () => {
           <div>
             <div className="flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373]">
               <div
-                className={`hover:bg-stone-800 hover:text-white rounded-full py-1 px-4 cursor-pointer transition duration-50 ${
+                className={`hover:bg-stone-100 hover:text-black rounded-full py-1 px-4 cursor-pointer transition duration-50 ${
                   activeMenu === "added" && "bg-stone-800 text-white"
                 }`}
                 onClick={() => setActiveMenu("added")}
@@ -686,7 +687,7 @@ const Hairstyles = () => {
                 Show Added Haircuts
               </div>
               <div
-                className={`hover:bg-stone-800 hover:text-white rounded-full py-1 px-4 cursor-pointer transition duration-50 ${
+                className={`hover:bg-stone-100 hover:text-black rounded-full py-1 px-4 cursor-pointer transition duration-50 ${
                   activeMenu === "new" && "bg-stone-800 text-white"
                 }`}
                 onClick={onToggleHairstyle}
@@ -946,7 +947,7 @@ const Hairstyles = () => {
               </div>
             )}
             {error.select_haircut && (
-              <p className="text-xs text-red-700 ml-3 mt-1">
+              <p className="text-xs text-red-900 ml-3 mt-1">
                 {error.select_haircut}*
               </p>
             )}

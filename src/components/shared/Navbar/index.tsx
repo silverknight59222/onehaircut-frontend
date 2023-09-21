@@ -167,14 +167,14 @@ import UserProfile from "@/components/UI/UserProfile";
                 <>
               <div ref={EthnicityDesktopRef} className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
                 <p
-                  className={showDesktopEthnicity ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7"}
+                  className={showDesktopEthnicity ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7 hover:bg-white rounded-xl py-2 px-7 "}
                   onClick={() => {
                     setShowDesktopGender(false);
                     setShowDesktopLength(false);
                     setShowDesktopEthnicity(!showDesktopEthnicity);
                   }}
                 >
-                  Ethinicity
+                  Ethinicit&eacute;
                 </p>
                 {showDesktopEthnicity && (
                   <div className="absolute top-[75px] -ml-2 z-20 flex flex-col items-center justify-center w-44 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
@@ -182,11 +182,11 @@ import UserProfile from "@/components/UI/UserProfile";
                       return (
                         <div
                           key={index}
-                          className="flex w-full cursor-pointer mb-[19px]"
+                          className="flex w-full cursor-pointer mb-[19px] transform hover:scale-110"
                           onClick={() => onClickEthnicityCheckbox(item.name)}
                         >
                           <div
-                            className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${
+                            className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105 ${
                               ethnicityFilters.includes(item.name)
                                 ? "bg-gradient-to-b from-pink-500 to-orange-500"
                                 : "bg-[#D6D6D6]"
@@ -203,14 +203,14 @@ import UserProfile from "@/components/UI/UserProfile";
               </div>
               <div ref={GenderDesktopRef} className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
                 <p
-                  className={showDesktopGender ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7"}
+                  className={showDesktopGender ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7 py-2 px-7 hover:bg-white rounded-xl py-2 px-7 "}
                   onClick={() => {
                     setShowDesktopEthnicity(false);
                     setShowDesktopLength(false);
                     setShowDesktopGender(!showDesktopGender);
                   }}
                 >
-                  Gender
+                  Genre
                 </p>
                 {showDesktopGender && (
                   <div className="absolute top-[75px] -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
@@ -218,11 +218,11 @@ import UserProfile from "@/components/UI/UserProfile";
                       return (
                         <div
                           key={index}
-                          className="flex w-full cursor-pointer mb-[19px]"
+                          className="flex w-full cursor-pointer mb-[19px] transform hover:scale-110"
                           onClick={() => onClickGenderCheckbox(item.name)}
                         >
                           <div
-                            className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${
+                            className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  transform hover:scale-105 ${
                               genderFilters.includes(item.name)
                                 ? "bg-gradient-to-b from-pink-500 to-orange-500"
                                 : "bg-[#D6D6D6]"
@@ -239,14 +239,14 @@ import UserProfile from "@/components/UI/UserProfile";
               </div>
               <div ref={LengthDesktopRef} className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
                 <p
-                  className={showDesktopLength ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7"}
+                  className={showDesktopLength ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7 py-2 px-7 hover:bg-white rounded-xl py-2 px-7 "}
                   onClick={() => {
                     setShowDesktopEthnicity(false);
                     setShowDesktopGender(false);
                     setShowDesktopLength(!showDesktopLength);
                   }}
                 >
-                  Length
+                  Longueur
                 </p>
                 {showDesktopLength && (
                   <div className="absolute top-[75px] -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
@@ -254,11 +254,11 @@ import UserProfile from "@/components/UI/UserProfile";
                       return (
                         <div
                           key={index}
-                          className="flex w-full cursor-pointer mb-[19px]"
+                          className="flex w-full cursor-pointer mb-[19px]  transform hover:scale-110"
                           onClick={() => onClickLengthCheckbox(item.name)}
                         >
                           <div
-                            className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${
+                            className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  transform hover:scale-105 ${
                               lengthFilters.includes(item.name)
                                 ? "bg-gradient-to-b from-pink-500 to-orange-500"
                                 : "bg-[#D6D6D6]"
