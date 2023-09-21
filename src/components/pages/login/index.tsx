@@ -153,7 +153,7 @@ const Login = () => {
 							{error.password && <p className="text-xs text-red-700 ml-4 mt-2">{error.password}*</p>}
 						</div>
 						<button
-							className="text-white font-medium text-xl rounded-xl w-full h-14 my-6 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)] transform hover:scale-105 transition-transform"
+							className="text-white font-medium text-xl rounded-xl w-full h-14 my-6 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_7px_12px_0px_rgba(255,125,60,0.25)] transform hover:scale-105 transition-transform transition-duration:2000ms"
 							onClick={onLogin}
 						>
 							<p>Connexion</p>
