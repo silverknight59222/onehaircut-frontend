@@ -4,6 +4,8 @@ import react, { useEffect, useState } from "react";
 import userLoader from "@/hooks/useLoader";
 import useSnackbar from "@/hooks/useSnackbar";
 import BaseMultiSelectbox from "@/components/UI/BaseMultiSelectbox";
+import { CheckedIcon, DownArrow } from "@/components/utilis/Icons";
+import React from "react";
 interface HairdresserSlot {
   id: string;
   status: number;
@@ -28,7 +30,6 @@ export const HairdresserSlots = () => {
   const { loadingView } = userLoader();
   const showSnackbar = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
-  const [hairDressers, setHairDressers] = useState([]);
   const [selectedSlot, setSelectedSlot] = useState<HairdresserSlot>();
   const [hairdressersList, setHairdressersList] = useState<
     HairdressersWithSlots[]
@@ -37,7 +38,7 @@ export const HairdresserSlots = () => {
     id: 0,
     hair_salon_id: 0,
     profile_image: "",
-    name: "-",
+    name: "",
     avatar: {
       image: "",
     },
@@ -55,20 +56,48 @@ export const HairdresserSlots = () => {
   };
   const [selectedSalonHairDresser, setSelectedSalonHairDresser] =
     useState<HairdressersWithSlots>(defaultHairDresser);
+  const [isDropdown, setIsDropdown] = useState(false);
+  const [selectedItems, setSelectedItems] = useState<string>("");
+  const dropdownRef =
+    React.useRef() as React.MutableRefObject<HTMLInputElement>;
 
+  const checkboxClickHandler = (value: string) => {
+    if (selectedItems === value) {
+      setSelectedItems(() => "");
+    } else {
+      setSelectedItems(value);
+    }
+  };
+  const closeSelectBox = ({ target }: MouseEvent): void => {
+    if (!dropdownRef.current?.contains(target as Node)) {
+      setIsDropdown(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", closeSelectBox);
+    return () => {
+      document.removeEventListener("click", closeSelectBox);
+    };
+  }, []);
+  useEffect(() => {
+    checkboxClickHandler(selectedItems);
+  }, [selectedItems]);
   const getAllHairDresser = async () => {
     const user = getLocalStorage("user");
     const userId = user ? Number(JSON.parse(user).id) : null;
     if (userId) {
       setIsLoading(true);
       await dashboard.getAllHairDressers(userId).then((resp) => {
-        if (resp.data.data.length) {
+        if(selectedSalonHairDresser.name) {
+          const Hairdresser = selectedSalonHairDresser.name;
+          setSelectedSalonHairDresser(defaultHairDresser);
+          setSelectedSlot(defaultHairDresser.slots[0])
+          setHairdressersList([]);
           setHairdressersList(resp.data.data);
-          let hairdressers: any = [];
-          resp.data.data.forEach((hairdresser: HairdressersWithSlots) => {
-            hairdressers.push({ name: hairdresser.name });
-          });
-          setHairDressers(hairdressers);
+          setSelectedSalonHairDresser(resp.data.data.filter((dresser:HairdressersWithSlots)=> dresser.name === Hairdresser)[0]);
+        } else {
+          setHairdressersList(resp.data.data);
         }
         setIsLoading(false);
       });
@@ -93,9 +122,7 @@ export const HairdresserSlots = () => {
     await dashboard
       .updateSalonSlot(Number(selectedSlot?.id), data)
       .then((resp) => {
-        getAllHairDresser();
-        setSelectedSlot(defaultHairDresser.slots[0]);
-        setSelectedSalonHairDresser(defaultHairDresser);
+        getAllHairDresser()
         showSnackbar("success", resp.data.message);
       })
       .catch((err) => {
@@ -110,28 +137,62 @@ export const HairdresserSlots = () => {
   }, []);
 
   return (
-    <div>
+    <div className="w-full h-full">
       {isLoading && loadingView()}
       {!isLoading && (
-        <div className="gap-7 w-full min-h-[700px]">
-          <div className="block rounded-2xl border-2 border-gray-200 w-full h-full px-16 py-4">
-            <div className="flex items-center justify-between my-2 w-full">
+        <div className="gap-7 w-full h-[700px] overflow-auto">
+          <div className="block rounded-2xl border-2 border-gray-200 w-full h-full px-6 py-4">
+            <div className="flex flex-col md:flex-row items-center justify-between my-2 w-full gap-3">
               <div>
-                <BaseMultiSelectbox
-                  dropdownItems={hairDressers}
-                  dropdownTitle={"Select a hairdresser"}
-                  getActiveFilters={getSelectedHairdresser}
-                />
+                <div ref={dropdownRef} className="relative w-60">
+                  <button
+                    onClick={() => setIsDropdown(!isDropdown)}
+                    className={
+                      selectedItems.length
+                        ? "flex items-center justify-center gap-8 font-medium rounded-xl h-[52px] pl-3 pr-4 bg-gray-400 text-white shadow-[0px_15px_18px_0px_rgba(0, 0, 0, 0.14)]"
+                        : "flex items-center justify-center gap-8 bg-[#F7F7F7] font-medium rounded-xl h-[52px] pl-3 pr-4 shadow-[0px_15px_18px_0px_rgba(0, 0, 0, 0.14)]"
+                    }
+                  >
+                    {selectedSalonHairDresser.name
+                      ? selectedSalonHairDresser.name
+                      : "Select hairdresser"}
+                    <DownArrow
+                      color={selectedItems.length ? "white" : "#000"}
+                    />
+                  </button>
+                  {isDropdown && (
+                    <div className="mt-2 z-10 absolute w-full rounded-xl border border-checkbox bg-white p-6">
+                      {hairdressersList.map((item, index) => {
+                        return (
+                          <div
+                            key={index}
+                            onClick={() => getSelectedHairdresser(item.name)}
+                            className="flex cursor-pointer mb-[19px]"
+                          >
+                            <div
+                              className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${selectedSalonHairDresser.name === item.name
+                                  ? "bg-gradient-to-b from-pink-500 to-orange-500"
+                                  : "bg-[#D6D6D6]"
+                                }`}
+                            >
+                              <CheckedIcon />
+                            </div>
+                            <p className="ml-2">{item.name}</p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
               </div>
               {selectedSalonHairDresser.id > 0 && (
                 <div className="flex items-center justify-center rounded-2xl text-lg">
                   <p
                     onClick={() => ChangeStatus()}
-                    className={`py-2 px-3 rounded-2xl  text-sm ${
-                      selectedSlot
+                    className={`py-3 px-4 rounded-2xl  text-sm ${selectedSlot
                         ? "bg-gradient-to-b from-pink-500 to-orange-500 text-white cursor-pointer"
                         : "bg-gray-200 text-black cursor-default"
-                    }`}
+                      }`}
                   >
                     Change Status
                   </p>
@@ -139,20 +200,21 @@ export const HairdresserSlots = () => {
               )}
             </div>
             {selectedSalonHairDresser.id ? (
-              <div className="flex items-center justify-center gap-4 flex-wrap">
+              <div className="flex items-center justify-center gap-4 flex-wrap mt-4 w-full">
                 {selectedSalonHairDresser.slots.map((slot, index) => {
                   return (
                     <div
                       key={index}
                       className={`flex items-center justify-center py-2 px-3 text-basefont-medium border-2 rounded-xl w-40 border-gray-200 cursor-pointer
-            ${
-              slot.status === 1
-                ? "bg-[#FFE7DF] text-[#FF7143]"
-                : "bg-white text-black"
-            } ${
-                        slot.id === selectedSlot?.id &&
-                        "bg-gradient-to-b from-pink-500 to-orange-500 text-white"
-                      }`}
+                      ${slot.status === 1
+                          && "bg-white text-black"
+                        }
+                        ${slot.status === 0
+                          && "bg-white text-black opacity-50"
+                        } 
+                        ${slot.id === selectedSlot?.id &&
+                          "!bg-[#FFE7DF] !text-[#FF7143] !opacity-100"
+                          }`}
                       onClick={() => setSelectedSlot(slot)}
                     >
                       {slot.start} - {slot.end}
@@ -161,7 +223,7 @@ export const HairdresserSlots = () => {
                 })}
               </div>
             ) : (
-              <div className="w-[400px] my-16">
+              <div className=" my-16">
                 The time slots of selected hairdresser will show here
               </div>
             )}
