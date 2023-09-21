@@ -34,7 +34,7 @@ function ScrollToTopButton() {
         <button 
             onClick={scrollTop} 
             style={{display: isVisible ? 'block' : 'none'}}
-            className="fixed bottom-10 right-10 p-4 bg-stone-900 text-sm text-white px-6 py-2 rounded-full transform hover:scale-105 transition-transform"
+            className="fixed bottom-10 right-10 p-4 bg-stone-200 text-sm text-white px-6 py-2 rounded-lg transform hover:scale-105 transition-transform"
         >
             <TotheTopIcon />
             

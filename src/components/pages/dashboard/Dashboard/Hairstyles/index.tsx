@@ -922,7 +922,7 @@ const Hairstyles = () => {
             </div>
             {!(activeMenu === "added" && selectedSalonHaircut.id >= 0) ? (
               <div className="flex items-center justify-center gap-4 mt-4">
-              <button onClick={addSalonHaircuts} className="text-white font-medium text-sm rounded-md px-4 py-2 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-md transform hover:scale-110 transition-transform">
+              <button onClick={addSalonHaircuts} className="text-white font-medium text-sm rounded-md px-4 py-2 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-md transform hover:scale-110 transition-transform hover:shadow-[0px_7px_12px_0px_rgba(255,125,60,0.25)]">
                   Ajouter
               </button>
           </div>
@@ -930,19 +930,19 @@ const Hairstyles = () => {
             ) : (
               <div className="flex items-center justify-center gap-4 mt-4 w-full">
                 <button
-                  className="w-full text-white font-medium text-sm rounded-md px-4 py-2 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+                  className="w-full text-black font-medium text-sm rounded-md px-4 py-2 bg-white border border-x-red-500 border-y-orange-500 transform hover:scale-105 transition-transform hover:shadow-md"
                   onClick={() => {
                     setForm(defaultFormDetails);
                     setSelectedSalonHaircut(defaultHaircut);
                   }}
                 >
-                  Clear
+                  Annuler
                 </button>
                 <button
                   onClick={updateSalonHaircuts}
-                  className="w-full text-white font-medium text-sm rounded-md px-4 py-2 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+                  className="w-full text-white font-medium text-sm rounded-md px-4 py-2 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo transform hover:scale-105 transition-transform hover:shadow-[0px_7px_12px_0px_rgba(255,125,60,0.25)]"
                 >
-                  Update
+                  mettre &agrave; jour
                 </button>
               </div>
             )}
@@ -989,18 +989,18 @@ const Hairstyles = () => {
               return (
                 <div
                   key={index}
-                  className="shadow-md rounded-xl my-2 cursor-pointer "
+                  className="shadow-md rounded-xl my-2 cursor-pointer bg-zinc-200"
                   onClick={() => selectSalonHaircut(index)}
                 >
-                  <div className="relative w-max px-4 pt-4 bg-[#F5F5F5] rounded-t-xl">
-                    <div className=" ~ h-32">
+                  <div className="relative w-max px-4 pt-4 bg-gradient-to-r from-white via-stone-50 to-red-200 rounded-t-xl ">
+                    <div className="relative w-32 h-32">
                       <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public/${item.image}`} fill={true} alt="" />
                     </div>
-                    <div className="absolute top-5 right-5 w-6 h-6 rounded-full bg-[#D9D9D9]">
+                    <div className="absolute top-5 right-5 w-6 h-6 rounded-full bg-stone-50 transform hover:scale-125 transition-transform ">
                       {selectedSalonHaircut?.id === item.id && <SelectedIcon />}
                     </div>
                   </div>
-                  <div className="rounded-b-xl bg-gradient-to-r from-pinkGradientFrom via-pinkGradientVia to-pinkGradientTo">
+                  <div className="rounded-b-xl bg-gradient-to-r from-white via-red-50 to-red-200">
                     <p className="rounded-b-xl flex items-center justify-center py-2 text-sm text-black font-medium">
                       {item.name}
                     </p>
