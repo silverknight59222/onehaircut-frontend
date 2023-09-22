@@ -72,12 +72,12 @@ const Step5 = () => {
                   Billing Detail
                 </p>
                 <div className="text-black text-lg mt-5">
-                  {haircut.name ? <p><span className="font-semibold">Haircut: </span>{haircut.name}</p> : '-'}
+                  {haircut ? <p><span className="font-semibold">Haircut: </span>{haircut.name}</p> : ''}
                   {selectedServices.length ? <p><span className="font-semibold mt-5">Services: </span> 
                   {selectedServices.map((item,index)=>{
                     return <p key={index}>{++index}. {item}</p>
                   })}
-                  </p> : '-'}
+                  </p> : ''}
                 </div>
               </div>
               <div className="bg-white px-4 py-8 mt-7 w-full">

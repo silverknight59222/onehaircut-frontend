@@ -1,4 +1,5 @@
 "use client";
+import { client } from "@/api/clientSide";
 import DatePicker from "@/components/UI/DatePicker";
 import Navbar from "@/components/shared/Navbar";
 import {
@@ -7,52 +8,91 @@ import {
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
+import userLoader from "@/hooks/useLoader";
+import { Hairdresser, Slot } from "@/types";
+import { getLocalStorage, setLocalStorage } from "@/api/storage";
 
 const BookSalon = () => {
-  const [selectedSlot, setSelectedSlot] = useState(4);
+  const [selectedSlot, setSelectedSlot] = useState<number|null>();
   const [selectedHairdresser, setSelectedHairdresser] = useState(0);
   const [showCalender,setShowCalender]=useState(false)
   const [selectedDate,setSelectedDate]=useState<Date>()
+  const [hairDressers,setHairDressers]=useState<Hairdresser[]>([])
   const route=useRouter()
+  const [isLoading, setIsLoading] = useState(false);
+  const [slots,setSlots]=useState<Slot[]>([])
+  const { loadingView } = userLoader();
+  const salonId=getLocalStorage('selectedSalon')
   const items = [
     { name: "Type de coiffure", desc: "Curly" },
     { name: "Couleur", desc: "Blond" },
     { name: "Durée", desc: "2 heures " },
     { name: "Lieu", desc: "à domicile" },
   ];
-  const slots = [
-    { name: "09:00 ", isDisable: false },
-    { name: "13:00 ", isDisable: false },
-    { name: "17:00 ", isDisable: false },
-    { name: "09:30 ", isDisable: false },
-    { name: "13:30 ", isDisable: false },
-    { name: "17:30 ", isDisable: false },
-    { name: "09:00 ", isDisable: true },
-    { name: "13:00 ", isDisable: true },
-    { name: "17:00 ", isDisable: false },
-    { name: "09:30 ", isDisable: false },
-    { name: "13:30 ", isDisable: true },
-    { name: "17:30 ", isDisable: false },
-  ];
-  const hairdressers = [
-    { rating: "4.9", img: "/assets/hairdresser1.png" },
-    { rating: "4.8", img: "/assets/hairdresser2.png" },
-    { rating: "5.0", img: "/assets/hairdresser3.png" },
-    { rating: "5.0", img: "/assets/hairdresser4.png" },
-  ];
-  const DateFormat=(date: Date)=>{
+
+  const getAllHairDresser = async () => {
+    if(salonId){
+    setIsLoading(true);
+    await client.getSalonDetail(salonId)
+      .then((resp) => {
+        setHairDressers(resp.data.data[0].salon_hairdressers)
+        setSelectedHairdresser(resp.data.data[0].salon_hairdressers[0].id)
+    }).catch(error=>{
+      console.log(error)
+    })
+    .finally(()=>{
+      setIsLoading(false);
+    })
+  }
+  };
+
+  const getSlots = async () => {
+      setIsLoading(true);
+      if(selectedHairdresser && selectedDate){
+      const data={
+        date: DateFormat(selectedDate, true)
+      }
+      await client.getSlots(selectedHairdresser, data)
+        .then((resp) => {
+          if (resp.data.data.length) {
+            setSlots(resp.data.data);
+          }          
+        })
+        .catch(err=>console.log(err))
+        .finally(()=>{
+          setIsLoading(false);
+        })
+      }
+  };
+
+  const DateFormat=(date: Date, isPayload?: boolean)=>{
     const day=`${String(date)[0]}${String(date)[1]}${String(date)[2]}`
-    const formattedDate=`${day} ${new Date(date).getDate()}-${new Date(date).getMonth()}-${new Date(date).getFullYear()}`
-    return formattedDate
+    const formattedDate=`${new Date(date).getFullYear()}-${new Date(date).getMonth()}-${new Date(date).getDate()}`
+    if(isPayload){
+      return formattedDate
+    }else{
+      return day + ' ' + formattedDate
+    }
   }
   const onSelectedDate=(date: Date)=>{
     setSelectedDate(date)
   }
+
+  const onContinue=()=>{
+    setLocalStorage('slotData', JSON.stringify({hairDresserId: selectedHairdresser, slot: selectedSlot}))
+    route.push('/payment')
+  }
+
   useEffect(()=>{
     setSelectedDate(new Date())
+    getAllHairDresser()
   },[])
+  useEffect(()=>{
+    getSlots()
+  },[selectedHairdresser, selectedDate])
   return (
     <div>
+      {isLoading && loadingView()}
       <Navbar isBookSalon={true}/>
       <div className="flex flex-col items-center justify-center mt-16 mb-5 px-6 md:px-10 2xl:px-14">
         <div className="flex flex-col md:flex-row items-center justify-center gap-16">
@@ -89,31 +129,28 @@ const BookSalon = () => {
             (optionnel)
           </p>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-4 2xl:gap-12 mt-10">
-            {hairdressers.map((hairdresser, index) => {
+            {hairDressers.map((hairdresser, index) => {
               return (
                 <div
                   key={index}
-                  onClick={() => setSelectedHairdresser(index)}
+                  onClick={() => setSelectedHairdresser(hairdresser.id)}
                   className={`flex items-center justify-center w-[311px] h-[376px] border rounded-2xl cursor-pointer hover:border-secondary ${
-                    selectedHairdresser === index
+                    selectedHairdresser === hairdresser.id
                       ? "border-secondary"
                       : "border-white"
                   }`}
                 >
                   <div className="relative">
                     <div className="relative w-[263px] h-[334px] rounded-2xl">
-                      <Image src={hairdresser.img} alt="" fill={true} />
+                      <Image src={'https://api-server.onehaircut.com/public' + hairdresser.profile_image} alt="" fill={true} />
                     </div>
-                    <p className="absolute top-5 right-3 w-14 h-8 flex items-center justify-center rounded-[26px] text-lg text-white font-semibold bg-[rgba(0,0,0,0.24)]">
-                      {hairdresser.rating}
-                    </p>
                   </div>
                 </div>
               );
             })}
           </div>
         </div>
-        <div className="w-full md:w-[750px] lg:w-[940px] border-2 border-[#D0D0D0] py-10 rounded-[54px] mt-20">
+        <div className="w-full md:w-[750px] lg:w-[940px] border-2 border-[#D0D0D0] py-10 rounded-[22px] mt-20">
           <div className="flex flex-col sm:flex-row items-center justify-between px-4 sm:px-10">
             <div className="relative">
               <div className="cursor-pointer" onClick={() => setShowCalender(!showCalender)}>
@@ -126,25 +163,28 @@ const BookSalon = () => {
             <p className='text-[#A0A0A0] text-lg font-medium bg-[#F7F7F7] rounded-lg px-6 py-3'>{selectedDate && DateFormat(selectedDate)}</p>
           </div>
           <div className="flex items-center justify-center mt-12 mb-4">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-10 gap-y-7">
+            {slots.length ?
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-10 gap-y-7">
               {slots.map((slot, index) => {
                 return (
                   <div
                     key={index}
-                    onClick={() => setSelectedSlot(index)}
-                    className={`w-32 h-14 flex items-center justify-center text-xl font-semibold border rounded-[20px] cursor-pointer ${
-                      slot.isDisable ? "text-[#AEAEAE]" : "text-black"
+                    onClick={() => setSelectedSlot(slot.id)}
+                    className={`w-32 h-14 flex items-center justify-center text-xl font-semibold border rounded-2xl cursor-pointer text-black"
                     } ${
-                      selectedSlot === index
+                      selectedSlot === slot.id
                         ? "bg-[#FFE7DF] text-[#FF7143]"
                         : "bg-white border-[#BABABA]"
                     }`}
                   >
-                    {slot.name}
+                    {slot.start}
                   </div>
                 );
               })}
             </div>
+            :
+            <p className="text-[#A0A0A0] text-xl font-medium">No slots for today</p>
+            }
           </div>
         </div>
         <div className="w-full lg:w-[940px] h-64 flex flex-col items-center justify-center border border-[#DFDFDF] bg-[#F8F8F8] text-xl sm:text-2xl rounded-[22px] mt-10 lg:mt-14 text-black text-center px-2 shadow-[0px_1px_46px_0px_rgba(121,121,121,0.06) inset]">
@@ -153,7 +193,7 @@ const BookSalon = () => {
             <p className="font-medium my-2">par: <span className="font-normal">Nom du coiffeur</span></p>
             <p className="font-medium">Temps d’éxécution : <span className="font-normal">2 heures</span></p>
         </div>
-        <button onClick={()=>route.push('/payment')} className="w-72 h-14 rounded-xl text-xl font-semibold text-white bg-background-gradient mt-10">Réservez ce créneau</button>
+        <button onClick={onContinue} className="w-72 h-14 rounded-xl text-xl font-semibold text-white bg-background-gradient mt-10">Réservez ce créneau</button>
       </div>
     </div>
   );

@@ -7,7 +7,7 @@ import Image from 'next/image';
 import StarRatings from 'react-star-ratings';
 import { useRouter } from 'next/navigation';
 import { dashboard } from '@/api/dashboard';
-import { getLocalStorage } from '@/api/storage';
+import { getLocalStorage, setLocalStorage } from '@/api/storage';
 import { SalonDetails } from '@/types';
 import userLoader from "@/hooks/useLoader";
 import useSnackbar from '@/hooks/useSnackbar';
@@ -107,6 +107,11 @@ const SalonChoice = () => {
         }
       }
 
+      const onContinue=()=>{
+        router.push(`salon/profile`)
+        setLocalStorage('selectedSalon', selectedSalon)
+      }
+
       useEffect(()=>{
         getAllSalons()
       },[])
@@ -131,7 +136,7 @@ const SalonChoice = () => {
                     </div>
                 </div> */}
                 <div className='w-full flex items-end justify-end mt-12'>
-                    <button disabled={!selectedSalon} onClick={()=>router.push(`salon/${selectedSalon}/profile`)} className={`flex items-center justify-center text-lg text-white font-medium w-full md:w-52 h-14 rounded-xl px-4 ${selectedSalon ? 'bg-background-gradient' : 'bg-[#D9D9D9]'}`}>Continue</button>
+                    <button disabled={!selectedSalon} onClick={onContinue} className={`flex items-center justify-center text-lg text-white font-medium w-full md:w-52 h-14 rounded-xl px-4 ${selectedSalon ? 'bg-background-gradient' : 'bg-[#D9D9D9]'}`}>Continue</button>
                 </div>
                 <div className='w-full mt-14 mb-5'>
                     <div className='w-full flex flex-col lg:flex-row items-start justify-center gap-6'>
