@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./index.css";
 import userLoader from "@/hooks/useLoader";
 import BaseMultiSelectbox from "@/components/UI/BaseMultiSelectbox";
-import { EditIcon } from "@/components/utilis/Icons";
+import { EditIcon, LogoCircle } from "@/components/utilis/Icons";
 import { dashboard } from "@/api/dashboard";
 import { getLocalStorage } from "@/api/storage";
 import AddServiceModal, { Service } from "./addServiceModal";
@@ -181,11 +181,11 @@ const Services = () => {
         </div>
       )}
       <div className="flex items-center justify-start">
-        <div className="gap-9 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+        <div className="gap-9 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 z-10">
           {getServices().map((item, index) => {
             return (
               <div key={index} className="flex items-center gap-9">
-                <div className="w-64 border border-grey rounded-[21px] py-6 px-5 shadow-[0px_4px_18px_0px_rgba(132,132,132,0.25)]">
+                <div className="w-64 bg-white  border border-grey rounded-[21px] py-6 px-5 shadow-[0px_4px_18px_0px_rgba(132,132,132,0.25)]">
                   <div className="flex items-center justify-between">
                     <div className="text-black font-medium">
                       {item.service ? item.service.name : '-'}
@@ -232,7 +232,11 @@ const Services = () => {
         </div>
         <div></div>
       </div>
+      <div className="bg-gradient-to-l  md:block fixed -left-32 md:-left-8 -bottom-32 md:-bottom-8 z-0">
+        <LogoCircle />
+      </div>
     </div>
+
   );
 };
 
