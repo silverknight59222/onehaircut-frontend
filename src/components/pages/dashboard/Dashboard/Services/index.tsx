@@ -8,6 +8,7 @@ import { getLocalStorage } from "@/api/storage";
 import AddServiceModal, { Service } from "./addServiceModal";
 import EditServiceModal from "./editServiceModal";
 import { Theme_A, ColorsThemeA } from "@/components/utilis/Themes";
+import ScrollToTopButton from "@/components/utilis/Helper";
 export interface SalonService {
   id: number;
   services_id: number;
@@ -160,7 +161,7 @@ const Services = () => {
       {isLoading && loadingView()}
       <p className="text-4xl font-medium text-center">
         Ajoutez vos{" "}
-        <span className={`font-bold text-gradient ${ColorsThemeA.textGradient_Title}`}>prestations !</span>
+        <span className={`${ColorsThemeA.textGradient_Title}`}>prestations !</span>
       </p>
       <div className="flex w-full items-center justify-between ">
         <div className="flex gap-4 my-7">
@@ -169,7 +170,7 @@ const Services = () => {
         </div>
         <div
           // className={`text-2xl cursor-pointer flex items-center text-white px-20 py-1 gap-4 rounded-md ${ColorsThemeA.OhcGradient_A} shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]`}
-          className={`${Theme_A.button.bigButtong}`}
+          className={`${Theme_A.button.addServicesButton}`}
           onClick={() => setShowAddServiceModal(true)}
         >
           Ajouter un service
@@ -180,7 +181,7 @@ const Services = () => {
           <AddServiceModal setShowAddServiceModal={setShowAddServiceModal} fetchAllServices={fetchAllServices} />
         </div>
       )}
-      <div className="flex items-center justify-start">
+      <div className="flex items-center justify-center">
         <div className="gap-9 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 z-10">
           {getServices().map((item, index) => {
             return (
@@ -191,13 +192,13 @@ const Services = () => {
                       {item.service ? item.service.name : '-'}
                     </div>
                     <div
-                      className="flex cursor-pointer my-2 py-1 px-2 rounded-md w-7 h-6 bg-gradient-to-r from-pink-500 to-orange-500 shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+                      className={`${Theme_A.servicesCards.modifyButton}`}
                       onClick={() => { setShowEditServiceModal(true); setEditServiceInfo(item) }}
                     >
                       <EditIcon />
                     </div>
                     {(showEditServiceModal && editServiceInfo) && (
-                      <div className="fixed top-0 left-0 overflow-hidden bg-black bg-opacity-10 flex items-center justify-center w-full h-full z-50">
+                      <div className="fixed top-0 left-0 overflow-hidden bg-grey bg-opacity-50 flex items-center justify-center w-full h-full z-50">
                         <EditServiceModal
                           setShowEditServiceModal={setShowEditServiceModal}
                           fetchAllServices={fetchAllServices}
@@ -235,6 +236,7 @@ const Services = () => {
       <div className="bg-gradient-to-l  md:block fixed -left-32 md:-left-8 -bottom-32 md:-bottom-8 z-0">
         <LogoCircle />
       </div>
+      <ScrollToTopButton/>
     </div>
 
   );

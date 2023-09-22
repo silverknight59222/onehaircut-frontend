@@ -178,7 +178,7 @@ const Login = () => {
 					            Vous êtes un professionnel et n'avez pas encore de compte ? 
 					        </div>
 							<hr className="my-2 w-full"/>
-					        <p className="text-black text-lg font-semibold transition duration-150 hover:text-secondary transform hover:scale-110 transition-transform">
+					        <p className="text-black text-lg font-semibold hover:text-secondary transform hover:scale-110 transition-transform">
 					            <Link href={{ pathname: '/registration' }} className="border-b border-black hover:border-secondary ">Enregistrer mon salon ?</Link>
 					        </p>
 					    </div>

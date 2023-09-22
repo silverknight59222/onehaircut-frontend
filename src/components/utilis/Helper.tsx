@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import {
     TotheTopIcon,
   } from "@/components/utilis/Icons";
+import { Theme_A } from './Themes';
 
 
 /* Scroll to the top button function */
@@ -34,7 +35,7 @@ function ScrollToTopButton() {
         <button 
             onClick={scrollTop} 
             style={{display: isVisible ? 'block' : 'none'}}
-            className="fixed bottom-10 right-10 p-4 bg-stone-200 text-sm text-white px-6 py-2 rounded-lg transform hover:scale-105 transition-transform"
+            className={`${Theme_A.button.scrollToTheTopButton}`}
         >
             <TotheTopIcon />
             

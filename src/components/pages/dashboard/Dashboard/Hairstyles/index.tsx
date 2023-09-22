@@ -923,7 +923,7 @@ const Hairstyles = () => {
             </div>
             {!(activeMenu === "added" && selectedSalonHaircut.id >= 0) ? (
               <div className="flex items-center justify-center gap-4 mt-4">
-              <button onClick={addSalonHaircuts} className={`${Theme_A.button.add}`}>
+              <button onClick={addSalonHaircuts} className={`${Theme_A.button.addButton}`}>
                   Ajouter
               </button>
           </div>
@@ -940,7 +940,7 @@ const Hairstyles = () => {
                 </button>
                 <button
                   onClick={updateSalonHaircuts}
-                  className={`${Theme_A.button.update}`}>
+                  className={`${Theme_A.button.updateButton}`}>
                   mettre &agrave; jour
                 </button>
               </div>

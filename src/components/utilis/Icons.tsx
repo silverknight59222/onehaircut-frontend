@@ -969,8 +969,8 @@ export const LogoCircle = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="449"
-      height="416"
+      width="720"
+      height="720"
       viewBox="0 0 449 416"
       fill="none"
     >

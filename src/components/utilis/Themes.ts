@@ -5,15 +5,16 @@ export const ColorsThemeA = {
   background: "gray-100",
   text: "gray-800",
   textSecondary: "gray-500",
-  textGradient_Title: "from-red-500 via-orange-500 to-orange-400",
-  OhcGradient_A: "bg-gradient-to-r from-red-500 via-orange-500 to-orange-400",
+  textGradient_Title: "font-bold text-transparent bg-clip-text bg-gradient-to-r from-rose-600 via-orange-500 to-orange-400",
+  OhcGradient_A: "bg-gradient-to-r from-rose-600 via-orange-500 to-orange-400",
+  OhcGradient_B: "bg-gradient-to-r from-rose-500 via-orange-600 to-orange-500",
   filterSelected: "bg-stone-800",
   error: "red-900"
 }
 
 export const Theme_A = {
   shadows: {
-    standardCard: "shadow-lg",
+    standardCardShadow: "shadow-lg",
   },
   cards: {
     selectedCardGradientBott: "rounded-b-xl bg-gradient-to-r from-white via-red-100 to-red-200",
@@ -27,6 +28,9 @@ export const Theme_A = {
       med: "relative  w-52 h-52",
       big: "relative  w-72 h-72",
     }
+  },
+  servicesCards: {
+    modifyButton: `flex cursor-pointer my-2 py-1 px-2 rounded-md w-7 h-6 bg-gradient-to-r ${ColorsThemeA.OhcGradient_A} shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]`,
   },
   shapes: {
   },
@@ -44,9 +48,10 @@ export const Theme_A = {
     desktop: "1024px",
   },
   button: {
-    add: "text-white font-medium text-sm rounded-md px-4 py-2 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-md transform hover:scale-105 transition-transform hover:shadow-[0px_3px_6px_0px_rgba(255,125,60,0.25)]",
-    update: `w-full text-white font-medium text-sm rounded-md px-4 py-2 ${ColorsThemeA.OhcGradient_A} transform hover:scale-105 transition-transform hover:shadow-[0px_7px_12px_0px_rgba(255,125,60,0.25)]`,
-    bigButtong: `text-white font-bold text-2xl rounded-md px-8 py-4 ${ColorsThemeA.OhcGradient_A} shadow-md transform hover:scale-105 transition-transform hover:shadow-[0px_3px_6px_0px_rgba(255,125,60,0.25)]`,
+    addButton: `text-white font-medium text-sm rounded-md px-4 py-2 ${ColorsThemeA.OhcGradient_A}  shadow-md transform hover:scale-105 transition-transform hover:shadow-[0px_3px_6px_0px_rgba(255,125,60,0.25)]`,
+    updateButton: `w-full text-white font-medium text-sm rounded-md px-4 py-2 ${ColorsThemeA.OhcGradient_A} transform hover:scale-105 transition-transform hover:shadow-[0px_7px_12px_0px_rgba(255,125,60,0.25)]`,
+    addServicesButton: `text-white font-semibold text-xl rounded-md px-6 py-4 ${ColorsThemeA.OhcGradient_B} shadow-md transform hover:scale-105 transition-transform hover:shadow-[0px_3px_6px_0px_rgba(255,125,60,0.25)]`,
+    scrollToTheTopButton: `fixed bottom-10 right-10 p-4 bg-stone-200 text-sm text-white px-6 py-2 rounded-lg transform hover:scale-105 transition-transform`
   },
   checkers: {
     errorText: `text-xs text-${ColorsThemeA.error} ml-3 mt-1`,
