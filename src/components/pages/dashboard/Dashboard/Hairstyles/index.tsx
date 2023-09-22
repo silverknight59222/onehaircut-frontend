@@ -11,6 +11,7 @@ import {
   SelectedIcon,
 } from "@/components/utilis/Icons";
 import ScrollToTopButton from "@/components/utilis/Helper";
+import { Theme_A } from "@/components/utilis/Themes";
 
 export interface HaircutDetails {
   id: number;
@@ -708,7 +709,7 @@ const Hairstyles = () => {
           </div>
           <div className="flex items-center justify-center">
             {getSelectedImage() ? (
-              <div className="relative w-72 h-72">
+              <div className={`relative ${Theme_A.CardSize.Big}`}>
                 <Image
                   src={getSelectedImage()}
                   fill={true}
@@ -963,8 +964,8 @@ const Hairstyles = () => {
                   className="shadow-md rounded-xl my-2 cursor-pointer hover:outline outline-1 outline-stone-400"
                   onClick={() => selectHaircut(item)}
                 >
-                  <div className="relative w-max px-4 pt-4 bg-gradient-to-r from-white via-stone-50 to-zinc-300 rounded-t-xl ">
-                    <div className="relative w-32 h-32">
+                  <div className={`relative w-max px-4 pt-4 rounded-t-xl  bg-gradient-to-r from-${Theme_A.colors.cardFrom} via-${Theme_A.colors.cardVia_Dark} to-${Theme_A.colors.cardTo}`}>
+                    <div className={`relative ${Theme_A.CardSize.Small}`}>
                     <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public/${item.image}`} fill={true} alt="" />
                     </div>
                     <div className="transform hover:scale-125 transition-transform absolute top-5 right-5 w-6 h-6 rounded-full bg-zinc-50">
@@ -973,7 +974,7 @@ const Hairstyles = () => {
                       ).length > 0 && <SelectedIcon />}
                     </div>
                   </div>
-                  <div className="rounded-b-xl bg-gradient-to-r from-white via-stone-100 to-zinc-300">
+                  <div className={`rounded-b-xl bg-gradient-to-r from-${Theme_A.colors.cardFrom} via-${Theme_A.colors.cardVia_Dark} to-${Theme_A.colors.cardTo}`}>
                     <p className="rounded-b-xl flex items-center justify-center py-2 text-sm text-black font-medium">
                       {item.name}
                     </p>
@@ -992,18 +993,18 @@ const Hairstyles = () => {
                   className="shadow-md rounded-xl my-2 cursor-pointer bg-zinc-200"
                   onClick={() => selectSalonHaircut(index)}
                 >
-                  <div className="relative w-max px-4 pt-4 bg-gradient-to-r from-white via-stone-50 to-red-200 rounded-t-xl ">
-                    <div className="relative w-32 h-32">
+                  <div className={`relative w-max px-4 pt-4 rounded-t-xl bg-gradient-to-r from-${Theme_A.colors.SelectedcardFrom} via-${Theme_A.colors.SelectedcardVia} to-${Theme_A.colors.SelectedcardTo}`}>
+                    <div className={`relative ${Theme_A.CardSize.Small}`}>
                       <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public/${item.image}`} fill={true} alt="" />
                     </div>
                     <div className="absolute top-5 right-5 w-6 h-6 rounded-full bg-stone-50 transform hover:scale-125 transition-transform ">
                       {selectedSalonHaircut?.id === item.id && <SelectedIcon />}
                     </div>
                   </div>
-                  <div className="rounded-b-xl bg-gradient-to-r from-white via-red-50 to-red-200">
-                    <p className="rounded-b-xl flex items-center justify-center py-2 text-sm text-black font-medium">
-                      {item.name}
-                    </p>
+                  <div className={`rounded-b-xl bg-gradient-to-r from-${Theme_A.colors.SelectedcardFrom} via-${Theme_A.colors.SelectedcardVia} to-${Theme_A.colors.SelectedcardTo}`}>
+                      <p className="rounded-b-xl flex items-center justify-center py-2 text-sm text-black font-medium">
+                          {item.name}
+                      </p>
                   </div>
                 </div>
               );
