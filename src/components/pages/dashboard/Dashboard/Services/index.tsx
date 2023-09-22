@@ -7,6 +7,7 @@ import { dashboard } from "@/api/dashboard";
 import { getLocalStorage } from "@/api/storage";
 import AddServiceModal, { Service } from "./addServiceModal";
 import EditServiceModal from "./editServiceModal";
+import { Theme_A, ColorsThemeA } from "@/components/utilis/Themes";
 export interface SalonService {
   id: number;
   services_id: number;
@@ -44,7 +45,7 @@ const Services = () => {
       name: "Durée ( Décroissante )",
     },
   ];
-   const typeDropdown = [
+  const typeDropdown = [
     {
       name: "Coloration",
       // value: "coloration",
@@ -70,30 +71,30 @@ const Services = () => {
       // value: "styling",
     },
   ];
-  
-  const getActiveFilters = (filter:string) => {
-    let list:SalonService[] = [];
-    if(filter === 'Nom ( A à Z )') {
+
+  const getActiveFilters = (filter: string) => {
+    let list: SalonService[] = [];
+    if (filter === 'Nom ( A à Z )') {
       list = allServices?.sort((a, b) => (a.service.name.toLowerCase() > b.service.name.toLowerCase() ? 1 : -1))
     }
-    if(filter === 'Nom ( Z à A )') {
+    if (filter === 'Nom ( Z à A )') {
       list = allServices?.sort((a, b) => (a.service.name.toLowerCase() > b.service.name.toLowerCase() ? -1 : 1))
     }
 
-    if(filter === 'Prix ( Croissant )') {
+    if (filter === 'Prix ( Croissant )') {
       list = allServices?.sort((a, b) => (Number(a.price) > Number(b.price) ? 1 : -1))
     }
-    if(filter === 'Prix ( Décroissant )') {
+    if (filter === 'Prix ( Décroissant )') {
       list = allServices?.sort((a, b) => (Number(a.price) > Number(b.price) ? -1 : 1))
     }
 
-    if(filter === 'Durée ( Croissante )') {
+    if (filter === 'Durée ( Croissante )') {
       list = allServices?.sort((a, b) => (Number(a.price) > Number(b.price) ? 1 : -1))
     }
-    if(filter === 'Durée ( Décroissante )') {
+    if (filter === 'Durée ( Décroissante )') {
       list = allServices?.sort((a, b) => (Number(a.price) > Number(b.price) ? -1 : 1))
     }
-    if(filter) {
+    if (filter) {
       setFilteredServices(list);
     } else {
       setFilteredServices([]);
@@ -101,29 +102,29 @@ const Services = () => {
     }
   }
 
-  const getActiveTypeFilter = (filter:string) => {
-    let list:SalonService[] = [];
-    if(filter === 'Coloration') {
-      list = allServices?.filter(service=> service.service.type === 'coloration')
+  const getActiveTypeFilter = (filter: string) => {
+    let list: SalonService[] = [];
+    if (filter === 'Coloration') {
+      list = allServices?.filter(service => service.service.type === 'coloration')
     }
-    if(filter === 'Discount') {
-      list = allServices?.filter(service=> service.service.type === 'discount')
-    }
-
-    if(filter === 'Care') {
-      list = allServices?.filter(service=> service.service.type === 'care')
-    }
-    if(filter === 'Special Treatment') {
-      list = allServices?.filter(service=> service.service.type === 'special_treatment')
+    if (filter === 'Discount') {
+      list = allServices?.filter(service => service.service.type === 'discount')
     }
 
-    if(filter === 'Men') {
-      list = allServices?.filter(service=> service.service.type === 'men')
+    if (filter === 'Care') {
+      list = allServices?.filter(service => service.service.type === 'care')
     }
-    if(filter === 'Styling') {
-      list = allServices?.filter(service=> service.service.type === 'styling')
+    if (filter === 'Special Treatment') {
+      list = allServices?.filter(service => service.service.type === 'special_treatment')
     }
-    if(filter.length) {
+
+    if (filter === 'Men') {
+      list = allServices?.filter(service => service.service.type === 'men')
+    }
+    if (filter === 'Styling') {
+      list = allServices?.filter(service => service.service.type === 'styling')
+    }
+    if (filter.length) {
       setFilteredServices(list);
     } else {
       setFilteredServices([]);
@@ -159,22 +160,23 @@ const Services = () => {
       {isLoading && loadingView()}
       <p className="text-4xl font-medium text-center">
         Ajoutez vos{" "}
-        <span className="font-bold text-gradient">prestations !</span>
+        <span className="font-bold text-gradient ">prestations !</span>
       </p>
       <div className="flex w-full items-center justify-between ">
         <div className="flex gap-4 my-7">
-          <BaseMultiSelectbox dropdownItems={sortDropdown} dropdownTitle='Trier par : Nom' getActiveFilters={getActiveFilters}/>
-          <BaseMultiSelectbox dropdownItems={typeDropdown} dropdownTitle='Trier par : Group' getActiveFilters={getActiveTypeFilter}/>
+          <BaseMultiSelectbox dropdownItems={sortDropdown} dropdownTitle='Trier par : Nom' getActiveFilters={getActiveFilters} />
+          <BaseMultiSelectbox dropdownItems={typeDropdown} dropdownTitle='Trier par : Group' getActiveFilters={getActiveTypeFilter} />
         </div>
         <div
-          className="cursor-pointer h-10 flex items-center text-white px-4 py-1 gap-4 rounded-md bg-gradient-to-r from-pink-500 to-orange-500 shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+          // className={`text-2xl cursor-pointer flex items-center text-white px-20 py-1 gap-4 rounded-md bg-gradient-to-b from-pink-500 to-orange-500 shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]`}
+          className={`text-2xl cursor-pointer flex items-center text-white px-20 py-1 gap-4 rounded-md ${ColorsThemeA.OhcGradient_A} shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]`}
           onClick={() => setShowAddServiceModal(true)}
         >
-          Add Service
+          Ajouter un service
         </div>
       </div>
       {showAddServiceModal && (
-        <div className="fixed top-0 left-0 overflow-hidden bg-black bg-opacity-40 flex items-center justify-center w-full h-full z-50">
+        <div className="fixed top-0 left-0 overflow-hidden bg-black bg-opacity-40 flex  items-center justify-center w-full h-full z-50">
           <AddServiceModal setShowAddServiceModal={setShowAddServiceModal} fetchAllServices={fetchAllServices} />
         </div>
       )}
@@ -190,7 +192,7 @@ const Services = () => {
                     </div>
                     <div
                       className="flex cursor-pointer my-2 py-1 px-2 rounded-md w-7 h-6 bg-gradient-to-r from-pink-500 to-orange-500 shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
-                      onClick={() => {setShowEditServiceModal(true); setEditServiceInfo(item)}}
+                      onClick={() => { setShowEditServiceModal(true); setEditServiceInfo(item) }}
                     >
                       <EditIcon />
                     </div>
@@ -204,7 +206,7 @@ const Services = () => {
                       </div>
                     )}
                   </div>
-                  <p className="text-sm text-[#A0A0A0] mt-2 line-clamp-2 overflow-hidden h-auto">
+                  <p className="text-sm text-gray-700 mt-2 line-clamp-2 overflow-hidden h-auto">
                     {item.service ? item.service.description : '-'}
                   </p>
                   <div className="flex items-center gap-6 mt-5">

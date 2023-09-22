@@ -4,6 +4,7 @@ import { CheckedIcon, CrossIcon, SearcIcon } from "@/components/utilis/Icons";
 import useSnackbar from "@/hooks/useSnackbar";
 import userLoader from "@/hooks/useLoader";
 import React, { useEffect, useState } from "react";
+import { Theme_A, ColorsThemeA } from "@/components/utilis/Themes";
 interface AddServiceModalType {
   setShowAddServiceModal: (value: boolean) => void;
   fetchAllServices: () => void;
@@ -41,7 +42,7 @@ const AddServiceModal = (props: AddServiceModalType) => {
     duration: "",
     price: "",
     service: "",
-       age: "",
+    age: "",
     percent: "",
   });
   const Types = [
@@ -315,11 +316,10 @@ const AddServiceModal = (props: AddServiceModalType) => {
                   onClick={() => onClickTypeCheckbox(item.value)}
                 >
                   <div
-                    className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${
-                      typeFilters.includes(item.value)
-                        ? "bg-gradient-to-b from-pink-500 to-orange-500"
-                        : "bg-[#D6D6D6]"
-                    }`}
+                    className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${typeFilters.includes(item.value)
+                      ? "bg-gradient-to-b from-pink-500 to-orange-500"
+                      : "bg-[#D6D6D6]"
+                      }`}
                   >
                     <CheckedIcon />
                   </div>
@@ -331,12 +331,13 @@ const AddServiceModal = (props: AddServiceModalType) => {
         </div>
       </div>
       <div className="flex flex-col md:flex-col items-center justify-center gap-4 ">
-        <div className="gap-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 h-80 xl:max-h-[480px] lg:w-[620px] overflow-y-auto rounded-xl items-start">
+        <div className="bg-white shadow-inner gap-3 grid grid-cols-1 justify-center sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 h-96 xl:h-[580px] lg:h-[580px]  overflow-y-auto rounded-xl items-start">
+          {/* <div className="gap-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 h-96 xl:max-h-[480px] lg:w-[540px] overflow-y-auto rounded-xl items-start"></div> */}
           {showServices().map((item, index) => {
             return (
               <div key={index} className="flex items-center gap-3">
                 <div
-                  className="flex flex-col justify-start gap-2 w-48 h-[170px] border border-grey rounded-[21px] py-3 px-3 shadow-[0px_4px_18px_0px_rgba(132,132,132,0.25)] cursor-pointer"
+                  className="flex flex-col justify-start gap-2 w-48 h-[170px] border border-stone-200 rounded-[21px] py-3 px-3 shadow-lg cursor-pointer hover:shadow-[3px_3px_3px_0px_rgba(228,76,99,255)] hover:shadow-orange-400"
                   onClick={() => selectService(item.id)}
                 >
                   <div className="flex items-center justify-between">
@@ -344,11 +345,10 @@ const AddServiceModal = (props: AddServiceModalType) => {
                       {item.name}
                     </p>
                     <div
-                      className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${
-                        selectedService?.includes(item.id)
-                          ? "bg-gradient-to-b from-pink-500 to-orange-500"
-                          : "bg-[#D6D6D6]"
-                      }`}
+                      className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${selectedService?.includes(item.id)
+                        ? "bg-gradient-to-b from-pink-500 to-orange-500"
+                        : "bg-[#D6D6D6]"
+                        }`}
                     >
                       <CheckedIcon />
                     </div>
