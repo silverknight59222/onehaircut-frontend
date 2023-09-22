@@ -160,7 +160,7 @@ const Services = () => {
       {isLoading && loadingView()}
       <p className="text-4xl font-medium text-center">
         Ajoutez vos{" "}
-        <span className="font-bold text-gradient ">prestations !</span>
+        <span className={`font-bold text-gradient ${ColorsThemeA.textGradient_Title}`}>prestations !</span>
       </p>
       <div className="flex w-full items-center justify-between ">
         <div className="flex gap-4 my-7">
@@ -168,8 +168,8 @@ const Services = () => {
           <BaseMultiSelectbox dropdownItems={typeDropdown} dropdownTitle='Trier par : Group' getActiveFilters={getActiveTypeFilter} />
         </div>
         <div
-          // className={`text-2xl cursor-pointer flex items-center text-white px-20 py-1 gap-4 rounded-md bg-gradient-to-b from-pink-500 to-orange-500 shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]`}
-          className={`text-2xl cursor-pointer flex items-center text-white px-20 py-1 gap-4 rounded-md ${ColorsThemeA.OhcGradient_A} shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]`}
+          // className={`text-2xl cursor-pointer flex items-center text-white px-20 py-1 gap-4 rounded-md ${ColorsThemeA.OhcGradient_A} shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]`}
+          className={`${Theme_A.button.bigButtong}`}
           onClick={() => setShowAddServiceModal(true)}
         >
           Ajouter un service

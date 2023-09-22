@@ -276,7 +276,7 @@ const AddServiceModal = (props: AddServiceModalType) => {
       {isLoading && loadingView()}
       <div className="w-full flex items-center justify-end pt-2">
         <div
-          className="cursor-pointer my-2 py-1 px-2 rounded-lg bg-gradient-to-r from-pink-500 to-orange-500 shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+          className={`cursor-pointer my-2 py-1 px-2 rounded-lg ${ColorsThemeA.OhcGradient_A} shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]`}
           onClick={() => props.setShowAddServiceModal(false)}
         >
           <CrossIcon width="12" />
@@ -292,7 +292,7 @@ const AddServiceModal = (props: AddServiceModalType) => {
             onChange={(e) => setSearch(e.target.value)}
           />
           <div className="relative">
-            <div className="absolute right-1 -top-4 cursor-pointer p-2 rounded-full bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
+            <div className={`absolute right-1 -top-4 cursor-pointer p-2 rounded-full ${ColorsThemeA.OhcGradient_A}`}>
               <SearcIcon />
             </div>
           </div>
@@ -301,7 +301,7 @@ const AddServiceModal = (props: AddServiceModalType) => {
           <div
             className={
               typeFilters.length > 0
-                ? "flex gap-4 rounded-full bg-gray-500 border border-[#EDEDED] p-1 text-sm text-white"
+                ? "flex gap-4 rounded-full bg-stone-800 border border-[#EDEDED] p-1 text-sm text-white"
                 : "flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373]"
             }
           >
@@ -317,7 +317,7 @@ const AddServiceModal = (props: AddServiceModalType) => {
                 >
                   <div
                     className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${typeFilters.includes(item.value)
-                      ? "bg-gradient-to-b from-pink-500 to-orange-500"
+                      ? `bg-gradient-to-b ${ColorsThemeA.OhcGradient_A}`
                       : "bg-[#D6D6D6]"
                       }`}
                   >
@@ -331,13 +331,12 @@ const AddServiceModal = (props: AddServiceModalType) => {
         </div>
       </div>
       <div className="flex flex-col md:flex-col items-center justify-center gap-4 ">
-        <div className="bg-white shadow-inner gap-3 grid grid-cols-1 justify-center sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 h-96 xl:h-[580px] lg:h-[580px]  overflow-y-auto rounded-xl items-start">
-          {/* <div className="gap-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 h-96 xl:max-h-[480px] lg:w-[540px] overflow-y-auto rounded-xl items-start"></div> */}
+        <div className="bg-white shadow-inner gap-3 grid grid-cols-1 justify-center sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 h-96 xl:h-[880px] lg:h-[680px] sm:h-[350px] p-3 overflow-y-auto rounded-xl items-start">
           {showServices().map((item, index) => {
             return (
               <div key={index} className="flex items-center gap-3">
                 <div
-                  className="flex flex-col justify-start gap-2 w-48 h-[170px] border border-stone-200 rounded-[21px] py-3 px-3 shadow-lg cursor-pointer hover:shadow-[3px_3px_3px_0px_rgba(228,76,99,255)] hover:shadow-orange-400"
+                  className={`flex flex-col justify-start gap-2 w-48 h-[170px] border border-stone-200 rounded-[21px] py-3 px-3 shadow-lg cursor-pointer ${Theme_A.behaviour.cardBehaviour}`}
                   onClick={() => selectService(item.id)}
                 >
                   <div className="flex items-center justify-between">
@@ -346,7 +345,7 @@ const AddServiceModal = (props: AddServiceModalType) => {
                     </p>
                     <div
                       className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${selectedService?.includes(item.id)
-                        ? "bg-gradient-to-b from-pink-500 to-orange-500"
+                        ? `bg-gradient-to-b ${ColorsThemeA.OhcGradient_A}`
                         : "bg-[#D6D6D6]"
                         }`}
                     >
@@ -419,7 +418,7 @@ const AddServiceModal = (props: AddServiceModalType) => {
                   onChange={(e) => onChangeDuration(e.target.value)}
                 />
                 {error.duration && (
-                  <p className="text-xs text-red-700 ml-3 mt-1">
+                  <p className={`${Theme_A.checkers.errorText}`}>
                     {error.duration}*
                   </p>
                 )}
@@ -433,7 +432,7 @@ const AddServiceModal = (props: AddServiceModalType) => {
                   onChange={(e) => onChangePrice(e.target.value)}
                 />
                 {error.price && (
-                  <p className="text-xs text-red-700 ml-3 mt-1">
+                  <p className={`${Theme_A.checkers.errorText}`}>
                     {error.price}*
                   </p>
                 )}
@@ -455,7 +454,7 @@ const AddServiceModal = (props: AddServiceModalType) => {
                   onChange={(e) => onChangeAge(e.target.value)}
                 />
                 {error.age && (
-                  <p className="text-xs text-red-700 ml-3 mt-1">
+                  <p className={`${Theme_A.checkers.errorText}`}>
                     {error.age}*
                   </p>
                 )}
@@ -475,7 +474,7 @@ const AddServiceModal = (props: AddServiceModalType) => {
                   onChange={(e) => onChangePercent(e.target.value)}
                 />
                 {error.percent && (
-                  <p className="text-xs text-red-700 ml-3 mt-1">
+                  <p className={`${Theme_A.checkers.errorText}`}>
                     {error.percent}*
                   </p>
                 )}
@@ -484,20 +483,21 @@ const AddServiceModal = (props: AddServiceModalType) => {
           </div>
           <div className="mt-4 flex gap-4 items-center justify-center w-full">
             <button
-              className="text-white font-medium text-base rounded-md py-2 px-4 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+              className={`${Theme_A.button.add}`}
               onClick={() => props.setShowAddServiceModal(false)}
             >
               Cancel
             </button>
             <button
-              className="text-white font-medium text-base rounded-md py-2 px-4 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+              // className="text-white font-medium text-base rounded-md py-2 px-4 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+              className={`${Theme_A.button.add}`}
               onClick={() => onSubmit()}
             >
               Add Service
             </button>
           </div>
           {error.service && (
-            <p className="text-xs text-red-700 ml-20 mt-1 text-center">
+            <p className={`${Theme_A.checkers.errorText}`}>
               {error.service}*
             </p>
           )}
