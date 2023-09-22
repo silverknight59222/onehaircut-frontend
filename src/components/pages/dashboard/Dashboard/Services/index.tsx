@@ -20,6 +20,8 @@ const Services = () => {
   const { loadingView } = userLoader();
   const [allServices, setAllServices] = useState<SalonService[]>([]);
   const [filteredServices, setFilteredServices] = useState<SalonService[]>([]);
+  const [sortingFilter, setSortingFilter] = useState<string>('');
+  const [groupFilter, setGroupFilter] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const [showAddServiceModal, setShowAddServiceModal] = useState(false);
   const [showEditServiceModal, setShowEditServiceModal] = useState(false);
@@ -47,56 +49,57 @@ const Services = () => {
    const typeDropdown = [
     {
       name: "Coloration",
-      // value: "coloration",
     },
     {
       name: "Discount",
-      // value: "discount",
     },
     {
       name: "Care",
-      // value: "care",
     },
     {
       name: "Special treatment",
-      // value: "special_treatment",
     },
     {
       name: "Men",
-      // value: "men",
     },
     {
       name: "Styling",
-      // value: "styling",
     },
   ];
-  
-  const getActiveFilters = (filter:string) => {
+  const getAvailableSortServices = () => {
+    if(groupFilter) {
+      return filteredServices;
+    } else {
+      return allServices;
+    }
+  };
+  const getActiveSortFilters = (filter:string) => {
     let list:SalonService[] = [];
     if(filter === 'Nom ( A à Z )') {
-      list = allServices?.sort((a, b) => (a.service.name.toLowerCase() > b.service.name.toLowerCase() ? 1 : -1))
+      list = getAvailableSortServices()?.sort((a, b) => (a.service.name.toLowerCase() > b.service.name.toLowerCase() ? 1 : -1))
     }
     if(filter === 'Nom ( Z à A )') {
-      list = allServices?.sort((a, b) => (a.service.name.toLowerCase() > b.service.name.toLowerCase() ? -1 : 1))
+      list = getAvailableSortServices()?.sort((a, b) => (a.service.name.toLowerCase() > b.service.name.toLowerCase() ? -1 : 1))
     }
 
     if(filter === 'Prix ( Croissant )') {
-      list = allServices?.sort((a, b) => (Number(a.price) > Number(b.price) ? 1 : -1))
+      list = getAvailableSortServices()?.sort((a, b) => (Number(a.price) > Number(b.price) ? 1 : -1))
     }
     if(filter === 'Prix ( Décroissant )') {
-      list = allServices?.sort((a, b) => (Number(a.price) > Number(b.price) ? -1 : 1))
+      list = getAvailableSortServices()?.sort((a, b) => (Number(a.price) > Number(b.price) ? -1 : 1))
     }
 
     if(filter === 'Durée ( Croissante )') {
-      list = allServices?.sort((a, b) => (Number(a.price) > Number(b.price) ? 1 : -1))
+      list = getAvailableSortServices()?.sort((a, b) => (Number(a.duration) > Number(b.duration) ? 1 : -1))
     }
     if(filter === 'Durée ( Décroissante )') {
-      list = allServices?.sort((a, b) => (Number(a.price) > Number(b.price) ? -1 : 1))
+      list = getAvailableSortServices()?.sort((a, b) => (Number(a.duration) > Number(b.duration) ? -1 : 1))
     }
     if(filter) {
+      setSortingFilter(filter);
       setFilteredServices(list);
     } else {
-      setFilteredServices([]);
+      setSortingFilter('');
       fetchAllServices();
     }
   }
@@ -113,7 +116,7 @@ const Services = () => {
     if(filter === 'Care') {
       list = allServices?.filter(service=> service.service.type === 'care')
     }
-    if(filter === 'Special Treatment') {
+    if(filter === 'Special treatment') {
       list = allServices?.filter(service=> service.service.type === 'special_treatment')
     }
 
@@ -123,10 +126,11 @@ const Services = () => {
     if(filter === 'Styling') {
       list = allServices?.filter(service=> service.service.type === 'styling')
     }
-    if(filter.length) {
+    if(filter) {
+      setGroupFilter(filter);
       setFilteredServices(list);
     } else {
-      setFilteredServices([]);
+      setGroupFilter('');
       fetchAllServices();
     }
   }
@@ -144,7 +148,7 @@ const Services = () => {
       });
   };
   const getServices = () => {
-    if (filteredServices.length) {
+    if (groupFilter || sortingFilter) {
       return filteredServices;
     } else {
       return allServices;
@@ -163,7 +167,7 @@ const Services = () => {
       </p>
       <div className="flex w-full items-center justify-between ">
         <div className="flex gap-4 my-7">
-          <BaseMultiSelectbox dropdownItems={sortDropdown} dropdownTitle='Trier par : Nom' getActiveFilters={getActiveFilters}/>
+          <BaseMultiSelectbox dropdownItems={sortDropdown} dropdownTitle='Trier par : Nom' getActiveFilters={getActiveSortFilters}/>
           <BaseMultiSelectbox dropdownItems={typeDropdown} dropdownTitle='Trier par : Group' getActiveFilters={getActiveTypeFilter}/>
         </div>
         <div
