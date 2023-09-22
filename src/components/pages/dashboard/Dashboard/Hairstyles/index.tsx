@@ -709,7 +709,7 @@ const Hairstyles = () => {
           </div>
           <div className="flex items-center justify-center">
             {getSelectedImage() ? (
-              <div className={`relative ${Theme_A.CardSize.Big}`}>
+              <div className={`${Theme_A.cards.cardSize.big}`}>
                 <Image
                   src={getSelectedImage()}
                   fill={true}
@@ -923,7 +923,7 @@ const Hairstyles = () => {
             </div>
             {!(activeMenu === "added" && selectedSalonHaircut.id >= 0) ? (
               <div className="flex items-center justify-center gap-4 mt-4">
-              <button onClick={addSalonHaircuts} className="text-white font-medium text-sm rounded-md px-4 py-2 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-md transform hover:scale-110 transition-transform hover:shadow-[0px_7px_12px_0px_rgba(255,125,60,0.25)]">
+              <button onClick={addSalonHaircuts} className={`${Theme_A.button.add}`}>
                   Ajouter
               </button>
           </div>
@@ -935,47 +935,45 @@ const Hairstyles = () => {
                   onClick={() => {
                     setForm(defaultFormDetails);
                     setSelectedSalonHaircut(defaultHaircut);
-                  }}
-                >
+                  }}>
                   Annuler
                 </button>
                 <button
                   onClick={updateSalonHaircuts}
-                  className="w-full text-white font-medium text-sm rounded-md px-4 py-2 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo transform hover:scale-105 transition-transform hover:shadow-[0px_7px_12px_0px_rgba(255,125,60,0.25)]"
-                >
+                  className={`${Theme_A.button.update}`}>
                   mettre &agrave; jour
                 </button>
               </div>
             )}
             {error.select_haircut && (
-              <p className="text-xs text-red-900 ml-3 mt-1">
+              <p className={`${Theme_A.checkers.errorText}`}>
                 {error.select_haircut}*
               </p>
             )}
           </div>
         </div>
         {activeMenu === "new" ? (
-          <div className=" relative flex-1 flex flex-wrap h-max gap-8">
+          <div className={`${Theme_A.behaviour.cardWindowBehaviour}`}>
             {haircuts().map((item, index) => {
               return (
                 <>
                 <div
                   key={index}
-                  className="shadow-md rounded-xl my-2 cursor-pointer hover:outline outline-1 outline-stone-400"
+                  className={`${Theme_A.behaviour.cardBehaviour}`}
                   onClick={() => selectHaircut(item)}
                 >
-                  <div className={`relative w-max px-4 pt-4 rounded-t-xl  bg-gradient-to-r from-${Theme_A.colors.cardFrom} via-${Theme_A.colors.cardVia_Dark} to-${Theme_A.colors.cardTo}`}>
-                    <div className={`relative ${Theme_A.CardSize.Small}`}>
+                  <div className={`${Theme_A.cards.cardgradientTop}`}>
+                    <div className={`${Theme_A.cards.cardSize.small}`}>
                     <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public/${item.image}`} fill={true} alt="" />
                     </div>
-                    <div className="transform hover:scale-125 transition-transform absolute top-5 right-5 w-6 h-6 rounded-full bg-zinc-50">
+                    <div className={`${Theme_A.cards.checkbubble}`}>
                       {selectedHaircutsMapping.filter(
                         (haircut) => haircut.id === item.id
                       ).length > 0 && <SelectedIcon />}
                     </div>
                   </div>
-                  <div className={`rounded-b-xl bg-gradient-to-r from-${Theme_A.colors.cardFrom} via-${Theme_A.colors.cardVia_Dark} to-${Theme_A.colors.cardTo}`}>
-                    <p className="rounded-b-xl flex items-center justify-center py-2 text-sm text-black font-medium">
+                  <div className={`${Theme_A.cards.cardGradientBott}`}>
+                    <p className={`${Theme_A.cards.cardText}`}>
                       {item.name}
                     </p>
                   </div>
@@ -985,24 +983,24 @@ const Hairstyles = () => {
             })}
           </div>
         ) : (
-          <div className="flex-1 flex flex-wrap h-max gap-8 overflow-scroll">
+          <div className={`${Theme_A.behaviour.cardWindowBehaviour}`}>
             {haircuts().map((item, index) => {
               return (
                 <div
                   key={index}
-                  className="shadow-md rounded-xl my-2 cursor-pointer bg-zinc-200"
+                  className={`${Theme_A.behaviour.cardBehaviour}`}
                   onClick={() => selectSalonHaircut(index)}
                 >
-                  <div className={`relative w-max px-4 pt-4 rounded-t-xl bg-gradient-to-r from-${Theme_A.colors.SelectedcardFrom} via-${Theme_A.colors.SelectedcardVia} to-${Theme_A.colors.SelectedcardTo}`}>
-                    <div className={`relative ${Theme_A.CardSize.Small}`}>
+                  <div className={`${Theme_A.cards.selectedCardGradientTop}`}>
+                    <div className={`${Theme_A.cards.cardSize.small}`}>
                       <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public/${item.image}`} fill={true} alt="" />
                     </div>
-                    <div className="absolute top-5 right-5 w-6 h-6 rounded-full bg-stone-50 transform hover:scale-125 transition-transform ">
+                    <div className={`${Theme_A.cards.checkbubble}`}>
                       {selectedSalonHaircut?.id === item.id && <SelectedIcon />}
                     </div>
                   </div>
-                  <div className={`rounded-b-xl bg-gradient-to-r from-${Theme_A.colors.SelectedcardFrom} via-${Theme_A.colors.SelectedcardVia} to-${Theme_A.colors.SelectedcardTo}`}>
-                      <p className="rounded-b-xl flex items-center justify-center py-2 text-sm text-black font-medium">
+                  <div className={`${Theme_A.cards.selectedCardGradientBott}`}>
+                      <p className={`${Theme_A.cards.cardText}`}>
                           {item.name}
                       </p>
                   </div>
