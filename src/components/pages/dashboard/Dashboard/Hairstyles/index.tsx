@@ -702,7 +702,7 @@ const Hairstyles = () => {
       <div className="flex flex-col md:flex-row gap-8">
         <div className="bg-lightGrey rounded-3xl p-4 md:sticky md:top-0 h-max">
           <div className="flex items-center justify-center gap-2">
-          <h2 className="text-lg font-semibold text-center">
+          <h2 className={`${Theme_A.textFont.headerH3}`}>
             Configurations des coiffures
           </h2>
           {(selectedHaircutsMapping.length > 0 && activeMenu === 'new') && <div className="text-sm py-1 px-[10px] rounded-full text-white bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo">{selectedHaircutsMapping.length}</div>}
