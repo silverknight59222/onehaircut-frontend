@@ -65,6 +65,19 @@ const Settings = () => {
       });
     }
   };
+  const getUpdatedSlots = (slots: OpenTimes[]) => {
+    let disable = false;
+    slots.forEach((slot) => {
+      if (Number(slot.start.split(":")[0]) >= Number(slot.end.split(":")[0])) {
+        disable = true;
+        setDisableUpdate(true);
+      }
+    });
+    if(disable === false) {
+      setDisableUpdate(false);
+    }
+    setUpdatedSlots(slots);
+  };
   const checkboxClickHandler = (item: OpenTimes) => {
     let updatedtime: OpenTimes[] = [];
     updatedSlots.forEach((slot) => {
@@ -98,23 +111,25 @@ const Settings = () => {
     setUpdatedSlots(updatedtime);
   };
   const updateSlots = async () => {
-    setIsLoading(true);
-    const data = {
-      openTimes: updatedSlots,
-    };
-    await dashboard
-      .updateSalonTiming(salonId, data)
-      .then((resp) => {
-        getHairSalonSlot();
-        setDisableUpdate(true);
-        showSnackbar("success", resp.data.message);
-      })
-      .catch((err) => {
-        showSnackbar("error", "Error Occured!");
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    if(!disableUpdate) {
+      setIsLoading(true);
+      const data = {
+        openTimes: updatedSlots,
+      };
+      await dashboard
+        .updateSalonTiming(salonId, data)
+        .then((resp) => {
+          getHairSalonSlot();
+          setDisableUpdate(true);
+          showSnackbar("success", resp.data.message);
+        })
+        .catch((err) => {
+          showSnackbar("error", "Error Occured!");
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
   };
   useEffect(() => {
     getHairSalonSlot();
@@ -126,13 +141,13 @@ const Settings = () => {
         <CircleRight />
       </div>
       <DashboardLayout>
-        <div className="flex flex-col items-center lg:flex-row lg:items-start justify-center gap-6 2xl:gap-12">
+        <div className="flex items-center flex-col justify-center gap-6">
           {!isLoading && (
-            <div className="w-80 2xl:w-72 flex flex-col items-center justify-center text-center px-9 py-10 gap-8 rounded-2xl bg-white text-xl font-medium text-[#ABABAB] shadow-[3px_3px_10px_-1px_rgba(0,0,0,0.30)]">
+            <div className="max-w-[750px] flex items-center justify-center text-center px-9 py-6 gap-8 rounded-2xl bg-white text-xl font-medium text-[#ABABAB] shadow-[3px_3px_10px_-1px_rgba(0,0,0,0.30)]">
               <p
                 className={`cursor-pointer text-black ${
                   activeMenu === "salon-time" &&
-                  "px-2 py-1 rounded-3xl bg-gray-200"
+                  "px-3 py-2 rounded-3xl bg-gray-200"
                 }`}
                 onClick={() => setActiveMenu("salon-time")}
               >
@@ -147,19 +162,15 @@ const Settings = () => {
               >
                 Hairdressers
               </p>
-              <p className="cursor-pointer">Disponibilité de l’équipe</p>
-              <p className="cursor-pointer">Promotions clients</p>
-              <p className="cursor-pointer">Objectifs</p>
-              <p className="cursor-pointer">Autres </p>
             </div>
           )}
           {activeMenu === "salon-time" && !isLoading && (
             <>
-              <div className="relative flex items-center justify-center z-10 w-full pl-24 md:pl-auto overflow-auto py-12 px-7 bg-white rounded-2xl shadow-[3px_3px_10px_-1px_rgba(0,0,0,0.30)]">
+              <div className="relative flex items-center justify-start z-10 w-[22rem] md:w-[620px] md:pl-auto overflow-auto py-12 px-7 bg-white rounded-2xl shadow-[3px_3px_10px_-1px_rgba(0,0,0,0.30)]">
                 <table>
                   <tbody>
                     <tr className="flex items-center justify-center">
-                      <td className="flex flex-col gap-16 pr-5">
+                      <td className="flex flex-col gap-16 pr-3 md:pr-5">
                         {updatedSlots.map((item, index) => {
                           return (
                             <div
@@ -176,37 +187,23 @@ const Settings = () => {
                               >
                                 <CheckedIcon width="15" height="10" />
                               </div>
-                              <p className="text-xl text-[#767676] font-medium">
+                              <p className="text-sm md:text-xl text-[#767676] font-medium">
                                 {item.day}
                               </p>
                             </div>
                           );
                         })}
                       </td>
-                      <td className="flex flex-col gap-12 border-l border-[rgba(171,171,171,0.20)] px-5">
-                        {updatedSlots.map((item, index) => {
-                          return (
-                            <div
-                              key={index}
-                              className="flex items-center justify-center gap-3"
-                            >
-                              <SlotDropdown
-                                disabled={!item.available}
-                                selectedItem={item.start}
-                              />
-                              <div className="w-5 border-t border-[#ABABAB]" />
-                              <SlotDropdown
-                                disabled={!item.available}
-                                selectedItem={item.end}
-                              />
-                            </div>
-                          );
-                        })}
+                      <td className="flex flex-col gap-12 border-l border-[rgba(171,171,171,0.20)] px-3 md:px-5">
+                        <SlotDropdown
+                          selectedItem={updatedSlots}
+                          getUpdatedSlots={getUpdatedSlots}
+                        />
                       </td>
                     </tr>
                     <tr>
-                      <td className="flex w-full items-center justify-end mt-3">
-                        <div className="flex items-center justify-center rounded-2xl text-lg">
+                      <td className="flex w-full items-center justify-end mt-5">
+                        <div className="flex items-center justify-center rounded-xl text-lg">
                           <p
                             onClick={updateSlots}
                             className={`py-2 px-3 rounded-2xl  text-sm ${
@@ -225,8 +222,8 @@ const Settings = () => {
               </div>
             </>
           )}
-          {(activeMenu === "salon-dressers" && !isLoading) && (
-            <div className="relative flex items-center justify-center w-full z-10 overflow-auto py-12 px-7 bg-white rounded-2xl shadow-[3px_3px_10px_-1px_rgba(0,0,0,0.30)]">
+          {activeMenu === "salon-dressers" && !isLoading && (
+            <div className="relative flex items-center justify-center w-[22rem] md:w-[810px] z-10 overflow-auto py-12 px-7 bg-white rounded-2xl shadow-[3px_3px_10px_-1px_rgba(0,0,0,0.30)]">
               <HairdresserSlots />
             </div>
           )}
