@@ -13,6 +13,12 @@ export const ColorsThemeA = {
 }
 
 export const Theme_A = {
+  textFont: {
+    headerH1:"",
+    headerH2:"",
+    headerH3:"text-lg font-semibold text-center",
+    headerH4:"",
+  },
   shadows: {
     standardCardShadow: "shadow-lg",
   },
