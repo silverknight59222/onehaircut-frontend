@@ -12,6 +12,7 @@ import {
 } from "@/components/utilis/Icons";
 import ScrollToTopButton from "@/components/utilis/Helper";
 import { Theme_A } from "@/components/utilis/Themes";
+import { ColorsThemeA } from "@/components/utilis/Themes";
 
 export interface HaircutDetails {
   id: number;
@@ -573,8 +574,8 @@ const Hairstyles = () => {
                       <div
                         className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 ${
                           ethnicityFilters.includes(item.name)
-                            ? "bg-gradient-to-b from-pink-500 to-orange-500"
-                            : "bg-[#D6D6D6]"
+                            ? `${ColorsThemeA.ohcVerticalGradient_A}`
+                            : `${ColorsThemeA.inactivButtonColor}`
                         }`}
                       >
                         <CheckedIcon />
@@ -606,8 +607,8 @@ const Hairstyles = () => {
                       <div
                         className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${
                           genderFilters.includes(item.name)
-                            ? "bg-gradient-to-b from-pink-500 to-orange-500"
-                            : "bg-[#D6D6D6]"
+                            ? `${ColorsThemeA.ohcVerticalGradient_A}`
+                            : `${ColorsThemeA.inactivButtonColor}`
                         }`}
                       >
                         <CheckedIcon />
@@ -639,8 +640,8 @@ const Hairstyles = () => {
                       <div
                         className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${
                           lengthFilters.includes(item.name)
-                            ? "bg-gradient-to-b from-pink-500 to-orange-500"
-                            : "bg-[#D6D6D6]"
+                            ? `${ColorsThemeA.ohcVerticalGradient_A}`
+                            : `${ColorsThemeA.inactivButtonColor}`
                         }`}
                       >
                         <CheckedIcon />
@@ -668,7 +669,7 @@ const Hairstyles = () => {
           <div className="relative flex">
             <input
               type="text"
-              className={`${Theme_A.searchBars.searchBar_1}`}
+              className={`${Theme_A.Bars.searchBar_1}`}
               placeholder="Nom coiffure"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
@@ -705,7 +706,7 @@ const Hairstyles = () => {
           <h2 className={`${Theme_A.textFont.headerH3}`}>
             Configurations des coiffures
           </h2>
-          {(selectedHaircutsMapping.length > 0 && activeMenu === 'new') && <div className="text-sm py-1 px-[10px] rounded-full text-white bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo">{selectedHaircutsMapping.length}</div>}
+          {(selectedHaircutsMapping.length > 0 && activeMenu === 'new') && <div className={`${Theme_A.indicators.counterIndicator}`}>{selectedHaircutsMapping.length}</div>}
           </div>
           <div className="flex items-center justify-center">
             {getSelectedImage() ? (
@@ -963,10 +964,10 @@ const Hairstyles = () => {
                   onClick={() => selectHaircut(item)}
                 >
                   <div className={`${Theme_A.hairstyleCards.cardgradientTop}`}>
-                    <div className={`${Theme_A.hairstyleCards.cardSize.small}`}>
+                    <div className={`${Theme_A.hairstyleCards.cardSize.med}`}>
                     <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public/${item.image}`} fill={true} alt="" />
                     </div>
-                    <div className={`${Theme_A.hairstyleCards.checkbubble}`}>
+                    <div className={`${Theme_A.hairstyleCards.checkbubbleOFF}`}>
                       {selectedHaircutsMapping.filter(
                         (haircut) => haircut.id === item.id
                       ).length > 0 && <SelectedIcon />}
@@ -992,10 +993,10 @@ const Hairstyles = () => {
                   onClick={() => selectSalonHaircut(index)}
                 >
                   <div className={`${Theme_A.hairstyleCards.selectedCardGradientTop}`}>
-                    <div className={`${Theme_A.hairstyleCards.cardSize.small}`}>
+                    <div className={`${Theme_A.hairstyleCards.cardSize.med}`}>
                       <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public/${item.image}`} fill={true} alt="" />
                     </div>
-                    <div className={`${Theme_A.hairstyleCards.checkbubble}`}>
+                    <div className={`${Theme_A.hairstyleCards.checkbubbleOFF}`}>
                       {selectedSalonHaircut?.id === item.id && <SelectedIcon />}
                     </div>
                   </div>

@@ -12,6 +12,7 @@ import { getLocalStorage, setLocalStorage } from "@/api/storage";
 import { dashboard } from "@/api/dashboard";
 import { usePathname } from "next/navigation";
 import UserProfile from "../UI/UserProfile";
+import { Theme_A } from "../utilis/Themes";
 export type TopbarType = {
 	isDashboard: Boolean;
 	tabHandler: (tab: string) => void;
@@ -90,9 +91,9 @@ const Topbar = ({ isDashboard, tabHandler, SidebarHandler }: TopbarType) => {
 					return (
 						<div key={index} onClick={() => onTabClick(item, index)}>
 							<p
-								className={`w-full flex items-center justify-center text-base font-medium cursor-pointer rounded-xl px-5 h-11 hover:border-secondary hover:bg-gradient-to-b from-pink-100 to-transparent ${selectedItem === index
-										? "border border-red-600 bg-gradient-to-b from-pink-100 to-transparent"
-										: "border border-stone-50 shadow-md"
+								className={`${Theme_A.Bars.proTopBar.standardShape} ${selectedItem === index
+										? `${Theme_A.Bars.proTopBar.activatedColor}`
+										: `${Theme_A.Bars.proTopBar.inactivatedColor}`
 									}`}
 							>
 								{item}

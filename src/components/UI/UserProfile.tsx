@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import { Auth } from "@/api/auth";
 import { removeFromLocalStorage } from "@/api/storage";
 import userLoader from '@/hooks/useLoader';
+import { ColorsThemeA, Theme_A } from "../utilis/Themes";
 
 interface UserProfileProfile{
   isDashboard?: Boolean
@@ -62,7 +63,7 @@ const UserProfile = ({isDashboard}: UserProfileProfile) => {
     <div ref={dropdownRef} className="relative">
       {isLoading && loadingView()}
       <div
-        className="w-12 h-12 flex items-center justify-center pb-1 border-2 border-secondary rounded-full cursor-pointer"
+        className={`w-12 h-12 flex items-center justify-center pb-1 ${ColorsThemeA.ohcBorder} rounded-full cursor-pointer`}
         onClick={() => setIsDropdown(!isDropdown)}
       >
         <UserIcon />

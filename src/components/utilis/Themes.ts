@@ -8,14 +8,18 @@ export const ColorsThemeA = {
   textGradient_Title: "font-bold text-transparent bg-clip-text bg-gradient-to-r from-rose-600 via-orange-500 to-orange-400",
   OhcGradient_A: "bg-gradient-to-r from-rose-600 via-orange-500 to-orange-400",
   OhcGradient_B: "bg-gradient-to-r from-rose-500 via-orange-600 to-orange-500",
+  ohcVerticalGradient_A: "bg-gradient-to-b from-rose-500 via-orange-600 to-orange-500",
+  ohcBorder: " border-2 border-red-500 ",
+  inactivButtonColor: "bg-[#D6D6D6]",
   filterSelected: "bg-stone-800",
+  pageBgColorLight: "bg-zinc-100",
   error: "red-900"
 }
 
 export const Theme_A = {
   behaviour: {
     buttonHoverBehaviour_1: `cursor-pointer`,
-    buttonHoverBehaviour_2: `hover:bg-orange-600 hover:text-white rounded-full px-4 cursor-pointer transform hover:scale-105 transition-transform`,
+    buttonHoverBehaviour_2: `hover:${ColorsThemeA.OhcGradient_A} hover:text-white rounded-full px-4 cursor-pointer transform hover:scale-105 transition-transform`,
     buttonHoverBehaviour_3: `hover:bg-stone-100 hover:text-black rounded-full py-1 px-4 cursor-pointer transition duration-50`,
     cardBehaviour: "shadow-md rounded-xl my-2 cursor-pointer hover:outline outline-offset-1 outline-1 outline-zinc-300",
     cardWindowBehaviour: "flex-1 flex flex-wrap h-max gap-8",
@@ -52,12 +56,20 @@ export const Theme_A = {
     },
     cardText: "rounded-b-xl flex items-center justify-center py-2 text-sm text-black font-medium",
     cardgradientTop: "relative w-max px-4 pt-4 rounded-t-xl bg-gradient-to-r from-white via-stone-50 to-zinc-300",
-    checkbubble: "absolute top-5 right-5 w-6 h-6 rounded-full bg-stone-50 transform hover:scale-125 transition-transform ",
-    selectedCardGradientBott: "rounded-b-xl bg-gradient-to-r from-white via-red-100 to-red-200",
-    selectedCardGradientTop: "relative w-max px-4 pt-4 rounded-t-xl bg-gradient-to-r from-white via-red-50 to-red-200",
+    checkbubbleOFF: "absolute top-5 right-5 w-6 h-6 shadow-inner border border-stone-200 rounded-full bg-stone-100 transform hover:scale-125 transition-transform ",
+    selectedCardGradientBott: "rounded-b-xl bg-gradient-to-r from-white via-stone-50 to-red-100",
+    selectedCardGradientTop: "relative w-max px-4 pt-4 rounded-t-xl bg-gradient-to-r from-white via-red-200 to-red-100",
   },
-  searchBars: {
+  indicators:{
+    counterIndicator: `text-sm py-1 px-[12px] rounded-full text-white ${ColorsThemeA.ohcVerticalGradient_A}`
+  },
+  Bars: {
     searchBar_1: `min-w-[300px] text-sm py-2 px-4 outline-none rounded-full bg-white border border-[#EDEDED] shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)]`,
+    proTopBar: {
+      standardShape: `w-full flex items-center justify-center font-semibold bg-stone-50 opacity-100 border-x-2 border-stone-100 shadow-inner cursor-pointer rounded-lg px-5 h-11 hover:border-secondary hover:bg-gradient-to-b from-red-100 to-transparent`,
+      activatedColor: "border border-red-50 bg-gradient-to-b from-red-100 to-transparent",
+      inactivatedColor: "border border-stone-200 shadow-lg",
+    }
   },
   servicesCards: {
     modifyButton: `flex cursor-pointer my-2 py-1 px-2 rounded-md w-7 h-6 bg-gradient-to-r ${ColorsThemeA.OhcGradient_A} shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]`,
