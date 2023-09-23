@@ -141,7 +141,7 @@ export const HairdresserSlots = () => {
       {isLoading && loadingView()}
       {!isLoading && (
         <div className="gap-7 w-full h-[700px] overflow-auto">
-          <div className="block rounded-2xl border-2 border-gray-200 w-full h-full px-6 py-4">
+          <div className="block rounded-2xl border-2 border-gray-200 w-full h-full overflow-auto px-6 py-4">
             <div className="flex flex-col md:flex-row items-center justify-between my-2 w-full gap-3">
               <div>
                 <div ref={dropdownRef} className="relative w-60">
