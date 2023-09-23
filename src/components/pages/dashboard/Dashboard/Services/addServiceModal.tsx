@@ -483,14 +483,14 @@ const AddServiceModal = (props: AddServiceModalType) => {
           </div>
           <div className="mt-4 flex gap-4 items-center justify-center w-full">
             <button
-              className={`${Theme_A.button.add}`}
+              className={`${Theme_A.button.addServices2Button}`}
               onClick={() => props.setShowAddServiceModal(false)}
             >
               Cancel
             </button>
             <button
               // className="text-white font-medium text-base rounded-md py-2 px-4 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
-              className={`${Theme_A.button.add}`}
+              className={`${Theme_A.button.addServices2Button}`}
               onClick={() => onSubmit()}
             >
               Add Service
