@@ -82,7 +82,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
   const onSubmit = async () => {
     if (!service.duration) {
       setError((prev) => {
-        return { ...prev, duration: "Duration is required" };
+        return { ...prev, duration: "Durée requise" };
       });
       return;
     } else {
@@ -92,7 +92,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
     }
     if (!service.price) {
       setError((prev) => {
-        return { ...prev, price: "Price is required" };
+        return { ...prev, price: "Prix requis" };
       });
       return;
     } else {
@@ -102,7 +102,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
     }
     if (props.service.age && !service.age) {
       setError((prev) => {
-        return { ...prev, age: "Age is required" };
+        return { ...prev, age: "Age requis" };
       });
       return;
     } else {
@@ -112,7 +112,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
     }
     if (props.service.percent && !service.percent) {
       setError((prev) => {
-        return { ...prev, percent: "Percent is required" };
+        return { ...prev, percent: "Pourcentage requis" };
       });
       return;
     } else {
@@ -134,10 +134,10 @@ const EditServiceModal = (props: EditServiceModalType) => {
       .updateSalonServices(props.service.id, data)
       .then((res) => {
         props.fetchAllServices();
-        showSnackbar("success", "Salon Service updated successfully.");
+        showSnackbar("success", "Prestation actualisée");
       })
       .catch((err) => {
-        showSnackbar("error", "Failed to update salon service");
+        showSnackbar("error", "Actualisation de préstation");
       })
       .finally(() => {
         setIsLoading(false);
@@ -149,10 +149,10 @@ const EditServiceModal = (props: EditServiceModalType) => {
       .deleteSalonServices(props.service.id)
       .then((res) => {
         props.fetchAllServices();
-        showSnackbar("success", "Salon Service deleted successfully.");
+        showSnackbar("success", "Prestation supprimée");
       })
       .catch((err) => {
-        showSnackbar("error", "Failed to delete salon service");
+        showSnackbar("error", "Echec de suppression");
       })
       .finally(() => {
         setIsLoading(false);

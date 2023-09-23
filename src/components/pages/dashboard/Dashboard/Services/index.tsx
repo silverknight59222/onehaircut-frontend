@@ -164,7 +164,7 @@ const Services = () => {
         <span className={`${ColorsThemeA.textGradient_Title}`}>prestations !</span>
       </p>
       <div className="flex w-full items-center justify-between ">
-        <div className="flex gap-4 my-7">
+        <div className="flex gap-4 my-7 z-0">
           <BaseMultiSelectbox dropdownItems={sortDropdown} dropdownTitle='Trier par : Nom' getActiveFilters={getActiveFilters} />
           <BaseMultiSelectbox dropdownItems={typeDropdown} dropdownTitle='Trier par : Group' getActiveFilters={getActiveTypeFilter} />
         </div>
@@ -182,7 +182,7 @@ const Services = () => {
         </div>
       )}
       <div className="flex items-center justify-center">
-        <div className="gap-9 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 z-10">
+        <div className="gap-9 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
           {getServices().map((item, index) => {
             return (
               <div key={index} className="flex items-center gap-9">
@@ -198,7 +198,7 @@ const Services = () => {
                       <EditIcon />
                     </div>
                     {(showEditServiceModal && editServiceInfo) && (
-                      <div className="fixed top-0 left-0 overflow-hidden bg-grey bg-opacity-50 flex items-center justify-center w-full h-full z-50">
+                      <div className="fixed top-0 left-0 overflow-hidden bg-slate-50 bg-opacity-50 flex items-center justify-center w-full h-full z-50">
                         <EditServiceModal
                           setShowEditServiceModal={setShowEditServiceModal}
                           fetchAllServices={fetchAllServices}
@@ -233,10 +233,10 @@ const Services = () => {
         </div>
         <div></div>
       </div>
-      <div className="bg-gradient-to-l  md:block fixed -left-32 md:-left-8 -bottom-32 md:-bottom-8 z-0">
+      <div className="bg-gradient-to-l  md:block fixed -left-32 md:-left-8 -bottom-32 md:-bottom-8 -z-50">
         <LogoCircle />
       </div>
-      <ScrollToTopButton/>
+      <ScrollToTopButton />
     </div>
 
   );
