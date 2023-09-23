@@ -718,7 +718,7 @@ const Hairstyles = () => {
                 />
               </div>
             ) : (
-              <div className="mt-2 flex items-center justify-center w-36 h-36 bg-zinc-200 border-1 border-black rounded-2xl shadow-md ">
+              <div className={`${Theme_A.thumbnails.selectHaircutThumbnail}`}>
                 Select Haircut
               </div>
             )}
@@ -931,7 +931,7 @@ const Hairstyles = () => {
             ) : (
               <div className="flex items-center justify-center gap-4 mt-4 w-full">
                 <button
-                  className="w-full text-black font-medium text-sm rounded-md px-4 py-2 bg-white border border-x-red-500 border-y-orange-500 transform hover:scale-105 transition-transform hover:shadow-md"
+                  className={`${Theme_A.button.cancelButton}`}
                   onClick={() => {
                     setForm(defaultFormDetails);
                     setSelectedSalonHaircut(defaultHaircut);
