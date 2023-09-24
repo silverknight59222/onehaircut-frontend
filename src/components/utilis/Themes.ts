@@ -8,16 +8,17 @@ export const ColorsThemeA = {
   textGradient_Title: "font-bold text-transparent bg-clip-text bg-gradient-to-r from-rose-600 via-orange-500 to-orange-400",
   OhcGradient_A: "bg-gradient-to-r from-rose-600 via-orange-500 to-orange-400",
   OhcGradient_B: "bg-gradient-to-r from-rose-500 via-orange-600 to-orange-500",
+  OhcGradient_SmallButt: "bg-gradient-to-r from-rose-600 via-orange-500 to-orange-400",
   filterSelected: "bg-stone-800",
   error: "red-900"
 }
 
 export const Theme_A = {
   textFont: {
-    headerH1:"",
-    headerH2:"",
-    headerH3:"text-lg font-semibold text-center",
-    headerH4:"",
+    headerH1: "text-2xl font-semibold text-center",
+    headerH2: "text-xl font-semibold text-center",
+    headerH3: "text-lg font-semibold text-center",
+    headerH4: "",
   },
   shadows: {
     standardCardShadow: "shadow-lg",
@@ -63,6 +64,7 @@ export const Theme_A = {
     addServices2Button: `text-white font-semibold text-md rounded-md px-6 py-4 ${ColorsThemeA.OhcGradient_B} shadow-md transform hover:scale-105 transition-transform hover:shadow-[0px_3px_6px_0px_rgba(255,125,60,0.25)]`,
     cancelButton: `w-full text-black font-medium text-sm rounded-md px-4 py-2 bg-white border border-x-red-500 border-y-orange-500 transform hover:scale-105 transition-transform hover:shadow-md`,
     scrollToTheTopButton: `fixed bottom-10 right-10 p-4 bg-stone-200 text-sm text-white px-6 py-2 rounded-lg transform hover:scale-105 transition-transform`,
+    crossButtonSmall: `cursor-pointer my-2 py-1 px-2 rounded-lg ${ColorsThemeA.OhcGradient_SmallButt} shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)] transform hover:scale-125 transition-transform`,
   },
   checkers: {
     errorText: `text-xs text-${ColorsThemeA.error} ml-3 mt-1`,

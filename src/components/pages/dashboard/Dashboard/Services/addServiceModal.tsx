@@ -277,7 +277,7 @@ const AddServiceModal = (props: AddServiceModalType) => {
       {isLoading && loadingView()}
       <div className="w-full flex items-center justify-end pt-2">
         <div
-          className={`cursor-pointer my-2 py-1 px-2 rounded-lg ${ColorsThemeA.OhcGradient_A} shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]`}
+          className={`${Theme_A.button.crossButtonSmall}`}
           onClick={() => props.setShowAddServiceModal(false)}
         >
           <CrossIcon width="12" />

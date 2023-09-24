@@ -5,6 +5,7 @@ import useSnackbar from "@/hooks/useSnackbar";
 import userLoader from "@/hooks/useLoader";
 import React, { useState } from "react";
 import { SalonService } from "./index";
+import { Theme_A } from "@/components/utilis/Themes";
 interface EditServiceModalType {
   setShowEditServiceModal: (value: boolean) => void;
   service: SalonService;
@@ -164,7 +165,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
       {isLoading && loadingView()}
       <div className="w-full flex items-center justify-end pt-2">
         <div
-          className="cursor-pointer my-2 py-1 px-2 rounded-lg bg-gradient-to-r from-pink-500 to-orange-500 shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+          className={`${Theme_A.button.crossButtonSmall}`}
           onClick={() => props.setShowEditServiceModal(false)}
         >
           <CrossIcon width="12" />
@@ -295,19 +296,19 @@ const EditServiceModal = (props: EditServiceModalType) => {
           </div>
           <div className="mt-4 flex gap-4 items-center justify-center w-full">
             <button
-              className="text-white font-medium text-lg rounded-md py-2 px-4 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+              className={`${Theme_A.button.addServices2Button}`}
               onClick={() => props.setShowEditServiceModal(false)}
             >
               Cancel
             </button>
             <button
-              className="text-white font-medium text-lg rounded-md py-2 px-4 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+              className={`${Theme_A.button.addServices2Button}`}
               onClick={() => deleteService()}
             >
               Delete
             </button>
             <button
-              className="text-white font-medium text-lg rounded-md py-2 px-4 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+              className={`${Theme_A.button.addServices2Button}`}
               onClick={() => onSubmit()}
             >
               Update
