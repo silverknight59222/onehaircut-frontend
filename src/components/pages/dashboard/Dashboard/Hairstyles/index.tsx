@@ -13,6 +13,7 @@ import {
 import ScrollToTopButton from "@/components/utilis/Helper";
 import { Theme_A } from "@/components/utilis/Themes";
 import { ColorsThemeA } from "@/components/utilis/Themes";
+import Footer from "@/components/UI/Footer";
 
 export interface HaircutDetails {
   id: number;
@@ -1011,6 +1012,7 @@ const Hairstyles = () => {
           </div>
         )}
       </div>
+      <Footer />
     </div>
   );
 };

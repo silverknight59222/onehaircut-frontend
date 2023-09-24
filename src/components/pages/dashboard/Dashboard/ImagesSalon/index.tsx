@@ -5,6 +5,7 @@ import userLoader from '@/hooks/useLoader';
 import { ImageSalon } from '@/types';
 import ImagesContainer from './ImagesContainer';
 import { EditIcon, LogoCircle } from "@/components/utilis/Icons";
+import Footer from "@/components/UI/Footer";
 
 const Images = () => {
 	const { loadingView } = userLoader();
@@ -47,6 +48,7 @@ const Images = () => {
       			  <LogoCircle />
       			</div>
 			</div>
+			<Footer/>
 		</>
 	)
 }

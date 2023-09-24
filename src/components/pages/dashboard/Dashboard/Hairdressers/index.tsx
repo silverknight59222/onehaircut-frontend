@@ -13,6 +13,7 @@ import {
 } from "@/components/utilis/Icons";
 import { Theme_A } from "@/components/utilis/Themes";
 import { EditIcon, LogoCircle } from "@/components/utilis/Icons";
+import Footer from "@/components/UI/Footer";
 interface AllAvatars {
   man: Avatar[];
   woman: Avatar[];
@@ -468,6 +469,7 @@ const Hairdressers = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 };
