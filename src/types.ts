@@ -93,3 +93,8 @@ export type Services={
 	colors: Color[],
 	requirements: string[]
 }
+
+export type Slot={
+	id: number,
+	start: string
+}

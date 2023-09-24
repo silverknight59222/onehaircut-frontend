@@ -2533,8 +2533,8 @@ export const CalenderIcon = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="76"
-      height="71"
+      width="55"
+      height="55"
       viewBox="0 0 76 71"
       fill="none"
     >
