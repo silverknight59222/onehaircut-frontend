@@ -170,10 +170,10 @@ const ImagesContainer = ({
                     />
                   ) : (
                     <div>
-                      <p className="text-[10px] font-medium text-[#959595]">
+                      <p className="text-[10px] font-medium text-[#959595] text-center">
                         Photo
                       </p>
-                      <p className="text-[10px] font-medium text-[#959595] mt-2">
+                      <p className="text-[10px] font-medium text-[#959595] text-center mt-2">
                         Recommended size is 128px x 128px
                       </p>
                     </div>

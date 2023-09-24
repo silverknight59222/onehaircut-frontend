@@ -233,7 +233,7 @@ const Services = () => {
         </div>
         <div></div>
       </div>
-      <div className="bg-gradient-to-l  md:block fixed -left-32 md:-left-8 -bottom-32 md:-bottom-8 z-0">
+      <div className="bg-gradient-to-l  md:block fixed -left-32 md:-left-8 -bottom-32 md:-bottom-8 z-0 mix-blend-overlay">
         <LogoCircle />
       </div>
       <ScrollToTopButton/>
