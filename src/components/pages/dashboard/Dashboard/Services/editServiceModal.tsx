@@ -296,19 +296,19 @@ const EditServiceModal = (props: EditServiceModalType) => {
           </div>
           <div className="mt-4 flex gap-4 items-center justify-center w-full">
             <button
-              className={`${Theme_A.button.addServices2Button}`}
+              className={`${Theme_A.button.mediumGradientButton}`}
               onClick={() => props.setShowEditServiceModal(false)}
             >
               Cancel
             </button>
             <button
-              className={`${Theme_A.button.addServices2Button}`}
+              className={`${Theme_A.button.mediumGradientButton}`}
               onClick={() => deleteService()}
             >
               Delete
             </button>
             <button
-              className={`${Theme_A.button.addServices2Button}`}
+              className={`${Theme_A.button.mediumGradientButton}`}
               onClick={() => onSubmit()}
             >
               Update

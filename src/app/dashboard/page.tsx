@@ -8,6 +8,8 @@ import ImagesSalon from '@/components/pages/dashboard/Dashboard/ImagesSalon'
 import Hairstyles from '@/components/pages/dashboard/Dashboard/Hairstyles'
 import Services from '@/components/pages/dashboard/Dashboard/Services'
 import AddPartner from '@/components/pages/dashboard/Dashboard/AddPartner'
+import { Theme_A } from "@/components/utilis/Themes";
+import { ColorsThemeA } from "@/components/utilis/Themes";
 
 const Page = () => {
 const [isSidebar, setIsSidebar] = useState(true);
@@ -34,7 +36,7 @@ const [isSidebar, setIsSidebar] = useState(true);
 		{tab === "Dashboard" && (
 				<Sidebar sidebarItems={sidebarItems} isSidebar={isSidebar} SidebarHandler={SidebarHandler} />
 			)}
-			<div className={`h-screen px-4 lg:px-8 py-5 overflow-x-hidden ${tab === "Dashboard" && "bg-[#F4F4F6] ml-0 lg:ml-72"}`}>
+			<div className={`h-screen px-4 lg:px-8 py-5 overflow-x-hidden ${tab === "Dashboard" && `${ColorsThemeA.pageBgColorLight} ml-0 lg:ml-72`}`}>
 				<Topbar
 					isDashboard={tab !== "Dashboard"}
 					SidebarHandler={SidebarHandler}

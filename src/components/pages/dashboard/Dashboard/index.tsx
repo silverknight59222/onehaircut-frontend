@@ -1,5 +1,6 @@
 import { CompletedHairStyleIcon, DashboardHeartIcon, DashboardUsersIcon, ProjectIncomeIcon } from "@/components/utilis/Icons";
 import React from "react";
+import Footer from "@/components/UI/Footer";
 
 const Dashboard = () => {
   const overview = [
@@ -59,6 +60,7 @@ const Dashboard = () => {
   
   return (
     <div className="px-4 lg:px-6">
+      <Footer />
       <div>
         <p className="text-primary text-2xl font-semibold mb-3">
           Analytical Overview
@@ -164,6 +166,7 @@ const Dashboard = () => {
         </div>
       </div>
     </div>
+    
       );
 };
 

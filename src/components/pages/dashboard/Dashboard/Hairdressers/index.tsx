@@ -11,6 +11,9 @@ import {
   RightArrowIcon,
   SelectedIcon,
 } from "@/components/utilis/Icons";
+import { Theme_A } from "@/components/utilis/Themes";
+import { EditIcon, LogoCircle } from "@/components/utilis/Icons";
+import Footer from "@/components/UI/Footer";
 interface AllAvatars {
   man: Avatar[];
   woman: Avatar[];
@@ -312,8 +315,12 @@ const Hairdressers = () => {
     <>
       {isLoading && loadingView()}
       <div className="w-full flex flex-col lg:flex-row items-center justify-center gap-4 mt-8">
-        <div className="h-[780px] w-full xl:w-2/5 overflow-auto flex flex-col items-center gap-8 bg-lightGrey rounded-3xl p-4 md:px-12 md:pt-12 md:pb-0">
+      <div className="bg-gradient-to-l  md:block fixed -left-32 md:-left-8 -bottom-32 md:-bottom-8 z-0 mix-blend-overlay ">
+        <LogoCircle />
+      </div>
+        <div className="h-[940px] w-full xl:w-2/5 overflow-auto flex flex-col items-center gap-8 bg-lightGrey rounded-3xl p-4 md:px-12 md:pt-12 md:pb-0 opacity-95">
           <div className="w-full max-w-[450px]">
+            <label className={`${Theme_A.textFont.headerH4}`} htmlFor="emailInput">Pr&eacute;nom </label>
             <input
               placeholder="Prénom coiffeur"
               className="w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
@@ -325,6 +332,7 @@ const Hairdressers = () => {
             )}
           </div>
           <div className="w-full max-w-[450px]">
+            <label className={`${Theme_A.textFont.headerH4}`} htmlFor="emailInput">Adresse mail</label>
             <input
               placeholder="Adresse mail"
               className="w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
@@ -342,15 +350,15 @@ const Hairdressers = () => {
             style={{ display: "none" }}
           />
           <div
-            className={`flex items-center p-4 rounded-2xl border-2 bg-white shadow-lg`}
+            className={`${Theme_A.thumbnails.containerPicThumbnail}`}
           >
-            <div className={`w-32 h-32 relative flex items-center`}>
+            <div className={`${Theme_A.thumbnails.profilPictureThumbnail}`}>
               {profileImage ? (
                 <Image src={profileImage} fill={true} alt="Profile Image" />
               ) : (
                 <div>
-                  <p className="text-[10px] font-medium text-[#959595]">
-                    Photo chargé coiffeur
+                  <p className={`${Theme_A.textFont.infoTextSmall}`}>
+                    Ajouter une photo
                   </p>
                   <p className="text-[10px] font-medium text-[#959595] mt-2">
                     Recommended size is 128px x 128px
@@ -360,12 +368,13 @@ const Hairdressers = () => {
             </div>
           </div>
           <button
-            className="text-white font-medium text-lg rounded-md w-[278px] py-2 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+            className={`${Theme_A.button.medWhiteColoredButton}`}
             onClick={handleClick}
           >
-            Ajouter photo
+            Parcourir les fichiers
           </button>
-          <p className="text-black font-medium text-xl">OU</p>
+          <p className={`${Theme_A.textFont.headerH3}`}>OU</p>
+          <label className={`${Theme_A.textFont.headerH5}`} htmlFor="emailInput">Choisir un avatar</label>
           <div className="flex items-center justify-center gap-4">
             <div className="cursor-pointer" onClick={handleAvatarPrevious}>
               <LeftArrowIcon />
@@ -384,27 +393,27 @@ const Hairdressers = () => {
               className="flex items-center justify-center gap-1 cursor-pointer"
               onClick={() => setShowAvatars("men")}
             >
-              <div className="w-6 h-6 rounded-full bg-[#D9D9D9]">
+              <div className="w-6 h-6 rounded-full bg-[#D9D9D9] ">
                 {showAvatar === "men" && <SelectedIcon />}
               </div>
-              <div>Male</div>
+              <div>Homme</div>
             </div>
             <div
               className="flex items-center justify-center gap-1 cursor-pointer"
               onClick={() => setShowAvatars("women")}
             >
-              <div className="w-6 h-6 rounded-full bg-[#D9D9D9]">
+              <div className="w-6 h-6 rounded-full bg-[#D9D9D9] m-1">
                 {showAvatar === "women" && <SelectedIcon />}
               </div>
-              <div>Female</div>
+              <div>Femme</div>
             </div>
           </div>
           {!isEdit ? (
             <button
-              className="text-white font-medium text-lg rounded-md w-[278px] py-2 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+              className={`${Theme_A.button.medLargeGradientButton}`}
               onClick={() => addDresser()}
             >
-              Ajouter un coiffeur
+              Cr&eacute;er le profil
             </button>
           ) : (
             <div className="flex items-center gap-3">
@@ -430,7 +439,7 @@ const Hairdressers = () => {
             </div>
           )}
         </div>
-        <div className="h-[780px] w-full xl:w-2/5 overflow-auto flex flex-col items-center justify-start gap-8 bg-lightGrey rounded-3xl p-4 md:p-12">
+        <div className="h-[940px] w-full xl:w-2/5 overflow-auto flex flex-col items-center justify-start gap-8 bg-lightGrey rounded-3xl p-4 md:p-12">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full md:w-96">
             {hairDressers.map((item, index) => {
               return (
@@ -460,6 +469,7 @@ const Hairdressers = () => {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 };

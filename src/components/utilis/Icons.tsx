@@ -2041,8 +2041,8 @@ export const CircleRight = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="424"
-      height="404"
+      width="720"
+      height="720"
       viewBox="0 0 424 404"
       fill="none"
     >
@@ -2053,20 +2053,21 @@ export const CircleRight = () => {
       <defs>
         <linearGradient
           id="paint0_linear_757_96"
-          x1="-73.6286"
+          x1="-10.6286"
           y1="298.027"
-          x2="480.433"
-          y2="59.4666"
+          x2="450.433"
+          y2="50.4666"
           gradientUnits="userSpaceOnUse"
         >
-          <stop offset="0.192708" stopColor="#E83768" />
-          <stop offset="0.588542" stopColor="#EB5C54" stopOpacity="0.71" />
+          <stop offset="0.192708" stopColor="#EC124F" />
+          <stop offset="0.75" stopColor="#FFE333" stopOpacity="0.71" /> {/* Modification de l'offset et de la couleur */}
           <stop offset="1" stopColor="#FFE917" stopOpacity="0" />
         </linearGradient>
       </defs>
     </svg>
   );
 };
+
 
 export const RegistrationUnCheckedIcon = () => {
   return (

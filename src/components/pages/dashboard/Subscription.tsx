@@ -10,6 +10,8 @@ import {
   RegistrationCheckedIcon,
 } from "@/components/utilis/Icons";
 import MobilePricingTable from "../registration/MobilePricingTable";
+import { ColorsThemeA } from "@/components/utilis/Themes";
+import { The_Nautigal } from "next/font/google";
 
 const Subscription = () => {
   const [isAutomaticRenewal, setIsAutomaticRenewal] = useState(false);
@@ -64,7 +66,7 @@ const Subscription = () => {
                   <div
                     style={{
                       background:
-                        "linear-gradient(162deg, #FE2569 0%, #FD4C55 42.71%, #FF8637 86.46%, #FFE30F 100%)",
+                        `${ColorsThemeA.ohcBigVerticalGradient_A}`,
                     }}
                     className="w-56 absolute -top-40 left-[216px] flex flex-col items-center justify-center py-6 rounded-[20px] shadow-[-71px_56px_56px_0px_rgba(255,125,60,0.13)]"
                   >
@@ -85,11 +87,8 @@ const Subscription = () => {
                       );
                     })}
                     <div className="mt-3 h-16">
-                      <p className="text-white font-medium text-xl text-center">
+                      <p className="text-black font-semibold text-xl text-center">
                         79 $<span className="text-2xl">/ mois</span>
-                      </p>
-                      <p className="text-white text-xs font-semibold">
-                        *1 % de tax de service
                       </p>
                     </div>
                     <div className="flex items-center justify-center text-white font-semibold rounded-3xl -mb-12 w-44 h-12 bg-[#070E06]">
@@ -118,9 +117,6 @@ const Subscription = () => {
                     </div>
                     <div className="w-full h-16 flex flex-col items-center justify-center py-4">
                       <p className="text-black font-medium text-2xl">Gratuit</p>
-                      <p className="text-black text-xs font-medium ml-16">
-                        *5 % de tax de service
-                      </p>
                     </div>
                   </div>
                 </div>

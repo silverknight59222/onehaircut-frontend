@@ -9,6 +9,7 @@ import { getLocalStorage } from "@/api/storage";
 import { dashboard } from "@/api/dashboard";
 import { SalonDetails } from "@/types";
 import SlotDropdown from "./SlotsDropdown";
+import Footer from "@/components/UI/Footer";
 export interface OpenTimes {
   available: boolean;
   day: string;
@@ -228,6 +229,7 @@ const Settings = () => {
           )}
         </div>
       </DashboardLayout>
+      <Footer />
     </div>
   );
 };

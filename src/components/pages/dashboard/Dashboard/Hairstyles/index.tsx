@@ -12,6 +12,8 @@ import {
 } from "@/components/utilis/Icons";
 import ScrollToTopButton from "@/components/utilis/Helper";
 import { Theme_A } from "@/components/utilis/Themes";
+import { ColorsThemeA } from "@/components/utilis/Themes";
+import Footer from "@/components/UI/Footer";
 
 export interface HaircutDetails {
   id: number;
@@ -556,8 +558,8 @@ const Hairstyles = () => {
               <div
                 className={
                   ethnicityFilters.length > 0
-                    ? "flex gap-4 rounded-full bg-stone-800 border border-[#EDEDED] p-1 text-sm text-white shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)]"
-                    : "flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373] shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)]"
+                    ? `${Theme_A.browingFilters.proHairstyleFilterON}`
+                    : `${Theme_A.browingFilters.proHairstyleFilterOFF}`
                 }
               >
                 <div className="px-4 cursor-pointer">Groupe Ethnique</div>
@@ -573,8 +575,8 @@ const Hairstyles = () => {
                       <div
                         className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 ${
                           ethnicityFilters.includes(item.name)
-                            ? "bg-gradient-to-b from-pink-500 to-orange-500"
-                            : "bg-[#D6D6D6]"
+                            ? `${ColorsThemeA.ohcVerticalGradient_A}`
+                            : `${ColorsThemeA.inactivButtonColor}`
                         }`}
                       >
                         <CheckedIcon />
@@ -589,8 +591,8 @@ const Hairstyles = () => {
               <div
                 className={
                   genderFilters.length > 0
-                    ? "flex gap-4 rounded-full bg-stone-800 border border-[#EDEDED] p-1 text-sm text-white shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)]"
-                    : "flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373] shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)]"
+                  ? `${Theme_A.browingFilters.proHairstyleFilterON}`
+                  : `${Theme_A.browingFilters.proHairstyleFilterOFF}`
                 }
               >
                 <div className="px-4 cursor-pointer">Genre</div>
@@ -606,8 +608,8 @@ const Hairstyles = () => {
                       <div
                         className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${
                           genderFilters.includes(item.name)
-                            ? "bg-gradient-to-b from-pink-500 to-orange-500"
-                            : "bg-[#D6D6D6]"
+                            ? `${ColorsThemeA.ohcVerticalGradient_A}`
+                            : `${ColorsThemeA.inactivButtonColor}`
                         }`}
                       >
                         <CheckedIcon />
@@ -622,11 +624,11 @@ const Hairstyles = () => {
               <div
                 className={
                   lengthFilters.length > 0
-                    ? "flex gap-4 rounded-full bg-stone-800 border border-[#EDEDED] p-1 text-sm text-white shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)]"
-                    : "flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373] shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)]"
+                  ? `${Theme_A.browingFilters.proHairstyleFilterON}`
+                  : `${Theme_A.browingFilters.proHairstyleFilterOFF}`
                 }
               >
-                <div className="px-4 cursor-pointer">Longueur</div>
+                <div className={`${Theme_A.shapes.standardShape} " " ${Theme_A.behaviour.buttonHoverBehaviour_1}`}>Longueur</div>
               </div>
               <div className="hidden group-hover:block absolute top-[30px] bg-white z-10 text-sm text-[#737373] rounded-lg border min-w-[134px]">
                 {Length.map((item, index) => {
@@ -639,8 +641,8 @@ const Hairstyles = () => {
                       <div
                         className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${
                           lengthFilters.includes(item.name)
-                            ? "bg-gradient-to-b from-pink-500 to-orange-500"
-                            : "bg-[#D6D6D6]"
+                            ? `${ColorsThemeA.ohcVerticalGradient_A}`
+                            : `${ColorsThemeA.inactivButtonColor}`
                         }`}
                       >
                         <CheckedIcon />
@@ -657,30 +659,30 @@ const Hairstyles = () => {
               className={
                 haircutList.length &&
                 selectedHaircutsMapping.length === haircutList.length
-                  ? "flex gap-4 rounded-full bg-stone-800 border border-[#EDEDED] p-1 text-sm text-white shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)]"
-                  : "flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373] shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)]"
+                ? `${Theme_A.browingFilters.proHairstyleFilterON}`
+                : `${Theme_A.browingFilters.proHairstyleFilterOFF}`
               }
               onClick={selectAllHaircuts}
             >
-              <div className="hover:bg-stone-800 hover:text-white rounded-full px-4 cursor-pointer transform hover:scale-105 transition-transform">Select All</div>
+              <div className={`${Theme_A.behaviour.buttonHoverBehaviour_2}`}>Select All</div>
             </div>
           </div>
           <div className="relative flex">
             <input
               type="text"
-              className="min-w-[300px] text-sm py-2 px-4 outline-none rounded-full bg-white border border-[#EDEDED] shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)]"
+              className={`${Theme_A.Bars.searchBar_1}`}
               placeholder="Nom coiffure"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
-            <div className="absolute right-1 top-[3px] cursor-pointer p-2 rounded-full bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
+            <div className={`${Theme_A.shapes.smallSearchCircle}`}>
               <SearcIcon />
             </div>
           </div>
           <div>
             <div className="flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373]">
               <div
-                className={`hover:bg-stone-100 hover:text-black rounded-full py-1 px-4 cursor-pointer transition duration-50 ${
+                className={`${Theme_A.behaviour.buttonHoverBehaviour_3} ${
                   activeMenu === "added" && "bg-stone-800 text-white"
                 }`}
                 onClick={() => setActiveMenu("added")}
@@ -688,7 +690,7 @@ const Hairstyles = () => {
                 Show Added Haircuts
               </div>
               <div
-                className={`hover:bg-stone-100 hover:text-black rounded-full py-1 px-4 cursor-pointer transition duration-50 ${
+                className={`${Theme_A.behaviour.buttonHoverBehaviour_3}  ${
                   activeMenu === "new" && "bg-stone-800 text-white"
                 }`}
                 onClick={onToggleHairstyle}
@@ -705,11 +707,11 @@ const Hairstyles = () => {
           <h2 className={`${Theme_A.textFont.headerH3}`}>
             Configurations des coiffures
           </h2>
-          {(selectedHaircutsMapping.length > 0 && activeMenu === 'new') && <div className="text-sm py-1 px-[10px] rounded-full text-white bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo">{selectedHaircutsMapping.length}</div>}
+          {(selectedHaircutsMapping.length > 0 && activeMenu === 'new') && <div className={`${Theme_A.indicators.counterIndicator}`}>{selectedHaircutsMapping.length}</div>}
           </div>
           <div className="flex items-center justify-center">
             {getSelectedImage() ? (
-              <div className={`${Theme_A.cards.cardSize.big}`}>
+              <div className={`${Theme_A.hairstyleCards.cardSize.big}`}>
                 <Image
                   src={getSelectedImage()}
                   fill={true}
@@ -923,7 +925,7 @@ const Hairstyles = () => {
             </div>
             {!(activeMenu === "added" && selectedSalonHaircut.id >= 0) ? (
               <div className="flex items-center justify-center gap-4 mt-4">
-              <button onClick={addSalonHaircuts} className={`${Theme_A.button.addButton}`}>
+              <button onClick={addSalonHaircuts} className={`${Theme_A.button.smallGradientButton}`}>
                   Ajouter
               </button>
           </div>
@@ -931,7 +933,7 @@ const Hairstyles = () => {
             ) : (
               <div className="flex items-center justify-center gap-4 mt-4 w-full">
                 <button
-                  className={`${Theme_A.button.cancelButton}`}
+                  className={`${Theme_A.button.medWhiteColoredButton}`}
                   onClick={() => {
                     setForm(defaultFormDetails);
                     setSelectedSalonHaircut(defaultHaircut);
@@ -940,7 +942,7 @@ const Hairstyles = () => {
                 </button>
                 <button
                   onClick={updateSalonHaircuts}
-                  className={`${Theme_A.button.updateButton}`}>
+                  className={`${Theme_A.button.mediumGradientButton}`}>
                   mettre &agrave; jour
                 </button>
               </div>
@@ -962,18 +964,18 @@ const Hairstyles = () => {
                   className={`${Theme_A.behaviour.cardBehaviour}`}
                   onClick={() => selectHaircut(item)}
                 >
-                  <div className={`${Theme_A.cards.cardgradientTop}`}>
-                    <div className={`${Theme_A.cards.cardSize.small}`}>
+                  <div className={`${Theme_A.hairstyleCards.cardgradientTop}`}>
+                    <div className={`${Theme_A.hairstyleCards.cardSize.med}`}>
                     <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public/${item.image}`} fill={true} alt="" />
                     </div>
-                    <div className={`${Theme_A.cards.checkbubble}`}>
+                    <div className={`${Theme_A.hairstyleCards.checkbubbleOFF}`}>
                       {selectedHaircutsMapping.filter(
                         (haircut) => haircut.id === item.id
                       ).length > 0 && <SelectedIcon />}
                     </div>
                   </div>
-                  <div className={`${Theme_A.cards.cardGradientBott}`}>
-                    <p className={`${Theme_A.cards.cardText}`}>
+                  <div className={`${Theme_A.hairstyleCards.cardGradientBott}`}>
+                    <p className={`${Theme_A.hairstyleCards.cardText}`}>
                       {item.name}
                     </p>
                   </div>
@@ -991,16 +993,16 @@ const Hairstyles = () => {
                   className={`${Theme_A.behaviour.cardBehaviour}`}
                   onClick={() => selectSalonHaircut(index)}
                 >
-                  <div className={`${Theme_A.cards.selectedCardGradientTop}`}>
-                    <div className={`${Theme_A.cards.cardSize.small}`}>
+                  <div className={`${Theme_A.hairstyleCards.selectedCardGradientTop}`}>
+                    <div className={`${Theme_A.hairstyleCards.cardSize.med}`}>
                       <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public/${item.image}`} fill={true} alt="" />
                     </div>
-                    <div className={`${Theme_A.cards.checkbubble}`}>
+                    <div className={`${Theme_A.hairstyleCards.checkbubbleOFF}`}>
                       {selectedSalonHaircut?.id === item.id && <SelectedIcon />}
                     </div>
                   </div>
-                  <div className={`${Theme_A.cards.selectedCardGradientBott}`}>
-                      <p className={`${Theme_A.cards.cardText}`}>
+                  <div className={`${Theme_A.hairstyleCards.selectedCardGradientBott}`}>
+                      <p className={`${Theme_A.hairstyleCards.cardText}`}>
                           {item.name}
                       </p>
                   </div>
@@ -1010,6 +1012,7 @@ const Hairstyles = () => {
           </div>
         )}
       </div>
+      <Footer />
     </div>
   );
 };
