@@ -51,7 +51,7 @@ const Hairdressers = () => {
   const [profileImage, setProfileImage] = useState<string | null>("");
   const [isLoading, setIsLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
-  const regex=/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+  const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
   const [error, setError] = useState({
     name: "",
     email: "",
@@ -115,7 +115,7 @@ const Hairdressers = () => {
     if (showAvatar === "men") {
       setAvatarIndex(newIndex < 1 ? avatars.man.length - 1 : newIndex);
     } else if (showAvatar === "women") {
-      setAvatarIndex(newIndex <  avatars.woman.length - 1 ? avatars.woman[avatars.woman.length - 1].id : newIndex);
+      setAvatarIndex(newIndex < avatars.woman.length - 1 ? avatars.woman[avatars.woman.length - 1].id : newIndex);
     }
   };
   const handleAvatarNext = () => {
@@ -125,7 +125,7 @@ const Hairdressers = () => {
         newIndex > avatars.man.length - 1 ? avatars.man[0].id : newIndex
       );
     } else if (showAvatar === "women") {
-      const totalLength=avatars.woman.length - 1 + avatars.woman.length - 1
+      const totalLength = avatars.woman.length - 1 + avatars.woman.length - 1
       setAvatarIndex(
         newIndex > totalLength ? avatars.woman[0].id : newIndex
       );
@@ -150,12 +150,12 @@ const Hairdressers = () => {
       });
       isValidated = false;
     }
-    else if(!regex.test(hairDresser.email)){
+    else if (!regex.test(hairDresser.email)) {
       setError((prev) => {
         return { ...prev, email: "Invalid Email" };
       });
       isValidated = false;
-    } 
+    }
     else {
       setError((prev) => {
         return { ...prev, email: "" };
@@ -234,17 +234,17 @@ const Hairdressers = () => {
     }
   };
   const getAllAvatars = async () => {
-     const user = getLocalStorage("user");
+    const user = getLocalStorage("user");
     const userId = user ? Number(JSON.parse(user).id) : null;
     if (userId) {
-    setIsLoading(true);
-    await dashboard
-      .getAllAvatars(userId)
-      .then((resp) => {
-        setAvatars(resp.data.data);
-      })
-      .catch((error) => console.log(error));
-    setIsLoading(false);
+      setIsLoading(true);
+      await dashboard
+        .getAllAvatars(userId)
+        .then((resp) => {
+          setAvatars(resp.data.data);
+        })
+        .catch((error) => console.log(error));
+      setIsLoading(false);
     }
   };
   const onDeleteHairDresser = async () => {
@@ -315,10 +315,13 @@ const Hairdressers = () => {
     <>
       {isLoading && loadingView()}
       <div className="w-full flex flex-col lg:flex-row items-center justify-center gap-4 mt-8">
-      <div className="bg-gradient-to-l  md:block fixed -left-32 md:-left-8 -bottom-32 md:-bottom-8 z-0 mix-blend-overlay ">
-        <LogoCircle />
-      </div>
+        <div className="bg-gradient-to-l  md:block fixed -left-32 md:-left-8 -bottom-32 md:-bottom-8 z-0 mix-blend-overlay ">
+          <LogoCircle />
+        </div>
         <div className="h-[940px] w-full xl:w-2/5 overflow-auto flex flex-col items-center gap-8 bg-lightGrey rounded-3xl p-4 md:px-12 md:pt-12 md:pb-0 opacity-95">
+          <div className={`${Theme_A.textFont.headerH2} underline`}>
+            Ajouter un nouveau coiffeur
+          </div>
           <div className="w-full max-w-[450px]">
             <label className={`${Theme_A.textFont.headerH4}`} htmlFor="emailInput">Pr&eacute;nom </label>
             <input
@@ -418,7 +421,7 @@ const Hairdressers = () => {
           ) : (
             <div className="flex items-center gap-3">
               <button
-                className="text-white font-medium text-lg rounded-md py-2 px-4 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+                className={`${Theme_A.button.mediumGradientButton} py-3`}
                 onClick={() => addDresser(true)}
               >
                 Update
@@ -426,13 +429,13 @@ const Hairdressers = () => {
 
               <button
                 onClick={onClear}
-                className="text-white font-medium text-lg rounded-md py-2 px-4 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+                className={`${Theme_A.button.medWhiteColoredButton} py-3`}
               >
                 Clear
               </button>
               <button
                 onClick={onDeleteHairDresser}
-                className="flex items-center justify-center px-4 py-3 gap-4 rounded-md bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+                className={`${Theme_A.button.deleteButtonSmall} px-4 py-3 gap-3`}
               >
                 <DeleteIcon />
               </button>
@@ -440,15 +443,17 @@ const Hairdressers = () => {
           )}
         </div>
         <div className="h-[940px] w-full xl:w-2/5 overflow-auto flex flex-col items-center justify-start gap-8 bg-lightGrey rounded-3xl p-4 md:p-12">
+          <div className={`${Theme_A.textFont.headerH2} underline`}>
+            Coiffeur(s)/-euse(s) disponible(s)
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full md:w-96">
             {hairDressers.map((item, index) => {
               return (
                 <div key={index} className="w-full flex justify-center">
                   <div
                     onClick={() => selectHairDresser(item)}
-                    className={`px-4 pt-4 shadow-lg flex flex-col justify-between cursor-pointer border-2 transition rounded-xl hover:border-secondary ${
-                      item.id === hairDresser.id && "border-secondary"
-                    }`}
+                    className={`px-4 pt-4 shadow-lg flex flex-col justify-between cursor-pointer border-2 transition rounded-xl hover:border-secondary ${item.id === hairDresser.id && "border-secondary"
+                      }`}
                   >
                     <div className="relative w-32 h-32">
                       <Image

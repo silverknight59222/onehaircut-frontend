@@ -10,7 +10,7 @@ import {
   RegistrationCheckedIcon,
 } from "@/components/utilis/Icons";
 import MobilePricingTable from "../registration/MobilePricingTable";
-import { ColorsThemeA } from "@/components/utilis/Themes";
+import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 import { The_Nautigal } from "next/font/google";
 
 const Subscription = () => {
@@ -28,7 +28,7 @@ const Subscription = () => {
   ];
   return (
     <div>
-      <div className="hidden sm:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
+      <div className="hidden sm:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-0">
         <CircleRight />
       </div>
       <DashboardLayout>
@@ -86,16 +86,18 @@ const Subscription = () => {
                         </div>
                       );
                     })}
-                    <div className="mt-3 h-16">
+                    <div className="mt-3 h-6">
                       <p className="text-black font-semibold text-xl text-center">
-                        79 $<span className="text-2xl">/ mois</span>
+                        79 €<span className="text-2xl">/ mois</span>
                       </p>
                     </div>
-                    <div className="flex items-center justify-center text-white font-semibold rounded-3xl -mb-12 w-44 h-12 bg-[#070E06]">
-                      Plan actuel
-                    </div>
                   </div>
-                  <div className="w-52 absolute -top-40 left-[440px] flex flex-col items-center justify-center py-6 rounded-[20px]">
+                  <div className="w-48 absolute left-[230px] top-[650px]  flex items-center justify-center text-white font-semibold rounded-3xl -mb-12 h-12 bg-black">
+                    {/* <div className={`${Theme_A.button.medBlackColoredButton} w-52 absolute left-[224px] top-[650px]  flex items-center justify-center`}> */}
+                    Abo actuel
+                  </div>
+                  {/* Regular side */}
+                  <div className="bg-white w-52 absolute -top-40 left-[440px] flex flex-col items-center justify-center py-6 rounded-[20px]">
                     <div className="text-3xl font-semibold text-black w-48 text-center mb-16">
                       OneHaircut Regular
                     </div>
@@ -115,16 +117,20 @@ const Subscription = () => {
                         );
                       })}
                     </div>
-                    <div className="w-full h-16 flex flex-col items-center justify-center py-4">
-                      <p className="text-black font-medium text-2xl">Gratuit</p>
+                    <div className="w-full h-1 flex flex-col items-center justify-center py-4">
+                      <p className="text-black font-medium text-2xl pt-6">Gratuit</p>
                     </div>
+                  </div>
+                  {/* <div className={`w-52 absolute left-[450px] top-[650px]  flex items-center justify-center ${Theme_A.button.medWhiteColoredButton}`}> */}
+                  <div className="w-48 absolute left-[450px] top-[650px]  flex items-center justify-center text-black font-semibold border border-[#000000] rounded-3xl -mb-12 h-12 bg-white hover:scale-105 transition-transform hover:shadow-md">
+                    Choisir
                   </div>
                 </div>
               </div>
             </div>
             <div className="relative z-10 flex items-center justify-center w-full lg:hidden">
-            <MobilePricingTable />
-          </div>
+              <MobilePricingTable />
+            </div>
             <div className="relative z-20 w-full sm:w-[415px] flex flex-col items-center justify-center sm:-mt-5 lg:mt-10 xl:mt-0">
               <div className="py-4 px-5 2xl:text-xl text-center text-black whitespace-nowrap bg-[#F4F4F6] font-medium border border-[#9B9B9B] rounded-xl">
                 <p>Renouvellement de l’abonnement le: </p>
@@ -134,11 +140,10 @@ const Subscription = () => {
                   className="flex items-center justify-start gap-3 mt-4 cursor-pointer"
                 >
                   <div
-                    className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${
-                      isAutomaticRenewal
-                        ? "bg-gradient-to-b from-pink-500 to-orange-500 border-white"
-                        : "border-[#767676]"
-                    }`}
+                    className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${isAutomaticRenewal
+                      ? ColorsThemeA.ohcVerticalGradient_A
+                      : "border-[#767676]"
+                      }`}
                   >
                     {isAutomaticRenewal && (
                       <CheckedIcon width="15" height="10" />
@@ -147,14 +152,14 @@ const Subscription = () => {
                   <p>Renouvellement&nbsp;Automatique</p>
                 </div>
               </div>
-              <button className="w-52 h-14 flex items-center justify-center bg-[#F4F4F6] border border-secondary rounded-xl mt-4 text-black font-medium">
+              <button className="w-48 h-12 flex items-center justify-center bg-[#ffffff] border border-secondary rounded-xl mt-4 text-black font-medium hover:scale-90 transition-transform hover:bg-red-500 hover:font-bold">
                 Clôturer le compte
               </button>
             </div>
           </div>
         </div>
-      </DashboardLayout>
-    </div>
+      </DashboardLayout >
+    </div >
   );
 };
 
