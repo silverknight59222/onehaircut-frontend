@@ -12,6 +12,7 @@ import {
 import MobilePricingTable from "../registration/MobilePricingTable";
 import { ColorsThemeA } from "@/components/utilis/Themes";
 import { The_Nautigal } from "next/font/google";
+import Footer from "@/components/UI/Footer";
 
 const Subscription = () => {
   const [isAutomaticRenewal, setIsAutomaticRenewal] = useState(false);
@@ -66,7 +67,7 @@ const Subscription = () => {
                   <div
                     style={{
                       background:
-                        `${ColorsThemeA.ohcBigVerticalGradient_A}`,
+                        `${ColorsThemeA.ohcBigVerticalGradient_B}`,
                     }}
                     className="w-56 absolute -top-40 left-[216px] flex flex-col items-center justify-center py-6 rounded-[20px] shadow-[-71px_56px_56px_0px_rgba(255,125,60,0.13)]"
                   >
@@ -154,6 +155,7 @@ const Subscription = () => {
           </div>
         </div>
       </DashboardLayout>
+      <Footer />
     </div>
   );
 };

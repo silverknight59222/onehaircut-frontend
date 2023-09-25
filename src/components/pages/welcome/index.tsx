@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { Like } from "@/components/utilis/Icons";
+import { Like, LogoCircleFixLeft } from "@/components/utilis/Icons";
 import { dashboard } from "@/api/dashboard";
 import userLoader from "@/hooks/useLoader";
 import { Haircut } from "@/types";
@@ -12,6 +12,7 @@ import useSnackbar from "@/hooks/useSnackbar";
 import ScrollToTopButton from "@/components/utilis/Helper";
 import Footer from "@/components/UI/Footer";
 import { Theme_A } from "@/components/utilis/Themes";
+
 
 const Welcome = () => {
   const { loadingView } = userLoader();
@@ -222,6 +223,7 @@ const onServiceOnlyClick = () => {
     <>
       <Navbar isWelcomePage={true} onSearch={(value: string)=>setSearch(value)} onGenderFilter={(gender)=>setGenderFilters(gender)} onEthnicityFilters={(groups)=>setEthnicityFilters(groups)} onLengthFilters={(length)=>setLengthFilters(length)} />
       <div className="flex flex-col items-center justify-center w-full overflow-hidden">
+
         {isLoading && loadingView()}
         <p className="mt-10 sm:mt-14 mb-6  md:w-[700px] text-black text-center font-semibold text-3xl px-2 md:px-10">
         Des doutes sur la finition ? pr&eacute;visualisez{" "}
@@ -240,11 +242,11 @@ const onServiceOnlyClick = () => {
             Rechercher un soin / service uniquement
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 mb-24 ">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-12 ">
           {haircuts().map((item, index) => {
             return <div key={index} onClick={() => onClickHaircut(item.id, item.name)} className={`shadow-md rounded-xl my-2 cursor-pointer border hover:outline outline-1 outline-stone-400 ${item.id===haircut?.id}`}>
               <div className="relative w-max px-4 pt-4 bg-gradient-to-r from-white via-stone-50 to-zinc-200 rounded-t-xl ">
-                <div className="relative w-52 h-52 ">
+                <div className={`${Theme_A.hairstyleCards.cardSize.med}`}>
                   <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public${item.image}`} fill={true} alt="" className="rounded-t-xl" />
                   <div onClick={(e) => onWishlist(e, item.id, item.is_added_to_wishlist)} className="absolute right-2 top-2 cursor-pointer">
                     <Like color={item.is_added_to_wishlist ? "#FF0000" : ""} />
@@ -259,6 +261,7 @@ const onServiceOnlyClick = () => {
             </div>
           })}
         </div>
+        
         {isLoggedIn && (
           <div className="flex py-4 mx-3 gap-3 sm:gap-12 md:gap-20 items-center justify-center bg-white w-full fixed bottom-0">
             <div className="p-2 sm:p-4 md:p-5 text-center border-[#FE3462] border-2 rounded-2xl cursor-pointer ml-3">
@@ -271,10 +274,13 @@ const onServiceOnlyClick = () => {
               Envie d’offrir un cadeau ?
             </div>
           </div>
+          
         )}
+        
         <ScrollToTopButton />
         <Footer />
       </div>
+      
     </>
   );
 };
