@@ -224,7 +224,7 @@ const onServiceOnlyClick = () => {
       <div className="flex flex-col items-center justify-center w-full overflow-hidden">
         {isLoading && loadingView()}
         <p className="mt-10 sm:mt-14 mb-6  md:w-[700px] text-black text-center font-semibold text-3xl px-2 md:px-10">
-        Des doutes sur la finition ? prévisualisez{" "}
+        Des doutes sur la finition ? pr&eacute;visualisez{" "}
         </p>
         <p className="text-4xl font-medium text-center mb-12">
         <span className=" font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-30 to-yellow-300">votre style !</span>

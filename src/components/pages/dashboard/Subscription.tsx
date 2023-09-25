@@ -4,7 +4,7 @@ import DashboardLayout from "@/layout/DashboardLayout";
 import {
   BgDashboardPricingTable,
   CheckedIcon,
-  CircleRight,
+  LogoCircleFixRight,
   PackageCheckedIcon,
   PackageUnCheckedIcon,
   RegistrationCheckedIcon,
@@ -29,7 +29,7 @@ const Subscription = () => {
   return (
     <div>
       <div className="hidden sm:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
-        <CircleRight />
+        <LogoCircleFixRight />
       </div>
       <DashboardLayout>
         <div className="mt-16 px-4 lg:px-11">

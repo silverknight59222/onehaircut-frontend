@@ -2,7 +2,7 @@
 import Navbar from '@/components/shared/Navbar'
 import React, { useEffect, useState } from 'react'
 import '../dashboard/Dashboard/Services/index.css'
-import { BackArrow, CheckedIcon, RegistrationCheckedIcon, SmallLogo } from '@/components/utilis/Icons';
+import { BackArrow, CheckedIcon, RegistrationCheckedIcon, SmallLogo, LogoCircleFixLeft, LogoCircleFixRight } from '@/components/utilis/Icons';
 import { useRouter } from 'next/navigation';
 import { dashboard } from '@/api/dashboard';
 import userLoader from "@/hooks/useLoader";
@@ -10,6 +10,7 @@ import { Services } from '@/types';
 import { getLocalStorage, setLocalStorage } from '@/api/storage';
 import BaseModal from '@/components/UI/BaseModal';
 import { Theme_A } from '@/components/utilis/Themes';
+import Footer from "@/components/UI/Footer";
 
 interface Requirements{
     id: number,
@@ -184,7 +185,8 @@ const ServiceChoose = () => {
                 <BackArrow />
                 <p className={`${Theme_A.textFont.navigationGreyFont}`}>Retour aux coiffures</p>
             </div>
-            <div className='flex flex-col items-center justify-center px-4 sm:px-12'>
+            <LogoCircleFixLeft/>
+            <div className='flex flex-col items-center justify-center px-4 sm:px-12' >
                 {isLoading && loadingView()}
                 <p className='text-4xl font-medium text-black text-center'> Choisissez une ou plusieurs <span className='font-bold text-gradient'>prestations !</span></p>
                 {/* <div className='flex flex-col md:flex-row items-center justify-center gap-8  mt-6'>
@@ -266,6 +268,7 @@ const ServiceChoose = () => {
                     }
                 </div>
             </div>
+            <Footer/>
         </div>
     )
 }

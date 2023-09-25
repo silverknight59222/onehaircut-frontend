@@ -1,5 +1,5 @@
 "use client";
-import { CheckedIcon, CircleRight } from "@/components/utilis/Icons";
+import { CheckedIcon, CircleRight, LogoCircleFixRight } from "@/components/utilis/Icons";
 import DashboardLayout from "@/layout/DashboardLayout";
 import React, { useEffect, useState } from "react";
 import { HairdresserSlots } from "./HairdresserSlots";
@@ -124,7 +124,7 @@ const Settings = () => {
     <div>
       {isLoading && loadingView()}
       <div className="hidden sm:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
-        <CircleRight />
+        <LogoCircleFixRight />
       </div>
       <DashboardLayout>
         <div className="flex items-center flex-col justify-center gap-6">

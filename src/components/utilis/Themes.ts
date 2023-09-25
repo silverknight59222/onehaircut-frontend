@@ -9,7 +9,7 @@ export const ColorsThemeA = {
   OhcGradient_A: "bg-gradient-to-r from-rose-600 via-orange-500 to-orange-400",
   OhcGradient_B: "bg-gradient-to-r from-rose-500 via-orange-600 to-orange-400",
   ohcVerticalGradient_A: `bg-gradient-to-b from-rose-500 via-orange-600 to-orange-500`,
-  ohcBigVerticalGradient_A : "linear-gradient(162deg, #EC124F 0%, #FD4C55 40.71%, #FF8637 70.46%, #FFE30F 100%)",
+  ohcBigVerticalGradient_A : "linear-gradient(162deg, #f54257 0%, #FD4C55 40.71%, #FF8637 70.46%, #FFE30F 100%)",
   ohcBorder: " border-2 border-red-500 ",
   inactivButtonColor: "bg-[#D6D6D6]",
   filterSelected: "bg-stone-800",

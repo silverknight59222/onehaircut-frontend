@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./index.css";
 import userLoader from "@/hooks/useLoader";
 import BaseMultiSelectbox from "@/components/UI/BaseMultiSelectbox";
-import { EditIcon, LogoCircle } from "@/components/utilis/Icons";
+import { EditIcon, LogoCircleFixLeft } from "@/components/utilis/Icons";
 import { dashboard } from "@/api/dashboard";
 import { getLocalStorage } from "@/api/storage";
 import AddServiceModal, { Service } from "./addServiceModal";
@@ -234,7 +234,7 @@ const Services = () => {
         <div></div>
       </div>
       <div className="bg-gradient-to-l  md:block fixed -left-32 md:-left-8 -bottom-32 md:-bottom-8 z-0 mix-blend-overlay">
-        <LogoCircle />
+        <LogoCircleFixLeft />
       </div>
       <ScrollToTopButton/>
     </div>
