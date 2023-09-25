@@ -175,6 +175,7 @@ const ServiceChoose = () => {
     useEffect(()=>{
         filteredServicesHandler()
     },[search, filteredType])
+
     return (
         <div>
             <Navbar isServicesPage={true} onTypeSelect={(type)=>setFilteredType(type)} onServiceSearch={(value: string)=>setSearch(value)} />

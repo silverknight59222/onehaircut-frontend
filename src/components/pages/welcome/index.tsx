@@ -200,6 +200,11 @@ const Welcome = () => {
     router.push(`/services`)
   }
 
+const onServiceOnlyClick = () => {
+  // Définir le nom de la coiffure à "aucune" et appeler onClickHaircut
+  onClickHaircut(-1, "Aucune coiffure sélectionnée");
+}
+
   useEffect(() => {
     getFilteredCuts();
   }, [ethnicityFilters, genderFilters, lengthFilters, search]);
@@ -225,13 +230,19 @@ const Welcome = () => {
         <span className=" font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-30 to-yellow-300">votre style !</span>
         </p>
         <div className="flex flex-col md:flex-row gap-4 mb-10 sm:mb-10">
-          <div className={`${Theme_A.button.bigWhiteColoredButton}`}>
+        <div
+          className={`${Theme_A.button.bigWhiteColoredButton}`}
+          onClick={() => {
+            onServiceOnlyClick();
+            router.push('/services');
+          }}
+          >
             Rechercher un soin / service uniquement
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 mb-24 ">
           {haircuts().map((item, index) => {
-            return <div key={index} onClick={() => onClickHaircut(item.id, item.name)} className={`shadow-md rounded-xl my-2 cursor-pointer border hover:outline outline-1 outline-stone-400 ${item.id===haircut?.id && 'border-secondary'}`}>
+            return <div key={index} onClick={() => onClickHaircut(item.id, item.name)} className={`shadow-md rounded-xl my-2 cursor-pointer border hover:outline outline-1 outline-stone-400 ${item.id===haircut?.id}`}>
               <div className="relative w-max px-4 pt-4 bg-gradient-to-r from-white via-stone-50 to-zinc-200 rounded-t-xl ">
                 <div className="relative w-52 h-52 ">
                   <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public${item.image}`} fill={true} alt="" className="rounded-t-xl" />
