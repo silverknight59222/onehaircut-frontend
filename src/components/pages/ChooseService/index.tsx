@@ -9,6 +9,7 @@ import userLoader from "@/hooks/useLoader";
 import { Services } from '@/types';
 import { getLocalStorage, setLocalStorage } from '@/api/storage';
 import BaseModal from '@/components/UI/BaseModal';
+import { Theme_A } from '@/components/utilis/Themes';
 
 interface Requirements{
     id: number,
@@ -181,7 +182,7 @@ const ServiceChoose = () => {
             <Navbar isServicesPage={true} onTypeSelect={(type)=>setFilteredType(type)} onServiceSearch={(value: string)=>setSearch(value)} />
             <div className='flex items-center cursor-pointer mt-10 mb-8 sm:mx-10 2xl:mx-14' onClick={() => router.push('/')}>
                 <BackArrow />
-                <p className='text-xl text-[#A0A0A0]'>Haircuts</p>
+                <p className={`${Theme_A.textFont.navigationGreyFont}`}>Retour aux coiffures</p>
             </div>
             <div className='flex flex-col items-center justify-center px-4 sm:px-12'>
                 {isLoading && loadingView()}
@@ -192,10 +193,19 @@ const ServiceChoose = () => {
                 </div> */}
                 <div className='flex flex-col items-center'>
                 <div className='w-full flex flex-col md:flex-row items-center justify-between mt-14'>
-                    <div className='flex flex-col sm:flex-row items-center gap-5 mb-5 md:mb-0'>
-                        <p className='text-[#A0A0A0] text-lg font-medium bg-[#F7F7F7] rounded-lg px-7 py-3'>{haircut.name}</p>
-                        {selectedService.length ? <p className='text-xl text-[#A0A0A0]'><span className='font-semibold'>Number of Services:</span> {selectedService.length}</p> : <p></p>}
-                    </div>
+                <div className='flex flex-col sm:flex-row items-center gap-5 mb-5 md:mb-0'>
+                    <p className='text-stone-600 text-lg font-semibold bg-[#F7F7F7] shadow-inner rounded-lg px-7 py-3'>{haircut.name}</p>
+                    {selectedService.length ? (
+                        <p className='text-xl text-stone-600 bg-[#F7F7F7] shadow-inner rounded-lg px-7 py-3'>
+                            <span className='font-semibold'>
+                                {selectedService.length > 1 ? 'Services sélectionnés :' : 'Service sélectionné :'}
+                            </span> 
+                            <span className={`text-white font-bold ml-4 ${Theme_A.indicators.counterIndicator}`}>{selectedService.length}</span>
+                        </p>
+                    ) : (
+                        <p></p>
+                    )}
+                </div>
                     <button onClick={onContinue} className={`flex items-center justify-center text-lg text-white font-medium w-full md:w-52 h-14 rounded-xl px-4 bg-background-gradient`}>Continue</button>
                 </div>
                     <div className='mt-8 mb-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-x-9 gap-y-5'>
@@ -228,7 +238,7 @@ const ServiceChoose = () => {
                         <BaseModal close={() => setIsModal(false)}>
                             <div>
                                 <p className='text-black font-medium text-2xl'>{requirements.name}</p>
-                                <p className='text-sm text-[#FF5950] w-full sm:w-[500px] md:w-[600px] my-4'>Une coloration nécessite quelques prérequis. Pour le respect de votre cuir chevelu et afin d’éviter toute inconvenance lors de votre rendez-vous, il est impossible de choisir cette prestation si vous n’êtes pas dans les situations suivantes : </p>
+                                <p className='text-sm text-[#FF5950] w-full sm:w-[500px] md:w-[600px] my-4'>Ce service n&eacute;cessite quelques prérequis. Pour le respect de votre cuir chevelu et afin d&apos;&eacute;viter toute inconvenance lors de votre rendez-vous, il est impossible de choisir cette prestation si vous n&apos;&ecirc;tes pas dans les situations suivantes : </p>
                                 <div className='flex flex-col gap-7 max-h-80 overflow-auto pr-1 my-6 sm:my-0'>
                                     {requirements.arr.map((requirement,index)=>{
                                         return <div key={index} onClick={()=>requirementCheckHandler(requirements.id,requirement)} className='flex items-center justify-between gap-5 cursor-pointer'>

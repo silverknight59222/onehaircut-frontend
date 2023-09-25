@@ -50,6 +50,7 @@ export const Theme_A = {
     medLargeGradientButton: `text-white font-medium text-lg mb-3 rounded-md w-[278px] py-2 ${ColorsThemeA.OhcGradient_A} transform hover:scale-105 transition-transform hover:shadow-[0px_7px_12px_0px_rgba(255,125,60,0.25)]`,
     smallGradientButton: `text-white font-medium text-sm rounded-md px-4 py-2 ${ColorsThemeA.OhcGradient_A}  shadow-md transform hover:scale-105 transition-transform hover:shadow-[0px_3px_6px_0px_rgba(255,125,60,0.25)]`,
     scrollToTheTopButton: `fixed bottom-10 right-10 mb-8 p-4 bg-stone-300 text-sm text-white px-6 py-2 rounded-lg transform hover:scale-105 transition-transform`,
+    bigWhiteGreyButton: `flex items-center justify-center min-w-56 h-14 rounded-xl shadow-md text-black font-semibold text-xl px-8 py-2 mt-2 bg-white border border-x-stone-200 border-y-stone-100 transform hover:scale-105 transition-transform hover:shadow-md`,
   },
   checkers: {
     errorText: `text-xs text-${ColorsThemeA.error} ml-3 mt-1`,
@@ -101,6 +102,7 @@ export const Theme_A = {
     headerH4: "text-md font-semibold text-left text-black block mb-2",
     headerH5: "text-md font-medium text-left text-black block",
     infoTextSmall : "text-[10px] justify-center font-medium text-[#959595]",
+    navigationGreyFont : "text-xl text-stone-600 justify-center font-medium ",
   },
   thumbnails: {
     selectHaircutThumbnail: `mt-2 flex items-center justify-center w-36 h-36 bg-zinc-200 border-1 border-black rounded-2xl shadow-md`,
