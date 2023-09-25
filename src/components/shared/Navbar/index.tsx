@@ -167,7 +167,7 @@ import UserProfile from "@/components/UI/UserProfile";
                 <>
               <div ref={EthnicityDesktopRef} className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
                 <p
-                  className={showDesktopEthnicity ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7 hover:bg-white rounded-xl py-2 px-7 "}
+                  className={showDesktopEthnicity ? "rounded-xl py-2 px-7 bg-white  text-black font-semibold"  : "hover:bg-white rounded-xl py-2 px-7 "}
                   onClick={() => {
                     setShowDesktopGender(false);
                     setShowDesktopLength(false);
@@ -203,7 +203,7 @@ import UserProfile from "@/components/UI/UserProfile";
               </div>
               <div ref={GenderDesktopRef} className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
                 <p
-                  className={showDesktopGender ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7 py-2 px-7 hover:bg-white rounded-xl py-2 px-7 "}
+                  className={showDesktopGender ? "rounded-xl py-2 px-7 bg-white  text-black font-semibold"  : "hover:bg-white rounded-xl py-2 px-7 "}
                   onClick={() => {
                     setShowDesktopEthnicity(false);
                     setShowDesktopLength(false);
@@ -239,7 +239,7 @@ import UserProfile from "@/components/UI/UserProfile";
               </div>
               <div ref={LengthDesktopRef} className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
                 <p
-                  className={showDesktopLength ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7 py-2 px-7 hover:bg-white rounded-xl py-2 px-7 "}
+                  className={showDesktopLength ? "rounded-xl py-2 px-7 bg-white  text-black font-semibold" : " hover:bg-white rounded-xl py-2 px-7 "}
                   onClick={() => {
                     setShowDesktopEthnicity(false);
                     setShowDesktopGender(false);

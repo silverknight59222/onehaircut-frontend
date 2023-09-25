@@ -118,9 +118,9 @@ const Login = () => {
 						<p className="text-black font-medium text-3xl my-8 md:my-12">
 							Connexion
 						</p>
-						<div className="w-full">
+						<div className="w-full mt-6">
 						    <label className="block text-left text-black mb-2 font-medium" htmlFor="emailInput">Adresse email</label>
-						    <div className="w-full h-[60px] p-[1px] flex items-center justify-center rounded-xl bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo">
+						    <div className="w-full h-[60px] p-[1px] flex items-center justify-center rounded-xl bg-stone-300 ">
 						        <div className="w-full h-[58px] rounded-[11px] bg-white flex items-center justify-center">
 						            <input
 						                id="emailInput"
@@ -135,7 +135,7 @@ const Login = () => {
 						</div>
 						<div className="w-full mt-6">
 							<label className="block text-left text-black mb-2 font-medium" htmlFor="passwordInput">Mot de passe</label>
-							<div className="w-full h-[60px] p-[1px] flex items-center justify-center rounded-xl bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo">
+							<div className="w-full h-[60px] p-[1px] flex items-center justify-center rounded-xl bg-stone-300 ">
 								<div className="w-full h-[58px] rounded-[11px] bg-white flex items-center justify-between">
 									<input
 										id="passwordInput"
@@ -143,7 +143,7 @@ const Login = () => {
 										type={showPassword ? "text" : "password"}
 										className="w-full h-[58px] rounded-l-[11px] outline-none px-4"
 										value={userInfo.password}
-										onChange={(e) => setUserPassword(e.target.value)}
+										onChange={(e) => setUserPassword(e.target.value) } 
 									/>
 									<button onClick={() => setShowPassword(!showPassword)} className="p-4">
 										{showPassword ? <EyeClosedIcon /> : <EyeIcon />}

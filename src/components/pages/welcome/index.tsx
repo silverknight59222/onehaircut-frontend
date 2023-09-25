@@ -10,6 +10,8 @@ import { getLocalStorage, setLocalStorage } from "@/api/storage";
 import { useRouter } from "next/navigation";
 import useSnackbar from "@/hooks/useSnackbar";
 import ScrollToTopButton from "@/components/utilis/Helper";
+import Footer from "@/components/UI/Footer";
+import { Theme_A } from "@/components/utilis/Themes";
 
 const Welcome = () => {
   const { loadingView } = userLoader();
@@ -223,7 +225,7 @@ const Welcome = () => {
         <span className=" font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-30 to-yellow-300">votre style !</span>
         </p>
         <div className="flex flex-col md:flex-row gap-4 mb-10 sm:mb-10">
-          <div className="px-4 py-4 rounded-2xl font-medium text-xl cursor-pointer border-stone-100 shadow-md hover:shadow-[0px_3px_9px_0px_rgba(255,125,60,0.25)] border-2 mt-8">
+          <div className={`${Theme_A.button.bigWhiteColoredButton}`}>
             Rechercher un soin / service uniquement
           </div>
         </div>
@@ -260,6 +262,7 @@ const Welcome = () => {
           </div>
         )}
         <ScrollToTopButton />
+        <Footer />
       </div>
     </>
   );
