@@ -521,13 +521,13 @@ const Hairstyles = () => {
     ) {
       setSelectedHaircutsMapping([]);
     } else {
-      if(
+      if (
         ethnicityFilters.length > 0 ||
         genderFilters ||
         lengthFilters.length > 0 ||
         search !== ""
       ) {
-      setSelectedHaircutsMapping(filteredHaircuts);
+        setSelectedHaircutsMapping(filteredHaircuts);
       } else {
         setSelectedHaircutsMapping(haircutList);
       }
@@ -573,11 +573,10 @@ const Hairstyles = () => {
                       onClick={() => onClickEthnicityCheckbox(item.name)}
                     >
                       <div
-                        className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 ${
-                          ethnicityFilters.includes(item.name)
-                            ? `${ColorsThemeA.ohcVerticalGradient_A}`
-                            : `${ColorsThemeA.inactivButtonColor}`
-                        }`}
+                        className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 ${ethnicityFilters.includes(item.name)
+                          ? `${ColorsThemeA.ohcVerticalGradient_A}`
+                          : `${ColorsThemeA.inactivButtonColor}`
+                          }`}
                       >
                         <CheckedIcon />
                       </div>
@@ -591,8 +590,8 @@ const Hairstyles = () => {
               <div
                 className={
                   genderFilters.length > 0
-                  ? `${Theme_A.browingFilters.proHairstyleFilterON}`
-                  : `${Theme_A.browingFilters.proHairstyleFilterOFF}`
+                    ? `${Theme_A.browingFilters.proHairstyleFilterON}`
+                    : `${Theme_A.browingFilters.proHairstyleFilterOFF}`
                 }
               >
                 <div className="px-4 cursor-pointer">Genre</div>
@@ -606,11 +605,10 @@ const Hairstyles = () => {
                       onClick={() => onClickGenderCheckbox(item.name)}
                     >
                       <div
-                        className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${
-                          genderFilters.includes(item.name)
-                            ? `${ColorsThemeA.ohcVerticalGradient_A}`
-                            : `${ColorsThemeA.inactivButtonColor}`
-                        }`}
+                        className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${genderFilters.includes(item.name)
+                          ? `${ColorsThemeA.ohcVerticalGradient_A}`
+                          : `${ColorsThemeA.inactivButtonColor}`
+                          }`}
                       >
                         <CheckedIcon />
                       </div>
@@ -624,8 +622,8 @@ const Hairstyles = () => {
               <div
                 className={
                   lengthFilters.length > 0
-                  ? `${Theme_A.browingFilters.proHairstyleFilterON}`
-                  : `${Theme_A.browingFilters.proHairstyleFilterOFF}`
+                    ? `${Theme_A.browingFilters.proHairstyleFilterON}`
+                    : `${Theme_A.browingFilters.proHairstyleFilterOFF}`
                 }
               >
                 <div className={`${Theme_A.shapes.standardShape} " " ${Theme_A.behaviour.buttonHoverBehaviour_1}`}>Longueur</div>
@@ -639,11 +637,10 @@ const Hairstyles = () => {
                       onClick={() => onClickLengthCheckbox(item.name)}
                     >
                       <div
-                        className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${
-                          lengthFilters.includes(item.name)
-                            ? `${ColorsThemeA.ohcVerticalGradient_A}`
-                            : `${ColorsThemeA.inactivButtonColor}`
-                        }`}
+                        className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${lengthFilters.includes(item.name)
+                          ? `${ColorsThemeA.ohcVerticalGradient_A}`
+                          : `${ColorsThemeA.inactivButtonColor}`
+                          }`}
                       >
                         <CheckedIcon />
                       </div>
@@ -658,9 +655,9 @@ const Hairstyles = () => {
             <div
               className={
                 haircutList.length &&
-                selectedHaircutsMapping.length === haircutList.length
-                ? `${Theme_A.browingFilters.proHairstyleFilterON}`
-                : `${Theme_A.browingFilters.proHairstyleFilterOFF}`
+                  selectedHaircutsMapping.length === haircutList.length
+                  ? `${Theme_A.browingFilters.proHairstyleFilterON}`
+                  : `${Theme_A.browingFilters.proHairstyleFilterOFF}`
               }
               onClick={selectAllHaircuts}
             >
@@ -682,17 +679,15 @@ const Hairstyles = () => {
           <div>
             <div className="flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373]">
               <div
-                className={`${Theme_A.behaviour.buttonHoverBehaviour_3} ${
-                  activeMenu === "added" && "bg-stone-800 text-white"
-                }`}
+                className={`${Theme_A.behaviour.buttonHoverBehaviour_3} ${activeMenu === "added" && "bg-stone-800 text-white"
+                  }`}
                 onClick={() => setActiveMenu("added")}
               >
                 Show Added Haircuts
               </div>
               <div
-                className={`${Theme_A.behaviour.buttonHoverBehaviour_3}  ${
-                  activeMenu === "new" && "bg-stone-800 text-white"
-                }`}
+                className={`${Theme_A.behaviour.buttonHoverBehaviour_3}  ${activeMenu === "new" && "bg-stone-800 text-white"
+                  }`}
                 onClick={onToggleHairstyle}
               >
                 Add New Haircuts
@@ -704,10 +699,10 @@ const Hairstyles = () => {
       <div className="flex flex-col md:flex-row gap-8">
         <div className="bg-lightGrey rounded-3xl p-4 md:sticky md:top-0 h-max">
           <div className="flex items-center justify-center gap-2">
-          <h2 className={`${Theme_A.textFont.headerH3}`}>
-            Configurations des coiffures
-          </h2>
-          {(selectedHaircutsMapping.length > 0 && activeMenu === 'new') && <div className={`${Theme_A.indicators.counterIndicator}`}>{selectedHaircutsMapping.length}</div>}
+            <h2 className={`${Theme_A.textFont.headerH3}`}>
+              Configurations des coiffures
+            </h2>
+            {(selectedHaircutsMapping.length > 0 && activeMenu === 'new') && <div className={`${Theme_A.indicators.counterIndicator}`}>{selectedHaircutsMapping.length}</div>}
           </div>
           <div className="flex items-center justify-center">
             {getSelectedImage() ? (
@@ -768,7 +763,7 @@ const Hairstyles = () => {
             <div className="mt-2">
               <div>
                 <p className="text-medium text-sm text-grey italic text-center">
-                Ajustement selon la longueur initiale de cheveux
+                  Ajustement selon la longueur initiale de cheveux
                 </p>
               </div>
               <div className="flex items-center gap-x-4 mt-4">
@@ -925,11 +920,11 @@ const Hairstyles = () => {
             </div>
             {!(activeMenu === "added" && selectedSalonHaircut.id >= 0) ? (
               <div className="flex items-center justify-center gap-4 mt-4">
-              <button onClick={addSalonHaircuts} className={`${Theme_A.button.smallGradientButton}`}>
+                <button onClick={addSalonHaircuts} className={`${Theme_A.button.mediumGradientButton}`}>
                   Ajouter
-              </button>
-          </div>
-          
+                </button>
+              </div>
+
             ) : (
               <div className="flex items-center justify-center gap-4 mt-4 w-full">
                 <button
@@ -943,7 +938,7 @@ const Hairstyles = () => {
                 <button
                   onClick={updateSalonHaircuts}
                   className={`${Theme_A.button.mediumGradientButton}`}>
-                  mettre &agrave; jour
+                  Mettre &agrave; jour
                 </button>
               </div>
             )}
@@ -959,27 +954,27 @@ const Hairstyles = () => {
             {haircuts().map((item, index) => {
               return (
                 <>
-                <div
-                  key={index}
-                  className={`${Theme_A.behaviour.cardBehaviour}`}
-                  onClick={() => selectHaircut(item)}
-                >
-                  <div className={`${Theme_A.hairstyleCards.cardgradientTop}`}>
-                    <div className={`${Theme_A.hairstyleCards.cardSize.med}`}>
-                    <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public/${item.image}`} fill={true} alt="" />
+                  <div
+                    key={index}
+                    className={`${Theme_A.behaviour.cardBehaviour}`}
+                    onClick={() => selectHaircut(item)}
+                  >
+                    <div className={`${Theme_A.hairstyleCards.cardgradientTop}`}>
+                      <div className={`${Theme_A.hairstyleCards.cardSize.med}`}>
+                        <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public/${item.image}`} fill={true} alt="" />
+                      </div>
+                      <div className={`${Theme_A.hairstyleCards.checkbubbleOFF}`}>
+                        {selectedHaircutsMapping.filter(
+                          (haircut) => haircut.id === item.id
+                        ).length > 0 && <SelectedIcon />}
+                      </div>
                     </div>
-                    <div className={`${Theme_A.hairstyleCards.checkbubbleOFF}`}>
-                      {selectedHaircutsMapping.filter(
-                        (haircut) => haircut.id === item.id
-                      ).length > 0 && <SelectedIcon />}
+                    <div className={`${Theme_A.hairstyleCards.cardGradientBott}`}>
+                      <p className={`${Theme_A.hairstyleCards.cardText}`}>
+                        {item.name}
+                      </p>
                     </div>
                   </div>
-                  <div className={`${Theme_A.hairstyleCards.cardGradientBott}`}>
-                    <p className={`${Theme_A.hairstyleCards.cardText}`}>
-                      {item.name}
-                    </p>
-                  </div>
-                </div>
                 </>
               );
             })}
@@ -1002,9 +997,9 @@ const Hairstyles = () => {
                     </div>
                   </div>
                   <div className={`${Theme_A.hairstyleCards.selectedCardGradientBott}`}>
-                      <p className={`${Theme_A.hairstyleCards.cardText}`}>
-                          {item.name}
-                      </p>
+                    <p className={`${Theme_A.hairstyleCards.cardText}`}>
+                      {item.name}
+                    </p>
                   </div>
                 </div>
               );

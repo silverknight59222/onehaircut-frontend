@@ -410,11 +410,11 @@ const AddServiceModal = (props: AddServiceModalType) => {
           </p>
           <div className="flex flex-col md:flex-row  gap-4 h-full items-center md:items-start justify-center w-full">
             <div className="flex flex-col gap-4 h-full items-start">
-              <div className="max-w-[300px] w-[200px]">
+              <div className="max-w-[300px] w-[200px] relative">
                 <input
                   type="number"
                   placeholder="Durée"
-                  className="w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
+                  className="w-48 p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
                   value={service.duration}
                   onChange={(e) => onChangeDuration(e.target.value)}
                 />
@@ -423,12 +423,13 @@ const AddServiceModal = (props: AddServiceModalType) => {
                     {error.duration}*
                   </p>
                 )}
+                <span className="absolute right-3 top-1/2 transform -translate-y-1/2">min</span>
               </div>
-              <div className="max-w-[300px] w-[200px]">
+              <div className="max-w-[300px] w-[200px] relative">
                 <input
                   type="number"
                   placeholder="Prix"
-                  className="w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
+                  className="w-48 p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
                   value={service.price}
                   onChange={(e) => onChangePrice(e.target.value)}
                 />
@@ -437,10 +438,12 @@ const AddServiceModal = (props: AddServiceModalType) => {
                     {error.price}*
                   </p>
                 )}
+                <span className="absolute right-3 top-1/2 transform -translate-y-1/2">€</span>
               </div>
+
             </div>
             <div className="flex flex-col gap-4 h-full items-start">
-              <div className="max-w-[300px] w-[200px]">
+              <div className="max-w-[300px] w-[200px] relative">
                 <input
                   type="number"
                   placeholder="Age"
@@ -459,11 +462,13 @@ const AddServiceModal = (props: AddServiceModalType) => {
                     {error.age}*
                   </p>
                 )}
+                <span className="absolute right-3 top-1/2 transform -translate-y-1/2">années</span>
               </div>
-              <div className="max-w-[300px] w-[200px]">
+              <div className="max-w-[300px] w-[200px] relative">
                 <input
                   type="number"
-                  placeholder="Percent"
+                  placeholder="Rabais"
+
                   className={
                     discountParamsDisable
                       ? "w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none bg-slate-200"
@@ -479,12 +484,13 @@ const AddServiceModal = (props: AddServiceModalType) => {
                     {error.percent}*
                   </p>
                 )}
+                <span className="absolute right-3 top-1/2 transform -translate-y-1/2">€</span>
               </div>
             </div>
           </div>
           <div className="mt-4 flex gap-4 items-center justify-center w-full">
             <button
-              className={`${Theme_A.button.mediumGradientButton}`}
+              className={`${Theme_A.button.medWhiteColoredButton}`}
               onClick={() => props.setShowAddServiceModal(false)}
             >
               Cancel

@@ -223,8 +223,8 @@ const EditServiceModal = (props: EditServiceModalType) => {
               <div
                 className={
                   props.service.age && props.service.percent
-                    ? "max-w-[300px] w-[150px]"
-                    : "max-w-[300px] w-[350px]"
+                    ? "max-w-[300px] w-[150px] relative"
+                    : "max-w-[300px] w-[350px] relative"
                 }
               >
                 <input
@@ -239,12 +239,13 @@ const EditServiceModal = (props: EditServiceModalType) => {
                     {error.duration}*
                   </p>
                 )}
+                <span className="text-gray-600 absolute right-3 top-1/2 transform -translate-y-1/2">Durée(min)</span>
               </div>
               <div
                 className={
                   props.service.age && props.service.percent
-                    ? "max-w-[300px] w-[150px]"
-                    : "max-w-[300px] w-[350px]"
+                    ? "max-w-[300px] w-[150px] relative"
+                    : "max-w-[300px] w-[350px] relative"
                 }
               >
                 <input
@@ -259,11 +260,13 @@ const EditServiceModal = (props: EditServiceModalType) => {
                     {error.price}*
                   </p>
                 )}
+                <span className="text-gray-600 absolute right-3 top-1/2 transform -translate-y-1/2">Prix(€)</span>
               </div>
+
             </div>
             {props.service.age && props.service.percent && (
               <div className="flex flex-col gap-4 items-center">
-                <div className="max-w-[300px] w-[150px]">
+                <div className="max-w-[300px] w-[150px] relative">
                   <input
                     type="number"
                     placeholder="Age"
@@ -276,8 +279,9 @@ const EditServiceModal = (props: EditServiceModalType) => {
                       {error.age}*
                     </p>
                   )}
+                  <span className="text-gray-600  absolute right-3 top-1/2 transform -translate-y-1/2">Age(années)</span>
                 </div>
-                <div className="max-w-[300px] w-[150px]">
+                <div className="max-w-[300px] w-[150px] relative">
                   <input
                     type="number"
                     placeholder="Percent"
@@ -290,19 +294,20 @@ const EditServiceModal = (props: EditServiceModalType) => {
                       {error.percent}*
                     </p>
                   )}
+                  <span className="text-gray-600 absolute right-3 top-1/2 transform -translate-y-1/2">Rabais(€)</span>
                 </div>
               </div>
             )}
           </div>
           <div className="mt-4 flex gap-4 items-center justify-center w-full">
             <button
-              className={`${Theme_A.button.mediumGradientButton}`}
+              className={`${Theme_A.button.medWhiteColoredButton}`}
               onClick={() => props.setShowEditServiceModal(false)}
             >
               Cancel
             </button>
             <button
-              className={`${Theme_A.button.mediumGradientButton}`}
+              className={`${Theme_A.button.medWhiteColoredButton}`}
               onClick={() => deleteService()}
             >
               Delete
