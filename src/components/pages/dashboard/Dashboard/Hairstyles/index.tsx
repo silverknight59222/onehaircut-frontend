@@ -735,7 +735,7 @@ const Hairstyles = () => {
                   type="number"
                   name="prix"
                   placeholder="40"
-                  className="w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)]"
+                  className={`${Theme_A.fields.configurationField}`}
                   value={form.base_price}
                   onChange={(e) => onChangeInput(e.target.value, "base_price")}
                 />
@@ -752,7 +752,7 @@ const Hairstyles = () => {
                 <input
                   type="number"
                   placeholder="35 min"
-                  className="w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)]"
+                  className={`${Theme_A.fields.configurationField}`}
                   value={form.base_duration}
                   onChange={(e) =>
                     onChangeInput(e.target.value, "base_duration")
@@ -776,7 +776,7 @@ const Hairstyles = () => {
                 <div>
                   <input
                     type="number"
-                    className="w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)]"
+                    className={`${Theme_A.fields.configurationField}`}
                     value={form.court_price_length}
                     onChange={(e) =>
                       onChangeInput(e.target.value, "court_price_length")
@@ -786,7 +786,7 @@ const Hairstyles = () => {
                 <div className="flex gap-2 items-center">
                   <input
                     type="number"
-                    className="w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)]"
+                    className={`${Theme_A.fields.configurationField}`}
                     value={form.court_duration_length}
                     onChange={(e) =>
                       onChangeInput(e.target.value, "court_duration_length")
@@ -800,7 +800,7 @@ const Hairstyles = () => {
                 <div>
                   <input
                     type="number"
-                    className="w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)]"
+                    className={`${Theme_A.fields.configurationField}`}
                     value={form.moyen_price_length}
                     onChange={(e) =>
                       onChangeInput(e.target.value, "moyen_price_length")
@@ -810,7 +810,7 @@ const Hairstyles = () => {
                 <div className="flex gap-2 items-center">
                   <input
                     type="number"
-                    className="w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)]"
+                    className={`${Theme_A.fields.configurationField}`}
                     value={form.moyen_duration_length}
                     onChange={(e) =>
                       onChangeInput(e.target.value, "moyen_duration_length")
@@ -824,7 +824,7 @@ const Hairstyles = () => {
                 <div>
                   <input
                     type="number"
-                    className="w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)]"
+                    className={`${Theme_A.fields.configurationField}`}
                     value={form.long_price_length}
                     onChange={(e) =>
                       onChangeInput(e.target.value, "long_price_length")
@@ -834,7 +834,7 @@ const Hairstyles = () => {
                 <div className="flex gap-2 items-center">
                   <input
                     type="number"
-                    className="w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)]"
+                    className={`${Theme_A.fields.configurationField}`}
                     value={form.long_duration_length}
                     onChange={(e) =>
                       onChangeInput(e.target.value, "long_duration_length")
@@ -855,7 +855,7 @@ const Hairstyles = () => {
                 <div>
                   <input
                     type="number"
-                    className="w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)]"
+                    className={`${Theme_A.fields.configurationField}`}
                     value={form.fin_price_type}
                     onChange={(e) =>
                       onChangeInput(e.target.value, "fin_price_type")
@@ -865,7 +865,7 @@ const Hairstyles = () => {
                 <div className="flex gap-2 items-center">
                   <input
                     type="number"
-                    className="w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)]"
+                    className={`${Theme_A.fields.configurationField}`}
                     value={form.fin_duration_type}
                     onChange={(e) =>
                       onChangeInput(e.target.value, "fin_duration_type")
@@ -879,7 +879,7 @@ const Hairstyles = () => {
                 <div>
                   <input
                     type="number"
-                    className="w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)]"
+                    className={`${Theme_A.fields.configurationField}`}
                     value={form.moyen_price_type}
                     onChange={(e) =>
                       onChangeInput(e.target.value, "moyen_price_type")
@@ -889,7 +889,7 @@ const Hairstyles = () => {
                 <div className="flex gap-2 items-center">
                   <input
                     type="number"
-                    className="w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)]"
+                    className={`${Theme_A.fields.configurationField}`}
                     value={form.moyen_duration_type}
                     onChange={(e) =>
                       onChangeInput(e.target.value, "moyen_duration_type")
@@ -903,7 +903,7 @@ const Hairstyles = () => {
                 <div>
                   <input
                     type="number"
-                    className="w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)]"
+                    className={`${Theme_A.fields.configurationField}`}
                     value={form.epais_price_type}
                     onChange={(e) =>
                       onChangeInput(e.target.value, "epais_price_type")
@@ -913,7 +913,7 @@ const Hairstyles = () => {
                 <div className="flex gap-2 items-center">
                   <input
                     type="number"
-                    className="w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)]"
+                    className={`${Theme_A.fields.configurationField}`}
                     value={form.epais_duration_type}
                     onChange={(e) =>
                       onChangeInput(e.target.value, "epais_duration_type")

@@ -231,9 +231,9 @@ const onServiceOnlyClick = () => {
         <p className="text-4xl font-medium text-center mb-12">
         <span className=" font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-30 to-yellow-300">votre style !</span>
         </p>
-        <div className="flex flex-col md:flex-row gap-4 mb-10 sm:mb-10">
+        <div className="flex flex-col md:flex-row gap-4 mb-10 sm:mb-10 ">
         <div
-          className={`${Theme_A.button.bigWhiteGreyButton}`}
+          className={`${Theme_A.button.bigWhiteGreyButton} `}
           onClick={() => {
             onServiceOnlyClick();
             router.push('/services');

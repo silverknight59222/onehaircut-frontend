@@ -12,7 +12,7 @@ import ServicesFilter from "./ServicesFilter";
 import HairsalonFilter from "./HairsalonFilters";
 import BooksalonFilter from "./BookingSalonFilter";
 import UserProfile from "@/components/UI/UserProfile";
-import { ColorsThemeA } from "@/components/utilis/Themes";
+import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
   
   interface Navbar{
     isWelcomePage?: boolean,
@@ -292,11 +292,11 @@ import { ColorsThemeA } from "@/components/utilis/Themes";
               <BooksalonFilter/>
                 }
                 {(isWelcomePage || isServicesPage) &&
-              <div className="border-r border-grey px-6 last:border-r-0 cursor-pointer">
+              <div className={`border-r border-grey px-6 last:border-r-0 cursor-pointer`}>
                 <input
                   type="text"
-                  placeholder="Search"
-                  className="text-base px-4 p-2 rounded-full outline-none"
+                  placeholder="Rechercher"
+                  className={`text-base px-4 p-2 rounded-full outline-none ${Theme_A.behaviour.fieldFocused_B}`}
                   onChange={onSearch && isWelcomePage ? (e)=>onSearch(e.target.value) : onServiceSearch && isServicesPage ? (e)=>onServiceSearch(e.target.value) : ()=>{}}
                 />
               </div>}

@@ -8,6 +8,7 @@ import useSnackbar from '@/hooks/useSnackbar';
 import { LogoCircleFixLeft, LogoIcon } from "@/components/utilis/Icons";
 import Link from "next/link";
 import { EyeIcon, EyeClosedIcon } from "@/components/utilis/Icons";
+import { Theme_A } from "@/components/utilis/Themes";
 
 const Login = () => {
 	const router = useRouter();
@@ -125,7 +126,7 @@ const Login = () => {
 						            <input
 						                id="emailInput"
 						                placeholder="Adresse email"
-						                className="w-full h-[58px] rounded-[11px] outline-none px-4"
+						                className={`w-full h-[58px] rounded-[11px] outline-none px-4 ${Theme_A.behaviour.fieldFocused}`}
 						                value={userInfo.email}
 						                onChange={(e) => setUserMail(e.target.value)}
 						            />
@@ -141,7 +142,7 @@ const Login = () => {
 										id="passwordInput"
 										placeholder="Mot de passe"
 										type={showPassword ? "text" : "password"}
-										className="w-full h-[58px] rounded-l-[11px] outline-none px-4"
+										className={`w-full h-[58px] rounded-l-[11px] outline-none px-4 ${Theme_A.behaviour.fieldFocused}`}
 										value={userInfo.password}
 										onChange={(e) => setUserPassword(e.target.value) } 
 									/>
