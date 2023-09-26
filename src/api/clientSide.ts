@@ -11,7 +11,7 @@ interface BookingParams{
     hair_dresser_id: number,
     amount: number|undefined,
     salon_haircut_id: number,
-    services: string[],
+    services: number[],
 }
 const client={
     getSalonDetail: async (id: string) => {

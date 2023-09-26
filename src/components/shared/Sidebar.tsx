@@ -160,9 +160,9 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
     }
   }
   useEffect(() => {
-    const user = getLocalStorage("user");
-    const userId = user ? Number(JSON.parse(user).id) : null;
-    if(userId===3){
+    const temp = getLocalStorage("user");
+    const user = temp ? JSON.parse(temp) : null;
+    if(!user.subscription){
       const filteredRoutes=sidebarItems.filter(route=>{
         return !proRoutes.includes(route.route)
       })
@@ -170,8 +170,8 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
     }else{
       setSidebarItem(sidebarItems)
     }
-    if (userId)
-      dashboard.getHairSalon(Number(userId)).then((res) => {
+    if (user.id)
+      dashboard.getHairSalon(Number(user.id)).then((res) => {
           setSalonDetails(res.data.data);
           setSalon(res.data.data);
       });
