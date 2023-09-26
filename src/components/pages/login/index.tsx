@@ -5,9 +5,10 @@ import { Auth } from "@/api/auth";
 import { getLocalStorage, setLocalStorage } from "@/api/storage";
 import userLoader from '@/hooks/useLoader';
 import useSnackbar from '@/hooks/useSnackbar';
-import { LogoCircle, LogoIcon } from "@/components/utilis/Icons";
+import { LogoCircleFixLeft, LogoIcon } from "@/components/utilis/Icons";
 import Link from "next/link";
 import { EyeIcon, EyeClosedIcon } from "@/components/utilis/Icons";
+import { Theme_A } from "@/components/utilis/Themes";
 
 const Login = () => {
 	const router = useRouter();
@@ -108,7 +109,7 @@ const Login = () => {
 			{isLoading && loadingView()}
 			<div className="w-full flex flex-col items-center min-h-screen bg-white md:bg-transparent">
 				<div className="hidden md:block fixed -left-32 md:-left-28 -bottom-32 md:-bottom-28">
-					<LogoCircle />
+					<LogoCircleFixLeft />
 				</div>
 				<div className="mt-8">
 					<LogoIcon />
@@ -118,14 +119,14 @@ const Login = () => {
 						<p className="text-black font-medium text-3xl my-8 md:my-12">
 							Connexion
 						</p>
-						<div className="w-full">
+						<div className="w-full mt-6">
 						    <label className="block text-left text-black mb-2 font-medium" htmlFor="emailInput">Adresse email</label>
-						    <div className="w-full h-[60px] p-[1px] flex items-center justify-center rounded-xl bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo">
+						    <div className="w-full h-[60px] p-[1px] flex items-center justify-center rounded-xl bg-stone-300 ">
 						        <div className="w-full h-[58px] rounded-[11px] bg-white flex items-center justify-center">
 						            <input
 						                id="emailInput"
 						                placeholder="Adresse email"
-						                className="w-full h-[58px] rounded-[11px] outline-none px-4"
+						                className={`w-full h-[58px] rounded-[11px] outline-none px-4 ${Theme_A.behaviour.fieldFocused}`}
 						                value={userInfo.email}
 						                onChange={(e) => setUserMail(e.target.value)}
 						            />
@@ -135,15 +136,15 @@ const Login = () => {
 						</div>
 						<div className="w-full mt-6">
 							<label className="block text-left text-black mb-2 font-medium" htmlFor="passwordInput">Mot de passe</label>
-							<div className="w-full h-[60px] p-[1px] flex items-center justify-center rounded-xl bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo">
+							<div className="w-full h-[60px] p-[1px] flex items-center justify-center rounded-xl bg-stone-300 ">
 								<div className="w-full h-[58px] rounded-[11px] bg-white flex items-center justify-between">
 									<input
 										id="passwordInput"
 										placeholder="Mot de passe"
 										type={showPassword ? "text" : "password"}
-										className="w-full h-[58px] rounded-l-[11px] outline-none px-4"
+										className={`w-full h-[58px] rounded-l-[11px] outline-none px-4 ${Theme_A.behaviour.fieldFocused}`}
 										value={userInfo.password}
-										onChange={(e) => setUserPassword(e.target.value)}
+										onChange={(e) => setUserPassword(e.target.value) } 
 									/>
 									<button onClick={() => setShowPassword(!showPassword)} className="p-4">
 										{showPassword ? <EyeClosedIcon /> : <EyeIcon />}

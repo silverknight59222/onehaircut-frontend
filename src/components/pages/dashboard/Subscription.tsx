@@ -4,7 +4,7 @@ import DashboardLayout from "@/layout/DashboardLayout";
 import {
   BgDashboardPricingTable,
   CheckedIcon,
-  CircleRight,
+  LogoCircleFixRight,
   PackageCheckedIcon,
   PackageUnCheckedIcon,
   RegistrationCheckedIcon,
@@ -12,6 +12,7 @@ import {
 import MobilePricingTable from "../registration/MobilePricingTable";
 import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 import { The_Nautigal } from "next/font/google";
+import Footer from "@/components/UI/Footer";
 
 const Subscription = () => {
   const [isAutomaticRenewal, setIsAutomaticRenewal] = useState(false);
@@ -28,8 +29,8 @@ const Subscription = () => {
   ];
   return (
     <div>
-      <div className="hidden sm:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-0">
-        <CircleRight />
+      <div className="hidden sm:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
+        <LogoCircleFixRight />
       </div>
       <DashboardLayout>
         <div className="mt-16 px-4 lg:px-11">
@@ -66,7 +67,7 @@ const Subscription = () => {
                   <div
                     style={{
                       background:
-                        `${ColorsThemeA.ohcBigVerticalGradient_A}`,
+                        `${ColorsThemeA.ohcBigVerticalGradient_B}`,
                     }}
                     className="w-56 absolute -top-40 left-[216px] flex flex-col items-center justify-center py-6 rounded-[20px] shadow-[-71px_56px_56px_0px_rgba(255,125,60,0.13)]"
                   >
@@ -158,8 +159,9 @@ const Subscription = () => {
             </div>
           </div>
         </div>
-      </DashboardLayout >
-    </div >
+      </DashboardLayout>
+      <Footer />
+    </div>
   );
 };
 

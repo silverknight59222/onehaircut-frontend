@@ -4,7 +4,7 @@ import { Auth } from "@/api/auth";
 import { getLocalStorage, setLocalStorage } from "@/api/storage";
 import userLoader from '@/hooks/useLoader';
 import useSnackbar from '@/hooks/useSnackbar';
-import { LogoCircle, LogoIcon } from "@/components/utilis/Icons";
+import { LogoCircleFixLeft, LogoIcon } from "@/components/utilis/Icons";
 import Link from "next/link";
 
 const Signup = () => {
@@ -156,7 +156,7 @@ const Signup = () => {
 			{isLoading && loadingView()}
 			<div className="w-full flex flex-col items-center min-h-screen bg-white md:bg-transparent">
 				<div className="hidden md:block fixed -left-32 md:-left-28 -bottom-32 md:-bottom-28">
-					<LogoCircle />
+					<LogoCircleFixLeft />
 				</div>
 				<div className="mt-8">
 					<LogoIcon />

@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { Like } from "@/components/utilis/Icons";
+import { Like, LogoCircleFixLeft } from "@/components/utilis/Icons";
 import { dashboard } from "@/api/dashboard";
 import userLoader from "@/hooks/useLoader";
 import { Haircut } from "@/types";
@@ -10,6 +10,9 @@ import { getLocalStorage, setLocalStorage } from "@/api/storage";
 import { useRouter } from "next/navigation";
 import useSnackbar from "@/hooks/useSnackbar";
 import ScrollToTopButton from "@/components/utilis/Helper";
+import Footer from "@/components/UI/Footer";
+import { Theme_A } from "@/components/utilis/Themes";
+
 
 const Welcome = () => {
   const { loadingView } = userLoader();
@@ -198,6 +201,11 @@ const Welcome = () => {
     router.push(`/services`)
   }
 
+const onServiceOnlyClick = () => {
+  // Définir le nom de la coiffure à "aucune" et appeler onClickHaircut
+  onClickHaircut(-1, "Aucune coiffure sélectionnée");
+}
+
   useEffect(() => {
     getFilteredCuts();
   }, [ethnicityFilters, genderFilters, lengthFilters, search]);
@@ -215,23 +223,30 @@ const Welcome = () => {
     <>
       <Navbar isWelcomePage={true} onSearch={(value: string)=>setSearch(value)} onGenderFilter={(gender)=>setGenderFilters(gender)} onEthnicityFilters={(groups)=>setEthnicityFilters(groups)} onLengthFilters={(length)=>setLengthFilters(length)} />
       <div className="flex flex-col items-center justify-center w-full overflow-hidden">
+
         {isLoading && loadingView()}
         <p className="mt-10 sm:mt-14 mb-6  md:w-[700px] text-black text-center font-semibold text-3xl px-2 md:px-10">
-        Des doutes sur la finition ? prévisualisez{" "}
+        Des doutes sur la finition ? pr&eacute;visualisez{" "}
         </p>
         <p className="text-4xl font-medium text-center mb-12">
         <span className=" font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-30 to-yellow-300">votre style !</span>
         </p>
-        <div className="flex flex-col md:flex-row gap-4 mb-10 sm:mb-10">
-          <div className="px-4 py-4 rounded-2xl font-medium text-xl cursor-pointer border-stone-100 shadow-md hover:shadow-[0px_3px_9px_0px_rgba(255,125,60,0.25)] border-2 mt-8">
+        <div className="flex flex-col md:flex-row gap-4 mb-10 sm:mb-10 ">
+        <div
+          className={`${Theme_A.button.bigWhiteGreyButton} hover:shadow-lg cursor-pointer `}
+          onClick={() => {
+            onServiceOnlyClick();
+            router.push('/services');
+          }}
+          >
             Rechercher un soin / service uniquement
           </div>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10 mb-24 ">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-12 ">
           {haircuts().map((item, index) => {
-            return <div key={index} onClick={() => onClickHaircut(item.id, item.name)} className={`shadow-md rounded-xl my-2 cursor-pointer border hover:outline outline-1 outline-stone-400 ${item.id===haircut?.id && 'border-secondary'}`}>
+            return <div key={index} onClick={() => onClickHaircut(item.id, item.name)} className={`shadow-md rounded-xl my-2 cursor-pointer border hover:outline outline-1 outline-stone-400 ${item.id===haircut?.id}`}>
               <div className="relative w-max px-4 pt-4 bg-gradient-to-r from-white via-stone-50 to-zinc-200 rounded-t-xl ">
-                <div className="relative w-52 h-52 ">
+                <div className={`${Theme_A.hairstyleCards.cardSize.med}`}>
                   <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public${item.image}`} fill={true} alt="" className="rounded-t-xl" />
                   <div onClick={(e) => onWishlist(e, item.id, item.is_added_to_wishlist)} className="absolute right-2 top-2 cursor-pointer">
                     <Like color={item.is_added_to_wishlist ? "#FF0000" : ""} />
@@ -246,6 +261,7 @@ const Welcome = () => {
             </div>
           })}
         </div>
+        
         {isLoggedIn && (
           <div className="flex py-4 mx-3 gap-3 sm:gap-12 md:gap-20 items-center justify-center bg-white w-full fixed bottom-0">
             <div className="p-2 sm:p-4 md:p-5 text-center border-[#FE3462] border-2 rounded-2xl cursor-pointer ml-3">
@@ -258,9 +274,13 @@ const Welcome = () => {
               Envie d’offrir un cadeau ?
             </div>
           </div>
+          
         )}
+        
         <ScrollToTopButton />
+        <Footer />
       </div>
+      
     </>
   );
 };

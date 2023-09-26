@@ -12,7 +12,7 @@ import {
   SelectedIcon,
 } from "@/components/utilis/Icons";
 import { Theme_A } from "@/components/utilis/Themes";
-import { EditIcon, LogoCircle } from "@/components/utilis/Icons";
+import { EditIcon, LogoCircleFixLeft } from "@/components/utilis/Icons";
 import Footer from "@/components/UI/Footer";
 interface AllAvatars {
   man: Avatar[];
@@ -316,7 +316,7 @@ const Hairdressers = () => {
       {isLoading && loadingView()}
       <div className="w-full flex flex-col lg:flex-row items-center justify-center gap-4 mt-8">
         <div className="bg-gradient-to-l  md:block fixed -left-32 md:-left-8 -bottom-32 md:-bottom-8 z-0 mix-blend-overlay ">
-          <LogoCircle />
+          <LogoCircleFixLeft />
         </div>
         <div className="h-[940px] w-full xl:w-2/5 overflow-auto flex flex-col items-center gap-8 bg-lightGrey rounded-3xl p-4 md:px-12 md:pt-12 md:pb-0 opacity-95">
           <div className={`${Theme_A.textFont.headerH2} underline`}>

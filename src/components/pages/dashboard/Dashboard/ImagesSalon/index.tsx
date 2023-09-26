@@ -4,7 +4,7 @@ import { getLocalStorage } from '@/api/storage';
 import userLoader from '@/hooks/useLoader';
 import { ImageSalon } from '@/types';
 import ImagesContainer from './ImagesContainer';
-import { EditIcon, LogoCircle } from "@/components/utilis/Icons";
+import { EditIcon, LogoCircleFixLeft } from "@/components/utilis/Icons";
 import Footer from "@/components/UI/Footer";
 
 const Images = () => {
@@ -45,7 +45,7 @@ const Images = () => {
 					<ImagesContainer title='Exemples de coiffure' type='hairstyle' setIsLoading={(value) => setIsLoading(value)} salonImages={salonImages} getAllSalonImages={getAllSalonImages} />
 				</div>
 				<div className="bg-gradient-to-l  md:block fixed -left-32 md:-left-8 -bottom-32 md:-bottom-8 z-0 mix-blend-overlay">
-      			  <LogoCircle />
+      			  <LogoCircleFixLeft />
       			</div>
 			</div>
 			<Footer/>

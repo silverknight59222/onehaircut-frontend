@@ -8,9 +8,12 @@ export const ColorsThemeA = {
   textGradient_Title: "font-bold text-transparent bg-clip-text bg-gradient-to-r from-rose-600 via-orange-500 to-orange-400",
   OhcGradient_A: "bg-gradient-to-r from-rose-600 via-orange-500 to-orange-400",
   OhcGradient_B: "bg-gradient-to-r from-rose-500 via-orange-600 to-orange-400",
-  ohcVerticalGradient_A: "bg-gradient-to-b from-rose-500 via-orange-600 to-orange-500",
-  ohcBigVerticalGradient_A: "linear-gradient(162deg, #EC124F 0%, #FD4C55 40.71%, #FF8637 70.46%, #FFE30F 100%)",
+  ohcVerticalGradient_A: `bg-gradient-to-b from-rose-500 via-orange-600 to-orange-500`,
+  ohcVerticalGradient_B: `bg-gradient-to-b from-pink-600 via-orange-600 to-orange-500`,
+  ohcBigVerticalGradient_A: `bg-gradient-to-br from-rose-600 via-orange-600 to-yellow-400 opacity-90`,
+  ohcBigVerticalGradient_B: "linear-gradient(162deg, #f54257 0%, #FD4C55 40.71%, #FF8637 70.46%, #FFE30F 100%)",
   ohcBorder: " border-2 border-red-500 ",
+  standardBorderGray: " border-2 border-stone-400 ",
   inactivButtonColor: "bg-[#D6D6D6]",
   filterSelected: "bg-stone-800",
   pageBgColorLight: "bg-zinc-100",
@@ -19,7 +22,7 @@ export const ColorsThemeA = {
 
 export const Theme_A = {
   Bars: {
-    searchBar_1: `min-w-[300px] text-sm py-2 px-4 outline-none rounded-full bg-white border border-[#EDEDED] shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)]`,
+    searchBar_1: `min-w-[300px] text-sm py-2 px-4 outline-none rounded-full bg-white border border-[#EDEDED] shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)] focus:ring-2 focus:bg-transparent focus:ring-red-300 `,
     proTopBar: {
       standardShape: `w-full flex items-center justify-center font-semibold bg-stone-50 opacity-100 border-x-2 border-stone-100 shadow-inner cursor-pointer rounded-lg px-5 h-11 hover:border-secondary hover:bg-gradient-to-b from-red-100 to-transparent`,
       activatedColor: "border border-red-50 bg-gradient-to-b from-red-100 to-transparent",
@@ -28,10 +31,12 @@ export const Theme_A = {
   },
   behaviour: {
     buttonHoverBehaviour_1: `cursor-pointer`,
-    buttonHoverBehaviour_2: `hover:bg-orange-600 hover:text-white rounded-full px-4 cursor-pointer transform hover:scale-105 transition-transform`,
+    buttonHoverBehaviour_2: `hover:bg-orange-600 hover:text-white rounded-full px-4 cursor-pointer transform hover:scale-105 transition-transform `,
     buttonHoverBehaviour_3: `hover:bg-stone-100 hover:text-black rounded-full py-1 px-4 cursor-pointer transition duration-50`,
     cardBehaviour: "shadow-md rounded-xl my-2 cursor-pointer hover:outline outline-offset-1 outline-1 outline-zinc-300",
     cardWindowBehaviour: "flex-1 flex flex-wrap h-max gap-8",
+    fieldFocused: "focus:ring-2 focus:bg-transparent focus:ring-red-200 focus:border-stone-200",
+    fieldFocused_B: "focus:ring-2 focus:bg-transparent focus:ring-stone-300",
   },
   breakpoints: {
     desktop: "1024px",
@@ -45,14 +50,15 @@ export const Theme_A = {
   button: {
     crossButtonSmall: `cursor-pointer my-2 py-1 px-2 rounded-lg ${ColorsThemeA.ohcVerticalGradient_A} shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)] transform hover:scale-125 transition-transform`,
     bigGradientButton: `flex items-center justify-center text-white font-semibold text-xl rounded-md px-6 py-4 mt-2 ${ColorsThemeA.OhcGradient_B} shadow-md transform hover:scale-105 transition-transform hover:shadow-[0px_3px_6px_0px_rgba(255,125,60,0.25)]`,
-    bigWhiteColoredButton: `flex items-center justify-center w-56 h-14 rounded-xl text-black font-semibold text-xl px-5 mt-2 bg-white border border-x-red-500 border-y-orange-500 transform hover:scale-105 transition-transform hover:shadow-md`,
+    bigWhiteColoredButton: `flex items-center justify-center min-w-56 h-14 rounded-xl text-black font-semibold text-xl px-8 py-2 mt-2 bg-white border border-x-red-500 border-y-orange-500 transform hover:scale-105 transition-transform hover:shadow-md`,
     medBlackColoredButton: `text-white font-medium text-md rounded-md px-4 py-2 bg-black border border-x-red-500 border-y-orange-500 transform hover:scale-105 transition-transform hover:shadow-md`,
     medWhiteColoredButton: `text-black font-medium text-md rounded-md px-4 py-2 bg-white border border-x-red-500 border-y-orange-500 transform hover:scale-105 transition-transform hover:shadow-md`,
     mediumGradientButton: `text-white font-medium text-md rounded-md px-4 py-2 ${ColorsThemeA.OhcGradient_A} transform hover:scale-105 transition-transform hover:shadow-[0px_7px_12px_0px_rgba(255,125,60,0.25)]`,
     medLargeGradientButton: `text-white font-medium text-lg mb-3 rounded-md w-[278px] py-2 ${ColorsThemeA.OhcGradient_A} transform hover:scale-105 transition-transform hover:shadow-[0px_7px_12px_0px_rgba(255,125,60,0.25)]`,
     smallGradientButton: `text-white font-medium text-sm rounded-md px-4 py-2 ${ColorsThemeA.OhcGradient_A}  shadow-md transform hover:scale-105 transition-transform hover:shadow-[0px_3px_6px_0px_rgba(255,125,60,0.25)]`,
-    scrollToTheTopButton: `fixed bottom-10 right-10 p-4 bg-stone-200 text-sm text-white px-6 py-2 rounded-lg transform hover:scale-105 transition-transform`,
+    scrollToTheTopButton: `fixed bottom-10 right-10 mb-8 p-4 bg-stone-300 text-sm text-white px-6 py-2 rounded-lg transform hover:scale-105 transition-transform`,
     deleteButtonSmall: `bg-red-600 flex items-center justify-center text-white font-medium text-sm rounded-md bg-white transform hover:scale-90 transition-transform hover:shadow-md`,
+    bigWhiteGreyButton: `flex items-center justify-center min-w-56 h-14 rounded-xl shadow-md text-black font-medium text-xl px-8 py-2 mt-2 bg-white border border-x-stone-200 border-y-stone-100 transform hover:scale-105 transition-transform hover:shadow-md`,
   },
   checkers: {
     errorText: `text-xs text-${ColorsThemeA.error} ml-3 mt-1`,
@@ -60,6 +66,9 @@ export const Theme_A = {
   fonts: {
     header: "'Montserrat', sans-serif",
     main: "'Montserrat', sans-serif",
+  },
+  fields: {
+    configurationField: "w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] focus:ring-2 focus:bg-transparent focus:ring-red-300 focus:border-stone-200 "
   },
   footer: {
     mainFooter:
@@ -104,6 +113,7 @@ export const Theme_A = {
     headerH4: "text-md font-semibold text-left text-black block mb-2",
     headerH5: "text-md font-medium text-left text-black block",
     infoTextSmall: "text-[10px] justify-center font-medium text-[#959595]",
+    navigationGreyFont: "text-xl text-stone-600 justify-center font-medium ",
   },
   thumbnails: {
     selectHaircutThumbnail: `mt-2 flex items-center justify-center w-36 h-36 bg-zinc-200 border-1 border-black rounded-2xl shadow-md`,
