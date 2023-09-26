@@ -33,7 +33,7 @@ const SalonChoice = () => {
         libraries: ['places'],
       })
 
-    const getAllSalons=()=>{
+    const getAllSalons= async ()=>{
         const services=getLocalStorage('ServiceIds')
         const servicesData=services ? JSON.parse(services) : null
         const serviceIds: number[]=[]
@@ -41,12 +41,12 @@ const SalonChoice = () => {
             serviceIds.push(service.id)
         })
         setIsLoading(true);
-        if(haircut.id) {
+        if(haircut) {
             const data={
                 haircut_id: haircut.id,
                 servicesIDs: serviceIds
             } 
-            dashboard.getSalonsByHaircut(data)
+           await dashboard.getSalonsByHaircut(data)
             .then((res) => {
             setIsLoading(false);
               if (res.data.data.length > 0) {
@@ -60,12 +60,12 @@ const SalonChoice = () => {
         }
       }
 
-    const onWishlist=(e: any, haircutId: number, isDelete?: boolean)=>{
+    const onWishlist= async (e: any, haircutId: number, isDelete?: boolean)=>{
         e.stopPropagation()
         let data
         if(isDelete){
-            dashboard.removeFromSalonWishList(haircutId)
-            .then(response=>{
+            await dashboard.removeFromSalonWishList(haircutId)
+            .then(()=>{
                 getAllSalons()
               showSnackbar('success', 'Remove From Wishlist Successfully!')
             })
