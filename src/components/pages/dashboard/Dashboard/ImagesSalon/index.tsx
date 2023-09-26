@@ -12,11 +12,11 @@ const Images = () => {
 	const [salonImages, setSalonImages] = useState<ImageSalon[]>([]);
 
 	const getAllSalonImages = async () => {
-		const user = getLocalStorage("user");
-		const userId = user ? Number(JSON.parse(user).id) : null;
-		if (userId) {
+		const temp = getLocalStorage("user");
+		const user = temp ? JSON.parse(temp) : null;
+		if (user.id) {
 		setIsLoading(true);
-		await dashboard.getAllSalonImages(userId).then((resp) => {
+		await dashboard.getAllSalonImages(user.id).then((resp) => {
 			if (resp.data.data.length) {
 				setSalonImages(resp.data.data);
 			}

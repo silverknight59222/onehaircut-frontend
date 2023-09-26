@@ -34,8 +34,8 @@ const SearchSalon = () => {
   const [salonProfile,setSalonProfile]=useState<SalonProfile>({name: '', rating: '', salon_images:[{image: '', is_cover: true}], salon_hairdressers: [{name: '', profile_image: ''}]})
   const router=useRouter()
   const { loadingView } = userLoader();
-  const salonId=getLocalStorage('selectedSalon')
-
+  const salon=getLocalStorage('selectedSalon')
+  const salonId= salon ? JSON.parse(salon).id : null
   const hours = [
     { title: "Lundi", hours: "Fermé" },
     { title: "Mardi", hours: "10:00 - 19:00" },
@@ -145,7 +145,7 @@ const SearchSalon = () => {
             })}
           </div>
         </div>
-        <div className="mt-16">
+        <div className="mt-20">
           <p className="text-5xl font-semibold text-black text-center">
             Coiffeur
           </p>
@@ -171,7 +171,7 @@ const SearchSalon = () => {
             </div>
           </div>
         </div>
-        <div className="my-16">
+        {/* <div className="my-16">
           <p className="text-5xl font-semibold text-black text-center mb-8">
             Avis client
           </p>
@@ -236,8 +236,8 @@ const SearchSalon = () => {
               )}
             </div>
           </div>
-        </div>
-        <div className="pb-16 mt-8">
+        </div> */}
+        <div className="pb-16 mt-20">
         <LogoIcon/>
       </div>
       </div>

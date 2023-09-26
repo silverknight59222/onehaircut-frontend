@@ -15,7 +15,7 @@ import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 
 const SalonChoice = () => {
     const [selectedTab, setSelectedTab] = useState(0)
-    const [selectedSalon, setSelectedSalon] = useState<number| null>()
+    const [selectedSalon, setSelectedSalon] = useState<{name: string, id: number|null}>({name: '', id: null})
     const [selectedWhishlist,setSelectedWhishlist]=useState<number | null>()
     const [salonImage,setSalonImage]=useState<string[]>([])
     const [salons,setSalons]=useState<SalonDetails[]>([])
@@ -35,33 +35,22 @@ const SalonChoice = () => {
 
     const getAllSalons=()=>{
         const services=getLocalStorage('ServiceIds')
+        const servicesData=services ? JSON.parse(services) : null
+        const serviceIds: number[]=[]
+        servicesData.forEach((service: {name: string, id: number})=>{
+            serviceIds.push(service.id)
+        })
         setIsLoading(true);
         if(haircut.id) {
             const data={
                 haircut_id: haircut.id,
-                servicesIDs: services && JSON.parse(services)
+                servicesIDs: serviceIds
             } 
             dashboard.getSalonsByHaircut(data)
             .then((res) => {
             setIsLoading(false);
               if (res.data.data.length > 0) {
                 setSalons(res.data.data);
-                for(let i=0 ; i<res.data.data.length; i++){
-                    dashboard.getSalonsImages(res.data.data[i].id)
-                    .then(response=>{
-                        for(let j=0 ; j<response.data.data.length; j++){
-                            if(response.data.data[i].is_cover){
-                                setSalonImage(prev=>[
-                                    ...prev,
-                                    response.data.data[i].image
-                                ])
-                            }
-                        }
-                    })
-                    .catch(error=>{
-                        console.log(error)
-                    })
-                }
               }
             })
             .catch(error => {
@@ -109,7 +98,7 @@ const SalonChoice = () => {
 
       const onContinue=()=>{
         router.push(`salon/profile`)
-        setLocalStorage('selectedSalon', selectedSalon)
+        setLocalStorage('selectedSalon',JSON.stringify(selectedSalon))
       }
 
       useEffect(()=>{
@@ -136,21 +125,21 @@ const SalonChoice = () => {
                     </div>
                 </div> */}
                 <div className='w-full flex items-end justify-end mt-12'>
-                    <button disabled={!selectedSalon} onClick={onContinue} className={`flex items-center justify-center text-lg text-white font-medium w-full md:w-52 h-14 rounded-xl px-4 ${selectedSalon ? 'bg-background-gradient' : 'bg-[#D9D9D9]'}`}>Continue</button>
+                    <button disabled={!selectedSalon.id} onClick={onContinue} className={`flex items-center justify-center text-lg text-white font-medium w-full md:w-52 h-14 rounded-xl px-4 ${selectedSalon.id ? 'bg-background-gradient' : 'bg-[#D9D9D9]'}`}>Continue</button>
                 </div>
                 <div className='w-full mt-14 mb-5'>
                     <div className='w-full flex flex-col lg:flex-row items-start justify-center gap-6'>
                         <div className='md:h-[1100px] md:overflow-y-auto'>
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                                 {salons.map((salon, index) => {
-                                    return <div key={index} onClick={()=>setSelectedSalon(salon.id)} className={`bg-[rgba(242,242,242,0.66)] rounded-2xl pb-3 border hover:border-secondary cursor-pointer ${selectedSalon===salon.id && 'border-secondary'}`}>
+                                    return <div key={index} onClick={()=>setSelectedSalon({name: salon.name, id: salon.id})} className={`bg-[rgba(242,242,242,0.66)] rounded-2xl pb-3 border hover:border-secondary cursor-pointer ${selectedSalon.id===salon.id && 'border-secondary'}`}>
                                         <div className="px-4 pt-4 relative">
                                         <div onClick={(e) => onWishlist(e, 3)} className="absolute right-6 top-6 z-20 cursor-pointer">
                                             <Like color={selectedWhishlist === index ? "#FF0000" : ""}  />
                                         </div>
                                         <div className='relative w-48 h-48'>
                                             <Image
-                                                src={salonImage.length ? salonImage[index].includes('api-server') ? salonImage[index] : `https://api-server.onehaircut.com/public${salonImage[index]}` : salon.logo.includes('api-server') ? salon.logo : `https://api-server.onehaircut.com/public${salon.logo}`}
+                                                src={salon.salon_images.length && salon.salon_images[index].is_cover ? salon.salon_images[index].image.includes('api-server') ? salon.salon_images[index].image : `https://api-server.onehaircut.com/public${salon.salon_images[index].image}` : salon.logo.includes('api-server') ? salon.logo : `https://api-server.onehaircut.com/public${salon.logo}`}
                                                 fill={true}
                                                 alt="image"
                                             />

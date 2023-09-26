@@ -113,11 +113,14 @@ const ServiceChoose = () => {
 
     const onContinue = () => {
         const arr = []
-        for (let i = 0; i < selectedService.length; i++) {
-            arr.push(Number(selectedService[i]))
+        for(let i=0; i < services.length; i++){
+            for (let j = 0; j < selectedService.length; j++) {
+                if(services[i].id === Number(selectedService[j])){
+                    arr.push({name: services[i].name, id: services[i].id})
+                }
+            }
         }
-        let serviceIds = JSON.stringify(arr)
-        setLocalStorage('ServiceIds', serviceIds)
+        setLocalStorage('ServiceIds', JSON.stringify(arr))
         router.push(`/salons`)
     }
 
@@ -193,7 +196,7 @@ const ServiceChoose = () => {
                 <div className='flex flex-col items-center'>
                 <div className='w-full flex flex-col md:flex-row items-center justify-between mt-14'>
                     <div className='flex flex-col sm:flex-row items-center gap-5 mb-5 md:mb-0'>
-                    {haircut.name && <p className='text-[#A0A0A0] text-lg font-medium bg-[#F7F7F7] rounded-lg px-7 py-3'>{haircut.name}</p>}
+                    {haircut && <p className='text-[#A0A0A0] text-lg font-medium bg-[#F7F7F7] rounded-lg px-7 py-3'>{haircut.name}</p>}
                         {selectedService.length ? <p className='text-xl text-[#A0A0A0]'><span className='font-semibold'>Number of Services:</span> {selectedService.length}</p> : <p></p>}
                     </div>
                     <button disabled={!haircut && !selectedService.length} onClick={onContinue} className={`flex items-center justify-center text-lg text-white font-medium w-full md:w-52 h-14 rounded-xl px-4 ${!haircut.id && !selectedService.length ? 'bg-[#D9D9D9]' : 'bg-background-gradient'}`}>Continue</button>

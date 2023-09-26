@@ -13,8 +13,8 @@ import { Hairdresser, Slot } from "@/types";
 import { getLocalStorage, setLocalStorage } from "@/api/storage";
 
 const BookSalon = () => {
-  const [selectedSlot, setSelectedSlot] = useState<number|null>();
-  const [selectedHairdresser, setSelectedHairdresser] = useState(0);
+  const [selectedSlot, setSelectedSlot] = useState<{name: string, id:number|null}>({name: '', id: null});
+  const [selectedHairdresser, setSelectedHairdresser] = useState({name: '', id: 0});
   const [showCalender,setShowCalender]=useState(false)
   const [selectedDate,setSelectedDate]=useState<Date>()
   const [hairDressers,setHairDressers]=useState<Hairdresser[]>([])
@@ -22,7 +22,8 @@ const BookSalon = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [slots,setSlots]=useState<Slot[]>([])
   const { loadingView } = userLoader();
-  const salonId=getLocalStorage('selectedSalon')
+  const salon=getLocalStorage('selectedSalon')
+  const salonId= salon ? JSON.parse(salon).id : null
   const items = [
     { name: "Type de coiffure", desc: "Curly" },
     { name: "Couleur", desc: "Blond" },
@@ -36,7 +37,7 @@ const BookSalon = () => {
     await client.getSalonDetail(salonId)
       .then((resp) => {
         setHairDressers(resp.data.data[0].salon_hairdressers)
-        setSelectedHairdresser(resp.data.data[0].salon_hairdressers[0].id)
+        setSelectedHairdresser({name: resp.data.data[0].salon_hairdressers[0].name, id: resp.data.data[0].salon_hairdressers[0].id})
     }).catch(error=>{
       console.log(error)
     })
@@ -48,11 +49,11 @@ const BookSalon = () => {
 
   const getSlots = async () => {
       setIsLoading(true);
-      if(selectedHairdresser && selectedDate){
+      if(selectedHairdresser.id && selectedDate){
       const data={
         date: DateFormat(selectedDate, true)
       }
-      await client.getSlots(selectedHairdresser, data)
+      await client.getSlots(selectedHairdresser.id, data)
         .then((resp) => {
           if (resp.data.data.length) {
             setSlots(resp.data.data);
@@ -79,7 +80,7 @@ const BookSalon = () => {
   }
 
   const onContinue=()=>{
-    setLocalStorage('slotData', JSON.stringify({hairDresserId: selectedHairdresser, slot: selectedSlot}))
+    setLocalStorage('slotData', JSON.stringify({hairDresser: selectedHairdresser, slot: selectedSlot}))
     route.push('/payment')
   }
 
@@ -90,6 +91,9 @@ const BookSalon = () => {
   useEffect(()=>{
     getSlots()
   },[selectedHairdresser, selectedDate])
+  const onSelectSlot=(slot: any)=>{
+    setSelectedSlot({name: slot.day + ' ' + slot.start, id:slot.id})
+  }
   return (
     <div>
       {isLoading && loadingView()}
@@ -133,16 +137,20 @@ const BookSalon = () => {
               return (
                 <div
                   key={index}
-                  onClick={() => setSelectedHairdresser(hairdresser.id)}
+                  onClick={() => setSelectedHairdresser({name: hairdresser.name, id:hairdresser.id})}
                   className={`flex items-center justify-center w-[311px] h-[376px] border rounded-2xl cursor-pointer hover:border-secondary ${
-                    selectedHairdresser === hairdresser.id
+                    selectedHairdresser.id === hairdresser.id
                       ? "border-secondary"
                       : "border-white"
                   }`}
                 >
                   <div className="relative">
                     <div className="relative w-[263px] h-[334px] rounded-2xl">
-                      <Image src={'https://api-server.onehaircut.com/public' + hairdresser.profile_image} alt="" fill={true} />
+                      { hairdresser.profile_image ?
+                      <Image src={'https://api-server.onehaircut.com/public' + hairdresser.profile_image } alt="" fill={true} />
+                      :
+                      <Image src={'https://api-server.onehaircut.com/public' + hairdresser.avatar.image } alt="" fill={true} />
+                      }
                     </div>
                   </div>
                 </div>
@@ -169,10 +177,10 @@ const BookSalon = () => {
                 return (
                   <div
                     key={index}
-                    onClick={() => setSelectedSlot(slot.id)}
+                    onClick={()=>onSelectSlot(slot)}
                     className={`w-32 h-14 flex items-center justify-center text-xl font-semibold border rounded-2xl cursor-pointer text-black"
                     } ${
-                      selectedSlot === slot.id
+                      selectedSlot.id === slot.id
                         ? "bg-[#FFE7DF] text-[#FF7143]"
                         : "bg-white border-[#BABABA]"
                     }`}
@@ -187,13 +195,13 @@ const BookSalon = () => {
             }
           </div>
         </div>
-        <div className="w-full lg:w-[940px] h-64 flex flex-col items-center justify-center border border-[#DFDFDF] bg-[#F8F8F8] text-xl sm:text-2xl rounded-[22px] mt-10 lg:mt-14 text-black text-center px-2 shadow-[0px_1px_46px_0px_rgba(121,121,121,0.06) inset]">
+        {/* <div className="w-full lg:w-[940px] h-64 flex flex-col items-center justify-center border border-[#DFDFDF] bg-[#F8F8F8] text-xl sm:text-2xl rounded-[22px] mt-10 lg:mt-14 text-black text-center px-2 shadow-[0px_1px_46px_0px_rgba(121,121,121,0.06) inset]">
           <p className="font-bold mb-2">Récapitulatif de la prestation</p>
             <p className="font-medium">Vous avez choisi: <span className="font-normal">Lundi 15 à 17h, à domicile</span></p>
             <p className="font-medium my-2">par: <span className="font-normal">Nom du coiffeur</span></p>
             <p className="font-medium">Temps d’éxécution : <span className="font-normal">2 heures</span></p>
-        </div>
-        <button onClick={onContinue} className="w-72 h-14 rounded-xl text-xl font-semibold text-white bg-background-gradient mt-10">Réservez ce créneau</button>
+        </div> */}
+        <button disabled={selectedSlot.id ? false : true} onClick={onContinue} className={`w-72 h-14 rounded-xl text-xl font-semibold text-white mt-10 ${selectedSlot.id ? 'bg-background-gradient' : 'bg-[#D9D9D9]'}`}>Réservez ce créneau</button>
       </div>
     </div>
   );

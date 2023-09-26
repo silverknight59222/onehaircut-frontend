@@ -8,7 +8,7 @@ import { getLocalStorage } from "@/api/storage";
 
 const Index = () => {
   const router = useRouter();
-  const userInfo = JSON.parse(getLocalStorage("user_Info") as string);
+  const userInfo = JSON.parse(getLocalStorage("user") as string);
   const salonName = getLocalStorage("salon_name") as string;
   const salonAddress = JSON.parse(getLocalStorage("salon_address") as string);
   const salonType = getLocalStorage("salon_type") as string;
