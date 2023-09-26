@@ -30,7 +30,7 @@ export const HairdresserSlots = () => {
   const { loadingView } = userLoader();
   const showSnackbar = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedSlot, setSelectedSlot] = useState<HairdresserSlot>();
+  const [selectedSlots, setSelectedSlots] = useState<string[]>([]);
   const [hairdressersList, setHairdressersList] = useState<
     HairdressersWithSlots[]
   >([]);
@@ -89,16 +89,21 @@ export const HairdresserSlots = () => {
     if (userId) {
       setIsLoading(true);
       await dashboard.getAllHairDressers(userId).then((resp) => {
-        if(selectedSalonHairDresser.name) {
+        if (selectedSalonHairDresser.name) {
           const Hairdresser = selectedSalonHairDresser.name;
           setSelectedSalonHairDresser(defaultHairDresser);
-          setSelectedSlot(defaultHairDresser.slots[0])
+          setSelectedSlots([]);
           setHairdressersList([]);
           setHairdressersList(resp.data.data);
-          setSelectedSalonHairDresser(resp.data.data.filter((dresser:HairdressersWithSlots)=> dresser.name === Hairdresser)[0]);
+          setSelectedSalonHairDresser(
+            resp.data.data.filter(
+              (dresser: HairdressersWithSlots) => dresser.name === Hairdresser
+            )[0]
+          );
         } else {
           setHairdressersList(resp.data.data);
         }
+      }).catch(()=>{}).finally(()=>{
         setIsLoading(false);
       });
     }
@@ -111,26 +116,37 @@ export const HairdresserSlots = () => {
     });
   };
 
-  const ChangeStatus = async () => {
-    setIsLoading(true);
-    let data: any = {};
-    if (selectedSlot?.status === 1) {
-      data.status = false;
+  const selectSlot = (slot: HairdresserSlot) => {
+    if (selectedSlots?.includes(slot.id)) {
+      setSelectedSlots(selectedSlots.filter((item) => item !== slot.id));
     } else {
-      data.status = true;
+      setSelectedSlots((prev) => [...prev, slot.id]);
     }
-    await dashboard
-      .updateSalonSlot(Number(selectedSlot?.id), data)
-      .then((resp) => {
-        getAllHairDresser()
-        showSnackbar("success", resp.data.message);
-      })
-      .catch((err) => {
-        showSnackbar("error", "Error Occured!");
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+  };
+  const ChangeStatus = async (status: string) => {
+    if (selectedSlots.length > 0) {
+      setIsLoading(true);
+      let data: any = {};
+      if (status === "available") {
+        data.status = 1;
+      } else {
+        data.status = 0;
+      }
+      data.slot_ids = selectedSlots;
+      setSelectedSlots([]);
+      await dashboard
+        .updateSalonSlot(data)
+        .then((resp) => {
+          getAllHairDresser();
+          showSnackbar("success", resp.data.message);
+        })
+        .catch((err) => {
+          showSnackbar("error", "Error Occured!");
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
   };
   useEffect(() => {
     getAllHairDresser();
@@ -142,9 +158,14 @@ export const HairdresserSlots = () => {
       {!isLoading && (
         <div className="gap-7 w-full h-[700px] overflow-auto">
           <div className="block rounded-2xl border-2 border-gray-200 w-full h-full overflow-auto px-6 py-4">
-            <div className="flex flex-col md:flex-row items-center justify-between my-2 w-full gap-3">
+            <div className="flex flex-col md:flex-row items-center justify-between my-2 w-full gap-3 mb-3">
               <div>
-                <div ref={dropdownRef} className="relative w-60">
+                <div
+                  ref={dropdownRef}
+                  className={`relative ${
+                    selectedSalonHairDresser.id ? "w-40" : "w-60"
+                  }`}
+                >
                   <button
                     onClick={() => setIsDropdown(!isDropdown)}
                     className={
@@ -170,10 +191,11 @@ export const HairdresserSlots = () => {
                             className="flex cursor-pointer mb-[19px]"
                           >
                             <div
-                              className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${selectedSalonHairDresser.name === item.name
+                              className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${
+                                selectedSalonHairDresser.name === item.name
                                   ? "bg-gradient-to-b from-pink-500 to-orange-500"
                                   : "bg-[#D6D6D6]"
-                                }`}
+                              }`}
                             >
                               <CheckedIcon />
                             </div>
@@ -186,16 +208,27 @@ export const HairdresserSlots = () => {
                 </div>
               </div>
               {selectedSalonHairDresser.id > 0 && (
-                <div className="flex items-center justify-center rounded-2xl text-lg">
-                  <p
-                    onClick={() => ChangeStatus()}
-                    className={`py-3 px-4 rounded-2xl  text-sm ${selectedSlot
+                <div className="flex items-center justify-center gap-4 rounded-2xl text-lg">
+                  <div
+                    onClick={() => ChangeStatus("available")}
+                    className={`py-3 px-4 rounded-2xl  text-sm ${
+                      selectedSlots.length > 0
                         ? "bg-gradient-to-b from-pink-500 to-orange-500 text-white cursor-pointer"
                         : "bg-gray-200 text-black cursor-default"
-                      }`}
+                    }`}
                   >
-                    Change Status
-                  </p>
+                    Be Available
+                  </div>
+                  <div
+                    onClick={() => ChangeStatus("unavailable")}
+                    className={`py-3 px-4 rounded-2xl  text-sm ${
+                      selectedSlots.length > 0
+                        ? "bg-gradient-to-b from-pink-500 to-orange-500 text-white cursor-pointer"
+                        : "bg-gray-200 text-black cursor-default"
+                    }`}
+                  >
+                    Be Unavailable
+                  </div>
                 </div>
               )}
             </div>
@@ -206,16 +239,16 @@ export const HairdresserSlots = () => {
                     <div
                       key={index}
                       className={`flex items-center justify-center py-2 px-3 text-basefont-medium border-2 rounded-xl w-40 border-gray-200 cursor-pointer
-                      ${slot.status === 1
-                          && "bg-white text-black"
-                        }
-                        ${slot.status === 0
-                          && "bg-white text-black opacity-50"
+                      ${slot.status === 1 && "bg-white text-black"}
+                        ${
+                          slot.status === 0 && "bg-white text-black opacity-50"
                         } 
-                        ${slot.id === selectedSlot?.id &&
+                        ${
+                          selectedSlots &&
+                          selectedSlots.includes(slot.id) &&
                           "!bg-[#FFE7DF] !text-[#FF7143] !opacity-100"
-                          }`}
-                      onClick={() => setSelectedSlot(slot)}
+                        }`}
+                      onClick={() => selectSlot(slot)}
                     >
                       {slot.start} - {slot.end}
                     </div>

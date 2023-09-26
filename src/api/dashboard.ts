@@ -119,9 +119,12 @@ const dashboard = {
   updateSalonTiming: async (id: number, data:any) => {
     return await request.post<any>(`hair_salon_open_times/${id}`, data);
   },
-  updateSalonSlot: async (id: number, data:any) => {
-    return await request.post<any>(`update_slot/${id}`, data);
+  updateSalonSlot: async ( data:any) => {
+    return await request.post<any>(`update_multiple_slot`, data);
   },
+  getAllBookings: async () => {
+  return await request.get<any>(`bookings`);
+  }
 };
 
 export { dashboard };
