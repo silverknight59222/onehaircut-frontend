@@ -18,7 +18,7 @@ const client={
         return await request.get(`/hair_salon_by_id/${id}`);
     },
     getSlots: async (id: number, params: SlotParam) => {
-        return await request.post(`/fetch_slots/${id}`, params);
+        return await request.post(`/fetch_slots_by_hair_dresser/${id}`, params);
     },
     createBooking: async (params: BookingParams) => {
         return await request.post(`/booking`, params);
