@@ -57,7 +57,7 @@ const dashboard = {
     return await request.post<ResponseType>(`/salon_haircut/${id}`, params);
   },
   getAllSalonHaircuts: async (id: number) => {
-    return await request.get<any>(`/salon_haircuts/${id}`);
+    return await request.get<any>(`/salon_haircuts_by_hair_salon/${id}`);
   },
   getAllHaircuts: async () => {
     return await request.get<any>(`/haircuts`);
@@ -72,7 +72,7 @@ const dashboard = {
     return await request.get<any>(`/filtered_services/${id}`);
   },
   getAllSalonServices: async (id: number) => {
-    return await request.get<any>(`/salon_services/${id}`);
+    return await request.get<any>(`/salon_services_by_hair_salon/${id}`);
   },
   addSalonServices: async (params: any) => {
     return await request.post<any>(`salon_service`, params);
