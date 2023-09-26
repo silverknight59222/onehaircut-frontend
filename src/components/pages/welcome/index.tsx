@@ -233,7 +233,7 @@ const onServiceOnlyClick = () => {
         </p>
         <div className="flex flex-col md:flex-row gap-4 mb-10 sm:mb-10 ">
         <div
-          className={`${Theme_A.button.bigWhiteGreyButton} `}
+          className={`${Theme_A.button.bigWhiteGreyButton} hover:shadow-lg cursor-pointer `}
           onClick={() => {
             onServiceOnlyClick();
             router.push('/services');

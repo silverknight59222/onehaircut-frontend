@@ -22,7 +22,7 @@ export const ColorsThemeA = {
 
 export const Theme_A = {
   Bars: {
-    searchBar_1: `min-w-[300px] text-sm py-2 px-4 outline-none rounded-full bg-white border border-[#EDEDED] shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)] focus:ring-2 focus:bg-transparent focus:ring-red-200 focus:border-stone-200 `,
+    searchBar_1: `min-w-[300px] text-sm py-2 px-4 outline-none rounded-full bg-white border border-[#EDEDED] shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)] focus:ring-2 focus:bg-transparent focus:ring-red-300 `,
     proTopBar: {
       standardShape: `w-full flex items-center justify-center font-semibold bg-stone-50 opacity-100 border-x-2 border-stone-100 shadow-inner cursor-pointer rounded-lg px-5 h-11 hover:border-secondary hover:bg-gradient-to-b from-red-100 to-transparent`,
       activatedColor: "border border-red-50 bg-gradient-to-b from-red-100 to-transparent",
