@@ -10,8 +10,8 @@ export const ColorsThemeA = {
   OhcGradient_B: "bg-gradient-to-r from-rose-500 via-orange-600 to-orange-400",
   ohcVerticalGradient_A: `bg-gradient-to-b from-rose-500 via-orange-600 to-orange-500`,
   ohcVerticalGradient_B: `bg-gradient-to-b from-pink-600 via-orange-600 to-orange-500`,
-  ohcBigVerticalGradient_A : `bg-gradient-to-br from-rose-600 via-orange-600 to-yellow-400 opacity-90`,
-  ohcBigVerticalGradient_B : "linear-gradient(162deg, #f54257 0%, #FD4C55 40.71%, #FF8637 70.46%, #FFE30F 100%)",
+  ohcBigVerticalGradient_A: `bg-gradient-to-br from-rose-600 via-orange-600 to-yellow-400 opacity-90`,
+  ohcBigVerticalGradient_B: "linear-gradient(162deg, #f54257 0%, #FD4C55 40.71%, #FF8637 70.46%, #FFE30F 100%)",
   ohcBorder: " border-2 border-red-500 ",
   standardBorderGray: " border-2 border-stone-400 ",
   inactivButtonColor: "bg-[#D6D6D6]",
@@ -48,13 +48,16 @@ export const Theme_A = {
     proHairstyleFilterON: `flex gap-4 rounded-full bg-stone-800 border border-[#EDEDED] p-1 text-sm text-white shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)]`,
   },
   button: {
+    crossButtonSmall: `cursor-pointer my-2 py-1 px-2 rounded-lg ${ColorsThemeA.ohcVerticalGradient_A} shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)] transform hover:scale-125 transition-transform`,
     bigGradientButton: `flex items-center justify-center text-white font-semibold text-xl rounded-md px-6 py-4 mt-2 ${ColorsThemeA.OhcGradient_B} shadow-md transform hover:scale-105 transition-transform hover:shadow-[0px_3px_6px_0px_rgba(255,125,60,0.25)]`,
     bigWhiteColoredButton: `flex items-center justify-center min-w-56 h-14 rounded-xl text-black font-semibold text-xl px-8 py-2 mt-2 bg-white border border-x-red-500 border-y-orange-500 transform hover:scale-105 transition-transform hover:shadow-md`,
-    medWhiteColoredButton: `text-black font-medium text-sm rounded-md px-4 py-2 bg-white border border-x-red-500 border-y-orange-500 transform hover:scale-105 transition-transform hover:shadow-md`,
-    mediumGradientButton: `text-white font-medium text-sm rounded-md px-4 py-2 ${ColorsThemeA.OhcGradient_A} transform hover:scale-105 transition-transform hover:shadow-[0px_7px_12px_0px_rgba(255,125,60,0.25)]`,
+    medBlackColoredButton: `text-white font-medium text-md rounded-md px-4 py-2 bg-black border border-x-red-500 border-y-orange-500 transform hover:scale-105 transition-transform hover:shadow-md`,
+    medWhiteColoredButton: `text-black font-medium text-md rounded-md px-4 py-2 bg-white border border-x-red-500 border-y-orange-500 transform hover:scale-105 transition-transform hover:shadow-md`,
+    mediumGradientButton: `text-white font-medium text-md rounded-md px-4 py-2 ${ColorsThemeA.OhcGradient_A} transform hover:scale-105 transition-transform hover:shadow-[0px_7px_12px_0px_rgba(255,125,60,0.25)]`,
     medLargeGradientButton: `text-white font-medium text-lg mb-3 rounded-md w-[278px] py-2 ${ColorsThemeA.OhcGradient_A} transform hover:scale-105 transition-transform hover:shadow-[0px_7px_12px_0px_rgba(255,125,60,0.25)]`,
     smallGradientButton: `text-white font-medium text-sm rounded-md px-4 py-2 ${ColorsThemeA.OhcGradient_A}  shadow-md transform hover:scale-105 transition-transform hover:shadow-[0px_3px_6px_0px_rgba(255,125,60,0.25)]`,
     scrollToTheTopButton: `fixed bottom-10 right-10 mb-8 p-4 bg-stone-300 text-sm text-white px-6 py-2 rounded-lg transform hover:scale-105 transition-transform`,
+    deleteButtonSmall: `bg-red-600 flex items-center justify-center text-white font-medium text-sm rounded-md bg-white transform hover:scale-90 transition-transform hover:shadow-md`,
     bigWhiteGreyButton: `flex items-center justify-center min-w-56 h-14 rounded-xl shadow-md text-black font-medium text-xl px-8 py-2 mt-2 bg-white border border-x-stone-200 border-y-stone-100 transform hover:scale-105 transition-transform hover:shadow-md`,
   },
   checkers: {
@@ -64,12 +67,12 @@ export const Theme_A = {
     header: "'Montserrat', sans-serif",
     main: "'Montserrat', sans-serif",
   },
-  fields:{
+  fields: {
     configurationField: "w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] focus:ring-2 focus:bg-transparent focus:ring-red-300 focus:border-stone-200 "
   },
   footer: {
-    mainFooter: 
-    `<div class="bg-gray-100">
+    mainFooter:
+      `<div class="bg-gray-100">
       <div class="container mx-auto py-4 px-5 flex flex-wrap flex-col sm:flex-row">
       <p class="text-gray-500 text-sm text-center sm:text-left">© 2021 Tailwind Snippets —
       <a href="https://twitter.com/knyttneve" class="text-gray-600 ml-1" target="_blank" rel="noopener noreferrer">@knyttneve</a>
@@ -90,7 +93,7 @@ export const Theme_A = {
     selectedCardGradientBott: "rounded-b-xl bg-gradient-to-r from-white via-stone-50 to-red-100",
     selectedCardGradientTop: "relative w-max px-4 pt-4 rounded-t-xl bg-gradient-to-r from-white via-red-200 to-red-100",
   },
-  indicators:{
+  indicators: {
     counterIndicator: `text-sm py-1 px-[12px] ml-2 rounded-full text-white ${ColorsThemeA.ohcVerticalGradient_A}`
   },
   servicesCards: {
@@ -105,12 +108,12 @@ export const Theme_A = {
   },
   textFont: {
     headerH1: "",
-    headerH2: "",
+    headerH2: "text-xl font-semibold text-center",
     headerH3: "text-lg font-semibold text-center",
     headerH4: "text-md font-semibold text-left text-black block mb-2",
     headerH5: "text-md font-medium text-left text-black block",
-    infoTextSmall : "text-[10px] justify-center font-medium text-[#959595]",
-    navigationGreyFont : "text-xl text-stone-600 justify-center font-medium ",
+    infoTextSmall: "text-[10px] justify-center font-medium text-[#959595]",
+    navigationGreyFont: "text-xl text-stone-600 justify-center font-medium ",
   },
   thumbnails: {
     selectHaircutThumbnail: `mt-2 flex items-center justify-center w-36 h-36 bg-zinc-200 border-1 border-black rounded-2xl shadow-md`,

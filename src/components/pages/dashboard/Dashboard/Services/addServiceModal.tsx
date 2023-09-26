@@ -5,6 +5,7 @@ import useSnackbar from "@/hooks/useSnackbar";
 import userLoader from "@/hooks/useLoader";
 import React, { useEffect, useState } from "react";
 import { Theme_A, ColorsThemeA } from "@/components/utilis/Themes";
+import '../../../../utilis/StylesOHC.css';
 interface AddServiceModalType {
   setShowAddServiceModal: (value: boolean) => void;
   fetchAllServices: () => void;
@@ -272,11 +273,11 @@ const AddServiceModal = (props: AddServiceModalType) => {
   }, [typeFilters, search]);
 
   return (
-    <div className="relative bg-white lg:min-w-[850px]  rounded-xl px-5 pb-5">
+    <div className=" bg-white w-9/12 max-h-full rounded-xl px-5 pb-5">
       {isLoading && loadingView()}
       <div className="w-full flex items-center justify-end pt-2">
         <div
-          className={`cursor-pointer my-2 py-1 px-2 rounded-lg ${ColorsThemeA.OhcGradient_A} shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]`}
+          className={`${Theme_A.button.crossButtonSmall}`}
           onClick={() => props.setShowAddServiceModal(false)}
         >
           <CrossIcon width="12" />
@@ -330,11 +331,11 @@ const AddServiceModal = (props: AddServiceModalType) => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col md:flex-col items-center justify-center gap-4 ">
-        <div className="bg-white shadow-inner gap-3 grid grid-cols-1 justify-center sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 h-96 xl:h-[880px] lg:h-[680px] sm:h-[350px] p-3 overflow-y-auto rounded-xl items-start">
+      <div className=" items-center justify-center">
+        <div className="bg-white max-h-[250px] lg:max-h-[500px] shadow-inner dynamic-grid rounded-xl items-start">
           {showServices().map((item, index) => {
             return (
-              <div key={index} className="flex items-center gap-3">
+              <div key={index} className="flex items-center">
                 <div
                   className={`flex flex-col justify-start gap-2 w-48 h-[170px] border border-stone-200 rounded-[21px] py-3 px-3 shadow-lg cursor-pointer ${Theme_A.behaviour.cardBehaviour}`}
                   onClick={() => selectService(item.id)}
@@ -409,11 +410,11 @@ const AddServiceModal = (props: AddServiceModalType) => {
           </p>
           <div className="flex flex-col md:flex-row  gap-4 h-full items-center md:items-start justify-center w-full">
             <div className="flex flex-col gap-4 h-full items-start">
-              <div className="max-w-[300px] w-[200px]">
+              <div className="max-w-[300px] w-[200px] relative">
                 <input
                   type="number"
                   placeholder="Durée"
-                  className="w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
+                  className="w-48 p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
                   value={service.duration}
                   onChange={(e) => onChangeDuration(e.target.value)}
                 />
@@ -422,12 +423,13 @@ const AddServiceModal = (props: AddServiceModalType) => {
                     {error.duration}*
                   </p>
                 )}
+                <span className="absolute right-3 top-1/2 transform -translate-y-1/2">min</span>
               </div>
-              <div className="max-w-[300px] w-[200px]">
+              <div className="max-w-[300px] w-[200px] relative">
                 <input
                   type="number"
                   placeholder="Prix"
-                  className="w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
+                  className="w-48 p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
                   value={service.price}
                   onChange={(e) => onChangePrice(e.target.value)}
                 />
@@ -436,10 +438,12 @@ const AddServiceModal = (props: AddServiceModalType) => {
                     {error.price}*
                   </p>
                 )}
+                <span className="absolute right-3 top-1/2 transform -translate-y-1/2">€</span>
               </div>
+
             </div>
             <div className="flex flex-col gap-4 h-full items-start">
-              <div className="max-w-[300px] w-[200px]">
+              <div className="max-w-[300px] w-[200px] relative">
                 <input
                   type="number"
                   placeholder="Age"
@@ -458,11 +462,13 @@ const AddServiceModal = (props: AddServiceModalType) => {
                     {error.age}*
                   </p>
                 )}
+                <span className="absolute right-3 top-1/2 transform -translate-y-1/2">années</span>
               </div>
-              <div className="max-w-[300px] w-[200px]">
+              <div className="max-w-[300px] w-[200px] relative">
                 <input
                   type="number"
-                  placeholder="Percent"
+                  placeholder="Rabais"
+
                   className={
                     discountParamsDisable
                       ? "w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none bg-slate-200"
@@ -478,19 +484,20 @@ const AddServiceModal = (props: AddServiceModalType) => {
                     {error.percent}*
                   </p>
                 )}
+                <span className="absolute right-3 top-1/2 transform -translate-y-1/2">€</span>
               </div>
             </div>
           </div>
           <div className="mt-4 flex gap-4 items-center justify-center w-full">
             <button
-              className={`${Theme_A.button.add}`}
+              className={`${Theme_A.button.medWhiteColoredButton}`}
               onClick={() => props.setShowAddServiceModal(false)}
             >
               Cancel
             </button>
             <button
               // className="text-white font-medium text-base rounded-md py-2 px-4 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
-              className={`${Theme_A.button.add}`}
+              className={`${Theme_A.button.mediumGradientButton}`}
               onClick={() => onSubmit()}
             >
               Add Service

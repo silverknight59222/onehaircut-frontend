@@ -5,6 +5,7 @@ import useSnackbar from "@/hooks/useSnackbar";
 import userLoader from "@/hooks/useLoader";
 import React, { useState } from "react";
 import { SalonService } from "./index";
+import { Theme_A } from "@/components/utilis/Themes";
 interface EditServiceModalType {
   setShowEditServiceModal: (value: boolean) => void;
   service: SalonService;
@@ -82,7 +83,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
   const onSubmit = async () => {
     if (!service.duration) {
       setError((prev) => {
-        return { ...prev, duration: "Duration is required" };
+        return { ...prev, duration: "Durée requise" };
       });
       return;
     } else {
@@ -92,7 +93,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
     }
     if (!service.price) {
       setError((prev) => {
-        return { ...prev, price: "Price is required" };
+        return { ...prev, price: "Prix requis" };
       });
       return;
     } else {
@@ -102,7 +103,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
     }
     if (props.service.age && !service.age) {
       setError((prev) => {
-        return { ...prev, age: "Age is required" };
+        return { ...prev, age: "Age requis" };
       });
       return;
     } else {
@@ -112,7 +113,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
     }
     if (props.service.percent && !service.percent) {
       setError((prev) => {
-        return { ...prev, percent: "Percent is required" };
+        return { ...prev, percent: "Pourcentage requis" };
       });
       return;
     } else {
@@ -134,10 +135,10 @@ const EditServiceModal = (props: EditServiceModalType) => {
       .updateSalonServices(props.service.id, data)
       .then((res) => {
         props.fetchAllServices();
-        showSnackbar("success", "Salon Service updated successfully.");
+        showSnackbar("success", "Prestation actualisée");
       })
       .catch((err) => {
-        showSnackbar("error", "Failed to update salon service");
+        showSnackbar("error", "Actualisation de préstation");
       })
       .finally(() => {
         setIsLoading(false);
@@ -149,10 +150,10 @@ const EditServiceModal = (props: EditServiceModalType) => {
       .deleteSalonServices(props.service.id)
       .then((res) => {
         props.fetchAllServices();
-        showSnackbar("success", "Salon Service deleted successfully.");
+        showSnackbar("success", "Prestation supprimée");
       })
       .catch((err) => {
-        showSnackbar("error", "Failed to delete salon service");
+        showSnackbar("error", "Echec de suppression");
       })
       .finally(() => {
         setIsLoading(false);
@@ -164,7 +165,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
       {isLoading && loadingView()}
       <div className="w-full flex items-center justify-end pt-2">
         <div
-          className="cursor-pointer my-2 py-1 px-2 rounded-lg bg-gradient-to-r from-pink-500 to-orange-500 shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+          className={`${Theme_A.button.crossButtonSmall}`}
           onClick={() => props.setShowEditServiceModal(false)}
         >
           <CrossIcon width="12" />
@@ -222,8 +223,8 @@ const EditServiceModal = (props: EditServiceModalType) => {
               <div
                 className={
                   props.service.age && props.service.percent
-                    ? "max-w-[300px] w-[150px]"
-                    : "max-w-[300px] w-[350px]"
+                    ? "max-w-[300px] w-[150px] relative"
+                    : "max-w-[300px] w-[350px] relative"
                 }
               >
                 <input
@@ -238,12 +239,13 @@ const EditServiceModal = (props: EditServiceModalType) => {
                     {error.duration}*
                   </p>
                 )}
+                <span className="text-gray-600 absolute right-3 top-1/2 transform -translate-y-1/2">Durée(min)</span>
               </div>
               <div
                 className={
                   props.service.age && props.service.percent
-                    ? "max-w-[300px] w-[150px]"
-                    : "max-w-[300px] w-[350px]"
+                    ? "max-w-[300px] w-[150px] relative"
+                    : "max-w-[300px] w-[350px] relative"
                 }
               >
                 <input
@@ -258,11 +260,13 @@ const EditServiceModal = (props: EditServiceModalType) => {
                     {error.price}*
                   </p>
                 )}
+                <span className="text-gray-600 absolute right-3 top-1/2 transform -translate-y-1/2">Prix(€)</span>
               </div>
+
             </div>
             {props.service.age && props.service.percent && (
               <div className="flex flex-col gap-4 items-center">
-                <div className="max-w-[300px] w-[150px]">
+                <div className="max-w-[300px] w-[150px] relative">
                   <input
                     type="number"
                     placeholder="Age"
@@ -275,8 +279,9 @@ const EditServiceModal = (props: EditServiceModalType) => {
                       {error.age}*
                     </p>
                   )}
+                  <span className="text-gray-600  absolute right-3 top-1/2 transform -translate-y-1/2">Age(années)</span>
                 </div>
-                <div className="max-w-[300px] w-[150px]">
+                <div className="max-w-[300px] w-[150px] relative">
                   <input
                     type="number"
                     placeholder="Percent"
@@ -289,25 +294,26 @@ const EditServiceModal = (props: EditServiceModalType) => {
                       {error.percent}*
                     </p>
                   )}
+                  <span className="text-gray-600 absolute right-3 top-1/2 transform -translate-y-1/2">Rabais(€)</span>
                 </div>
               </div>
             )}
           </div>
           <div className="mt-4 flex gap-4 items-center justify-center w-full">
             <button
-              className="text-white font-medium text-lg rounded-md py-2 px-4 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+              className={`${Theme_A.button.medWhiteColoredButton}`}
               onClick={() => props.setShowEditServiceModal(false)}
             >
               Cancel
             </button>
             <button
-              className="text-white font-medium text-lg rounded-md py-2 px-4 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+              className={`${Theme_A.button.medWhiteColoredButton}`}
               onClick={() => deleteService()}
             >
               Delete
             </button>
             <button
-              className="text-white font-medium text-lg rounded-md py-2 px-4 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+              className={`${Theme_A.button.mediumGradientButton}`}
               onClick={() => onSubmit()}
             >
               Update
