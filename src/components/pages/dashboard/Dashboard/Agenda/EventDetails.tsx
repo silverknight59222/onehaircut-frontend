@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { CrossIcon } from "@/components/utilis/Icons";
 import { ColorsThemeA } from "@/components/utilis/Themes";
+import { ChatSendIcon } from "@/components/utilis/Icons";
 
 interface Booking {
   id: string;
@@ -32,8 +33,18 @@ const AddServiceModal = (props: BookingDetail) => {
     }
   };
 
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === 'Enter') {
+      if (!e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    }
+  };
+
+
   return (
-    <div className="relative bg-white rounded-xl shadow-lg overflow-visible max-w-full lg:max-w-2xl mx-auto p-5">
+    <div className="relative bg-white rounded-xl px-5 pb-5 shadow-lg" style={{ minWidth: '500px', minHeight: '600px' }}>
       {/* Icône de fermeture */}
       <div
         className={`absolute -right-3 -top-7 cursor-pointer my-3 rounded-lg ${ColorsThemeA.ohcVerticalGradient_A} shadow-md flex items-center justify-center`}
@@ -47,30 +58,46 @@ const AddServiceModal = (props: BookingDetail) => {
 
 
       {/* Contenu */}
-      <div className="flex flex-col gap-4">
-        {/* Nom */}
+      <div className="flex flex-col gap-4 mt-6">
+        {/* Nom du client */}
         <div className="text-xl font-semibold text-center">
-          Name: {props.event.title}
+          Client: {props.event.title}
         </div>
 
         {/* Vignette */}
-        <div className="self-center border border-gray-300 rounded-md p-2 w-52 h-52">
+        <div className="self-center border border-gray-300 rounded-md p-2 w-52 h-52 shadow-inner">
           {/* Insérez ici la vignette */}
         </div>
 
         {/* Date */}
-        <div className="text-center">
-          Date: {props.event.start.split('T')[0]}
+        <div className="text-center mb-[-4px]">
+          <strong>Date du rdv :</strong> {props.event.start.split('T')[0]}
+        </div>
+        <div className="text-center mb-[-4px]">
+          <strong>Coiffeur :</strong> {/* Ici, vous pouvez insérer le nom du coiffeur */}
+        </div>
+        <div className="text-center mb-[-4px]">
+          <strong>Dur&eacute;e &eacute;stim&eacute;e :</strong> {/* Ici, vous pouvez insérer la durée de la coiffure */}
+        </div>
+        <div className="text-center mb-[-4px]">
+          <strong>Pr&eacute;station :</strong> {/* Ici, vous pouvez insérer le nom des prestations */}
+        </div>
+        <div className="text-center mb-[-4px]">
+          <strong>Dur&eacute;e de la Pr&eacute;station &eacute;stim&eacute;e :</strong> {/* Ici, vous pouvez insérer la durée totale des prestaion */}
+        </div>
+        <div className="text-center mb-[-4px]">
+          <strong>Dur&eacute;e totale &eacute;stim&eacute;e :</strong> {/* Ici, vous pouvez insérer la durée totale*/}
         </div>
 
+
         {/* Zone de messagerie */}
-        <div className="flex flex-col gap-2 mt-4">
+        <div className="flex flex-col gap-2 mt-4 ">
           {/* Conversation */}
-          <div className="border border-gray-300 rounded-md p-2 overflow-auto h-40 bg-stone-100 shadow-inner">
+          <div className="border border-gray-300 rounded-xl p-2 rounded-bl-lg overflow-auto h-40 bg-stone-100 shadow-inner mb-2 ">
             {messages.map((msg, index) => (
-              <div key={index} className={`${msg.sent ? 'text-right' : 'text-left'} mb-2`}>
+              <div key={index} className={`${msg.sent ? 'text-right' : 'text-left '} mb-2`}>
                 <div
-                  className={`inline-block p-2 rounded-md text-xs outline-1 ${msg.sent ? 'outline outline-orange-500 bg-stone-100' : 'outline outline-stone-400 bg-white'}`}
+                  className={`inline-block p-2 text-xs outline-1 ${msg.sent ? 'rounded-l-lg rounded-b-lg outline outline-orange-500 bg-stone-100 ' : 'rounded-r-lg rounded-b-lg outline outline-stone-400 bg-white'}`}
                 >
                   <strong>{msg.sent ? 'Vous:' : 'Client:'}</strong> {msg.content}
                 </div>
@@ -78,16 +105,17 @@ const AddServiceModal = (props: BookingDetail) => {
             ))}
           </div>
 
-          {/* Zone d'écriture et envoi */}
-          <div className="flex gap-2">
+          {/* Zone d'écriture et envoi - ajouter nKeyDown={handleKeyPress} pour valider le message avec Enter */}
+          <div className="flex gap-1 ">
             <input
               type="text"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Écrire un message"
-              className="flex-grow border border-gray-300 rounded-md p-2 focus:outline-none focus:border-red-500 shadow-inner"
+              className="flex-grow border border-gray-300 rounded-xl p-2 focus:outline-none focus:border-red-500 shadow-inner"
+
             />
-            <button onClick={sendMessage} className="p-2 rounded-md bg-blue-500 text-white">Envoyer</button>
+            <button type="button" onClick={sendMessage} className="transform hover:scale-110" > <ChatSendIcon /> </button>
           </div>
         </div>
       </div>

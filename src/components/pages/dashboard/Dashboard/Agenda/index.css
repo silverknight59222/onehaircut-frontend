@@ -3,6 +3,38 @@ a.fc-event.fc-event-draggable.fc-event-resizable.fc-event-start.fc-event-end.fc-
     border: 1px #EA4361 solid;
 }
 
+:root {
+    --fc-daygrid-event-dot-width: 5px;
+    --fc-small-font-size: .85em;
+    --fc-page-bg-color: #fff;
+    --fc-neutral-bg-color: rgba(223, 60, 60, 0.3);
+    --fc-neutral-text-color: #d83d3d;
+    --fc-border-color: #ddd;
+
+    --fc-event-selected-overlay-color: rgba(0, 0, 0, 0.25);
+    --fc-button-text-color: #fff;
+    --fc-button-bg-color: #f94b4b;
+    --fc-button-border-color: #383838;
+    --fc-button-hover-bg-color: #383838;
+    --fc-button-hover-border-color: #000000;
+    --fc-button-active-bg-color: #212121;
+    --fc-button-active-border-color: #383838;
+    --fc-today-bg-color: rgba(223, 197, 62, 0.15);
+
+    --fc-more-link-bg-color: #d0d0d0;
+    --fc-more-link-text-color: inherit;
+
+    --fc-event-resizer-thickness: 8px;
+    --fc-event-resizer-dot-total-width: 8px;
+    --fc-event-resizer-dot-border-width: 1px;
+
+    --fc-non-business-color: rgba(215, 215, 215, 0.3);
+    --fc-bg-event-color: rgb(143, 223, 130);
+    --fc-bg-event-opacity: 0.3;
+    --fc-highlight-color: rgba(188, 232, 241, 0.3);
+    --fc-now-indicator-color: red;
+}
+
 .fc-daygrid-event-dot {
     border: #000000 4px solid;
     border-radius: calc(var(--fc-daygrid-event-dot-width)/2);
@@ -19,7 +51,7 @@ a.fc-event.fc-event-draggable.fc-event-resizable.fc-event-start.fc-event-end.fc-
 .fc-event-main {
     font-size: 16px;
     font-weight: 500;
-    background-color: #EA4361;
+    background-color: #f25c5c;
 }
 
 .fc-scrollgrid-section-header th .fc-scroller-harness .fc-scroller {
@@ -28,4 +60,14 @@ a.fc-event.fc-event-draggable.fc-event-resizable.fc-event-start.fc-event-end.fc-
 
 .fc-daygrid-body.fc-daygrid-body-unbalanced.fc-daygrid-body-natural {
     display: none;
+}
+
+.fc-day-header {
+    background-color: #f25c5c;
+
+}
+
+.fc-axis {
+    background-color: #a9a9a9;
+
 }
