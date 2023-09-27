@@ -4,7 +4,7 @@ a.fc-event.fc-event-draggable.fc-event-resizable.fc-event-start.fc-event-end.fc-
 }
 
 .fc-daygrid-event-dot {
-    border:#EA4361 4px solid;
+    border: #000000 4px solid;
     border-radius: calc(var(--fc-daygrid-event-dot-width)/2);
     box-sizing: content-box;
     height: 0px;
@@ -22,9 +22,10 @@ a.fc-event.fc-event-draggable.fc-event-resizable.fc-event-start.fc-event-end.fc-
     background-color: #EA4361;
 }
 
-.fc-scrollgrid-section-header th .fc-scroller-harness .fc-scroller{
+.fc-scrollgrid-section-header th .fc-scroller-harness .fc-scroller {
     overflow: hidden;
 }
+
 .fc-daygrid-body.fc-daygrid-body-unbalanced.fc-daygrid-body-natural {
     display: none;
 }
