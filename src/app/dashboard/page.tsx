@@ -8,8 +8,8 @@ import ImagesSalon from '@/components/pages/dashboard/Dashboard/ImagesSalon'
 import Hairstyles from '@/components/pages/dashboard/Dashboard/Hairstyles'
 import Services from '@/components/pages/dashboard/Dashboard/Services'
 import AddPartner from '@/components/pages/dashboard/Dashboard/AddPartner'
-import { Theme_A } from "@/components/utilis/Themes";
 import { ColorsThemeA } from "@/components/utilis/Themes";
+import { Agenda } from "@/components/pages/dashboard/Dashboard/Agenda";
 
 const Page = () => {
 const [isSidebar, setIsSidebar] = useState(true);
@@ -47,6 +47,7 @@ const [isSidebar, setIsSidebar] = useState(true);
 				{tab === 'Images Salon' && <ImagesSalon />}
 				{tab === 'Coiffures' && <Hairstyles />}
 				{tab === 'Prestation' && <Services />}
+				{tab === 'Agenda' && <Agenda />}
 				{tab === 'Ajouter un salon partenaire' && <AddPartner />}
 			</div>
 		</>

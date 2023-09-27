@@ -37,8 +37,10 @@ type SidebarType = {
 const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }: SidebarType) => {
   const [salonDetail, setSalonDetails] = useState<SalonDetails[]>();
   const [activeSalon, setActiveSalon] = useState<SalonDetails>();
+  const [sidebarItem,setSidebarItem]=useState<SidebarItems[]>([])
   const router=useRouter()
   const path=usePathname()
+  const proRoutes=['/dashboard/client-activity', '/dashboard/visites']
 
   const setIcon = (SidebarIcon: string, activeIcon: string) => {
     let Icon;
@@ -157,12 +159,19 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
     router.push(route)
     }
   }
-
   useEffect(() => {
-    const user = getLocalStorage("user");
-    const userId = user ? Number(JSON.parse(user).id) : null;
-    if (userId)
-      dashboard.getHairSalon(Number(userId)).then((res) => {
+    const temp = getLocalStorage("user");
+    const user = temp ? JSON.parse(temp) : null;
+    if(!user.subscription){
+      const filteredRoutes=sidebarItems.filter(route=>{
+        return !proRoutes.includes(route.route)
+      })
+      setSidebarItem(filteredRoutes)
+    }else{
+      setSidebarItem(sidebarItems)
+    }
+    if (user.id)
+      dashboard.getHairSalon(Number(user.id)).then((res) => {
           setSalonDetails(res.data.data);
           setSalon(res.data.data);
       });
@@ -196,7 +205,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
              {!isClientDashboard && <p className="text-lg font-medium mt-2.5">Daniel j.</p>}
             </div>
             <div className="mt-8">
-              {sidebarItems.map((item, index) => {
+              {sidebarItem.map((item, index) => {
                 return (
                   <div key={index}>
                     <div

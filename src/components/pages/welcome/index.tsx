@@ -22,13 +22,15 @@ const Welcome = () => {
   const router = useRouter()
   const user = getLocalStorage("user");
   const userId = user ? Number(JSON.parse(user).id) : null;
-  const haircut = JSON.parse(String(getLocalStorage("haircut")))
+  const temp=getLocalStorage("haircut")
+  const haircut= temp ? JSON.parse(String(temp)) : null
   const [ethnicityFilters, setEthnicityFilters] = useState<string[]>([]);
   const [lengthFilters, setLengthFilters] = useState<string[]>([]);
   const [genderFilters, setGenderFilters] = useState<string>("");
   const [filteredHaircuts, setFilteredHaircuts] = useState<Haircut[]>([]);
   const [search, setSearch] = useState<string>('');
   const showSnackbar = useSnackbar();
+  const [selectedHaircut,setSelectedHaircut]=useState<any>({id: '', name: ''})
 
   const getAllHaircuts = () => {
     setIsLoading(true);
@@ -196,8 +198,18 @@ const Welcome = () => {
       return salonHaircut;
     }
   };
-  const onClickHaircut = (id: number, name: string) => {
-    setLocalStorage("haircut", JSON.stringify({ id: id, name: name }))
+  const onClickHaircut=(id: number, name: string)=>{
+    if(id===selectedHaircut.id){
+      setSelectedHaircut({
+        id: null,
+        name: ''
+      })
+    }else{
+    setSelectedHaircut({id: id, name: name})
+    }
+  }
+  const onContinue=()=>{
+    setLocalStorage("haircut", JSON.stringify({id: selectedHaircut.id, name: selectedHaircut.name}))
     router.push(`/services`)
   }
 
@@ -220,6 +232,11 @@ const Welcome = () => {
       setIsLoggedIn(true);
     }
   }, []);
+  useEffect(()=>{
+    if(haircut){
+      setSelectedHaircut(haircut)
+    }
+  },[])
 
   return (
     <>
@@ -237,8 +254,7 @@ const Welcome = () => {
           <div
             className={`${Theme_A.button.bigWhiteGreyButton} hover:shadow-lg cursor-pointer `}
             onClick={() => {
-              onServiceOnlyClick();
-              router.push('/services');
+              onContinue();
             }}
           >
             Rechercher un soin / service uniquement

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from 'next/image'
 import { Auth } from "@/api/auth";
 import { getLocalStorage, setLocalStorage } from "@/api/storage";
@@ -15,6 +15,7 @@ const Login = () => {
 	const showSnackbar = useSnackbar();
 	const { loadingView } = userLoader();
 	const [showPassword, setShowPassword] = useState(false);
+	const searchParams = useSearchParams()
 
 	const defaultUserInfo = {
 		email: "",
@@ -89,9 +90,13 @@ const Login = () => {
 		await Auth.login(userInfo)
 			.then((resp) => {
 				const res = resp.data;
+				console.log(res.user)
 				setLocalStorage("user", JSON.stringify(res.user));
 				setLocalStorage("auth-token", res.token);
-				if (res.user.role === 'salon_professional') {
+				// if(searchParams.get('redirect') === 'payment'){
+				// 	router.push("/payment");
+				// }
+				 if (res.user.role === 'salon_professional') {
 					router.push("/dashboard");
 				} else {
 					router.push("/client/dashboard");

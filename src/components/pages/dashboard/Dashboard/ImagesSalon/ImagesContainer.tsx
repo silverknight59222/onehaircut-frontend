@@ -72,6 +72,8 @@ const ImagesContainer = ({
     const formData = new FormData();
      const user = getLocalStorage("user");
     const userID = user ? JSON.parse(user).id : null;
+    const limit = userID === 3 ? 5 : 20
+    if(images.length < limit){
     if (userID) {
       formData.append("hair_salon_id", userID);
     }
@@ -100,7 +102,11 @@ const ImagesContainer = ({
       .finally(() => {
         setIsLoading(false);
       });
+    }else{
+      showSnackbar("error", "Limit Exceeded!");
+    }
   };
+
   const selectImage = (image: ImageSalon) => {
     setUpdateMode(image);
   };
@@ -160,7 +166,7 @@ const ImagesContainer = ({
                 <div className={`w-32 h-32 relative flex items-center`}>
                   {updateMode || selectedImage ? (
                     <Image
-                      src={updateMode ? updateMode.image : selectedImage}
+                      src={updateMode ? updateMode.image.includes('api-server') ? updateMode.image : `https://api-server.onehaircut.com/public${updateMode.image}` : selectedImage}
                       fill={true}
                       alt={
                         type === "showcase"

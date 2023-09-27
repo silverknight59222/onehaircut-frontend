@@ -66,6 +66,19 @@ const Settings = () => {
       });
     }
   };
+  const getUpdatedSlots = (slots: OpenTimes[]) => {
+    let disable = false;
+    slots.forEach((slot) => {
+      if (Number(slot.start.split(":")[0]) >= Number(slot.end.split(":")[0])) {
+        disable = true;
+        setDisableUpdate(true);
+      }
+    });
+    if(disable === false) {
+      setDisableUpdate(false);
+    }
+    setUpdatedSlots(slots);
+  };
   const checkboxClickHandler = (item: OpenTimes) => {
     let updatedtime: OpenTimes[] = [];
     updatedSlots.forEach((slot) => {
@@ -99,23 +112,25 @@ const Settings = () => {
     setUpdatedSlots(updatedtime);
   };
   const updateSlots = async () => {
-    setIsLoading(true);
-    const data = {
-      openTimes: updatedSlots,
-    };
-    await dashboard
-      .updateSalonTiming(salonId, data)
-      .then((resp) => {
-        getHairSalonSlot();
-        setDisableUpdate(true);
-        showSnackbar("success", resp.data.message);
-      })
-      .catch((err) => {
-        showSnackbar("error", "Error Occured!");
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+    if(!disableUpdate) {
+      setIsLoading(true);
+      const data = {
+        openTimes: updatedSlots,
+      };
+      await dashboard
+        .updateSalonTiming(salonId, data)
+        .then((resp) => {
+          getHairSalonSlot();
+          setDisableUpdate(true);
+          showSnackbar("success", resp.data.message);
+        })
+        .catch((err) => {
+          showSnackbar("error", "Error Occured!");
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    }
   };
   useEffect(() => {
     getHairSalonSlot();
@@ -181,24 +196,10 @@ const Settings = () => {
                         })}
                       </td>
                       <td className="flex flex-col gap-12 border-l border-[rgba(171,171,171,0.20)] px-3 md:px-5">
-                        {updatedSlots.map((item, index) => {
-                          return (
-                            <div
-                              key={index}
-                              className="flex items-center justify-center gap-3"
-                            >
-                              <SlotDropdown
-                                disabled={!item.available}
-                                selectedItem={item.start}
-                              />
-                              -
-                              <SlotDropdown
-                                disabled={!item.available}
-                                selectedItem={item.end}
-                              />
-                            </div>
-                          );
-                        })}
+                        <SlotDropdown
+                          selectedItem={updatedSlots}
+                          getUpdatedSlots={getUpdatedSlots}
+                        />
                       </td>
                     </tr>
                     <tr>
@@ -222,7 +223,7 @@ const Settings = () => {
               </div>
             </>
           )}
-          {(activeMenu === "salon-dressers" && !isLoading) && (
+          {activeMenu === "salon-dressers" && !isLoading && (
             <div className="relative flex items-center justify-center w-[22rem] md:w-[810px] z-10 overflow-auto py-12 px-7 bg-white rounded-2xl shadow-[3px_3px_10px_-1px_rgba(0,0,0,0.30)]">
               <HairdresserSlots />
             </div>
