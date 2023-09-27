@@ -37,6 +37,7 @@ export const Theme_A = {
     cardWindowBehaviour: "flex-1 flex flex-wrap h-max gap-8",
     fieldFocused: "focus:ring-2 focus:bg-transparent focus:ring-red-200 focus:border-stone-200",
     fieldFocused_B: "focus:ring-2 focus:bg-transparent focus:ring-stone-300",
+    fieldFocused_C: "focus:ring-2 focus:bg-transparent focus:ring-red-300 ",
   },
   breakpoints: {
     desktop: "1024px",
