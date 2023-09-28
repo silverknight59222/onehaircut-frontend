@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React, { useState } from 'react'
 import Sidebar from "@/components/shared/Sidebar";
 import {
   CircleRight,
@@ -10,28 +10,28 @@ import {
 } from "@/components/utilis/Icons";
 
 interface DashboardLayout {
-    children: JSX.Element,
+  children: JSX.Element,
 }
 
 
-const ClientDashboardLayout = ({children}: DashboardLayout) => {
-    const [isSidebar, setIsSidebar] = useState(true);
-    const sidebarItems = [
-        { icon: "DashboardIcon", title: "Compte", route:"/client/dashboard" },
-        { icon: "MessageIcon", title: "Message", route:"/client/messages" },
-        { icon: "HeartIcon", title: "Favoris", route:"/client/favorites" },
-        { icon: "PortraitIcon", title: "Portrait", route:"/client/portrait" },
-        { icon: "MessageIcon", title: "Filtres", route:"/client/filters" },
-        { icon: "SettingsIcon", title: "Réglages", route:"" },
-        { icon: "HistoryIcon", title: "Historique", route:"/client/history" },
-        { icon: "HelpIcon", title: "Aide", route:"" },
-      ];
-    const SidebarHandler = () => {
-        setIsSidebar(!isSidebar);
-      };
+const ClientDashboardLayout = ({ children }: DashboardLayout) => {
+  const [isSidebar, setIsSidebar] = useState(true);
+  const sidebarItems = [
+    { icon: "DashboardIcon", title: "Compte", route: "/client/dashboard" },
+    { icon: "MessageIcon", title: "Message", route: "/client/messages" },
+    { icon: "HeartIcon", title: "Favoris", route: "/client/favorites" },
+    { icon: "PortraitIcon", title: "Portrait", route: "/client/portrait" },
+    { icon: "MessageIcon", title: "Filtres", route: "/client/filters" },
+    { icon: "ReservationIcon", title: "Réservations en cours", route: "/client/reservation" },
+    { icon: "HistoryIcon", title: "Historique", route: "/client/history" },
+    { icon: "HelpIcon", title: "Aide", route: "" },
+  ];
+  const SidebarHandler = () => {
+    setIsSidebar(!isSidebar);
+  };
   return (
     <div>
-        <Sidebar
+      <Sidebar
         sidebarItems={sidebarItems}
         isSidebar={isSidebar}
         SidebarHandler={SidebarHandler}
@@ -47,7 +47,7 @@ const ClientDashboardLayout = ({children}: DashboardLayout) => {
               </div>
               <div className="w-full hidden lg:block">
                 <div className='flex items-center justify-center'>
-                <LogoIcon />
+                  <LogoIcon />
                 </div>
               </div>
             </div>
@@ -65,9 +65,9 @@ const ClientDashboardLayout = ({children}: DashboardLayout) => {
           </div>
         </div>
         <div>
-        {children}
+          {children}
         </div>
-        </div>
+      </div>
     </div>
   )
 }

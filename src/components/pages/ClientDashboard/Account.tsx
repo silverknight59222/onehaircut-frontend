@@ -1,9 +1,27 @@
-import { CircleRight } from "@/components/utilis/Icons";
+import { LogoCircleFixRight } from "@/components/utilis/Icons";
 import ClientDashboardLayout from "@/layout/ClientDashboardLayout";
 import React, { useState } from "react";
 import BaseModal from "@/components/UI/BaseModal";
 import Footer from "@/components/UI/Footer";
 import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
+
+interface infoInterface {
+    name: string;
+    desc: string;
+    modif: boolean;
+    popup: React.JSX.Element
+}
+
+// function emptyFct() {
+//     return (
+//         <div></div>)
+// };
+
+const emptyPopup: React.JSX.Element = <div></div>; // Define an empty JSX element
+
+
+const infoInterfaceIni: infoInterface =
+    { name: "", desc: "", modif: false, popup: emptyPopup }
 
 
 const Account = () => {
@@ -43,16 +61,16 @@ const Account = () => {
         });
     };
 
-    const onSubmit = async () => {
+    const onSubmitPassword = async () => {
         if (passwordField.new != passwordField.new2) { // TODO modify
             setError((prev) => {
-                return { ...prev, text: "Nouveaux mot de passes différents" };
+                return { ...prev, text: "Nouveaux mots de passe différents" };
             });
             return;
         }
         else if (passwordField.new.length < 8) {
             setError((prev) => {
-                return { ...prev, text: "Nouveaux mot de passes trop petit" };
+                return { ...prev, text: "Nouveaux mots de passe trop petits" };
             });
             return;
         }
@@ -66,101 +84,159 @@ const Account = () => {
     const [error, setError] = useState({
         text: "",
     })
-    function modifPassWord() {
-        return (
-            <div>
-                <div className="flex flex-col items-center justify-center gap-4">
-                    <p className="text-3xl font-semibold text-black text-center">Modification du mot de passe</p>
+    const modifPassWord: React.JSX.Element =
+        <div>
+            <div className="flex flex-col items-center justify-center gap-4">
+                <p className="text-3xl font-semibold text-black text-center">Modification du mot de passe</p>
 
 
-                    {error && (
-                        <p className={`${Theme_A.checkers.errorText}`}>
-                            {error.text}
-                        </p>
-                    )}
-                    <input
-                        // type=""
-                        placeholder="Ancien mot de passe"
-                        className="w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
-                        value={passwordField.old}
-                        maxLength={30}
-                        onChange={(e) => setOldPassword(e.target.value)}
-                    />
-                    <input
-                        // type=""
-                        placeholder="Nouveau mot de passe"
-                        className="w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
-                        value={passwordField.new}
-                        maxLength={30}
-                        onChange={(e) => setNewPassword(e.target.value)}
-                    />
+                {error && (
+                    <p className={`${Theme_A.checkers.errorText}`}>
+                        {error.text}
+                    </p>
+                )}
+                <input
+                    // type=""
+                    placeholder="Ancien mot de passe"
+                    className={`w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none ${Theme_A.behaviour.fieldFocused_B}`}
+                    value={passwordField.old}
+                    maxLength={30}
+                    onChange={(e) => setOldPassword(e.target.value)}
+                />
+                <input
+                    // type=""
+                    placeholder="Nouveau mot de passe"
+                    className={`w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none ${Theme_A.behaviour.fieldFocused_B}`}
+                    value={passwordField.new}
+                    maxLength={30}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                />
 
-                    <input
-                        // type=""
-                        placeholder="Nouveau mot de passe"
-                        className="w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
-                        value={passwordField.new2}
-                        maxLength={30}
-                        onChange={(e) => setNew2Password(e.target.value)}
-                    />
-                </div>
-                <div className="mt-4 flex gap-4 items-center justify-center w-full">
-                    <button
-                        className={`${Theme_A.button.medWhiteColoredButton}`}
-                        onClick={() => null} // TODO
-                    >
-                        Annuler
-                    </button>
-                    <button
-                        className={`${Theme_A.button.mediumGradientButton}`}
-                        onClick={() => onSubmit()}
-                    >
-                        Actualiser
-                    </button>
-                </div>
+                <input
+                    // type=""
+                    placeholder="Nouveau mot de passe"
+                    className={`w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none fieldFocused ${Theme_A.behaviour.fieldFocused_B}`}
+                    value={passwordField.new2}
+                    maxLength={30}
+                    onChange={(e) => setNew2Password(e.target.value)}
+                />
             </div>
-        )
+            <div className="mt-4 flex gap-4 items-center justify-center w-full">
+                <button
+                    className={`${Theme_A.button.medWhiteColoredButton}`}
+                    onClick={() => setIsModal(!isModal)}
+                >
+                    Annuler
+                </button>
+                <button
+                    className={`${Theme_A.button.mediumGradientButton}`}
+                    onClick={() => onSubmitPassword()}
+                >
+                    Actualiser
+                </button>
+            </div>
+        </div>
+
+
+    ////////////////////////////////////////////////////
+    ///////////////////// ADDRESS 
+    ////////////////////////////////////////////////////
+    const [addressField, newAddressField] = useState("");
+    const setNewAddress = (value: string) => {
+        newAddressField(value);
     };
 
-    const informations = [
-        { name: "Nom légal", desc: "Dimitri Bala", modif: false },
-        { name: "Adresse", desc: "Information non fournie", modif: true },
-        { name: "Numéro de téléphone", desc: "+41 ** *** 62 92", modif: true },
-        { name: "Adresse e-mail", desc: "b***9@gmail.com", modif: false },
-        { name: "Pièce d'identité officielle", desc: "Information non fournie", modif: true },
-        { name: "Statut", desc: "Etudiant - vérifié", modif: true },
+    const onSubmitAdd = async () => {
+        if (addressField.length > 8) { // TODO modify
+            setError((prev) => {
+                return { ...prev, text: "Entrez une address correcte" };
+            });
+            return;
+        }
+        else {
+            setError((prev) => {
+                return { ...prev, text: "" };
+            });
+        }
+    }
+
+
+    const modifAddress: React.JSX.Element =
+        <div>
+            <div className="flex flex-col items-center justify-center gap-4">
+                <p className="text-3xl font-semibold text-black text-center">Modification de l'adresse</p>
+                {error && (
+                    <p className={`${Theme_A.checkers.errorText}`}>
+                        {error.text}
+                    </p>
+                )}
+                <input
+                    placeholder="Nouvelle adresse"
+                    className={`w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none ${Theme_A.behaviour.fieldFocused_B}`}
+                    value={addressField}
+                    maxLength={100}
+                    onChange={(e) => setOldPassword(e.target.value)}
+                />
+            </div>
+            <div className="mt-4 flex gap-4 items-center justify-center w-full">
+                <button
+                    className={`${Theme_A.button.medWhiteColoredButton}`}
+                    onClick={() => setIsModal(!isModal)}
+                >
+                    Annuler
+                </button>
+                <button
+                    className={`${Theme_A.button.mediumGradientButton}`}
+                    onClick={() => onSubmitAdd()}
+                >
+                    Actualiser
+                </button>
+            </div>
+        </div>
+        ;
+
+    // TODO: add information about the client.
+    const informations: infoInterface[] = [
+        { name: "Nom légal", desc: "Dimitri Bala", modif: false, popup: emptyPopup },
+        { name: "Adresse", desc: "Information non fournie", modif: true, popup: modifAddress },
+        { name: "Numéro de téléphone", desc: "+41 ** *** 62 92", modif: true, popup: emptyPopup },
+        { name: "Adresse e-mail", desc: "b***9@gmail.com", modif: false, popup: emptyPopup },
+        { name: "Pièce d'identité officielle", desc: "Information non fournie", modif: true, popup: emptyPopup },
+        { name: "Statut", desc: "Etudiant - vérifié", modif: true, popup: emptyPopup },
     ];
 
-    const password = [
-        { name: "Mot de passe", desc: "", modif: true },
+    const password: infoInterface[] = [
+        { name: "Mot de passe", desc: "", modif: true, popup: modifPassWord },
     ];
 
-    const notifications = [
-        { name: "Activité du compte", desc: "Activé : E-mail et SMS", modif: true },
-        { name: "Rappels", desc: "Activé : E-mail, SMS et Whatsapp", modif: true },
-        { name: "Messages", desc: "Activé : E-mail, Whatsapp", modif: true },
+    const notifications: infoInterface[] = [
+        { name: "Activité du compte", desc: "Activé : E-mail et SMS", modif: true, popup: emptyPopup },
+        { name: "Rappels", desc: "Activé : E-mail, SMS et Whatsapp", modif: true, popup: emptyPopup },
+        { name: "Messages", desc: "Activé : E-mail, Whatsapp", modif: true, popup: emptyPopup },
     ];
 
-    const payments = [
-        { name: "Carte de crédit", desc: "Enregistrée", modif: true },
-        { name: "Paypal", desc: "Bientôt disponible", modif: false },
+    const payments: infoInterface[] = [
+        // TODO: Add card number
+        { name: "Carte de crédit", desc: "4212 **** **** ****", modif: true, popup: emptyPopup },
+        { name: "Paypal", desc: "Bientôt disponible", modif: false, popup: emptyPopup },
     ];
 
-    const reservations = [
-        { name: "", desc: "", modif: false },
+    const reservations: infoInterface[] = [
+        { name: "", desc: "", modif: false, popup: emptyPopup },
     ];
 
-    const confidentiality = [
-        { name: "", desc: "", modif: false },
+    const confidentiality: infoInterface[] = [
+        { name: "", desc: "", modif: false, popup: emptyPopup },
     ];
 
-    const languages = [
-        { name: "Langue actuelle", desc: "Francais", modif: true },
+    const languages: infoInterface[] = [
+        { name: "Langue actuelle", desc: "Francais", modif: true, popup: emptyPopup },
     ];
 
 
     const [showItem, setShowItem] = useState(informations);
-    const [selectedItem, setSelectedItem] = useState(null);
+    const [selectedParam, setSelectedParam] = useState(infoInterfaceIni);
+
     const onSelectTab = (item: string, index: number) => {
         setSelectedTab(index);
         if (item === "Notifications") {
@@ -190,9 +266,9 @@ const Account = () => {
     };
 
     const [isModal, setIsModal] = useState(false);
-    const handleModifierClick = (item: any) => {
+    const handleModifierClick = (item: infoInterface) => {
         setIsModal(true); // Show the modal when "modifier" is clicked
-        setSelectedItem(item);
+        setSelectedParam(item);
     };
 
 
@@ -201,15 +277,15 @@ const Account = () => {
     return (
         <div>
             <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 -z-10">
-                <CircleRight />
+                <LogoCircleFixRight />
             </div>
             <ClientDashboardLayout>
                 <div className="mt-14 mb-5 px-6">
-                    /* POPUP */
                     {isModal && (
                         <BaseModal close={() => setIsModal(!isModal)}>
                             <div>
-                                {modifPassWord()}
+                                {/* {modifPassWord()} */}
+                                {selectedParam.popup}
                             </div>
 
                         </BaseModal>)}

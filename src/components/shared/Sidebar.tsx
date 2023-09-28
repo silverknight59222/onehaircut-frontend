@@ -16,13 +16,14 @@ import {
   RevenueIcon,
   SettingsIcon,
   StatsIcon,
+  ReservationIcon,
 } from "../utilis/Icons";
 import { SalonDetails } from "@/types";
 import { getLocalStorage, setLocalStorage } from "@/api/storage";
 import { dashboard } from "@/api/dashboard";
 import { usePathname, useRouter } from "next/navigation";
 
-interface SidebarItems{
+interface SidebarItems {
   icon: string;
   title: string;
   route: string;
@@ -37,8 +38,8 @@ type SidebarType = {
 const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }: SidebarType) => {
   const [salonDetail, setSalonDetails] = useState<SalonDetails[]>();
   const [activeSalon, setActiveSalon] = useState<SalonDetails>();
-  const router=useRouter()
-  const path=usePathname()
+  const router = useRouter()
+  const path = usePathname()
 
   const setIcon = (SidebarIcon: string, activeIcon: string) => {
     let Icon;
@@ -115,6 +116,15 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
           />
         );
         break;
+      case "Reservation":
+        Icon = (
+          <ReservationIcon
+            color={activeIcon === SidebarIcon ? "#FE3164" : "#989898"}
+            width="24"
+            height="24"
+          />
+        );
+        break;
       case "BotIcon":
         Icon = (
           <BotIcon color={activeIcon === SidebarIcon ? "#FE3164" : "#989898"} width="24" height="24" />
@@ -140,6 +150,11 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
           <HelpIcon color={activeIcon === SidebarIcon ? "#FE3164" : "#989898"} width="24" height="24" />
         );
         break;
+      case "ReservationIcon":
+        Icon = (
+          <ReservationIcon color={activeIcon === SidebarIcon ? "#FE3164" : "#989898"} width="24" height="24" />
+        );
+        break;
     }
     return Icon;
   };
@@ -152,9 +167,9 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
     });
   };
 
-  const onSelectItem=(route :string,index: number)=>{
-    if(route){
-    router.push(route)
+  const onSelectItem = (route: string, index: number) => {
+    if (route) {
+      router.push(route)
     }
   }
 
@@ -163,8 +178,8 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
     const userId = user ? Number(JSON.parse(user).id) : null;
     if (userId)
       dashboard.getHairSalon(Number(userId)).then((res) => {
-          setSalonDetails(res.data.data);
-          setSalon(res.data.data);
+        setSalonDetails(res.data.data);
+        setSalon(res.data.data);
       });
   }, []);
 
@@ -193,29 +208,28 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
                 alt="profile"
                 className={`rounded-full absolute left-[100px] ${isClientDashboard ? 'top-5' : 'top-[68px]'}`}
               />
-             {!isClientDashboard && <p className="text-lg font-medium mt-2.5">Daniel j.</p>}
+              {!isClientDashboard && <p className="text-lg font-medium mt-2.5">Daniel j.</p>}
             </div>
             <div className="mt-8">
               {sidebarItems.map((item, index) => {
                 return (
                   <div key={index}>
                     <div
-                      onClick={() => onSelectItem(item.route,index)}
+                      onClick={() => onSelectItem(item.route, index)}
                       className={
                         `flex items-center my-2 pl-8 py-4 gap-4 cursor-pointer text-primary transition ease-in-out duration-100 border-l-4 
-                        ${ path === item.route && "border-secondary bg-gradient-to-r from-pink-300 via-red-200 to-transparent" }`}
+                        ${path === item.route && "border-secondary bg-gradient-to-r from-pink-300 via-red-200 to-transparent"}`}
                     >
                       <div className="relative">
                         {setIcon(
                           item.icon,
                           path === item.route ? item.icon : ""
                         )}
-                       {item.title === 'Message' &&<p className="absolute top-3 -right-2.5 flex items-center justify-center w-4 h-4 rounded-full bg-[#F44336] text-white text-[10px] font-semibold">2</p>}
+                        {item.title === 'Message' && <p className="absolute top-3 -right-2.5 flex items-center justify-center w-4 h-4 rounded-full bg-[#F44336] text-white text-[10px] font-semibold">2</p>}
                       </div>
                       <p
-                        className={`text-base ${
-                          path === item.route && "text-secondary"
-                        }`}
+                        className={`text-base ${path === item.route && "text-secondary"
+                          }`}
                       >
                         {item.title}
                       </p>
