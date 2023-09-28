@@ -63,11 +63,55 @@ a.fc-event.fc-event-draggable.fc-event-resizable.fc-event-start.fc-event-end.fc-
 }
 
 .fc-day-header {
-    background-color: #f25c5c;
+    background-color: black;
 
 }
 
 .fc-axis {
     background-color: #a9a9a9;
 
+}
+
+/* Pour le modal */
+.modal {
+    min-width: 260px;
+    min-height: 600px;
+    width: 20%;
+    /* ou la taille que vous préférez */
+    max-width: 100%;
+    /* Pour s'assurer qu'il ne dépasse pas la largeur de l'écran */
+    max-height: 100vh;
+    /* Pour s'assurer qu'il ne dépasse pas la hauteur de l'écran */
+
+    height: auto;
+    margin: auto;
+}
+
+@media (max-width: 600px) {
+    .modal {
+        width: 80%;
+        /* prend 90% de la largeur de l'écran */
+        height: 80%;
+        /* prend 90% de la hauteur de l'écran */
+        min-width: 0;
+        /* réinitialiser la min-width */
+        min-height: 0;
+        height: 600px;
+    }
+}
+
+/* Pour le chat du modal */
+.modalChat {
+    min-width: 100px;
+    min-height: 100px;
+
+    width: 100%;
+    /* Prend la largeur totale disponible de l'élément parent */
+    height: 100%;
+    /* Prend 80% de la hauteur de l'élément parent */
+    max-width: 500px;
+    /* Largeur maximale de 500px */
+    max-height: 600px;
+    /* Hauteur maximale de 480px (80% de 600px) */
+    margin: auto;
 }
