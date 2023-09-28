@@ -8,6 +8,7 @@ import timeGridPlugin from "@fullcalendar/timegrid";
 import "./index.css";
 import { dashboard } from "@/api/dashboard";
 import EventDetails from "./EventDetails";
+import { getLocalStorage } from "@/api/storage";
 
 // Définition du type de Booking
 export type Booking = {
@@ -26,9 +27,10 @@ export const Agenda = () => {
 
   // Fonction pour récupérer toutes les réservations
   const getAllBookings = () => {
+    const id = Number(getLocalStorage("salon_id"));
     setIsLoading(true);
     dashboard
-      .getAllBookings()
+      .getBookingsByHairsalon(id)
       .then((res) => {
         res.data.data.forEach((event: any) => {
           setEvents((pre) => [
