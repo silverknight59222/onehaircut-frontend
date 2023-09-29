@@ -6,7 +6,7 @@ import {
   BotIcon,
   ClientActivityIcon,
   DashboardIcon,
-  HeartIcon,
+  StarGreyIcon,
   HelpIcon,
   HistoryIcon,
   MessageIcon,
@@ -132,9 +132,9 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
           <BotIcon color={activeIcon === SidebarIcon ? "#FE3164" : "#989898"} width="24" height="24" />
         );
         break;
-      case "HeartIcon":
+      case "StarGreyIcon":
         Icon = (
-          <HeartIcon color={activeIcon === SidebarIcon ? "#FE3164" : "#989898"} width="24" height="24" />
+          <StarGreyIcon color={activeIcon === SidebarIcon ? "#FE3164" : "#989898"} width="28" height="28" />
         );
         break;
       case "PortraitIcon":
@@ -154,7 +154,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
         break;
       case "ReservationIcon":
         Icon = (
-          <ReservationIcon color={activeIcon === SidebarIcon ? "#FE3164" : "#989898"} width="24" height="24" />
+          <ReservationIcon color={activeIcon === SidebarIcon ? "#FE3164" : "#989898"} width="30" height="28" />
         );
         break;
     }

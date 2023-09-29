@@ -2073,12 +2073,12 @@ export const SelectedPaymentIcon = () => {
   );
 };
 
-export const StarIcon = () => {
+export const StarIcon = (IconStyle: IconType) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="25"
-      height="25"
+      width={IconStyle.width ? IconStyle.width : "25"}
+      height={IconStyle.height ? IconStyle.height : "25"}
       viewBox="0 0 25 25"
       fill="none"
     >
@@ -2086,6 +2086,17 @@ export const StarIcon = () => {
         d="M15.2502 15.2353L24.6857 14.418L16.4195 9.59751L18.2932 0.566492L11.3559 6.64466L3.08961 1.82412L7.02492 10.4387L0.0479687 16.5518L9.44591 15.7379L13.3656 24.3181L15.2502 15.2353Z"
         fill="white"
       />
+    </svg>
+  );
+};
+
+export const StarGreyIcon = (IconStyle: IconType) => {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg"
+      width={IconStyle.width ? IconStyle.width : "100"}
+      height={IconStyle.height ? IconStyle.height : "100"}
+      viewBox="0 0 100 100">
+      <polygon points="50,10 61.803,39.106 94.296,39.106 68.398,60.894 80.201,89.999 50,70.894 19.799,89.999 31.602,60.894 5.704,39.106 38.197,39.106" fill="none" stroke="#808080" stroke-width="4" />
     </svg>
   );
 };
@@ -2912,10 +2923,10 @@ export const EyeClosedIcon = () => {
 
 export const EyeIcon = () => {
   return (
-  <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 14">
+    <svg className="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 14">
       <g stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2">
-        <path d="M10 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/>
-        <path d="M10 13c4.97 0 9-2.686 9-6s-4.03-6-9-6-9 2.686-9 6 4.03 6 9 6Z"/>
+        <path d="M10 10a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" />
+        <path d="M10 13c4.97 0 9-2.686 9-6s-4.03-6-9-6-9 2.686-9 6 4.03 6 9 6Z" />
       </g>
     </svg>
   );
