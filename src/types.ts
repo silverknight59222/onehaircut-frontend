@@ -1,5 +1,9 @@
 import { HaircutDetails } from "./components/pages/dashboard/Dashboard/Hairstyles";
 
+interface SalonImages{
+	image: string,
+	is_cover: boolean
+}
 export type SalonDetails = {
 	address: string;
 	id: number;
@@ -8,7 +12,8 @@ export type SalonDetails = {
 	rating: number;
 	type: string;
 	user_id: number;
-	logo: string
+	logo: string;
+	salon_images: SalonImages[]
 };
 
 export type FileDetails = {
@@ -37,6 +42,7 @@ export type Hairdresser = {
 	email: string;
 	profile_image: string | null;
 	avatar_id: number;
+	avatar: Avatar
 };
 
 export type ImageSalon = {
@@ -92,4 +98,9 @@ export type Services={
 	type: string,
 	colors: Color[],
 	requirements: string[]
+}
+
+export type Slot={
+	id: number,
+	start: string
 }

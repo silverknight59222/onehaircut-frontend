@@ -326,7 +326,7 @@ const Hairdressers = () => {
             <label className={`${Theme_A.textFont.headerH4}`} htmlFor="emailInput">Pr&eacute;nom </label>
             <input
               placeholder="Prénom coiffeur"
-              className="w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
+              className={`w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none ${Theme_A.behaviour.fieldFocused_C}`}
               value={hairDresser.name}
               onChange={(e) => onChangeName(e.target.value)}
             />
@@ -338,7 +338,7 @@ const Hairdressers = () => {
             <label className={`${Theme_A.textFont.headerH4}`} htmlFor="emailInput">Adresse mail</label>
             <input
               placeholder="Adresse mail"
-              className="w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
+              className={`w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none ${Theme_A.behaviour.fieldFocused_C}`}
               value={hairDresser.email}
               onChange={(e) => onChangeEmail(e.target.value)}
             />

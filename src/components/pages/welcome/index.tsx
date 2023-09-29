@@ -19,67 +19,69 @@ const Welcome = () => {
   const [salonHaircut, setSalonHaircut] = useState<Haircut[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const router=useRouter()
+  const router = useRouter()
   const user = getLocalStorage("user");
   const userId = user ? Number(JSON.parse(user).id) : null;
-  const haircut=JSON.parse(String(getLocalStorage("haircut")))
+  const temp=getLocalStorage("haircut")
+  const haircut= temp ? JSON.parse(String(temp)) : null
   const [ethnicityFilters, setEthnicityFilters] = useState<string[]>([]);
   const [lengthFilters, setLengthFilters] = useState<string[]>([]);
   const [genderFilters, setGenderFilters] = useState<string>("");
   const [filteredHaircuts, setFilteredHaircuts] = useState<Haircut[]>([]);
   const [search, setSearch] = useState<string>('');
   const showSnackbar = useSnackbar();
+  const [selectedHaircut,setSelectedHaircut]=useState<any>({id: '', name: ''})
 
-  const getAllHaircuts=()=>{
+  const getAllHaircuts = () => {
     setIsLoading(true);
     dashboard.getAllHaircuts()
-    .then((res) => {
-      if (res.data.data.length > 0) {
-        setSalonHaircut(res.data.data);
-      }
-    })
-    .catch(error => console.log(error))
-    .finally(()=>setIsLoading(false))
+      .then((res) => {
+        if (res.data.data.length > 0) {
+          setSalonHaircut(res.data.data);
+        }
+      })
+      .catch(error => console.log(error))
+      .finally(() => setIsLoading(false))
   }
 
-  const onWishlist=(e: any, haircutId: number, isDelete: boolean)=>{
+  const onWishlist = (e: any, haircutId: number, isDelete: boolean) => {
     console.log(isDelete)
     e.stopPropagation()
     let data
-    if(isDelete){
+    if (isDelete) {
       dashboard.removeFromWishList(haircutId)
-      .then(response=>{
-        getAllHaircuts()
-        showSnackbar('success', 'Removed From Wishlist Successfully!')
-      })
-      .catch(error=>{
-        console.log(error)
-        showSnackbar('error', 'Error Occured!')
-      })
+        .then(response => {
+          getAllHaircuts()
+          showSnackbar('success', 'Removed From Wishlist Successfully!')
+        })
+        .catch(error => {
+          console.log(error)
+          showSnackbar('error', 'Error Occured!')
+        })
     }
-    else{
+    else {
       if (userId) {
-    data={
-      user_id: userId,
-      haircut_id: haircutId
+        data = {
+          user_id: userId,
+          haircut_id: haircutId
+        }
+        dashboard.addWishList(data)
+          .then(response => {
+            getAllHaircuts()
+            showSnackbar('success', 'Added To Wishlist Successfully!')
+          })
+          .catch(err => {
+            console.log(err)
+            showSnackbar('error', 'Error Occured!')
+          })
+      }
     }
-    dashboard.addWishList(data)
-    .then(response=>{
-      getAllHaircuts()
-      showSnackbar('success', 'Added To Wishlist Successfully!')
-    })
-    .catch(err => {
-      console.log(err)
-      showSnackbar('error', 'Error Occured!')
-    })
-  }
-  }
   }
 
 
   const getFilteredCuts = () => {
     const haircuts: Haircut[] = [];
-    let list=salonHaircut
+    let list = salonHaircut
 
     if (search) {
       list = list.filter((haircut) =>
@@ -197,19 +199,31 @@ const Welcome = () => {
     }
   };
   const onClickHaircut=(id: number, name: string)=>{
-    setLocalStorage("haircut", JSON.stringify({id: id, name: name}))
+    if(id===selectedHaircut.id){
+      setSelectedHaircut({
+        id: null,
+        name: ''
+      })
+    }else{
+    setSelectedHaircut({id: id, name: name})
+    }
+  }
+  const onContinue=()=>{
+    setLocalStorage("haircut", JSON.stringify({id: selectedHaircut.id, name: selectedHaircut.name}))
     router.push(`/services`)
   }
 
-const onServiceOnlyClick = () => {
-  // Définir le nom de la coiffure à "aucune" et appeler onClickHaircut
-  onClickHaircut(-1, "Aucune coiffure sélectionnée");
-}
+  const onServiceOnlyClick = () => {
+    // Définir le nom de la coiffure à "aucune" et appeler onClickHaircut
+    onClickHaircut(-1, "Aucune coiffure sélectionnée");
+  }
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
 
   useEffect(() => {
     getFilteredCuts();
   }, [ethnicityFilters, genderFilters, lengthFilters, search]);
-  
+
   useEffect(() => {
     getAllHaircuts();
     const user = getLocalStorage("user");
@@ -218,33 +232,37 @@ const onServiceOnlyClick = () => {
       setIsLoggedIn(true);
     }
   }, []);
+  useEffect(()=>{
+    if(haircut){
+      setSelectedHaircut(haircut)
+    }
+  },[])
 
   return (
     <>
-      <Navbar isWelcomePage={true} onSearch={(value: string)=>setSearch(value)} onGenderFilter={(gender)=>setGenderFilters(gender)} onEthnicityFilters={(groups)=>setEthnicityFilters(groups)} onLengthFilters={(length)=>setLengthFilters(length)} />
+      <Navbar isWelcomePage={true} onSearch={(value: string) => setSearch(value)} onGenderFilter={(gender) => setGenderFilters(gender)} onEthnicityFilters={(groups) => setEthnicityFilters(groups)} onLengthFilters={(length) => setLengthFilters(length)} />
       <div className="flex flex-col items-center justify-center w-full overflow-hidden">
 
         {isLoading && loadingView()}
         <p className="mt-10 sm:mt-14 mb-6  md:w-[700px] text-black text-center font-semibold text-3xl px-2 md:px-10">
-        Des doutes sur la finition ? pr&eacute;visualisez{" "}
+          Des doutes sur la finition ? pr&eacute;visualisez{" "}
         </p>
         <p className="text-4xl font-medium text-center mb-12">
-        <span className=" font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-30 to-yellow-300">votre style !</span>
+          <span className=" font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-30 to-yellow-300">votre style !</span>
         </p>
         <div className="flex flex-col md:flex-row gap-4 mb-10 sm:mb-10 ">
-        <div
-          className={`${Theme_A.button.bigWhiteGreyButton} hover:shadow-lg cursor-pointer `}
-          onClick={() => {
-            onServiceOnlyClick();
-            router.push('/services');
-          }}
+          <div
+            className={`${Theme_A.button.bigWhiteGreyButton} hover:shadow-lg cursor-pointer `}
+            onClick={() => {
+              onContinue();
+            }}
           >
             Rechercher un soin / service uniquement
           </div>
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-12 ">
           {haircuts().map((item, index) => {
-            return <div key={index} onClick={() => onClickHaircut(item.id, item.name)} className={`shadow-md rounded-xl my-2 cursor-pointer border hover:outline outline-1 outline-stone-400 ${item.id===haircut?.id}`}>
+            return <div key={index} onClick={() => onClickHaircut(item.id, item.name)} className={`shadow-md rounded-xl my-2 cursor-pointer border hover:outline outline-1 outline-stone-400 ${item.id === haircut?.id}`}>
               <div className="relative w-max px-4 pt-4 bg-gradient-to-r from-white via-stone-50 to-zinc-200 rounded-t-xl ">
                 <div className={`${Theme_A.hairstyleCards.cardSize.med}`}>
                   <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public${item.image}`} fill={true} alt="" className="rounded-t-xl" />
@@ -261,26 +279,26 @@ const onServiceOnlyClick = () => {
             </div>
           })}
         </div>
-        
+
         {isLoggedIn && (
           <div className="flex py-4 mx-3 gap-3 sm:gap-12 md:gap-20 items-center justify-center bg-white w-full fixed bottom-0">
             <div className="p-2 sm:p-4 md:p-5 text-center border-[#FE3462] border-2 rounded-2xl cursor-pointer ml-3">
               Démonstration d’utilisation
             </div>
-            <div onClick={()=>router.push('/login')} className="p-2 sm:p-4 md:p-5 text-white text-center rounded-2xl cursor-pointer bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo">
+            <div onClick={() => router.push('/login')} className="p-2 sm:p-4 md:p-5 text-white text-center rounded-2xl cursor-pointer bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo">
               Connexion / Inscription
             </div>
             <div className="p-2 sm:p-4 md:p-5 text-center border-[#FE3462] border-2 rounded-2xl cursor-pointer mr-3">
               Envie d’offrir un cadeau ?
             </div>
           </div>
-          
+
         )}
-        
+
         <ScrollToTopButton />
         <Footer />
       </div>
-      
+
     </>
   );
 };

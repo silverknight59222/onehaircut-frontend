@@ -22,6 +22,8 @@ const Services = () => {
   const { loadingView } = userLoader();
   const [allServices, setAllServices] = useState<SalonService[]>([]);
   const [filteredServices, setFilteredServices] = useState<SalonService[]>([]);
+  const [sortingFilter, setSortingFilter] = useState<string>('');
+  const [groupFilter, setGroupFilter] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const [showAddServiceModal, setShowAddServiceModal] = useState(false);
   const [showEditServiceModal, setShowEditServiceModal] = useState(false);
@@ -49,27 +51,21 @@ const Services = () => {
   const typeDropdown = [
     {
       name: "Coloration",
-      // value: "coloration",
     },
     {
       name: "Discount",
-      // value: "discount",
     },
     {
       name: "Care",
-      // value: "care",
     },
     {
       name: "Special treatment",
-      // value: "special_treatment",
     },
     {
       name: "Men",
-      // value: "men",
     },
     {
       name: "Styling",
-      // value: "styling",
     },
   ];
 
@@ -98,7 +94,7 @@ const Services = () => {
     if (filter) {
       setFilteredServices(list);
     } else {
-      setFilteredServices([]);
+      setSortingFilter('');
       fetchAllServices();
     }
   }
@@ -128,7 +124,7 @@ const Services = () => {
     if (filter.length) {
       setFilteredServices(list);
     } else {
-      setFilteredServices([]);
+      setGroupFilter('');
       fetchAllServices();
     }
   }
@@ -146,7 +142,7 @@ const Services = () => {
       });
   };
   const getServices = () => {
-    if (filteredServices.length) {
+    if (groupFilter || sortingFilter) {
       return filteredServices;
     } else {
       return allServices;

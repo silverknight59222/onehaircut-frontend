@@ -12,10 +12,8 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import StarRatings from "react-star-ratings";
 import userLoader from "@/hooks/useLoader";
+import { getLocalStorage } from "@/api/storage";
 
-interface SearchSalonProps{
-  salonId: string
-}
 interface SalonImages{
   image: string,
   is_cover: boolean
@@ -30,13 +28,14 @@ interface SalonProfile{
   salon_images: SalonImages[],
   salon_hairdressers: SalonHairdressers[],
 }
-const SearchSalon = ({salonId}: SearchSalonProps) => {
+const SearchSalon = () => {
   const [selectedImage, setSelectedImage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [salonProfile,setSalonProfile]=useState<SalonProfile>({name: '', rating: '', salon_images:[{image: '', is_cover: true}], salon_hairdressers: [{name: '', profile_image: ''}]})
   const router=useRouter()
   const { loadingView } = userLoader();
-
+  const salon=getLocalStorage('selectedSalon')
+  const salonId= salon ? JSON.parse(salon).id : null
   const hours = [
     { title: "Lundi", hours: "Fermé" },
     { title: "Mardi", hours: "10:00 - 19:00" },
@@ -48,6 +47,7 @@ const SearchSalon = ({salonId}: SearchSalonProps) => {
   ];
   const getAllHairDresser = async () => {
     setIsLoading(true);
+    if(salonId){
     await client.getSalonDetail(salonId)
       .then((resp) => {
         setSalonProfile(resp.data.data[0])
@@ -55,6 +55,7 @@ const SearchSalon = ({salonId}: SearchSalonProps) => {
     }).catch(error=>{
       console.log(error)
     })
+  }
   };
   useEffect(()=>{
     getAllHairDresser()
@@ -144,7 +145,7 @@ const SearchSalon = ({salonId}: SearchSalonProps) => {
             })}
           </div>
         </div>
-        <div className="mt-16">
+        <div className="mt-20">
           <p className="text-5xl font-semibold text-black text-center">
             Coiffeur
           </p>
@@ -155,7 +156,7 @@ const SearchSalon = ({salonId}: SearchSalonProps) => {
                   <div key={index}>
                     <div className="relative w-52 lg:w-64 h-52 lg:h-64 rounded-[20px]">
                       <Image
-                        src={hairdresser.profile_image.includes('https://api-server.onehaircut.com/public') ? hairdresser.profile_image : `https://api-server.onehaircut.com/public${hairdresser.profile_image}`}
+                        src={hairdresser.profile_image && hairdresser.profile_image.includes('https://api-server.onehaircut.com/public') ? hairdresser.profile_image : `https://api-server.onehaircut.com/public${hairdresser.profile_image}`}
                         alt=""
                         fill={true}
                         className="rounded-[20px]"
@@ -170,7 +171,7 @@ const SearchSalon = ({salonId}: SearchSalonProps) => {
             </div>
           </div>
         </div>
-        <div className="my-16">
+        {/* <div className="my-16">
           <p className="text-5xl font-semibold text-black text-center mb-8">
             Avis client
           </p>
@@ -235,8 +236,8 @@ const SearchSalon = ({salonId}: SearchSalonProps) => {
               )}
             </div>
           </div>
-        </div>
-        <div className="pb-16 mt-8">
+        </div> */}
+        <div className="pb-16 mt-20">
         <LogoIcon/>
       </div>
       </div>
