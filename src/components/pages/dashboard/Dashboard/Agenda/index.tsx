@@ -9,7 +9,7 @@ import "./index.css";
 import { dashboard } from "@/api/dashboard";
 import EventDetailsModal from "./EventDetails";
 import { Booking, Coiffeur } from "./types";
-
+import { getLocalStorage } from "@/api/storage";
 
 
 
@@ -61,9 +61,10 @@ export const Agenda = () => {
   //TODO Changer coiffeurAleatoire par le vrai nom du coiffeur de l'event ainsi que la couleur
   // Fonction pour récupérer toutes les réservations
   const getAllBookings = () => {
+    const id = Number(getLocalStorage("salon_id"));
     setIsLoading(true);
     dashboard
-      .getAllBookings()
+      .getBookingsByHairsalon(id)
       .then((res) => {
         res.data.data.forEach((event: any) => {
           const coiffeurAleatoire = coiffeurs[Math.floor(Math.random() * coiffeurs.length)];
