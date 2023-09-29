@@ -3,22 +3,18 @@ import { CrossIcon } from "@/components/utilis/Icons";
 import { ColorsThemeA } from "@/components/utilis/Themes";
 import { ChatSendIcon } from "@/components/utilis/Icons";
 import './index.css';
+import { Booking, Coiffeur } from "./types";
 
-// Le reste de votre code JSX...
-
-
-interface Booking {
-  id: string;
-  title: string;
-  start: string;
+// Ajout de toutes les propriétes qu'on veut reprendre dans le modal
+interface EventDetailsModalProps {
+  event: Booking; // Assurez-vous d'importer ou de définir le type Booking
+  setModal: React.Dispatch<React.SetStateAction<Booking | undefined>>;
+  coiffeurNom: string;
+  coiffeurCouleur: string;
 }
 
-interface BookingDetail {
-  event: Booking;
-  setModal: (value: Booking) => void;
-}
 
-const AddServiceModal = (props: BookingDetail) => {
+const EventDetailsModal = (props: EventDetailsModalProps) => {
   const defaultBooking = {
     id: "",
     title: "",
@@ -49,11 +45,11 @@ const AddServiceModal = (props: BookingDetail) => {
 
 
   return (
-    <div className="relative bg-white rounded-xl px-5 pb-5 shadow-lg mt-10 modal">
+    <div className="relative bg-white rounded-xl px-5 pb-5 shadow-lg mt-10 bg- modal">
       {/* Icône de fermeture */}
       <div
         className={`absolute -right-3 -top-7 cursor-pointer my-3 rounded-lg ${ColorsThemeA.ohcVerticalGradient_A} shadow-md flex items-center justify-center`}
-        onClick={() => props.setModal(defaultBooking)}
+        onClick={() => props.setModal(undefined)}
         style={{ width: '35px', height: '35px' }} // Augmentez ces valeurs pour agrandir le carré
       >
         <CrossIcon width="16" />
@@ -65,6 +61,8 @@ const AddServiceModal = (props: BookingDetail) => {
       {/* Contenu */}
       <div className="flex flex-col gap-4 mt-6">
         {/* Nom du client */}
+        {/* Cercle de couleur du coiffeur */}
+        <div style={{ backgroundColor: props.coiffeurCouleur, width: '20px', height: '20px', borderRadius: '50%', position: 'absolute', top: '10px', left: '10px' }}></div>
         <div className="text-xl font-semibold text-center">
           Client: {props.event.title}
         </div>
@@ -79,7 +77,7 @@ const AddServiceModal = (props: BookingDetail) => {
           <strong>Date du rdv :</strong> {props.event.start.split('T')[0]}
         </div>
         <div className="text-center mb-[-4px]">
-          <strong>Coiffeur :</strong> {/* Ici, vous pouvez insérer le nom du coiffeur */}
+          <strong>Coiffeur :</strong> {props.coiffeurNom}
         </div>
         <div className="text-center mb-[-4px]">
           <strong>Dur&eacute;e &eacute;stim&eacute;e :</strong> {/* Ici, vous pouvez insérer la durée de la coiffure */}
@@ -128,4 +126,4 @@ const AddServiceModal = (props: BookingDetail) => {
   );
 };
 
-export default AddServiceModal;
+export default EventDetailsModal;

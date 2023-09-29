@@ -7,14 +7,9 @@ import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import "./index.css";
 import { dashboard } from "@/api/dashboard";
-import EventDetails from "./EventDetails";
+import EventDetailsModal from "./EventDetails";
+import { Booking, Coiffeur } from "./types";
 
-// Définition du type de Booking
-export type Booking = {
-  id: string;
-  title: string;
-  start: string;
-};
 
 export const Agenda = () => {
   // Initialisation des états et des références
@@ -24,6 +19,46 @@ export const Agenda = () => {
   const [selectedEventDetails, setSelectedEventDetails] = useState<Booking>();
   const calendarRef = useRef<FullCalendar | null>(null);
 
+  const [view, setView] = useState<string>('timeGridWeek'); // initialisez avec la vue par défaut
+
+
+
+  // TODO importer la liste de coiffeur  avec leur image et attribuer une couleur dynamiquement
+  const coiffeurs = [
+    {
+      nom: "Jean Dupont",
+      image: "https://i.pravatar.cc/150?img=1",
+      couleur: "#FAD4D9", // rouge clair
+      textColor: "#EA4A5E",
+    },
+    {
+      nom: "Marie Durand",
+      image: "https://i.pravatar.cc/150?img=2",
+      couleur: "#CEE7FC", // bleu ciel
+      textColor: "#329BF2",
+    },
+    {
+      nom: "Pierre Martin",
+      image: "https://i.pravatar.cc/150?img=3",
+      couleur: "#FDE7D0", // orange clair
+      textColor: "#F4993A",
+    },
+    {
+      nom: "Sophie Lemoine",
+      image: "https://i.pravatar.cc/150?img=4",
+      couleur: "#FFF9D7", // Jaune pâle
+      textColor: "#E49544",
+    },
+    {
+      nom: "Lucas Bernard",
+      image: "https://i.pravatar.cc/150?img=5",
+      couleur: "#EA4361", // rouge/rose intense
+      textColor: "#FFFFFF",
+    },
+  ];
+
+
+  //TODO Changer coiffeurAleatoire par le vrai nom du coiffeur de l'event ainsi que la couleur
   // Fonction pour récupérer toutes les réservations
   const getAllBookings = () => {
     setIsLoading(true);
@@ -31,12 +66,17 @@ export const Agenda = () => {
       .getAllBookings()
       .then((res) => {
         res.data.data.forEach((event: any) => {
+          const coiffeurAleatoire = coiffeurs[Math.floor(Math.random() * coiffeurs.length)];
+
           setEvents((pre) => [
             ...pre,
             {
               id: event.id,
-              title: event.user.name,
+              title: event.user.name + " - " + coiffeurAleatoire.nom,
               start: event.created_at,
+              coiffeur: coiffeurAleatoire,
+              backgroundColor: coiffeurAleatoire.couleur,
+              textColor: coiffeurAleatoire.textColor,
             },
           ]);
         });
@@ -46,35 +86,35 @@ export const Agenda = () => {
       });
   };
 
+
   // Fonction pour définir les détails de l'événement sélectionné
   const setEventDetails = (id: string) => {
-    events.forEach((e) => {
-      if (e.id.toString() === id) {
-        setSelectedEventDetails(e);
-      }
-    });
+    const event = events.find((e) => e.id.toString() === id);
+    if (event) setSelectedEventDetails(event);
   };
+
 
   // Utilisation du hook useEffect pour charger toutes les réservations au montage du composant
   useEffect(() => {
     getAllBookings();
   }, []);
 
+
   // Rendu du composant
   return (
     <>
-      {isLoading && loadingView()} {/* Affichage du loader si le chargement est en cours */}
-      <FullCalendar // Affichage du calendrier
+      {isLoading && loadingView()}
+      <FullCalendar
         ref={calendarRef}
-        events={events} // Liste des événements à afficher
-        plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]} // Plugins utilisés
+        events={events}
+        plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
         headerToolbar={{
           start: "prev,next today",
           center: "title",
-          end: "dayGridMonth,timeGridWeek,timeGridDay", // Boutons de navigation
+          end: "dayGridMonth,timeGridWeek,timeGridDay",
         }}
-        height={900} // Hauteur du calendrier
-        eventClick={(info) => { // Gestionnaire de clic sur un événement
+        height={900}
+        eventClick={(info) => {
           setEventDetails(info.event.id);
         }}
         dayHeaderFormat={{
@@ -84,10 +124,19 @@ export const Agenda = () => {
         editable
         selectable
       />
-      {selectedEventDetails && selectedEventDetails.id && (
-        // Affichage du modal de détails de l'événement si un événement est sélectionné
+      {/* Pour ajouter la fonctionnalité de changement de vue
+      <div style={{ textAlign: 'center', marginTop: '10px' }}>
+        <button type="button" className="custom-button">Changer de vue</button>
+      </div>
+      */}
+      {selectedEventDetails && (
         <div className="fixed top-0 left-0 overflow-hidden bg-black bg-opacity-10 flex items-center justify-center w-full h-full z-50">
-          <EventDetails event={selectedEventDetails} setModal={setSelectedEventDetails} />
+          <EventDetailsModal
+            event={selectedEventDetails}
+            setModal={setSelectedEventDetails}
+            coiffeurNom={selectedEventDetails.coiffeur.nom}
+            coiffeurCouleur={selectedEventDetails.coiffeur.couleur}
+          />
         </div>
       )}
     </>

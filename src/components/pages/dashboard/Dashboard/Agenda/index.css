@@ -1,6 +1,6 @@
 a.fc-event.fc-event-draggable.fc-event-resizable.fc-event-start.fc-event-end.fc-event-past.fc-timegrid-event.fc-v-event,
 a.fc-event.fc-event-draggable.fc-event-resizable.fc-event-start.fc-event-end.fc-event-today.fc-event-future.fc-timegrid-event.fc-v-event {
-    border: 1px #EA4361 solid;
+    border: 1px white solid;
 }
 
 :root {
@@ -51,7 +51,7 @@ a.fc-event.fc-event-draggable.fc-event-resizable.fc-event-start.fc-event-end.fc-
 .fc-event-main {
     font-size: 16px;
     font-weight: 500;
-    background-color: #f25c5c;
+    border: #000000
 }
 
 .fc-scrollgrid-section-header th .fc-scroller-harness .fc-scroller {
@@ -71,6 +71,36 @@ a.fc-event.fc-event-draggable.fc-event-resizable.fc-event-start.fc-event-end.fc-
     background-color: #a9a9a9;
 
 }
+
+.custom-button {
+    background-color: #f94b4b;
+    /* Couleur d'arrière-plan du bouton */
+    color: #fff;
+    /* Couleur du texte du bouton */
+    border: 1px solid #383838;
+    /* Pas de bordure autour du bouton */
+    padding: 10px 20px;
+    /* Espace intérieur autour du texte */
+    cursor: pointer;
+    /* Change le curseur lors du survol du bouton */
+    font-size: 1em;
+    /* Taille du texte du bouton */
+    border-radius: 4px;
+    /* Coins arrondis du bouton */
+    transition: background-color 0.3s;
+    /* Transition douce pour le changement de couleur */
+}
+
+.custom-button:hover {
+    background-color: #383838;
+    /* Couleur d'arrière-plan du bouton lors du survol */
+}
+
+.custom-button:active {
+    background-color: #212121;
+    /* Couleur d'arrière-plan du bouton lorsqu'il est enfoncé */
+}
+
 
 /* Pour le modal */
 .modal {
