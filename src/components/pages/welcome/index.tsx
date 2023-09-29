@@ -251,7 +251,7 @@ const Welcome = () => {
                 <div className={`${Theme_A.hairstyleCards.cardSize.med}`}>
                   <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public${item.image}`} fill={true} alt="" className="rounded-t-xl" />
                   <div onClick={(e) => onWishlist(e, item.id, item.is_added_to_wishlist)} className="absolute right-2 top-2 cursor-pointer">
-                    <Like color={item.is_added_to_wishlist ? "#ef4444" : ""} />
+                    <Like color={item.is_added_to_wishlist ? "#ebdb78" : ""} />
                   </div>
                 </div>
               </div>
