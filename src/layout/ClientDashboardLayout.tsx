@@ -7,6 +7,7 @@ import {
   HeartIcon,
   LogoIcon,
   UserIcon,
+  StarGreyIcon
 } from "@/components/utilis/Icons";
 
 interface DashboardLayout {
@@ -19,7 +20,7 @@ const ClientDashboardLayout = ({ children }: DashboardLayout) => {
   const sidebarItems = [
     { icon: "DashboardIcon", title: "Compte", route: "/client/dashboard" },
     { icon: "MessageIcon", title: "Message", route: "/client/messages" },
-    { icon: "HeartIcon", title: "Favoris", route: "/client/favorites" },
+    { icon: "StarGreyIcon", title: "Favoris", route: "/client/favorites" },
     { icon: "PortraitIcon", title: "Portrait", route: "/client/portrait" },
     { icon: "MessageIcon", title: "Filtres", route: "/client/filters" },
     { icon: "ReservationIcon", title: "Réservations en cours", route: "/client/reservation" },
