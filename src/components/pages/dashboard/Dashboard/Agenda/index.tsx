@@ -11,6 +11,9 @@ import EventDetailsModal from "./EventDetails";
 import { Booking, Coiffeur } from "./types";
 
 
+
+
+
 export const Agenda = () => {
   // Initialisation des états et des références
   const { loadingView } = userLoader();
@@ -18,9 +21,6 @@ export const Agenda = () => {
   const [events, setEvents] = useState<Booking[]>([]);
   const [selectedEventDetails, setSelectedEventDetails] = useState<Booking>();
   const calendarRef = useRef<FullCalendar | null>(null);
-
-  const [view, setView] = useState<string>('timeGridWeek'); // initialisez avec la vue par défaut
-
 
 
   // TODO importer la liste de coiffeur  avec leur image et attribuer une couleur dynamiquement
@@ -103,18 +103,19 @@ export const Agenda = () => {
   // Rendu du composant
   return (
     <>
-      {isLoading && loadingView()}
-      <FullCalendar
+      {isLoading && loadingView()} {/* Affichage du loader si le chargement est en cours */}
+      <FullCalendar // Affichage du calendrier
         ref={calendarRef}
-        events={events}
-        plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
+        events={events} // Liste des événements à afficher
+        plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]} // Plugins utilisés
+
         headerToolbar={{
           start: "prev,next today",
           center: "title",
-          end: "dayGridMonth,timeGridWeek,timeGridDay",
+          end: "dayGridMonth,timeGridWeek,timeGridDay", // Boutons de navigation
         }}
-        height={900}
-        eventClick={(info) => {
+        height={900} // Hauteur du calendrier
+        eventClick={(info) => { // Gestionnaire de clic sur un événement
           setEventDetails(info.event.id);
         }}
         dayHeaderFormat={{
@@ -124,11 +125,6 @@ export const Agenda = () => {
         editable
         selectable
       />
-      {/* Pour ajouter la fonctionnalité de changement de vue
-      <div style={{ textAlign: 'center', marginTop: '10px' }}>
-        <button type="button" className="custom-button">Changer de vue</button>
-      </div>
-      */}
       {selectedEventDetails && (
         <div className="fixed top-0 left-0 overflow-hidden bg-black bg-opacity-10 flex items-center justify-center w-full h-full z-50">
           <EventDetailsModal
@@ -138,6 +134,7 @@ export const Agenda = () => {
             coiffeurCouleur={selectedEventDetails.coiffeur.couleur}
           />
         </div>
+
       )}
     </>
   );

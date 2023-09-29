@@ -62,7 +62,11 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
       <div className="flex flex-col gap-4 mt-6">
         {/* Nom du client */}
         {/* Cercle de couleur du coiffeur */}
-        <div style={{ backgroundColor: props.coiffeurCouleur, width: '20px', height: '20px', borderRadius: '50%', position: 'absolute', top: '10px', left: '10px' }}></div>
+        <div
+          className="coiffeur-color"
+          style={{ backgroundColor: props.coiffeurCouleur }}
+        ></div>
+
         <div className="text-xl font-semibold text-center">
           Client: {props.event.title}
         </div>
@@ -98,7 +102,7 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
           {/* Conversation */}
           <div className=" border border-gray-300 rounded-xl p-2 rounded-bl-lg overflow-auto h-40 bg-stone-100 shadow-inner mb-2 ">
             {messages.map((msg, index) => (
-              <div key={index} className={`${msg.sent ? 'text-right' : 'text-left '} mb-2`}>
+              <div key={`msg-${index}`} className={`${msg.sent ? 'text-right' : 'text-left '} mb-2`}>
                 <div
                   className={`inline-block p-2 text-xs outline-1 ${msg.sent ? 'rounded-l-lg rounded-b-lg outline outline-orange-500 bg-stone-100 ' : 'rounded-r-lg rounded-b-lg outline outline-stone-400 bg-white'}`}
                 >

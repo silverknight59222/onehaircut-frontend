@@ -145,3 +145,12 @@ a.fc-event.fc-event-draggable.fc-event-resizable.fc-event-start.fc-event-end.fc-
     /* Hauteur maximale de 480px (80% de 600px) */
     margin: auto;
 }
+
+.coiffeur-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
