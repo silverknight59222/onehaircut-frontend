@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import BaseModal from "@/components/UI/BaseModal";
 import Footer from "@/components/UI/Footer";
 import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
+import useSnackbar from "@/hooks/useSnackbar";
 
 interface infoInterface {
     name: string;
@@ -12,29 +13,31 @@ interface infoInterface {
     popup: React.JSX.Element
 }
 
-// function emptyFct() {
-//     return (
-//         <div></div>)
-// };
-
 const emptyPopup: React.JSX.Element = <div></div>; // Define an empty JSX element
-
 
 const infoInterfaceIni: infoInterface =
     { name: "", desc: "", modif: false, popup: emptyPopup }
 
 
 const Account = () => {
+    const showSnackbar = useSnackbar();
+
     const [selectedTab, setSelectedTab] = useState(0);
     const items = [
         "Informations personnelles",
         "Mot de passe",
         "Moyens de paiements",
-        "Réservations en cours",
         "Notifications",
         "Confidentialité et règles d’utilisation",
         "Langue",
     ];
+
+
+    const [isModal, setIsModal] = useState(false);
+    const handleModifierClick = (item: infoInterface) => {
+        setIsModal(true); // Show the modal when "modifier" is clicked
+        setSelectedParam(item);
+    };
 
 
     ////////////////////////////////////////////////////
@@ -84,6 +87,8 @@ const Account = () => {
     const [error, setError] = useState({
         text: "",
     })
+    let [errorPop, setErrorPop] = useState("")
+
     const modifPassWord: React.JSX.Element =
         <div>
             <div className="flex flex-col items-center justify-center gap-4">
@@ -157,7 +162,11 @@ const Account = () => {
             setError((prev) => {
                 return { ...prev, text: "" };
             });
+            // TODO: save the address for the future
+            showSnackbar("success", "Salon Service added successfully.");
+            setIsModal(false);
         }
+        // 
     }
 
 
@@ -175,7 +184,7 @@ const Account = () => {
                     className={`w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none ${Theme_A.behaviour.fieldFocused_B}`}
                     value={addressField}
                     maxLength={100}
-                    onChange={(e) => setOldPassword(e.target.value)}
+                    onChange={(e) => setNewAddress(e.target.value)}
                 />
             </div>
             <div className="mt-4 flex gap-4 items-center justify-center w-full">
@@ -195,14 +204,133 @@ const Account = () => {
         </div>
         ;
 
+    ////////////////////////////////////////////////////
+    ///////////////////// PHONE 
+    ////////////////////////////////////////////////////
+
+    const [phoneField, setPhoneField] = useState("");
+    const setNewPhone = (value: string) => {
+        setPhoneField(value);
+    };
+
+    const onSubmitPhone = async () => {
+        if (phoneField.length < 6) { // TODO check condition
+            // setError((prev) => {
+            //     return { ...prev, text: "Entrez un numero de téléphone correct" };
+            // });
+            setErrorPop("Entrez un numero de téléphone correct");
+            return;
+        }
+        else {
+            setError((prev) => {
+                return { ...prev, text: "" };
+            });
+            // TODO: save phone for the future
+            showSnackbar("success", "Téléphone actualisé");
+            setIsModal(false)
+        }
+    }
+
+    const modifPhone: React.JSX.Element =
+        <div>
+            <div className="flex flex-col items-center justify-center gap-4">
+                <p className="text-3xl font-semibold text-black text-center">Modification du numéro</p>
+                {errorPop && (
+                    <p className={`${Theme_A.checkers.errorText}`}>
+                        {errorPop}
+                    </p>
+                )}
+                <input
+                    placeholder="Nouveau numéro"
+                    className={`w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none ${Theme_A.behaviour.fieldFocused_B}`}
+                    value={phoneField}
+                    maxLength={15}
+                    onChange={(e) => setPhoneField(e.target.value)}
+                />
+            </div>
+            <div className="mt-4 flex gap-4 items-center justify-center w-full">
+                <button
+                    className={`${Theme_A.button.medWhiteColoredButton}`}
+                    onClick={() => setIsModal(false)}
+                >
+                    Annuler
+                </button>
+                <button
+                    className={`${Theme_A.button.mediumGradientButton}`}
+                    onClick={() => onSubmitPhone()}
+                >
+                    Actualiser
+                </button>
+            </div>
+        </div>;
+
+    ////////////////////////////////////////////////////
+    ///////////////////// Bank card 
+    ////////////////////////////////////////////////////
+    let currentCardNumb = 11223399; // TODO: give the client's card number
+    const currentExpireDate = "01/2023";
+    const [BankeCardNumb, newBankeCardNumb] = useState(currentCardNumb);
+    const setNewBankCard = (value: string) => {
+        newBankeCardNumb(+value);
+    };
+
+    const onSubmitBankCard = async () => {
+        if (addressField.length < 10) { // TODO check
+            setError((prev) => {
+                return { ...prev, text: "Entrez un numero de carte correct" };
+            });
+            return;
+        }
+        else {
+            setError((prev) => {
+                return { ...prev, text: "" };
+            });
+            // TODO: save the card for the future
+            setIsModal(false);
+        }
+    }
+
+    const modifBankCard: React.JSX.Element =
+        <div>
+            <div className="flex flex-col items-center justify-center gap-4">
+                <p className="text-3xl font-semibold text-black text-center">Modification de la carte</p>
+                {error && (
+                    <p className={`${Theme_A.checkers.errorText}`}>
+                        {error.text}
+                    </p>
+                )}
+                <input
+                    placeholder="Numéro de la carte bancaire"
+                    className={`w-full p-3 placeholder:text-[#959595] placeh,older:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none ${Theme_A.behaviour.fieldFocused_B}`}
+                    value={BankeCardNumb}
+                    maxLength={15}
+                    onChange={(e) => setNewBankCard(e.target.value)}
+                />
+            </div>
+            <div className="mt-4 flex gap-4 items-center justify-center w-full">
+                <button
+                    className={`${Theme_A.button.medWhiteColoredButton}`}
+                    onClick={() => setIsModal(!isModal)}
+                >
+                    Annuler
+                </button>
+                <button
+                    className={`${Theme_A.button.mediumGradientButton}`}
+                    onClick={() => onSubmitBankCard()}
+                >
+                    Actualiser
+                </button>
+            </div>
+        </div>;
+
     // TODO: add information about the client.
     const informations: infoInterface[] = [
         { name: "Nom légal", desc: "Dimitri Bala", modif: false, popup: emptyPopup },
         { name: "Adresse", desc: "Information non fournie", modif: true, popup: modifAddress },
-        { name: "Numéro de téléphone", desc: "+41 ** *** 62 92", modif: true, popup: emptyPopup },
+        { name: "Numéro de téléphone", desc: "+41 ** *** 62 92", modif: true, popup: modifPhone },
         { name: "Adresse e-mail", desc: "b***9@gmail.com", modif: false, popup: emptyPopup },
-        { name: "Pièce d'identité officielle", desc: "Information non fournie", modif: true, popup: emptyPopup },
-        { name: "Statut", desc: "Etudiant - vérifié", modif: true, popup: emptyPopup },
+        { name: "Pièce d'identité officielle", desc: "Information non fournie", modif: false, popup: emptyPopup },
+        { name: "Statut", desc: "Etudiant - vérifié", modif: false, popup: emptyPopup },
     ];
 
     const password: infoInterface[] = [
@@ -216,17 +344,13 @@ const Account = () => {
     ];
 
     const payments: infoInterface[] = [
-        // TODO: Add card number
-        { name: "Carte de crédit", desc: "4212 **** **** ****", modif: true, popup: emptyPopup },
+        // TODO: Add real card number of client
+        { name: "Carte de crédit", desc: "4212 **** **** ****", modif: true, popup: modifBankCard },
         { name: "Paypal", desc: "Bientôt disponible", modif: false, popup: emptyPopup },
     ];
 
-    const reservations: infoInterface[] = [
-        { name: "", desc: "", modif: false, popup: emptyPopup },
-    ];
-
     const confidentiality: infoInterface[] = [
-        { name: "", desc: "", modif: false, popup: emptyPopup },
+        { name: "Rendez-vous sur:", desc: "www.onehaircut.com/confidentiality", modif: false, popup: emptyPopup },
     ];
 
     const languages: infoInterface[] = [
@@ -251,9 +375,6 @@ const Account = () => {
         else if (item === "Mot de passe") {
             setShowItem(password);
         }
-        else if (item === "Réservations en cours") {
-            setShowItem(reservations);
-        }
         else if (item === "Confidentialité et règles d’utilisation") {
             setShowItem(confidentiality);
             const urlToOpen = '/confidentiality'; // Replace with your URL or component path
@@ -264,13 +385,6 @@ const Account = () => {
             setShowItem(informations);
         }
     };
-
-    const [isModal, setIsModal] = useState(false);
-    const handleModifierClick = (item: infoInterface) => {
-        setIsModal(true); // Show the modal when "modifier" is clicked
-        setSelectedParam(item);
-    };
-
 
 
 
@@ -284,8 +398,8 @@ const Account = () => {
                     {isModal && (
                         <BaseModal close={() => setIsModal(!isModal)}>
                             <div>
-                                {/* {modifPassWord()} */}
-                                {selectedParam.popup}
+                                {selectedParam.popup} // not working
+                                {modifPhone} // working fine
                             </div>
 
                         </BaseModal>)}
