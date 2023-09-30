@@ -23,39 +23,50 @@ export const Agenda = () => {
   const calendarRef = useRef<FullCalendar | null>(null);
 
 
+  const couleurs = [
+    { couleur: "#FAD4D9", textColor: "#EA4A5E" }, // rouge clair
+    { couleur: "#CEE7FC", textColor: "#329BF2" }, // bleu ciel
+    { couleur: "#FDE7D0", textColor: "#F4993A" }, // orange clair
+    { couleur: "#FFF9D7", textColor: "#E49544" }, // Jaune pâle
+    { couleur: "#EA4361", textColor: "#FFFFFF" }  // rouge/rose intense
+  ];
+
+
   // TODO importer la liste de coiffeur  avec leur image et attribuer une couleur dynamiquement
   const coiffeurs = [
-    {
-      nom: "Jean Dupont",
-      image: "https://i.pravatar.cc/150?img=1",
-      couleur: "#FAD4D9", // rouge clair
-      textColor: "#EA4A5E",
-    },
-    {
-      nom: "Marie Durand",
-      image: "https://i.pravatar.cc/150?img=2",
-      couleur: "#CEE7FC", // bleu ciel
-      textColor: "#329BF2",
-    },
-    {
-      nom: "Pierre Martin",
-      image: "https://i.pravatar.cc/150?img=3",
-      couleur: "#FDE7D0", // orange clair
-      textColor: "#F4993A",
-    },
-    {
-      nom: "Sophie Lemoine",
-      image: "https://i.pravatar.cc/150?img=4",
-      couleur: "#FFF9D7", // Jaune pâle
-      textColor: "#E49544",
-    },
-    {
-      nom: "Lucas Bernard",
-      image: "https://i.pravatar.cc/150?img=5",
-      couleur: "#EA4361", // rouge/rose intense
-      textColor: "#FFFFFF",
-    },
+    { nom: "Jean Dupont", image: "https://i.pravatar.cc/150?img=1", ...couleurs[0] },
+    { nom: "Marie Durand", image: "https://i.pravatar.cc/150?img=2", ...couleurs[1] },
+    { nom: "Pierre Martin", image: "https://i.pravatar.cc/150?img=3", ...couleurs[2] },
+    { nom: "Sophie Lemoine", image: "https://i.pravatar.cc/150?img=4", ...couleurs[3] },
+    { nom: "Lucas Bernard", image: "https://i.pravatar.cc/150?img=5", ...couleurs[4] },
   ];
+
+  interface LegendProps {
+    listeCoiffeurs: Coiffeur[];
+  }
+
+  const Legend: React.FC<LegendProps> = ({ listeCoiffeurs }) => {
+    return (
+      <div className="legend-container">
+        {listeCoiffeurs.map((item, index) => (
+          <div key={index} className="item-legend"> {/* Utilisation de l'index comme clé */}
+            <span
+              className="color-box"
+              style={{
+                backgroundColor: item.couleur,
+                color: item.textColor
+              }}
+            >
+              ■
+            </span>
+            {item.nom}
+          </div>
+        ))}
+      </div>
+    );
+  };
+
+
 
 
   //TODO Changer coiffeurAleatoire par le vrai nom du coiffeur de l'event ainsi que la couleur
@@ -126,6 +137,7 @@ export const Agenda = () => {
         editable
         selectable
       />
+      <Legend listeCoiffeurs={coiffeurs} />
       {selectedEventDetails && (
         <div className="fixed top-0 left-0 overflow-hidden bg-black bg-opacity-10 flex items-center justify-center w-full h-full z-50">
           <EventDetailsModal

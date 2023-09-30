@@ -154,3 +154,37 @@ a.fc-event.fc-event-draggable.fc-event-resizable.fc-event-start.fc-event-end.fc-
     top: 10px;
     left: 10px;
 }
+
+.legend-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    /* Ajustez 200px selon la largeur souhaitée pour chaque colonne */
+    grid-template-rows: repeat(4, auto);
+    /* 4 lignes pour chaque colonne */
+    gap: 10px;
+    /* Espace entre les lignes et les colonnes */
+}
+
+
+.coiffeur-legend {
+    display: flex;
+    align-items: center;
+}
+
+.item-legend {
+    display: flex;
+    /* Transforme le conteneur en un conteneur flex */
+    align-items: center;
+    /* Centrage vertical des éléments enfants */
+}
+
+
+.color-box {
+    display: inline-flex;
+    /* Garde le comportement en ligne tout en permettant l'alignement du contenu avec flexbox */
+    justify-content: center;
+    /* Centrage horizontal */
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
+}
