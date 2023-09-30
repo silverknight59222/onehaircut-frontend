@@ -108,7 +108,7 @@ export const Theme_A = {
     standardShape: `px-4 cursor-pointer`,
   },
   textFont: {
-    headerH1: "",
+    headerH1: "text-3xl font-medium text-center",
     headerH2: "text-xl font-semibold text-center",
     headerH3: "text-lg font-semibold text-center",
     headerH4: "text-md font-semibold text-left text-black block mb-2",
