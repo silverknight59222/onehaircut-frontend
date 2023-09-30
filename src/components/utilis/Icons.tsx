@@ -2073,12 +2073,12 @@ export const SelectedPaymentIcon = () => {
   );
 };
 
-export const StarIcon = () => {
+export const StarIcon = (IconStyle: IconType) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="25"
-      height="25"
+      width={IconStyle.width ? IconStyle.width : "25"}
+      height={IconStyle.height ? IconStyle.height : "25"}
       viewBox="0 0 25 25"
       fill="none"
     >
@@ -2086,6 +2086,17 @@ export const StarIcon = () => {
         d="M15.2502 15.2353L24.6857 14.418L16.4195 9.59751L18.2932 0.566492L11.3559 6.64466L3.08961 1.82412L7.02492 10.4387L0.0479687 16.5518L9.44591 15.7379L13.3656 24.3181L15.2502 15.2353Z"
         fill="white"
       />
+    </svg>
+  );
+};
+
+export const StarGreyIcon = (IconStyle: IconType) => {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg"
+      width={IconStyle.width ? IconStyle.width : "100"}
+      height={IconStyle.height ? IconStyle.height : "100"}
+      viewBox="0 0 100 100">
+      <polygon points="50,10 61.803,39.106 94.296,39.106 68.398,60.894 80.201,89.999 50,70.894 19.799,89.999 31.602,60.894 5.704,39.106 38.197,39.106" fill="none" stroke="#808080" stroke-width="4" />
     </svg>
   );
 };
@@ -2225,6 +2236,22 @@ export const HistoryIcon = (IconStyle: IconType) => {
         d="M15 13.9787L20.0515 17.5469"
         stroke={IconStyle.color ? IconStyle.color : "#767676"}
         strokeWidth="2"
+      />
+    </svg>
+  );
+};
+
+export const ReservationIcon = (IconStyle: IconType) => {
+  return (
+    <svg
+      width={IconStyle.width ? IconStyle.width : "27"}
+      height={IconStyle.height ? IconStyle.height : "26"}
+      viewBox="0 0 27 26"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M16.53 11.06L15.47 10l-4.88 4.88-2.12-2.12-1.06 1.06L10.59 17l5.94-5.94zM19 3h-1V1h-2v2H8V1H6v2H5c-1.11 0-1.99.9-1.99 2L3 19c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V8h14v11z"
+        stroke={IconStyle.color ? IconStyle.color : "#767676"}
       />
     </svg>
   );

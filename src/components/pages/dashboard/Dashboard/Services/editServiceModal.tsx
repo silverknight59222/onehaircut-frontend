@@ -239,7 +239,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
                     {error.duration}*
                   </p>
                 )}
-                <span className="text-gray-600 absolute right-3 top-1/2 transform -translate-y-1/2">Durée(min)</span>
+                <span className="text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2">Durée(min)</span>
               </div>
               <div
                 className={
@@ -260,7 +260,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
                     {error.price}*
                   </p>
                 )}
-                <span className="text-gray-600 absolute right-3 top-1/2 transform -translate-y-1/2">Prix(€)</span>
+                <span className="text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2">Prix(€)</span>
               </div>
 
             </div>
@@ -279,7 +279,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
                       {error.age}*
                     </p>
                   )}
-                  <span className="text-gray-600  absolute right-3 top-1/2 transform -translate-y-1/2">Age(années)</span>
+                  <span className="text-gray-500  absolute right-3 top-1/2 transform -translate-y-1/2">Age(années)</span>
                 </div>
                 <div className="max-w-[300px] w-[150px] relative">
                   <input
@@ -294,7 +294,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
                       {error.percent}*
                     </p>
                   )}
-                  <span className="text-gray-600 absolute right-3 top-1/2 transform -translate-y-1/2">Rabais(€)</span>
+                  <span className="text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2">Rabais(%)</span>
                 </div>
               </div>
             )}
@@ -304,19 +304,19 @@ const EditServiceModal = (props: EditServiceModalType) => {
               className={`${Theme_A.button.medWhiteColoredButton}`}
               onClick={() => props.setShowEditServiceModal(false)}
             >
-              Cancel
+              Annuler
             </button>
             <button
               className={`${Theme_A.button.medWhiteColoredButton}`}
               onClick={() => deleteService()}
             >
-              Delete
+              Supprimer
             </button>
             <button
               className={`${Theme_A.button.mediumGradientButton}`}
               onClick={() => onSubmit()}
             >
-              Update
+              Actualiser
             </button>
           </div>
         </div>
