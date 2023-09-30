@@ -22,6 +22,7 @@ import { SalonDetails } from "@/types";
 import { getLocalStorage, setLocalStorage } from "@/api/storage";
 import { dashboard } from "@/api/dashboard";
 import { usePathname, useRouter } from "next/navigation";
+import { ColorsThemeA, Theme_A } from "../utilis/Themes";
 
 interface SidebarItems {
   icon: string;
@@ -219,6 +220,14 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
               />
               {!isClientDashboard && <p className="text-lg font-medium mt-2.5">Daniel j.</p>}
             </div>
+            {/* Button to go directly to the order page */}
+            <div
+              onClick={() => router.push('/')}
+              className={`flex items-center justify-center w-auto h-14 px-4 py-6 mx-2 my-6 ${ColorsThemeA.textGradient_Title} rounded-2xl shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] ${ColorsThemeA.ohcBorder} cursor-pointer `}
+            >
+              Réserver une coiffure
+            </div>
+            {/* Sidebar items display */}
             <div className="mt-8">
               {sidebarItem.map((item, index) => {
                 return (
