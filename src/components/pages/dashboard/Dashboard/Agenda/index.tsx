@@ -28,8 +28,14 @@ export const Agenda = () => {
     { couleur: "#CEE7FC", textColor: "#329BF2" }, // bleu ciel
     { couleur: "#FDE7D0", textColor: "#F4993A" }, // orange clair
     { couleur: "#FFF9D7", textColor: "#E49544" }, // Jaune pâle
-    { couleur: "#EA4361", textColor: "#FFFFFF" }  // rouge/rose intense
+    { couleur: "#EA4361", textColor: "#FFFFFF" }, // rouge/rose intense
+    { couleur: "#D8EAD2", textColor: "#4C9654" }, // Vert doux
+    { couleur: "#E3D7E6", textColor: "#8A5B8F" }, // Mauve doux
+    { couleur: "#D9E2E9", textColor: "#53708E" }, // Bleu-gris doux
+    { couleur: "#EBD5C0", textColor: "#B47D56" }, // Terre de sienne
+    { couleur: "#DCE7E5", textColor: "#5B8A8F" }  // Vert-gris doux
   ];
+
 
 
   // TODO importer la liste de coiffeur  avec leur image et attribuer une couleur dynamiquement
