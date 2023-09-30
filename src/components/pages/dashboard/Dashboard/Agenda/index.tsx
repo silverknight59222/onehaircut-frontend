@@ -151,6 +151,7 @@ export const Agenda = () => {
             setModal={setSelectedEventDetails}
             coiffeurNom={selectedEventDetails.coiffeur.nom}
             coiffeurCouleur={selectedEventDetails.coiffeur.couleur}
+            coiffeurs={coiffeurs}
           />
         </div>
 

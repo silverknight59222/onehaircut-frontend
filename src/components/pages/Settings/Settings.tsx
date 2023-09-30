@@ -10,6 +10,7 @@ import { dashboard } from "@/api/dashboard";
 import { SalonDetails } from "@/types";
 import SlotDropdown from "./SlotsDropdown";
 import Footer from "@/components/UI/Footer";
+import { Theme_A } from "@/components/utilis/Themes";
 export interface OpenTimes {
   available: boolean;
   day: string;
@@ -74,7 +75,7 @@ const Settings = () => {
         setDisableUpdate(true);
       }
     });
-    if(disable === false) {
+    if (disable === false) {
       setDisableUpdate(false);
     }
     setUpdatedSlots(slots);
@@ -112,7 +113,7 @@ const Settings = () => {
     setUpdatedSlots(updatedtime);
   };
   const updateSlots = async () => {
-    if(!disableUpdate) {
+    if (!disableUpdate) {
       setIsLoading(true);
       const data = {
         openTimes: updatedSlots,
@@ -146,22 +147,20 @@ const Settings = () => {
           {!isLoading && (
             <div className="max-w-[750px] flex items-center justify-center text-center px-9 py-6 gap-8 rounded-2xl bg-white text-xl font-medium text-[#ABABAB] shadow-[3px_3px_10px_-1px_rgba(0,0,0,0.30)]">
               <p
-                className={`cursor-pointer text-black ${
-                  activeMenu === "salon-time" &&
-                  "px-3 py-2 rounded-3xl bg-gray-200"
-                }`}
+                className={`cursor-pointer text-black ${activeMenu === "salon-time" &&
+                  "px-3 py-2 rounded-md bg-gray-200"
+                  }`}
                 onClick={() => setActiveMenu("salon-time")}
               >
                 Horaires d’ouverture
               </p>
               <p
-                className={`cursor-pointer text-black ${
-                  activeMenu === "salon-dressers" &&
-                  "px-2 py-1 rounded-3xl bg-gray-200"
-                }`}
+                className={`cursor-pointer text-black ${activeMenu === "salon-dressers" &&
+                  "px-2 py-2 rounded-md bg-gray-200"
+                  }`}
                 onClick={() => setActiveMenu("salon-dressers")}
               >
-                Hairdressers
+                Horaires des coiffeurs
               </p>
             </div>
           )}
@@ -180,11 +179,10 @@ const Settings = () => {
                               className="flex items-center gap-5 cursor-pointer"
                             >
                               <div
-                                className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${
-                                  avaiableDays.includes(item.day)
-                                    ? "bg-gradient-to-b from-pink-500 to-orange-500 border-white"
-                                    : "border-[#767676]"
-                                }`}
+                                className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${avaiableDays.includes(item.day)
+                                  ? "bg-gradient-to-b from-pink-500 to-orange-500 border-white"
+                                  : "border-[#767676]"
+                                  }`}
                               >
                                 <CheckedIcon width="15" height="10" />
                               </div>
@@ -207,13 +205,12 @@ const Settings = () => {
                         <div className="flex items-center justify-center rounded-xl text-lg">
                           <p
                             onClick={updateSlots}
-                            className={`py-2 px-3 rounded-2xl  text-sm ${
-                              !disableUpdate
-                                ? "bg-gradient-to-b from-pink-500 to-orange-500 text-white cursor-pointer"
-                                : "bg-gray-200 text-black cursor-default"
-                            }`}
+                            className={`py-2 px-3  text-sm ${!disableUpdate
+                              ? Theme_A.button.mediumGradientButton
+                              : "bg-gray-200 text-black rounded-md cursor-default"
+                              }`}
                           >
-                            Apply Change
+                            Appliquer les changement
                           </p>
                         </div>
                       </td>

@@ -6,6 +6,7 @@ import useSnackbar from "@/hooks/useSnackbar";
 import BaseMultiSelectbox from "@/components/UI/BaseMultiSelectbox";
 import { CheckedIcon, DownArrow } from "@/components/utilis/Icons";
 import React from "react";
+import { Theme_A } from "@/components/utilis/Themes";
 interface HairdresserSlot {
   id: string;
   status: number;
@@ -103,7 +104,7 @@ export const HairdresserSlots = () => {
         } else {
           setHairdressersList(resp.data.data);
         }
-      }).catch(()=>{}).finally(()=>{
+      }).catch(() => { }).finally(() => {
         setIsLoading(false);
       });
     }
@@ -162,9 +163,8 @@ export const HairdresserSlots = () => {
               <div>
                 <div
                   ref={dropdownRef}
-                  className={`relative ${
-                    selectedSalonHairDresser.id ? "w-40" : "w-60"
-                  }`}
+                  className={`relative ${selectedSalonHairDresser.id ? "w-40" : "w-60"
+                    }`}
                 >
                   <button
                     onClick={() => setIsDropdown(!isDropdown)}
@@ -176,7 +176,7 @@ export const HairdresserSlots = () => {
                   >
                     {selectedSalonHairDresser.name
                       ? selectedSalonHairDresser.name
-                      : "Select hairdresser"}
+                      : "Selectionner un coiffeur"}
                     <DownArrow
                       color={selectedItems.length ? "white" : "#000"}
                     />
@@ -191,11 +191,10 @@ export const HairdresserSlots = () => {
                             className="flex cursor-pointer mb-[19px]"
                           >
                             <div
-                              className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${
-                                selectedSalonHairDresser.name === item.name
-                                  ? "bg-gradient-to-b from-pink-500 to-orange-500"
-                                  : "bg-[#D6D6D6]"
-                              }`}
+                              className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${selectedSalonHairDresser.name === item.name
+                                ? "bg-gradient-to-b from-pink-500 to-orange-500"
+                                : "bg-[#D6D6D6]"
+                                }`}
                             >
                               <CheckedIcon />
                             </div>
@@ -211,23 +210,21 @@ export const HairdresserSlots = () => {
                 <div className="flex items-center justify-center gap-4 rounded-2xl text-lg">
                   <div
                     onClick={() => ChangeStatus("available")}
-                    className={`py-3 px-4 rounded-2xl  text-sm ${
-                      selectedSlots.length > 0
-                        ? "bg-gradient-to-b from-pink-500 to-orange-500 text-white cursor-pointer"
-                        : "bg-gray-200 text-black cursor-default"
-                    }`}
+                    className={`py-3 px-4 rounded-2xl text-sm ${selectedSlots.length > 0
+                      ? `${Theme_A.button.mediumGradientButton}`
+                      : "bg-gray-200 text-black cursor-default"
+                      }`}
                   >
-                    Be Available
+                    Etre disponible
                   </div>
                   <div
                     onClick={() => ChangeStatus("unavailable")}
-                    className={`py-3 px-4 rounded-2xl  text-sm ${
-                      selectedSlots.length > 0
-                        ? "bg-gradient-to-b from-pink-500 to-orange-500 text-white cursor-pointer"
-                        : "bg-gray-200 text-black cursor-default"
-                    }`}
+                    className={`py-3 px-4 rounded-2xl text-sm ${selectedSlots.length > 0
+                      ? `${Theme_A.button.medWhiteColoredButton}`
+                      : "bg-gray-200 text-black cursor-default"
+                      }`}
                   >
-                    Be Unavailable
+                    Etre indisponible
                   </div>
                 </div>
               )}
@@ -240,13 +237,11 @@ export const HairdresserSlots = () => {
                       key={index}
                       className={`flex items-center justify-center py-2 px-3 text-basefont-medium border-2 rounded-xl w-40 border-gray-200 cursor-pointer
                       ${slot.status === 1 && "bg-white text-black"}
-                        ${
-                          slot.status === 0 && "bg-white text-black opacity-50"
+                        ${slot.status === 0 && "bg-white text-black opacity-50"
                         } 
-                        ${
-                          selectedSlots &&
-                          selectedSlots.includes(slot.id) &&
-                          "!bg-[#FFE7DF] !text-[#FF7143] !opacity-100"
+                        ${selectedSlots &&
+                        selectedSlots.includes(slot.id) &&
+                        "!bg-[#FFE7DF] !text-[#FF7143] !opacity-100"
                         }`}
                       onClick={() => selectSlot(slot)}
                     >
@@ -257,7 +252,8 @@ export const HairdresserSlots = () => {
               </div>
             ) : (
               <div className=" my-16">
-                The time slots of selected hairdresser will show here
+
+                Les plages horaires du coiffeur sélectionné s'afficheront ici
               </div>
             )}
           </div>

@@ -7,10 +7,11 @@ import { Booking, Coiffeur } from "./types";
 
 // Ajout de toutes les propriétes qu'on veut reprendre dans le modal
 interface EventDetailsModalProps {
-  event: Booking; // Assurez-vous d'importer ou de définir le type Booking
+  event: Booking;
   setModal: React.Dispatch<React.SetStateAction<Booking | undefined>>;
   coiffeurNom: string;
   coiffeurCouleur: string;
+  coiffeurs: { nom: string; image: string }[]; // Ajoutez cette ligne
 }
 
 
@@ -43,6 +44,8 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
     }
   };
 
+  // Reprise du nom du client et du coiffeur
+  const [nomClient, nomCoiffeur] = props.event.title.split(" - ");
 
   return (
     <div className="relative bg-white rounded-xl px-5 pb-5 shadow-lg mt-10 bg- modal">
@@ -66,10 +69,10 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
           className="coiffeur-color"
           style={{ backgroundColor: props.coiffeurCouleur }}
         ></div>
-
         <div className="text-xl font-semibold text-center">
-          Client: {props.event.title}
+          Client: {nomClient}
         </div>
+
 
         {/* Vignette */}
         <div className="self-center border border-gray-300 rounded-md p-2 w-52 h-52 shadow-inner">
@@ -81,7 +84,7 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
           <strong>Date du rdv :</strong> {props.event.start.split('T')[0]}
         </div>
         <div className="text-center mb-[-4px]">
-          <strong>Coiffeur :</strong> {props.coiffeurNom}
+          <strong>Coiffeur : </strong>{nomCoiffeur}
         </div>
         <div className="text-center mb-[-4px]">
           <strong>Dur&eacute;e &eacute;stim&eacute;e :</strong> {/* Ici, vous pouvez insérer la durée de la coiffure */}
