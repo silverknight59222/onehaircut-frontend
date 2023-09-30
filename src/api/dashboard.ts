@@ -92,14 +92,14 @@ const dashboard = {
   addWishList: async (params: WishlistParams) => {
     return await request.post(`/wishlist`, params);
   },
-  removeFromWishList: async (id: number) => {
-    return await request.delete(`/wishlist/${id}`);
+  removeFromWishList: async (haircutId: number, userId:number) => {
+    return await request.delete(`/wishlist/${haircutId}/${userId}`);
   },
   addSalonWishList: async (params: SalonWishlistParams) => {
     return await request.post(`/salon_wishlist`, params);
   },
-  removeFromSalonWishList: async (id: number) => {
-    return await request.delete(`/salon_wishlist/${id}`);
+  removeFromSalonWishList: async (salonId: number, userId:number) => {
+    return await request.delete(`/salon_wishlist/${salonId}/${userId}`);
   },
   getSalonsByHaircut: async (params: SalonHaircut) => {
     return await request.post(`/hair_salon_by_haircut_and_services`, params);
@@ -122,8 +122,8 @@ const dashboard = {
   updateSalonSlot: async ( data:any) => {
     return await request.post<any>(`update_multiple_slot`, data);
   },
-  getAllBookings: async () => {
-  return await request.get<any>(`bookings`);
+  getBookingsByHairsalon: async (id: number) => {
+  return await request.get<any>(`bookings/${id}`);
   }
 };
 

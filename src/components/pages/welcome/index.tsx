@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { Like, LogoCircleFixLeft } from "@/components/utilis/Icons";
+import { Like, LogoIcon } from "@/components/utilis/Icons";
 import { dashboard } from "@/api/dashboard";
 import userLoader from "@/hooks/useLoader";
 import { Haircut } from "@/types";
@@ -11,28 +11,38 @@ import { useRouter } from "next/navigation";
 import useSnackbar from "@/hooks/useSnackbar";
 import ScrollToTopButton from "@/components/utilis/Helper";
 import Footer from "@/components/UI/Footer";
-import { Theme_A } from "@/components/utilis/Themes";
+import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
+import BaseModal from "@/components/UI/BaseModal";
 
 
 const Welcome = () => {
-  const { loadingView } = userLoader();
-  const [salonHaircut, setSalonHaircut] = useState<Haircut[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const router = useRouter()
+  // Define state variables
+  const { loadingView } = userLoader(); // Using a custom hook to load user data
+  const [salonHaircut, setSalonHaircut] = useState<Haircut[]>([]); // Store haircut data fetched from the API
+  const [isLoading, setIsLoading] = useState(false); // Loading state for asynchronous operations
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // User login state
+  const router = useRouter() // Next.js Router for navigation
+  // Retrieve user and haircut information from local storage
   const user = getLocalStorage("user");
   const userId = user ? Number(JSON.parse(user).id) : null;
-  const temp=getLocalStorage("haircut")
-  const haircut= temp ? JSON.parse(String(temp)) : null
+  const haircut = JSON.parse(String(getLocalStorage("haircut")))
+  // Define filters state variables
   const [ethnicityFilters, setEthnicityFilters] = useState<string[]>([]);
   const [lengthFilters, setLengthFilters] = useState<string[]>([]);
   const [genderFilters, setGenderFilters] = useState<string>("");
+  // Store filtered haircuts based on user’s filters
   const [filteredHaircuts, setFilteredHaircuts] = useState<Haircut[]>([]);
+  // Search state variable for filtering haircuts by name
   const [search, setSearch] = useState<string>('');
-  const showSnackbar = useSnackbar();
-  const [selectedHaircut,setSelectedHaircut]=useState<any>({id: '', name: ''})
+  const showSnackbar = useSnackbar(); // Custom hook to show snackbars
+  const [isModal, setIsModal] = useState(false) // State to control the visibility of the modal
+  const [isPreview, setIsPreview] = useState(false); // Initialiser à false pour afficher la coiffure par défaut
+  const [selectedHaircut, setSelectedHaircut] = useState({ id: 0, name: '', image: '' }) // Store the selected haircut
+  const [wishlist, setWishlist] = useState<string[]>([]) // Store user’s wishlist of haircuts
+
 
   const getAllHaircuts = () => {
+    // Fetch all available haircuts from the API
     setIsLoading(true);
     dashboard.getAllHaircuts()
       .then((res) => {
@@ -44,30 +54,56 @@ const Welcome = () => {
       .finally(() => setIsLoading(false))
   }
 
-  const onWishlist = (e: any, haircutId: number, isDelete: boolean) => {
-    console.log(isDelete)
-    e.stopPropagation()
-    let data
-    if (isDelete) {
-      dashboard.removeFromWishList(haircutId)
-        .then(response => {
-          getAllHaircuts()
-          showSnackbar('success', 'Removed From Wishlist Successfully!')
+  const getHaircutsWishlist = () => {
+    // Fetch the user’s wishlist of haircuts
+    if (userId) {
+      setIsLoading(true);
+      dashboard.getWishlistHaircuts(userId)
+        .then((res) => {
+          if (res.data.data.length > 0) {
+            if (salonHaircut.length) {
+              const arr: string[] = []
+              res.data.data.forEach((item: any) => {
+                salonHaircut.forEach((haircut) => {
+                  if (item.haircut.id === haircut.id) {
+                    arr.push(String(haircut.id))
+                  }
+                })
+              });
+              setWishlist(arr)
+            }
+          }
+          setIsLoading(false);
         })
         .catch(error => {
+          setIsLoading(false);
           console.log(error)
-          showSnackbar('error', 'Error Occured!')
         })
     }
-    else {
-      if (userId) {
-        data = {
-          user_id: userId,
-          haircut_id: haircutId
-        }
-        dashboard.addWishList(data)
+  }
+
+  const onWishlist = async (e: any, haircutId: number) => {
+    // Handle adding/removing haircuts to/from the wishlist
+    e.stopPropagation()
+    if (userId) {
+      let data = {
+        user_id: userId,
+        haircut_id: haircutId
+      }
+      if (wishlist.includes(String(haircutId))) {
+        await dashboard.removeFromWishList(haircutId, userId)
           .then(response => {
-            getAllHaircuts()
+            getHaircutsWishlist()
+            showSnackbar('success', 'Removed From Wishlist Successfully!')
+          })
+          .catch(error => {
+            showSnackbar('error', 'Error Occured!')
+          })
+      }
+      else {
+        await dashboard.addWishList(data)
+          .then(response => {
+            getHaircutsWishlist()
             showSnackbar('success', 'Added To Wishlist Successfully!')
           })
           .catch(err => {
@@ -78,11 +114,13 @@ const Welcome = () => {
     }
   }
 
-
   const getFilteredCuts = () => {
+    // Filter haircuts based on user-selected filters
     const haircuts: Haircut[] = [];
     let list = salonHaircut
 
+
+    // Apply filters
     if (search) {
       list = list.filter((haircut) =>
         haircut.name.toLowerCase().includes(search.toLowerCase())
@@ -198,18 +236,16 @@ const Welcome = () => {
       return salonHaircut;
     }
   };
-  const onClickHaircut=(id: number, name: string)=>{
-    if(id===selectedHaircut.id){
-      setSelectedHaircut({
-        id: null,
-        name: ''
-      })
-    }else{
-    setSelectedHaircut({id: id, name: name})
-    }
+
+  const onClickHaircut = (id: number, name: string, image?: string) => {
+    setIsModal(true)
+    setSelectedHaircut({ id: id, name: name, image: image ? image : '' })
+    setIsPreview(false); // Initialisez isPreview à false avant d'ouvrir le modal
+    setIsModal(true);
   }
-  const onContinue=()=>{
-    setLocalStorage("haircut", JSON.stringify({id: selectedHaircut.id, name: selectedHaircut.name}))
+
+  const onContinue = () => {
+    setLocalStorage("haircut", JSON.stringify({ id: selectedHaircut.id, name: selectedHaircut.name }))
     router.push(`/services`)
   }
 
@@ -217,7 +253,6 @@ const Welcome = () => {
     // Définir le nom de la coiffure à "aucune" et appeler onClickHaircut
     onClickHaircut(-1, "Aucune coiffure sélectionnée");
   }
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
 
   useEffect(() => {
@@ -232,11 +267,21 @@ const Welcome = () => {
       setIsLoggedIn(true);
     }
   }, []);
-  useEffect(()=>{
-    if(haircut){
-      setSelectedHaircut(haircut)
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      getHaircutsWishlist()
     }
-  },[])
+  }, [salonHaircut])
+
+  // Control et regle l'image par defaut affiché lors de l'ouverture du modal
+  useEffect(() => {
+    if (isModal) {
+      setIsPreview(false);
+    }
+  }, [isModal]);
+
+
 
   return (
     <>
@@ -254,7 +299,8 @@ const Welcome = () => {
           <div
             className={`${Theme_A.button.bigWhiteGreyButton} hover:shadow-lg cursor-pointer `}
             onClick={() => {
-              onContinue();
+              onServiceOnlyClick();
+              router.push('/services');
             }}
           >
             Rechercher un soin / service uniquement
@@ -262,13 +308,14 @@ const Welcome = () => {
         </div>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-12 ">
           {haircuts().map((item, index) => {
-            return <div key={index} onClick={() => onClickHaircut(item.id, item.name)} className={`shadow-md rounded-xl my-2 cursor-pointer border hover:outline outline-1 outline-stone-400 ${item.id === haircut?.id}`}>
+            return <div key={index} onClick={() => onClickHaircut(item.id, item.name, item.image)} className={`shadow-md rounded-xl my-2 cursor-pointer border hover:outline outline-1 outline-stone-400 ${item.id === haircut?.id}`}>
               <div className="relative w-max px-4 pt-4 bg-gradient-to-r from-white via-stone-50 to-zinc-200 rounded-t-xl ">
                 <div className={`${Theme_A.hairstyleCards.cardSize.med}`}>
                   <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public${item.image}`} fill={true} alt="" className="rounded-t-xl" />
-                  <div onClick={(e) => onWishlist(e, item.id, item.is_added_to_wishlist)} className="absolute right-2 top-2 cursor-pointer">
-                    <Like color={item.is_added_to_wishlist ? "#FF0000" : ""} />
-                  </div>
+                  {!isLoggedIn &&
+                    <div onClick={(e) => onWishlist(e, item.id)} className="absolute right-2 top-2 cursor-pointer">
+                      <Like color={wishlist.includes(String(item.id)) ? "#ef4444" : ""} />
+                    </div>}
                 </div>
               </div>
               <div className="rounded-b-xl bg-gradient-to-r from-white via-stone-50 to-zinc-200">
@@ -297,7 +344,39 @@ const Welcome = () => {
 
         <ScrollToTopButton />
         <Footer />
-      </div>
+        {isModal &&
+          <BaseModal close={() => setIsModal(false)}>
+            <div className="flex flex-col items-center justify-center my-4 relative">
+              <div className="relative w-52 h-52 sm:w-72 sm:h-72 md:w-96 md:h-96 mb-5">
+                {isPreview ? (
+                  <div className="flex items-center justify-center rounded-xl w-full h-full object-cover">
+                    <LogoIcon />
+                  </div>
+                ) : (
+                  <Image
+                    src={selectedHaircut.image.includes('https://api-server.onehaircut.com/public') ? selectedHaircut.image : `https://api-server.onehaircut.com/public${selectedHaircut.image}`}
+                    fill={true}
+                    alt=""
+                    className="rounded-xl w-full h-full object-cover"
+                  />
+                )}
+              </div>
+              <div className="flex flex-col items-center">
+                <button onClick={onContinue} className={`flex items-center justify-center font-medium w-full md:w-52 h-14 mb-4 ${Theme_A.button.medLargeGradientButton}`}>Choisir cette coiffure</button>
+                <button
+                  onClick={() => setIsPreview(!isPreview)}
+                  className={`flex items-center justify-center font-medium w-full md:w-52 h-14 ${isPreview ? Theme_A.button.medGreydButton : Theme_A.button.medWhiteColoredButton}`}
+                >
+                  {isPreview ? 'Image de référence' : 'Prévisualiser sur moi'}
+                </button>
+              </div>
+            </div>
+          </BaseModal>
+        }
+
+
+
+      </div >
 
     </>
   );

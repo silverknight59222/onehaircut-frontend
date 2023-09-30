@@ -14,9 +14,7 @@ import useSnackbar from '@/hooks/useSnackbar';
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 
 const SalonChoice = () => {
-    const [selectedTab, setSelectedTab] = useState(0)
     const [selectedSalon, setSelectedSalon] = useState<{name: string, id: number|null}>({name: '', id: null})
-    const [selectedWhishlist,setSelectedWhishlist]=useState<number | null>()
     const [salonImage,setSalonImage]=useState<string[]>([])
     const [salons,setSalons]=useState<SalonDetails[]>([])
     const router = useRouter();
@@ -28,6 +26,8 @@ const SalonChoice = () => {
     const { loadingView } = userLoader();
     const showSnackbar = useSnackbar();
     const [location, setLocation] = useState({lat: 48.8584, lng: 2.2945});
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [wishlist,setWishlist]=useState<string[]>([]) 
       const { isLoaded } = useJsApiLoader({
         googleMapsApiKey: 'AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E',
         libraries: ['places'],
@@ -59,41 +59,58 @@ const SalonChoice = () => {
             })
         }
       }
+      const getSalonsWishlist = () => {
+        //   if (userId) {
+        //       setIsLoading(true);
+        //       dashboard.getSalonsWishlist(userId)
+        //           .then((res) => {
+        //               if (res.data.data.length > 0) {
+        //                   if (salons.length) {
+        //                       const arr: string[] = []
+        //                       res.data.data.forEach((item: any) => {
+        //                           salons.forEach((salon) => {
+        //                               if (item.hairsalon.id === salon.id) {
+        //                                   arr.push(String(salon.id))
+        //                               }
+        //                           })
+        //                       });
+        //                       setWishlist(arr)
+        //                   }
+        //               }
+        //               setIsLoading(false);
+        //           })
+        //           .catch(error => {
+        //               setIsLoading(false);
+        //           })
+        //   }
+    }
 
-    const onWishlist= async (e: any, haircutId: number, isDelete?: boolean)=>{
+    const onWishlist= async (e: any, salonId: number)=>{
         e.stopPropagation()
-        let data
-        if(isDelete){
-            await dashboard.removeFromSalonWishList(haircutId)
+        if(userId){
+        let data= {
+            user_id: userId,
+            hair_salon_id: salonId
+        }
+        if(wishlist.includes(String(salonId))){
+            await dashboard.removeFromSalonWishList(salonId, userId)
             .then(()=>{
-                getAllSalons()
+                getSalonsWishlist()
               showSnackbar('success', 'Remove From Wishlist Successfully!')
             })
             .catch(error=>{
-              console.log(error)
               showSnackbar('error', 'Error Occured!')
             })
           }
         else {
-            if (userId) {
-                data = {
-                    user_id: userId,
-                    hair_salon_id: haircutId
-                }
-                if (selectedWhishlist !== haircutId) {
-                    setSelectedWhishlist(haircutId)
-                    dashboard.addSalonWishList(data)
-                        .then(response => {
-                            showSnackbar('success', 'Added To Wishlist Successfully!')
-                        })
-                        .catch(err => console.log(err))
-                }
-                else {
-                    setSelectedWhishlist(null)
-                    showSnackbar('error', 'Error Occured!')
-                }
-            }
+            await dashboard.addSalonWishList(data)
+            .then(response => {
+                getSalonsWishlist()
+                showSnackbar('success', 'Added To Wishlist Successfully!')
+            })
+            .catch(err => console.log(err))
         }
+    }
       }
 
       const onContinue=()=>{
@@ -103,7 +120,18 @@ const SalonChoice = () => {
 
       useEffect(()=>{
         getAllSalons()
+        const user = getLocalStorage("user");
+        const userId = user ? Number(JSON.parse(user).id) : null;
+        if (!userId) {
+            setIsLoggedIn(true);
+        }
       },[])
+
+      useEffect(()=>{
+        if(!isLoggedIn){
+        getSalonsWishlist()
+        }
+      },[salons])
     
     if (!isLoaded) {
         return loadingView()
@@ -134,9 +162,10 @@ const SalonChoice = () => {
                                 {salons.map((salon, index) => {
                                     return <div key={index} onClick={()=>setSelectedSalon({name: salon.name, id: salon.id})} className={`bg-[rgba(242,242,242,0.66)] rounded-2xl pb-3 border hover:border-secondary cursor-pointer ${selectedSalon.id===salon.id && 'border-secondary'}`}>
                                         <div className="px-4 pt-4 relative">
-                                        <div onClick={(e) => onWishlist(e, 3)} className="absolute right-6 top-6 z-20 cursor-pointer">
-                                            <Like color={selectedWhishlist === index ? "#FF0000" : ""}  />
-                                        </div>
+                                        {!isLoggedIn &&
+                                        <div onClick={(e) => onWishlist(e, salon.id)} className="absolute right-6 top-6 z-20 cursor-pointer">
+                                            <Like color={wishlist.includes(String(salon.id)) ? "#FF0000" : ""}  />
+                                        </div>}
                                         <div className='relative w-48 h-48'>
                                             <Image
                                                 src={salon.salon_images.length && salon.salon_images[index].is_cover ? salon.salon_images[index].image.includes('api-server') ? salon.salon_images[index].image : `https://api-server.onehaircut.com/public${salon.salon_images[index].image}` : salon.logo.includes('api-server') ? salon.logo : `https://api-server.onehaircut.com/public${salon.logo}`}

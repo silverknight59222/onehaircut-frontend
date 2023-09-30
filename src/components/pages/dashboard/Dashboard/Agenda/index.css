@@ -1,10 +1,42 @@
 a.fc-event.fc-event-draggable.fc-event-resizable.fc-event-start.fc-event-end.fc-event-past.fc-timegrid-event.fc-v-event,
 a.fc-event.fc-event-draggable.fc-event-resizable.fc-event-start.fc-event-end.fc-event-today.fc-event-future.fc-timegrid-event.fc-v-event {
-    border: 1px #EA4361 solid;
+    border: 1px white solid;
+}
+
+:root {
+    --fc-daygrid-event-dot-width: 5px;
+    --fc-small-font-size: .85em;
+    --fc-page-bg-color: #fff;
+    --fc-neutral-bg-color: rgba(223, 60, 60, 0.3);
+    --fc-neutral-text-color: #d83d3d;
+    --fc-border-color: #ddd;
+
+    --fc-event-selected-overlay-color: rgba(0, 0, 0, 0.25);
+    --fc-button-text-color: #fff;
+    --fc-button-bg-color: #f94b4b;
+    --fc-button-border-color: #383838;
+    --fc-button-hover-bg-color: #383838;
+    --fc-button-hover-border-color: #000000;
+    --fc-button-active-bg-color: #212121;
+    --fc-button-active-border-color: #383838;
+    --fc-today-bg-color: rgba(223, 197, 62, 0.15);
+
+    --fc-more-link-bg-color: #d0d0d0;
+    --fc-more-link-text-color: inherit;
+
+    --fc-event-resizer-thickness: 8px;
+    --fc-event-resizer-dot-total-width: 8px;
+    --fc-event-resizer-dot-border-width: 1px;
+
+    --fc-non-business-color: rgba(215, 215, 215, 0.3);
+    --fc-bg-event-color: rgb(143, 223, 130);
+    --fc-bg-event-opacity: 0.3;
+    --fc-highlight-color: rgba(188, 232, 241, 0.3);
+    --fc-now-indicator-color: red;
 }
 
 .fc-daygrid-event-dot {
-    border:#EA4361 4px solid;
+    border: #000000 4px solid;
     border-radius: calc(var(--fc-daygrid-event-dot-width)/2);
     box-sizing: content-box;
     height: 0px;
@@ -19,12 +51,140 @@ a.fc-event.fc-event-draggable.fc-event-resizable.fc-event-start.fc-event-end.fc-
 .fc-event-main {
     font-size: 16px;
     font-weight: 500;
-    background-color: #EA4361;
+    border: #000000
 }
 
-.fc-scrollgrid-section-header th .fc-scroller-harness .fc-scroller{
+.fc-scrollgrid-section-header th .fc-scroller-harness .fc-scroller {
     overflow: hidden;
 }
+
 .fc-daygrid-body.fc-daygrid-body-unbalanced.fc-daygrid-body-natural {
     display: none;
+}
+
+.fc-day-header {
+    background-color: black;
+
+}
+
+.fc-axis {
+    background-color: #a9a9a9;
+
+}
+
+.custom-button {
+    background-color: #f94b4b;
+    /* Couleur d'arrière-plan du bouton */
+    color: #fff;
+    /* Couleur du texte du bouton */
+    border: 1px solid #383838;
+    /* Pas de bordure autour du bouton */
+    padding: 10px 20px;
+    /* Espace intérieur autour du texte */
+    cursor: pointer;
+    /* Change le curseur lors du survol du bouton */
+    font-size: 1em;
+    /* Taille du texte du bouton */
+    border-radius: 4px;
+    /* Coins arrondis du bouton */
+    transition: background-color 0.3s;
+    /* Transition douce pour le changement de couleur */
+}
+
+.custom-button:hover {
+    background-color: #383838;
+    /* Couleur d'arrière-plan du bouton lors du survol */
+}
+
+.custom-button:active {
+    background-color: #212121;
+    /* Couleur d'arrière-plan du bouton lorsqu'il est enfoncé */
+}
+
+
+/* Pour le modal */
+.modal {
+    min-width: 260px;
+    min-height: 600px;
+    width: 20%;
+    /* ou la taille que vous préférez */
+    max-width: 100%;
+    /* Pour s'assurer qu'il ne dépasse pas la largeur de l'écran */
+    max-height: 100vh;
+    /* Pour s'assurer qu'il ne dépasse pas la hauteur de l'écran */
+
+    height: auto;
+    margin: auto;
+}
+
+@media (max-width: 600px) {
+    .modal {
+        width: 80%;
+        /* prend 90% de la largeur de l'écran */
+        height: 80%;
+        /* prend 90% de la hauteur de l'écran */
+        min-width: 0;
+        /* réinitialiser la min-width */
+        min-height: 0;
+        height: 600px;
+    }
+}
+
+/* Pour le chat du modal */
+.modalChat {
+    min-width: 100px;
+    min-height: 100px;
+
+    width: 100%;
+    /* Prend la largeur totale disponible de l'élément parent */
+    height: 100%;
+    /* Prend 80% de la hauteur de l'élément parent */
+    max-width: 500px;
+    /* Largeur maximale de 500px */
+    max-height: 600px;
+    /* Hauteur maximale de 480px (80% de 600px) */
+    margin: auto;
+}
+
+.coiffeur-color {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+
+.legend-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    /* Ajustez 200px selon la largeur souhaitée pour chaque colonne */
+    grid-template-rows: repeat(4, auto);
+    /* 4 lignes pour chaque colonne */
+    gap: 10px;
+    /* Espace entre les lignes et les colonnes */
+}
+
+
+.coiffeur-legend {
+    display: flex;
+    align-items: center;
+}
+
+.item-legend {
+    display: flex;
+    /* Transforme le conteneur en un conteneur flex */
+    align-items: center;
+    /* Centrage vertical des éléments enfants */
+}
+
+
+.color-box {
+    display: inline-flex;
+    /* Garde le comportement en ligne tout en permettant l'alignement du contenu avec flexbox */
+    justify-content: center;
+    /* Centrage horizontal */
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
 }
