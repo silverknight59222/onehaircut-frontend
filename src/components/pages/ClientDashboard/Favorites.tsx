@@ -134,12 +134,12 @@ const Favorites = () => {
                                                 <div
 
                                                     className={`${Theme_A.hairstyleCards.cardgradientTop}`}>
-                                                    <div className="relative w-max px-4 pt-4 bg-[#F5F5F5] rounded-t-xl">
+                                                    <div className="relative w-max  bg-[#F5F5F5] rounded-t-xl">
                                                         <div className="relative w-32 h-32">
                                                             <Image src={item.haircut.image.includes('https://api-server.onehaircut.com/public') ? item.haircut.image : `https://api-server.onehaircut.com/public${item.haircut.image}`} fill={true} alt="" className="rounded-t-xl" />
                                                         </div>
                                                     </div>
-                                                    <div className="rounded-b-xl bg-gradient-to-r from-pinkGradientFrom via-pinkGradientVia to-pinkGradientTo">
+                                                    <div className="rounded-b-xl ">
                                                         <p className={`${Theme_A.hairstyleCards.cardText}`}>
                                                             {item.haircut.name}
                                                         </p>
