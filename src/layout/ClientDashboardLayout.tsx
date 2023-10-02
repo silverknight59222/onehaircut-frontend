@@ -44,9 +44,11 @@ const ClientDashboardLayout = ({ children }: DashboardLayout) => {
         <div className="px-8 py-5 border-b border-[#EBF0F2]">
           <div className="flex items-center justify-between">
             <div className="w-full flex items-center gap-3">
-              <div className="lg:hidden" onClick={SidebarHandler}>
-                <HamburgerIcon />
-              </div>
+              {!isSidebar &&
+                <div className="" onClick={SidebarHandler}>
+                  <HamburgerIcon />
+                </div>
+              }
               <div className="w-full hidden lg:block">
                 <div className='flex items-center justify-center cursor-pointer' onClick={() => router.push('/')}>
                   <LogoIcon />
