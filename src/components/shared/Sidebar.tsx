@@ -6,7 +6,7 @@ import {
   BotIcon,
   ClientActivityIcon,
   DashboardIcon,
-  HeartIcon,
+  StarGreyIcon,
   HelpIcon,
   HistoryIcon,
   MessageIcon,
@@ -16,13 +16,15 @@ import {
   RevenueIcon,
   SettingsIcon,
   StatsIcon,
+  ReservationIcon,
 } from "../utilis/Icons";
 import { SalonDetails } from "@/types";
 import { getLocalStorage, setLocalStorage } from "@/api/storage";
 import { dashboard } from "@/api/dashboard";
 import { usePathname, useRouter } from "next/navigation";
+import { ColorsThemeA, Theme_A } from "../utilis/Themes";
 
-interface SidebarItems{
+interface SidebarItems {
   icon: string;
   title: string;
   route: string;
@@ -37,10 +39,10 @@ type SidebarType = {
 const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }: SidebarType) => {
   const [salonDetail, setSalonDetails] = useState<SalonDetails[]>();
   const [activeSalon, setActiveSalon] = useState<SalonDetails>();
-  const [sidebarItem,setSidebarItem]=useState<SidebarItems[]>([])
-  const router=useRouter()
-  const path=usePathname()
-  const proRoutes=['/dashboard/client-activity', '/dashboard/visites']
+  const [sidebarItem, setSidebarItem] = useState<SidebarItems[]>([])
+  const router = useRouter()
+  const path = usePathname()
+  const proRoutes = ['/dashboard/client-activity', '/dashboard/visites']
 
   const setIcon = (SidebarIcon: string, activeIcon: string) => {
     let Icon;
@@ -117,14 +119,23 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
           />
         );
         break;
+      case "Reservation":
+        Icon = (
+          <ReservationIcon
+            color={activeIcon === SidebarIcon ? "#FE3164" : "#989898"}
+            width="24"
+            height="24"
+          />
+        );
+        break;
       case "BotIcon":
         Icon = (
           <BotIcon color={activeIcon === SidebarIcon ? "#FE3164" : "#989898"} width="24" height="24" />
         );
         break;
-      case "HeartIcon":
+      case "StarGreyIcon":
         Icon = (
-          <HeartIcon color={activeIcon === SidebarIcon ? "#FE3164" : "#989898"} width="24" height="24" />
+          <StarGreyIcon color={activeIcon === SidebarIcon ? "#FE3164" : "#989898"} width="28" height="28" />
         );
         break;
       case "PortraitIcon":
@@ -142,6 +153,11 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
           <HelpIcon color={activeIcon === SidebarIcon ? "#FE3164" : "#989898"} width="24" height="24" />
         );
         break;
+      case "ReservationIcon":
+        Icon = (
+          <ReservationIcon color={activeIcon === SidebarIcon ? "#FE3164" : "#989898"} width="30" height="28" />
+        );
+        break;
     }
     return Icon;
   };
@@ -154,26 +170,26 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
     });
   };
 
-  const onSelectItem=(route :string,index: number)=>{
-    if(route){
-    router.push(route)
+  const onSelectItem = (route: string, index: number) => {
+    if (route) {
+      router.push(route)
     }
   }
   useEffect(() => {
     const temp = getLocalStorage("user");
     const user = temp ? JSON.parse(temp) : null;
-    if(!user.subscription){
-      const filteredRoutes=sidebarItems.filter(route=>{
+    if (!user.subscription) {
+      const filteredRoutes = sidebarItems.filter(route => {
         return !proRoutes.includes(route.route)
       })
       setSidebarItem(filteredRoutes)
-    }else{
+    } else {
       setSidebarItem(sidebarItems)
     }
     if (user.id)
       dashboard.getHairSalon(Number(user.id)).then((res) => {
-          setSalonDetails(res.data.data);
-          setSalon(res.data.data);
+        setSalonDetails(res.data.data);
+        setSalon(res.data.data);
       });
   }, []);
 
@@ -202,29 +218,36 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
                 alt="profile"
                 className={`rounded-full absolute left-[100px] ${isClientDashboard ? 'top-5' : 'top-[68px]'}`}
               />
-             {!isClientDashboard && <p className="text-lg font-medium mt-2.5">Daniel j.</p>}
+              {!isClientDashboard && <p className="text-lg font-medium mt-2.5">Daniel j.</p>}
             </div>
+            {/* Button to go directly to the order page */}
+            {isClientDashboard && <div
+              onClick={() => router.push('/')}
+              className={`flex items-center justify-center w-auto h-14 px-4 py-6 mx-3 my-6 ${Theme_A.button.medWhiteColoredButton} rounded-2xl shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] cursor-pointer `}
+            >
+              Réserver une coiffure
+            </div>}
+            {/* Sidebar items display */}
             <div className="mt-8">
               {sidebarItem.map((item, index) => {
                 return (
                   <div key={index}>
                     <div
-                      onClick={() => onSelectItem(item.route,index)}
+                      onClick={() => onSelectItem(item.route, index)}
                       className={
                         `flex items-center my-2 pl-8 py-4 gap-4 cursor-pointer text-primary transition ease-in-out duration-100 border-l-4 
-                        ${ path === item.route && "border-secondary bg-gradient-to-r from-pink-300 via-red-200 to-transparent" }`}
+                        ${path === item.route && "border-secondary bg-gradient-to-r from-pink-300 via-red-200 to-transparent"}`}
                     >
                       <div className="relative">
                         {setIcon(
                           item.icon,
                           path === item.route ? item.icon : ""
                         )}
-                       {item.title === 'Message' &&<p className="absolute top-3 -right-2.5 flex items-center justify-center w-4 h-4 rounded-full bg-[#F44336] text-white text-[10px] font-semibold">2</p>}
+                        {item.title === 'Message' && <p className="absolute top-3 -right-2.5 flex items-center justify-center w-4 h-4 rounded-full bg-[#F44336] text-white text-[10px] font-semibold">2</p>}
                       </div>
                       <p
-                        className={`text-base ${
-                          path === item.route && "text-secondary"
-                        }`}
+                        className={`text-base ${path === item.route && "text-secondary"
+                          }`}
                       >
                         {item.title}
                       </p>

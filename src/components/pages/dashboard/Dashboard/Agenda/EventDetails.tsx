@@ -2,19 +2,19 @@ import React, { useState } from "react";
 import { CrossIcon } from "@/components/utilis/Icons";
 import { ColorsThemeA } from "@/components/utilis/Themes";
 import { ChatSendIcon } from "@/components/utilis/Icons";
+import './index.css';
+import { Booking, Coiffeur } from "./types";
 
-interface Booking {
-  id: string;
-  title: string;
-  start: string;
+// Ajout de toutes les propriétes qu'on veut reprendre dans le modal
+interface EventDetailsModalProps {
+  event: Booking; // Assurez-vous d'importer ou de définir le type Booking
+  setModal: React.Dispatch<React.SetStateAction<Booking | undefined>>;
+  coiffeurNom: string;
+  coiffeurCouleur: string;
 }
 
-interface BookingDetail {
-  event: Booking;
-  setModal: (value: Booking) => void;
-}
 
-const AddServiceModal = (props: BookingDetail) => {
+const EventDetailsModal = (props: EventDetailsModalProps) => {
   const defaultBooking = {
     id: "",
     title: "",
@@ -24,6 +24,7 @@ const AddServiceModal = (props: BookingDetail) => {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<{ content: string, sent: boolean }[]>([]);
 
+  {/* TODO Replace with the correction message function */ }
   const sendMessage = () => {
     if (message) {
       setMessages([...messages, { content: message, sent: true }]);
@@ -44,11 +45,11 @@ const AddServiceModal = (props: BookingDetail) => {
 
 
   return (
-    <div className="relative bg-white rounded-xl px-5 pb-5 shadow-lg" style={{ minWidth: '500px', minHeight: '600px' }}>
+    <div className="relative bg-white rounded-xl px-5 pb-5 shadow-lg mt-10 bg- modal">
       {/* Icône de fermeture */}
       <div
         className={`absolute -right-3 -top-7 cursor-pointer my-3 rounded-lg ${ColorsThemeA.ohcVerticalGradient_A} shadow-md flex items-center justify-center`}
-        onClick={() => props.setModal(defaultBooking)}
+        onClick={() => props.setModal(undefined)}
         style={{ width: '35px', height: '35px' }} // Augmentez ces valeurs pour agrandir le carré
       >
         <CrossIcon width="16" />
@@ -60,6 +61,12 @@ const AddServiceModal = (props: BookingDetail) => {
       {/* Contenu */}
       <div className="flex flex-col gap-4 mt-6">
         {/* Nom du client */}
+        {/* Cercle de couleur du coiffeur */}
+        <div
+          className="coiffeur-color"
+          style={{ backgroundColor: props.coiffeurCouleur }}
+        ></div>
+
         <div className="text-xl font-semibold text-center">
           Client: {props.event.title}
         </div>
@@ -74,7 +81,7 @@ const AddServiceModal = (props: BookingDetail) => {
           <strong>Date du rdv :</strong> {props.event.start.split('T')[0]}
         </div>
         <div className="text-center mb-[-4px]">
-          <strong>Coiffeur :</strong> {/* Ici, vous pouvez insérer le nom du coiffeur */}
+          <strong>Coiffeur :</strong> {props.coiffeurNom}
         </div>
         <div className="text-center mb-[-4px]">
           <strong>Dur&eacute;e &eacute;stim&eacute;e :</strong> {/* Ici, vous pouvez insérer la durée de la coiffure */}
@@ -91,11 +98,11 @@ const AddServiceModal = (props: BookingDetail) => {
 
 
         {/* Zone de messagerie */}
-        <div className="flex flex-col gap-2 mt-4 ">
+        <div className="modalChat flex flex-col gap-2 mt-4  ">
           {/* Conversation */}
-          <div className="border border-gray-300 rounded-xl p-2 rounded-bl-lg overflow-auto h-40 bg-stone-100 shadow-inner mb-2 ">
+          <div className=" border border-gray-300 rounded-xl p-2 rounded-bl-lg overflow-auto h-40 bg-stone-100 shadow-inner mb-2 ">
             {messages.map((msg, index) => (
-              <div key={index} className={`${msg.sent ? 'text-right' : 'text-left '} mb-2`}>
+              <div key={`msg-${index}`} className={`${msg.sent ? 'text-right' : 'text-left '} mb-2`}>
                 <div
                   className={`inline-block p-2 text-xs outline-1 ${msg.sent ? 'rounded-l-lg rounded-b-lg outline outline-orange-500 bg-stone-100 ' : 'rounded-r-lg rounded-b-lg outline outline-stone-400 bg-white'}`}
                 >
@@ -106,16 +113,16 @@ const AddServiceModal = (props: BookingDetail) => {
           </div>
 
           {/* Zone d'écriture et envoi - ajouter nKeyDown={handleKeyPress} pour valider le message avec Enter */}
-          <div className="flex gap-1 ">
+          <div className="flex gap-1">
             <input
               type="text"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Écrire un message"
-              className="flex-grow border border-gray-300 rounded-xl p-2 focus:outline-none focus:border-red-500 shadow-inner"
+              className="flex-grow border border-gray-300 rounded-xl p-2 min-w-0 focus:outline-none focus:border-red-500 shadow-inner"
 
             />
-            <button type="button" onClick={sendMessage} className="transform hover:scale-110" > <ChatSendIcon /> </button>
+            <button type="button" onClick={sendMessage} className="transform hover:scale-105 " > <ChatSendIcon /> </button>
           </div>
         </div>
       </div>
@@ -123,4 +130,4 @@ const AddServiceModal = (props: BookingDetail) => {
   );
 };
 
-export default AddServiceModal;
+export default EventDetailsModal;
