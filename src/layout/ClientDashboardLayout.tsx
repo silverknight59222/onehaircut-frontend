@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
+import { useRouter } from "next/navigation";
 import Sidebar from "@/components/shared/Sidebar";
 import {
   CircleRight,
   Hamburger,
   HamburgerIcon,
-  HeartIcon,
   LogoIcon,
   UserIcon,
   StarGreyIcon
@@ -16,6 +16,7 @@ interface DashboardLayout {
 
 
 const ClientDashboardLayout = ({ children }: DashboardLayout) => {
+  const router = useRouter()
   const [isSidebar, setIsSidebar] = useState(true);
   const sidebarItems = [
     { icon: "DashboardIcon", title: "Compte", route: "/client/dashboard" },
@@ -43,19 +44,18 @@ const ClientDashboardLayout = ({ children }: DashboardLayout) => {
         <div className="px-8 py-5 border-b border-[#EBF0F2]">
           <div className="flex items-center justify-between">
             <div className="w-full flex items-center gap-3">
-              <div className="lg:hidden" onClick={SidebarHandler}>
-                <HamburgerIcon />
-              </div>
+              {!isSidebar &&
+                <div className="" onClick={SidebarHandler}>
+                  <HamburgerIcon />
+                </div>
+              }
               <div className="w-full hidden lg:block">
-                <div className='flex items-center justify-center'>
+                <div className='flex items-center justify-center cursor-pointer' onClick={() => router.push('/')}>
                   <LogoIcon />
                 </div>
               </div>
             </div>
             <div className="flex items-center justify-end gap-4">
-              <div className="cursor-pointer">
-                <HeartIcon color="#000" />
-              </div>
               <div className="cursor-pointer">
                 <Hamburger />
               </div>
