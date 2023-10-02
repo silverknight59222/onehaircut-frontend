@@ -1,6 +1,6 @@
 "use client";
 import { dashboard } from "@/api/dashboard";
-import { LogoCircleFixRight, RegistrationCheckedIcon } from "@/components/utilis/Icons";
+import { CrossIcon, LogoCircleFixRight, RegistrationCheckedIcon } from "@/components/utilis/Icons";
 import ClientDashboardLayout from "@/layout/ClientDashboardLayout";
 import Image from "next/image";
 import React from "react";
@@ -10,6 +10,7 @@ import { SalonWishlist, WishlistHaircuts } from "@/types";
 import { getLocalStorage } from "@/api/storage";
 import { Theme_A } from "@/components/utilis/Themes";
 import Footer from "@/components/UI/Footer";
+import useSnackbar from "@/hooks/useSnackbar";
 
 const Favorites = () => {
     const { loadingView } = userLoader();
@@ -18,6 +19,7 @@ const Favorites = () => {
     const [salons, setSalons] = useState<SalonWishlist[]>([]);
     const user = getLocalStorage("user");
     const userId = user ? Number(JSON.parse(user).id) : null;
+    const showSnackbar = useSnackbar(); // Custom hook to show snackbars
 
     const getWishlistHaircuts = () => {
         if (userId) {
@@ -54,10 +56,34 @@ const Favorites = () => {
         }
     }
 
+    const onWishlist = async (e: any, haircutId: number) => {
+        // Handle adding/removing haircuts to/from the wishlist
+        e.stopPropagation()
+        if (userId) {
+            let data = {
+                user_id: userId,
+                haircut_id: haircutId
+            }
+
+            await dashboard.removeFromWishList(haircutId, userId)
+                .then(response => {
+                    getWishlistHaircuts()
+                    showSnackbar('success', 'Removed From Wishlist Successfully!')
+                })
+                .catch(error => {
+                    showSnackbar('error', 'Error Occured!')
+                })
+
+        }
+    }
+
     useEffect(() => {
         getWishlistHaircuts()
         getSalonsWishlist()
     }, [])
+
+
+
     return (
         <div>
             <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 -z-10">
@@ -72,23 +98,22 @@ const Favorites = () => {
                     <div className="w-full relative flex flex-col items-center justify-center my-28">
                         <div className="w-full">
                             <p className="text-black text-3xl mb-3">Coiffures</p>
-                            <div className="w-full h-7 flex items-center rounded-xl text-white px-5 bg-gradient-to-r from-pink-500 via-orange-500 to-yellow-200">
-                                {haircuts.length} / 10
+                            <div className=" h-7 flex items-center rounded-xl text-white px-5 bg-gradient-to-r from-pink-500 via-orange-500 to-yellow-200">
+                                {haircuts.length} favorites
                             </div>
                         </div>
-                        <div className="lg:absolute -top-10 right-7 2xl:right-auto w-full md:w-[600px] lg:w-[550px] xl:w-[750px] overflow-auto mt-3">
+                        <div className="lg:absolute -top-10 ml-72  w-9/12 overflow-scroll mt-3 mr-48">
                             <table>
-                                <tbody className="flex items-center justify-center gap-8 pb-2">
+                                <tbody className="flex items-center  gap-8 pb-2">
                                     {haircuts.map((item, index) => {
                                         return (
                                             <tr key={index} className="flex flex-col items-center justify-center">
                                                 <div
 
-                                                    className={`${Theme_A.hairstyleCards.cardgradientTop}`}
-                                                >
+                                                    className={`${Theme_A.hairstyleCards.cardgradientTop}`}>
                                                     <div className="relative w-max px-4 pt-4 bg-[#F5F5F5] rounded-t-xl">
                                                         <div className="relative w-32 h-32">
-                                                            <Image src={item.haircut.image} fill={true} alt="" />
+                                                            <Image src={item.haircut.image.includes('https://api-server.onehaircut.com/public') ? item.haircut.image : `https://api-server.onehaircut.com/public${item.haircut.image}`} fill={true} alt="" className="rounded-t-xl" />
                                                         </div>
                                                     </div>
                                                     <div className="rounded-b-xl bg-gradient-to-r from-pinkGradientFrom via-pinkGradientVia to-pinkGradientTo">
@@ -96,8 +121,14 @@ const Favorites = () => {
                                                             {item.haircut.name}
                                                         </p>
                                                     </div>
+                                                    <div
+                                                        onClick={(e) => onWishlist(e, item.haircut.id)}
+                                                        className={`absolute top-1 right-1 flex items-center justify-center w-6 h-6 cursor-pointer rounded-md ${Theme_A.button.crossButtonSmall}`}>
+                                                        <CrossIcon width="9" height="9" />
+                                                    </div>
                                                 </div>
-                                                <RegistrationCheckedIcon />
+
+                                                {/* <RegistrationCheckedIcon /> */}
                                             </tr>
                                         );
                                     })}
@@ -109,10 +140,10 @@ const Favorites = () => {
                         <p className="text-black text-3xl mb-3">Salons</p>
                         <div className="w-full relativ  overflow-auto">
                             <table className="w-full">
-                                <thead className="w-full h-7 flex items-center rounded-xl text-white px-5 bg-gradient-to-r from-pink-500 via-orange-500 to-yellow-200">
+                                <thead className=" h-7 flex items-center rounded-xl text-white px-5 bg-gradient-to-r from-pink-500 via-orange-500 to-yellow-200">
                                     <tr>
                                         <td className="">
-                                            {salons.length}/10
+                                            {salons.length} favoris
                                         </td>
                                         {salons.map((item, index) => {
                                             return <td key={index} scope="col" className="text-center font-bold px-6">
