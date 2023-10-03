@@ -121,8 +121,8 @@ const Favorites = () => {
                     <div className="w-full relative flex flex-col items-center justify-center my-28">
                         <div className="w-full">
                             <p className="text-black text-3xl mb-3">Coiffures</p>
-                            <div className={`h-7 flex items-center rounded-xl text-white px-5 ${ColorsThemeA.OhcGradient_A}`} >
-                                {haircuts.length} favorites
+                            <div className={`h-7 flex items-center rounded-xl text-white px-5 ${ColorsThemeA.OhcGradient_C}`} >
+                                {haircuts.length} favoris
                             </div>
                         </div>
                         <div className="lg:absolute -top-10 ml-72  w-9/12 overflow-scroll mt-3 mr-48">
@@ -134,12 +134,12 @@ const Favorites = () => {
                                                 <div
 
                                                     className={`${Theme_A.hairstyleCards.cardgradientTop}`}>
-                                                    <div className="relative w-max  bg-[#F5F5F5] rounded-t-xl">
-                                                        <div className="relative w-32 h-32">
-                                                            <Image src={item.haircut.image.includes('https://api-server.onehaircut.com/public') ? item.haircut.image : `https://api-server.onehaircut.com/public${item.haircut.image}`} fill={true} alt="" className="rounded-t-xl" />
+                                                    <div className="relative w-max  bg-[#F5F5F5] rounded-xl">
+                                                        <div className="relative w-48 h-48">
+                                                            <Image src={item.haircut.image.includes('https://api-server.onehaircut.com/public') ? item.haircut.image : `https://api-server.onehaircut.com/public${item.haircut.image}`} fill={true} alt="" className="rounded-xl" />
                                                         </div>
                                                     </div>
-                                                    <div className="rounded-b-xl ">
+                                                    <div className="rounded-xl ">
                                                         <p className={`${Theme_A.hairstyleCards.cardText}`}>
                                                             {item.haircut.name}
                                                         </p>
@@ -147,7 +147,7 @@ const Favorites = () => {
                                                     <div
                                                         onClick={(e) => RemoveHaircutWishlist(e, item.haircut.id)}
                                                         className={`absolute top-1 right-1 flex items-center justify-center w-6 h-6 cursor-pointer rounded-md ${Theme_A.button.crossButtonSmall}`}>
-                                                        <CrossIcon width="9" height="9" />
+                                                        <CrossIcon width="18" height="18" />
                                                     </div>
                                                 </div>
                                             </tr>
@@ -162,8 +162,8 @@ const Favorites = () => {
                     <div className="w-full relative flex flex-col items-center justify-center my-28">
                         <div className="w-full">
                             <p className="text-black text-3xl mb-3">Salons</p>
-                            <div className={`h-7 flex items-center rounded-xl text-white px-5 ${ColorsThemeA.OhcGradient_A}`} >
-                                {salons.length} favorites
+                            <div className={`h-7 flex items-center rounded-xl text-white px-5 ${ColorsThemeA.OhcGradient_C}`} >
+                                {salons.length} favoris
                             </div>
                         </div>
                         <div className="lg:absolute -top-10 ml-72  w-9/12 overflow-scroll mt-3 mr-48">
