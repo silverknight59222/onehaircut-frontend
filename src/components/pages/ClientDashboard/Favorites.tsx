@@ -8,9 +8,10 @@ import { useEffect, useState } from "react";
 import userLoader from "@/hooks/useLoader";
 import { SalonWishlist, WishlistHaircuts } from "@/types";
 import { getLocalStorage } from "@/api/storage";
-import { Theme_A } from "@/components/utilis/Themes";
+import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 import Footer from "@/components/UI/Footer";
 import useSnackbar from "@/hooks/useSnackbar";
+import { ColorRing } from "react-loader-spinner";
 
 const Favorites = () => {
     const { loadingView } = userLoader();
@@ -56,7 +57,7 @@ const Favorites = () => {
         }
     }
 
-    const onWishlist = async (e: any, haircutId: number) => {
+    const RemoveHaircutWishlist = async (e: any, haircutId: number) => {
         // Handle adding/removing haircuts to/from the wishlist
         e.stopPropagation()
         if (userId) {
@@ -72,6 +73,27 @@ const Favorites = () => {
                 })
                 .catch(error => {
                     showSnackbar('error', 'Error Occured!')
+                })
+
+        }
+    }
+
+    const RemoveSalonFromFavorites = async (e: any, hairsalonId: number) => {
+        // Handle adding/removing haircuts to/from the wishlist
+        e.stopPropagation()
+        if (userId) {
+            let data = {
+                user_id: userId,
+                hairsalon_id: hairsalonId
+            }
+
+            await dashboard.removeFromSalonWishList(hairsalonId, userId)
+                .then(response => {
+                    getSalonsWishlist()
+                    showSnackbar('succès', 'Salon supprimé des préférences')
+                })
+                .catch(error => {
+                    showSnackbar('erreur', 'Salon non supprimé')
                 })
 
         }
@@ -95,10 +117,11 @@ const Favorites = () => {
                     <p className={`text-black ${Theme_A.fonts.header} ${Theme_A.textFont.headerH1} mb-10 static`}>
                         Favoris
                     </p>
+                    {/* Haircuts part */}
                     <div className="w-full relative flex flex-col items-center justify-center my-28">
                         <div className="w-full">
                             <p className="text-black text-3xl mb-3">Coiffures</p>
-                            <div className=" h-7 flex items-center rounded-xl text-white px-5 bg-gradient-to-r from-pink-500 via-orange-500 to-yellow-200">
+                            <div className={`h-7 flex items-center rounded-xl text-white px-5 ${ColorsThemeA.OhcGradient_A}`} >
                                 {haircuts.length} favorites
                             </div>
                         </div>
@@ -111,24 +134,22 @@ const Favorites = () => {
                                                 <div
 
                                                     className={`${Theme_A.hairstyleCards.cardgradientTop}`}>
-                                                    <div className="relative w-max px-4 pt-4 bg-[#F5F5F5] rounded-t-xl">
+                                                    <div className="relative w-max  bg-[#F5F5F5] rounded-t-xl">
                                                         <div className="relative w-32 h-32">
                                                             <Image src={item.haircut.image.includes('https://api-server.onehaircut.com/public') ? item.haircut.image : `https://api-server.onehaircut.com/public${item.haircut.image}`} fill={true} alt="" className="rounded-t-xl" />
                                                         </div>
                                                     </div>
-                                                    <div className="rounded-b-xl bg-gradient-to-r from-pinkGradientFrom via-pinkGradientVia to-pinkGradientTo">
+                                                    <div className="rounded-b-xl ">
                                                         <p className={`${Theme_A.hairstyleCards.cardText}`}>
                                                             {item.haircut.name}
                                                         </p>
                                                     </div>
                                                     <div
-                                                        onClick={(e) => onWishlist(e, item.haircut.id)}
+                                                        onClick={(e) => RemoveHaircutWishlist(e, item.haircut.id)}
                                                         className={`absolute top-1 right-1 flex items-center justify-center w-6 h-6 cursor-pointer rounded-md ${Theme_A.button.crossButtonSmall}`}>
                                                         <CrossIcon width="9" height="9" />
                                                     </div>
                                                 </div>
-
-                                                {/* <RegistrationCheckedIcon /> */}
                                             </tr>
                                         );
                                     })}
@@ -136,11 +157,58 @@ const Favorites = () => {
                             </table>
                         </div>
                     </div>
-                    <div className="w-full relativ mt-14">
-                        <p className="text-black text-3xl mb-3">Salons</p>
-                        <div className="w-full relativ  overflow-auto">
-                            <table className="w-full">
-                                <thead className=" h-7 flex items-center rounded-xl text-white px-5 bg-gradient-to-r from-pink-500 via-orange-500 to-yellow-200">
+
+                    {/* Salons' part */}
+                    <div className="w-full relative flex flex-col items-center justify-center my-28">
+                        <div className="w-full">
+                            <p className="text-black text-3xl mb-3">Salons</p>
+                            <div className={`h-7 flex items-center rounded-xl text-white px-5 ${ColorsThemeA.OhcGradient_A}`} >
+                                {salons.length} favorites
+                            </div>
+                        </div>
+                        <div className="lg:absolute -top-10 ml-72  w-9/12 overflow-scroll mt-3 mr-48">
+                            <table>
+                                <tbody className="flex items-center  gap-8 pb-2">
+                                    {salons.map((item, index) => {
+                                        return (
+                                            <tr key={index} className="flex flex-col items-center justify-center">
+                                                <div
+
+                                                    className={`relative w-52 px-4 pt-4 rounded-xl ${ColorsThemeA.pageBgColorLight}`}>
+                                                    <div className="relative w-max px-4 pt-4  rounded-xl">
+                                                        <div className="relative w-36 h-36">
+                                                            <Image src={item.hairsalon.logo.includes('https://api-server.onehaircut.com/public') ? item.hairsalon.logo : `https://api-server.onehaircut.com/public${item.hairsalon.logo}`} fill={true} alt="" className="rounded-t-xl" />
+                                                        </div>
+                                                    </div>
+                                                    <div className="rounded-b-xl">
+                                                        <p className={`rounded-b-xl flex items-center justify-center py-2 text-lg text-black font-bold `}>
+                                                            {item.hairsalon.name}
+                                                        </p>
+                                                    </div>
+                                                    <div className="rounded-b-xl">
+                                                        <p className={`rounded-b-xl flex items-center justify-center py-2 text-lg ${ColorsThemeA.textSecondary} font-normal overflow-clip`}>
+                                                            {/* {item.hairsalon.address}  TODO uncomment */}
+                                                            63a rue Dietwiller 68440 Schlierbach  {/* comment */}
+                                                        </p>
+                                                    </div>
+                                                    <div
+                                                        onClick={(e) => RemoveSalonFromFavorites(e, item.hairsalon.id)}
+                                                        className={`absolute top-1 right-1 flex items-center justify-center w-6 h-6 cursor-pointer rounded-md ${Theme_A.button.crossButtonSmall}`}>
+                                                        <CrossIcon width="9" height="9" />
+                                                    </div>
+                                                </div>
+                                            </tr>
+                                        );
+                                    })}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {/* <div className="w-full relativ mt-14">
+                        <p className="text-black text-3xl mb-3 ">Salons</p>
+                        <div className="w-full relativ  overflow-auto absolute">
+                            <table className="w-full ">
+                                <thead className={`w-full h-7 flex items-center rounded-xl text-white px-5 ${ColorsThemeA.OhcGradient_A}`}>
                                     <tr>
                                         <td className="">
                                             {salons.length} favoris
@@ -156,11 +224,10 @@ const Favorites = () => {
                                     <tr className="text-black">
                                         <td className="px-6"></td>
                                         {salons.map((salon, index) => {
-                                            return <td key={index} className="px-3 py-4">
-                                                <div className="flex flex-col items-center justify-center">
-                                                    <Image src={salon.hairsalon.logo} width={120} height={120} alt="" />
-                                                    <p className="mb-2 mt-1 text-center">{salon.hairsalon.name}</p>
-                                                    <RegistrationCheckedIcon />
+                                            return <td key={index} className="px-3 py-4 ">
+                                                <div className="flex flex-col items-center justify-center relative w-32 h-32">
+                                                    <Image src={salon.hairsalon.logo.includes('https://api-server.onehaircut.com/public') ? salon.hairsalon.logo : `https://api-server.onehaircut.com/public${salon.hairsalon.logo}`} fill={true} alt="" className="rounded-t-xl" />
+                                                    <p className="mb-2 mt-1 text-black text-center">{salon.hairsalon.name}</p>
                                                 </div>
                                             </td>
                                         })}
@@ -169,7 +236,7 @@ const Favorites = () => {
                             </table>
                         </div>
 
-                    </div>
+                    </div> */}
                 </div>
             </ClientDashboardLayout>
             <Footer />
