@@ -7,6 +7,7 @@ import BaseMultiSelectbox from "@/components/UI/BaseMultiSelectbox";
 import { CheckedIcon, DownArrow } from "@/components/utilis/Icons";
 import React from "react";
 import { Theme_A } from "@/components/utilis/Themes";
+import { ColorsThemeA } from "@/components/utilis/Themes";
 interface HairdresserSlot {
   id: string;
   status: number;
@@ -192,7 +193,7 @@ export const HairdresserSlots = () => {
                           >
                             <div
                               className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${selectedSalonHairDresser.name === item.name
-                                ? "bg-gradient-to-b from-pink-500 to-orange-500"
+                                ? `${ColorsThemeA.ohcVerticalGradient_A}`
                                 : "bg-[#D6D6D6]"
                                 }`}
                             >

@@ -11,6 +11,7 @@ import { SalonDetails } from "@/types";
 import SlotDropdown from "./SlotsDropdown";
 import Footer from "@/components/UI/Footer";
 import { Theme_A } from "@/components/utilis/Themes";
+import { ColorsThemeA } from "@/components/utilis/Themes";
 export interface OpenTimes {
   available: boolean;
   day: string;
@@ -143,6 +144,7 @@ const Settings = () => {
         <LogoCircleFixRight />
       </div>
       <DashboardLayout>
+
         <div className="flex items-center flex-col justify-center gap-6">
           {!isLoading && (
             <div className="max-w-[750px] flex items-center justify-center text-center px-9 py-6 gap-8 rounded-2xl bg-white text-xl font-medium text-[#ABABAB] shadow-[3px_3px_10px_-1px_rgba(0,0,0,0.30)]">
@@ -180,7 +182,7 @@ const Settings = () => {
                             >
                               <div
                                 className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${avaiableDays.includes(item.day)
-                                  ? "bg-gradient-to-b from-pink-500 to-orange-500 border-white"
+                                  ? `bg-gradient-to-b ${ColorsThemeA.ohcVerticalGradient_A} border-white`
                                   : "border-[#767676]"
                                   }`}
                               >
