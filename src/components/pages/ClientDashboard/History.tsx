@@ -15,10 +15,11 @@ const History = () => {
     Prestation: string;
     Salon: string;
     Coiffeur: string;
-    Prix: string;
+    Prix: number;
     Date: string;
     Heure: string;
     image: string;
+    note: number;
   }
 
 
@@ -28,10 +29,11 @@ const History = () => {
     Prestation: 'Aucune',
     Salon: 'Golden Barber',
     Coiffeur: 'Karim',
-    Prix: '45 euro',
+    Prix: 45,
     Date: '25/09/2023',
     Heure: '14:00',
-    image: '/assets/img1.png'
+    image: '/assets/img1.png',
+    note: 0
   }
 
   const items2: BookingInfoStruct = {
@@ -39,10 +41,11 @@ const History = () => {
     Prestation: 'Dégradé',
     Salon: '123',
     Coiffeur: 'Karim',
-    Prix: '15 euro',
+    Prix: 15,
     Date: '20/08/2023',
     Heure: '8:00',
-    image: '/assets/img2.png'
+    image: '/assets/img2.png',
+    note: 0
   }
 
   const items3: BookingInfoStruct = {
@@ -50,13 +53,26 @@ const History = () => {
     Prestation: 'Aucune',
     Salon: 'Schwarzkopf',
     Coiffeur: 'Le Boss',
-    Prix: '150 euro',
+    Prix: 150,
     Date: '20/06/2023',
     Heure: '16:00',
-    image: '/assets/portrait.png'
+    image: '/assets/portrait.png',
+    note: 4
   }
 
-  const history: BookingInfoStruct[] = [items1, items2, items3]
+  const items4: BookingInfoStruct = {
+    Coiffure: 'blabla',
+    Prestation: 'Aucune',
+    Salon: 'Schwarzkopf',
+    Coiffeur: 'Le Boss',
+    Prix: 140,
+    Date: '20/03/2023',
+    Heure: '11:00',
+    image: '/assets/portrait.png',
+    note: 4
+  }
+
+  const history: BookingInfoStruct[] = [items1, items2, items3, items4]
 
   ////////////////////////////////////////////
   // functions for the buttons
@@ -137,11 +153,12 @@ const History = () => {
                       <div className='flex flex-col items-center sm:items-start justify-center sm:justify-start gap-2 mt-5 sm:mt-0'>
 
                         <p className='text-[#5B5B5B] font-bold text-center sm:text-start'>{item.Date}</p>
-                        <p className='text-[#666] text-sm text-center sm:text-start'>{item.Heure}</p>
-                        <p className='text-[#666] text-sm text-center sm:text-start'>{item.Coiffure}</p>
-                        <p className='text-[#666] text-sm text-center sm:text-start'>{item.Prix}</p>
-                        <p className='text-[#666] text-sm text-center sm:text-start'>{item.Salon}</p>
-                        <p className='text-[#666] text-sm text-center sm:text-start'>{item.Coiffeur}</p>
+                        <p className='text-[#666] text-sm text-center sm:text-start'>Heure: {item.Heure}</p>
+                        <p className='text-[#666] text-sm text-center sm:text-start'>Coiffure: {item.Coiffure}</p>
+                        <p className='text-[#666] text-sm text-center sm:text-start'>Préstation: {item.Prestation}</p>
+                        <p className='text-[#666] text-sm text-center sm:text-start'>Prix: {item.Prix} euro</p>
+                        <p className='text-[#666] text-sm text-center sm:text-start'>Salon: {item.Salon}</p>
+                        <p className='text-[#666] text-sm text-center sm:text-start'>Coiffeur: {item.Coiffeur}</p>
 
                       </div>
                       <div>
@@ -149,18 +166,20 @@ const History = () => {
                       </div>
                     </div>
                     {!isRatePopUp &&
-                      <div className='flex items-center  mt-10 sm:mt-5 -z-10'>
-                        <button
+                      <div className='flex items-center justify-center  mt-10 sm:mt-5 -z-10'>
+                        {item.note == 0 && <button
                           onClick={() => rateThisHaircut(item.Salon)}
-                          className={` ${Theme_A.button.medWhiteColoredButton} mx-2`}>
-                          Noter</button>
+                          className={` ${Theme_A.button.medWhiteColoredButton} mx-1`}>
+                          Noter
+                        </button>
+                        }
                         <button
                           onClick={() => downloadBill(item)}
-                          className={`${Theme_A.button.medWhiteColoredButton} mx-2`}>
+                          className={`${Theme_A.button.medWhiteColoredButton} mx-1`}>
                           Télecharger la facture</button>
                         <button
                           onClick={() => rebook(item)}
-                          className={`${Theme_A.button.mediumGradientButton}`}>
+                          className={`${Theme_A.button.mediumGradientButton} mx-1`}>
                           Reserver à nouveau</button>
                       </div>
                     }
