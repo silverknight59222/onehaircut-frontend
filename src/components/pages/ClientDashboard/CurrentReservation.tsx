@@ -61,7 +61,7 @@ const Currentreservation = () => {
                                 </div>
                                 <div className='flex items-center justify-center mt-10 sm:mt-5'>
                                     <button className={`${Theme_A.button.medWhiteColoredButton}`}>
-                                        Chatter avec the salon
+                                        Chatter avec le salon
                                     </button>
                                 </div>
                             </div>

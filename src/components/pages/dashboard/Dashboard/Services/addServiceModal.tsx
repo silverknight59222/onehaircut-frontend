@@ -406,7 +406,7 @@ const AddServiceModal = (props: AddServiceModalType) => {
         </div>
         <div className="flex flex-col gap-4 h-full items-start">
           <p className="text-sm text-[#A0A0A0]">
-            Age and percent is only applicable to services with type discount
+            Age et rabais ne sont applicable que pour les prestations de type remise (discount)
           </p>
           <div className="flex flex-col md:flex-row  gap-4 h-full items-center md:items-start justify-center w-full">
             <div className="flex flex-col gap-4 h-full items-start">
@@ -493,14 +493,14 @@ const AddServiceModal = (props: AddServiceModalType) => {
               className={`${Theme_A.button.medWhiteColoredButton}`}
               onClick={() => props.setShowAddServiceModal(false)}
             >
-              Cancel
+              Annuler
             </button>
             <button
               // className="text-white font-medium text-base rounded-md py-2 px-4 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
               className={`${Theme_A.button.mediumGradientButton}`}
               onClick={() => onSubmit()}
             >
-              Add Service
+              Ajouter prestations
             </button>
           </div>
           {error.service && (
