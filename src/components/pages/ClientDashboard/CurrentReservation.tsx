@@ -1,4 +1,5 @@
 "use client";
+import Footer from "@/components/UI/Footer";
 import { CircleRight } from "@/components/utilis/Icons";
 import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 import ClientDashboardLayout from "@/layout/ClientDashboardLayout";
@@ -59,8 +60,8 @@ const Currentreservation = () => {
                                         </div>
                                     })}
                                 </div>
-                                <div className='flex items-center justify-center mt-10 sm:mt-5'>
-                                    <button className={`${Theme_A.button.medWhiteColoredButton}`}>
+                                <div className='flex  justify-start mt-10 sm:mt-5'>
+                                    <button className={`xl:w-full ${Theme_A.button.medWhiteColoredButton}`}>
                                         Chatter avec le salon
                                     </button>
                                 </div>
@@ -74,6 +75,7 @@ const Currentreservation = () => {
                     </div>
                 </div>
             </ClientDashboardLayout>
+            <Footer />
         </div>
     );
 };
