@@ -1,6 +1,6 @@
 "use client";
 import BaseModal from '@/components/UI/BaseModal';
-import { CircleRight } from '@/components/utilis/Icons';
+import { LogoCircleFixRight } from '@/components/utilis/Icons';
 import { Theme_A } from '@/components/utilis/Themes';
 import ClientDashboardLayout from '@/layout/ClientDashboardLayout'
 import Image from 'next/image';
@@ -114,7 +114,7 @@ const History = () => {
   return (
     <div>
       <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 -z-10">
-        <CircleRight />
+        <LogoCircleFixRight />
       </div>
       <ClientDashboardLayout>
         <div className="mt-14 mb-5 px-6">

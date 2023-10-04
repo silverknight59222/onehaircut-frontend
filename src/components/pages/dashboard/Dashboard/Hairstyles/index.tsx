@@ -683,14 +683,14 @@ const Hairstyles = () => {
                   }`}
                 onClick={() => setActiveMenu("added")}
               >
-                Show Added Haircuts
+                Coiffures ajoutées
               </div>
               <div
                 className={`${Theme_A.behaviour.buttonHoverBehaviour_3}  ${activeMenu === "new" && "bg-stone-800 text-white"
                   }`}
                 onClick={onToggleHairstyle}
               >
-                Add New Haircuts
+                Coiffure non dispensées
               </div>
             </div>
           </div>
