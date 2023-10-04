@@ -24,7 +24,7 @@ const ClientDashboardLayout = ({ children }: DashboardLayout) => {
     { icon: "StarGreyIcon", title: "Favoris", route: "/client/favorites" },
     { icon: "PortraitIcon", title: "Portrait", route: "/client/portrait" },
     { icon: "MessageIcon", title: "Filtres", route: "/client/filters" },
-    { icon: "ReservationIcon", title: "Réservations en cours", route: "/client/reservation" },
+    { icon: "ReservationIcon", title: "Réservations en cours", route: "/client/currentreservation" },
     { icon: "HistoryIcon", title: "Historique", route: "/client/history" },
     { icon: "HelpIcon", title: "Aide", route: "" },
   ];

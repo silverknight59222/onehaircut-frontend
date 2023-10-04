@@ -109,7 +109,7 @@ const Subscription = () => {
                             key={index}
                             className="flex items-center justify-center w-full h-16 border-b-2 border-[#E4E8E9] py-4"
                           >
-                            {index < 6 ? (
+                            {index < 5 ? (
                               <RegistrationCheckedIcon />
                             ) : (
                               <PackageUnCheckedIcon />
