@@ -20,6 +20,7 @@ export interface settingsStruct {
 const settingsMenu: settingsStruct[] = [
   { name: "Horaires", display: OpenningHours },
   { name: "Promotions", display: PromotionsSettings },
+  { name: "Notifications", display: BotSettings },
   { name: "Bot", display: BotSettings }
 ]
 
@@ -44,12 +45,13 @@ const Settings = () => {
         <div className="flex items-center justify-center gap-2">
           {/* DISPLAY SETTINGS MENU */}
           {!isLoading && (
-            <div className="max-w-[200px] h-max flex flex-col items-left justify-center text-center px-2 py-6 gap-8 rounded-2xl bg-white text-xl font-medium text-[#ABABAB] shadow-[3px_3px_10px_-1px_rgba(0,0,0,0.30)]">
+            <div className="max-w-[200px] h-max flex flex-col items-left justify-center text-center px-2 py-6 gap-8 rounded-2xl bg-white text- font-normal text-[#909090] shadow-lg">
               {settingsMenu.map((item) => {
                 return (
                   <p
-                    className={` cursor-pointer text-black ${activeMenu === item.name &&
-                      "px-3 py-2 rounded-md bg-gray-200"
+                    className={` cursor-pointer  ${activeMenu === item.name &&
+                      // "px-3 py-2 rounded-md bg-gray-200"
+                      " text-black "
                       }`}
                     onClick={() => setActiveMenu(item.name)}
                   >

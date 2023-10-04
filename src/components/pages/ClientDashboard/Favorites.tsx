@@ -1,6 +1,6 @@
 "use client";
 import { dashboard } from "@/api/dashboard";
-import { CrossIcon, LogoCircleFixRight, RegistrationCheckedIcon } from "@/components/utilis/Icons";
+import { CircleRight, CrossIcon, LogoCircleFixRight, RegistrationCheckedIcon } from "@/components/utilis/Icons";
 import ClientDashboardLayout from "@/layout/ClientDashboardLayout";
 import Image from "next/image";
 import React from "react";
@@ -109,7 +109,7 @@ const Favorites = () => {
     return (
         <div>
             <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 -z-10">
-                <LogoCircleFixRight />
+                <CircleRight />
             </div>
             <ClientDashboardLayout>
                 <div className="flex flex-col items-center justify-center mt-10 mb-5 px-8">
@@ -118,10 +118,10 @@ const Favorites = () => {
                         Favoris
                     </p>
                     {/* Haircuts part */}
-                    <div className="w-full relative flex flex-col items-center justify-center my-28">
+                    <div className="w-full relative flex flex-col items-center justify-center my-10">
                         <div className="w-full">
                             <p className="text-black text-3xl mb-3">Coiffures</p>
-                            <div className={`h-7 flex items-center rounded-xl text-white px-5 ${ColorsThemeA.OhcGradient_A}`} >
+                            <div className={`h-7 flex items-center rounded-xl text-white px-5 bg-gradient-to-r  from-zinc-800 via-zinc-400 to-zinc-100`} >
                                 {haircuts.length} favorites
                             </div>
                         </div>
@@ -133,8 +133,8 @@ const Favorites = () => {
                                             <tr key={index} className="flex flex-col items-center justify-center">
                                                 <div
 
-                                                    className={`${Theme_A.hairstyleCards.cardgradientTop}`}>
-                                                    <div className="relative w-max  bg-[#F5F5F5] rounded-t-xl">
+                                                    className={`${Theme_A.hairstyleCards.cardgradientTop} rounded-xl`}>
+                                                    <div className="relative w-max  bg-[#F5F5F5] ">
                                                         <div className="relative w-32 h-32">
                                                             <Image src={item.haircut.image.includes('https://api-server.onehaircut.com/public') ? item.haircut.image : `https://api-server.onehaircut.com/public${item.haircut.image}`} fill={true} alt="" className="rounded-t-xl" />
                                                         </div>
@@ -159,10 +159,10 @@ const Favorites = () => {
                     </div>
 
                     {/* Salons' part */}
-                    <div className="w-full relative flex flex-col items-center justify-center my-28">
+                    <div className="w-full relative flex flex-col items-center justify-center my-72 ">
                         <div className="w-full">
                             <p className="text-black text-3xl mb-3">Salons</p>
-                            <div className={`h-7 flex items-center rounded-xl text-white px-5 ${ColorsThemeA.OhcGradient_A}`} >
+                            <div className={`h-7 flex items-center rounded-xl text-white px-5 bg-gradient-to-r from-zinc-800 via-zinc-400 to-zinc-100`} >
                                 {salons.length} favorites
                             </div>
                         </div>

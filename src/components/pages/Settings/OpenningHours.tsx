@@ -141,18 +141,18 @@ const OpenningHours = () => {
             {isLoading && loadingView()}
             <div className="flex items-center flex-col justify-center gap-2 w-max">
                 {!isLoading && (
-                    <div className="max-w-[750px] flex items-center justify-center text-center px-9 py-6 gap-8 rounded-2xl bg-white text-xl font-medium text-[#ABABAB] shadow-[3px_3px_10px_-1px_rgba(0,0,0,0.30)]">
+                    <div className="max-w-[750px] flex items-center justify-center text-center px-9 py-6 mb-3 gap-8 rounded-2xl bg-white text-xl font-light text-[#ABABAB] shadow-lg">
                         <p
-                            className={`cursor-pointer text-black ${activeMenu === "salon-time" &&
-                                "px-3 py-2 rounded-md bg-gray-200"
+                            className={`cursor-pointer text-black  px-2 py-2 rounded-md hover:bg-stone-100 hover:text-black ${activeMenu === "salon-time" &&
+                                " bg-black text-white font-medium"
                                 }`}
                             onClick={() => setActiveMenu("salon-time")}
                         >
                             Horaires d’ouverture
                         </p>
                         <p
-                            className={`cursor-pointer text-black ${activeMenu === "salon-dressers" &&
-                                "px-2 py-2 rounded-md bg-gray-200"
+                            className={`cursor-pointer text-black px-2 py-2 rounded-md hover:bg-stone-100  hover:text-black ${activeMenu === "salon-dressers" &&
+                                " bg-black text-white font-medium"
                                 }`}
                             onClick={() => setActiveMenu("salon-dressers")}
                         >
@@ -166,7 +166,7 @@ const OpenningHours = () => {
                             <table>
                                 <tbody>
                                     <tr className="flex items-center justify-center">
-                                        <td className="flex flex-col gap-16 pr-3 md:pr-5">
+                                        <td className="flex flex-col gap-12 pr-3 md:pr-5">
                                             {updatedSlots.map((item, index) => {
                                                 return (
                                                     <div
@@ -182,14 +182,14 @@ const OpenningHours = () => {
                                                         >
                                                             <CheckedIcon width="15" height="10" />
                                                         </div>
-                                                        <p className="text-sm md:text-xl text-[#767676] font-medium">
+                                                        <p className="text-sm md:text-md font-normal text-[#767676]">
                                                             {item.day}
                                                         </p>
                                                     </div>
                                                 );
                                             })}
                                         </td>
-                                        <td className="flex flex-col gap-12 border-l border-[rgba(171,171,171,0.20)] px-3 md:px-5">
+                                        <td className="flex flex-col gap-8 border-l border-[rgba(171,171,171,0.20)] px-3 md:px-5">
                                             <SlotDropdown
                                                 selectedItem={updatedSlots}
                                                 getUpdatedSlots={getUpdatedSlots}
@@ -197,13 +197,13 @@ const OpenningHours = () => {
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td className="flex w-full items-center justify-end mt-5">
+                                        <td className="flex w-full items-center justify-end mt-14">
                                             <div className="flex items-center justify-center rounded-xl text-lg">
                                                 <p
                                                     onClick={updateSlots}
                                                     className={`py-2 px-3  text-sm ${!disableUpdate
                                                         ? Theme_A.button.mediumGradientButton
-                                                        : "bg-gray-200 text-black rounded-md cursor-default"
+                                                        : "bg-gray-200 text-zinc-400 rounded-md cursor-not-allowed"
                                                         }`}
                                                 >
                                                     Appliquer les changement
