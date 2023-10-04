@@ -79,7 +79,7 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
           {/* Insérez ici la vignette */}
         </div>
 
-        {/* Liste */}
+        {/* Date */}
         <div className="text-center mb-[-4px]">
           <strong>Date du rdv :</strong> {props.event.start.split('T')[0]}
         </div>
