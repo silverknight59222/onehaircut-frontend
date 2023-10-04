@@ -8,6 +8,7 @@ import path from 'path';
 import React, { useState } from 'react'
 import { pathToFileURL } from 'url';
 import StarRatings from "react-star-ratings";
+import Footer from '@/components/UI/Footer';
 
 const History = () => {
   interface BookingInfoStruct {
@@ -69,7 +70,7 @@ const History = () => {
     Date: '20/03/2023',
     Heure: '11:00',
     image: '/assets/portrait.png',
-    note: 4
+    note: 5
   }
 
   const history: BookingInfoStruct[] = [items1, items2, items3, items4]
@@ -93,7 +94,7 @@ const History = () => {
   // function to send the rate to backend
   // function to show the popup to rate the haircut given in argument
   const sendRate = async () => {
-    //TODO add backend function to send rate
+    //TODO add backend function to save rate into backend
     // use itemToRate and rating
     setRatePopUp(false)
   };
@@ -161,15 +162,24 @@ const History = () => {
                         <p className='text-[#666] text-sm text-center sm:text-start'>Coiffeur: {item.Coiffeur}</p>
 
                       </div>
-                      <div>
-                        <Image src={item.image} alt='' width={150} height={163} className='rounded-3xl' />
+                      <div className='w-[150px]'>
+                        <Image src={item.image} alt='' width={150} height={150} className='rounded-3xl' />
+                        <div className='justify-center items-center mt-3 bg-zinc-100 rounded-2xl p-1'>
+                          <StarRatings
+                            rating={item.note}
+                            starRatedColor="#FEDF10"
+                            starSpacing="2px"
+                            starDimension="25px"
+                            numberOfStars={5}
+                          />
+                        </div>
                       </div>
                     </div>
                     {!isRatePopUp &&
                       <div className='flex items-center justify-center  mt-10 sm:mt-5 -z-10'>
                         {item.note == 0 && <button
                           onClick={() => rateThisHaircut(item.Salon)}
-                          className={` ${Theme_A.button.medWhiteColoredButton} mx-1`}>
+                          className={` ${Theme_A.button.medBlackColoredButton} mx-1`}>
                           Noter
                         </button>
                         }
@@ -192,6 +202,7 @@ const History = () => {
           </div>
         </div>
       </ClientDashboardLayout>
+      <Footer />
     </div>
   )
 }
