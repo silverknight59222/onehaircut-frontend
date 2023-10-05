@@ -44,7 +44,7 @@ const Subscription = () => {
               </p>
             </div>
           </div>
-          <div className="flex flex-col xl:flex-row items-center xl:items-start justify-center gap-4 2xl:gap-12 mt-10 lg:mt-52">
+          <div className="z-10  flex-col xl:flex-row items-center xl:items-start justify-center gap-4 2xl:gap-12 mt-10 lg:mt-52">
             <div className="hidden lg:block relative">
               <BgDashboardPricingTable />
               <div className="rounded-xl py-4 px-5">
@@ -98,7 +98,7 @@ const Subscription = () => {
                     Abo actuel
                   </div>
                   {/* Regular side */}
-                  <div className="bg-white w-52 absolute -top-40 left-[440px] flex flex-col items-center justify-center py-6 rounded-[20px]">
+                  <div className=" z-10 bg-white w-52 absolute -top-40 left-[440px] flex flex-col items-center justify-center py-6 rounded-[20px]">
                     <div className="text-3xl font-semibold text-black w-48 text-center mb-16">
                       OneHaircut Regular
                     </div>
@@ -123,7 +123,7 @@ const Subscription = () => {
                     </div>
                   </div>
                   {/* <div className={`w-52 absolute left-[450px] top-[650px]  flex items-center justify-center ${Theme_A.button.medWhiteColoredButton}`}> */}
-                  <div className="w-48 absolute left-[450px] top-[650px]  flex items-center justify-center text-black font-semibold border border-[#000000] rounded-3xl -mb-12 h-12 bg-white hover:scale-105 transition-transform hover:shadow-md">
+                  <div className="z-10 w-48 absolute left-[450px] top-[650px]  flex items-center justify-center text-black font-semibold border border-[#000000] rounded-3xl -mb-12 h-12 bg-white hover:scale-105 transition-transform hover:shadow-md">
                     Choisir
                   </div>
                 </div>
@@ -132,7 +132,7 @@ const Subscription = () => {
             <div className="relative z-10 flex items-center justify-center w-full lg:hidden">
               <MobilePricingTable />
             </div>
-            <div className="relative z-20 w-full sm:w-[415px] flex flex-col items-center justify-center sm:-mt-5 lg:mt-10 xl:mt-0">
+            <div className="relative z-10 w-full sm:w-[415px] flex flex-col  sm:-mt-5 lg:mt-20 xl:mt-20">
               <div className="py-4 px-5 2xl:text-xl text-center text-black whitespace-nowrap bg-[#F4F4F6] font-medium border border-[#9B9B9B] rounded-xl">
                 <p>Renouvellement de l’abonnement le: </p>
                 <p className="text-center mt-1">12 / 07 / 2024</p>
@@ -153,7 +153,7 @@ const Subscription = () => {
                   <p>Renouvellement&nbsp;Automatique</p>
                 </div>
               </div>
-              <button className="w-48 h-12 flex items-center justify-center bg-[#ffffff] border border-secondary rounded-xl mt-4 text-black font-medium hover:scale-90 transition-transform hover:bg-red-500 hover:font-bold">
+              <button className="w-40 h-10 flex items-center justify-center bg-[#ffffff] border border-secondary rounded-xl mt-40 mb-6 text-black font-normal hover:scale-90 transition-transform hover:bg-red-500 hover:font-bold">
                 Clôturer le compte
               </button>
             </div>
