@@ -35,6 +35,7 @@ const Subscription = () => {
       <DashboardLayout>
         <div className="mt-16 px-4 lg:px-11">
           <div className="flex items-center justify-center">
+            {/* TODO: slide button not working */}
             <div className="w-80 h-10 flex items-center justify-between rounded-3xl bg-[#FAFAFA] shadow-[rgba(220,215,215,0.34)] text-xs font-semibold">
               <p className="text-[#0E0D0D] pl-5 cursor-pointer">
                 Paiement mensuel
