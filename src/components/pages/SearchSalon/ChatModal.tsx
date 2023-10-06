@@ -16,6 +16,7 @@ interface ChatModalProps {
     message: string;
     setMessage: (val: string) => void;
     sendMessage: () => void;
+    className?: string; // Ajouter ceci
 }
 
 const ChatModal: FC<ChatModalProps> = ({
@@ -24,7 +25,7 @@ const ChatModal: FC<ChatModalProps> = ({
     messages,
     message,
     setMessage,
-    sendMessage
+    sendMessage,
 }) => {
     const router = useRouter();
 

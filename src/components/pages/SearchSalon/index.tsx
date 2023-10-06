@@ -2,12 +2,8 @@
 import { client } from "@/api/clientSide";
 import Navbar from "@/components/shared/Navbar";
 import {
-  Instagram,
+  LogoCircleFixLeft,
   LogoIcon,
-  QuotationFillIcon,
-  QuotationIcon,
-  ChatSendIcon,
-  CrossIcon,
 } from "@/components/utilis/Icons";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -19,7 +15,8 @@ import BaseModal from "@/components/UI/BaseModal";
 import { Theme_A } from "@/components/utilis/Themes";
 import { ColorsThemeA } from "@/components/utilis/Themes";
 import ChatModal from "./ChatModal";
-
+import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
+import Footer from "@/components/UI/Footer";
 
 interface SalonImages {
   image: string,
@@ -36,6 +33,7 @@ interface SalonProfile {
   salon_hairdressers: SalonHairdressers[],
 }
 
+
 const SearchSalon = () => {
   const [selectedImage, setSelectedImage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -44,6 +42,7 @@ const SearchSalon = () => {
   const { loadingView } = userLoader();
   const salon = getLocalStorage('selectedSalon')
   const salonId = salon ? JSON.parse(salon).id : null
+
   //TODO Import salon availability times
   const hours = [
     { title: "Lundi", hours: "Fermé" },
@@ -54,6 +53,7 @@ const SearchSalon = () => {
     { title: "Samedi", hours: "10:00 - 19:00" },
     { title: "Dimanche", hours: "10:00 - 19:00" },
   ];
+
 
   const getAllHairDresser = async () => {
     setIsLoading(true);
@@ -103,9 +103,6 @@ const SearchSalon = () => {
     <div className="relative">
       {/* Affiche une vue de chargement pendant que les données sont récupérées */}
       {isLoading && loadingView()}
-
-      {/* Image en arrière-plan */}
-      <img src="/assets/registration_bg_bottom.png" className="absolute -bottom-12 w-full" />
 
       {/* Barre de navigation */}
       <Navbar isSalonPage={true} />
@@ -240,72 +237,69 @@ const SearchSalon = () => {
             >
               Contacter le salon
             </button>
-            {/* Affichez le modal si `isModalOpen` est vrai */}
-            {isModalOpen && (
-              <ChatModal
-                isModalOpen={isModalOpen}
-                closeModal={closeModal}
-                messages={messages}
-                message={message}
-                setMessage={setMessage}
-                sendMessage={sendMessage}
-              />
-
-
-            )}
           </div>
         </div>
 
-        {/* Galerie d'images du salon */}
-        <div className="flex items-center justify-center">
-          <div className="w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 2xl:gap-12 mt-20">
-            {salonProfile.salon_images.map((img, index) => {
-              return (
-                <div
-                  key={index}
-                  className="relative w-full sm:w-[280px] md:w-[315px] xl:w-[390px] 2xl:w-[487px] h-60 md:h-64 xl:h-72 2xl:h-80 bg-[#D9D9D9] rounded-3xl"
-                >
-                  <Image src={img.image.includes('https://api-server.onehaircut.com/public') ? img.image : `https://api-server.onehaircut.com/public${img.image}`} alt="" fill={true} className="rounded-3xl" />
-                </div>
-              );
-            })}
-          </div>
-        </div>
+        {/* Import Google map here */}
+
 
         {/* Section des coiffeurs */}
-        <div className="mt-20">
+        <div className="mt-20 bg-stone-50 p-8 rounded-lg shadow-sm opacity-90 "> {/* Vignette générale ajoutée ici */}
           <p className="text-5xl font-semibold text-black text-center">
-            Coiffeur
+            Coiffeurs
           </p>
           <div className="flex items-center justify-center mt-8">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 lg:gap-20 ">
               {salonProfile.salon_hairdressers.map((hairdresser, index) => {
                 return (
-                  <div key={index}>
-                    <div className="relative w-52 lg:w-64 h-52 lg:h-64 rounded-[20px]">
+                  <div key={index} className="p-2 rounded-lg shadow-sm relative bg-gray-100 border border-stone-300">
+
+                    {/* Background de la vignette avec opacité */}
+                    <div className="absolute inset-0 opacity-100 rounded-xl"></div>
+
+                    {/* Image du coiffeur */}
+                    <div className="relative w-40 lg:w-52 h-40 lg:h-52 rounded-[20px] ">
                       <Image
                         src={hairdresser.profile_image && hairdresser.profile_image.includes('https://api-server.onehaircut.com/public') ? hairdresser.profile_image : `https://api-server.onehaircut.com/public${hairdresser.profile_image}`}
                         alt=""
-                        fill={true}
+                        layout="fill"
                         className="rounded-[20px]"
                       />
+
+                      {/*Affichage de tous les modaux ici */}
+                      {/* Affichez le modal si `isModalOpen` est vrai */}
+                      {isModalOpen && (
+                        <ChatModal
+                          isModalOpen={isModalOpen}
+                          closeModal={closeModal}
+                          messages={messages}
+                          message={message}
+                          setMessage={setMessage}
+                          sendMessage={sendMessage}
+                          className="z-1000 opacity-100"
+                        />
+                      )}
                     </div>
+
+                    {/* Nom du coiffeur */}
                     <p className="text-2xl text-black font-medium text-center mt-1">
                       {hairdresser.name}
                     </p>
                   </div>
                 );
               })}
+
             </div>
           </div>
         </div>
-
-        {/* Logo en bas de la page */}
-        <div className="pb-16 mt-20">
-          <LogoIcon />
-        </div>
       </div>
+
+      <div className="pb-16 mt-40 relative z-[-1]"> {/* Ici nous appliquons le z-index et position:relative */}
+        <LogoCircleFixLeft />
+      </div>
+      <Footer />
     </div >
+
   );
 };
 
