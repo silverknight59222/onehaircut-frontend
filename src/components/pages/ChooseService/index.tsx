@@ -13,6 +13,7 @@ import { Theme_A } from '@/components/utilis/Themes';
 import { ColorsThemeA } from '@/components/utilis/Themes';
 import Footer from "@/components/UI/Footer";
 
+// Définition des interfaces pour typer les données manipulées dans le composant.
 interface Requirements {
     id: number,
     name: string,
@@ -34,7 +35,9 @@ export interface Service {
     requirements: []
 }
 
+// Composant principal
 const ServiceChoose = () => {
+    // Déclaration des états locaux du composant avec useState.
     const [selectedService, setSelectedService] = useState<string[]>([])
     const [selectedRequirements, setSelectedRequirements] = useState<string[]>([])
     const [selectedDropdown, setSelectedDropdown] = useState<number | null>(null)
@@ -49,10 +52,12 @@ const ServiceChoose = () => {
     const [filteredService, setFilteredServices] = useState<Services[]>([]);
     const { loadingView } = userLoader();
     const router = useRouter()
+    // useRef est utilisé pour créer une référence mutable qui conserve la même .current entre les renders
     const dropdownRef = React.useRef() as React.MutableRefObject<HTMLInputElement>
     const temp = getLocalStorage("haircut")
     const haircut = temp ? JSON.parse(String(temp)) : null
 
+    // Obtention de tous les services.
     const getAllServices = () => {
         setIsLoading(true);
         dashboard.getServicesByHaircut()
@@ -65,6 +70,7 @@ const ServiceChoose = () => {
             .catch(error => console.log(error))
     }
 
+    // Gestion du clic sur un service.
     const onServiceclick = (name: string, serviceId: number, serviceRequirements: string[]) => {
         setSelectedRequirements([])
         setIsCorrectInfo(false)
@@ -81,6 +87,7 @@ const ServiceChoose = () => {
         }
     }
 
+    // Validation d'une exigence.
     const onValidateRequirement = (id: number) => {
         setSelectedRequirementIds([...selectedRequirementIds, String(id)])
         if ((requirements.arr.length === selectedRequirements.length) && isCorrectInfo) {
@@ -90,6 +97,7 @@ const ServiceChoose = () => {
 
     }
 
+    // Gestion du service sélectionné/désélectionné.
     const serviceCheckedHandler = (serviceId: number) => {
         let id = serviceId.toString()
         if (selectedService.includes(id)) {
@@ -102,6 +110,7 @@ const ServiceChoose = () => {
         }
     }
 
+    // Gestion du contrôle de l'exigence.
     const requirementCheckHandler = (id: number, requirement: string) => {
         if (selectedRequirements.includes(requirement)) {
             const tempArray = [...selectedRequirements];
@@ -114,6 +123,7 @@ const ServiceChoose = () => {
         }
     }
 
+    // Fonction pour continuer à l'étape suivante.
     const onContinue = () => {
         const arr = []
         for (let i = 0; i < services.length; i++) {
@@ -127,10 +137,12 @@ const ServiceChoose = () => {
         router.push(`/salons`)
     }
 
+    // Fonction pour gérer le menu déroulant.
     const onDropdown = (e: any, index: number) => {
         setSelectedDropdown(index)
     }
 
+    // Filtrage des services.
     const filteredServicesHandler = () => {
         let list = services;
         let filteredServices: Services[] = [];
@@ -155,6 +167,8 @@ const ServiceChoose = () => {
             setFilteredServices(filteredServices);
         }
     }
+
+    // Affichage des services.
     const showServices = () => {
         if (filteredType.length > 0 || search !== "") {
             return filteredService;
@@ -163,12 +177,14 @@ const ServiceChoose = () => {
         }
     };
 
+    // Fermeture de la boîte de sélection lors du clic en dehors de celle-ci.
     const closeSelectBox = ({ target }: MouseEvent): void => {
         if (!dropdownRef.current?.contains(target as Node)) {
             setSelectedDropdown(null);
         }
     };
 
+    // Les useEffect sont utilisés pour gérer les effets de bord dans les fonctionnalités de composants.
     useEffect(() => {
         document.addEventListener('click', closeSelectBox);
         return () => {
@@ -176,18 +192,22 @@ const ServiceChoose = () => {
         };
     }, []);
 
+    // Charger tous les services au montage du composant.
     useEffect(() => {
         getAllServices()
     }, [])
+
+    // Filtrage des services lors de la modification de la recherche ou du type filtré.
     useEffect(() => {
         filteredServicesHandler()
     }, [search, filteredType])
 
 
+    // JSX retourné pour le rendu du composant.
     return (
         <div>
             <Navbar isServicesPage={true} onTypeSelect={(type) => setFilteredType(type)} onServiceSearch={(value: string) => setSearch(value)} />
-            <div className='flex items-center cursor-pointer mt-10 mb-8 sm:mx-10 2xl:mx-14' onClick={() => router.push('/')}>
+            <div className='flex items-center cursor-pointer mt-10 mb-8 sm:mx-10 2xl:mx-14 text-stone-800' onClick={() => router.push('/')}>
                 <BackArrow />
                 <p className={`${Theme_A.textFont.navigationGreyFont}`}>Retour aux coiffures</p>
             </div>
@@ -195,10 +215,6 @@ const ServiceChoose = () => {
             <div className='flex flex-col items-center justify-center px-4 sm:px-12' >
                 {isLoading && loadingView()}
                 <p className='text-4xl font-medium text-black text-center'> Choisissez une ou plusieurs <span className={`font-bold ${ColorsThemeA.textGradient_Title}`}>prestations !</span></p>
-                {/* <div className='flex flex-col md:flex-row items-center justify-center gap-8  mt-6'>
-                    <button className='flex items-center justify-center text-lg text-black font-medium w-full md:w-64 h-14 border border-black rounded-xl'>Retour au coiffure</button>
-                    <button className='flex items-center justify-center text-lg text-white bg-background-gradient font-medium w-full md:w-80 h-14 rounded-xl px-4'>Rechercher un professionnel</button>
-                </div> */}
                 <div className='flex flex-col items-center'>
                     <div className='w-full flex flex-col md:flex-row items-center justify-between mt-14'>
                         <div className='flex flex-col sm:flex-row items-center gap-5 mb-5 md:mb-0'>
@@ -216,7 +232,7 @@ const ServiceChoose = () => {
                         </div>
                         <button disabled={!haircut && !selectedService.length} onClick={onContinue} className={`flex items-center justify-center text-lg text-white font-medium w-full md:w-52 h-14 rounded-xl px-4 ${Theme_A.button.medLargeGradientButton}`}>Continue</button>
                     </div>
-                    <div className='mt-8 mb-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-x-9 gap-y-5 '>
+                    <div className='mt-8 mb-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-x-9 gap-y-5 '>
                         {showServices().map((service, index) => {
                             return (
                                 <div key={index} onClick={() => onServiceclick(service.name, service.id, service.requirements)}

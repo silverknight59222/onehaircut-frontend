@@ -155,7 +155,7 @@ const SalonChoice = () => {
                     </div>
                 </div> */}
                 <div className='w-full flex items-end justify-between mt-12 px-4'>
-                    <div className='flex items-center cursor-pointer mt-10 mb-8 sm:mx-10 2xl:mx-14' onClick={() => router.push('/services')}>
+                    <div className='flex items-center cursor-pointer mt-10 mb-8 sm:mx-10 2xl:mx-14 text-stone-800' onClick={() => router.push('/services')}>
                         <BackArrow />
                         <p className={`${Theme_A.textFont.navigationGreyFont}`}>Retour aux services</p>
                     </div>

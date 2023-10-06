@@ -16,7 +16,6 @@ interface ChatModalProps {
     message: string;
     setMessage: (val: string) => void;
     sendMessage: () => void;
-    className?: string; // Ajouter ceci
 }
 
 const ChatModal: FC<ChatModalProps> = ({

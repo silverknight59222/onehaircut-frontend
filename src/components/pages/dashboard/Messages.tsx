@@ -35,10 +35,9 @@ const Messages = () => {
                     <p className="text-black">{message.name}</p>
                   </div>
                   <p
-                    className={`w-5 h-5 rounded-full text-xs flex items-center justify-center text-white ${
-                      message.num &&
+                    className={`w-5 h-5 rounded-full text-xs flex items-center justify-center text-white ${message.num &&
                       "bg-gradient-to-tr from-red-500 to-yellow-400"
-                    }`}
+                      }`}
                   >
                     {message.num && message.num}
                   </p>
@@ -65,18 +64,18 @@ const Messages = () => {
                   Oui, je peux le faire, regardez sur mes photos de
                   présentation.{" "}
                 </p>
-              </div>              
+              </div>
             </div>
             <div className="w-full flex items-center justify-center gap-3 mt-10">
-                <PlusIcon />
-                <div className="relative w-9/12">
-                  <input className="w-full border border-[#A3A3A3] rounded-xl h-9" />
-                  <div className="absolute top-1.5 right-1.5">
-                    <EmojiIcon />
-                  </div>
+              <PlusIcon />
+              <div className="relative w-9/12">
+                <input className="w-full border border-[#A3A3A3] rounded-xl h-9" />
+                <div className="absolute top-1.5 right-1.5">
+                  <EmojiIcon />
                 </div>
-                <SendIcon />
               </div>
+              <SendIcon />
+            </div>
             <div className="relative w-full bg-white h-20">
               <Image
                 src="/assets/messages2.png"
