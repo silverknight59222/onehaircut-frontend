@@ -1,6 +1,6 @@
 "use client";
 import BaseModal from '@/components/UI/BaseModal';
-import { CircleRight, LogoCircleFixRight } from '@/components/utilis/Icons';
+import { LogoCircleFixRight } from '@/components/utilis/Icons';
 import { Theme_A } from '@/components/utilis/Themes';
 import ClientDashboardLayout from '@/layout/ClientDashboardLayout'
 import Image from 'next/image';

@@ -139,7 +139,7 @@ const Favorites = () => {
                                                             <Image src={item.haircut.image.includes('https://api-server.onehaircut.com/public') ? item.haircut.image : `https://api-server.onehaircut.com/public${item.haircut.image}`} fill={true} alt="" className="rounded-t-xl" />
                                                         </div>
                                                     </div>
-                                                    <div className="rounded-b-xl ">
+                                                    <div className="rounded-xl ">
                                                         <p className={`${Theme_A.hairstyleCards.cardText}`}>
                                                             {item.haircut.name}
                                                         </p>
@@ -147,7 +147,7 @@ const Favorites = () => {
                                                     <div
                                                         onClick={(e) => RemoveHaircutWishlist(e, item.haircut.id)}
                                                         className={`absolute top-1 right-1 flex items-center justify-center w-6 h-6 cursor-pointer rounded-md ${Theme_A.button.crossButtonSmall}`}>
-                                                        <CrossIcon width="9" height="9" />
+                                                        <CrossIcon width="18" height="18" />
                                                     </div>
                                                 </div>
                                             </tr>

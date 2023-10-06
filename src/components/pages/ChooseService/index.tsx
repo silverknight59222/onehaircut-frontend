@@ -50,8 +50,8 @@ const ServiceChoose = () => {
     const { loadingView } = userLoader();
     const router = useRouter()
     const dropdownRef = React.useRef() as React.MutableRefObject<HTMLInputElement>
-    const temp=getLocalStorage("haircut")
-    const haircut= temp ? JSON.parse(String(temp)) : null
+    const temp = getLocalStorage("haircut")
+    const haircut = temp ? JSON.parse(String(temp)) : null
 
     const getAllServices = () => {
         setIsLoading(true);
@@ -116,10 +116,10 @@ const ServiceChoose = () => {
 
     const onContinue = () => {
         const arr = []
-        for(let i=0; i < services.length; i++){
+        for (let i = 0; i < services.length; i++) {
             for (let j = 0; j < selectedService.length; j++) {
-                if(services[i].id === Number(selectedService[j])){
-                    arr.push({name: services[i].name, id: services[i].id})
+                if (services[i].id === Number(selectedService[j])) {
+                    arr.push({ name: services[i].name, id: services[i].id })
                 }
             }
         }
@@ -214,7 +214,7 @@ const ServiceChoose = () => {
                                 <p></p>
                             )}
                         </div>
-                        <button disabled={!haircut && !selectedService.length} onClick={onContinue} className={`flex items-center justify-center text-lg text-white font-medium w-full md:w-52 h-14 rounded-xl px-4 ${ColorsThemeA.OhcGradient_A}`}>Continue</button>
+                        <button disabled={!haircut && !selectedService.length} onClick={onContinue} className={`flex items-center justify-center text-lg text-white font-medium w-full md:w-52 h-14 rounded-xl px-4 ${Theme_A.button.medLargeGradientButton}`}>Continue</button>
                     </div>
                     <div className='mt-8 mb-5 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-x-9 gap-y-5 '>
                         {showServices().map((service, index) => {

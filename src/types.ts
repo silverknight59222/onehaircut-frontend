@@ -104,3 +104,19 @@ export type Slot={
 	id: number,
 	start: string
 }
+
+export type Chat={
+	message: string,
+	by: string,
+	created_at: string,
+}
+
+interface Client{
+	name: string
+}
+
+export type ClientChat={
+	id?: number,
+	client_id: number,
+	client: Client
+}
