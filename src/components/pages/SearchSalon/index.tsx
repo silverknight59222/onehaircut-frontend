@@ -449,7 +449,7 @@ const SearchSalon = () => {
           <LoadScript googleMapsApiKey={googleMapsApiKey}>
             <GoogleMap
               mapContainerStyle={mapStyles}
-              zoom={17}
+              zoom={13}
               center={mapCenter}
             >
               {/* Ajout d'un marqueur */}
