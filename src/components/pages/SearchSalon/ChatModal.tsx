@@ -1,8 +1,11 @@
-import React, { FC } from "react";
+import React, { FC, useEffect, useState } from "react";
 import BaseModal from "@/components/UI/BaseModal";
 import { ChatSendIcon } from "@/components/utilis/Icons";
 import { Theme_A } from '@/components/utilis/Themes';
 import { useRouter } from "next/navigation";
+import { dashboard } from "@/api/dashboard";
+import { getLocalStorage } from "@/api/storage";
+import { Chat } from "@/types";
 
 interface Message {
     content: string;
@@ -12,23 +15,53 @@ interface Message {
 interface ChatModalProps {
     isModalOpen: boolean;
     closeModal: () => void;
-    messages: Message[];
-    message: string;
-    setMessage: (val: string) => void;
-    sendMessage: () => void;
     className?: string; // Ajouter ceci
+    professionalData: any
 }
 
 const ChatModal: FC<ChatModalProps> = ({
     isModalOpen,
     closeModal,
-    messages,
-    message,
-    setMessage,
-    sendMessage,
+    professionalData
 }) => {
     const router = useRouter();
+    const user = getLocalStorage("user");
+    const userData = user ? JSON.parse(user) : null
+    const [chats,setChats]=useState<Chat[]>([])
+    const [message, setMessage] = useState("");
 
+    const getChat = async () => {
+        if (userData) {
+            await dashboard.getChat(userData.id, professionalData.id)
+                .then(resp => {
+                    setChats(resp.data.data)
+                })
+                .catch(err => console.log(err))
+        }
+    }
+
+    const onSendMessage = async () => {
+        if (message) {
+          const data={
+            client_id: userData.id,
+            professional_id: professionalData.id,
+            message: message,
+            by: userData.role==='salon_professional' ? 'professional' : 'client',
+        }
+        await dashboard.sendMessage(data)
+        .then(resp=>{
+            getChat()
+            setMessage("");
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+        }
+      };
+
+    useEffect(()=>{
+        getChat()
+    },[])
     return (
         <>
             {isModalOpen && (
@@ -44,12 +77,12 @@ const ChatModal: FC<ChatModalProps> = ({
                             Vers la messagerie
                         </button>
                         <div className="border border-gray-300 rounded-xl p-2 rounded-bl-lg overflow-auto h-40 bg-stone-100 shadow-inner mb-2">
-                            {messages.map((msg, index) => (
-                                <div key={`msg-${index}`} className={`${msg.sent ? 'text-right' : 'text-left'} mb-2`}>
+                            {chats.map((msg, index) => (
+                                <div key={`msg-${index}`} className={`${msg.by==='client' ? 'text-right' : 'text-left'} mb-2`}>
                                     <div
-                                        className={`inline-block p-2 text-xs outline-1 ${msg.sent ? 'rounded-l-lg rounded-b-lg outline outline-orange-500 bg-stone-100' : 'rounded-r-lg rounded-b-lg outline outline-stone-400 bg-white'}`}
+                                        className={`inline-block p-2 text-xs outline-1 ${msg.by==='client' ? 'rounded-l-lg rounded-b-lg outline outline-orange-500 bg-stone-100' : 'rounded-r-lg rounded-b-lg outline outline-stone-400 bg-white'}`}
                                     >
-                                        <strong>{msg.sent ? 'Vous:' : 'Client:'}</strong> {msg.content}
+                                        <strong>{msg.by==='client' ? 'Vous' : professionalData.name}:</strong> {msg.message}
                                     </div>
                                 </div>
                             ))}
@@ -62,7 +95,7 @@ const ChatModal: FC<ChatModalProps> = ({
                                 placeholder="Écrire un message"
                                 className="flex-grow border border-gray-300 rounded-xl p-2 min-w-0 focus:outline-none focus:border-red-500 shadow-inner"
                             />
-                            <button type="button" onClick={sendMessage} className="transform hover:scale-105 ">
+                            <button type="button" onClick={onSendMessage} className="transform hover:scale-105 ">
                                 <ChatSendIcon />
                             </button>
                         </div>

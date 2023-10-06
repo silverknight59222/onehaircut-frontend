@@ -17,6 +17,7 @@ import { ColorsThemeA } from "@/components/utilis/Themes";
 import ChatModal from "./ChatModal";
 import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import Footer from "@/components/UI/Footer";
+import useSnackbar from "@/hooks/useSnackbar";
 
 interface SalonImages {
   image: string,
@@ -31,13 +32,14 @@ interface SalonProfile {
   rating: string,
   salon_images: SalonImages[],
   salon_hairdressers: SalonHairdressers[],
+  user_id: number
 }
 
 
 const SearchSalon = () => {
   const [selectedImage, setSelectedImage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [salonProfile, setSalonProfile] = useState<SalonProfile>({ name: '', rating: '', salon_images: [{ image: '', is_cover: true }], salon_hairdressers: [{ name: '', profile_image: '' }] })
+  const [salonProfile, setSalonProfile] = useState<SalonProfile>({ name: '', rating: '', user_id: 0, salon_images: [{ image: '', is_cover: true }], salon_hairdressers: [{ name: '', profile_image: '' }] })
   const router = useRouter();
   const { loadingView } = userLoader();
   const salon = getLocalStorage('selectedSalon')
@@ -89,14 +91,6 @@ const SearchSalon = () => {
   // Cette fonction sera appelée lorsque l'utilisateur clique sur le bouton pour ouvrir le modal
   const openModal = () => {
     setIsModalOpen(true);
-  };
-  const sendMessage = () => {
-    if (message) {
-      setMessages([...messages, { content: message, sent: true }]);
-      setMessage("");
-      // Pour simuler la réception d'un message
-      setMessages(prev => [...prev, { content: "Réponse automatique", sent: false }]);
-    }
   };
 
   return (
@@ -272,10 +266,7 @@ const SearchSalon = () => {
                         <ChatModal
                           isModalOpen={isModalOpen}
                           closeModal={closeModal}
-                          messages={messages}
-                          message={message}
-                          setMessage={setMessage}
-                          sendMessage={sendMessage}
+                          professionalData={salonProfile}
                           className="z-1000 opacity-100"
                         />
                       )}
