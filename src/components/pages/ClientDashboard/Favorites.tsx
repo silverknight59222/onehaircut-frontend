@@ -109,7 +109,7 @@ const Favorites = () => {
     return (
         <div>
             <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 -z-10">
-                <CircleRight />
+                <LogoCircleFixRight />
             </div>
             <ClientDashboardLayout>
                 <div className="flex flex-col items-center justify-center mt-10 mb-5 px-8">

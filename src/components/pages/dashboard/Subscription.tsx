@@ -36,14 +36,14 @@ const Subscription = () => {
         <div className="mt-16 px-4 lg:px-11">
           <div className="flex items-center justify-center">
             {/* TODO: slide button not working */}
-            <div className="w-80 h-10 flex items-center justify-between rounded-3xl bg-[#FAFAFA] shadow-[rgba(220,215,215,0.34)] text-xs font-semibold">
+            {/* <div className="w-80 h-10 flex items-center justify-between rounded-3xl bg-[#FAFAFA] shadow-[rgba(220,215,215,0.34)] text-xs font-semibold">
               <p className="text-[#0E0D0D] pl-5 cursor-pointer">
                 Paiement mensuel
               </p>
               <p className="text-white bg-[#3C3A3A] rounded-3xl py-2.5 px-5 cursor-pointer">
                 Paiement Annuel
               </p>
-            </div>
+            </div> */}
           </div>
           <div className="z-10  flex-col xl:flex-row items-center xl:items-start justify-center gap-4 2xl:gap-12 mt-10 lg:mt-52">
             <div className="hidden lg:block relative">

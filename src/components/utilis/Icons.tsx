@@ -2084,7 +2084,7 @@ export const StarIcon = (IconStyle: IconType) => {
     >
       <path
         d="M15.2502 15.2353L24.6857 14.418L16.4195 9.59751L18.2932 0.566492L11.3559 6.64466L3.08961 1.82412L7.02492 10.4387L0.0479687 16.5518L9.44591 15.7379L13.3656 24.3181L15.2502 15.2353Z"
-        fill="white"
+        fill={IconStyle.color ? IconStyle.color : "#989898"}
       />
     </svg>
   );
@@ -2096,7 +2096,9 @@ export const StarGreyIcon = (IconStyle: IconType) => {
       width={IconStyle.width ? IconStyle.width : "100"}
       height={IconStyle.height ? IconStyle.height : "100"}
       viewBox="0 0 100 100">
-      <polygon points="50,10 61.803,39.106 94.296,39.106 68.398,60.894 80.201,89.999 50,70.894 19.799,89.999 31.602,60.894 5.704,39.106 38.197,39.106" fill="none" stroke="#808080" stroke-width="4" />
+      <polygon
+        points="50,10 61.803,39.106 94.296,39.106 68.398,60.894 80.201,89.999 50,70.894 19.799,89.999 31.602,60.894 5.704,39.106 38.197,39.106"
+        fill={IconStyle.color ? IconStyle.color : "#989898"} stroke="#808080" stroke-width="4" />
     </svg>
   );
 };

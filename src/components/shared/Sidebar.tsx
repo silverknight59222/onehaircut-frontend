@@ -36,6 +36,8 @@ type SidebarType = {
   SidebarHandler: () => void;
 };
 
+const colorIcon = "#ffffff"
+
 const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }: SidebarType) => {
   const [salonDetail, setSalonDetails] = useState<SalonDetails[]>();
   const [activeSalon, setActiveSalon] = useState<SalonDetails>();
@@ -50,7 +52,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
       case "DashboardIcon":
         Icon = (
           <DashboardIcon
-            color={activeIcon === SidebarIcon ? "#FE3164" : "#989898"}
+            color={activeIcon === SidebarIcon ? colorIcon : "#989898"}
             width="24"
             height="24"
           />
@@ -59,7 +61,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
       case "ClientActivityIcon":
         Icon = (
           <ClientActivityIcon
-            color={activeIcon === SidebarIcon ? "#FE3164" : "#989898"}
+            color={activeIcon === SidebarIcon ? colorIcon : "#989898"}
             width="24"
             height="24"
           />
@@ -68,7 +70,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
       case "StatsIcon":
         Icon = (
           <StatsIcon
-            color={activeIcon === SidebarIcon ? "#FE3164" : "#989898"}
+            color={activeIcon === SidebarIcon ? colorIcon : "#989898"}
             width="24"
             height="24"
           />
@@ -77,7 +79,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
       case "RevenueIcon":
         Icon = (
           <RevenueIcon
-            color={activeIcon === SidebarIcon ? "#FE3164" : "#989898"}
+            color={activeIcon === SidebarIcon ? colorIcon : "#989898"}
             width="24"
             height="24"
           />
@@ -86,7 +88,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
       case "MessageIcon":
         Icon = (
           <MessageIcon
-            color={activeIcon === SidebarIcon ? "#FE3164" : "#989898"}
+            color={activeIcon === SidebarIcon ? colorIcon : "#989898"}
             width="24"
             height="24"
           />
@@ -95,7 +97,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
       case "SettingsIcon":
         Icon = (
           <SettingsIcon
-            color={activeIcon === SidebarIcon ? "#FE3164" : "#989898"}
+            color={activeIcon === SidebarIcon ? colorIcon : "#989898"}
             width="24"
             height="24"
           />
@@ -104,7 +106,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
       case "PersonalizationIcon":
         Icon = (
           <PersonalizationIcon
-            color={activeIcon === SidebarIcon ? "#FE3164" : "#989898"}
+            color={activeIcon === SidebarIcon ? colorIcon : "#989898"}
             width="24"
             height="24"
           />
@@ -113,7 +115,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
       case "BoostIcon":
         Icon = (
           <BoostIcon
-            color={activeIcon === SidebarIcon ? "#FE3164" : "#989898"}
+            color={activeIcon === SidebarIcon ? colorIcon : "#989898"}
             width="24"
             height="24"
           />
@@ -122,7 +124,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
       case "Reservation":
         Icon = (
           <ReservationIcon
-            color={activeIcon === SidebarIcon ? "#FE3164" : "#989898"}
+            color={activeIcon === SidebarIcon ? colorIcon : "#989898"}
             width="24"
             height="24"
           />
@@ -130,32 +132,32 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
         break;
       case "BotIcon":
         Icon = (
-          <BotIcon color={activeIcon === SidebarIcon ? "#FE3164" : "#989898"} width="24" height="24" />
+          <BotIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="24" height="24" />
         );
         break;
       case "StarGreyIcon":
         Icon = (
-          <StarGreyIcon color={activeIcon === SidebarIcon ? "#FE3164" : "#989898"} width="28" height="28" />
+          <StarGreyIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="28" height="28" />
         );
         break;
       case "PortraitIcon":
         Icon = (
-          <PortraitIcon color={activeIcon === SidebarIcon ? "#FE3164" : "#989898"} width="24" height="24" />
+          <PortraitIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="24" height="24" />
         );
         break;
       case "HistoryIcon":
         Icon = (
-          <HistoryIcon color={activeIcon === SidebarIcon ? "#FE3164" : "#989898"} width="24" height="24" />
+          <HistoryIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="24" height="24" />
         );
         break;
       case "HelpIcon":
         Icon = (
-          <HelpIcon color={activeIcon === SidebarIcon ? "#FE3164" : "#989898"} width="24" height="24" />
+          <HelpIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="24" height="24" />
         );
         break;
       case "ReservationIcon":
         Icon = (
-          <ReservationIcon color={activeIcon === SidebarIcon ? "#FE3164" : "#989898"} width="30" height="28" />
+          <ReservationIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="30" height="28" />
         );
         break;
     }
@@ -223,7 +225,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
             {/* Button to go directly to the order page */}
             {isClientDashboard && <div
               onClick={() => router.push('/')}
-              className={`flex items-center justify-center w-auto h-14 px-4 py-6 mx-3 my-6 ${Theme_A.button.medWhiteColoredButton} rounded-2xl shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] cursor-pointer `}
+              className={`flex items-center justify-center w-auto h-14 px-4 py-6 mx-3 my-6 ${Theme_A.button.mediumGradientButton} rounded-2xl shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] cursor-pointer `}
             >
               Réserver une coiffure
             </div>}
@@ -235,18 +237,18 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
                     <div
                       onClick={() => onSelectItem(item.route, index)}
                       className={
-                        `flex items-center my-2 pl-8 py-4 gap-4 cursor-pointer text-primary transition ease-in-out duration-100 border-l-4 
-                        ${path === item.route && "border-secondary bg-gradient-to-r from-pink-300 via-red-200 to-transparent"}`}
+                        `flex items-center my-2 pl-8 py-4 gap-4 cursor-pointer transition ease-in-out duration-100 border-l-4 
+                        ${path === item.route && "border-rose-600 bg-gradient-to-r from-zinc-800 via-zinc-600 to-zinc-400 font-bold"}`}
                     >
                       <div className="relative">
                         {setIcon(
                           item.icon,
                           path === item.route ? item.icon : ""
                         )}
-                        {item.title === 'Message' && <p className="absolute top-3 -right-2.5 flex items-center justify-center w-4 h-4 rounded-full bg-[#F44336] text-white text-[10px] font-semibold">2</p>}
+                        {item.title === 'Message' && <p className="absolute top-3 -right-2.5 flex items-center justify-center w-4 h-4 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold">2</p>}
                       </div>
                       <p
-                        className={`text-base ${path === item.route && "text-secondary"
+                        className={`text-base ${path === item.route && "text-white"
                           }`}
                       >
                         {item.title}

@@ -18,6 +18,8 @@ const emptyPopup: React.JSX.Element = <div></div>; // Define an empty JSX elemen
 const infoInterfaceIni: infoInterface =
     { name: "", desc: "", modif: false, popup: emptyPopup }
 
+// design choices:
+const inputFieldsDesign = `w-full p-3 placeholder:text-[#959595] placeholder:text-base ${Theme_A.behaviour.fieldFocused_B}${Theme_A.fields.inputField}`
 
 const Account = () => {
     const showSnackbar = useSnackbar();
@@ -92,7 +94,7 @@ const Account = () => {
     const modifPassWord: React.JSX.Element =
         <div>
             <div className="flex flex-col items-center justify-center gap-4">
-                <p className="text-3xl font-semibold text-black text-center">Modification du mot de passe</p>
+                <p className="text-xl font-semibold text-black text-center">Modification du mot de passe</p>
 
 
                 {error && (
@@ -103,7 +105,7 @@ const Account = () => {
                 <input
                     // type=""
                     placeholder="Ancien mot de passe"
-                    className={`w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none ${Theme_A.behaviour.fieldFocused_B}`}
+                    className={`${inputFieldsDesign}`}
                     value={passwordField.old}
                     maxLength={30}
                     onChange={(e) => setOldPassword(e.target.value)}
@@ -111,7 +113,7 @@ const Account = () => {
                 <input
                     // type=""
                     placeholder="Nouveau mot de passe"
-                    className={`w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none ${Theme_A.behaviour.fieldFocused_B}`}
+                    className={`${inputFieldsDesign}`}
                     value={passwordField.new}
                     maxLength={30}
                     onChange={(e) => setNewPassword(e.target.value)}
@@ -120,7 +122,7 @@ const Account = () => {
                 <input
                     // type=""
                     placeholder="Nouveau mot de passe"
-                    className={`w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none fieldFocused ${Theme_A.behaviour.fieldFocused_B}`}
+                    className={` ${inputFieldsDesign}`}
                     value={passwordField.new2}
                     maxLength={30}
                     onChange={(e) => setNew2Password(e.target.value)}
@@ -173,7 +175,7 @@ const Account = () => {
     const modifAddress: React.JSX.Element =
         <div>
             <div className="flex flex-col items-center justify-center gap-4">
-                <p className="text-3xl font-semibold text-black text-center">Modification de l'adresse</p>
+                <p className="text-xl font-semibold text-black text-center">Modification de l'adresse</p>
                 {error && (
                     <p className={`${Theme_A.checkers.errorText}`}>
                         {error.text}
@@ -181,7 +183,7 @@ const Account = () => {
                 )}
                 <input
                     placeholder="Nouvelle adresse"
-                    className={`w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none ${Theme_A.behaviour.fieldFocused_B}`}
+                    className={`${inputFieldsDesign}`}
                     value={addressField}
                     maxLength={100}
                     onChange={(e) => setNewAddress(e.target.value)}
@@ -234,7 +236,7 @@ const Account = () => {
     const modifPhone: React.JSX.Element =
         <div>
             <div className="flex flex-col items-center justify-center gap-4">
-                <p className="text-3xl font-semibold text-black text-center">Modification du numéro</p>
+                <p className="text-xl font-semibold text-black text-center">Modification du numéro</p>
                 {errorPop && (
                     <p className={`${Theme_A.checkers.errorText}`}>
                         {errorPop}
@@ -242,7 +244,7 @@ const Account = () => {
                 )}
                 <input
                     placeholder="Nouveau numéro"
-                    className={`w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none ${Theme_A.behaviour.fieldFocused_B}`}
+                    className={`${inputFieldsDesign}`}
                     value={phoneField}
                     maxLength={15}
                     onChange={(e) => setPhoneField(e.target.value)}
@@ -293,7 +295,7 @@ const Account = () => {
     const modifBankCard: React.JSX.Element =
         <div>
             <div className="flex flex-col items-center justify-center gap-4">
-                <p className="text-3xl font-semibold text-black text-center">Modification de la carte</p>
+                <p className="text-xl font-semibold text-black text-center">Modification de la carte</p>
                 {error && (
                     <p className={`${Theme_A.checkers.errorText}`}>
                         {error.text}
@@ -301,7 +303,7 @@ const Account = () => {
                 )}
                 <input
                     placeholder="Numéro de la carte bancaire"
-                    className={`w-full p-3 placeholder:text-[#959595] placeh,older:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none ${Theme_A.behaviour.fieldFocused_B}`}
+                    className={` ${inputFieldsDesign}`}
                     value={BankeCardNumb}
                     maxLength={15}
                     onChange={(e) => setNewBankCard(e.target.value)}

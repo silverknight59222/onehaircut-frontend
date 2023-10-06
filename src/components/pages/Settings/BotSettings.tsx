@@ -31,7 +31,7 @@ const BotSettings = () => {
                     onClick={() => setisAutoExe(!isAutoExe)}
                     className="flex flex-row justify-around cursor-pointer my-3">
 
-                    <p className="text-sm md:text-xl text-zinc-600 font-medium items-start">
+                    <p className="text-sm md:text-lg text-zinc-600 font-medium items-start">
                         Exécution automatique
                     </p>
                     <div
@@ -42,7 +42,7 @@ const BotSettings = () => {
                     >
                         <div
                             className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${isAutoExe
-                                ? "bg-gradient-to-b from-pink-500 to-orange-500 border-white"
+                                ? `bg-gradient-to-b ${ColorsThemeA.ohcVerticalGradient_A} border-white`
                                 : "border-[#767676]"
                                 }`}
                         >
@@ -53,16 +53,16 @@ const BotSettings = () => {
                 {isAutoExe &&
                     <div className="flex flex-row justify-around my-5">
 
-                        <p className="text-sm md:text-xl justify-center text-zinc-800 font-medium items-start my-1">
+                        <p className="text-sm md:text-lg justify-center text-zinc-800 font-normal items-start my-1">
                             Période d'exécution
                         </p>
-                        <div >
+                        <div className=" bg-zinc-200 rounded-lg">
                             {botRepetition.map((element) => {
                                 return (
                                     <div className="">
                                         <p
                                             onClick={() => setBotPeriod(element)}
-                                            className={`text-sm md:text-xl my-1 px-2 font-medium items-start  cursor-pointer ${botPeriod == element
+                                            className={`text-sm md:text-sm my-1 px-2 font-normal items-start  cursor-pointer ${botPeriod == element
                                                 ? "text-white bg-black rounded-lg"
                                                 : "text-zinc-600 "
                                                 }`}>
