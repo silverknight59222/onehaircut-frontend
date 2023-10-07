@@ -1,6 +1,6 @@
 "use client";
 import BaseDropdown from "@/components/UI/BaseDropdown";
-import { CircleRight } from "@/components/utilis/Icons";
+import { CircleRight, LogoCircleFixRight } from "@/components/utilis/Icons";
 import ClientDashboardLayout from "@/layout/ClientDashboardLayout";
 import Image from "next/image";
 import React from "react";
@@ -9,7 +9,7 @@ const Portrait = () => {
     return (
         <div>
             <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
-                <CircleRight />
+                <LogoCircleFixRight />
             </div>
             <ClientDashboardLayout>
                 <div className="relative z-10 mt-10 mb-5 px-6 sm:px-10 md:px-20">

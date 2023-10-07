@@ -1,6 +1,6 @@
 "use client";
 import Footer from "@/components/UI/Footer";
-import { CircleRight } from "@/components/utilis/Icons";
+import { CircleRight, LogoCircleFixRight } from "@/components/utilis/Icons";
 import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 import ClientDashboardLayout from "@/layout/ClientDashboardLayout";
 import Image from "next/image";
@@ -30,7 +30,7 @@ const Currentreservation = () => {
     return (
         <div>
             <div className="hidden lg:block fixed -right-2 md:-right-2 -bottom-2 md:-bottom-2 z-10">
-                <CircleRight />
+                <LogoCircleFixRight />
             </div>
             <ClientDashboardLayout>
                 <div className="flex flex-col items-center justify-center mt-10 mb-5 px-6 sm:px-10 md:px-20">
@@ -43,7 +43,7 @@ const Currentreservation = () => {
                             <div className='flex flex-col items-center sm:items-start justify-center sm:justify-start gap-5 mt-5 sm:mt-0'>
                                 {items.map((item, index) => {
                                     return <div key={index}>
-                                        <p className='text-[#5B5B5B] font-bold text-center sm:text-start'>{item.name}</p>
+                                        <p className='text-[#444343] font-bold text-center sm:text-start'>{item.name}</p>
                                         <p className='text-[#666] text-sm text-center sm:text-start'>{item.desc}</p>
                                     </div>
                                 })}
@@ -55,14 +55,14 @@ const Currentreservation = () => {
                                 <div className='flex flex-col items-center sm:items-start justify-center sm:justify-start gap-4 mt-5 sm:mt-0'>
                                     {itemsSalons.map((item, index) => {
                                         return <div key={index}>
-                                            <p className='text-[#5B5B5B] font-bold text-center sm:text-start'>{item.name}</p>
+                                            <p className='text-[#494949] font-bold text-center sm:text-start'>{item.name}</p>
                                             <p className='text-[#666] text-sm text-center sm:text-start'>{item.desc}</p>
                                         </div>
                                     })}
                                 </div>
                                 <div className='flex  justify-start mt-10 sm:mt-5'>
-                                    <button className={`xl:w-full ${Theme_A.button.medWhiteColoredButton}`}>
-                                        Chatter avec le salon
+                                    <button className={`xl:w-full ${Theme_A.button.medBlackColoredButton}`}>
+                                        Contacter le salon
                                     </button>
                                 </div>
                             </div>
