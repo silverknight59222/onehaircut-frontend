@@ -15,7 +15,10 @@ import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
 import { Theme_A } from '@/components/utilis/Themes';
 import { BackArrow } from '@/components/utilis/Icons';
 
+
+// Composant principal SalonChoice
 const SalonChoice = () => {
+    // Déclaration des états locaux
     const [selectedSalon, setSelectedSalon] = useState<{ name: string, id: number | null }>({ name: '', id: null })
     const [salonImage, setSalonImage] = useState<string[]>([])
     const [salons, setSalons] = useState<SalonDetails[]>([])
@@ -35,6 +38,7 @@ const SalonChoice = () => {
         libraries: ['places'],
     })
 
+    // Fonction pour récupérer tous les salons
     const getAllSalons = async () => {
         const services = getLocalStorage('ServiceIds')
         const servicesData = services ? JSON.parse(services) : null
@@ -42,6 +46,7 @@ const SalonChoice = () => {
         servicesData.forEach((service: { name: string, id: number }) => {
             serviceIds.push(service.id)
         })
+        // Code pour obtenir des informations sur les salons depuis l'API
         setIsLoading(true);
         if (haircut) {
             const data = {
@@ -61,6 +66,7 @@ const SalonChoice = () => {
                 })
         }
     }
+    // Fonction pour obtenir la liste de souhaits des salons
     const getSalonsWishlist = () => {
         //   if (userId) {
         //       setIsLoading(true);
@@ -87,6 +93,7 @@ const SalonChoice = () => {
         //   }
     }
 
+    // Fonction pour ajouter/supprimer des salons à la liste de souhaits
     const onWishlist = async (e: any, salonId: number) => {
         e.stopPropagation()
         if (userId) {
@@ -115,11 +122,13 @@ const SalonChoice = () => {
         }
     }
 
+    // Fonction pour continuer avec le salon sélectionné
     const onContinue = () => {
         router.push(`salon/profile`)
         setLocalStorage('selectedSalon', JSON.stringify(selectedSalon))
     }
 
+    // Utilisation de useEffect pour récupérer les données lors du montage du composant
     useEffect(() => {
         getAllSalons()
         const user = getLocalStorage("user");
@@ -129,6 +138,7 @@ const SalonChoice = () => {
         }
     }, [])
 
+    // Autre appel useEffect basé sur l'état des salons
     useEffect(() => {
         if (!isLoggedIn) {
             getSalonsWishlist()
@@ -138,11 +148,16 @@ const SalonChoice = () => {
     if (!isLoaded) {
         return loadingView()
     }
+
+    // Rendu du composant
     return (
         <div className='w-full'>
+            {/* Entête/Navbar du composant */}
             <Navbar isSalonPage={true} />
             <div className='w-full flex flex-col items-center justify-center px-6'>
+                {/* Vérifier si le contenu est en cours de chargement et afficher le loader si nécessaire */}
                 {isLoading && loadingView()}
+                {/* Texte affichant le nombre de salons trouvés */}
                 <p className='text-4xl font-medium text-black text-center mt-14'>87 <span className='font-bold text-gradient'>Salons</span> correspondent à vos critères</p>
                 {/* <div className='flex flex-col md:flex-row items-center justify-center gap-8  mt-6'>
                     <div onClick={() => setSelectedTab(0)} className='flex items-center justify-center gap-7 w-[350px] h-14 border border-[#BDBDBD] rounded-xl cursor-pointer'>
@@ -155,16 +170,22 @@ const SalonChoice = () => {
                     </div>
                 </div> */}
                 <div className='w-full flex items-end justify-between mt-12 px-4'>
-                    <div className='flex items-center cursor-pointer mt-10 mb-8 sm:mx-10 2xl:mx-14' onClick={() => router.push('/services')}>
+                    {/* Bouton pour revenir aux services */}
+                    <div className='flex items-center cursor-pointer mt-10 mb-8 sm:mx-10 2xl:mx-14 text-stone-800' onClick={() => router.push('/services')}>
                         <BackArrow />
                         <p className={`${Theme_A.textFont.navigationGreyFont}`}>Retour aux services</p>
                     </div>
+                    {/* Bouton pour continuer avec le salon sélectionné */}
                     <button disabled={!selectedSalon.id} onClick={onContinue} className={`flex items-center justify-center text-lg text-white font-medium w-full md:w-52 h-14 rounded-xl px-4 ${selectedSalon.id ? Theme_A.button.medLargeGradientButton : 'bg-[#D9D9D9]'}`}>Continuer</button>
                 </div>
+
+
+                {/* Section principale affichant les salons et la carte */}
                 <div className='w-full mt-14 mb-5'>
                     <div className='w-full flex flex-col lg:flex-row items-start justify-center gap-6'>
                         <div className='md:h-[1100px] md:overflow-y-auto'>
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+                                {/* Mapping et affichage des salons */}
                                 {salons.map((salon, index) => {
                                     return <div key={index} onClick={() => setSelectedSalon({ name: salon.name, id: salon.id })} className={`bg-[rgba(242,242,242,0.66)] rounded-2xl pb-3 border hover:border-secondary cursor-pointer ${selectedSalon.id === salon.id && 'border-secondary'}`}>
                                         <div className="px-4 pt-4 relative">
@@ -200,6 +221,7 @@ const SalonChoice = () => {
                                 })}
                             </div>
                         </div>
+                        {/* Carte Google Maps affichée seulement si des salons sont présents */}
                         {salons.length ?
                             <div className='hidden lg:block w-[300pxw] lg:w-[400px] 2xl:w-[725px]'>
                                 <GoogleMap center={location} zoom={10} mapContainerStyle={{ width: '100%', height: '100vh' }}>

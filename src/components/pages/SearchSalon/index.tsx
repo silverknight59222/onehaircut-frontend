@@ -3,21 +3,26 @@ import { client } from "@/api/clientSide";
 import Navbar from "@/components/shared/Navbar";
 import {
   LogoCircleFixLeft,
-  LogoIcon,
+  BackArrow,
 } from "@/components/utilis/Icons";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import StarRatings from "react-star-ratings";
 import userLoader from "@/hooks/useLoader";
 import { getLocalStorage } from "@/api/storage";
-import BaseModal from "@/components/UI/BaseModal";
 import { Theme_A } from "@/components/utilis/Themes";
-import { ColorsThemeA } from "@/components/utilis/Themes";
 import ChatModal from "./ChatModal";
-import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
+import { GoogleMap, Marker, useJsApiLoader, LoadScript } from '@react-google-maps/api';
 import Footer from "@/components/UI/Footer";
-import useSnackbar from "@/hooks/useSnackbar";
+import SalonPicModal from "./SalonPicModal";
+import PerfSampleModal from "./PerfSampleModal";
+import MapIcon from "@/components/utilis/Icons";
+import ReactDOMServer from 'react-dom/server';
+
+
+const temp = getLocalStorage("haircut")
+const haircut = temp ? JSON.parse(String(temp)) : null
 
 interface SalonImages {
   image: string,
@@ -81,17 +86,64 @@ const SearchSalon = () => {
     })
   }, [salonProfile])
 
-  // Créez un état pour suivre si le modal est ouvert ou fermé
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  // FOR CHAT MODAL 
+  // Créez un état pour suivre si le Chat modal est ouvert ou fermé
+  const [isChatModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('');
   const [messages, setMessages] = useState<Array<{ content: string, sent: boolean }>>([]);
-  const closeModal = () => {
+  const closeChatModal = () => {
     setIsModalOpen(false);
   };
   // Cette fonction sera appelée lorsque l'utilisateur clique sur le bouton pour ouvrir le modal
-  const openModal = () => {
+  const openChatModal = () => {
     setIsModalOpen(true);
   };
+
+  //FOR SALON PIC MODAL 
+  // Créez un état pour suivre si le Salon Pic modal est ouvert ou fermé
+  const [isSalonPicModalOpen, setIsSalonPicModalOpen] = useState<boolean>(false);
+  const closeSalonPicModal = () => {
+    setIsSalonPicModalOpen(false);
+  };
+  // Cette fonction sera appelée lorsque l'utilisateur clique sur le bouton pour ouvrir le modal
+  const openSalonPicModal = () => {
+    setIsSalonPicModalOpen(true);
+  };
+
+  //FOR PERF SAMPLES MODAL 
+  // Créez un état pour suivre si le Chat modal est ouvert ou fermé
+  const [isPerfSampleModalOpen, setIsPerfSampleModalOpen] = useState<boolean>(false);
+  const closePerfSampleModal = () => {
+    setIsPerfSampleModalOpen(false);
+  };
+  // Cette fonction sera appelée lorsque l'utilisateur clique sur le bouton pour ouvrir le modal
+  const openPerfSampleModal = () => {
+    setIsPerfSampleModalOpen(true);
+  };
+
+  //GOOGLE MAP 
+  //TODO Centrer par rapport aux coordonnées du salon
+  const mapCenter = {
+    lat: 47.146263032510866, // Latitude du centre de votre carte
+    lng: 7.27569477025937  // Longitude du centre de votre carte
+  };
+
+  const mapStyles = {
+    height: "500px",
+    width: "100%",
+    borderRadius: "20px"
+  };
+
+  //TODO importer la clef autrement
+  const googleMapsApiKey = 'AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E';
+  const { isLoaded } = useJsApiLoader({
+    googleMapsApiKey: 'AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E',
+    libraries: ['places'],
+  })
+  // Pour l'icon sur la carte
+  const mapIconSvg = ReactDOMServer.renderToStaticMarkup(<MapIcon />);
+  const mapIconUrl = `data:image/svg+xml;base64,${btoa(mapIconSvg)}`;
+
 
   return (
     <div className="relative">
@@ -100,8 +152,39 @@ const SearchSalon = () => {
 
       {/* Barre de navigation */}
       <Navbar isSalonPage={true} />
+      <div className="mt-2 mb-5 px-5 md:px-10 2xl:px-14">
+        <div className='flex items-start cursor-pointer mt-8 mb-8 sm:mx-10 2xl:mx-14 text-stone-800' onClick={() => router.push('/salons')}>
+          <BackArrow />
+          <p className={`${Theme_A.textFont.navigationGreyFont}`}>Retour choix des salons</p>
+        </div>
 
-      <div className="mt-16 mb-5 px-5 md:px-10 2xl:px-14">
+        <div className="bg-black bg-opacity-30 mt-2 mb-5 px-5 md:px-10 2xl:px-14 relative z-[1000] ">
+          {/*Affichage de tous les modaux ici */}
+
+          {/* Affichez le Salon Pic modal si `isSalonPicModalOpen` est vrai */}
+          {isSalonPicModalOpen && (
+            <SalonPicModal
+              isModalOpen={isSalonPicModalOpen}
+              closeModal={closeSalonPicModal}
+              images={salonProfile.salon_images}  // Passer les images au modal
+            />
+          )}
+          {/* Affichez le Salon Pic modal si `isPerfSampleModalOpen` est vrai */}
+          {isPerfSampleModalOpen && (
+            <PerfSampleModal
+              isModalOpen={isPerfSampleModalOpen}
+              closeModal={closePerfSampleModal}
+            />
+          )}
+          {/* Affichez le Chat modal si `isChatModalOpen` est vrai */}
+          {isChatModalOpen && (
+            <ChatModal
+              isModalOpen={isChatModalOpen}
+              closeModal={closeChatModal}
+              professionalData={salonProfile}
+            />
+          )}
+        </div>
 
         {/* Section d'image et d'informations du salon */}
         <div className="flex flex-col lg:flex-row items-center md:items-start xl:justify-between gap-11">
@@ -130,7 +213,7 @@ const SearchSalon = () => {
                 <div className="flex flex-col items-center">
                   {/* Miniature gauche */}
                   <div
-                    onClick={() => {/* Votre fonction pour ouvrir le modal ici */ }}
+                    onClick={openSalonPicModal}
                     className="relative w-24 lg:w-32 2xl:w-36 h-24 lg:h-32 2xl:h-36 cursor-pointer overflow-hidden rounded-lg transform transition-all duration-300 group hover:scale-105"
                   >
                     {/* TODO charger les images vitrines ici */}
@@ -151,7 +234,7 @@ const SearchSalon = () => {
                 <div className="flex flex-col items-center">
                   {/* Miniature droite */}
                   <div
-                    onClick={() => {/* Votre fonction pour ouvrir le modal ici */ }}
+                    onClick={openPerfSampleModal}
                     className="relative w-24 lg:w-32 2xl:w-36 h-24 lg:h-32 2xl:h-36 cursor-pointer overflow-hidden rounded-lg transform transition-all duration-300 group hover:scale-105"
                   >
                     {/* TODO charger les images coiffures ici */}
@@ -172,7 +255,7 @@ const SearchSalon = () => {
 
             {/* Nom et notation du salon */}
             <div className="flex flex-col items-start md:items-center md:justify-center flex-grow">
-              <p className="text-black font-bold text-2xl 2xl:text-3xl">
+              <p className="text-black font-bold text-3xl xl:text-4xl 2xl:text-5xl">
                 {salonProfile.name}
               </p>
               {/*TODO import real rating on the selected haircut {salonProfile.rating} */}
@@ -186,8 +269,7 @@ const SearchSalon = () => {
                   name="rating"
                 />
                 {/* TODO use salon's rating of the selected haircut {salonProfile.rating}*/}
-                <p className="-mb-2"> 4.7</p> <br />
-                <p className="mt-2"> <small><small>  (note sur cette coiffure) </small></small> </p>
+                <p className="-mb-2"> 4.7</p> <br /> <small><small>  (348 avis</small></small> <p className="font-normal"><small><small><small>* sur cette coiffure</small></small></small> <br /></p> <small><small> ) </small></small>
               </div>
               {/* Description du salon */}
               <div className="mt-5 p-4 bg-gray-100 w-full lg:w-[400px] 2xl:w-[720px] rounded-xl ">
@@ -202,7 +284,7 @@ const SearchSalon = () => {
 
           {/* Horaires et bouton de réservation */}
           <div className="w-full md:w-auto flex flex-col items-center justify-center">
-            <div className="flex flex-col gap-6 w-full md:w-[350px] xl:w-[420px] 2xl:w-[470px] border border-[#E1E1E1] rounded-3xl py-6 px-8 2xl:px-10 shadow-lg">
+            <div className="flex flex-col gap-6 bg-white  opacity-90 w-full sm:w-[300px] md:w-[350px] xl:w-[420px] 2xl:w-[470px] border border-[#E1E1E1] rounded-3xl py-6 px-8 2xl:px-10 shadow-lg ">
               {/* Titre ajouté ici */}
               <h2 className="text-xl 2xl:text-2xl font-semibold text-[#272727] mb-4 text-center">
                 Horaire d'ouverture
@@ -222,11 +304,11 @@ const SearchSalon = () => {
 
             {/* Bouton de réservation */}
             <button onClick={() => router.push('/book-salon')} className={`w-full md:w-64 2xl:w-72 h-14 flex items-center justify-center mt-7 text-white font-semibold text-xl rounded-xl ${Theme_A.button.mediumGradientButton} shadow-md`}>
-              Réservez un créneau
+              R&eacute;server un créneau
             </button>
             {/* Ajoutez le bouton pour ouvrir le modal ici */}
             <button
-              onClick={openModal}
+              onClick={openChatModal}
               className={`mt-4 ${Theme_A.button.medBlackColoredButton}`}
             >
               Contacter le salon
@@ -234,12 +316,86 @@ const SearchSalon = () => {
           </div>
         </div>
 
-        {/* Import Google map here */}
+        {/*TODO importer les details des prix et durées ici */}
+        {/* Section des informations des prix */}
+        <div className="flex items-center justify-center bg-stone-50 p-8 rounded-lg shadow-sm opacity-90 mt-20 ">
+          <div className="text-center">
+            {/* Titre de la section */}
+            <p className="text-3xl xl:text-4xl font-semibold text-black">
+              Tarifs et informations
+            </p>
 
+            {/* Conteneur pour les informations */}
+            <div className="flex flex-col items-center gap-6 bg-white opacity-90 w-full max-w-[90vw] sm:max-w-[300px] md:max-w-[350px] xl:max-w-[420px] 2xl:max-w-[470px] border border-[#E1E1E1] rounded-3xl py-6 px-8 2xl:px-10 shadow-md mt-6 ">
+
+              {/* Ligne d'information avec titre et valeur */}
+              {/* Ligne avec Prix et Durée totale */}
+              <div className="flex justify-between w-full">
+                {/* Partie gauche : Prix total */}
+                <div className="flex justify-between w-1/2">
+                  <p className="text-md xl:text-lg font-semibold text-black">
+                    Prix total :
+                  </p>
+                  <p className="text-md xl:text-lg font-normal text-black">
+                    [Votre prix ici]
+                  </p>
+                </div>
+
+                {/* Partie droite : Durée totale */}
+                <div className="flex justify-between w-1/2">
+                  <p className="text-md xl:text-lg font-semibold text-black">
+                    Dur&eacute;e totale :
+                  </p>
+                  <p className="text-md xl:text-lg font-normal text-black">
+                    [Votre durée ici]
+                  </p>
+                </div>
+              </div>
+              <div className="flex justify-between w-full">
+                {/* Nom de la coiffure*/}
+                <p className="text-md xl:text-lg font-semibold text-black">
+                  {haircut.name} :
+                </p>
+                <p className="text-md xl:text-lg font-normal text-black">
+                  [Votre valeur ici]
+                </p>
+              </div>
+              <div className="flex justify-between w-full">
+                {/* Durée de la coiffure*/}
+                <p className="text-md xl:text-lg font-semibold text-black">
+                  Dur&eacute;e de la coiffure :
+                </p>
+                <p className="text-md xl:text-lg font-normal text-black">
+                  [Votre valeur ici]
+                </p>
+              </div>
+              <div className="flex justify-between w-full">
+                {/* Durée de la coiffure*/}
+                <p className="text-md xl:text-lg font-semibold text-black">
+                  Nom des prestations:
+                </p>
+                <p className="text-md xl:text-lg font-normal text-black">
+                  [Votre valeur ici]
+                </p>
+              </div>
+              <div className="flex justify-between w-full">
+                {/* Durée de la coiffure*/}
+                <p className="text-md xl:text-lg font-semibold text-black">
+                  Dur&eacute;e des prestations :
+                </p>
+                <p className="text-md xl:text-lg font-normal text-black">
+                  [Votre valeur ici]
+                </p>
+              </div>
+
+
+            </div>
+          </div>
+        </div>
 
         {/* Section des coiffeurs */}
-        <div className="mt-20 bg-stone-50 p-8 rounded-lg shadow-sm opacity-90 "> {/* Vignette générale ajoutée ici */}
-          <p className="text-5xl font-semibold text-black text-center">
+        <div className="mt-20 bg-stone-50 p-8 rounded-lg shadow-sm  opacity-90"> {/* Vignette générale ajoutée ici */}
+          <p className="text-3xl xl:text-4xl font-semibold text-black text-center">
             Coiffeurs
           </p>
           <div className="flex items-center justify-center mt-8">
@@ -262,10 +418,10 @@ const SearchSalon = () => {
 
                       {/*Affichage de tous les modaux ici */}
                       {/* Affichez le modal si `isModalOpen` est vrai */}
-                      {isModalOpen && (
+                      {isChatModalOpen && (
                         <ChatModal
-                          isModalOpen={isModalOpen}
-                          closeModal={closeModal}
+                          isModalOpen={isChatModalOpen}
+                          closeModal={closeChatModal}
                           professionalData={salonProfile}
                           className="z-1000 opacity-100"
                         />
@@ -282,6 +438,36 @@ const SearchSalon = () => {
 
             </div>
           </div>
+        </div>
+
+        {/*TODO import real adress of the salon */}
+        <div className="mt-20 bg-stone-50 p-8 rounded-lg shadow-sm  opacity-90">
+          <p className="text-3xl xl:text-4xl font-semibold text-black text-center">
+            Adresse du salon
+          </p>
+          <p className="mt-6 text-lg xl:text-xl font-medium text-black text-center">
+            {/*Import Salon's adress here  */}
+            {salonProfile.name}
+          </p>
+        </div>
+        {/* Import Google map here */}
+        <div className="mt-20 shadow-xl rounded-3xl">
+          <LoadScript googleMapsApiKey={googleMapsApiKey}>
+            <GoogleMap
+              mapContainerStyle={mapStyles}
+              zoom={13}
+              center={mapCenter}
+            >
+              {/* Ajout d'un marqueur */}
+              {/* TODO Position du salon ici */}
+              <Marker
+                position={mapCenter}
+                icon={mapIconUrl}
+              />
+
+              {/* Vous pouvez ajouter des marqueurs ou d'autres éléments ici si nécessaire */}
+            </GoogleMap>
+          </LoadScript>
         </div>
       </div>
 
