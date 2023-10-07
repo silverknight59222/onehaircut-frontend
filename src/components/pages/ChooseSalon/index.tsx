@@ -16,6 +16,7 @@ import { ColorsThemeA, Theme_A } from '@/components/utilis/Themes';
 import { BackArrow } from '@/components/utilis/Icons';
 import Footer from '@/components/UI/Footer';
 import MapIcon from "@/components/utilis/Icons";
+import { MapIconRed } from '@/components/utilis/Icons';
 import ReactDOMServer from 'react-dom/server';
 // TODO IMPORT TO USE ADRESSES 
 //import axios from 'axios'; 
@@ -188,7 +189,10 @@ const SalonChoice = () => {
 
     // MARQUEUR PERSONNALISE
     const mapIconSvg = ReactDOMServer.renderToStaticMarkup(<MapIcon />);
+    const MapIconRedSvg = ReactDOMServer.renderToStaticMarkup(<MapIconRed />);
     const mapIconUrl = `data:image/svg+xml;base64,${btoa(mapIconSvg)}`;
+    const MapIconRedUrl = `data:image/svg+xml;base64,${btoa(MapIconRedSvg)}`;
+    const MAX_MARKERS = 15;
 
     // Rendu du composant
     return (
@@ -235,24 +239,23 @@ const SalonChoice = () => {
                                     zoom={12}
                                     mapContainerStyle={{ width: '100%', height: '100%' }}
                                 >
-                                    {salons.map((salon, index) => (
+
+                                    {salons.slice(0, MAX_MARKERS).map((salon, index) => (
                                         <Marker
                                             key={index}
-                                            //TODO UTILISER LA LAT-LONG DU SALON => position={{ lat: salon.latitude, lng: salon.longitude }} or 
-                                            //TODO UTILISER L'ADRESSE DU SALON => position={salon.coordinates}
                                             label={{
-                                                color: '#000',  // Couleur du texte
-                                                fontFamily: 'Arial', // Famille de la police
-                                                fontSize: '10px',  // Taille de la police
-                                                fontWeight: 'semibold', // Poids de la police
-                                                text: `${salon.id}00$`, // Texte à afficher
+                                                color: salon.id === selectedSalon.id ? "#FFF" : "#000",
+                                                fontFamily: 'Arial',
+                                                fontSize: '10px',
+                                                fontWeight: 'semibold',
+                                                text: `${salon.id}00$`,
                                             }}
-                                            position={location}
+                                            position={location} // Attention : ici vous devrez probablement utiliser la position du salon plutôt que la position centrale de la carte
                                             icon={{
-                                                url: mapIconUrl, // URL de l'icône personnalisée
-                                                scaledSize: new window.google.maps.Size(70, 90), // Taille de l'icône
-                                                origin: new window.google.maps.Point(0, -10), // Point d'origine de l'image
-                                                anchor: new window.google.maps.Point(20, 40), // Point d'ancrage de l'icône
+                                                url: salon.id === selectedSalon.id ? MapIconRedUrl : mapIconUrl, // changer le marqueur en fonction du salon selectionné 
+                                                scaledSize: new window.google.maps.Size(70, 90),
+                                                origin: new window.google.maps.Point(0, -10),
+                                                anchor: new window.google.maps.Point(20, 40),
                                             }}
                                         />
                                     ))}
