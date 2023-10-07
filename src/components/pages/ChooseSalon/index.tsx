@@ -11,7 +11,7 @@ import { getLocalStorage, setLocalStorage } from '@/api/storage';
 import { SalonDetails } from '@/types';
 import userLoader from "@/hooks/useLoader";
 import useSnackbar from '@/hooks/useSnackbar';
-import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
+import { GoogleMap, Marker, useJsApiLoader, OverlayView } from '@react-google-maps/api';
 import { ColorsThemeA, Theme_A } from '@/components/utilis/Themes';
 import { BackArrow } from '@/components/utilis/Icons';
 import Footer from '@/components/UI/Footer';
@@ -239,27 +239,39 @@ const SalonChoice = () => {
                                     zoom={12}
                                     mapContainerStyle={{ width: '100%', height: '100%' }}
                                 >
-
                                     {salons.slice(0, MAX_MARKERS).map((salon, index) => (
-                                        <Marker
-                                            key={index}
-                                            label={{
-                                                color: salon.id === selectedSalon.id ? "#FFF" : "#000",
-                                                fontFamily: 'Arial',
-                                                fontSize: '10px',
-                                                fontWeight: 'semibold',
-                                                text: `${salon.id}00$`,
-                                            }}
-                                            position={location} // Attention : ici vous devrez probablement utiliser la position du salon plutôt que la position centrale de la carte
-                                            icon={{
-                                                url: salon.id === selectedSalon.id ? MapIconRedUrl : mapIconUrl, // changer le marqueur en fonction du salon selectionné 
-                                                scaledSize: salon.id === selectedSalon.id ? new window.google.maps.Size(70, 90) : new window.google.maps.Size(60, 80),
-                                                origin: new window.google.maps.Point(0, -10),
-                                                anchor: new window.google.maps.Point(20, 40),
-                                            }}
-                                        />
+                                        <>
+                                            <Marker
+                                                key={index}
+                                                position={location} // Utiliser la position du salon ici
+                                                icon={{
+                                                    url: salon.id === selectedSalon.id ? MapIconRedUrl : mapIconUrl,
+                                                    scaledSize: salon.id === selectedSalon.id ? new window.google.maps.Size(70, 90) : new window.google.maps.Size(60, 80),
+                                                    origin: new window.google.maps.Point(0, -10),
+                                                    anchor: salon.id === selectedSalon.id ? new window.google.maps.Point(20, 37) : new window.google.maps.Point(20, 40),
+                                                }}
+                                            />
+                                            <OverlayView
+                                                position={location} // Utiliser la position du salon ici aussi
+                                                mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+                                                getPixelPositionOffset={(width, height) => ({ x: -(width / 2), y: -height })}
+                                            >
+                                                <div style={{
+                                                    //padding: '5px 10px',  // Espace autour du texte
+                                                    color: selectedSalon.id ? "#FFF" : "000",  // Couleur du texte
+                                                    //borderRadius: '12px',  // Coins arrondis
+                                                    whiteSpace: 'nowrap',  // Garde le texte sur une seule ligne
+                                                    fontSize: '12px',  // Taille du texte
+                                                    fontWeight: 'normal',  // Épaisseur normale du texte
+                                                    //backgroundColor: salon.id === selectedSalon.id ? "#FFF" : "#000",  // Couleur de fond
+                                                }}>
+                                                    {`${salon.id}00$`}
+                                                </div>
+                                            </OverlayView>
+                                        </>
                                     ))}
                                 </GoogleMap>
+
                             </div>
                         )
                     }
