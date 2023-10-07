@@ -3,7 +3,6 @@ import { client } from "@/api/clientSide";
 import Navbar from "@/components/shared/Navbar";
 import {
   LogoCircleFixLeft,
-  LogoIcon,
   BackArrow,
 } from "@/components/utilis/Icons";
 import Image from "next/image";
@@ -12,9 +11,7 @@ import React, { useEffect, useState, useRef } from "react";
 import StarRatings from "react-star-ratings";
 import userLoader from "@/hooks/useLoader";
 import { getLocalStorage } from "@/api/storage";
-import BaseModal from "@/components/UI/BaseModal";
 import { Theme_A } from "@/components/utilis/Themes";
-import { ColorsThemeA } from "@/components/utilis/Themes";
 import ChatModal from "./ChatModal";
 import { GoogleMap, Marker, useJsApiLoader, LoadScript } from '@react-google-maps/api';
 import Footer from "@/components/UI/Footer";
@@ -443,7 +440,16 @@ const SearchSalon = () => {
           </div>
         </div>
 
-
+        {/*TODO import real adress of the salon */}
+        <div className="mt-20 bg-stone-50 p-8 rounded-lg shadow-sm  opacity-90">
+          <p className="text-3xl xl:text-4xl font-semibold text-black text-center">
+            Adresse du salon
+          </p>
+          <p className="mt-6 text-lg xl:text-xl font-medium text-black text-center">
+            {/*Import Salon's adress here  */}
+            {salonProfile.name}
+          </p>
+        </div>
         {/* Import Google map here */}
         <div className="mt-20 shadow-xl rounded-3xl">
           <LoadScript googleMapsApiKey={googleMapsApiKey}>
