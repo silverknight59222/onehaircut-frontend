@@ -206,7 +206,7 @@ const OpenningHours = () => {
                                                         : "bg-gray-200 text-zinc-400 rounded-md cursor-not-allowed"
                                                         }`}
                                                 >
-                                                    Appliquer les changement
+                                                    Appliquer les changements
                                                 </p>
                                             </div>
                                         </td>

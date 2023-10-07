@@ -149,11 +149,11 @@ const History = () => {
               {/* Loop over the booking history and display them */}
               {history.map((item, index) => {
                 return <div key={index}>
-                  <div className=" w-full sm:w-[536px] lg:w-[600px] rounded-3xl bg-white py-6 px-12 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)]">
+                  <div className=" w-full sm:w-[536px] lg:w-[600px] rounded-3xl bg-white py-6 px-12 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)] opacity-95">
                     <div className='flex flex-col-reverse sm:flex-row items-center sm:items-start justify-between'>
                       <div className='flex flex-col items-center sm:items-start justify-center sm:justify-start gap-2 mt-5 sm:mt-0'>
 
-                        <p className='text-[#5B5B5B] font-bold text-center sm:text-start'>{item.Date}</p>
+                        <p className='text-[#444343] font-bold text-center sm:text-start'>{item.Date}</p>
                         <p className='text-[#666] text-sm text-center sm:text-start'>Heure: {item.Heure}</p>
                         <p className='text-[#666] text-sm text-center sm:text-start'>Coiffure: {item.Coiffure}</p>
                         <p className='text-[#666] text-sm text-center sm:text-start'>Préstation: {item.Prestation}</p>

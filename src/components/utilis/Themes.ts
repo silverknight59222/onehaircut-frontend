@@ -71,7 +71,8 @@ export const Theme_A = {
     main: "'Montserrat', sans-serif",
   },
   fields: {
-    configurationField: "w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] focus:ring-2 focus:bg-transparent focus:ring-red-300 focus:border-stone-200 "
+    configurationField: "w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] focus:ring-2 focus:bg-transparent focus:ring-red-300 focus:border-stone-200 ",
+    inputField: `outline-none rounded-lg shadow-inner`
   },
   footer: {
     mainFooter:

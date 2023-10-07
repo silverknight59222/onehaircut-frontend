@@ -37,13 +37,14 @@ interface SalonProfile {
   rating: string,
   salon_images: SalonImages[],
   salon_hairdressers: SalonHairdressers[],
+  user_id: number
 }
 
 
 const SearchSalon = () => {
   const [selectedImage, setSelectedImage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [salonProfile, setSalonProfile] = useState<SalonProfile>({ name: '', rating: '', salon_images: [{ image: '', is_cover: true }], salon_hairdressers: [{ name: '', profile_image: '' }] })
+  const [salonProfile, setSalonProfile] = useState<SalonProfile>({ name: '', rating: '', user_id: 0, salon_images: [{ image: '', is_cover: true }], salon_hairdressers: [{ name: '', profile_image: '' }] })
   const router = useRouter();
   const { loadingView } = userLoader();
   const salon = getLocalStorage('selectedSalon')
@@ -97,15 +98,6 @@ const SearchSalon = () => {
   const openChatModal = () => {
     setIsModalOpen(true);
   };
-  const sendMessage = () => {
-    if (message) {
-      setMessages([...messages, { content: message, sent: true }]);
-      setMessage("");
-      // Pour simuler la réception d'un message
-      setMessages(prev => [...prev, { content: "Réponse automatique", sent: false }]);
-    }
-  };
-
 
   //FOR SALON PIC MODAL 
   // Créez un état pour suivre si le Salon Pic modal est ouvert ou fermé
@@ -189,10 +181,7 @@ const SearchSalon = () => {
             <ChatModal
               isModalOpen={isChatModalOpen}
               closeModal={closeChatModal}
-              messages={messages}
-              message={message}
-              setMessage={setMessage}
-              sendMessage={sendMessage}
+              professionalData={salonProfile}
             />
           )}
         </div>
@@ -426,6 +415,17 @@ const SearchSalon = () => {
                         layout="fill"
                         className="rounded-[20px]"
                       />
+
+                      {/*Affichage de tous les modaux ici */}
+                      {/* Affichez le modal si `isModalOpen` est vrai */}
+                      {isChatModalOpen && (
+                        <ChatModal
+                          isModalOpen={isChatModalOpen}
+                          closeModal={closeChatModal}
+                          professionalData={salonProfile}
+                          className="z-1000 opacity-100"
+                        />
+                      )}
                     </div>
 
                     {/* Nom du coiffeur */}

@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { CrossIcon } from "@/components/utilis/Icons";
 import { ColorsThemeA } from "@/components/utilis/Themes";
 import { ChatSendIcon } from "@/components/utilis/Icons";
 import './index.css';
 import { Booking, Coiffeur } from "./types";
+import { getLocalStorage } from "@/api/storage";
+import { dashboard } from "@/api/dashboard";
+import { Chat } from "@/types";
 
 // Ajout de toutes les propriétes qu'on veut reprendre dans le modal
 interface EventDetailsModalProps {
@@ -23,15 +26,29 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
   };
 
   const [message, setMessage] = useState("");
-  const [messages, setMessages] = useState<{ content: string, sent: boolean }[]>([]);
+  const user = getLocalStorage("user");
+  const userData = user ? JSON.parse(user) : null
+  const [chats,setChats]=useState<Chat[]>([])
+  // Reprise du nom du client et du coiffeur
+  const [nomClient, nomCoiffeur] = props.event.title.split(" - ");
 
   {/* TODO Replace with the correction message function */ }
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (message) {
-      setMessages([...messages, { content: message, sent: true }]);
-      setMessage("");
-      // Pour simuler la réception d'un message
-      setMessages(prev => [...prev, { content: "Réponse automatique", sent: false }]);
+      const data = {
+        client_id: props.event.clientId,
+        professional_id: userData.id,
+        message: message,
+        by: userData.role === 'salon_professional' ? 'professional' : 'client',
+      }
+      await dashboard.sendMessage(data)
+        .then(resp => {
+          getChat()
+          setMessage("");
+        })
+        .catch(err => {
+          console.log(err)
+        })
     }
   };
 
@@ -44,9 +61,19 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
     }
   };
 
-  // Reprise du nom du client et du coiffeur
-  const [nomClient, nomCoiffeur] = props.event.title.split(" - ");
+  const getChat = async () => {
+    if (userData) {
+      await dashboard.getChat(props.event.clientId, userData.id)
+        .then(resp => {
+          setChats(resp.data.data)
+        })
+        .catch(err => console.log(err))
+    }
+  }
 
+  useEffect(()=>{
+    getChat()
+  },[])
   return (
     <div className="relative bg-white rounded-xl px-5 pb-5 shadow-lg mt-10 bg- modal">
       {/* Icône de fermeture */}
@@ -104,12 +131,12 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
         <div className="modalChat flex flex-col gap-2 mt-4  ">
           {/* Conversation */}
           <div className=" border border-gray-300 rounded-xl p-2 rounded-bl-lg overflow-auto h-40 bg-stone-100 shadow-inner mb-2 ">
-            {messages.map((msg, index) => (
-              <div key={`msg-${index}`} className={`${msg.sent ? 'text-right' : 'text-left '} mb-2`}>
+            {chats.map((msg, index) => (
+              <div key={`msg-${index}`} className={`${msg.by==='professional' ? 'text-right' : 'text-left '} mb-2`}>
                 <div
-                  className={`inline-block p-2 text-xs outline-1 ${msg.sent ? 'rounded-l-lg rounded-b-lg outline outline-orange-500 bg-stone-100 ' : 'rounded-r-lg rounded-b-lg outline outline-stone-400 bg-white'}`}
+                  className={`inline-block p-2 text-xs outline-1 ${msg.by==='professional' ? 'rounded-l-lg rounded-b-lg outline outline-orange-500 bg-stone-100 ' : 'rounded-r-lg rounded-b-lg outline outline-stone-400 bg-white'}`}
                 >
-                  <strong>{msg.sent ? 'Vous:' : 'Client:'}</strong> {msg.content}
+                  <strong>{msg.by==='professional' ? 'Vous:' : 'Client:'}</strong> {msg.message}
                 </div>
               </div>
             ))}

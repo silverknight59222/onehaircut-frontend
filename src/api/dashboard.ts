@@ -18,7 +18,12 @@ interface SalonHaircut {
   haircut_id: number,
   servicesIDs: number[]
 }
-
+interface MessageParam{
+ client_id: number,
+ professional_id:number,
+ message: string,
+ by: string,
+}
 const dashboard = {
   getHairSalon: async (id: number) => {
     return await request.get<any>(`/hair_salon/${id}`);
@@ -124,7 +129,16 @@ const dashboard = {
   },
   getBookingsByHairsalon: async (id: number) => {
   return await request.get<any>(`bookings/${id}`);
-  }
+  },
+  getClientsBySalon: async (id: number) => {
+    return await request.get(`/fetch_clients_by_salon/${id}`);
+  },
+  getChat: async (clientId: number, professionalId:number) => {
+    return await request.get(`/fetch_chat/${clientId}/${professionalId}`);
+  },
+  sendMessage: async ( param: MessageParam) => {
+    return await request.post<any>(`send_message`, param);
+  },
 };
 
 export { dashboard };

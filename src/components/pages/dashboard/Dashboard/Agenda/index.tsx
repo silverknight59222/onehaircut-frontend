@@ -91,6 +91,7 @@ export const Agenda = () => {
             {
               id: event.id,
               title: event.user.name + " - " + coiffeurAleatoire.nom,
+              clientId: event.user.id,
               start: event.created_at,
               coiffeur: coiffeurAleatoire,
               backgroundColor: coiffeurAleatoire.couleur,
