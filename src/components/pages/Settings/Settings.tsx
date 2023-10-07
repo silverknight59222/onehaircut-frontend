@@ -12,6 +12,7 @@ import Footer from "@/components/UI/Footer";
 import { Theme_A } from "@/components/utilis/Themes";
 import BotSettings from "./BotSettings";
 import PromotionsSettings from "./PromotionsSettings";
+import PayementSettings from "./PayementSettings";
 export interface settingsStruct {
   name: string;
   display: () => React.JSX.Element;
@@ -21,6 +22,7 @@ const settingsMenu: settingsStruct[] = [
   { name: "Horaires", display: OpenningHours },
   { name: "Promotions", display: PromotionsSettings },
   { name: "Notifications", display: BotSettings },
+  { name: "Paiements", display: PayementSettings },
   { name: "Bot", display: BotSettings }
 ]
 
@@ -42,7 +44,7 @@ const Settings = () => {
         <LogoCircleFixRight />
       </div>
       <DashboardLayout>
-        <div className="flex items-center justify-center gap-2">
+        <div className="flex gap-4">
           {/* DISPLAY SETTINGS MENU */}
           {!isLoading && (
             <div className="max-w-[200px] h-max flex flex-col items-left justify-center text-center px-2 py-6 gap-8 rounded-2xl bg-white text- font-normal text-[#909090] shadow-lg">
@@ -67,7 +69,7 @@ const Settings = () => {
             return (
               <>
                 {activeMenu === item.name && !isLoading && (
-                  <div className="relative flex z-10 md:pl-auto overflow-auto py-4 px-4 bg-transparent rounded-2xl">
+                  <div className="relative flex z-10 md:pl-auto overflow-auto bg-transparent rounded-2xl">
                     <item.display />
                   </div>
                 )}

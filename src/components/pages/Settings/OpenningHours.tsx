@@ -139,9 +139,9 @@ const OpenningHours = () => {
     return (
         <div>
             {isLoading && loadingView()}
-            <div className="flex items-center flex-col justify-center gap-2 w-max">
+            <div className="flex items-center flex-col justify-center w-max">
                 {!isLoading && (
-                    <div className="max-w-[750px] flex items-center justify-center text-center px-9 py-6 mb-3 gap-8 rounded-2xl bg-white text-xl font-light text-[#ABABAB] shadow-lg">
+                    <div className="w-[620px] flex items-center justify-center text-center px-9 py-6 mb-3 gap-8 rounded-2xl bg-white text-lg font-light text-[#ABABAB] shadow-lg">
                         <p
                             className={`cursor-pointer text-black  px-2 py-2 rounded-md hover:bg-stone-100 hover:text-black ${activeMenu === "salon-time" &&
                                 " bg-black text-white font-medium"
