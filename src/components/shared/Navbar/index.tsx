@@ -451,7 +451,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
             <div className="px-6 cursor-pointer">
               <input
                 type="text"
-                placeholder="Search"
+                placeholder="Rechercher"
                 className="text-base px-4 p-2 rounded-full outline-none"
                 onChange={onSearch && isWelcomePage ? (e) => onSearch(e.target.value) : onServiceSearch && isServicesPage ? (e) => onServiceSearch(e.target.value) : () => { }}
               />

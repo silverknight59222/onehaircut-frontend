@@ -112,7 +112,7 @@ const Messages = () => {
                     className={`w-5 h-5 rounded-full text-xs flex items-center justify-center text-white ${
                       message.num &&
                       "bg-gradient-to-tr from-red-500 to-yellow-400"
-                    }`}
+                      }`}
                   >
                     {message.num && message.num}
                   </p> */}
