@@ -253,7 +253,7 @@ const SalonChoice = () => {
                                             position={location} // Attention : ici vous devrez probablement utiliser la position du salon plutôt que la position centrale de la carte
                                             icon={{
                                                 url: salon.id === selectedSalon.id ? MapIconRedUrl : mapIconUrl, // changer le marqueur en fonction du salon selectionné 
-                                                scaledSize: new window.google.maps.Size(70, 90),
+                                                scaledSize: salon.id === selectedSalon.id ? new window.google.maps.Size(70, 90) : new window.google.maps.Size(60, 80),
                                                 origin: new window.google.maps.Point(0, -10),
                                                 anchor: new window.google.maps.Point(20, 40),
                                             }}
