@@ -243,12 +243,12 @@ const SalonChoice = () => {
                                         <>
                                             <Marker
                                                 key={index}
-                                                position={location} // Utiliser la position du salon ici
+                                                position={location} // Utiliser la position du salon
                                                 icon={{
                                                     url: salon.id === selectedSalon.id ? MapIconRedUrl : mapIconUrl,
                                                     scaledSize: salon.id === selectedSalon.id ? new window.google.maps.Size(70, 90) : new window.google.maps.Size(60, 80),
                                                     origin: new window.google.maps.Point(0, -10),
-                                                    anchor: salon.id === selectedSalon.id ? new window.google.maps.Point(20, 37) : new window.google.maps.Point(20, 40),
+                                                    anchor: salon.id === selectedSalon.id ? new window.google.maps.Point(25, 37) : new window.google.maps.Point(20, 35),
                                                 }}
                                             />
                                             <OverlayView
@@ -257,20 +257,18 @@ const SalonChoice = () => {
                                                 getPixelPositionOffset={(width, height) => ({ x: -(width / 2), y: -height })}
                                             >
                                                 <div style={{
-                                                    //padding: '5px 10px',  // Espace autour du texte
-                                                    color: selectedSalon.id ? "#FFF" : "000",  // Couleur du texte
-                                                    //borderRadius: '12px',  // Coins arrondis
-                                                    whiteSpace: 'nowrap',  // Garde le texte sur une seule ligne
-                                                    fontSize: '12px',  // Taille du texte
-                                                    fontWeight: 'normal',  // Épaisseur normale du texte
-                                                    //backgroundColor: salon.id === selectedSalon.id ? "#FFF" : "#000",  // Couleur de fond
+                                                    color: salon.id === selectedSalon.id ? "#FFF" : "#000",
+                                                    whiteSpace: 'nowrap',
+                                                    fontSize: salon.id === selectedSalon.id ? '12px' : "10px",
+                                                    fontWeight: 'normal',
                                                 }}>
-                                                    {`${salon.id}00$`}
+                                                    {`${salon.id}0$`}
                                                 </div>
                                             </OverlayView>
                                         </>
                                     ))}
                                 </GoogleMap>
+
 
                             </div>
                         )
