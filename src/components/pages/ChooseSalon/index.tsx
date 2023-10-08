@@ -187,6 +187,43 @@ const SalonChoice = () => {
      }, [salons]);
  */
 
+    //TODO : Delete once data are there
+    // Définir un type pour une position individuelle
+    type Position = {
+        lat: number;
+        lng: number;
+    };
+
+    // Définir un type pour un tableau de positions
+    type Positions = Position[];
+
+    // Définir un tableau d'exemple de positions
+    const positions: Positions = [
+        { lat: 47.1510, lng: 7.2676 },
+        { lat: 47.1310, lng: 7.2576 },
+        { lat: 47.1410, lng: 7.2776 },
+        // ... autres positions
+    ];
+
+    // Fonction pour calculer le centre des markers avec types explicites
+    const getMapCenter = (positions: Positions): Position => {
+        let totalLat = 0;
+        let totalLng = 0;
+
+        positions.forEach(pos => {
+            totalLat += pos.lat;
+            totalLng += pos.lng;
+        });
+
+        return {
+            lat: totalLat / positions.length,
+            lng: totalLng / positions.length,
+        };
+    };
+
+    // Utilisation
+    const center = getMapCenter(positions);
+
     // MARQUEUR PERSONNALISE
     const mapIconSvg = ReactDOMServer.renderToStaticMarkup(<MapIcon />);
     const MapIconRedSvg = ReactDOMServer.renderToStaticMarkup(<MapIconRed />);
@@ -227,23 +264,24 @@ const SalonChoice = () => {
                 {/***************************************************************************************************************************************************************************************************************** */}
 
                 {/* Conteneur principal pour les salons et la carte */}
-                <div className='w-full mt-4 mb-2 relative'>
+                <div className='w-full mt-4 mb-2 relative '>
 
                     {/* Carte Google affichée uniquement si des salons sont disponibles */}
                     {
                         salons.length > 0 && (
-                            <div className={`lg:absolute lg:top-0 lg:left-0 w-full h-[400px] lg:w-[400px] lg:h-[970px] 2xl:w-[920px] 4xl:w-[920px] rounded-lg overflow-hidden lg:z-10`}>
+                            <div className={`lg:absolute lg:top-0 lg:left-0 w-full h-[400px] lg:w-[400px] lg:h-[880px] 2xl:w-[920px] 4xl:w-[920px] rounded-lg overflow-hidden lg:z-10`}>
 
+                                {/*TODO USE salon.position when data are available  */}
                                 <GoogleMap
-                                    center={location}
-                                    zoom={12}
+                                    center={center}
+                                    zoom={13}
                                     mapContainerStyle={{ width: '100%', height: '100%' }}
                                 >
                                     {salons.slice(0, MAX_MARKERS).map((salon, index) => (
                                         <>
                                             <Marker
                                                 key={index}
-                                                position={location} // Utiliser la position du salon
+                                                position={positions[index]} // Utiliser la position du salon
                                                 icon={{
                                                     url: salon.id === selectedSalon.id ? MapIconRedUrl : mapIconUrl,
                                                     scaledSize: salon.id === selectedSalon.id ? new window.google.maps.Size(70, 90) : new window.google.maps.Size(60, 80),
@@ -252,7 +290,7 @@ const SalonChoice = () => {
                                                 }}
                                             />
                                             <OverlayView
-                                                position={location} // Utiliser la position du salon ici aussi
+                                                position={positions[index]} // Utiliser la position du salon ici aussi
                                                 mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
                                                 getPixelPositionOffset={(width, height) => ({ x: -(width / 2), y: -height })}
                                             >
@@ -260,7 +298,7 @@ const SalonChoice = () => {
                                                     color: salon.id === selectedSalon.id ? "#FFF" : "#000",
                                                     whiteSpace: 'nowrap',
                                                     fontSize: salon.id === selectedSalon.id ? '12px' : "10px",
-                                                    fontWeight: 'normal',
+                                                    fontWeight: 'bold',
                                                 }}>
                                                     {`${salon.id}0$`}
                                                 </div>

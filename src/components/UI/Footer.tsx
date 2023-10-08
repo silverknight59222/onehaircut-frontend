@@ -2,7 +2,7 @@ import React from 'react';
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-white text-black py-3 fixed bottom-0 left-0 w-full border border-stone-200 z-50">
+    <footer className="bg-white text-black py-3 fixed bottom-0 left-0 w-full border border-stone-200 z-50 ">
       <div className="container mx-auto flex justify-between items-center px-8 md:px-4 sm:px-2" style={{ fontSize: 'clamp(7px, 0.75vw, 14px)' }}>
 
         {/* Section de texte à gauche */}
