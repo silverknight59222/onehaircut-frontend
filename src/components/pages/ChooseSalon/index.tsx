@@ -231,6 +231,18 @@ const SalonChoice = () => {
     const MapIconRedUrl = `data:image/svg+xml;base64,${btoa(MapIconRedSvg)}`;
     const MAX_MARKERS = 15;
 
+    type Salon = {
+        name: string;
+        id: number;
+    };
+
+    const handleSelectSalon = (salonId: number) => {
+        const foundSalon = salons.find(s => s.id === salonId);
+        setSelectedSalon(foundSalon ? foundSalon : { name: '', id: null });
+    };
+
+
+
     // Rendu du composant
     return (
         <div className='w-full'>
@@ -276,22 +288,30 @@ const SalonChoice = () => {
                                     center={center}
                                     zoom={13}
                                     mapContainerStyle={{ width: '100%', height: '100%' }}
+                                    options={{
+                                        minZoom: 2,  // ici, définissez votre zoom minimum
+                                        maxZoom: 18   // et ici, votre zoom maximum
+                                    }}
                                 >
                                     {salons.slice(0, MAX_MARKERS).map((salon, index) => (
-                                        <>
+                                        <React.Fragment key={salon.id}>
                                             <Marker
                                                 key={index}
                                                 position={positions[index]} // Utiliser la position du salon
+                                                onClick={() => setSelectedSalon({ name: salon.name, id: salon.id })}
                                                 icon={{
                                                     url: salon.id === selectedSalon.id ? MapIconRedUrl : mapIconUrl,
                                                     scaledSize: salon.id === selectedSalon.id ? new window.google.maps.Size(70, 90) : new window.google.maps.Size(60, 80),
                                                     origin: new window.google.maps.Point(0, -10),
                                                     anchor: salon.id === selectedSalon.id ? new window.google.maps.Point(25, 37) : new window.google.maps.Point(20, 35),
+
                                                 }}
+                                                zIndex={salon.id === selectedSalon.id ? 4 : 3}
+
                                             />
                                             <OverlayView
-                                                position={positions[index]} // Utiliser la position du salon ici aussi
-                                                mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+                                                position={positions[index]}
+                                                mapPaneName={OverlayView.FLOAT_PANE}
                                                 getPixelPositionOffset={(width, height) => ({ x: -(width / 2), y: -height })}
                                             >
                                                 <div style={{
@@ -299,15 +319,15 @@ const SalonChoice = () => {
                                                     whiteSpace: 'nowrap',
                                                     fontSize: salon.id === selectedSalon.id ? '12px' : "10px",
                                                     fontWeight: 'bold',
+                                                    zIndex: salon.id === selectedSalon.id ? 2 : 1, // Ajout du zIndex
                                                 }}>
                                                     {`${salon.id}0$`}
+
                                                 </div>
                                             </OverlayView>
-                                        </>
+                                        </React.Fragment >
                                     ))}
                                 </GoogleMap>
-
-
                             </div>
                         )
                     }
@@ -323,7 +343,7 @@ const SalonChoice = () => {
                                 <div
                                     key={index}
                                     onClick={() => setSelectedSalon({ name: salon.name, id: salon.id })}
-                                    className={`relative bg-stone-100 rounded-2xl border hover:border-secondary cursor-pointer ${selectedSalon.id === salon.id && 'border-secondary'}`}
+                                    className={`relative bg-stone-100 rounded-2xl border hover:border-stone-400 cursor-pointer ${selectedSalon.id === salon.id && 'border-2 border-red-300 shadow-xl'}`}
                                     style={{ width: '100%', aspectRatio: '1/1', display: 'flex', flexDirection: 'column', minWidth: '300px', minHeight: '300px' }}
                                 >
                                     {/* Contenu de la vignette */}
