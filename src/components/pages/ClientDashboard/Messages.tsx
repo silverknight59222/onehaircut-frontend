@@ -75,6 +75,7 @@ const Messages = () => {
         }
     };
 
+
     // Formatte une date en heures et minutes
     const formatDate = (date: string) => {
         const d = new Date(date);
@@ -128,7 +129,7 @@ const Messages = () => {
                                     <div
                                         key={index}
                                         onClick={() => getChat(salon)}
-                                        className={`flex items-center justify-between py-4 px-5 hover:bg-[#F5F5F5] mb-5 rounded-3xl cursor-pointer ${selectedChat.user_id === salon.id && 'bg-[#F5F5F5]'}`}
+                                        className={`flex items-center justify-between py-4 px-5 hover:bg-[#F5F5F5] mb-5 rounded-3xl cursor-pointer ${selectedChat.user_id === salon.id && 'bg-[#F5F5F5] outline outline-1 outline-red-200'}`}
                                     >
                                         <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row sm:items-center lg:items-start xl:items-center justify-center gap-2 sm:gap-4">
                                             {/* Image du Salon */}
@@ -172,6 +173,7 @@ const Messages = () => {
                                             className={`mb-2 flex flex-col ${chat.by === 'professional' ? 'items-end' : 'items-start'}`}
                                             key={index}
                                         >
+
                                             <p className="text-xs text-[#666] mb-1">
                                                 {/* Formatage de la date */}
                                                 <strong>{formatDate(chat.created_at).day}</strong> - {formatDate(chat.created_at).time}
