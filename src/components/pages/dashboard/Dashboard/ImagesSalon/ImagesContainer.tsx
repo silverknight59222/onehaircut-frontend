@@ -229,7 +229,7 @@ const ImagesContainer = ({
           </div>
         </div>
         <div className="flex-1 flex justify-center sm:justify-end gap-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 w-max">
+          <div className="relative grid grid-cols-1 sm:grid-cols-2 gap-2 w-max border-2 rounded-xl border-gray-300 p-5 min-h-[456px]">
             {images
               .filter((item) => {
                 return item.type === type;
@@ -258,6 +258,7 @@ const ImagesContainer = ({
                   </div>
                 );
               })}
+              <div className="absolute right-2 bottom-1 text-sm">{images.filter(image=>image.type === type).length}/25</div>
           </div>
         </div>
       </div>
