@@ -5,6 +5,7 @@ import { dashboard } from "@/api/dashboard";
 import useSnackbar from "@/hooks/useSnackbar";
 import { FileDetails, ImageSalon } from "@/types";
 import { AddIcon, DeleteIcon } from "@/components/utilis/Icons";
+import { Theme_A } from "@/components/utilis/Themes";
 interface ImagesContainerProps {
   title: string;
   type: "showcase" | "hairstyle";
@@ -70,39 +71,39 @@ const ImagesContainer = ({
       image: "",
     });
     const formData = new FormData();
-     const user = getLocalStorage("user");
+    const user = getLocalStorage("user");
     const userID = user ? JSON.parse(user).id : null;
     const limit = userID === 3 ? 5 : 20
-    if(images.length < limit){
-    if (userID) {
-      formData.append("hair_salon_id", userID);
-    }
-    formData.append("type", type);
-    if (
-      type === "showcase" &&
-      images.filter((image) => image.type === "showcase").length === 0
-    ) {
-      formData.append("is_cover", 1 as unknown as Blob);
+    if (images.length < limit) {
+      if (userID) {
+        formData.append("hair_salon_id", userID);
+      }
+      formData.append("type", type);
+      if (
+        type === "showcase" &&
+        images.filter((image) => image.type === "showcase").length === 0
+      ) {
+        formData.append("is_cover", 1 as unknown as Blob);
+      } else {
+        formData.append("is_cover", 0 as unknown as Blob);
+      }
+      formData.append("image", uploadedImage as unknown as Blob);
+      setIsLoading(true);
+      await dashboard
+        .addSalonImage(formData)
+        .then((res) => {
+          getAllSalonImages();
+          setSelectedImage("");
+          setUploadedImage(defaultUploadedImage);
+          showSnackbar("success", res.data.message);
+        })
+        .catch((error) => {
+          console.error(error);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
     } else {
-      formData.append("is_cover", 0 as unknown as Blob);
-    }
-    formData.append("image", uploadedImage as unknown as Blob);
-    setIsLoading(true);
-    await dashboard
-      .addSalonImage(formData)
-      .then((res) => {
-        getAllSalonImages();
-        setSelectedImage("");
-        setUploadedImage(defaultUploadedImage);
-        showSnackbar("success", res.data.message);
-      })
-      .catch((error) => {
-        console.error(error);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
-    }else{
       showSnackbar("error", "Limit Exceeded!");
     }
   };
@@ -205,22 +206,22 @@ const ImagesContainer = ({
                 <>
                   <button
                     onClick={deleteImage}
-                    className="flex items-center justify-center px-4 py-2 gap-4 rounded-md bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+                    className={`flex items-center justify-center px-4 py-2 gap-4 rounded-md ${Theme_A.button.mediumGradientButton} shadow-md `}
                   >
                     <DeleteIcon />
                   </button>
                   <button
                     onClick={clearUpdateMode}
-                    className="flex items-center justify-center text-white px-4 py-2 gap-4 rounded-md bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+                    className={`flex items-center justify-center px-4 py-2 gap-4 rounded-md ${Theme_A.button.medWhiteColoredButton} shadow-md `}
                   >
-                    Clear
+                    Annuler
                   </button>
                 </>
               )}
               {!updateMode && (
                 <button
                   onClick={addImage}
-                  className="flex items-center justify-center px-4 py-2 gap-4 rounded-md bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+                  className={`flex items-center justify-center px-4 py-2 gap-4 rounded-md ${Theme_A.button.mediumGradientButton} shadow-md `}
                 >
                   <AddIcon />
                 </button>
@@ -239,16 +240,15 @@ const ImagesContainer = ({
                   <div key={index} className="flex justify-center">
                     <div
                       onClick={() => selectImage(item)}
-                      className={`p-4 shadow-lg h-max flex flex-col justify-between cursor-pointer border-2 transition rounded-xl hover:border-secondary ${
-                        item.id === updateMode?.id && "border-secondary"
-                      }`}
+                      className={`p-4 shadow-lg h-max flex flex-col justify-between cursor-pointer border-2 transition rounded-xl hover:border-secondary ${item.id === updateMode?.id && "border-secondary"
+                        }`}
                     >
                       <div className="relative w-32 h-32">
                         <Image fill={true} src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public${item.image}`} alt="image" />
                       </div>
                       {!item.is_cover && type === "showcase" && (
                         <div
-                          className="cursor-pointer h-8 mt-2 text-sm flex items-center justify-center text-white px-4 py-1 gap-4 rounded-md bg-gradient-to-r from-pink-500 to-orange-500 shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+                          className={`cursor-pointer h-8 mt-2 text-sm flex items-center justify-center text-white px-4 py-1 gap-4 rounded-md ${Theme_A.button.mediumGradientButton} shadow-md`}
                           onClick={() => makeCover(item.id)}
                         >
                           Make Cover
@@ -258,7 +258,7 @@ const ImagesContainer = ({
                   </div>
                 );
               })}
-              <div className="absolute right-2 bottom-1 text-sm">{images.filter(image=>image.type === type).length}/25</div>
+            <div className="absolute right-2 bottom-1 text-sm">{images.filter(image => image.type === type).length}/25</div>
           </div>
         </div>
       </div>
