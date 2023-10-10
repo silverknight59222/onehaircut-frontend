@@ -9,6 +9,7 @@ export interface CreateIntentParams {
 export interface SalonRegisterParams {
   user_id: string;
   salon_name: string;
+  salon_description: string;
   country: string,
   city: string,
   state: string,

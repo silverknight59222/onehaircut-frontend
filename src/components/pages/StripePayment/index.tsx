@@ -41,6 +41,7 @@ function StripePayment() {
     let data: SalonRegisterParams = {
       user_id: "",
       salon_name: "",
+      salon_description: "",
       country: '',
       city: '',
       state: '',
@@ -59,6 +60,7 @@ function StripePayment() {
     const planType = JSON.parse(getLocalStorage("plan_type") as string);
     data.user_id = userInfo?.id;
     data.salon_name = salonName;
+    data.salon_description = 'Description text here';
     data.country=salonAddress.country
     data.state=salonAddress.state
     data.city=salonAddress.city
