@@ -166,7 +166,7 @@ const Services = () => {
         </div>
         <div
           // className={`text-2xl cursor-pointer flex items-center text-white px-20 py-1 gap-4 rounded-md ${ColorsThemeA.OhcGradient_A} shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]`}
-          className={`${Theme_A.button.bigGradientButton}`}
+          className={`${Theme_A.button.bigGradientButton} cursor-pointer`}
           onClick={() => setShowAddServiceModal(true)}
         >
           Ajouter un service
@@ -194,7 +194,7 @@ const Services = () => {
                       <EditIcon />
                     </div>
                     {(showEditServiceModal && editServiceInfo) && (
-                      <div className="fixed top-0 left-0 overflow-hidden bg-slate-50 bg-opacity-50 flex items-center justify-center w-full h-full z-50">
+                      <div className="fixed top-0 left-0 overflow-hidden bg-black bg-opacity-50 flex items-center justify-center w-full h-full z-50">
                         <EditServiceModal
                           setShowEditServiceModal={setShowEditServiceModal}
                           fetchAllServices={fetchAllServices}
@@ -229,7 +229,7 @@ const Services = () => {
         </div>
         <div></div>
       </div>
-      <div className="bg-gradient-to-l  md:block fixed -left-32 md:-left-8 -bottom-32 md:-bottom-8 z-0 mix-blend-overlay">
+      <div className="bg-gradient-to-l  md:block fixed -left-32 md:-left-8 -bottom-32 md:-bottom-8 -z-10">
         <LogoCircleFixLeft />
       </div>
       <ScrollToTopButton />
