@@ -124,7 +124,7 @@ const Messages = () => {
                   <div
                     key={index}
                     onClick={() => getChat(client)}
-                    className={`flex items-center justify-between py-4 px-5 hover:bg-[#F5F5F5] mb-5 rounded-3xl cursor-pointer ${selectedChat.client_id === client.client_id && 'bg-[#F5F5F5]'}`}
+                    className={`flex items-center justify-between py-4 px-5 hover:bg-[#F5F5F5] mb-5 rounded-3xl cursor-pointer ${selectedChat.client_id === client.client_id && 'bg-[#F5F5F5] outline outline-1 outline-red-200'}`}
                   >
                     <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row sm:items-center lg:items-start xl:items-center justify-center gap-2 sm:gap-4">
 
@@ -161,7 +161,7 @@ const Messages = () => {
                         <strong>{formatDate(chat.created_at).day}</strong> - {formatDate(chat.created_at).time}
                       </p>
                       <div
-                        className={`max-w-2/3 inline-block p-2 text-base ${chat.by === 'professional' ? 'rounded-r-lg rounded-b-lg outline outline-orange-500 bg-stone-100' : 'rounded-l-lg rounded-b-lg outline outline-stone-400 bg-white'}`}
+                        className={`max-w-2/3 inline-block p-2 text-base ${chat.by === 'professional' ? 'rounded-r-lg rounded-b-lg outline outline-2 outline-orange-500 bg-stone-100' : 'rounded-l-lg rounded-b-lg outline outline-2 outline-stone-400 bg-white'}`}
                       >
                         <strong>{chat.by === 'professional' ? 'Vous:' : `${selectedChat.client.name}:`}</strong> {chat.message}
                       </div>
