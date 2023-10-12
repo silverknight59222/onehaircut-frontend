@@ -31,7 +31,7 @@ const BotSettings = () => {
                     onClick={() => setisAutoExe(!isAutoExe)}
                     className="flex flex-row justify-around cursor-pointer my-3">
 
-                    <p className="text-sm md:text-lg text-zinc-600 font-medium items-start">
+                    <p className="text-sm md:text-md text-zinc-800 font-medium items-start">
                         Exécution automatique
                     </p>
                     <div
@@ -53,10 +53,10 @@ const BotSettings = () => {
                 {isAutoExe &&
                     <div className="flex flex-row justify-around my-5">
 
-                        <p className="text-sm md:text-lg justify-center text-zinc-800 font-normal items-start my-1">
+                        <p className="text-sm md:text-md justify-center text-zinc-800 font-normal items-start my-1">
                             Période d'exécution
                         </p>
-                        <div className=" bg-zinc-200 rounded-lg">
+                        <div className="p-1 bg-zinc-200 rounded-lg">
                             {botRepetition.map((element) => {
                                 return (
                                     <div className="">

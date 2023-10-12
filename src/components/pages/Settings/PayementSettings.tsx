@@ -38,7 +38,7 @@ const PayementSettings = () => {
     }
 
     return (
-        <div className={`w-[400px] h-max bg-white rounded-2xl py-4 shadow-[3px_3px_10px_-1px_rgba(0,0,0,0.30)]`}>
+        <div className={`w-[400px] h-max bg-white rounded-2xl py-4 shadow-lg`}>
             {showModal &&
                 <BaseModal close={() => setShowModal(false)}>
                     <div className="">
@@ -130,11 +130,11 @@ const PayementSettings = () => {
             <p className={`${Theme_A.textFont.headerH2} my-5 justify-center`}>
                 Réglage du moyen de paiement
             </p>
-            <p className="text-sm md:text-lg ml-8 text-zinc-800 font-normal items-start my-1">
+            <p className="text-sm md:text-md ml-8 text-black font-normal items-start my-1">
                 Moyen actuel
             </p>
             <div className="flex flex-row justify-around">
-                <p className="text-sm md:text-sm justify-center text-zinc-600  font-normal items-start my-1">
+                <p className="text-sm md:text-sm justify-center text-zinc-800  font-normal items-start my-1">
                     {payMethod}
                 </p>
                 {payMethod == payementMethodStruct[0] &&
@@ -150,10 +150,10 @@ const PayementSettings = () => {
             </div>
             <div className="flex flex-row justify-around mt-8 ">
 
-                <p className="text-sm md:text-lg justify-center text-zinc-800 font-normal items-start my-1">
+                <p className="text-sm md:text-md justify-center text-zinc-800 font-normal items-start my-1">
                     Moyens proposés
                 </p>
-                <div className=" bg-zinc-200 rounded-lg">
+                <div className=" p-1 bg-zinc-200 rounded-lg">
                     {payementMethodStruct.map((element) => {
                         return (
                             <div className="">

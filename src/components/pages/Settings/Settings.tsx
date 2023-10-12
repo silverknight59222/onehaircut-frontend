@@ -47,12 +47,11 @@ const Settings = () => {
         <div className="flex gap-4">
           {/* DISPLAY SETTINGS MENU */}
           {!isLoading && (
-            <div className="max-w-[200px] h-max flex flex-col items-left justify-center text-center px-2 py-6 gap-8 rounded-2xl bg-white text- font-normal text-[#909090] shadow-lg">
+            <div className="max-w-[200px] h-max flex flex-col items-left justify-center text-center px-2 py-6 gap-8 rounded-2xl bg-white text- font-medium text-[#909090] shadow-md">
               {settingsMenu.map((item) => {
                 return (
                   <p
                     className={` cursor-pointer  ${activeMenu === item.name &&
-                      // "px-3 py-2 rounded-md bg-gray-200"
                       " text-black "
                       }`}
                     onClick={() => setActiveMenu(item.name)}
@@ -69,7 +68,7 @@ const Settings = () => {
             return (
               <>
                 {activeMenu === item.name && !isLoading && (
-                  <div className="relative flex z-10 md:pl-auto overflow-auto bg-transparent rounded-2xl">
+                  <div className="relative flex z-10 md:pl-auto overflow-auto bg-transparent rounded-2xl px-2">
                     <item.display />
                   </div>
                 )}
