@@ -2,7 +2,7 @@
 import Navbar from '@/components/shared/Navbar'
 import React, { useEffect, useState } from 'react'
 import '../dashboard/Dashboard/Services/index.css'
-import { Like } from '@/components/utilis/Icons';
+import { Like, StarGreyIcon, StarIcon } from '@/components/utilis/Icons';
 import Image from 'next/image';
 import StarRatings from 'react-star-ratings';
 import { useRouter } from 'next/navigation';
@@ -352,7 +352,7 @@ const SalonChoice = () => {
                                         <div className='relative mb-4 ' style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                             {!isLoggedIn &&
                                                 <div onClick={(e) => onWishlist(e, salon.id)} className="absolute right-6 top-6 z-20 cursor-pointer">
-                                                    <Like color={wishlist.includes(String(salon.id)) ? "#FF0000" : ""} />
+                                                    <StarIcon width='35' height='35' color={wishlist.includes(String(salon.id)) ? "#FF0000" : ""} />
                                                 </div>}
                                             <Image
                                                 src={salon.salon_images.length && salon.salon_images[index].is_cover ? salon.salon_images[index].image.includes('api-server') ? salon.salon_images[index].image : `https://api-server.onehaircut.com/public${salon.salon_images[index].image}` : salon.logo.includes('api-server') ? salon.logo : `https://api-server.onehaircut.com/public${salon.logo}`}
