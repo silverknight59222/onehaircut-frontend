@@ -1,12 +1,13 @@
 "use client";
 import { dashboard } from "@/api/dashboard";
-import BaseDropdown from "@/components/UI/BaseDropdown";
+import DropdownMenu from "@/components/UI/DropDownMenu";
 import { CircleRight, CrossIcon, LogoCircleFixRight } from "@/components/utilis/Icons";
 import { Theme_A } from "@/components/utilis/Themes";
 import ClientDashboardLayout from "@/layout/ClientDashboardLayout";
 import Image from "next/image";
 import React, { useState } from "react";
 
+// default text if no picture to display
 const TextToDsplayifNoPic =
     <div>
         <p className={`${Theme_A.textFont.infoTextSmall}`}>
@@ -17,7 +18,22 @@ const TextToDsplayifNoPic =
         </p>
     </div>
 
+
+
+
 const Portrait = () => {
+
+    const Gender = [
+        "Femme",
+        "Homme",
+        "Autre",]
+    const Ethnicity = [
+        "Afro",
+        "Asian",
+        "Occidental",
+        "Oriental",]
+
+
     // -----------------------------------------------
     // for the straight picture
     const hiddenFileInput = React.useRef<HTMLInputElement | null>(null);
@@ -81,6 +97,48 @@ const Portrait = () => {
         }
     };
 
+    // -----------------------------------------------
+    // for the right picture
+    const hiddenFile4Input = React.useRef<HTMLInputElement | null>(null);
+    const [profileRightImage, setProfileRightImage] = useState<string | null>("");
+    // handle the profil pic change
+    const handleProfileRightImageUpload = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        if (!event.target.files) {
+            return;
+        }
+        const fileUploaded = event.target.files[0];
+        setProfileLeftImage(URL.createObjectURL(fileUploaded));
+    };
+    // handle the click to modify the pic
+    const handleClickRight = () => {
+        if (hiddenFile4Input.current) {
+            hiddenFile4Input.current.click();
+        }
+    };
+
+    // -----------------------------------------------
+    // for the slightly right picture
+    const hiddenFile5Input = React.useRef<HTMLInputElement | null>(null);
+    const [profileRight2Image, setProfileRight2Image] = useState<string | null>("");
+    // handle the profil pic change
+    const handleProfileRight2ImageUpload = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        if (!event.target.files) {
+            return;
+        }
+        const fileUploaded = event.target.files[0];
+        setProfileRight2Image(URL.createObjectURL(fileUploaded));
+    };
+    // handle the click to modify the pic
+    const handleClickRight2 = () => {
+        if (hiddenFile5Input.current) {
+            hiddenFile5Input.current.click();
+        }
+    };
+
 
     // For removing
     const RemoveHaircutWishlist = async (e: any, profil: string) => {
@@ -101,6 +159,32 @@ const Portrait = () => {
         //     showSnackbar('erreur', 'Photo non supprimée!')
         // })
 
+    }
+
+    const profilPicToDisplay = (clickFct: () => void, img: string | null, subtitle: string, picSize: number) => {
+        return (
+            <div className=" flex flex-col gap-2 items-center transform hover:scale-105 transition-transform "
+                onClick={clickFct}
+                role="button"
+                tabIndex={0}>
+                <div
+                    className="relative p-4 rounded-2xl border-2 bg-white shadow-lg">
+                    <div className={`w-${picSize} h-${picSize} relative flex text-center items-center`}>
+                        {img ? (
+                            <Image src={img} fill={true} alt="Profile Image" />
+                        ) : (
+                            TextToDsplayifNoPic
+                        )}
+                    </div>
+                    <div
+                        onClick={(e) => RemoveHaircutWishlist(e, "LightLeft")}
+                        className={`absolute -top-5 -right-3 flex items-center w-6 h-6 cursor-pointer rounded-md ${Theme_A.button.crossButtonSmall} z-10`}>
+                        <CrossIcon width="18" height="18" />
+                    </div>
+                </div>
+                <p className="text-black ">{subtitle}</p>
+            </div>
+        )
     }
 
 
@@ -127,103 +211,42 @@ const Portrait = () => {
                 onChange={handleProfileLeft2ImageUpload}
                 style={{ display: "none" }}
             />
+            <input
+                type="file"
+                ref={hiddenFile4Input}
+                onChange={handleProfileRightImageUpload}
+                style={{ display: "none" }}
+            />
+            <input
+                type="file"
+                ref={hiddenFile5Input}
+                onChange={handleProfileRight2ImageUpload}
+                style={{ display: "none" }}
+            />
             <ClientDashboardLayout>
                 <div className="relative mt-10 mb-5 px-6 sm:px-10 md:px-20">
                     <p className="text-black font-medium text-3xl text-center mb-8">
                         Modifiez vos photos de profils
                     </p>
-                    <p className="text-black font-normal text-md text-center mb-8">
+                    <p className="text-stone-600 font-normal italic text-md text-center mb-10">
                         Pour modifiez une photo, cliquer sur celle-ci et selectionner la remplacente
                     </p>
                     <div className="flex flex-col sm:flex-row  sm:items-start justify-center gap-14">
                         {/* Left side of the head placed left */}
                         <div className="flex sm:flex-col  gap-10 -mt-6 sm:-mt-0">
-                            <div className="w-6/12 sm:w-full flex flex-col   gap-2"
-                                onClick={handleClickLeft2}
-                                role="button"
-                                tabIndex={0}>
-                                <div
-                                    // className={` ${Theme_A.thumbnails.containerPicThumbnail} cursor-pointer `}
-                                    className="flex p-4 rounded-2xl border-2 bg-white shadow-lg"
-                                    onClick={handleClickLeft2}
-                                    role="button"
-                                    tabIndex={0}>
-                                    <div className={`w-32 h-32 relative flex items-center text-center`}>
-                                        {profileLeft2Image ? (
-                                            <Image src={profileLeft2Image} fill={true} alt="Profile Image" />
-                                        ) : (
-                                            TextToDsplayifNoPic
-                                        )}
-                                    </div>
-                                    <div
-                                        onClick={(e) => RemoveHaircutWishlist(e, "LightLeft")}
-                                        className={`absolut -top-2 -right-2 flex items-center w-6 h-6 cursor-pointer rounded-md ${Theme_A.button.crossButtonSmall} z-10`}>
-                                        <CrossIcon width="18" height="18" />
-                                    </div>
-                                </div>
-                                <p className="text-black">Profil légèrement gauche</p>
-                            </div>
-                            <div className="w-6/12 sm:w-full flex flex-col items-center justify-center"
-                                onClick={handleClickLeft}
-                                role="button"
-                                tabIndex={0}>
-                                <div className={`${Theme_A.thumbnails.containerPicThumbnail} cursor-pointer `}
-                                    onClick={handleClickLeft}
-                                    role="button"
-                                    tabIndex={0}>
-                                    <div className={`w-32 h-32 relative flex items-center text-center`}>
-                                        {profileLeftImage ? (
-                                            <Image src={profileLeftImage} fill={true} alt="Profile Image" />
-                                        ) : (
-                                            TextToDsplayifNoPic
-                                        )}
-                                    </div>
-                                </div>
-                                <p className="text-black">Profil gauche</p>
-                            </div>
+                            {profilPicToDisplay(handleClickLeft2, profileLeft2Image, "Profil légèrement gauche", 32)}
+
+                            {profilPicToDisplay(handleClickLeft, profileLeftImage, "Profil gauche", 32)}
                         </div>
 
                         {/* Straight side in the middle */}
-                        <div className="flex flex-col items-center justify-center"      >
-                            <div className={`${Theme_A.thumbnails.containerPicThumbnail} cursor-pointer `}
-                                onClick={handleClick}
-                                role="button"
-                                tabIndex={0}>
-                                <div className={`w-48 h-48 relative flex items-center text-center`}>
-                                    {profileImage ? (
-                                        <Image src={profileImage} fill={true} alt="Profile Image" />
-                                    ) : (
-                                        TextToDsplayifNoPic
-                                    )}
-                                </div>
-                            </div>
-                            <p className="text-black">Profil de face</p>
-                        </div>
+                        {profilPicToDisplay(handleClick, profileImage, "Profil de face", 48)}
 
                         {/* Right side of the face on the right */}
-                        <div className="flex sm:flex-col items-center justify-center gap-10 -mt-6 sm:-mt-0">
-                            <div className="w-6/12 sm:w-full flex flex-col items-center justify-center gap-2">
-                                <Image
-                                    src="/assets/portrait2.png"
-                                    alt=""
-                                    width={150}
-                                    height={150}
-                                    className="rounded-3xl"
-                                />
-                                <p className="text-black">Profil légèrement droite</p>
-                            </div>
-                            <div className="w-6/12 sm:w-full flex flex-col items-center justify-center">
-                                <div>
-                                    <Image
-                                        src="/assets/portrait2.png"
-                                        alt=""
-                                        width={150}
-                                        height={150}
-                                        className="rounded-3xl"
-                                    />
-                                </div>
-                                <p className="text-black">Profil droite</p>
-                            </div>
+                        <div className="flex sm:flex-col  gap-10 -mt-6 sm:-mt-0">
+                            {profilPicToDisplay(handleClickRight2, profileRight2Image, "Profil légèrement droite", 32)}
+
+                            {profilPicToDisplay(handleClickRight, profileRightImage, "Profil droite", 32)}
                         </div>
                     </div>
                     <div className="flex flex-col md:flex-row items-center md:items-start justify-center gap-10 mt-10">
@@ -241,6 +264,23 @@ const Portrait = () => {
                             <p className="text-black text-sm mb-2">Ou Selectionner un avatar</p>
                             <BaseDropdown dropdownItems={['Aucun']} width="w-52" height="h-14" rounded="rounded-2xl" />
                         </div> */}
+                    </div>
+                    <p className="text-stone-600 font-normal italic text-md text-center my-10">
+                        Indiquer votre genre et groupe ethnique. Ceux-ci serviront lors de la presentation des coiffures à la page d'accueil
+                    </p>
+                    <div className="flex flex-col sm:flex-row  sm:items-start justify-center gap-14">
+                        <div className="flex flex-col gap-2">
+                            <p className="text-black text-sm">
+                                Genre
+                            </p>
+                            <DropdownMenu dropdownItems={Gender} />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <p className="text-black text-sm">
+                                Groupe ethnique
+                            </p>
+                            <DropdownMenu dropdownItems={Ethnicity} />
+                        </div>
                     </div>
                 </div>
             </ClientDashboardLayout >
