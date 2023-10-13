@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, FC } from "react";
+import React, { useEffect, useState, ChangeEvent, useRef } from "react";
 import "./index.css";
 import {
   BoostIcon,
@@ -228,18 +228,54 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
     setIsModalOpen(false);
   };
   const initialText = ""; // Ajoutez votre texte initial ici si nécessaire
-  const [textDescription, setTextDescription] = useState(initialText);
-  const [textLength, setTextLength] = useState(initialText.length);
-  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  const [textDescription, setTextDescription] = useState<string>('');
+  const [textLength, setTextLength] = useState<number>(0);
+
+  const handleTextChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setTextDescription(e.target.value);
     setTextLength(e.target.value.length);
   };
 
+  const MaxChar = 300;
+
+
   /* For The Logo */
-  const [logoPath, setLogoPath] = useState(null);
 
+  {/* Importation du logo  */ }
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [logoPath, setLogoPath] = useState(""); // pour conserver le chemin du logo une fois chargé
+  const handleLogoClick = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+  const [image, setImage] = useState<string | null>(null);
+  // Gestionnaire d'événements pour traiter le changement de fichier.
+  const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
+    // Vérification pour s'assurer qu'un fichier a été sélectionné.
+    if (event.target.files && event.target.files[0]) {
+      const file = event.target.files[0];
+      // Utiliser FileReader pour convertir l'image en chaîne base64.
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImage(reader.result as string);
+      };
+      // Commencer la lecture du fichier.
+      reader.readAsDataURL(file);
+    }
+  };
+  const SetCurrentLogo = () => {
 
+  }
+  const SetCurrentDescription = () => {
 
+  }
+  const handleClick = () => {
+    closeModal();
+    SetCurrentLogo();
+    SetCurrentDescription();
+    // Ajoutez d'autres fonctions ici si nécessaire...
+  };
 
   return (
     <>
@@ -260,6 +296,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
             {/* Section Salon LOGO On top of the Sidebar */}
             <div className="relative w-full flex flex-col items-center justify-center lg:mt-0 mt-10 group">
               {!isClientDashboard && <p className="text-xl font-bold mb-5">{activeSalon?.name ? activeSalon.name : '-'}</p>}
+
 
               {/* Conteneur de l'image et de l'icône */}
               <div
@@ -282,9 +319,10 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
                 <img
                   src="/assets/user_img.png"
                   alt="profile"
-                  className="rounded-full absolute inset-0 m-auto shadow-md transform transition-transform duration-300 group-hover:scale-90 hover:shadow-inner border border-stone-700"
+                  className="rounded-full absolute inset-0 m-auto shadow-md transform transition-transform duration-300 group-hover:scale-90 hover:shadow-inner border-2 border-stone-700"
                 />
               </div>
+
 
               {/* Popup  to change the LOGO an DESCRIPTION*/}
               {isModalOpen && (
@@ -296,49 +334,65 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
                         Modifiez votre logo
                       </h2>
                       {/*TODO save Logo */}
+                      {/* Zone de chargement d'image */}
                       <div className="flex justify-center item-center mb-4 ">
-                        {logoPath ? (
+                        <input
+                          type="file"
+                          ref={fileInputRef}
+                          onChange={handleFileChange}
+                          style={{ display: 'none' }}
+                          accept="image/*"
+                        />
+                        {image ? (
                           <img
-                            src={logoPath}
+                            src={image}
                             alt="Logo"
                             className="w-48 h-48 rounded-full shadow-md transform transition-transform duration-300 hover:scale-105 hover:shadow-lg cursor-pointer"
+                            onClick={handleLogoClick}
                           />
                         ) : (
-                          <div className="w-48 h-48 rounded-full shadow-md flex items-center justify-center border-2 border-stone-200 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg cursor-pointer">
-                            <div className=" flex items-center justify-center w-24 h-24">
+                          <div
+                            className="w-48 h-48 rounded-full shadow-md flex items-center justify-center border-2 border-stone-200 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg cursor-pointer"
+                            onClick={handleLogoClick}
+                          >
+                            <div className="flex items-center justify-center w-24 h- transition-transform duration-500 hover:rotate-90">
                               <AddPlusIcon />
                             </div>
                           </div>
                         )}
+
                       </div>
-                      <h2 className="text-center text-lg font-bold mb-4">
+                      <h2 className="text-center text-lg font-bold mb-4 mt-4">
                         Modifiez votre description
                       </h2>
                       {/*TODO save Description */}
-                      <div className="relative">
+                      <div className="relative ">
                         <textarea
-                          className="w-full p-2 mb-4 rounded border shadow-inner  border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
-                          id="Description"
-                          rows={4}
+                          className="focus:outline-red-400 text-stone-700 w-full p-2 mb-2 rounded-xl border shadow-inner min-h-[120px]"
+                          id="description"
                           value={textDescription}
                           onChange={handleTextChange}
-                          maxLength={100}
-                          placeholder="Décrivez votre service ici. Soyez attractif !"
-                        ></textarea>
+                          maxLength={MaxChar}
+                          placeholder="Décrivez votre salon ou vos services ici. Soyez attractif !"
+                        />
 
-                        <div className="absolute bottom-2 right-2 text-sm text-gray-300 mt-2">
-                          {textLength}/100
+                        <div className="absolute bottom-6 right-2 text-sm text-gray-300 mt-2">
+                          {textLength}/{MaxChar}
                         </div>
                       </div>
                     </div>
                     {/* Bouton Enregistrer */}
                     <div className="flex justify-center pb-2">
-                      <button className={`${Theme_A.button.smallGradientButton}`}>
+                      <button className={`${Theme_A.button.smallGradientButton}`}
+                        /* TODO Save the logo and set it on the Sidebar zone */
+                        onClick={handleClick}
+                      >
                         Enregistrer
                       </button>
                     </div>
                   </div>
                 </BaseModal>
+
               )}
             </div>
 
