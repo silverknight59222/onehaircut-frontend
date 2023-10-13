@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, FC } from "react";
 import "./index.css";
 import {
   BoostIcon,
@@ -17,7 +17,7 @@ import {
   SettingsIcon,
   StatsIcon,
   ReservationIcon,
-  CrossIcon
+  AddPlusIcon,
 } from "../utilis/Icons";
 import { SalonDetails } from "@/types";
 import { getLocalStorage, setLocalStorage } from "@/api/storage";
@@ -30,6 +30,7 @@ interface SidebarItems {
   icon: string;
   title: string;
   route: string;
+
 }
 type SidebarType = {
   isSidebar: Boolean;
@@ -212,15 +213,33 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
       });
   }, []);
 
+
+  /* For the modal */
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const openModal = () => {
-    setIsModalOpen(true);
+    if (!isClientDashboard) {
+      setIsModalOpen(true);
+    } else {
+      router.push("/client/portrait")
+    }
   };
-
   const closeModal = () => {
     setIsModalOpen(false);
   };
+  const initialText = ""; // Ajoutez votre texte initial ici si nécessaire
+  const [textDescription, setTextDescription] = useState(initialText);
+  const [textLength, setTextLength] = useState(initialText.length);
+  const handleTextChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setTextDescription(e.target.value);
+    setTextLength(e.target.value.length);
+  };
+
+  /* For The Logo */
+  const [logoPath, setLogoPath] = useState(null);
+
+
+
 
   return (
     <>
@@ -239,7 +258,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
             </div>
 
             {/* Section Salon LOGO On top of the Sidebar */}
-            <div className="relative w-full flex flex-col items-center justify-center lg:mt-0 mt-10 group">  {/* Nouveau code: Ajout de la classe 'group' */}
+            <div className="relative w-full flex flex-col items-center justify-center lg:mt-0 mt-10 group">
               {!isClientDashboard && <p className="text-xl font-bold mb-5">{activeSalon?.name ? activeSalon.name : '-'}</p>}
 
               {/* Conteneur de l'image et de l'icône */}
@@ -263,16 +282,61 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
                 <img
                   src="/assets/user_img.png"
                   alt="profile"
-                  className="rounded-full absolute inset-0 m-auto shadow-sm transform transition-transform duration-300 group-hover:scale-90"
+                  className="rounded-full absolute inset-0 m-auto shadow-md transform transition-transform duration-300 group-hover:scale-90 hover:shadow-inner border border-stone-700"
                 />
               </div>
 
               {/* Popup  to change the LOGO an DESCRIPTION*/}
               {isModalOpen && (
-                <BaseModal close={closeModal} width="md:min-w-[470px] lg:min-w-[550px] xl:min-w-[600px]  ">
-                  <div>
-                    <h2>Mon Modal</h2>
-                    <p>Ceci est le contenu de mon modal.</p>
+                <BaseModal close={closeModal} width="md:min-w-[470px] lg:min-w-[550px] xl:min-w-[600px]">
+                  <div className="flex flex-col h-full p-4 justify-between">
+                    {/* Section du contenu */}
+                    <div>
+                      <h2 className="text-center text-lg font-bold mb-4">
+                        Modifiez votre logo
+                      </h2>
+                      {/*TODO save Logo */}
+                      <div className="flex justify-center item-center mb-4 ">
+                        {logoPath ? (
+                          <img
+                            src={logoPath}
+                            alt="Logo"
+                            className="w-48 h-48 rounded-full shadow-md transform transition-transform duration-300 hover:scale-105 hover:shadow-lg cursor-pointer"
+                          />
+                        ) : (
+                          <div className="w-48 h-48 rounded-full shadow-md flex items-center justify-center border-2 border-stone-200 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg cursor-pointer">
+                            <div className=" flex items-center justify-center w-24 h-24">
+                              <AddPlusIcon />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                      <h2 className="text-center text-lg font-bold mb-4">
+                        Modifiez votre description
+                      </h2>
+                      {/*TODO save Description */}
+                      <div className="relative">
+                        <textarea
+                          className="w-full p-2 mb-4 rounded border shadow-inner  border-gray-300 focus:ring-blue-500 focus:border-blue-500 "
+                          id="Description"
+                          rows={4}
+                          value={textDescription}
+                          onChange={handleTextChange}
+                          maxLength={100}
+                          placeholder="Décrivez votre service ici. Soyez attractif !"
+                        ></textarea>
+
+                        <div className="absolute bottom-2 right-2 text-sm text-gray-300 mt-2">
+                          {textLength}/100
+                        </div>
+                      </div>
+                    </div>
+                    {/* Bouton Enregistrer */}
+                    <div className="flex justify-center pb-2">
+                      <button className={`${Theme_A.button.smallGradientButton}`}>
+                        Enregistrer
+                      </button>
+                    </div>
                   </div>
                 </BaseModal>
               )}
