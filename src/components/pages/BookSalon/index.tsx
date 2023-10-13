@@ -13,14 +13,17 @@ import { Hairdresser, Slot } from "@/types";
 import { getLocalStorage, setLocalStorage } from "@/api/storage";
 
 const BookSalon = () => {
-  const [selectedSlot, setSelectedSlot] = useState<{name: string, id:number|null}>({name: '', id: null});
+  const [selectedSlot, setSelectedSlot] = useState<[]>([]);
   const [selectedHairdresser, setSelectedHairdresser] = useState({name: '', id: 0});
   const [showCalender,setShowCalender]=useState(false)
+  const haircut=getLocalStorage("haircut")
+  const haircutData = haircut ? JSON.parse(haircut) : null
   const [selectedDate,setSelectedDate]=useState<Date>()
   const [hairDressers,setHairDressers]=useState<Hairdresser[]>([])
   const route=useRouter()
   const [isLoading, setIsLoading] = useState(false);
   const [slots,setSlots]=useState<Slot[]>([])
+  const [hairCut, setHairCut] = useState({});
   const { loadingView } = userLoader();
   const salon=getLocalStorage('selectedSalon')
   const salonId= salon ? JSON.parse(salon).id : null
@@ -34,9 +37,10 @@ const BookSalon = () => {
   const getAllHairDresser = async () => {
     if(salonId){
     setIsLoading(true);
-    await client.getSalonDetail(salonId)
+    await client.getSalonDetail(salonId,haircutData.id)
       .then((resp) => {
         setHairDressers(resp.data.data[0].salon_hairdressers)
+        setHairCut(resp.data.salon_haircut)
         setSelectedHairdresser({name: resp.data.data[0].salon_hairdressers[0].name, id: resp.data.data[0].salon_hairdressers[0].id})
     }).catch(error=>{
       console.log(error)
@@ -91,9 +95,23 @@ const BookSalon = () => {
   useEffect(()=>{
     getSlots()
   },[selectedHairdresser, selectedDate])
-  const onSelectSlot=(slot: any)=>{
-    setSelectedSlot({name: slot.day + ' ' + slot.start, id:slot.id})
-  }
+
+  const onSelectSlot = (slot:any) => {
+    const currentIndex = slots.findIndex((item) => item.id === slot.id);
+    if (currentIndex !== -1) {
+      const selectedObjects = [];
+      // const ddd=+hairCut.base_duration
+      const ddd=+hairCut.base_duration
+      for (let i = currentIndex; i <= currentIndex + Math.floor(ddd/30); i++) {
+        if (slots[i]) {
+          selectedObjects.push(slots[i]);
+        }
+      }
+      setSelectedSlot(selectedObjects);
+    }
+  };
+
+
   return (
     <div>
       {isLoading && loadingView()}
@@ -178,17 +196,17 @@ const BookSalon = () => {
                   <div
                     key={index}
                     onClick={()=>onSelectSlot(slot)}
-                    className={`w-32 h-14 flex items-center justify-center text-xl font-semibold border rounded-2xl cursor-pointer text-black"
-                    } ${
-                      selectedSlot.id === slot.id
-                        ? "bg-[#FFE7DF] text-[#FF7143]"
+                    className={`w-32 h-14 flex items-center justify-center text-xl font-semibold border rounded-2xl cursor-pointer text-black ${
+                      selectedSlot.some((item:any)=>item.id===slot.id)
+                        ? "bg-[#fbd3c6] text-[#473c38]"
                         : "bg-white border-[#BABABA]"
-                    }`}
+                    }`}         
                   >
                     {slot.start}
                   </div>
                 );
               })}
+              
             </div>
             :
             <p className="text-[#A0A0A0] text-xl font-medium">No slots for today</p>
@@ -201,7 +219,7 @@ const BookSalon = () => {
             <p className="font-medium my-2">par: <span className="font-normal">Nom du coiffeur</span></p>
             <p className="font-medium">Temps d’éxécution : <span className="font-normal">2 heures</span></p>
         </div> */}
-        <button disabled={selectedSlot.id ? false : true} onClick={onContinue} className={`w-72 h-14 rounded-xl text-xl font-semibold text-white mt-10 ${selectedSlot.id ? 'bg-background-gradient' : 'bg-[#D9D9D9]'}`}>Réservez ce créneau</button>
+        <button disabled={selectedSlot.length>0 ? false : true } onClick={onContinue} className={`w-72 h-14 rounded-xl text-xl font-semibold text-white mt-10 ${selectedSlot.length>0 ? 'bg-background-gradient' : 'bg-[#D9D9D9]'}`}>Réservez ce créneau</button>
       </div>
     </div>
   );
