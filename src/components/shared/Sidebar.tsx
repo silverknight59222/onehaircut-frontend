@@ -17,12 +17,14 @@ import {
   SettingsIcon,
   StatsIcon,
   ReservationIcon,
+  CrossIcon
 } from "../utilis/Icons";
 import { SalonDetails } from "@/types";
 import { getLocalStorage, setLocalStorage } from "@/api/storage";
 import { dashboard } from "@/api/dashboard";
 import { usePathname, useRouter } from "next/navigation";
 import { ColorsThemeA, Theme_A } from "../utilis/Themes";
+import BaseModal from "../UI/BaseModal";
 
 interface SidebarItems {
   icon: string;
@@ -36,17 +38,27 @@ type SidebarType = {
   SidebarHandler: () => void;
 };
 
+// Declare icon color
 const colorIcon = "#ffffff"
 
+// Define the Sidebar component
 const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }: SidebarType) => {
+  // State to store salon details
   const [salonDetail, setSalonDetails] = useState<SalonDetails[]>();
+  // State to store active salon info
   const [activeSalon, setActiveSalon] = useState<SalonDetails>();
+  // State to store sidebar items
   const [sidebarItem, setSidebarItem] = useState<SidebarItems[]>([])
+  // Get routing functions and current path
   const router = useRouter()
   const path = usePathname()
+  // Define routes that require a pro subscription
   const proRoutes = ['/dashboard/client-activity', '/dashboard/visites']
 
+
+  // Function to determine which icon to display on the sidebar
   const setIcon = (SidebarIcon: string, activeIcon: string) => {
+    // ... (icon displaying logic is defined here)
     let Icon;
     switch (SidebarIcon) {
       case "DashboardIcon":
@@ -163,6 +175,8 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
     }
     return Icon;
   };
+
+  // Function to set the active salon
   const setSalon = (salonList: SalonDetails[]) => {
     salonList.forEach(salon => {
       if (salon.is_primary) {
@@ -172,11 +186,14 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
     });
   };
 
+  // Function to handle click on a sidebar item
   const onSelectItem = (route: string, index: number) => {
     if (route) {
       router.push(route)
     }
   }
+
+  // Use effect to fetch data on component mount
   useEffect(() => {
     const temp = getLocalStorage("user");
     const user = temp ? JSON.parse(temp) : null;
@@ -195,6 +212,16 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
       });
   }, []);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <>
       {isSidebar && (
@@ -210,18 +237,48 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
             >
               &#10005;
             </div>
-            <div className="relative w-full flex flex-col items-center justify-center lg:mt-0 mt-10">
+
+            {/* Section Salon LOGO On top of the Sidebar */}
+            <div className="relative w-full flex flex-col items-center justify-center lg:mt-0 mt-10 group">  {/* Nouveau code: Ajout de la classe 'group' */}
               {!isClientDashboard && <p className="text-xl font-bold mb-5">{activeSalon?.name ? activeSalon.name : '-'}</p>}
-              <ProfileImageBorderIcon />
-              <img
-                src="/assets/user_img.png"
-                width={104}
-                height={104}
-                alt="profile"
-                className={`rounded-full absolute left-[100px] ${isClientDashboard ? 'top-5' : 'top-[68px]'}`}
-              />
-              {!isClientDashboard && <p className="text-lg font-medium mt-2.5">Daniel j.</p>}
+
+              {/* Conteneur de l'image et de l'icône */}
+              <div
+                className="relative cursor-pointer group"
+                onClick={openModal}
+                style={{ width: '160px', height: '160px' }}
+              >
+                {/* Icôn around the logo*/}
+                <div className="absolute inset-0 flex items-center justify-center transition-transform duration-500 group-hover:rotate-90"
+                  style={{
+                    left: '-15px',
+                    transition: 'transform 500ms',
+                    transformOrigin: '54% center', // ajustez selon vos besoins
+                  }}> {/* Ajustement ici */}
+                  <ProfileImageBorderIcon />
+                </div>
+
+                {/* Salon Logo*/}
+                {/* TODO Add and save Logo fron salon there */}
+                <img
+                  src="/assets/user_img.png"
+                  alt="profile"
+                  className="rounded-full absolute inset-0 m-auto shadow-sm transform transition-transform duration-300 group-hover:scale-90"
+                />
+              </div>
+
+              {/* Popup  to change the LOGO an DESCRIPTION*/}
+              {isModalOpen && (
+                <BaseModal close={closeModal} width="md:min-w-[470px] lg:min-w-[550px] xl:min-w-[600px]  ">
+                  <div>
+                    <h2>Mon Modal</h2>
+                    <p>Ceci est le contenu de mon modal.</p>
+                  </div>
+                </BaseModal>
+              )}
             </div>
+
+
             {/* Button to go directly to the order page */}
             {isClientDashboard && <div
               onClick={() => router.push('/')}
@@ -229,8 +286,8 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
             >
               Réserver une coiffure
             </div>}
-            {/* Sidebar items display */}
-            <div className="mt-8">
+            {/* Sidebar items display - mb-8 added to be able to see the last element due to the bottom-bar */}
+            <div className="mt-8 mb-8">
               {sidebarItem.map((item, index) => {
                 return (
                   <div key={index}>
@@ -245,6 +302,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
                           item.icon,
                           path === item.route ? item.icon : ""
                         )}
+                        {/* TODO make the message notification number dynamic */}
                         {item.title === 'Message' && <p className="absolute top-3 -right-2.5 flex items-center justify-center w-4 h-4 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold">2</p>}
                       </div>
                       <p
