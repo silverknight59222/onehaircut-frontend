@@ -113,7 +113,7 @@ const Messages = () => {
           {/* Section de gauche : Liste des Clients */}
           <div className="flex flex-col md:flex-row items-start justify-center gap-10 2xl:gap-20 h-screen md:h-auto">
             {/* Section de gauche */}
-            <div className="w-full md:max-w-sm xl:max-w-sm min-h-[500px] md:min-h-[300px] overflow-y-auto flex-shrink-0 rounded-3xl bg-white py-4 px-8 shadow-md">
+            <div className={`w-full md:max-w-sm xl:max-w-sm min-h-[500px] md:min-h-[300px] overflow-y-auto flex-shrink-0 rounded-3xl bg-white py-4 px-8 shadow-md`}>
 
               {/* Titre */}
               <h2 className="text-xl font-semibold mb-4">
@@ -124,7 +124,7 @@ const Messages = () => {
                   <div
                     key={index}
                     onClick={() => getChat(client)}
-                    className={`flex items-center justify-between py-4 px-5 hover:bg-[#F5F5F5] mb-5 rounded-3xl cursor-pointer ${selectedChat.client_id === client.client_id && 'bg-[#F5F5F5] outline outline-1 outline-red-200'}`}
+                    className={`flex items-center justify-between py-4 px-5 hover:bg-[#F5F5F5] mb-5 rounded-3xl cursor-pointer ${selectedChat.client_id === client.client_id && 'bg-[#F5F5F5] outline outline-1 outline-stone-300'}`}
                   >
                     <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row sm:items-center lg:items-start xl:items-center justify-center gap-2 sm:gap-4">
 
