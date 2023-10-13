@@ -10,7 +10,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import userLoader from "@/hooks/useLoader";
 import { Chat, ClientChat } from "@/types";
-import { Theme_A } from "@/components/utilis/Themes";
+import { Theme_A, ColorsThemeA } from "@/components/utilis/Themes";
 
 const Messages = () => {
   const [clients, setClients] = useState<ClientChat[]>([])
@@ -156,12 +156,12 @@ const Messages = () => {
                       className={`mb-2 flex flex-col ${chat.by === 'professional' ? 'items-start' : 'items-end'}`}
                       key={index}
                     >
-                      <p className="text-xs text-[#666] mb-1">
+                      <p className="text-xs text-[#666] mb-1 italic">
                         {/* Formatage de la date */}
                         <strong>{formatDate(chat.created_at).day}</strong> - {formatDate(chat.created_at).time}
                       </p>
                       <div
-                        className={`max-w-2/3 inline-block p-2 text-base ${chat.by === 'professional' ? 'rounded-r-lg rounded-b-lg outline outline-2 outline-orange-500 bg-stone-100' : 'rounded-l-lg rounded-b-lg outline outline-2 outline-stone-400 bg-white'}`}
+                        className={`max-w-2/3 inline-block p-2 text-base shadow-md ${chat.by === 'professional' ? `rounded-r-lg text-white ${ColorsThemeA.OhcGradient_D} rounded-b-lg ` : `bg-stone-200 rounded-l-lg rounded-b-lg `}`}
                       >
                         <strong>{chat.by === 'professional' ? 'Vous:' : `${selectedChat.client.name}:`}</strong> {chat.message}
                       </div>
@@ -180,7 +180,7 @@ const Messages = () => {
                 </div>
 
                 {/* Bouton d'envoi de message */}
-                <div className="ml-4 hover:scale-110" onClick={onSendMessage}>
+                <div className="ml-4 hover:scale-125 transform transition-transform duration-300" onClick={onSendMessage}>
                   <ChatSendIcon />
                 </div>
               </div>
