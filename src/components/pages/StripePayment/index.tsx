@@ -51,6 +51,7 @@ function StripePayment() {
       payment_method: "",
       plan_id: "",
       plan_name: "",
+      salon_description: "abc"
     };
     const userInfo = JSON.parse(getLocalStorage("user_Info") as string);
     const salonName = getLocalStorage("salon_name") as string;
