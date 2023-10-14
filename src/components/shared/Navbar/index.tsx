@@ -66,9 +66,9 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
     if (!GenderMobileRef.current?.contains(target as Node)) {
       setShowMobileGender(false);
     }
-    if (!LengthDesktopRef.current?.contains(target as Node)) {
-      setShowDesktopLength(false);
-    }
+    // if (!LengthDesktopRef.current?.contains(target as Node)) {
+    //   setShowDesktopLength(false);
+    // }
     if (!LengthMobileRef.current?.contains(target as Node)) {
       setShowMobileLength(false);
     }
@@ -242,7 +242,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
                     </div>
                   )}
                 </div>
-                <div ref={LengthDesktopRef} className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
+                <div className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
                   <p
                     className={showDesktopLength ? "rounded-xl py-2 px-7 bg-white  text-black font-semibold" : " hover:bg-white rounded-xl py-2 px-7 "}
                     onClick={() => {
