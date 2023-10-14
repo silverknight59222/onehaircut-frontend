@@ -1,6 +1,6 @@
 "use client";
 import { dashboard } from "@/api/dashboard";
-import BaseDropdown from "@/components/UI/BaseDropdown";
+import DropdownMenu from "@/components/UI/DropDownMenu";
 import { CircleRight, CrossIcon, LogoCircleFixRight } from "@/components/utilis/Icons";
 import { Theme_A } from "@/components/utilis/Themes";
 import ClientDashboardLayout from "@/layout/ClientDashboardLayout";
@@ -23,9 +23,14 @@ const TextToDsplayifNoPic =
 
 const Portrait = () => {
 
+    const Gender = [
+        "Femme",
+        "Homme",
+        "Autre",]
     const Ethnicity = [
         "Afro",
-        "Asian", "Occidental",
+        "Asian",
+        "Occidental",
         "Oriental",]
 
 
@@ -261,10 +266,22 @@ const Portrait = () => {
                         </div> */}
                     </div>
                     <p className="text-stone-600 font-normal italic text-md text-center my-10">
-                        Indiquer votre genre et type ethnique. Ceux-ci serviront lors de la presentation des coiffures à la page d'accueil
+                        Indiquer votre genre et groupe ethnique. Ceux-ci serviront lors de la presentation des coiffures à la page d'accueil
                     </p>
-                    <BaseDropdown dropdownItems={Ethnicity}
-                    />
+                    <div className="flex flex-col sm:flex-row  sm:items-start justify-center gap-14">
+                        <div className="flex flex-col gap-2">
+                            <p className="text-black text-sm">
+                                Genre
+                            </p>
+                            <DropdownMenu dropdownItems={Gender} />
+                        </div>
+                        <div className="flex flex-col gap-2">
+                            <p className="text-black text-sm">
+                                Groupe ethnique
+                            </p>
+                            <DropdownMenu dropdownItems={Ethnicity} />
+                        </div>
+                    </div>
                 </div>
             </ClientDashboardLayout >
         </div >
