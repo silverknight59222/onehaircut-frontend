@@ -75,29 +75,29 @@ const SalonChoice = () => {
     }
     // Fonction pour obtenir la liste de souhaits des salons
     const getSalonsWishlist = () => {
-        //   if (userId) {
-        //       setIsLoading(true);
-        //       dashboard.getSalonsWishlist(userId)
-        //           .then((res) => {
-        //               if (res.data.data.length > 0) {
-        //                   if (salons.length) {
-        //                       const arr: string[] = []
-        //                       res.data.data.forEach((item: any) => {
-        //                           salons.forEach((salon) => {
-        //                               if (item.hairsalon.id === salon.id) {
-        //                                   arr.push(String(salon.id))
-        //                               }
-        //                           })
-        //                       });
-        //                       setWishlist(arr)
-        //                   }
-        //               }
-        //               setIsLoading(false);
-        //           })
-        //           .catch(error => {
-        //               setIsLoading(false);
-        //           })
-        //   }
+          if (userId) {
+              setIsLoading(true);
+              dashboard.getSalonsWishlist(userId)
+                  .then((res) => {
+                      if (res.data.data) {
+                          if (salons.length) {
+                              const arr: string[] = []
+                              res.data.data.forEach((item: any) => {
+                                  salons.forEach((salon) => {
+                                      if (item.hairsalon.id === salon.id) {
+                                          arr.push(String(salon.id))
+                                      }
+                                  })
+                              });
+                              setWishlist(arr)
+                          }
+                      }
+                      setIsLoading(false);
+                  })
+                  .catch(error => {
+                      setIsLoading(false);
+                  })
+          }
     }
 
     // Fonction pour ajouter/supprimer des salons à la liste de souhaits
