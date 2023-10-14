@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { HeartIcon, HelpIcon, MessageIcon, UserIcon } from "../utilis/Icons";
+import { HelpIcon, MessageIcon, UserIcon, StarGreyIcon } from "../utilis/Icons";
 import { useRouter } from "next/navigation";
 import { Auth } from "@/api/auth";
 import { removeFromLocalStorage } from "@/api/storage";
 import userLoader from '@/hooks/useLoader';
 import { ColorsThemeA, Theme_A } from "../utilis/Themes";
 
-interface UserProfileProfile{
+interface UserProfileProfile {
   isDashboard?: Boolean
 }
-const UserProfile = ({isDashboard}: UserProfileProfile) => {
+const UserProfile = ({ isDashboard }: UserProfileProfile) => {
   const [isDropdown, setIsDropdown] = useState(false);
   const router = useRouter();
   const dropdownRef =
-      React.useRef() as React.MutableRefObject<HTMLInputElement>;
+    React.useRef() as React.MutableRefObject<HTMLInputElement>;
   const { loadingView } = userLoader();
   const [isLoading, setIsLoading] = useState(false);
   const dropdownItems = [
@@ -24,7 +24,7 @@ const UserProfile = ({isDashboard}: UserProfileProfile) => {
     },
     {
       name: "Favoris",
-      icon: <HeartIcon width="25" height="25" />,
+      icon: <StarGreyIcon width="25" height="25" />,
       route: "/client/favorites",
     },
     { name: "Aide", icon: <HelpIcon width="25" height="25" />, route: "" },
@@ -43,7 +43,7 @@ const UserProfile = ({isDashboard}: UserProfileProfile) => {
         router.push("/login");
       })
       .catch((error) => console.log(error))
-      .finally(()=>{
+      .finally(() => {
         setIsLoading(false);
       })
   };

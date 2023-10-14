@@ -229,8 +229,8 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
             >
               Réserver une coiffure
             </div>}
-            {/* Sidebar items display */}
-            <div className="mt-8">
+            {/* Sidebar items display - mb-8 added to be able to see the last element due to the bottom-bar */}
+            <div className="mt-8 mb-8">
               {sidebarItem.map((item, index) => {
                 return (
                   <div key={index}>
