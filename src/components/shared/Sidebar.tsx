@@ -362,7 +362,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
                         )}
 
                       </div>
-                      <h2 className="text-center text-lg font-bold mb-4 mt-4">
+                      <h2 className="text-center text-lg font-bold mb-4 mt-12">
                         Modifiez votre description
                       </h2>
                       {/*TODO save Description */}
