@@ -46,7 +46,10 @@ const SearchSalon = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [salonProfile, setSalonProfile] = useState<SalonProfile>({ name: '', rating: '', user_id: 0, salon_images: [{ image: '', is_cover: true }], salon_hairdressers: [{ name: '', profile_image: '' }] })
   const router = useRouter();
+  const [hairCut, setHairCut] = useState({});
   const { loadingView } = userLoader();
+  const haircut=getLocalStorage("haircut")
+  const haircutData = haircut ? JSON.parse(haircut) : null
   const salon = getLocalStorage('selectedSalon')
   const salonId = salon ? JSON.parse(salon).id : null
 
@@ -65,9 +68,10 @@ const SearchSalon = () => {
   const getAllHairDresser = async () => {
     setIsLoading(true);
     if (salonId) {
-      await client.getSalonDetail(salonId)
+      await client.getSalonDetail(salonId,haircutData.id)
         .then((resp) => {
           setSalonProfile(resp.data.data[0])
+          setHairCut(resp.data.salon_haircut)
           setIsLoading(false);
         }).catch(error => {
           console.log(error)
@@ -120,6 +124,8 @@ const SearchSalon = () => {
   const openPerfSampleModal = () => {
     setIsPerfSampleModalOpen(true);
   };
+
+  console.log(hairCut,"sdfhjksda")
 
   //GOOGLE MAP 
   //TODO Centrer par rapport aux coordonnées du salon
@@ -337,7 +343,7 @@ const SearchSalon = () => {
                     Prix total :
                   </p>
                   <p className="text-md xl:text-lg font-normal text-black">
-                    [Votre prix ici]
+                  {hairCut.base_price}
                   </p>
                 </div>
 
@@ -347,7 +353,7 @@ const SearchSalon = () => {
                     Dur&eacute;e totale :
                   </p>
                   <p className="text-md xl:text-lg font-normal text-black">
-                    [Votre durée ici]
+                    {hairCut.base_duration}
                   </p>
                 </div>
               </div>
