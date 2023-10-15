@@ -124,13 +124,21 @@ const Messages = () => {
                   <div
                     key={index}
                     onClick={() => getChat(client)}
-                    className={`flex items-center justify-between py-4 px-5 hover:bg-[#F5F5F5] mb-5 rounded-3xl cursor-pointer ${selectedChat.client_id === client.client_id && 'bg-[#F5F5F5] outline outline-1 outline-stone-300'}`}
+                    className={`flex items-center justify-between py-2 px-5 hover:bg-[#F5F5F5] mb-2 rounded-3xl cursor-pointer ${selectedChat.client_id === client.client_id && 'bg-[#F5F5F5] outline outline-1 outline-stone-300'}`}
                   >
                     <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row sm:items-center lg:items-start xl:items-center justify-center gap-2 sm:gap-4">
+                      {/* Icône du client (décommentez si nécessaire) */}
+                      <div className="flex items-center">
+                        {/* Cercle ajouté */}
+                        <div className="w-10 h-10 rounded-full bg-stone-800 mr-2"></div>
+                        <p className="ml-4 text-black">{client.client.name}</p>
 
-                      {/* <p className="text-xs text-[#666] w-32 md:w-24">{message.time}</p> */}
-                      <p className="text-black">{client.client.name}</p>
+                      </div>
                     </div>
+                    {/* Cercle rouge pour indiquer un nouveau message TODO ADD RED DOT IF NEW MESSAGE*/}
+                    <div className="ml-auto w-4 h-4 rounded-full bg-red-500"></div>
+
+                    {/* Vous pouvez décommenter ce bloc si vous avez besoin d'afficher un message ou une notification */}
                     {/* {message.num ? (
                         <p className="w-5 h-5 rounded-full text-xs flex items-center justify-center text-white bg-gradient-to-tr from-red-500 to-yellow-400">
                             {message.num}
