@@ -36,11 +36,11 @@ const Portrait = () => {
 
     // functions for filters
     // handling the change of gender
-    const handleNewGender = (item:string) =>{
+    const handleNewGender = (item: string) => {
         // TODO: add backend to save the new preference
     }
     // handling the change of ethnicity
-    const handleNewEthnicity = (item:string) =>{
+    const handleNewEthnicity = (item: string) => {
         // TODO: add backend to save the new preference
     }
 
@@ -179,7 +179,7 @@ const Portrait = () => {
                 role="button"
                 tabIndex={0}>
                 <div
-                    className="relative p-4 rounded-2xl border-2 bg-white shadow-lg">
+                    className="relative p-4 rounded-2xl border-2 bg-white shadow-md hover:shadow-xl">
                     <div className={`w-${picSize} h-${picSize} relative flex text-center items-center`}>
                         {img ? (
                             <Image src={img} fill={true} alt="Profile Image" />
@@ -187,12 +187,12 @@ const Portrait = () => {
                             TextToDsplayifNoPic
                         )}
                     </div>
-                    {   img &&(
-                    <div
-                        onClick={(e) => RemoveHaircutWishlist(e, "LightLeft")}
-                        className={`absolute -top-5 -right-3 flex items-center w-6 h-6 cursor-pointer rounded-md ${Theme_A.button.crossButtonSmall} z-10`}>
-                        <CrossIcon width="18" height="18" />
-                    </div>)}
+                    {img && (
+                        <div
+                            onClick={(e) => RemoveHaircutWishlist(e, "LightLeft")}
+                            className={`absolute -top-5 -right-3 flex items-center w-6 h-6 cursor-pointer rounded-md ${Theme_A.button.crossButtonSmall} z-10`}>
+                            <CrossIcon width="18" height="18" />
+                        </div>)}
                 </div>
                 <p className="text-black ">{subtitle}</p>
             </div>
@@ -240,7 +240,7 @@ const Portrait = () => {
                     <p className="text-black font-medium text-3xl text-center mb-8">
                         Modifiez vos photos de profils
                     </p>
-                    <p className="text-stone-600 font-normal italic text-md text-center mb-10">
+                    <p className="text-stone-400 font-normal italic text-sm text-center my-10">
                         Pour modifiez une photo, cliquer sur celle-ci et selectionner la remplacente
                     </p>
                     <div className="flex flex-col sm:flex-row  sm:items-start justify-center gap-14">
@@ -280,7 +280,7 @@ const Portrait = () => {
                             <BaseDropdown dropdownItems={['Aucun']} width="w-52" height="h-14" rounded="rounded-2xl" />
                         </div> */}
                     </div>
-                    <p className="text-stone-600 font-normal italic text-md text-center my-10">
+                    <p className="text-stone-400 font-normal italic text-sm text-center my-10">
                         Indiquer votre genre et groupe ethnique. Ceux-ci serviront lors de la presentation des coiffures à la page d'accueil
                     </p>
                     <div className="flex flex-col sm:flex-row  sm:items-start justify-center gap-14 mb-40">
@@ -288,15 +288,15 @@ const Portrait = () => {
                             <p className="text-black text-sm">
                                 Genre
                             </p>
-                            <DropdownMenu dropdownItems={Gender} backgroundClr= {ColorsThemeA.standardBorderGray} 
-                            fctToCallOnClick={handleNewGender}/>
+                            <DropdownMenu dropdownItems={Gender} backgroundClr={ColorsThemeA.standardBorderGray}
+                                fctToCallOnClick={handleNewGender} />
                         </div>
                         <div className="flex flex-col gap-2">
                             <p className="text-black text-sm">
                                 Groupe ethnique
                             </p>
-                            <DropdownMenu dropdownItems={Ethnicity} backgroundClr= {ColorsThemeA.standardBorderGray}
-                            fctToCallOnClick={handleNewEthnicity}/>
+                            <DropdownMenu dropdownItems={Ethnicity} backgroundClr={ColorsThemeA.standardBorderGray}
+                                fctToCallOnClick={handleNewEthnicity} />
                         </div>
                     </div>
                 </div>
