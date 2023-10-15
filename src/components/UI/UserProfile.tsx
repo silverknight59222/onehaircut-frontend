@@ -63,7 +63,7 @@ const UserProfile = ({ isDashboard }: UserProfileProfile) => {
     <div ref={dropdownRef} className="relative">
       {isLoading && loadingView()}
       <div
-        className={`w-12 h-12 flex items-center justify-center pb-1 ${ColorsThemeA.ohcBorder} rounded-full cursor-pointer`}
+        className={`w-12 h-12 flex items-center justify-center pb-1 ${ColorsThemeA.standardBorderGray} hover:shadow-md rounded-full cursor-pointer transition-transform duration-300 transform hover:scale-110`}
         onClick={() => setIsDropdown(!isDropdown)}
       >
         <UserIcon />

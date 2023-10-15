@@ -16,7 +16,7 @@ export const ColorsThemeA = {
   ohcBigVerticalGradient_A: `bg-gradient-to-br from-rose-600 via-orange-600 to-yellow-400 opacity-90`,
   ohcBigVerticalGradient_B: "linear-gradient(162deg, #f54257 0%, #FD4C55 40.71%, #FF8637 70.46%, #FFE30F 100%)",
   ohcBorder: " border-2 border-red-500 ",
-  standardBorderGray: " border-2 border-stone-400 ",
+  standardBorderGray: " border-2 border-stone-500 ",
   inactivButtonColor: "bg-[#D6D6D6]",
   filterSelected: "bg-stone-800",
   pageBgColorLight: "bg-zinc-100",
@@ -53,6 +53,7 @@ export const Theme_A = {
   },
   button: {
     crossButtonSmall: `cursor-pointer my-2 py-1 px-2 rounded-lg ${ColorsThemeA.ohcVerticalGradient_A} shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)] transform hover:scale-125 transition-transform`,
+    crossButtonStd: `cursor-pointer my-2 py-1 px-2 rounded-lg ${ColorsThemeA.ohcVerticalGradient_A} shadow-md transform hover:scale-90 transition-transform`,
     bigGradientButton: `flex items-center justify-center text-white font-semibold text-xl rounded-md px-6 py-4 mt-2 ${ColorsThemeA.OhcGradient_B} shadow-md transform hover:scale-105 transition-transform hover:shadow-[0px_3px_6px_0px_rgba(255,125,60,0.25)]`,
     bigWhiteColoredButton: `flex items-center justify-center min-w-56 h-14 rounded-xl text-black font-semibold text-xl px-8 py-2 mt-2 bg-white border border-x-red-500 border-y-orange-500 transform hover:scale-105 transition-transform hover:shadow-md`,
     medBlackColoredButton: `text-white font-medium text-md rounded-md px-4 py-2 bg-black border border-x-red-500 border-y-orange-500 transform hover:scale-105 transition-transform hover:shadow-md`,
