@@ -40,7 +40,7 @@ type SidebarType = {
 };
 
 // Declare icon color
-const colorIcon = "#ffffff"
+const colorIcon = "#FFFFFF"
 
 // Define the Sidebar component
 const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }: SidebarType) => {
