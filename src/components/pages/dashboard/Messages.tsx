@@ -130,7 +130,7 @@ const Messages = () => {
                       {/* Icône du client (décommentez si nécessaire) */}
                       <div className="flex items-center">
                         {/* Cercle ajouté */}
-                        <div className="w-10 h-10 rounded-full bg-stone-800 mr-2"></div>
+                        <div className="w-10 h-10 rounded-full border border-stone-200 bg-stone-50 mr-2"></div>
                         <p className="ml-4 text-black">{client.client.name}</p>
 
                       </div>
