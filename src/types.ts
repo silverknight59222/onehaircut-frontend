@@ -6,6 +6,7 @@ interface SalonImages{
 }
 export type SalonDetails = {
 	address: string;
+	city_name: string;
 	id: number;
 	is_primary: 1;
 	name: string;

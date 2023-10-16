@@ -29,6 +29,8 @@ const SalonChoice = () => {
     const [selectedSalon, setSelectedSalon] = useState<{ name: string, id: number | null }>({ name: '', id: null })
     const [salonImage, setSalonImage] = useState<string[]>([])
     const [salons, setSalons] = useState<SalonDetails[]>([])
+    const [filteredSalons, setFilteredSalons] = useState<SalonDetails[]>([]);
+
     const router = useRouter();
     let user = getLocalStorage("user");
     const userId = user ? Number(JSON.parse(user).id) : null;
@@ -40,11 +42,26 @@ const SalonChoice = () => {
     const [location, setLocation] = useState({ lat: 47.18052966583263, lng: 7.358082527907601 });
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [wishlist, setWishlist] = useState<string[]>([])
+    const [citySearch, setCitySearch] = useState<string>('');
+    const [nameSearch, setNameSearch] = useState<string>('');
     const { isLoaded } = useJsApiLoader({
         googleMapsApiKey: 'AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E',
         libraries: ['places'],
     })
-
+    const filteredCityHandler = () => {
+        const filteredSalons = salons.filter((salon) => {
+            const cityNameMatches = salon.city_name.toLowerCase().includes(citySearch.toLowerCase());
+            const salonNameMatches = salon.name.toLowerCase().includes(nameSearch.toLowerCase());
+            console.log(citySearch, cityNameMatches, nameSearch, salonNameMatches)
+            if (citySearch && nameSearch) {
+                return cityNameMatches && salonNameMatches; // Both city and salon names must match
+              } else {
+                return cityNameMatches || salonNameMatches; // Either city or salon name can match
+              }
+        });
+        
+        setFilteredSalons(filteredSalons);
+    };
     // Fonction pour récupérer tous les salons
     const getAllSalons = async () => {
         const services = getLocalStorage('ServiceIds')
@@ -65,6 +82,7 @@ const SalonChoice = () => {
                     setIsLoading(false);
                     if (res.data.data.length > 0) {
                         setSalons(res.data.data);
+                        setFilteredSalons(res.data.data);
                     }
                 })
                 .catch(error => {
@@ -138,6 +156,7 @@ const SalonChoice = () => {
     // Utilisation de useEffect pour récupérer les données lors du montage du composant
     useEffect(() => {
         getAllSalons()
+
         const user = getLocalStorage("user");
         const userId = user ? Number(JSON.parse(user).id) : null;
         if (!userId) {
@@ -151,6 +170,10 @@ const SalonChoice = () => {
             getSalonsWishlist()
         }
     }, [salons])
+
+    useEffect(() => {
+        filteredCityHandler()
+    }, [citySearch, nameSearch])
 
     if (!isLoaded) {
         return loadingView()
@@ -247,15 +270,19 @@ const SalonChoice = () => {
     return (
         <div className='w-full'>
             {/* Entête du composant */}
-            <Navbar isSalonPage={true} />
-
+            {/* <Navbar isSalonPage={true} /> */}
+            <Navbar 
+            isSalonPage={true} 
+            onCitySearch={(value: string) => setCitySearch(value)}
+            onNameSearch={(value: string) => setNameSearch(value)} />
+            
             {/* Corps du composant */}
             <div className='w-full flex flex-col items-center justify-center px-6'>
                 {isLoading && loadingView()}
 
                 {/* Texte indiquant le nombre de salons */}
                 <p className='text-4xl font-medium text-black text-center mt-6'>
-                    {salons.length} <span className='font-bold text-gradient'>{salons.length === 1 ? 'Salon' : 'Salons'}</span> {salons.length === 1 ? 'correspond' : 'correspondent'} à vos critères
+                    {filteredSalons.length} <span className='font-bold text-gradient'>{filteredSalons.length === 1 ? 'Salon' : 'Salons'}</span> {filteredSalons.length === 1 ? 'correspond' : 'correspondent'} à vos critères
                 </p>
 
                 {/* Bouton retour et continuer */}
@@ -280,7 +307,7 @@ const SalonChoice = () => {
 
                     {/* Carte Google affichée uniquement si des salons sont disponibles */}
                     {
-                        salons.length > 0 && (
+                        filteredSalons.length > 0 && (
                             <div className={`lg:absolute lg:top-0 lg:left-0 w-full h-[400px] lg:w-[400px] lg:h-[880px] 2xl:w-[920px] 4xl:w-[920px] rounded-lg overflow-hidden lg:z-10`}>
 
                                 {/*TODO USE salon.position when data are available  */}
@@ -339,7 +366,7 @@ const SalonChoice = () => {
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-10">
 
                             {/* VIGNETTES (ITERATIONS) */}
-                            {salons.map((salon, index) => (
+                            {filteredSalons.map((salon, index) => (
                                 <div
                                     key={index}
                                     onClick={() => setSelectedSalon({ name: salon.name, id: salon.id })}
