@@ -11,6 +11,7 @@ import { SalonDetails } from "@/types";
 import SlotDropdown from "./SlotsDropdown";
 import Footer from "@/components/UI/Footer";
 import { Theme_A } from "@/components/utilis/Themes";
+import { ColorsThemeA } from "@/components/utilis/Themes";
 export interface OpenTimes {
     available: boolean;
     day: string;
@@ -176,7 +177,7 @@ const OpenningHours = () => {
                                                     >
                                                         <div
                                                             className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${avaiableDays.includes(item.day)
-                                                                ? "bg-gradient-to-b from-pink-500 to-orange-500 border-white"
+                                                                ? ` ${ColorsThemeA.ohcVerticalGradient_A} border-white`
                                                                 : "border-[#767676]"
                                                                 }`}
                                                         >

@@ -10,7 +10,7 @@ import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import userLoader from "@/hooks/useLoader";
 import { Chat, ClientChat } from "@/types";
-import { Theme_A } from "@/components/utilis/Themes";
+import { Theme_A, ColorsThemeA } from "@/components/utilis/Themes";
 
 const Messages = () => {
   const [clients, setClients] = useState<ClientChat[]>([])
@@ -113,7 +113,7 @@ const Messages = () => {
           {/* Section de gauche : Liste des Clients */}
           <div className="flex flex-col md:flex-row items-start justify-center gap-10 2xl:gap-20 h-screen md:h-auto">
             {/* Section de gauche */}
-            <div className="w-full md:max-w-sm xl:max-w-sm min-h-[500px] md:min-h-[300px] overflow-y-auto flex-shrink-0 rounded-3xl bg-white py-4 px-8 shadow-md">
+            <div className={`w-full md:max-w-sm xl:max-w-sm min-h-[500px] md:min-h-[300px] overflow-y-auto flex-shrink-0 rounded-3xl bg-white py-4 px-8 shadow-md`}>
 
               {/* Titre */}
               <h2 className="text-xl font-semibold mb-4">
@@ -124,13 +124,21 @@ const Messages = () => {
                   <div
                     key={index}
                     onClick={() => getChat(client)}
-                    className={`flex items-center justify-between py-4 px-5 hover:bg-[#F5F5F5] mb-5 rounded-3xl cursor-pointer ${selectedChat.client_id === client.client_id && 'bg-[#F5F5F5] outline outline-1 outline-red-200'}`}
+                    className={`flex items-center justify-between py-2 px-5 hover:bg-[#F5F5F5] mb-2 rounded-3xl cursor-pointer ${selectedChat.client_id === client.client_id && 'bg-[#F5F5F5] outline outline-1 outline-stone-300'}`}
                   >
                     <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row sm:items-center lg:items-start xl:items-center justify-center gap-2 sm:gap-4">
+                      {/* Icône du client (décommentez si nécessaire) */}
+                      <div className="flex items-center">
+                        {/* Cercle ajouté */}
+                        <div className="w-10 h-10 rounded-full border border-stone-200 bg-stone-50 mr-2"></div>
+                        <p className="ml-4 text-black">{client.client.name}</p>
 
-                      {/* <p className="text-xs text-[#666] w-32 md:w-24">{message.time}</p> */}
-                      <p className="text-black">{client.client.name}</p>
+                      </div>
                     </div>
+                    {/* Cercle rouge pour indiquer un nouveau message TODO ADD RED DOT IF NEW MESSAGE*/}
+                    <div className="ml-auto w-4 h-4 rounded-full bg-red-500"></div>
+
+                    {/* Vous pouvez décommenter ce bloc si vous avez besoin d'afficher un message ou une notification */}
                     {/* {message.num ? (
                         <p className="w-5 h-5 rounded-full text-xs flex items-center justify-center text-white bg-gradient-to-tr from-red-500 to-yellow-400">
                             {message.num}
@@ -156,12 +164,12 @@ const Messages = () => {
                       className={`mb-2 flex flex-col ${chat.by === 'professional' ? 'items-start' : 'items-end'}`}
                       key={index}
                     >
-                      <p className="text-xs text-[#666] mb-1">
+                      <p className="text-xs text-[#666] mb-1 italic">
                         {/* Formatage de la date */}
                         <strong>{formatDate(chat.created_at).day}</strong> - {formatDate(chat.created_at).time}
                       </p>
                       <div
-                        className={`max-w-2/3 inline-block p-2 text-base ${chat.by === 'professional' ? 'rounded-r-lg rounded-b-lg outline outline-2 outline-orange-500 bg-stone-100' : 'rounded-l-lg rounded-b-lg outline outline-2 outline-stone-400 bg-white'}`}
+                        className={`max-w-2/3 inline-block p-2 text-base shadow-md ${chat.by === 'professional' ? `rounded-r-lg text-white ${ColorsThemeA.OhcGradient_D} rounded-b-lg ` : `bg-stone-200 rounded-l-lg rounded-b-lg `}`}
                       >
                         <strong>{chat.by === 'professional' ? 'Vous:' : `${selectedChat.client.name}:`}</strong> {chat.message}
                       </div>
@@ -180,7 +188,7 @@ const Messages = () => {
                 </div>
 
                 {/* Bouton d'envoi de message */}
-                <div className="ml-4 hover:scale-110" onClick={onSendMessage}>
+                <div className="ml-4 hover:scale-125 transform transition-transform duration-300" onClick={onSendMessage}>
                   <ChatSendIcon />
                 </div>
               </div>
