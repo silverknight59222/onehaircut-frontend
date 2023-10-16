@@ -121,7 +121,7 @@ const History = () => {
           {/*  For displaying the rating popup */}
           {isRatePopUp &&
             <BaseModal close={() => setRatePopUp(false)}>
-              <div className='flex flex-col items-center w-full justify-center z-50'>
+              <div className='flex flex-col items-center w-full justify-center'>
                 <p className="text-black font-medium text-xl text-center mb-8">
                   Noter {itemToRate}
                 </p>
@@ -145,7 +145,7 @@ const History = () => {
             <p className="text-black font-medium text-3xl text-center mb-8">
               Historique des coiffures effectuées
             </p>
-            <div className='flex flex-col gap-4 -z-10' >
+            <div className='flex flex-col gap-4' >
               {/* Loop over the booking history and display them */}
               {history.map((item, index) => {
                 return <div key={index}>
