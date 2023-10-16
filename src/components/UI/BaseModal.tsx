@@ -11,7 +11,7 @@ interface ModalType {
 
 const BaseModal = ({ children, close, width }: ModalType) => {
     return (
-        <div className="relative">
+        <div className="relative z-50">
             <div className="fixed top-0 left-0 h-full w-screen overflow-y-auto flex justify-center items-center">
                 <div className="fixed top-0 left-0 h-full w-screen bg-black bg-opacity-40 cursor-pointer" onClick={close} />
                 <div className="relative">
