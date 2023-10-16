@@ -24,9 +24,13 @@ interface MessageParam{
  message: string,
  by: string,
 }
+
 const dashboard = {
   getHairSalon: async (id: number) => {
     return await request.get<any>(`/hair_salon/${id}`);
+  },
+  updateHairSalonLogo: async (id: number) => {
+    return await request.post<any>(`/hair_salon_logo_update/${id}`);
   },
   getAllHairDressers: async (id: number) => {
     return await request.get<any>(`/hair_dresser/${id}`);

@@ -100,7 +100,7 @@ const Index = () => {
     const data={
       user_id: user ? Number(JSON.parse(user).id) : null,
       hair_salon_id: Number(salonData.id),
-      slot_id: slotData.slot.id,
+      slot_ids:slotData.slot.map((prevSlot:any) => prevSlot.id),
       hair_dresser_id: slotData.hairDresser.id,
       amount: !haircutPrize ? servicePrize : !servicePrize ? haircutPrize : haircutPrize && servicePrize ? haircutPrize + servicePrize : 0,
       salon_haircut_id: haircutData.id,
@@ -160,14 +160,14 @@ const Index = () => {
                 );
               })} */}
               {haircutData ? <p className="text-base"><span className="font-semibold text-lg">Haircut: </span>{haircutData.name}</p> : ''}
-              {servicesData ? <p><span className="font-semibold mt-5">Services: </span> 
+              {servicesData ? <p><span className="font-semibold text-lg">Services: </span> 
                   {servicesData.map((item: {name: string, id: number},index: number)=>{
                     return <p key={index} className="text-base">{++index}. {item.name}</p>
                   })}
               </p> : ''}
               {salonData && <p className="text-base"><span className="font-semibold text-lg">Hair Salon: </span>{salonData.name}</p>}
               {slotData && <p className="text-base"><span className="font-semibold text-lg">Hair Dresser: </span>{slotData.hairDresser.name}</p>}
-              {slotData && <p className="text-base"><span className="font-semibold text-lg">Slot: </span>{slotData.slot.name}</p>}
+              {slotData && <p className="text-base"><span className="font-semibold text-lg">Slot: </span>{slotData.slot[0].day} {slotData.slot.map((prevSlot:any)=>{return <>{prevSlot.start}</>})}</p>} 
             </div>
             <div className="flex items-center justify-between border-t-2 border-[#CBCBCB] pt-9 mt-9">
               <button onClick={()=>router.push('/')} className="w-36 h-14 flex items-center justify-center border border-secondary rounded-xl text-xl text-black font-semibold">

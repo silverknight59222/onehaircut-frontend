@@ -9,7 +9,7 @@ import { clientDashboard } from "@/api/clientDashboard";
 import { SalonDetails, Chat } from "@/types";
 import { dashboard } from "@/api/dashboard";
 import userLoader from "@/hooks/useLoader";
-import { Theme_A } from "@/components/utilis/Themes";
+import { Theme_A, ColorsThemeA } from "@/components/utilis/Themes";
 
 const Messages = () => {
     const [selectedChat, setSelectedChat] = useState({ user_id: 0, name: '' })
@@ -174,12 +174,12 @@ const Messages = () => {
                                             key={index}
                                         >
 
-                                            <p className="text-xs text-[#666] mb-1">
+                                            <p className="text-xs text-[#666] mb-1 italic">
                                                 {/* Formatage de la date */}
                                                 <strong>{formatDate(chat.created_at).day}</strong> - {formatDate(chat.created_at).time}
                                             </p>
                                             <div
-                                                className={`max-w-2/3 inline-block p-2 text-base ${chat.by === 'professional' ? 'rounded-l-lg rounded-b-lg outline outline-2 outline-stone-400 bg-white' : 'rounded-r-lg rounded-b-lg outline outline-2 outline-orange-500 bg-stone-100'}`}
+                                                className={`max-w-2/3 inline-block p-2 text-base shadow-md ${chat.by === 'professional' ? `rounded-l-lg rounded-b-lg bg-stone-100 ` : `rounded-r-lg rounded-b-lg text-white ${ColorsThemeA.OhcGradient_D} `}`}
                                             >
                                                 <strong>{chat.by === 'professional' ? selectedChat.name + ':' : 'Vous:'}</strong> {chat.message}
                                             </div>
@@ -200,7 +200,7 @@ const Messages = () => {
                                 </div>
 
                                 {/* Bouton d'envoi de message */}
-                                <div className="ml-4 hover:scale-110" onClick={onSendMessage}>
+                                <div className="ml-4 hover:scale-125 transform transition-transform duration-300" onClick={onSendMessage}>
                                     <ChatSendIcon />
                                 </div>
                             </div>

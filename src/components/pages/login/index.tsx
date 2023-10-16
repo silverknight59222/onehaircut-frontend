@@ -96,7 +96,7 @@ const Login = () => {
 				// if(searchParams.get('redirect') === 'payment'){
 				// 	router.push("/payment");
 				// }
-				 if (res.user.role === 'salon_professional') {
+				if (res.user.role === 'salon_professional') {
 					router.push("/dashboard");
 				} else {
 					router.push("/client/dashboard");
@@ -125,19 +125,19 @@ const Login = () => {
 							Connexion
 						</p>
 						<div className="w-full mt-6">
-						    <label className="block text-left text-black mb-2 font-medium" htmlFor="emailInput">Adresse email</label>
-						    <div className="w-full h-[60px] p-[1px] flex items-center justify-center rounded-xl bg-stone-300 ">
-						        <div className="w-full h-[58px] rounded-[11px] bg-white flex items-center justify-center">
-						            <input
-						                id="emailInput"
-						                placeholder="Adresse email"
-						                className={`w-full h-[58px] rounded-[11px] outline-none px-4 ${Theme_A.behaviour.fieldFocused}`}
-						                value={userInfo.email}
-						                onChange={(e) => setUserMail(e.target.value)}
-						            />
-						        </div>
-						    </div>
-						    {error.email && <p className="text-xs text-red-700 ml-4 mt-2">{error.email}*</p>}
+							<label className="block text-left text-black mb-2 font-medium" htmlFor="emailInput">Adresse email</label>
+							<div className="w-full h-[60px] p-[1px] flex items-center justify-center rounded-xl bg-stone-300 ">
+								<div className="w-full h-[58px] rounded-[11px] bg-white flex items-center justify-center">
+									<input
+										id="emailInput"
+										placeholder="Adresse email"
+										className={`w-full h-[58px] rounded-[11px] outline-none px-4 ${Theme_A.behaviour.fieldFocused}`}
+										value={userInfo.email}
+										onChange={(e) => setUserMail(e.target.value)}
+									/>
+								</div>
+							</div>
+							{error.email && <p className="text-xs text-red-700 ml-4 mt-2">{error.email}*</p>}
 						</div>
 						<div className="w-full mt-6">
 							<label className="block text-left text-black mb-2 font-medium" htmlFor="passwordInput">Mot de passe</label>
@@ -149,7 +149,7 @@ const Login = () => {
 										type={showPassword ? "text" : "password"}
 										className={`w-full h-[58px] rounded-l-[11px] outline-none px-4 ${Theme_A.behaviour.fieldFocused}`}
 										value={userInfo.password}
-										onChange={(e) => setUserPassword(e.target.value) } 
+										onChange={(e) => setUserPassword(e.target.value)}
 									/>
 									<button onClick={() => setShowPassword(!showPassword)} className="p-4">
 										{showPassword ? <EyeClosedIcon /> : <EyeIcon />}
@@ -159,35 +159,35 @@ const Login = () => {
 							{error.password && <p className="text-xs text-red-700 ml-4 mt-2">{error.password}*</p>}
 						</div>
 						<button
-							className="text-white font-medium text-xl rounded-xl w-full h-14 my-6 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_7px_12px_0px_rgba(255,125,60,0.25)] transform hover:scale-105"
+							className="text-white font-medium text-xl rounded-xl w-full h-14 my-6 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_7px_12px_0px_rgba(255,125,60,0.25)] transition-transform duration-300 transform hover:scale-105"
 							onClick={onLogin}
 						>
 							<p>Connexion</p>
 						</button>
 					</div>
-					<hr className="my-4"/>
+					<hr className="my-4" />
 					<div className="w-full flex flex-row items-end justify-between gap-2 mt-4 mb-4">
-					    <div className="flex items-center gap-2">
-					        <p className="text-black text-base border-b border-black transition duration-150 hover:border-secondary hover:text-secondary">
-					            <Link href={{ pathname: '/signup' }}>Première connexion ?</Link>
-					        </p>
-					    </div>
-					    <div className="flex items-center gap-2">
-					        <p className="text-black text-base border-b border-black transition duration-150 hover:border-secondary hover:text-secondary">
-					            <Link href={{ pathname: '/forgot-password' }}>Mot de passe oublié ?</Link>
-					        </p>
-					    </div>
+						<div className="flex items-center gap-2">
+							<p className="text-black text-base border-b border-black transition duration-150 hover:border-secondary hover:text-secondary">
+								<Link href={{ pathname: '/signup' }}>Première connexion ?</Link>
+							</p>
+						</div>
+						<div className="flex items-center gap-2">
+							<p className="text-black text-base border-b border-black transition duration-150 hover:border-secondary hover:text-secondary">
+								<Link href={{ pathname: '/forgot-password' }}>Mot de passe oublié ?</Link>
+							</p>
+						</div>
 					</div>
 					<div className="flex flex-col md:flex-row gap-4 mb-10 sm:mb-12 mt-10">
-					    <div className="w-full h-[120px] p-4 rounded-2xl bg-slate-50 flex flex-col justify-center items-center border-zinc-300 border-2">
-					        <div className="font-medium text-md mb-2" >
-					            Vous êtes un professionnel et n'avez pas encore de compte ? 
-					        </div>
-							<hr className="my-2 w-full"/>
-					        <p className="text-black text-lg font-semibold hover:text-secondary transform hover:scale-110 transition-transform">
-					            <Link href={{ pathname: '/registration' }} className="border-b border-black hover:border-secondary ">Enregistrer mon salon ?</Link>
-					        </p>
-					    </div>
+						<div className="w-full h-[120px] p-4 rounded-2xl bg-slate-50 flex flex-col justify-center items-center border-zinc-300 border-2">
+							<div className="font-medium text-md mb-2" >
+								Vous êtes un professionnel et n'avez pas encore de compte ?
+							</div>
+							<hr className="my-2 w-full" />
+							<p className="text-black text-lg font-semibold hover:text-secondary transform hover:scale-110 transition-transform">
+								<Link href={{ pathname: '/registration' }} className="border-b border-black hover:border-secondary ">Enregistrer mon salon ?</Link>
+							</p>
+						</div>
 					</div>
 
 				</div>

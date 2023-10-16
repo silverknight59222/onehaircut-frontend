@@ -273,27 +273,27 @@ const AddServiceModal = (props: AddServiceModalType) => {
   }, [typeFilters, search]);
 
   return (
-    <div className=" bg-white w-9/12 max-h-full rounded-xl px-5 pb-5">
+    <div className="bg-white w-9/12 max-h-full rounded-xl px-5 pb-5 relative">
       {isLoading && loadingView()}
-      <div className="w-full flex items-center justify-end pt-2">
+      <div className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2">
         <div
-          className={`${Theme_A.button.crossButtonSmall}`}
+          className={`${Theme_A.button.crossButtonStd}  shadow-md hover:scale-90`}
           onClick={() => props.setShowAddServiceModal(false)}
         >
-          <CrossIcon width="12" />
+          <CrossIcon width="18" height="26" />
         </div>
       </div>
       <div className="flex gap-2 w-full items-baseline justify-center">
         <div className="relative flex items-center justify-center pb-5">
           <input
             type="text"
-            className="max-w-[300px] text-sm py-2 px-4 outline-none rounded-full bg-white border border-[#EDEDED] shadow-[0px_11px_26px_0px_rgba(176,176,176,0.25)]"
-            placeholder="Nom coiffure"
+            className="max-w-[300px] text-sm py-2 px-4 mt-4 outline-none rounded-full bg-white border border-[#EDEDED] shadow-inner"
+            placeholder="Nom du service"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
           <div className="relative">
-            <div className={`absolute right-1 -top-4 cursor-pointer p-2 rounded-full ${ColorsThemeA.OhcGradient_A}`}>
+            <div className={`absolute right-1 -top-2 cursor-pointer p-2 rounded-full shadow-sm hover:scale-90 ${ColorsThemeA.OhcGradient_A}`}>
               <SearcIcon />
             </div>
           </div>
@@ -404,7 +404,7 @@ const AddServiceModal = (props: AddServiceModalType) => {
             );
           })}
         </div>
-        <div className="flex flex-col gap-4 h-full items-start">
+        <div className="flex flex-col gap-4 h-full items-start mt-2">
           <p className="text-sm text-[#A0A0A0]">
             Age et rabais ne sont applicable que pour les prestations de type remise (discount)
           </p>

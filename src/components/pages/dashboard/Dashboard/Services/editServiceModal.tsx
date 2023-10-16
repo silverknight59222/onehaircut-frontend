@@ -163,18 +163,18 @@ const EditServiceModal = (props: EditServiceModalType) => {
   return (
     <div className="relative bg-white rounded-xl px-5 pb-5">
       {isLoading && loadingView()}
-      <div className="w-full flex items-center justify-end pt-2">
+      <div className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2">
         <div
-          className={`${Theme_A.button.crossButtonSmall} shadow-md`}
+          className={`${Theme_A.button.crossButtonSmall} shadow-md hover:scale-90`}
           onClick={() => props.setShowEditServiceModal(false)}
         >
-          <CrossIcon width="12" />
+          <CrossIcon width="18" height="26" />
         </div>
       </div>
       <div>
         <div className="flex flex-col gap-4 h-full items-start">
           <div className="mb-2 max-w-[300px] max-h-[150px] overflow-auto px-2">
-            <div className="text-base font-semibold">
+            <div className="text-base font-semibold mt-4">
               {props.service.service.name}
             </div>
             <div className="text-sm text-[#737373]">

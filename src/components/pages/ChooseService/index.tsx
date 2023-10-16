@@ -56,6 +56,8 @@ const ServiceChoose = () => {
     const dropdownRef = React.useRef() as React.MutableRefObject<HTMLInputElement>
     const temp = getLocalStorage("haircut")
     const haircut = temp ? JSON.parse(String(temp)) : null
+    const service=getLocalStorage('ServiceIds')
+    const servicesData=service ? JSON.parse(service) : null
 
     // Obtention de tous les services.
     const getAllServices = () => {
@@ -195,6 +197,11 @@ const ServiceChoose = () => {
     // Charger tous les services au montage du composant.
     useEffect(() => {
         getAllServices()
+        if(servicesData){
+            servicesData.forEach((item: {name: string, id: string}) => {
+                setSelectedService((prevState) => [...prevState, String(item.id)]);
+            });
+        }
     }, [])
 
     // Filtrage des services lors de la modification de la recherche ou du type filtré.
