@@ -293,12 +293,12 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
                 <input
                   type="text"
                   placeholder="Rechercher"
-                  className={`text-base px-4 p-2 rounded-full outline-none ${Theme_A.behaviour.fieldFocused_C}`}
+                  className={`text-base px-4 p-2 rounded-full outline-none ${Theme_A.behaviour.fieldFocused_B}`}
                   onChange={onSearch && isWelcomePage ? (e) => onSearch(e.target.value) : onServiceSearch && isServicesPage ? (e) => onServiceSearch(e.target.value) : () => { }}
                 />
               </div>}
           </div>
-          <div className="cursor-pointer p-3 rounded-full bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
+          <div className="cursor-pointer p-3 rounded-full hover:scale-90 transform transition-transform duration-300 bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
             <SearcIcon />
           </div>
         </div>

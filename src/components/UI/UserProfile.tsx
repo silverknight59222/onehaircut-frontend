@@ -1,5 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { HelpIcon, MessageIcon, UserIcon, StarGreyIcon } from "../utilis/Icons";
+import {
+  HelpIcon,
+  DashboardIcon,
+  MessageIcon,
+  UserIcon,
+  StarGreyIcon,
+  PortraitIcon,
+  FilterIcon,
+  ReservationIcon,
+  HistoryIcon,
+}
+  from "../utilis/Icons";
 import { useRouter } from "next/navigation";
 import { Auth } from "@/api/auth";
 import { removeFromLocalStorage } from "@/api/storage";
@@ -16,19 +27,52 @@ const UserProfile = ({ isDashboard }: UserProfileProfile) => {
     React.useRef() as React.MutableRefObject<HTMLInputElement>;
   const { loadingView } = userLoader();
   const [isLoading, setIsLoading] = useState(false);
+
+  /* TODO ADD USER SHORTCUT MENU HERE */
   const dropdownItems = [
     {
+      name: "Compte",
+      icon: <DashboardIcon width="18" height="18" />,
+      route: "/client/dashboard",
+    },
+    {
       name: "Messages",
-      icon: <MessageIcon width="25" height="25" />,
+      icon: <MessageIcon width="18" height="18" />,
       route: "/client/messages",
     },
     {
       name: "Favoris",
-      icon: <StarGreyIcon width="25" height="25" />,
+      icon: <StarGreyIcon width="18" height="18" />,
       route: "/client/favorites",
     },
-    { name: "Aide", icon: <HelpIcon width="25" height="25" />, route: "" },
+    {
+      name: "Portrait",
+      icon: <PortraitIcon width="18" height="18" />,
+      route: "/client/portrait",
+    },
+    {
+      name: "Filtre",
+      icon: <FilterIcon width="18" height="18" />,
+      route: "/client/filters",
+    },
+    {
+      name: "Reservation",
+      icon: <ReservationIcon width="18" height="18" />,
+      route: "/client/currentreservation",
+    },
+    {
+      name: "Historique",
+      icon: <HistoryIcon width="18" height="18" />,
+      route: "/client/history",
+    },
+    {
+      name: "Aide",
+      icon: <HelpIcon width="20" height="20" />,
+      route: ""
+    },
   ];
+
+
   const onDropdownItemClick = (route: string) => {
     if (route) {
       router.push(route);
@@ -69,7 +113,7 @@ const UserProfile = ({ isDashboard }: UserProfileProfile) => {
         <UserIcon />
       </div>
       {isDropdown && (
-        <div className={`absolute top-[52px] right-0 z-20 pt-3 pb-2 flex flex-col items-center justify-center text-black bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)] ${!isDashboard ? 'rounded-3xl' : 'rounded-xl'}`}>
+        <div className={`absolute top-[52px] right-0 z-20 pt-3 pb-2 flex flex-col items-center justify-center text-black bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)] ${!isDashboard ? 'rounded-lg' : 'rounded-xl'}`}>
           {!isDashboard &&
             <div className="flex flex-col gap-x-4 border-b w-44 border-[#D4CBCB] pb-3">
               {dropdownItems.map((item, index) => {

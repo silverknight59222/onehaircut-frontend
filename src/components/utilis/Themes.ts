@@ -64,7 +64,7 @@ export const Theme_A = {
     smallGradientButton: `text-white font-medium text-sm rounded-md px-4 py-2 ${ColorsThemeA.OhcGradient_A}  shadow-md transform hover:scale-105 transition-transform hover:shadow-[0px_3px_6px_0px_rgba(255,125,60,0.25)]`,
     scrollToTheTopButton: `fixed bottom-10 right-10 mb-8 p-4 bg-stone-300 text-sm text-white px-6 py-2 rounded-lg transform hover:scale-105 transition-transform`,
     deleteButtonSmall: `bg-red-600 flex items-center justify-center text-white font-medium text-sm rounded-md bg-white transform hover:scale-90 transition-transform hover:shadow-md`,
-    bigWhiteGreyButton: `flex items-center justify-center min-w-56 h-14 rounded-xl shadow-md text-black font-medium text-xl px-8 py-2 mt-2 bg-white border border-x-stone-200 border-y-stone-100 transform hover:scale-105 transition-transform hover:shadow-md`,
+    bigWhiteGreyButton: `flex items-center justify-center min-w-56 h-14 rounded-lg shadow-sm text-black font-medium text-xl px-8 py-2 mt-2 bg-white border border-x-stone-200 border-y-stone-100 hover:scale-105 transform transition-transform duration-300 hover:shadow-md`,
   },
   checkers: {
     errorText: `text-xs text-${ColorsThemeA.error} ml-3 mt-1`,
