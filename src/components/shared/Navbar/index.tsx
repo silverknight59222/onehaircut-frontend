@@ -13,7 +13,8 @@ import HairsalonFilter from "./HairsalonFilters";
 import BooksalonFilter from "./BookingSalonFilter";
 import UserProfile from "@/components/UI/UserProfile";
 import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
-
+import Typography from '@material-ui/core/Typography';
+import Slider from '@material-ui/core/Slider';
 interface Navbar {
   isWelcomePage?: boolean,
   isServicesPage?: boolean,
@@ -21,16 +22,21 @@ interface Navbar {
   isBookSalon?: boolean,
   onSearch?: (arg0: string) => void
   onServiceSearch?: (arg0: string) => void
+  onCitySearch?: (arg0: string) => void
+  onNameSearch?: (arg0: string) => void
   onGenderFilter?: (arg0: string) => void
   onEthnicityFilters?: (arg0: string[]) => void
   onLengthFilters?: (arg0: string[]) => void
-  onTypeSelect?: (arg0: string[]) => void
+  onMobileFilters?: (arg0: string[]) => void
+  onRangeFilters?: (arg0: string[]) => void
+  onTypeSelect?: (arg0: string[]) => void,
 }
 
-const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTypeSelect, onSearch, onServiceSearch, onGenderFilter, onEthnicityFilters, onLengthFilters }: Navbar) => {
+const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTypeSelect, onSearch, onServiceSearch, onGenderFilter, onEthnicityFilters, onLengthFilters, onMobileFilters, onCitySearch, onNameSearch, onRangeFilters }: Navbar) => {
   const [isDropdown, setIsDropdown] = useState(false);
   const [showDesktopGender, setShowDesktopGender] = useState(false);
   const [showDesktopLength, setShowDesktopLength] = useState(false);
+  const [showDesktopBudget, setShowDesktopBudget] = useState(false);
   const [showDesktopEthnicity, setShowDesktopEthnicity] = useState(false);
 
   const [showMobileGender, setShowMobileGender] = useState(false);
@@ -40,6 +46,9 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
   const [genderFilters, setGenderFilters] = useState<string>('');
   const [ethnicityFilters, setEthnicityFilters] = useState<string[]>([]);
   const [lengthFilters, setLengthFilters] = useState<string[]>([]);
+  const [mobileFilters, setMobileFilters] = useState<string[]>([]);
+  const [rangeFilters, setRangeFilter] = useState([2, 100]);
+
   const router = useRouter()
   const EthnicityDesktopRef =
     React.useRef() as React.MutableRefObject<HTMLInputElement>;
@@ -109,7 +118,20 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
       name: "Long",
     },
   ];
-
+  const Mobile = [
+    {
+      name: "Yes",
+    },
+    {
+      name: "No",
+    },
+    {
+      name: "Both",
+    },
+  ];
+  const rangeSelector = (event, newValue:any) => {
+    setRangeFilter(newValue);
+  };
   const onClickGenderCheckbox = (gender: string) => {
     onGenderFilter && onGenderFilter(gender === 'Homme' ? 'men' : gender === 'Femme' ? 'women' : 'Mix')
     if (genderFilters === gender) {
@@ -135,12 +157,25 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
       setLengthFilters((prev) => [...prev, length]);
     }
   };
+  const onClickMobileCheckbox = (mobile: string) => {
+    if (mobileFilters.includes(mobile)) {
+      setMobileFilters(mobileFilters.filter((item) => item !== mobile));
+    } else {
+      setMobileFilters((prev) => [...prev, mobile]);
+    }
+  };
   useEffect(() => {
     onEthnicityFilters && onEthnicityFilters(ethnicityFilters)
   }, [ethnicityFilters])
   useEffect(() => {
     onLengthFilters && onLengthFilters(lengthFilters)
   }, [lengthFilters])
+  useEffect(() => {
+    onMobileFilters && onMobileFilters(mobileFilters)
+  }, [mobileFilters])
+  useEffect(() => {
+    onRangeFilters && onRangeFilters(rangeFilters)
+  }, [rangeFilters])
 
   useEffect(() => {
     const user = getLocalStorage("user");
@@ -288,15 +323,114 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
                   isBookSalon &&
                   <BooksalonFilter />
             }
+
             {(isWelcomePage || isServicesPage) &&
               <div className={`border-r border-grey px-6 last:border-r-0 cursor-pointer`}>
                 <input
                   type="text"
                   placeholder="Rechercher"
                   className={`text-base px-4 p-2 rounded-full outline-none ${Theme_A.behaviour.fieldFocused_B}`}
-                  onChange={onSearch && isWelcomePage ? (e) => onSearch(e.target.value) : onServiceSearch && isServicesPage ? (e) => onServiceSearch(e.target.value) : () => { }}
+                  onChange={onSearch && isWelcomePage ?
+                    (e) => onSearch(e.target.value) :
+                    onServiceSearch && isServicesPage ? (e) => onServiceSearch(e.target.value) : () => { }}
                 />
               </div>}
+            {(isSalonPage) &&
+              <div className={`border-r border-grey px-6 last:border-r-0 cursor-pointer`}>
+                <input
+                  type="text"
+                  placeholder="Ville"
+                  className={`text-base px-4 p-2 rounded-full outline-none ${Theme_A.behaviour.fieldFocused_C}`}
+                  onChange={onSearch && isWelcomePage ?
+                    (e) => onSearch(e.target.value) :
+                    onCitySearch && isSalonPage ? (e) => onCitySearch(e.target.value) : () => { }}
+                />
+              </div>}
+            {(isSalonPage) &&
+              <div className={`border-r border-grey px-6 last:border-r-0 cursor-pointer`}>
+                <input
+                  type="text"
+                  placeholder="Nom Salon"
+                  className={`text-base px-4 p-2 rounded-full outline-none ${Theme_A.behaviour.fieldFocused_C}`}
+                  onChange={onNameSearch && isWelcomePage ?
+                    () => { } :
+                    onNameSearch && isSalonPage ? (e) => onNameSearch(e.target.value) : () => { }}
+                />
+              </div>}
+            {(isSalonPage) &&
+              <div className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
+                <p
+                  className={showDesktopLength ? "rounded-xl py-2 px-7 bg-white  text-black font-semibold" : " hover:bg-white rounded-xl py-2 px-7 "}
+                  onClick={() => {
+                    setShowDesktopEthnicity(false);
+                    setShowDesktopGender(false);
+                    setShowDesktopLength(!showDesktopLength);
+                    setShowDesktopBudget(false);
+
+                  }}
+                >
+                  Mobile
+                </p>
+                {showDesktopLength && isSalonPage && (
+                  <div className="absolute top-[75px] -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                    {Mobile.map((item, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className="flex w-full cursor-pointer mb-[19px]  transform hover:scale-110"
+                          onClick={() => onClickMobileCheckbox(item.name.toLowerCase())}
+                        >
+                          <div
+                            className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  transform hover:scale-105 ${mobileFilters.includes(item.name.toLowerCase())
+                              ? "bg-gradient-to-b from-pink-500 to-orange-500"
+                              : "bg-[#D6D6D6]"
+                              }`}
+                          >
+                            <CheckedIcon />
+                          </div>
+                          <p className="ml-2">{item.name}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            }
+            {(isSalonPage) &&
+              <div className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
+                <p
+                  className={showDesktopBudget ? "rounded-xl py-2 px-7 bg-white  text-black font-semibold" : " hover:bg-white rounded-xl py-2 px-7 "}
+                  onClick={() => {
+                    setShowDesktopEthnicity(false);
+                    setShowDesktopGender(false);
+                    setShowDesktopLength(false);
+                    setShowDesktopBudget(!showDesktopBudget);
+                  }}
+                >
+                  Budget
+                </p>
+                {showDesktopBudget && isSalonPage && (
+                  <div className="absolute top-[75px] -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                    <div style={{
+                      margin: 'auto',
+                      display: 'block',
+                      width: 'fit-content'
+                    }}>
+
+                      <Typography id="range-slider" gutterBottom>
+                      </Typography>
+                      <Slider
+                        value={rangeFilters}
+                        onChange={rangeSelector}
+                        valueLabelDisplay="auto"
+                      />
+                      Min: {rangeFilters[0]} Max:{rangeFilters[1]}
+                    </div>
+                  </div>
+                )}
+              </div>
+            }
+
           </div>
           <div className="cursor-pointer p-3 rounded-full hover:scale-90 transform transition-transform duration-300 bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
             <SearcIcon />
@@ -453,7 +587,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
                 type="text"
                 placeholder="Rechercher"
                 className="text-base px-4 p-2 rounded-full outline-none"
-                onChange={onSearch && isWelcomePage ? (e) => onSearch(e.target.value) : onServiceSearch && isServicesPage ? (e) => onServiceSearch(e.target.value) : () => { }}
+                onChange={onSearch && isSalonPage ? (e) => onSearch(e.target.value) : onServiceSearch && isServicesPage ? (e) => onServiceSearch(e.target.value) : () => { }}
               />
             </div>
             <div className="cursor-pointer p-3 rounded-full bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">

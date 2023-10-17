@@ -29,6 +29,8 @@ const SalonChoice = () => {
     const [selectedSalon, setSelectedSalon] = useState<{ name: string, id: number | null }>({ name: '', id: null })
     const [salonImage, setSalonImage] = useState<string[]>([])
     const [salons, setSalons] = useState<SalonDetails[]>([])
+    const [filteredSalons, setFilteredSalons] = useState<SalonDetails[]>([]);
+
     const router = useRouter();
     let user = getLocalStorage("user");
     const userId = user ? Number(JSON.parse(user).id) : null;
@@ -40,11 +42,42 @@ const SalonChoice = () => {
     const [location, setLocation] = useState({ lat: 47.18052966583263, lng: 7.358082527907601 });
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [wishlist, setWishlist] = useState<string[]>([])
+    const [citySearch, setCitySearch] = useState<string>('');
+    const [nameSearch, setNameSearch] = useState<string>('');
+    const [filteredMobile, setFilteredMobile] = useState<string[]>([]);
+    const [filtereRange, setRangeFilter] = useState([2, 100]);
+
     const { isLoaded } = useJsApiLoader({
         googleMapsApiKey: 'AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E',
         libraries: ['places'],
     })
+    const filteredCityHandler = () => {
+        console.log(citySearch, nameSearch, filteredMobile, filtereRange);
+        const filteredSalons = salons.filter((salon) => {
+            const cityNameMatches = citySearch
+                ? salon.city_name.toLowerCase().includes(citySearch.toLowerCase())
+                : true; // If citySearch is empty, consider it as a match
 
+            const salonNameMatches = nameSearch
+                ? salon.name.toLowerCase().includes(nameSearch.toLowerCase())
+                : true; // If nameSearch is empty, consider it as a match
+
+            const salonMobileMatches =
+                filteredMobile.length === 0 ||
+                filteredMobile.includes(salon.is_mobile.toLowerCase());
+
+            const salonInRange = filtereRange[0] <= salon.base_price && salon.base_price <= filtereRange[1];
+
+            return (
+                cityNameMatches &&
+                salonNameMatches &&
+                salonMobileMatches &&
+                salonInRange
+            );
+        });
+
+        setFilteredSalons(filteredSalons);
+    };
     // Fonction pour récupérer tous les salons
     const getAllSalons = async () => {
         const services = getLocalStorage('ServiceIds')
@@ -65,6 +98,7 @@ const SalonChoice = () => {
                     setIsLoading(false);
                     if (res.data.data.length > 0) {
                         setSalons(res.data.data);
+                        setFilteredSalons(res.data.data);
                     }
                 })
                 .catch(error => {
@@ -75,29 +109,29 @@ const SalonChoice = () => {
     }
     // Fonction pour obtenir la liste de souhaits des salons
     const getSalonsWishlist = () => {
-          if (userId) {
-              setIsLoading(true);
-              dashboard.getSalonsWishlist(userId)
-                  .then((res) => {
-                      if (res.data.data) {
-                          if (salons.length) {
-                              const arr: string[] = []
-                              res.data.data.forEach((item: any) => {
-                                  salons.forEach((salon) => {
-                                      if (item.hairsalon.id === salon.id) {
-                                          arr.push(String(salon.id))
-                                      }
-                                  })
-                              });
-                              setWishlist(arr)
-                          }
-                      }
-                      setIsLoading(false);
-                  })
-                  .catch(error => {
-                      setIsLoading(false);
-                  })
-          }
+        if (userId) {
+            setIsLoading(true);
+            dashboard.getSalonsWishlist(userId)
+                .then((res) => {
+                    if (res.data.data) {
+                        if (salons.length) {
+                            const arr: string[] = []
+                            res.data.data.forEach((item: any) => {
+                                salons.forEach((salon) => {
+                                    if (item.hairsalon.id === salon.id) {
+                                        arr.push(String(salon.id))
+                                    }
+                                })
+                            });
+                            setWishlist(arr)
+                        }
+                    }
+                    setIsLoading(false);
+                })
+                .catch(error => {
+                    setIsLoading(false);
+                })
+        }
     }
 
     // Fonction pour ajouter/supprimer des salons à la liste de souhaits
@@ -138,6 +172,7 @@ const SalonChoice = () => {
     // Utilisation de useEffect pour récupérer les données lors du montage du composant
     useEffect(() => {
         getAllSalons()
+
         const user = getLocalStorage("user");
         const userId = user ? Number(JSON.parse(user).id) : null;
         if (!userId) {
@@ -151,6 +186,10 @@ const SalonChoice = () => {
             getSalonsWishlist()
         }
     }, [salons])
+
+    useEffect(() => {
+        filteredCityHandler()
+    }, [citySearch, nameSearch, filteredMobile, filtereRange, filtereRange])
 
     if (!isLoaded) {
         return loadingView()
@@ -247,7 +286,14 @@ const SalonChoice = () => {
     return (
         <div className='w-full'>
             {/* Entête du composant */}
-            <Navbar isSalonPage={true} />
+            {/* <Navbar isSalonPage={true} /> */}
+            <Navbar
+                isSalonPage={true}
+                onCitySearch={(value: string) => setCitySearch(value)}
+                onNameSearch={(value: string) => setNameSearch(value)}
+                onMobileFilters={(mobile) => setFilteredMobile(mobile)}
+                onRangeFilters={(range) => setRangeFilter(range)}
+            />
 
             {/* Corps du composant */}
             <div className='w-full flex flex-col items-center justify-center px-6'>
@@ -255,7 +301,7 @@ const SalonChoice = () => {
 
                 {/* Texte indiquant le nombre de salons */}
                 <p className='text-4xl font-medium text-black text-center mt-6'>
-                    {salons.length} <span className='font-bold text-gradient'>{salons.length === 1 ? 'Salon' : 'Salons'}</span> {salons.length === 1 ? 'correspond' : 'correspondent'} à vos critères
+                    {filteredSalons.length} <span className='font-bold text-gradient'>{filteredSalons.length === 1 ? 'Salon' : 'Salons'}</span> {filteredSalons.length === 1 ? 'correspond' : 'correspondent'} à vos critères
                 </p>
 
                 {/* Bouton retour et continuer */}
@@ -280,7 +326,7 @@ const SalonChoice = () => {
 
                     {/* Carte Google affichée uniquement si des salons sont disponibles */}
                     {
-                        salons.length > 0 && (
+                        filteredSalons.length > 0 && (
                             <div className={`lg:absolute lg:top-0 lg:left-0 w-full h-[400px] lg:w-[400px] lg:h-[880px] 2xl:w-[920px] 4xl:w-[920px] rounded-lg overflow-hidden lg:z-10`}>
 
                                 {/*TODO USE salon.position when data are available  */}
@@ -339,7 +385,7 @@ const SalonChoice = () => {
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-10">
 
                             {/* VIGNETTES (ITERATIONS) */}
-                            {salons.map((salon, index) => (
+                            {filteredSalons.map((salon, index) => (
                                 <div
                                     key={index}
                                     onClick={() => setSelectedSalon({ name: salon.name, id: salon.id })}
@@ -366,7 +412,7 @@ const SalonChoice = () => {
                                         {/* Nom et prix du salon */}
                                         <div className="flex items-start justify-between text-black text-lg font-semibold px-3 pt-2 ">
                                             <p className='w-36'>{salon.name}</p>
-                                            <p className={`p-2 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white`}> $35</p>
+                                            <p className={`p-2 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white`}> ${salon.base_price}</p>
                                         </div>
 
                                         {/* Évaluation et nombre d'avis */}
