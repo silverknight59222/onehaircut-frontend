@@ -7,7 +7,8 @@ import {
   HamburgerIcon,
   LogoIcon,
   UserIcon,
-  StarGreyIcon
+  StarGreyIcon,
+  FilterIcon,
 } from "@/components/utilis/Icons";
 
 interface DashboardLayout {
@@ -23,6 +24,7 @@ const ClientDashboardLayout = ({ children }: DashboardLayout) => {
     { icon: "MessageIcon", title: "Message", route: "/client/messages" },
     { icon: "StarGreyIcon", title: "Favoris", route: "/client/favorites" },
     { icon: "PortraitIcon", title: "Portrait", route: "/client/portrait" },
+    //TODO MODIFY MESSAGEICON VY FILTER ICON
     { icon: "MessageIcon", title: "Filtres", route: "/client/filters" },
     { icon: "ReservationIcon", title: "Réservations en cours", route: "/client/currentreservation" },
     { icon: "HistoryIcon", title: "Historique", route: "/client/history" },

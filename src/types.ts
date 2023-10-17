@@ -6,6 +6,7 @@ interface SalonImages{
 }
 export type SalonDetails = {
 	address: string;
+	city_name: string;
 	id: number;
 	is_primary: 1;
 	name: string;
@@ -13,7 +14,12 @@ export type SalonDetails = {
 	type: string;
 	user_id: number;
 	logo: string;
-	salon_images: SalonImages[]
+	salon_images: SalonImages[],
+	is_mobile:string,
+	range: number[],
+	base_price: number,
+	service_price:number,
+	final_price: number
 };
 
 export type FileDetails = {
