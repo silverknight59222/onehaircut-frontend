@@ -1,4 +1,4 @@
-import { LogoCircleFixRight } from "@/components/utilis/Icons";
+import { CheckedIcon, LogoCircleFixRight } from "@/components/utilis/Icons";
 import ClientDashboardLayout from "@/layout/ClientDashboardLayout";
 import React, { useState } from "react";
 import BaseModal from "@/components/UI/BaseModal";
@@ -34,10 +34,47 @@ const Account = () => {
         "Langue",
     ];
 
+    // Modal for addresses
+    const [isModalAdd, setIsModalAdd] = useState(false);
+    // Modal for phone number
+    const [isModalPhone, setIsModalPhone] = useState(false);
+    // Modal for password
+    const [isModalPswrd, setIsModalPswrd] = useState(false);
+    // Modal for credit card
+    const [isModalCreditCard, setIsModalCreditCard] = useState(false);
+    // Modal for account notification
+    const [isModalNotifAccount, setIsModalNotifAccount] = useState(false);
+    // Modal for Reminders notification
+    const [isModalNotifReminders, setIsModalNotifReminders] = useState(false);
+    // Modal for messages notification
+    const [isModalNotifMsg, setIsModalNotifMsg] = useState(false);
 
-    const [isModal, setIsModal] = useState(false);
+    // function to hadnle the click on the modify 
     const handleModifierClick = (item: infoInterface) => {
-        setIsModal(true); // Show the modal when "modifier" is clicked
+        if (item.name == "Adresse") {
+            setIsModalAdd(true); // Show the modal to modify add
+        }
+        else if (item.name == "Numéro de téléphone") {
+            setIsModalPhone(true) // Show the modal to modify phone number
+        }
+        else if (item.name == "Mot de passe") {
+            setIsModalPswrd(true) // Show the modal to modify password
+        }
+        else if (item.name == "Carte de crédit") {
+            setIsModalCreditCard(true) // Show the modal to modify credit card
+        }
+        else if (item.name == "Activité du compte") {
+            setIsModalNotifAccount(true) // Show the modal to modify account activity
+        }
+        else if (item.name == "Rappels") {
+            setIsModalNotifReminders(true) // Show the modal to modify reminders
+        }
+        else if (item.name == "Messages") {
+            setIsModalNotifMsg(true) // Show the modal to modify messages
+        }
+        else {
+            // do nothing
+        }
         setSelectedParam(item);
     };
 
@@ -131,7 +168,7 @@ const Account = () => {
             <div className="mt-4 flex gap-4 items-center justify-center w-full">
                 <button
                     className={`${Theme_A.button.medWhiteColoredButton}`}
-                    onClick={() => setIsModal(!isModal)}
+                    onClick={() => setIsModalPswrd(!isModalPswrd)}
                 >
                     Annuler
                 </button>
@@ -166,7 +203,7 @@ const Account = () => {
             });
             // TODO: save the address for the future
             showSnackbar("success", "Salon Service added successfully.");
-            setIsModal(false);
+            setIsModalAdd(false);
         }
         // 
     }
@@ -192,7 +229,7 @@ const Account = () => {
             <div className="mt-4 flex gap-4 items-center justify-center w-full">
                 <button
                     className={`${Theme_A.button.medWhiteColoredButton}`}
-                    onClick={() => setIsModal(!isModal)}
+                    onClick={() => setIsModalAdd(false)}
                 >
                     Annuler
                 </button>
@@ -229,7 +266,7 @@ const Account = () => {
             });
             // TODO: save phone for the future
             showSnackbar("success", "Téléphone actualisé");
-            setIsModal(false)
+            setIsModalPhone(false)
         }
     }
 
@@ -253,7 +290,7 @@ const Account = () => {
             <div className="mt-4 flex gap-4 items-center justify-center w-full">
                 <button
                     className={`${Theme_A.button.medWhiteColoredButton}`}
-                    onClick={() => setIsModal(false)}
+                    onClick={() => setIsModalPhone(false)}
                 >
                     Annuler
                 </button>
@@ -288,7 +325,7 @@ const Account = () => {
                 return { ...prev, text: "" };
             });
             // TODO: save the card for the future
-            setIsModal(false);
+            setIsModalCreditCard(false);
         }
     }
 
@@ -312,7 +349,7 @@ const Account = () => {
             <div className="mt-4 flex gap-4 items-center justify-center w-full">
                 <button
                     className={`${Theme_A.button.medWhiteColoredButton}`}
-                    onClick={() => setIsModal(!isModal)}
+                    onClick={() => setIsModalCreditCard(false)}
                 >
                     Annuler
                 </button>
@@ -325,7 +362,95 @@ const Account = () => {
             </div>
         </div>;
 
-    // TODO: add information about the client.
+    ////////////////////////////////////////////////////
+    ///////////////////// Account Notification  
+    ////////////////////////////////////////////////////
+
+    const [NotifAccountEmail, setPNotifAccountEmail] = useState(false);
+    const [NotifAccountWhatsapp, setPNotifAccountWhatsapp] = useState(false);
+    const [NotifAccount, setNotifAccount] = useState("");
+
+    // function to display the preferences
+    const displayNotifAccount = () => {
+        let text = ""
+        if (NotifAccountEmail) {
+            text = "Email"
+        }
+        if (NotifAccountWhatsapp) {
+            text = text + " Whatsapp"
+        }
+
+        // set the text to be displayed
+        setNotifAccount(text)
+    }
+
+    const onSubmitAccountNotif = () => {
+        // TODO: save preferences for the future
+        displayNotifAccount() // update text to be displayed
+        // setShowItem(informations);
+        setSelectedTab(3);
+        setShowItem(notifications);
+        showSnackbar("succès", "Préférence actualisée");
+        setIsModalNotifAccount(false)
+
+    }
+
+    // display the field for the account modifications
+    const modifAccountNotif: React.JSX.Element =
+        <div>
+            <div className="flex flex-col items-center justify-center gap-4">
+                <p className="text-xl font-semibold text-black text-center">
+                    Notifications concernants votre compte sont émises par</p>
+                <div className="items-start">
+                    <div
+                        onClick={() => setPNotifAccountEmail(!NotifAccountEmail)}
+                        className="flex items-center justify-start gap-3 mt-4 cursor-pointer"
+                    >
+                        <div className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${NotifAccountEmail
+                            ? ColorsThemeA.ohcVerticalGradient_A
+                            : "border-[#767676]"
+                            }`}
+                        >
+                            {NotifAccountEmail && (
+                                <CheckedIcon width="15" height="10" />)}
+                        </div>
+                        <p>Emails</p>
+                    </div>
+                    <div
+                        onClick={() => setPNotifAccountWhatsapp(!NotifAccountWhatsapp)}
+                        className="flex items-center justify-start gap-3 mt-4 cursor-pointer"
+                    >
+                        <div className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${NotifAccountWhatsapp
+                            ? ColorsThemeA.ohcVerticalGradient_A
+                            : "border-[#767676]"
+                            }`}
+                        >
+                            {NotifAccountWhatsapp && (
+                                <CheckedIcon width="15" height="10" />)}
+                        </div>
+                        <p>Whatsapp</p>
+                    </div>
+                </div>
+            </div>
+            <div className="mt-4 flex gap-4 items-center justify-center w-full">
+                <button
+                    className={`${Theme_A.button.medWhiteColoredButton}`}
+                    onClick={() => setIsModalNotifAccount(false)}
+                >
+                    Annuler
+                </button>
+                <button
+                    className={`${Theme_A.button.mediumGradientButton}`}
+                    onClick={() => onSubmitAccountNotif()}
+                >
+                    Actualiser
+                </button>
+            </div>
+        </div>;
+
+
+
+    // TODO: add information about the client coming from backend in "desc".
     const informations: infoInterface[] = [
         { name: "Nom légal", desc: "Dimitri Bala", modif: false, popup: emptyPopup },
         { name: "Adresse", desc: "Information non fournie", modif: true, popup: modifAddress },
@@ -339,10 +464,10 @@ const Account = () => {
         { name: "Mot de passe", desc: "", modif: true, popup: modifPassWord },
     ];
 
-    const notifications: infoInterface[] = [
-        { name: "Activité du compte", desc: "Activé : E-mail et SMS", modif: true, popup: emptyPopup },
-        { name: "Rappels", desc: "Activé : E-mail, SMS et Whatsapp", modif: true, popup: emptyPopup },
-        { name: "Messages", desc: "Activé : E-mail, Whatsapp", modif: true, popup: emptyPopup },
+    let notifications: infoInterface[] = [
+        { name: "Activité du compte", desc: NotifAccount, modif: true, popup: modifAccountNotif },
+        { name: "Rappels", desc: "E-mail + Whatsapp", modif: true, popup: emptyPopup },
+        { name: "Messages", desc: "E-mail + Whatsapp", modif: true, popup: emptyPopup },
     ];
 
     const payments: infoInterface[] = [
@@ -397,13 +522,46 @@ const Account = () => {
             </div>
             <ClientDashboardLayout>
                 <div className="mt-14 mb-5 px-6">
-                    {isModal && (
-                        <BaseModal close={() => setIsModal(!isModal)}>
-                            <div>
-                                {selectedParam.popup} // not working
-                                {modifPhone} // working fine
-                            </div>
 
+                    {/* PLACE FOR ALL MODALS */}
+                    {/*  Address */}
+                    {isModalAdd && (
+                        <BaseModal close={() => setIsModalAdd(false)}>
+                            <div>
+                                {modifAddress}
+                            </div>
+                        </BaseModal>)}
+
+                    {/*  Phone */}
+                    {isModalPhone && (
+                        <BaseModal close={() => setIsModalPhone(false)}>
+                            <div>
+                                {modifPhone}
+                            </div>
+                        </BaseModal>)}
+
+                    {/*  Password */}
+                    {isModalPswrd && (
+                        <BaseModal close={() => setIsModalPswrd(false)}>
+                            <div>
+                                {modifPassWord}
+                            </div>
+                        </BaseModal>)}
+
+                    {/*  Credit card */}
+                    {isModalCreditCard && (
+                        <BaseModal close={() => setIsModalCreditCard(false)}>
+                            <div>
+                                {modifBankCard}
+                            </div>
+                        </BaseModal>)}
+
+                    {/*  Notification account */}
+                    {isModalNotifAccount && (
+                        <BaseModal close={() => setIsModalNotifAccount(false)}>
+                            <div>
+                                {modifAccountNotif}
+                            </div>
                         </BaseModal>)}
 
                     {/* NORMAL VIEW */}
