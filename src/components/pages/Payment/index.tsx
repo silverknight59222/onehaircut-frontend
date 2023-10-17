@@ -21,6 +21,9 @@ const Index = () => {
   const showSnackbar=useSnackbar()
   const user = getLocalStorage("user");
   const haircut=getLocalStorage("haircut")
+  const hairTime=getLocalStorage("slotTime")
+  const haircutTime = hairTime ? JSON.parse(hairTime) : null
+  const hairTimeData=+haircutTime
   const haircutData = haircut ? JSON.parse(haircut) : null
   const salon=getLocalStorage('selectedSalon')
   const salonData= salon ? JSON.parse(salon) : null
@@ -33,6 +36,7 @@ const Index = () => {
   const { loadingView } = userLoader();
   const [isLoading, setIsLoading] = useState(false);
   const [isModal,setIsModal]=useState(false)
+  const [duration,setDuration]=useState("")
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [stripePromise, setStripePromise] = useState<string>("pk_test_51IkzH1ExivflHCSmgQfNoQAWOnOcfKopp26Ct493No4QtWa8Cv6HEf9933YbMXcrs6wVR7YjWslQV58IikPujC5U006Imw8zpO");
@@ -136,7 +140,31 @@ const Index = () => {
       arr.push(service.id)
     })
     setServiceIds(arr)
+
+    if(hairTimeData>30){
+      const i=Math.floor(hairTimeData/30)
+      const ppp=30*(i+1)-hairTimeData
+      const newTime = calculateTimeAfterSeparatingMinutes(slotData.slot[slotData.slot.length-1].end, ppp);
+      setDuration(newTime)
+    }else {
+      const newTime = calculateTimeAfterSeparatingMinutes(slotData.slot[slotData.slot.length-1].end, hairTimeData);
+      setDuration(newTime)
+    }
   },[])
+
+  function calculateTimeAfterSeparatingMinutes(timeString:any, minutesToSeparate:any) {
+    const [hours, minutes] = timeString.split(':').map(Number);
+    const totalMinutes = hours * 60 + minutes;
+    const newTotalMinutes = totalMinutes - minutesToSeparate;
+    let newHours = Math.floor(newTotalMinutes / 60);
+    let newMinutes = newTotalMinutes % 60;
+    if (newHours < 0) {
+      newHours += 24;
+    }
+    const newTimeString = `${newHours.toString().padStart(2, '0')}:${newMinutes.toString().padStart(2, '0')}`;
+  
+    return newTimeString;
+  }
   return (
     <div>
       {isLoading && loadingView()}
@@ -167,7 +195,7 @@ const Index = () => {
               </p> : ''}
               {salonData && <p className="text-base"><span className="font-semibold text-lg">Hair Salon: </span>{salonData.name}</p>}
               {slotData && <p className="text-base"><span className="font-semibold text-lg">Hair Dresser: </span>{slotData.hairDresser.name}</p>}
-              {slotData && <p className="text-base"><span className="font-semibold text-lg">Slot: </span>{slotData.slot[0].day} {slotData.slot.map((prevSlot:any)=>{return <>{prevSlot.start}</>})}</p>} 
+              {slotData && <p className="text-base"><span className="font-semibold text-lg">Slot: </span>{slotData.slot[0].day} Start{slotData.slot[0].start}, End{duration}, Duration{hairTimeData}</p>} 
             </div>
             <div className="flex items-center justify-between border-t-2 border-[#CBCBCB] pt-9 mt-9">
               <button onClick={()=>router.push('/')} className="w-36 h-14 flex items-center justify-center border border-secondary rounded-xl text-xl text-black font-semibold">

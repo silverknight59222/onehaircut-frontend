@@ -10,20 +10,17 @@ import Link from "next/link";
 import { EyeIcon, EyeClosedIcon } from "@/components/utilis/Icons";
 import { Theme_A } from "@/components/utilis/Themes";
 
-const Login = () => {
+const Forgot = () => {
 	const router = useRouter();
 	const showSnackbar = useSnackbar();
 	const { loadingView } = userLoader();
-	const [showPassword, setShowPassword] = useState(false);
 	const searchParams = useSearchParams()
 
 	const defaultUserInfo = {
 		email: "",
-		password: "",
 	};
 	const [error, setError] = useState({
 		email: '',
-		password: ''
 	})
 	const [userInfo, setUserInfo] = useState(defaultUserInfo);
 	const [isLoading, setIsLoading] = useState(false);
@@ -43,21 +40,7 @@ const Login = () => {
 			email: e,
 		}));
 	};
-	const setUserPassword = (e: string) => {
-		if (!e.length) {
-			setError((prev => {
-				return { ...prev, password: 'Mot de passe requis' }
-			}))
-		} else {
-			setError((prev => {
-				return { ...prev, password: '' }
-			}))
-		}
-		setUserInfo((prevState) => ({
-			...prevState,
-			password: e,
-		}));
-	};
+	
 	const validateLogin = () => {
 		let isValidated = true;
 		if (!userInfo.email) {
@@ -70,32 +53,16 @@ const Login = () => {
 				return { ...prev, email: '' }
 			}))
 		}
-		if (!userInfo.password) {
-			setError((prev => {
-				return { ...prev, password: 'Mot de passe requis' }
-			}))
-			isValidated = false;
-		} else {
-			setError((prev => {
-				return { ...prev, password: '' }
-			}))
-		}
 		return isValidated;
 	}
-	const onLogin = async () => {
+	const onForgot = async () => {
 		if (!validateLogin()) {
 			return;
 		}
 		setIsLoading(true);
-		await Auth.login(userInfo)
+		await Auth.forgot(userInfo)
 			.then((resp) => {
 				const res = resp.data;
-				console.log(res.user)
-				setLocalStorage("user", JSON.stringify(res.user));
-				setLocalStorage("auth-token", res.token);
-				// if(searchParams.get('redirect') === 'payment'){
-				// 	router.push("/payment");
-				// }
 				 if (res.user.role === 'salon_professional') {
 					router.push("/dashboard");
 				} else {
@@ -139,28 +106,9 @@ const Login = () => {
 						    </div>
 						    {error.email && <p className="text-xs text-red-700 ml-4 mt-2">{error.email}*</p>}
 						</div>
-						<div className="w-full mt-6">
-							<label className="block text-left text-black mb-2 font-medium" htmlFor="passwordInput">Mot de passe</label>
-							<div className="w-full h-[60px] p-[1px] flex items-center justify-center rounded-xl bg-stone-300 ">
-								<div className="w-full h-[58px] rounded-[11px] bg-white flex items-center justify-between">
-									<input
-										id="passwordInput"
-										placeholder="Mot de passe"
-										type={showPassword ? "text" : "password"}
-										className={`w-full h-[58px] rounded-l-[11px] outline-none px-4 ${Theme_A.behaviour.fieldFocused}`}
-										value={userInfo.password}
-										onChange={(e) => setUserPassword(e.target.value) } 
-									/>
-									<button onClick={() => setShowPassword(!showPassword)} className="p-4">
-										{showPassword ? <EyeClosedIcon /> : <EyeIcon />}
-									</button>
-								</div>
-							</div>
-							{error.password && <p className="text-xs text-red-700 ml-4 mt-2">{error.password}*</p>}
-						</div>
 						<button
 							className="text-white font-medium text-xl rounded-xl w-full h-14 my-6 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_7px_12px_0px_rgba(255,125,60,0.25)] transform hover:scale-105"
-							onClick={onLogin}
+							onClick={onForgot}
 						>
 							<p>Connexion</p>
 						</button>
@@ -174,7 +122,7 @@ const Login = () => {
 					    </div>
 					    <div className="flex items-center gap-2">
 					        <p className="text-black text-base border-b border-black transition duration-150 hover:border-secondary hover:text-secondary">
-					            <Link href={{ pathname: '/forgot' }}>Mot de passe oublié ?</Link>
+					            <Link href={{ pathname: '/login' }}>Mot de passe oublié ?</Link>
 					        </p>
 					    </div>
 					</div>
@@ -196,4 +144,4 @@ const Login = () => {
 	);
 };
 
-export default Login;
+export default Forgot;

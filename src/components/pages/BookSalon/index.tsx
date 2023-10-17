@@ -85,6 +85,7 @@ const BookSalon = () => {
 
   const onContinue=()=>{
     setLocalStorage('slotData', JSON.stringify({hairDresser: selectedHairdresser, slot: selectedSlot}))
+    setLocalStorage('slotTime', hairCut.base_duration)
     route.push('/payment')
   }
 
@@ -101,8 +102,8 @@ const BookSalon = () => {
     if (currentIndex !== -1) {
       const selectedObjects = [];
       // const ddd=+hairCut.base_duration
-      const ddd=+hairCut.base_duration
-      for (let i = currentIndex; i <= currentIndex + Math.floor(ddd/30); i++) {
+      const time=+hairCut.base_duration
+      for (let i = currentIndex; i <= currentIndex + Math.floor(time/30); i++) {
         if (slots[i]) {
           selectedObjects.push(slots[i]);
         }
