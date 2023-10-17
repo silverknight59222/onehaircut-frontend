@@ -44,22 +44,38 @@ const SalonChoice = () => {
     const [wishlist, setWishlist] = useState<string[]>([])
     const [citySearch, setCitySearch] = useState<string>('');
     const [nameSearch, setNameSearch] = useState<string>('');
+    const [filteredMobile, setFilteredMobile] = useState<string[]>([]);
+    const [filtereRange, setRangeFilter] = useState([2, 100]);
+
     const { isLoaded } = useJsApiLoader({
         googleMapsApiKey: 'AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E',
         libraries: ['places'],
     })
     const filteredCityHandler = () => {
+        console.log(citySearch, nameSearch, filteredMobile, filtereRange);
         const filteredSalons = salons.filter((salon) => {
-            const cityNameMatches = salon.city_name.toLowerCase().includes(citySearch.toLowerCase());
-            const salonNameMatches = salon.name.toLowerCase().includes(nameSearch.toLowerCase());
-            console.log(citySearch, cityNameMatches, nameSearch, salonNameMatches)
-            if (citySearch && nameSearch) {
-                return cityNameMatches && salonNameMatches; // Both city and salon names must match
-              } else {
-                return cityNameMatches || salonNameMatches; // Either city or salon name can match
-              }
+            const cityNameMatches = citySearch
+                ? salon.city_name.toLowerCase().includes(citySearch.toLowerCase())
+                : true; // If citySearch is empty, consider it as a match
+
+            const salonNameMatches = nameSearch
+                ? salon.name.toLowerCase().includes(nameSearch.toLowerCase())
+                : true; // If nameSearch is empty, consider it as a match
+
+            const salonMobileMatches =
+                filteredMobile.length === 0 ||
+                filteredMobile.includes(salon.is_mobile.toLowerCase());
+
+            const salonInRange = filtereRange[0] <= salon.base_price && salon.base_price <= filtereRange[1];
+
+            return (
+                cityNameMatches &&
+                salonNameMatches &&
+                salonMobileMatches &&
+                salonInRange
+            );
         });
-        
+
         setFilteredSalons(filteredSalons);
     };
     // Fonction pour récupérer tous les salons
@@ -93,29 +109,29 @@ const SalonChoice = () => {
     }
     // Fonction pour obtenir la liste de souhaits des salons
     const getSalonsWishlist = () => {
-          if (userId) {
-              setIsLoading(true);
-              dashboard.getSalonsWishlist(userId)
-                  .then((res) => {
-                      if (res.data.data) {
-                          if (salons.length) {
-                              const arr: string[] = []
-                              res.data.data.forEach((item: any) => {
-                                  salons.forEach((salon) => {
-                                      if (item.hairsalon.id === salon.id) {
-                                          arr.push(String(salon.id))
-                                      }
-                                  })
-                              });
-                              setWishlist(arr)
-                          }
-                      }
-                      setIsLoading(false);
-                  })
-                  .catch(error => {
-                      setIsLoading(false);
-                  })
-          }
+        if (userId) {
+            setIsLoading(true);
+            dashboard.getSalonsWishlist(userId)
+                .then((res) => {
+                    if (res.data.data) {
+                        if (salons.length) {
+                            const arr: string[] = []
+                            res.data.data.forEach((item: any) => {
+                                salons.forEach((salon) => {
+                                    if (item.hairsalon.id === salon.id) {
+                                        arr.push(String(salon.id))
+                                    }
+                                })
+                            });
+                            setWishlist(arr)
+                        }
+                    }
+                    setIsLoading(false);
+                })
+                .catch(error => {
+                    setIsLoading(false);
+                })
+        }
     }
 
     // Fonction pour ajouter/supprimer des salons à la liste de souhaits
@@ -173,7 +189,7 @@ const SalonChoice = () => {
 
     useEffect(() => {
         filteredCityHandler()
-    }, [citySearch, nameSearch])
+    }, [citySearch, nameSearch, filteredMobile, filtereRange, filtereRange])
 
     if (!isLoaded) {
         return loadingView()
@@ -271,11 +287,14 @@ const SalonChoice = () => {
         <div className='w-full'>
             {/* Entête du composant */}
             {/* <Navbar isSalonPage={true} /> */}
-            <Navbar 
-            isSalonPage={true} 
-            onCitySearch={(value: string) => setCitySearch(value)}
-            onNameSearch={(value: string) => setNameSearch(value)} />
-            
+            <Navbar
+                isSalonPage={true}
+                onCitySearch={(value: string) => setCitySearch(value)}
+                onNameSearch={(value: string) => setNameSearch(value)}
+                onMobileFilters={(mobile) => setFilteredMobile(mobile)}
+                onRangeFilters={(range) => setRangeFilter(range)}
+            />
+
             {/* Corps du composant */}
             <div className='w-full flex flex-col items-center justify-center px-6'>
                 {isLoading && loadingView()}
@@ -393,7 +412,7 @@ const SalonChoice = () => {
                                         {/* Nom et prix du salon */}
                                         <div className="flex items-start justify-between text-black text-lg font-semibold px-3 pt-2 ">
                                             <p className='w-36'>{salon.name}</p>
-                                            <p className={`p-2 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white`}> $35</p>
+                                            <p className={`p-2 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white`}> ${salon.base_price}</p>
                                         </div>
 
                                         {/* Évaluation et nombre d'avis */}

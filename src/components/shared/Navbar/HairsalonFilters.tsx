@@ -33,7 +33,7 @@ const HairsalonFilter = ({ isWelcomePage, isSaloonPage, onSearch, onServiceSearc
         </p>
       </div> */}
 
-      <div className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
+      {/* <div className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
         <p
           className={
             showDesktopMobile ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7"
@@ -41,8 +41,8 @@ const HairsalonFilter = ({ isWelcomePage, isSaloonPage, onSearch, onServiceSearc
         >
           Mobile
         </p>
-      </div>
-      <div className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
+      </div> */}
+      {/* <div className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
         <p
           className={
             showDesktopBudget ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7"
@@ -50,7 +50,7 @@ const HairsalonFilter = ({ isWelcomePage, isSaloonPage, onSearch, onServiceSearc
         >
           Budget
         </p>
-      </div>
+      </div> */}
       {/* <div className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
         <p
           className={
