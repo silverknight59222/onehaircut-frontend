@@ -27,7 +27,7 @@ interface Navbar {
   onGenderFilter?: (arg0: string) => void
   onEthnicityFilters?: (arg0: string[]) => void
   onLengthFilters?: (arg0: string[]) => void
-  onMobileFilters?: (arg0: string[]) => void
+  onMobileFilters?: (arg0: string) => void
   onRangeFilters?: (arg0: string[]) => void
   onTypeSelect?: (arg0: string[]) => void,
 }
@@ -46,8 +46,8 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
   const [genderFilters, setGenderFilters] = useState<string>('');
   const [ethnicityFilters, setEthnicityFilters] = useState<string[]>([]);
   const [lengthFilters, setLengthFilters] = useState<string[]>([]);
-  const [mobileFilters, setMobileFilters] = useState<string[]>([]);
-  const [rangeFilters, setRangeFilter] = useState([2, 100]);
+  const [mobileFilters, setMobileFilters] = useState<string>("");
+  const [rangeFilters, setRangeFilter] = useState<number[]>([2, 100]);
 
   const router = useRouter()
   const EthnicityDesktopRef =
@@ -124,10 +124,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
     },
     {
       name: "No",
-    },
-    {
-      name: "Both",
-    },
+    }
   ];
   const rangeSelector = (event, newValue: any) => {
     setRangeFilter(newValue);
@@ -158,11 +155,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
     }
   };
   const onClickMobileCheckbox = (mobile: string) => {
-    if (mobileFilters.includes(mobile)) {
-      setMobileFilters(mobileFilters.filter((item) => item !== mobile));
-    } else {
-      setMobileFilters((prev) => [...prev, mobile]);
-    }
+    setMobileFilters(mobile);
   };
   useEffect(() => {
     onEthnicityFilters && onEthnicityFilters(ethnicityFilters)
@@ -381,12 +374,12 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
                           onClick={() => onClickMobileCheckbox(item.name.toLowerCase())}
                         >
                           <div
-                            className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  transform hover:scale-105 ${mobileFilters.includes(item.name.toLowerCase())
+                            className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  transform hover:scale-105 
                               ? "bg-gradient-to-b from-pink-500 to-orange-500"
                               : "bg-[#D6D6D6]"
                               }`}
                           >
-                            <CheckedIcon />
+                            <input type="radio" name="radio" />
                           </div>
                           <p className="ml-2">{item.name}</p>
                         </div>
