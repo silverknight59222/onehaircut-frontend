@@ -41,17 +41,16 @@ const Welcome = () => {
   const [wishlist, setWishlist] = useState<string[]>([]) // Store user’s wishlist of haircuts
 
 
-  const getAllHaircuts = () => {
+  const getAllHaircuts = async () => {
     // Fetch all available haircuts from the API
     setIsLoading(true);
-    dashboard.getAllHaircuts()
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await dashboard.getAllHaircuts()
       .then((res) => {
-        if (res.data.data.length > 0) {
-          setSalonHaircut(res.data.data);
-        }
+          setSalonHaircut([...salonHaircut, ...res.data.data]);
+          setIsLoading(false)
       })
       .catch(error => console.log(error))
-      .finally(() => setIsLoading(false))
   }
 
   const getHaircutsWishlist = () => {
