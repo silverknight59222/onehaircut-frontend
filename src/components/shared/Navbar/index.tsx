@@ -21,13 +21,15 @@ interface Navbar {
   isBookSalon?: boolean,
   onSearch?: (arg0: string) => void
   onServiceSearch?: (arg0: string) => void
+  onCitySearch?: (arg0: string) => void
+  onNameSearch?: (arg0: string) => void
   onGenderFilter?: (arg0: string) => void
   onEthnicityFilters?: (arg0: string[]) => void
   onLengthFilters?: (arg0: string[]) => void
-  onTypeSelect?: (arg0: string[]) => void
+  onTypeSelect?: (arg0: string[]) => void,  
 }
 
-const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTypeSelect, onSearch, onServiceSearch, onGenderFilter, onEthnicityFilters, onLengthFilters }: Navbar) => {
+const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTypeSelect, onSearch, onServiceSearch, onGenderFilter, onEthnicityFilters, onLengthFilters, onCitySearch, onNameSearch }: Navbar) => {
   const [isDropdown, setIsDropdown] = useState(false);
   const [showDesktopGender, setShowDesktopGender] = useState(false);
   const [showDesktopLength, setShowDesktopLength] = useState(false);
@@ -288,13 +290,37 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
                   isBookSalon &&
                   <BooksalonFilter />
             }
-            {(isWelcomePage || isServicesPage) &&
+            {(isWelcomePage || isServicesPage ) &&
               <div className={`border-r border-grey px-6 last:border-r-0 cursor-pointer`}>
                 <input
                   type="text"
                   placeholder="Rechercher"
                   className={`text-base px-4 p-2 rounded-full outline-none ${Theme_A.behaviour.fieldFocused_B}`}
-                  onChange={onSearch && isWelcomePage ? (e) => onSearch(e.target.value) : onServiceSearch && isServicesPage ? (e) => onServiceSearch(e.target.value) : () => { }}
+                  onChange={onSearch && isWelcomePage ? 
+                    (e) => onSearch(e.target.value) : 
+                    onServiceSearch && isServicesPage  ? (e) => onServiceSearch(e.target.value) : () => { }}
+                />
+              </div>}
+              {(isSalonPage ) &&
+              <div className={`border-r border-grey px-6 last:border-r-0 cursor-pointer`}>
+                <input
+                  type="text"
+                  placeholder="Ville"
+                  className={`text-base px-4 p-2 rounded-full outline-none ${Theme_A.behaviour.fieldFocused_C}`}
+                  onChange={onSearch && isWelcomePage ? 
+                    (e) => onSearch(e.target.value) : 
+                    onCitySearch && isSalonPage ? (e) => onCitySearch(e.target.value) : () => { }}
+                />
+              </div>}
+              {(isSalonPage ) &&
+              <div className={`border-r border-grey px-6 last:border-r-0 cursor-pointer`}>
+                <input
+                  type="text"
+                  placeholder="Nom Salon"
+                  className={`text-base px-4 p-2 rounded-full outline-none ${Theme_A.behaviour.fieldFocused_C}`}
+                  onChange={onNameSearch && isWelcomePage ? 
+                    () => {} : 
+                    onNameSearch && isSalonPage ? (e) => onNameSearch(e.target.value) : () => { }}
                 />
               </div>}
           </div>
@@ -453,7 +479,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
                 type="text"
                 placeholder="Rechercher"
                 className="text-base px-4 p-2 rounded-full outline-none"
-                onChange={onSearch && isWelcomePage ? (e) => onSearch(e.target.value) : onServiceSearch && isServicesPage ? (e) => onServiceSearch(e.target.value) : () => { }}
+                onChange={onSearch && isSalonPage ? (e) => onSearch(e.target.value) : onServiceSearch && isServicesPage ? (e) => onServiceSearch(e.target.value) : () => { }}
               />
             </div>
             <div className="cursor-pointer p-3 rounded-full bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
