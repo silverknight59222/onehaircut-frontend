@@ -43,7 +43,7 @@ const DropdownMenu = ({
                 // style={{ width: width }}
                 >
                     {dropdownItems.map((item) => (
-                        <p className='text-sm'
+                        <p className='text-sm hover:bg-grey pl-2'
                             key={item}
                             onClick={() => handleItemClick(item)}>
                             {item}
