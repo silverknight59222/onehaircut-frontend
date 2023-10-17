@@ -159,7 +159,7 @@ const Favorites = () => {
                     </div>
 
                     {/* Salons' part */}
-                    <div className="w-full relative flex flex-col items-center justify-center my-72 ">
+                    <div className="w-full relative flex flex-col items-center justify-center mt-40">
                         <div className="w-full">
                             <p className="text-black text-3xl mb-3">Salons</p>
                             <div className={`h-7 flex items-center rounded-xl text-white px-5 bg-gradient-to-r from-zinc-800 via-zinc-400 to-zinc-100`} >
