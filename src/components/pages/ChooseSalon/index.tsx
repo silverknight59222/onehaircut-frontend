@@ -2,7 +2,7 @@
 import Navbar from '@/components/shared/Navbar'
 import React, { useEffect, useState } from 'react'
 import '../dashboard/Dashboard/Services/index.css'
-import { Like } from '@/components/utilis/Icons';
+import { Like, StarGreyIcon, StarIcon } from '@/components/utilis/Icons';
 import Image from 'next/image';
 import StarRatings from 'react-star-ratings';
 import { useRouter } from 'next/navigation';
@@ -11,11 +11,12 @@ import { getLocalStorage, setLocalStorage } from '@/api/storage';
 import { SalonDetails } from '@/types';
 import userLoader from "@/hooks/useLoader";
 import useSnackbar from '@/hooks/useSnackbar';
-import { GoogleMap, Marker, useJsApiLoader } from '@react-google-maps/api';
+import { GoogleMap, Marker, useJsApiLoader, OverlayView } from '@react-google-maps/api';
 import { ColorsThemeA, Theme_A } from '@/components/utilis/Themes';
 import { BackArrow } from '@/components/utilis/Icons';
 import Footer from '@/components/UI/Footer';
 import MapIcon from "@/components/utilis/Icons";
+import { MapIconRed } from '@/components/utilis/Icons';
 import ReactDOMServer from 'react-dom/server';
 // TODO IMPORT TO USE ADRESSES 
 //import axios from 'axios'; 
@@ -74,29 +75,29 @@ const SalonChoice = () => {
     }
     // Fonction pour obtenir la liste de souhaits des salons
     const getSalonsWishlist = () => {
-        //   if (userId) {
-        //       setIsLoading(true);
-        //       dashboard.getSalonsWishlist(userId)
-        //           .then((res) => {
-        //               if (res.data.data.length > 0) {
-        //                   if (salons.length) {
-        //                       const arr: string[] = []
-        //                       res.data.data.forEach((item: any) => {
-        //                           salons.forEach((salon) => {
-        //                               if (item.hairsalon.id === salon.id) {
-        //                                   arr.push(String(salon.id))
-        //                               }
-        //                           })
-        //                       });
-        //                       setWishlist(arr)
-        //                   }
-        //               }
-        //               setIsLoading(false);
-        //           })
-        //           .catch(error => {
-        //               setIsLoading(false);
-        //           })
-        //   }
+          if (userId) {
+              setIsLoading(true);
+              dashboard.getSalonsWishlist(userId)
+                  .then((res) => {
+                      if (res.data.data) {
+                          if (salons.length) {
+                              const arr: string[] = []
+                              res.data.data.forEach((item: any) => {
+                                  salons.forEach((salon) => {
+                                      if (item.hairsalon.id === salon.id) {
+                                          arr.push(String(salon.id))
+                                      }
+                                  })
+                              });
+                              setWishlist(arr)
+                          }
+                      }
+                      setIsLoading(false);
+                  })
+                  .catch(error => {
+                      setIsLoading(false);
+                  })
+          }
     }
 
     // Fonction pour ajouter/supprimer des salons à la liste de souhaits
@@ -186,9 +187,61 @@ const SalonChoice = () => {
      }, [salons]);
  */
 
+    //TODO : Delete once data are there
+    // Définir un type pour une position individuelle
+    type Position = {
+        lat: number;
+        lng: number;
+    };
+
+    // Définir un type pour un tableau de positions
+    type Positions = Position[];
+
+    // Définir un tableau d'exemple de positions
+    const positions: Positions = [
+        { lat: 47.1510, lng: 7.2676 },
+        { lat: 47.1310, lng: 7.2576 },
+        { lat: 47.1410, lng: 7.2776 },
+        // ... autres positions
+    ];
+
+    // Fonction pour calculer le centre des markers avec types explicites
+    const getMapCenter = (positions: Positions): Position => {
+        let totalLat = 0;
+        let totalLng = 0;
+
+        positions.forEach(pos => {
+            totalLat += pos.lat;
+            totalLng += pos.lng;
+        });
+
+        return {
+            lat: totalLat / positions.length,
+            lng: totalLng / positions.length,
+        };
+    };
+
+    // Utilisation
+    const center = getMapCenter(positions);
+
     // MARQUEUR PERSONNALISE
     const mapIconSvg = ReactDOMServer.renderToStaticMarkup(<MapIcon />);
+    const MapIconRedSvg = ReactDOMServer.renderToStaticMarkup(<MapIconRed />);
     const mapIconUrl = `data:image/svg+xml;base64,${btoa(mapIconSvg)}`;
+    const MapIconRedUrl = `data:image/svg+xml;base64,${btoa(MapIconRedSvg)}`;
+    const MAX_MARKERS = 15;
+
+    type Salon = {
+        name: string;
+        id: number;
+    };
+
+    const handleSelectSalon = (salonId: number) => {
+        const foundSalon = salons.find(s => s.id === salonId);
+        setSelectedSalon(foundSalon ? foundSalon : { name: '', id: null });
+    };
+
+
 
     // Rendu du composant
     return (
@@ -223,38 +276,56 @@ const SalonChoice = () => {
                 {/***************************************************************************************************************************************************************************************************************** */}
 
                 {/* Conteneur principal pour les salons et la carte */}
-                <div className='w-full mt-4 mb-2 relative'>
+                <div className='w-full mt-4 mb-2 relative '>
 
                     {/* Carte Google affichée uniquement si des salons sont disponibles */}
                     {
                         salons.length > 0 && (
-                            <div className={`lg:absolute lg:top-0 lg:left-0 w-full h-[400px] lg:w-[400px] lg:h-[970px] 2xl:w-[920px] 4xl:w-[920px] rounded-lg overflow-hidden lg:z-10`}>
+                            <div className={`lg:absolute lg:top-0 lg:left-0 w-full h-[400px] lg:w-[400px] lg:h-[880px] 2xl:w-[920px] 4xl:w-[920px] rounded-lg overflow-hidden lg:z-10`}>
 
+                                {/*TODO USE salon.position when data are available  */}
                                 <GoogleMap
-                                    center={location}
-                                    zoom={12}
+                                    center={center}
+                                    zoom={13}
                                     mapContainerStyle={{ width: '100%', height: '100%' }}
+                                    options={{
+                                        minZoom: 2,  // ici, définissez votre zoom minimum
+                                        maxZoom: 18   // et ici, votre zoom maximum
+                                    }}
                                 >
-                                    {salons.map((salon, index) => (
-                                        <Marker
-                                            key={index}
-                                            //TODO UTILISER LA LAT-LONG DU SALON => position={{ lat: salon.latitude, lng: salon.longitude }} or 
-                                            //TODO UTILISER L'ADRESSE DU SALON => position={salon.coordinates}
-                                            label={{
-                                                color: '#000',  // Couleur du texte
-                                                fontFamily: 'Arial', // Famille de la police
-                                                fontSize: '10px',  // Taille de la police
-                                                fontWeight: 'semibold', // Poids de la police
-                                                text: `${salon.id}00$`, // Texte à afficher
-                                            }}
-                                            position={location}
-                                            icon={{
-                                                url: mapIconUrl, // URL de l'icône personnalisée
-                                                scaledSize: new window.google.maps.Size(70, 90), // Taille de l'icône
-                                                origin: new window.google.maps.Point(0, -10), // Point d'origine de l'image
-                                                anchor: new window.google.maps.Point(20, 40), // Point d'ancrage de l'icône
-                                            }}
-                                        />
+                                    {salons.slice(0, MAX_MARKERS).map((salon, index) => (
+                                        <React.Fragment key={salon.id}>
+                                            <Marker
+                                                key={index}
+                                                position={positions[index]} // Utiliser la position du salon
+                                                onClick={() => setSelectedSalon({ name: salon.name, id: salon.id })}
+                                                icon={{
+                                                    url: salon.id === selectedSalon.id ? MapIconRedUrl : mapIconUrl,
+                                                    scaledSize: salon.id === selectedSalon.id ? new window.google.maps.Size(70, 90) : new window.google.maps.Size(60, 80),
+                                                    origin: new window.google.maps.Point(0, -10),
+                                                    anchor: salon.id === selectedSalon.id ? new window.google.maps.Point(25, 37) : new window.google.maps.Point(20, 35),
+
+                                                }}
+                                                zIndex={salon.id === selectedSalon.id ? 4 : 3}
+
+                                            />
+                                            <OverlayView
+                                                position={positions[index]}
+                                                mapPaneName={OverlayView.FLOAT_PANE}
+                                                getPixelPositionOffset={(width, height) => ({ x: -(width / 2), y: -height })}
+                                            >
+                                                <div style={{
+                                                    color: salon.id === selectedSalon.id ? "#FFF" : "#000",
+                                                    whiteSpace: 'nowrap',
+                                                    fontSize: salon.id === selectedSalon.id ? '12px' : "10px",
+                                                    fontWeight: 'bold',
+                                                    zIndex: salon.id === selectedSalon.id ? 2 : 1, // Ajout du zIndex
+                                                }}>
+                                                    {`${salon.id}0$`}
+
+                                                </div>
+                                            </OverlayView>
+                                        </React.Fragment >
                                     ))}
                                 </GoogleMap>
                             </div>
@@ -272,7 +343,7 @@ const SalonChoice = () => {
                                 <div
                                     key={index}
                                     onClick={() => setSelectedSalon({ name: salon.name, id: salon.id })}
-                                    className={`relative bg-stone-100 rounded-2xl border hover:border-secondary cursor-pointer ${selectedSalon.id === salon.id && 'border-secondary'}`}
+                                    className={`relative bg-stone-100 rounded-2xl border hover:border-stone-400 cursor-pointer ${selectedSalon.id === salon.id && 'border-2 border-red-300 shadow-xl'}`}
                                     style={{ width: '100%', aspectRatio: '1/1', display: 'flex', flexDirection: 'column', minWidth: '300px', minHeight: '300px' }}
                                 >
                                     {/* Contenu de la vignette */}
@@ -281,7 +352,7 @@ const SalonChoice = () => {
                                         <div className='relative mb-4 ' style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                             {!isLoggedIn &&
                                                 <div onClick={(e) => onWishlist(e, salon.id)} className="absolute right-6 top-6 z-20 cursor-pointer">
-                                                    <Like color={wishlist.includes(String(salon.id)) ? "#FF0000" : ""} />
+                                                    <StarIcon width='35' height='35' color={wishlist.includes(String(salon.id)) ? "#FF0000" : ""} />
                                                 </div>}
                                             <Image
                                                 src={salon.salon_images.length && salon.salon_images[index].is_cover ? salon.salon_images[index].image.includes('api-server') ? salon.salon_images[index].image : `https://api-server.onehaircut.com/public${salon.salon_images[index].image}` : salon.logo.includes('api-server') ? salon.logo : `https://api-server.onehaircut.com/public${salon.logo}`}

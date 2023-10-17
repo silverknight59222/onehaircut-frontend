@@ -11,6 +11,7 @@ import { SalonDetails } from "@/types";
 import SlotDropdown from "./SlotsDropdown";
 import Footer from "@/components/UI/Footer";
 import { Theme_A } from "@/components/utilis/Themes";
+import { ColorsThemeA } from "@/components/utilis/Themes";
 export interface OpenTimes {
     available: boolean;
     day: string;
@@ -139,9 +140,9 @@ const OpenningHours = () => {
     return (
         <div>
             {isLoading && loadingView()}
-            <div className="flex items-center flex-col justify-center gap-2 w-max">
+            <div className="flex items-center flex-col justify-center w-max">
                 {!isLoading && (
-                    <div className="max-w-[750px] flex items-center justify-center text-center px-9 py-6 mb-3 gap-8 rounded-2xl bg-white text-xl font-light text-[#ABABAB] shadow-lg">
+                    <div className="w-[580px] flex   text-center  md:px-1 lg:justify-center xl:justify-center py-6 mb-3 gap-8 rounded-2xl bg-white text-lg font-light shadow-lg">
                         <p
                             className={`cursor-pointer text-black  px-2 py-2 rounded-md hover:bg-stone-100 hover:text-black ${activeMenu === "salon-time" &&
                                 " bg-black text-white font-medium"
@@ -162,7 +163,7 @@ const OpenningHours = () => {
                 )}
                 {activeMenu === "salon-time" && !isLoading && (
                     <>
-                        <div className="relative flex items-center justify-start z-10 w-[22rem] md:w-[620px] md:pl-auto overflow-auto py-12 px-7 bg-white rounded-2xl shadow-[3px_3px_10px_-1px_rgba(0,0,0,0.30)]">
+                        <div className="relative flex items-center justify-start z-10 w-[22rem] md:w-[580px] md:pl-auto overflow-auto py-12 px-7 bg-white rounded-2xl shadow-[3px_3px_10px_-1px_rgba(0,0,0,0.30)]">
                             <table>
                                 <tbody>
                                     <tr className="flex items-center justify-center">
@@ -176,7 +177,7 @@ const OpenningHours = () => {
                                                     >
                                                         <div
                                                             className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${avaiableDays.includes(item.day)
-                                                                ? "bg-gradient-to-b from-pink-500 to-orange-500 border-white"
+                                                                ? ` ${ColorsThemeA.ohcVerticalGradient_A} border-white`
                                                                 : "border-[#767676]"
                                                                 }`}
                                                         >
@@ -189,7 +190,7 @@ const OpenningHours = () => {
                                                 );
                                             })}
                                         </td>
-                                        <td className="flex flex-col gap-8 border-l border-[rgba(171,171,171,0.20)] px-3 md:px-5">
+                                        <td className="flex flex-col gap-8 border-l border-[rgba(171,171,171,0.20)] px-2 md:px-3">
                                             <SlotDropdown
                                                 selectedItem={updatedSlots}
                                                 getUpdatedSlots={getUpdatedSlots}

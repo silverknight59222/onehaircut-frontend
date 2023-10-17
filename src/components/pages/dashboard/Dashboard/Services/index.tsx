@@ -154,47 +154,64 @@ const Services = () => {
 
   return (
     <div>
+      {/* Vérification et affichage de l'animation de chargement si le chargement est en cours */}
       {isLoading && loadingView()}
+
+      {/* Titre de la page ou section */}
       <p className="text-4xl font-medium text-center">
         Ajoutez vos{" "}
         <span className={`${ColorsThemeA.textGradient_Title}`}>prestations !</span>
       </p>
+
       <div className="flex w-full items-center justify-between ">
-        <div className="flex gap-4 my-7 z-0">
-          <BaseMultiSelectbox dropdownItems={sortDropdown} dropdownTitle='Trier par : Nom' getActiveFilters={getActiveFilters} />
-          <BaseMultiSelectbox dropdownItems={typeDropdown} dropdownTitle='Trier par : Group' getActiveFilters={getActiveTypeFilter} />
+        {/* Section des filtres de tri pour les services */}
+        <div className="flex gap-4 my-7 z-0 ">
+          {/* Composant de liste déroulante pour le tri par nom */}
+          <BaseMultiSelectbox dropdownItems={sortDropdown} dropdownTitle='Trier par nom' getActiveFilters={getActiveFilters} />
+          {/* Composant de liste déroulante pour le tri par groupe/type */}
+          {/* TODO Group filter not working */}
+          <BaseMultiSelectbox dropdownItems={typeDropdown} dropdownTitle='Trier par groupe' getActiveFilters={getActiveTypeFilter} />
         </div>
+
+        {/* Bouton pour ouvrir le modal d'ajout d'un nouveau service */}
         <div
-          // className={`text-2xl cursor-pointer flex items-center text-white px-20 py-1 gap-4 rounded-md ${ColorsThemeA.OhcGradient_A} shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]`}
-          className={`${Theme_A.button.bigGradientButton} cursor-pointer`}
+          className={`${Theme_A.button.bigGradientButton} cursor-pointer `}
           onClick={() => setShowAddServiceModal(true)}
         >
           Ajouter un service
         </div>
       </div>
+
+      {/* Modal pour l'ajout d'un nouveau service, s'affiche si showAddServiceModal est vrai */}
       {showAddServiceModal && (
-        <div className="fixed top-0 left-0 overflow-hidden bg-black bg-opacity-40 flex  items-center justify-center w-full h-full z-50">
+        <div className="fixed top-0 left-0 overflow-hidden bg-black bg-opacity-40 flex  items-center justify-center w-full h-full z-50 ">
           <AddServiceModal setShowAddServiceModal={setShowAddServiceModal} fetchAllServices={fetchAllServices} />
         </div>
       )}
+
       <div className="flex items-center justify-center">
+        {/* Grille pour afficher les services */}
         <div className="gap-9 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+          {/* Boucle pour cartographier et afficher chaque service */}
           {getServices().map((item, index) => {
             return (
               <div key={index} className="flex items-center gap-9">
-                <div className="w-64 bg-white  border border-grey rounded-[21px] py-6 px-5 shadow-[0px_4px_18px_0px_rgba(132,132,132,0.25)]">
+                <div className="w-64 bg-white border border-grey rounded-xl py-6 px-5 shadow-md">
                   <div className="flex items-center justify-between">
+                    {/* Nom du service */}
                     <div className="text-black font-medium">
                       {item.service ? item.service.name : '-'}
                     </div>
+                    {/* Bouton pour ouvrir le modal de modification du service */}
                     <div
-                      className={`${Theme_A.servicesCards.modifyButton}`}
+                      className={`${Theme_A.servicesCards.modifyButton} shadow-md  transition-transform duration-300 transform hover:scale-125`}
                       onClick={() => { setShowEditServiceModal(true); setEditServiceInfo(item) }}
                     >
                       <EditIcon />
                     </div>
+                    {/* Modal pour l'édition du service, s'affiche si showEditServiceModal et editServiceInfo sont définis */}
                     {(showEditServiceModal && editServiceInfo) && (
-                      <div className="fixed top-0 left-0 overflow-hidden bg-slate-50 bg-opacity-50 flex items-center justify-center w-full h-full z-50">
+                      <div className="fixed top-0 left-0 overflow-hidden bg-black bg-opacity-50 flex items-center justify-center w-full h-full z-50">
                         <EditServiceModal
                           setShowEditServiceModal={setShowEditServiceModal}
                           fetchAllServices={fetchAllServices}
@@ -203,10 +220,12 @@ const Services = () => {
                       </div>
                     )}
                   </div>
+                  {/* Description du service */}
                   <p className="text-sm text-gray-700 mt-2 line-clamp-2 overflow-hidden h-auto">
                     {item.service ? item.service.description : '-'}
                   </p>
                   <div className="flex items-center gap-6 mt-5">
+                    {/* Durée du service */}
                     <div>
                       <p className="text-sm font-medium text-black">Durée</p>
                       <div className="w-[74px] flex items-center justify-between border border-[#CACACA] rounded py-1 px-1.5">
@@ -215,6 +234,7 @@ const Services = () => {
                         </p>
                       </div>
                     </div>
+                    {/* Prix du service */}
                     <div>
                       <p className="text-sm font-medium text-black">Prix</p>
                       <div className="w-[74px] flex items-center justify-between border border-[#CACACA] rounded py-1 px-1.5">
@@ -227,15 +247,17 @@ const Services = () => {
             );
           })}
         </div>
-        <div></div>
       </div>
+
+      {/* Logo/Élément de décoration en bas à gauche */}
       <div className="bg-gradient-to-l  md:block fixed -left-32 md:-left-8 -bottom-32 md:-bottom-8 -z-10">
         <LogoCircleFixLeft />
       </div>
+
+      {/* Bouton pour remonter en haut de la page */}
       <ScrollToTopButton />
     </div>
-
   );
-};
+}
 
 export default Services;
