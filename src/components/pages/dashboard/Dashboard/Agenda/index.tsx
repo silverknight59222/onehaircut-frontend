@@ -11,9 +11,6 @@ import EventDetailsModal from "./EventDetails";
 import { Booking, Coiffeur } from "./types";
 import { getLocalStorage } from "@/api/storage";
 
-
-
-
 export const Agenda = () => {
   // Initialisation des états et des références
   const { loadingView } = userLoader();
@@ -72,9 +69,6 @@ export const Agenda = () => {
     );
   };
 
-
-
-
   //TODO Changer coiffeurAleatoire par le vrai nom du coiffeur de l'event ainsi que la couleur
   // Fonction pour récupérer toutes les réservations
   const getAllBookings = () => {
@@ -86,13 +80,34 @@ export const Agenda = () => {
         res.data.data.forEach((event: any) => {
           const coiffeurAleatoire = coiffeurs[Math.floor(Math.random() * coiffeurs.length)];
 
+          const targetDayOfWeek = event.booking_slots[0].day; 
+
+            const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            const number= daysOfWeek.indexOf(targetDayOfWeek);
+            const today = new Date();
+            const currentDayOfWeek = today.getDay();
+            let difference = number - currentDayOfWeek;
+            if (difference < 0) {
+              difference += 7;
+            }
+            const targetDate = new Date(today);
+            targetDate.setDate(today.getDate() + difference);
+
+            const formattedDate = targetDate.toISOString().split('T')[0];
+            console.log(formattedDate,"shfjasdfh")
+
+
+       
           setEvents((pre) => [
             ...pre,
             {
               id: event.id,
               title: event.user.name + " - " + coiffeurAleatoire.nom,
               clientId: event.user.id,
-              start: event.created_at,
+              start: `${formattedDate}T${event.booking_slots[0].start}:00`,
+              end:`${formattedDate}T${event.booking_slots[event.booking_slots.length-1].end}:00`,
+              // start: `2023-10-16T10:00.000000Z`,
+              // end:`2023-10-16T11:30.000000Z`,
               coiffeur: coiffeurAleatoire,
               backgroundColor: coiffeurAleatoire.couleur,
               textColor: coiffeurAleatoire.textColor,
@@ -104,6 +119,8 @@ export const Agenda = () => {
         setIsLoading(false);
       });
   };
+
+  console.log(events,"shfakdjhf")
 
 
   // Fonction pour définir les détails de l'événement sélectionné
@@ -133,7 +150,7 @@ export const Agenda = () => {
           center: "title",
           end: "dayGridMonth,timeGridWeek,timeGridDay", // Boutons de navigation
         }}
-        height={900} // Hauteur du calendrier
+        height={1200} // Hauteur du calendrier
         eventClick={(info) => { // Gestionnaire de clic sur un événement
           setEventDetails(info.event.id);
         }}

@@ -33,7 +33,7 @@ const Auth = {
     return await request.post<LoginResponse>(`/login`, params);
   },
   forgot: async (params: ForgotParams) => {
-    return await request.post(`/forgot`, params);
+    return await request.post(`/forgot-password`, params);
   },
   logout: async () => {
     return await request.post(`/logout`);
