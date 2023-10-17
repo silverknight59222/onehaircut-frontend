@@ -292,7 +292,10 @@ const SalonChoice = () => {
                 onCitySearch={(value: string) => setCitySearch(value)}
                 onNameSearch={(value: string) => setNameSearch(value)}
                 onMobileFilters={(mobile) => setFilteredMobile(mobile)}
-                onRangeFilters={(range) => setRangeFilter(range)}
+                onRangeFilters={(range: string[]) => {
+                    const numberArray = range.map(item => parseInt(item, 10));
+                    setRangeFilter(numberArray);
+                }}
             />
 
             {/* Corps du composant */}
