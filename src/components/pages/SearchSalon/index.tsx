@@ -157,7 +157,7 @@ const SearchSalon = () => {
       {isLoading && loadingView()}
 
       {/* Barre de navigation */}
-      <Navbar isSalonPage={true} />
+      <Navbar isSalonPage={false} />
       <div className="mt-2 mb-5 px-5 md:px-10 2xl:px-14">
         <div className='flex items-start cursor-pointer mt-8 mb-8 sm:mx-10 2xl:mx-14 text-stone-800' onClick={() => router.push('/salons')}>
           <BackArrow />

@@ -17,7 +17,9 @@ export type SalonDetails = {
 	salon_images: SalonImages[],
 	is_mobile:string,
 	range: number[],
-	base_price: number
+	base_price: number,
+	service_price:number,
+	final_price: number
 };
 
 export type FileDetails = {

@@ -412,7 +412,7 @@ const SalonChoice = () => {
                                         {/* Nom et prix du salon */}
                                         <div className="flex items-start justify-between text-black text-lg font-semibold px-3 pt-2 ">
                                             <p className='w-36'>{salon.name}</p>
-                                            <p className={`p-2 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white`}> ${salon.base_price}</p>
+                                            <p className={`p-2 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white`}> ${salon.final_price}</p>
                                         </div>
 
                                         {/* Évaluation et nombre d'avis */}

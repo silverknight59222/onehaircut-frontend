@@ -129,7 +129,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
       name: "Both",
     },
   ];
-  const rangeSelector = (event, newValue:any) => {
+  const rangeSelector = (event, newValue: any) => {
     setRangeFilter(newValue);
   };
   const onClickGenderCheckbox = (gender: string) => {
@@ -432,9 +432,11 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
             }
 
           </div>
-          <div className="cursor-pointer p-3 rounded-full hover:scale-90 transform transition-transform duration-300 bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
-            <SearcIcon />
-          </div>
+          {showDesktopBudget && isSalonPage && (
+            <div className="cursor-pointer p-3 rounded-full hover:scale-90 transform transition-transform duration-300 bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
+              <SearcIcon />
+            </div>
+          )}
         </div>
         <div
           className="relative flex items-center justify-center md:justify-end gap-4"
