@@ -14,7 +14,10 @@ export type SalonDetails = {
 	type: string;
 	user_id: number;
 	logo: string;
-	salon_images: SalonImages[]
+	salon_images: SalonImages[],
+	is_mobile:string,
+	range: number[],
+	base_price: number
 };
 
 export type FileDetails = {
