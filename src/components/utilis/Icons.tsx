@@ -3011,18 +3011,35 @@ export const AddPlusIcon = () => {
   );
 };
 
-export const FilterIcon = ({ width = '18', height = '18' }) => {
+export const FilterIcon = (IconStyle: { width?: string, height?: string, color?: string }) => {
   return (
-    <svg width={width} height={height} viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M16.9312 1.8457H1.28467" stroke="#767676" stroke-width="2" />
-      <path d="M1.28467 8H17.2157" stroke="#767676" stroke-width="2" />
-      <path d="M17.5 13.8457H1" stroke="#767676" stroke-width="2" />
-      <path d="M14.4397 1.84615C14.4397 2.62726 13.8631 3.19231 13.2328 3.19231C12.6024 3.19231 12.0259 2.62726 12.0259 1.84615C12.0259 1.06505 12.6024 0.5 13.2328 0.5C13.8631 0.5 14.4397 1.06505 14.4397 1.84615Z" fill="white" stroke="#767676" />
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width={IconStyle.width ? IconStyle.width : '18'}
+      height={IconStyle.height ? IconStyle.height : '18'}
+      viewBox="0 0 18 18"
+      fill="none"
+    >
+      <path d="M16.9312 1.8457H1.28467" stroke={IconStyle.color ? IconStyle.color : "#767676"} strokeWidth="2" />
+      <path d="M1.28467 8H17.2157" stroke={IconStyle.color ? IconStyle.color : "#767676"} strokeWidth="2" />
+      <path d="M17.5 13.8457H1" stroke={IconStyle.color ? IconStyle.color : "#767676"} strokeWidth="2" />
+      <path
+        d="M14.4397 1.84615C14.4397 2.62726 13.8631 3.19231 13.2328 3.19231C12.6024 3.19231 12.0259 2.62726 12.0259 1.84615C12.0259 1.06505 12.6024 0.5 13.2328 0.5C13.8631 0.5 14.4397 1.06505 14.4397 1.84615Z"
+        fill="white"
+        stroke={IconStyle.color ? IconStyle.color : "#767676"}
+      />
       <g filter="url(#filter0_d_3243_2)">
         <ellipse cx="6.40514" cy="8.00045" rx="1.7069" ry="1.84615" fill="white" />
-        <path d="M7.61204 8.00045C7.61204 8.78156 7.03549 9.3466 6.40514 9.3466C5.77479 9.3466 5.19824 8.78156 5.19824 8.00045C5.19824 7.21934 5.77479 6.6543 6.40514 6.6543C7.03549 6.6543 7.61204 7.21934 7.61204 8.00045Z" stroke="#767676" />
+        <path
+          d="M7.61204 8.00045C7.61204 8.78156 7.03549 9.3466 6.40514 9.3466C5.77479 9.3466 5.19824 8.78156 5.19824 8.00045C5.19824 7.21934 5.77479 6.6543 6.40514 6.6543C7.03549 6.6543 7.61204 7.21934 7.61204 8.00045Z"
+          stroke={IconStyle.color ? IconStyle.color : "#767676"}
+        />
       </g>
-      <path d="M14.4397 14.1538C14.4397 14.9349 13.8631 15.4999 13.2328 15.4999C12.6024 15.4999 12.0259 14.9349 12.0259 14.1538C12.0259 13.3727 12.6024 12.8076 13.2328 12.8076C13.8631 12.8076 14.4397 13.3727 14.4397 14.1538Z" fill="white" stroke="#767676" />
+      <path
+        d="M14.4397 14.1538C14.4397 14.9349 13.8631 15.4999 13.2328 15.4999C12.6024 15.4999 12.0259 14.9349 12.0259 14.1538C12.0259 13.3727 12.6024 12.8076 13.2328 12.8076C13.8631 12.8076 14.4397 13.3727 14.4397 14.1538Z"
+        fill="white"
+        stroke={IconStyle.color ? IconStyle.color : "#767676"}
+      />
       <defs>
         <filter id="filter0_d_3243_2" x="0.698242" y="6.1543" width="11.4136" height="11.6924" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
           <feFlood flood-opacity="0" result="BackgroundImageFix" />
@@ -3035,7 +3052,7 @@ export const FilterIcon = ({ width = '18', height = '18' }) => {
           <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_3243_2" result="shape" />
         </filter>
       </defs>
-    </svg>
+    </svg >
   );
 };
 
