@@ -62,12 +62,7 @@ const Forgot = () => {
 		setIsLoading(true);
 		await Auth.forgot(userInfo)
 			.then((resp) => {
-				const res = resp.data;
-				 if (res.user.role === 'salon_professional') {
-					router.push("/dashboard");
-				} else {
-					router.push("/client/dashboard");
-				}
+				showSnackbar('success', resp.data.message)
 			})
 			.catch((err) => {
 				showSnackbar('error', 'Le mot de passe et l\'adresse e-mail sont obligatoires.')
@@ -122,7 +117,7 @@ const Forgot = () => {
 					    </div>
 					    <div className="flex items-center gap-2">
 					        <p className="text-black text-base border-b border-black transition duration-150 hover:border-secondary hover:text-secondary">
-					            <Link href={{ pathname: '/login' }}>Mot de passe oublié ?</Link>
+					            <Link href={{ pathname: '/login' }}>Login ?</Link>
 					        </p>
 					    </div>
 					</div>

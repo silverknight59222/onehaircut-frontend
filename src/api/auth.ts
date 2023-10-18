@@ -35,6 +35,9 @@ const Auth = {
   forgot: async (params: ForgotParams) => {
     return await request.post(`/forgot-password`, params);
   },
+  reset: async (params: ForgotParams) => {
+    return await request.post(`/password-reset`, params);
+  },
   logout: async () => {
     return await request.post(`/logout`);
   },

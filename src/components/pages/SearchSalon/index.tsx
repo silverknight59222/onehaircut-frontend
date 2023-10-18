@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState, useRef } from "react";
 import StarRatings from "react-star-ratings";
 import userLoader from "@/hooks/useLoader";
-import { getLocalStorage } from "@/api/storage";
+import { getLocalStorage,setLocalStorage } from "@/api/storage";
 import { Theme_A } from "@/components/utilis/Themes";
 import ChatModal from "./ChatModal";
 import { GoogleMap, Marker, useJsApiLoader, LoadScript } from '@react-google-maps/api';
@@ -73,6 +73,7 @@ const SearchSalon = () => {
           setSalonProfile(resp.data.data[0])
           setHairCut(resp.data.salon_haircut)
           setIsLoading(false);
+          setLocalStorage('slotTime', resp.data.salon_haircut.base_duration)
         }).catch(error => {
           console.log(error)
         })
@@ -124,8 +125,6 @@ const SearchSalon = () => {
   const openPerfSampleModal = () => {
     setIsPerfSampleModalOpen(true);
   };
-
-  console.log(hairCut,"sdfhjksda")
 
   //GOOGLE MAP 
   //TODO Centrer par rapport aux coordonnées du salon

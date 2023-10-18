@@ -1,28 +1,28 @@
 import React, { useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { Auth } from "@/api/auth";
-import { getLocalStorage, setLocalStorage } from "@/api/storage";
 import userLoader from "@/hooks/useLoader";
 import useSnackbar from "@/hooks/useSnackbar";
 import { LogoCircleFixLeft, LogoIcon } from "@/components/utilis/Icons";
 import Link from "next/link";
 import { Theme_A } from "@/components/utilis/Themes";
 
-const Reset = () => 
+const Reset = ({email,token}:any) => 
 {
   const router = useRouter();
   const showSnackbar = useSnackbar();
   const { loadingView } = userLoader();
-  const searchParams = useSearchParams();
 
   const defaultUserInfo = {
-    newPassword: "",
-    confirmPassword: "",
+    password: "",
+    password_confirmation: "",
+    email:email,
+    token:token,
   };
 
   const [error, setError] = useState({
-    newPassword: "",
-    confirmPassword: "",
+    password: "",
+    password_confirmation: "",
   });
 
   const [userInfo, setUserInfo] = useState(defaultUserInfo);
@@ -31,40 +31,40 @@ const Reset = () =>
   const setNewPassword = (password: string) => {
     setUserInfo((prevState) => ({
       ...prevState,
-      newPassword: password,
+      password: password,
     }));
   };
 
   const setConfirmPassword = (password: string) => {
     setUserInfo((prevState) => ({
       ...prevState,
-      confirmPassword: password,
+      password_confirmation: password,
     }));
   };
 
   const validatePassword = () => {
     let isValidated = true;
-    if (!userInfo.newPassword) {
+    if (!userInfo.password) {
       setError((prev) => {
-        return { ...prev, newPassword: "Un nouveau mot de passe est requis" };
+        return { ...prev, password: "Un nouveau mot de passe est requis" };
       });
       isValidated = false;
     } else {
       setError((prev) => {
-        return { ...prev, newPassword: "" };
+        return { ...prev, password: "" };
       });
 
-      if (userInfo.newPassword !== userInfo.confirmPassword) {
+      if (userInfo.password !== userInfo.password_confirmation) {
         setError((prev) => {
           return {
             ...prev,
-            confirmPassword: "Les mots de passe ne correspondent pas",
+            password_confirmation: "Les mots de passe ne correspondent pas",
           };
         });
         isValidated = false;
       } else {
         setError((prev) => {
-          return { ...prev, confirmPassword: "" };
+          return { ...prev, password_confirmation: "" };
         });
       }
 
@@ -76,17 +76,15 @@ const Reset = () =>
         return;
       }
       setIsLoading(true);
-      await Auth.Reset(userInfo)
+      await Auth.reset(userInfo)
         .then((resp) => {
           const res = resp.data;
-          console.log(res.user);
-          setLocalStorage("user", JSON.stringify(res.user));
-          setLocalStorage("auth-token", res.token);
-          if (res.user.role === "salon_professional") {
-            router.push("/dashboard");
-          } else {
-            router.push("/client/dashboard");
-          }
+          console.log(res);
+            router.push("/login");
+            showSnackbar(
+              "success",
+              res.message
+            );
         })
         .catch((err) => {
           showSnackbar(
@@ -129,14 +127,14 @@ const Reset = () =>
                       type="password"
                       placeholder="Nouveau mot de passe"
                       className={`w-full h-[58px] rounded-[11px] outline-none px-4 ${Theme_A.behaviour.fieldFocused}`}
-                      value={userInfo.newPassword}
+                      value={userInfo.password}
                       onChange={(e) => setNewPassword(e.target.value)}
                     />
                   </div>
                 </div>
-                {error.newPassword && (
+                {error.password && (
                   <p className="text-xs text-red-700 ml-4 mt-2">
-                    {error.newPassword}*
+                    {error.password}*
                   </p>
                 )}
               </div>
@@ -154,14 +152,14 @@ const Reset = () =>
                       type="password"
                       placeholder="Confirmer le mot de passe"
                       className={`w-full h-[58px] rounded-[11px] outline-none px-4 ${Theme_A.behaviour.fieldFocused}`}
-                      value={userInfo.confirmPassword}
+                      value={userInfo.password_confirmation}
                       onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                   </div>
                 </div>
-                {error.confirmPassword && (
+                {error.password_confirmation && (
                   <p className="text-xs text-red-700 ml-4 mt-2">
-                    {error.confirmPassword}*
+                    {error.password_confirmation}*
                   </p>
                 )}
               </div>
@@ -173,6 +171,19 @@ const Reset = () =>
               </button>
             </div>
             <hr className="my-4" />
+            <hr className="my-4"/>
+					<div className="w-full flex flex-row items-end justify-between gap-2 mt-4 mb-4">
+					    <div className="flex items-center gap-2">
+					        <p className="text-black text-base border-b border-black transition duration-150 hover:border-secondary hover:text-secondary">
+					            <Link href={{ pathname: '/signup' }}>Première connexion ?</Link>
+					        </p>
+					    </div>
+					    <div className="flex items-center gap-2">
+					        <p className="text-black text-base border-b border-black transition duration-150 hover:border-secondary hover:text-secondary">
+					            <Link href={{ pathname: '/login' }}>Login ?</Link>
+					        </p>
+					    </div>
+					</div>
             <div className="flex flex-col md:flex-row gap-4 mb-10 sm:mb-12 mt-10">
               <div className="w-full h-[120px] p-4 rounded-2xl bg-slate-50 flex flex-col justify-center items-center border-zinc-300 border-2">
                 <div className="font-medium text-md mb-2">

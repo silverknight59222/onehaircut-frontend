@@ -58,7 +58,7 @@ const Index = () => {
               </div>
               <div className="flex items-center justify-end mt-4">
                 <p className="text-black text-3xl font-medium ">
-                  Total: <span className="text-4xl font-semibold">{ planType ? planType.price : '-'} €</span>
+                  Total: <span className="text-4xl font-semibold">${ planType ? planType : '-'}</span>
                 </p>
               </div>
               <div className="border-t-2 border-[#CBCBCB] pt-9 mt-4">

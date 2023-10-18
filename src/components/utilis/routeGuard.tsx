@@ -28,10 +28,10 @@ export const RouteGuard = ({ children }: any) => {
 		router.push('/login');
 	}
 
-	let pathIsProtected = publicRoutes.indexOf(`/${pathname.split('/')[1]}`) === -1;
-	if (isBrowser() && !isSalonAuthenticated && pathIsProtected) {
-		router.push('/login');
-	}
+	// let pathIsProtected = publicRoutes.indexOf(`/${pathname.split('/')[1]}/${pathname.split('/')[1]}`) === -1;
+	// if (isBrowser() && !isSalonAuthenticated && pathIsProtected) {
+	// 	router.push('/login');
+	// }
 	return children;
 
 };

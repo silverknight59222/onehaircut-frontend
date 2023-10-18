@@ -1,7 +1,7 @@
 "use client";
 import { client } from "@/api/clientSide";
 import { dashboard } from "@/api/dashboard";
-import { getLocalStorage, removeFromLocalStorage } from "@/api/storage";
+import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/storage";
 import Navbar from "@/components/shared/Navbar";
 import {
   CardIcon,
@@ -29,6 +29,7 @@ const Index = () => {
   const salonData= salon ? JSON.parse(salon) : null
   const services=getLocalStorage('ServiceIds')
   const servicesData=services ? JSON.parse(services) : null
+  const datetime=getLocalStorage('selectDate')
   const slot = getLocalStorage('slotData')
   const slotData= slot ? JSON.parse(slot) : null
   const [haircutPrize,setHaircutPrize]=useState()
@@ -108,14 +109,16 @@ const Index = () => {
       hair_dresser_id: slotData.hairDresser.id,
       amount: !haircutPrize ? servicePrize : !servicePrize ? haircutPrize : haircutPrize && servicePrize ? haircutPrize + servicePrize : 0,
       salon_haircut_id: haircutData.id,
-      services: serviceIds
+      services: serviceIds,
+      date:datetime
     }
     await client.createBooking(data)
     .then(resp=>{
-      removeFromLocalStorage('haircut')
-      removeFromLocalStorage('slotData')
-      removeFromLocalStorage('ServiceIds')
-      removeFromLocalStorage('selectedSalon')
+      // removeFromLocalStorage('haircut')
+      // removeFromLocalStorage('slotData')
+      // removeFromLocalStorage('ServiceIds')
+      // removeFromLocalStorage('selectedSalon')
+       setLocalStorage("plan_type",haircutPrize)
       showSnackbar("success", 'Booking Created Successfully');
       router.push('/confirm-payment')
     })
@@ -141,13 +144,25 @@ const Index = () => {
     })
     setServiceIds(arr)
 
-    if(hairTimeData>30){
+    if(hairTimeData>30 && !Number.isInteger(hairTimeData/30)){
       const i=Math.floor(hairTimeData/30)
       const ppp=30*(i+1)-hairTimeData
       const newTime = calculateTimeAfterSeparatingMinutes(slotData.slot[slotData.slot.length-1].end, ppp);
       setDuration(newTime)
-    }else {
-      const newTime = calculateTimeAfterSeparatingMinutes(slotData.slot[slotData.slot.length-1].end, hairTimeData);
+    }else if(hairTimeData>30 && Number.isInteger(hairTimeData/30)){
+      const i=Math.floor(hairTimeData/30)
+      const ppp=0
+      const newTime = calculateTimeAfterSeparatingMinutes(slotData.slot[slotData.slot.length-1].end, ppp);
+      setDuration(newTime)
+    }
+    else {
+      var value=0;
+      if(hairTimeData==30){
+         value=0
+      }else{
+        value=30-hairTimeData
+      }
+      const newTime = calculateTimeAfterSeparatingMinutes(slotData.slot[0].end, value);
       setDuration(newTime)
     }
   },[])
@@ -195,7 +210,10 @@ const Index = () => {
               </p> : ''}
               {salonData && <p className="text-base"><span className="font-semibold text-lg">Hair Salon: </span>{salonData.name}</p>}
               {slotData && <p className="text-base"><span className="font-semibold text-lg">Hair Dresser: </span>{slotData.hairDresser.name}</p>}
-              {slotData && <p className="text-base"><span className="font-semibold text-lg">Slot: </span>{slotData.slot[0].day} Start{slotData.slot[0].start}, End{duration}, Duration{hairTimeData}</p>} 
+              {slotData && <p className="text-base"><span className="font-semibold text-lg">Slot: </span>{slotData.slot[0].day}</p>}
+              {slotData && <p className="text-base"><span className="font-semibold text-lg">Start: </span>{slotData.slot[0].start}</p>}
+              {slotData && <p className="text-base"><span className="font-semibold text-lg">End: </span>{duration}</p>}
+              {slotData && <p className="text-base"><span className="font-semibold text-lg">Duration: </span>{hairTimeData} Minutes</p>}
             </div>
             <div className="flex items-center justify-between border-t-2 border-[#CBCBCB] pt-9 mt-9">
               <button onClick={()=>router.push('/')} className="w-36 h-14 flex items-center justify-center border border-secondary rounded-xl text-xl text-black font-semibold">

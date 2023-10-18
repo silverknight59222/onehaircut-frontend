@@ -85,7 +85,9 @@ const BookSalon = () => {
 
   const onContinue=()=>{
     setLocalStorage('slotData', JSON.stringify({hairDresser: selectedHairdresser, slot: selectedSlot}))
-    setLocalStorage('slotTime', hairCut.base_duration)
+    // setLocalStorage('slotTime', hairCut.base_duration)
+    setLocalStorage('selectDate',selectedDate)
+
     route.push('/payment')
   }
 
@@ -101,15 +103,24 @@ const BookSalon = () => {
     const currentIndex = slots.findIndex((item) => item.id === slot.id);
     if (currentIndex !== -1) {
       const selectedObjects = [];
-      // const ddd=+hairCut.base_duration
-      const time=+hairCut.base_duration
-      for (let i = currentIndex; i <= currentIndex + Math.floor(time/30); i++) {
-        if (slots[i]) {
-          selectedObjects.push(slots[i]);
+      const ddd=+getLocalStorage('slotTime')
+      const time=+ddd
+      if(Number.isInteger(time/30)){
+        for (let i = currentIndex; i <= currentIndex + time/30-1; i++) {
+          if (slots[i]) {
+            selectedObjects.push(slots[i]);
+          }
         }
+        setSelectedSlot(selectedObjects)
+      }else{
+        for (let i = currentIndex; i <= currentIndex + Math.floor(time/30); i++) {
+          if (slots[i]) {
+            selectedObjects.push(slots[i]);
+          }
+        }
+        setSelectedSlot(selectedObjects)
       }
-      setSelectedSlot(selectedObjects);
-    }
+    };
   };
 
 
