@@ -15,12 +15,7 @@ const HairsalonFilter = ({ isWelcomePage, isSaloonPage, onSearch, onServiceSearc
   const [searchResults, setSearchResults] = useState([]);
 
   // Use useEffect to watch for changes in searchQuery and trigger the search function
-  useEffect(() => {
-    handleSearch();
-  }, [searchQuery]);
-  const handleSearch = () => {
-    console.log(`--- ${searchQuery}`)
-  };
+
   return (
     <>
       {/* <div className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">

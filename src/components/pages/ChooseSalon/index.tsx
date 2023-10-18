@@ -52,7 +52,6 @@ const SalonChoice = () => {
         libraries: ['places'],
     })
     const filteredCityHandler = () => {
-        console.log(citySearch, nameSearch, filteredMobile, filtereRange);
         const filteredSalons = salons.filter((salon) => {
             const cityNameMatches = citySearch
                 ? salon.city_name.toLowerCase().includes(citySearch.toLowerCase())
@@ -80,6 +79,7 @@ const SalonChoice = () => {
     };
     // Fonction pour récupérer tous les salons
     const getAllSalons = async () => {
+        const haircut = getLocalStorage('haircut')
         const services = getLocalStorage('ServiceIds')
         const servicesData = services ? JSON.parse(services) : null
         const serviceIds: number[] = []
