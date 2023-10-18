@@ -7,8 +7,12 @@ import {
   HamburgerIcon,
   LogoIcon,
   UserIcon,
-  StarGreyIcon
+  StarGreyIcon,
 } from "@/components/utilis/Icons";
+import { request } from "../api/Request";
+import { removeFromLocalStorage } from "@/api/storage";
+import { Auth } from "@/api/auth";
+import userLoader from '@/hooks/useLoader';
 
 interface DashboardLayout {
   children: JSX.Element,
@@ -31,8 +35,40 @@ const ClientDashboardLayout = ({ children }: DashboardLayout) => {
   const SidebarHandler = () => {
     setIsSidebar(!isSidebar);
   };
+
+  const { loadingView } = userLoader();
+
+  // FOr the dropdown menu on userIcon
+  const [isUserDropDwn, setIsUserDropDwn] = useState(false);
+
+  const dropdownItems = [
+    {
+      name: "Déconnextion",
+      icon: <StarGreyIcon width="18" height="18" />,
+      route: "/client/dashboard",
+    },
+  ]
+
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const onLogout = () => {
+    setIsLoading(true);
+    Auth.logout()
+      .then((response) => {
+        removeFromLocalStorage("auth-token");
+        removeFromLocalStorage("user");
+        router.push("/login");
+      })
+      .catch((error) => console.log(error))
+      .finally(() => {
+        setIsLoading(false);
+      })
+  };
+
   return (
     <div>
+      {isLoading && loadingView()}
       <Sidebar
         sidebarItems={sidebarItems}
         isSidebar={isSidebar}
@@ -56,14 +92,31 @@ const ClientDashboardLayout = ({ children }: DashboardLayout) => {
               </div>
             </div>
             <div className="flex items-center justify-end gap-4">
-              <div className="cursor-pointer">
-                <Hamburger />
-              </div>
-              <div className="w-14 h-14 flex items-center justify-center pb-1 border-2 border-secondary rounded-full cursor-pointer">
+
+              <div className="w-14 h-14 flex items-center justify-center pb-1 border-2 border-secondary rounded-full cursor-pointer"
+                onClick={() => setIsUserDropDwn(!isUserDropDwn)}>
                 <UserIcon />
               </div>
             </div>
           </div>
+          {isUserDropDwn && (
+            <div className={`absolute top-[58px] right-0 z-20 pt-3 pb-2 flex flex-col items-center justify-center text-black bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)] rounded-lg`}>
+              <div className="flex flex-col gap-x-4 border-b w-44 border-[#D4CBCB] pb-3">
+                {dropdownItems.map((item, index) => {
+                  return (
+                    <div
+                      key={index}
+                      onClick={() => onLogout()}
+                      className="flex gap-x-5 px-6 py-3 hover:bg-[#F5F5F5] cursor-pointer"
+                    >
+                      {item.icon}
+                      <p>{item.name}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
         </div>
         <div>
           {children}
