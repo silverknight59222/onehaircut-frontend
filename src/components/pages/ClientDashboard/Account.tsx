@@ -377,7 +377,13 @@ const Account = () => {
             text = "Email"
         }
         if (NotifAccountWhatsapp) {
-            text = text + " Whatsapp"
+            if (text != "") {
+                text = text + " + "
+            }
+            text = text + "Whatsapp"
+        }
+        if (text == "") {
+            text = "Aucun"
         }
 
         // set the text to be displayed
@@ -583,7 +589,7 @@ const Account = () => {
                                 );
                             })}
                         </div>
-                        <div className=" w-full md:w-6/12 md:h-[590px] mt-5 md:mt-0 rounded-3xl bg-white py-8 px-14 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)]">
+                        <div className=" w-full md:w-6/12 md:h-max mt-5 md:mt-0 rounded-3xl bg-white py-8 px-14 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)]">
                             {showItem.map((item, index) => {
                                 return (
                                     <div
