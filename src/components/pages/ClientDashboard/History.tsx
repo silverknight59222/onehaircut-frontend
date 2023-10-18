@@ -149,7 +149,7 @@ const History = () => {
               {/* Loop over the booking history and display them */}
               {history.map((item, index) => {
                 return <div key={index}>
-                  <div className=" w-full sm:w-[536px] lg:w-[600px] rounded-3xl bg-white py-6 px-12 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)] opacity-95">
+                  <div className=" w-full sm:w-[536px] lg:w-[600px] rounded-3xl bg-white py-6 px-12 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)] opacity-95 ">
                     <div className='flex flex-col-reverse sm:flex-row items-center sm:items-start justify-between'>
                       <div className='flex flex-col items-center sm:items-start justify-center sm:justify-start gap-2 mt-5 sm:mt-0'>
 
@@ -175,24 +175,22 @@ const History = () => {
                         </div>
                       </div>
                     </div>
-                    {!isRatePopUp &&
-                      <div className='flex items-center justify-center  mt-10 sm:mt-5 -z-10'>
-                        {item.note == 0 && <button
-                          onClick={() => rateThisHaircut(item.Salon)}
-                          className={` ${Theme_A.button.medBlackColoredButton} mx-1`}>
-                          Noter
-                        </button>
-                        }
-                        <button
-                          onClick={() => downloadBill(item)}
-                          className={`${Theme_A.button.medWhiteColoredButton} mx-1`}>
-                          Télecharger la facture</button>
-                        <button
-                          onClick={() => rebook(item)}
-                          className={`${Theme_A.button.mediumGradientButton} mx-1`}>
-                          Reserver à nouveau</button>
-                      </div>
-                    }
+                    <div className='flex items-center justify-center  mt-10 sm:mt-5 -z-10'>
+                      {item.note == 0 && <button
+                        onClick={() => rateThisHaircut(item.Salon)}
+                        className={` ${Theme_A.button.medBlackColoredButton} mx-1`}>
+                        Noter
+                      </button>
+                      }
+                      <button
+                        onClick={() => downloadBill(item)}
+                        className={`${Theme_A.button.medWhiteColoredButton} mx-1`}>
+                        Télecharger la facture</button>
+                      <button
+                        onClick={() => rebook(item)}
+                        className={`${Theme_A.button.mediumGradientButton} mx-1`}>
+                        Reserver à nouveau</button>
+                    </div>
                     {/* <p className='absolute bottom-8 right-4 text-xs text-[#666]'>23/24</p> */}
                   </div>
                 </div>

@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { Like, LogoIcon } from "@/components/utilis/Icons";
+import { Like, LogoIcon, StarIcon } from "@/components/utilis/Icons";
 import { dashboard } from "@/api/dashboard";
 import userLoader from "@/hooks/useLoader";
 import { Haircut } from "@/types";
@@ -297,7 +297,7 @@ const Welcome = () => {
         </p>
         <div className="flex flex-col md:flex-row gap-4 mb-10 sm:mb-10 ">
           <div
-            className={`${Theme_A.button.bigWhiteGreyButton} hover:shadow-lg cursor-pointer `}
+            className={`${Theme_A.button.bigWhiteGreyButton} shadow-sm hover:shadow-md cursor-pointer `}
             onClick={() => {
               onServiceOnlyClick();
               router.push('/services');
@@ -314,7 +314,7 @@ const Welcome = () => {
                   <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public${item.image}`} fill={true} alt="" className="rounded-t-xl" />
                   {!isLoggedIn &&
                     <div onClick={(e) => onWishlist(e, item.id)} className="absolute right-2 top-2 cursor-pointer">
-                      <Like color={wishlist.includes(String(item.id)) ? "#ef4444" : ""} />
+                      <StarIcon color={wishlist.includes(String(item.id)) ? "#ef4444" : ""} />
                     </div>}
                 </div>
               </div>

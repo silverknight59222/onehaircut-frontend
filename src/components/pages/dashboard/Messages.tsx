@@ -2,26 +2,25 @@
 import { dashboard } from "@/api/dashboard";
 import { getLocalStorage } from "@/api/storage";
 import {
-  CircleRight,
-  EmojiIcon,
-  PlusIcon,
-  SendIcon,
+  LogoCircleFixRight,
+  ChatSendIcon,
 } from "@/components/utilis/Icons";
 import DashboardLayout from "@/layout/DashboardLayout";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import userLoader from "@/hooks/useLoader";
 import { Chat, ClientChat } from "@/types";
+import { Theme_A, ColorsThemeA } from "@/components/utilis/Themes";
 
 const Messages = () => {
-  const [clients,setClients]=useState<ClientChat[]>([])
+  const [clients, setClients] = useState<ClientChat[]>([])
   const user = getLocalStorage("user");
   const userId = user ? Number(JSON.parse(user).id) : null;
   const { loadingView } = userLoader();
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedChat,setSelectedChat]=useState({client_id: 0, client:{name: ''}})
-  const [chats,setChats]=useState<Chat[]>([])
-  const [message,setMessage]=useState('')
+  const [selectedChat, setSelectedChat] = useState({ client_id: 0, client: { name: '' } })
+  const [chats, setChats] = useState<Chat[]>([])
+  const [message, setMessage] = useState('')
 
   const getClientsByProfessional = async () => {
     if (userId) {
@@ -33,7 +32,7 @@ const Messages = () => {
         .catch(err => {
           console.log(err)
         })
-        .finally(()=>{
+        .finally(() => {
           setIsLoading(false)
         })
     }
@@ -56,30 +55,36 @@ const Messages = () => {
 
   const onSendMessage = async () => {
     if (userId) {
-        setIsLoading(true)
-        const data = {
-            client_id: selectedChat.client_id,
-            professional_id: userId,
-            message: message,
-            by: 'professional',
-        }
-        await dashboard.sendMessage(data)
-            .then(resp => {
-                getChat(selectedChat)
-                setMessage('')
-            })
-            .catch(err => {
-                console.log(err)
-            })
-            .finally(()=>{
-                setIsLoading(false)
-            })
+      setIsLoading(true)
+      const data = {
+        client_id: selectedChat.client_id,
+        professional_id: userId,
+        message: message,
+        by: 'professional',
+      }
+      await dashboard.sendMessage(data)
+        .then(resp => {
+          getChat(selectedChat)
+          setMessage('')
+        })
+        .catch(err => {
+          console.log(err)
+        })
+        .finally(() => {
+          setIsLoading(false)
+        })
     }
   };
 
-  const formatDate=(date: string)=>{
-    return `${new Date(date).getUTCHours()}:${new Date(date).getUTCMinutes()}`
+  const formatDate = (date: string) => {
+    const d = new Date(date);
+    return {
+      day: `${d.getUTCDate()}/${d.getUTCMonth() + 1}`,
+      time: `${d.getUTCHours()}:${String(d.getUTCMinutes()).padStart(2, '0')}`
+    };
   }
+
+
 
   useEffect(() => {
     getClientsByProfessional()
@@ -89,67 +94,104 @@ const Messages = () => {
       getChat(clients[0])
     }
   }, [clients])
+
   return (
     <div>
       {isLoading && loadingView()}
-      <div className="hidden sm:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
-        <CircleRight />
+      <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
+        <LogoCircleFixRight />
       </div>
       <DashboardLayout>
-        <div className="flex flex-col sm:flex-row items-start justify-center gap-10 2xl:gap-20">
-          <div className="w-full sm:w-4/12 xl:w-4/12 h-[360px] sm:h-[680px] overflow-auto rounded-3xl bg-white py-4 px-8 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)]">
-            {clients.map((client, index) => {
-              return (
-                <div
-                  key={index}
-                  onClick={()=>getChat(client)}
-                  className={`flex items-center justify-between py-4 px-5 cursor-pointer mb-5 rounded-3xl ${ selectedChat.client_id===client.client_id && 'bg-[#F5F5F5]'}`}
-                >
-                  <div className="w-full flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-4">
-                    <p className="text-black">{client.client.name}</p>
-                  </div>
-                  {/* <p
-                    className={`w-5 h-5 rounded-full text-xs flex items-center justify-center text-white ${
-                      message.num &&
-                      "bg-gradient-to-tr from-red-500 to-yellow-400"
-                      }`}
+        <div className="mt-10 mb-5 px-8 sm:px-14 2xl:px-36">
+
+          {/* Titre du centre de messagerie */}
+          <p className="text-black font-medium text-3xl text-center mb-10">
+            Centre de messagerie
+          </p>
+
+
+          {/* Section de gauche : Liste des Clients */}
+          <div className="flex flex-col md:flex-row items-start justify-center gap-10 2xl:gap-20 h-screen md:h-auto">
+            {/* Section de gauche */}
+            <div className={`w-full md:max-w-sm xl:max-w-sm min-h-[500px] md:min-h-[300px] overflow-y-auto flex-shrink-0 rounded-3xl bg-white py-4 px-8 shadow-md`}>
+
+              {/* Titre */}
+              <h2 className="text-xl font-semibold mb-4">
+                Messages
+              </h2>
+              {clients.map((client, index) => {
+                return (
+                  <div
+                    key={index}
+                    onClick={() => getChat(client)}
+                    className={`flex items-center justify-between py-2 px-5 hover:bg-[#F5F5F5] mb-2 rounded-3xl cursor-pointer ${selectedChat.client_id === client.client_id && 'bg-[#F5F5F5] outline outline-1 outline-stone-300'}`}
                   >
-                    {message.num && message.num}
-                  </p> */}
-                </div>
-              );
-            })}
-          </div>
-          <div className="relative z-10 w-full sm:w-8/12 xl:w-8/12 rounded-3xl bg-white py-4 px-8 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)]">
-            <div className="overflow-auto h-[350px] sm:h-[490px]">
-              {chats.map((chat,index)=>{
-                return <div className="mt-6" key={index}>
-                <p className="text-black">
-                  {chat.by==='client' ? selectedChat.client.name : 'You'}: <span className="text-xs text-[#666]">{formatDate(chat.created_at)}</span>
-                </p>
-                <p className="text-sm text-[#2F2F2F] mt-2">
-                  {chat.message}
-                </p>
-              </div> 
+                    <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row sm:items-center lg:items-start xl:items-center justify-center gap-2 sm:gap-4">
+                      {/* Icône du client (décommentez si nécessaire) */}
+                      <div className="flex items-center">
+                        {/* Cercle ajouté */}
+                        <div className="w-10 h-10 rounded-full border border-stone-200 bg-stone-50 mr-2"></div>
+                        <p className="ml-4 text-black">{client.client.name}</p>
+
+                      </div>
+                    </div>
+                    {/* Cercle rouge pour indiquer un nouveau message TODO ADD RED DOT IF NEW MESSAGE*/}
+                    <div className="ml-auto w-4 h-4 rounded-full bg-red-500"></div>
+
+                    {/* Vous pouvez décommenter ce bloc si vous avez besoin d'afficher un message ou une notification */}
+                    {/* {message.num ? (
+                        <p className="w-5 h-5 rounded-full text-xs flex items-center justify-center text-white bg-gradient-to-tr from-red-500 to-yellow-400">
+                            {message.num}
+                        </p>
+                    ) : (
+                        <p></p>
+                    )} */}
+                  </div>
+                );
               })}
-                     
             </div>
-            <div className="w-full flex items-center justify-center mt-10">
+
+            {/* Section de droite */}
+            <div className="relative z-10 w-full md:w-8/12 xl:w-9/12 min-h-[500px] md:min-h-[300px] overflow-y-auto flex flex-col justify-between rounded-3xl bg-white py-4 px-8 shadow-xl">
+
+              {/* Zone de Chat */}
+              <div className="flex-grow overflow-auto mb-4 p-2 border border-gray-300 rounded-xl bg-stone-100 shadow-inner flex flex-col max-h-[700px] min-w-[200px]">
+                {chats.length === 0 ? (
+                  <p className="text-gray-500 text-center">Commencez à discuter maintenant</p>
+                ) : (
+                  chats.map((chat, index) => (
+                    <div
+                      className={`mb-2 flex flex-col ${chat.by === 'professional' ? 'items-start' : 'items-end'}`}
+                      key={index}
+                    >
+                      <p className="text-xs text-[#666] mb-1 italic">
+                        {/* Formatage de la date */}
+                        <strong>{formatDate(chat.created_at).day}</strong> - {formatDate(chat.created_at).time}
+                      </p>
+                      <div
+                        className={`max-w-2/3 inline-block p-2 text-base shadow-md ${chat.by === 'professional' ? `rounded-r-lg text-white ${ColorsThemeA.OhcGradient_D} rounded-b-lg ` : `bg-stone-200 rounded-l-lg rounded-b-lg `}`}
+                      >
+                        <strong>{chat.by === 'professional' ? 'Vous:' : `${selectedChat.client.name}:`}</strong> {chat.message}
+                      </div>
+                    </div>
+                  ))
+                )}
+              </div>
+
+
+
+              {/* Input et Bouton d'Envoi */}
+              <div className="w-full flex items-center justify-center mt-auto mb-6">
                 <div className="relative w-9/12">
-                  <input onChange={(e)=>setMessage(e.target.value)} value={message} className="w-full border border-[#A3A3A3] rounded-xl h-9 outline-none px-3" />
+                  {/* Champ de texte pour entrer un message */}
+                  <input onChange={(e) => setMessage(e.target.value)} value={message} className={`w-full shadow-inner border border:bg-stone-300 ${Theme_A.behaviour.fieldFocused_C} rounded-xl h-12 outline-none px-3`} />
                 </div>
-                <div onClick={onSendMessage}>
-                <SendIcon />
+
+                {/* Bouton d'envoi de message */}
+                <div className="ml-4 hover:scale-125 transform transition-transform duration-300" onClick={onSendMessage}>
+                  <ChatSendIcon />
                 </div>
               </div>
-            <div className="relative w-full bg-white h-20">
-              <Image
-                src="/assets/messages2.png"
-                alt=""
-                width={50}
-                height={50}
-                className="absolute top-8 right-0"
-              />
             </div>
           </div>
         </div>

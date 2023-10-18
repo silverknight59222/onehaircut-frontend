@@ -163,18 +163,18 @@ const EditServiceModal = (props: EditServiceModalType) => {
   return (
     <div className="relative bg-white rounded-xl px-5 pb-5">
       {isLoading && loadingView()}
-      <div className="w-full flex items-center justify-end pt-2">
+      <div className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2">
         <div
-          className={`${Theme_A.button.crossButtonSmall}`}
+          className={`${Theme_A.button.crossButtonSmall} shadow-md hover:scale-90`}
           onClick={() => props.setShowEditServiceModal(false)}
         >
-          <CrossIcon width="12" />
+          <CrossIcon width="18" height="26" />
         </div>
       </div>
       <div>
         <div className="flex flex-col gap-4 h-full items-start">
           <div className="mb-2 max-w-[300px] max-h-[150px] overflow-auto px-2">
-            <div className="text-base font-semibold">
+            <div className="text-base font-semibold mt-4">
               {props.service.service.name}
             </div>
             <div className="text-sm text-[#737373]">
@@ -230,7 +230,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
                 <input
                   type="number"
                   placeholder="Durée"
-                  className="w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
+                  className={`w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-inner outline-none bg-stone-100 ${Theme_A.behaviour.fieldFocused_C}`}
                   value={service.duration}
                   onChange={(e) => onChangeDuration(e.target.value)}
                 />
@@ -239,7 +239,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
                     {error.duration}*
                   </p>
                 )}
-                <span className="text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2">Durée(min)</span>
+                <span className="text-gray-500 text-sm absolute right-3 top-1/2 transform -translate-y-1/2">Durée(min)</span>
               </div>
               <div
                 className={
@@ -251,7 +251,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
                 <input
                   type="number"
                   placeholder="Prix"
-                  className="w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
+                  className={`w-full p-3 placeholder:text-[#959595] text-sm  placeholder:text-base rounded-md shadow-inner outline-none bg-stone-100 ${Theme_A.behaviour.fieldFocused_C}`}
                   value={service.price}
                   onChange={(e) => onChangePrice(e.target.value)}
                 />
@@ -270,7 +270,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
                   <input
                     type="number"
                     placeholder="Age"
-                    className="w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
+                    className={`w-full p-3 placeholder:text-[#959595] text-sm  placeholder:text-base rounded-md shadow-inner outline-none bg-stone-100 ${Theme_A.behaviour.fieldFocused_C}`}
                     value={service.age}
                     onChange={(e) => onChangeAge(e.target.value)}
                   />
@@ -285,7 +285,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
                   <input
                     type="number"
                     placeholder="Percent"
-                    className="w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
+                    className={`w-full p-3 placeholder:text-[#959595] text-sm placeholder:text-base rounded-md shadow-inner outline-none bg-stone-100 ${Theme_A.behaviour.fieldFocused_C}`}
                     value={service.percent}
                     onChange={(e) => onChangePercent(e.target.value)}
                   />
@@ -301,7 +301,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
           </div>
           <div className="mt-4 flex gap-4 items-center justify-center w-full">
             <button
-              className={`${Theme_A.button.medWhiteColoredButton}`}
+              className={`${Theme_A.button.medWhiteColoredButton} text-md`}
               onClick={() => props.setShowEditServiceModal(false)}
             >
               Annuler

@@ -66,9 +66,9 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
     if (!GenderMobileRef.current?.contains(target as Node)) {
       setShowMobileGender(false);
     }
-    if (!LengthDesktopRef.current?.contains(target as Node)) {
-      setShowDesktopLength(false);
-    }
+    // if (!LengthDesktopRef.current?.contains(target as Node)) {
+    //   setShowDesktopLength(false);
+    // }
     if (!LengthMobileRef.current?.contains(target as Node)) {
       setShowMobileLength(false);
     }
@@ -242,7 +242,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
                     </div>
                   )}
                 </div>
-                <div ref={LengthDesktopRef} className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
+                <div className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
                   <p
                     className={showDesktopLength ? "rounded-xl py-2 px-7 bg-white  text-black font-semibold" : " hover:bg-white rounded-xl py-2 px-7 "}
                     onClick={() => {
@@ -293,12 +293,12 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
                 <input
                   type="text"
                   placeholder="Rechercher"
-                  className={`text-base px-4 p-2 rounded-full outline-none ${Theme_A.behaviour.fieldFocused_C}`}
+                  className={`text-base px-4 p-2 rounded-full outline-none ${Theme_A.behaviour.fieldFocused_B}`}
                   onChange={onSearch && isWelcomePage ? (e) => onSearch(e.target.value) : onServiceSearch && isServicesPage ? (e) => onServiceSearch(e.target.value) : () => { }}
                 />
               </div>}
           </div>
-          <div className="cursor-pointer p-3 rounded-full bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
+          <div className="cursor-pointer p-3 rounded-full hover:scale-90 transform transition-transform duration-300 bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
             <SearcIcon />
           </div>
         </div>
