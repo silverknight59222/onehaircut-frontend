@@ -68,8 +68,8 @@ const dashboard = {
   getAllSalonHaircuts: async (id: number) => {
     return await request.get<any>(`/salon_haircuts_by_hair_salon/${id}`);
   },
-  getAllHaircuts: async () => {
-    return await request.get<any>(`/haircuts`);
+  getAllHaircuts: async (page: number) => {
+    return await request.get<any>(`/haircuts/${page}`);
   },
   getAllHaircutBySalon: async (id: number) => {
     return await request.get<any>(`/filtered_haircuts/${id}`);

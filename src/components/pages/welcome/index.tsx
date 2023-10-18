@@ -46,7 +46,7 @@ const Welcome = () => {
     // Fetch all available haircuts from the API
     setIsLoading(true);
     await new Promise((resolve) => setTimeout(resolve, 1000));
-    await dashboard.getAllHaircuts()
+    await dashboard.getAllHaircuts(page)
       .then((res) => {
           setSalonHaircut([...salonHaircut, ...res.data.data]);
           setPage(prevPage => prevPage + 1);
@@ -63,13 +63,6 @@ const Welcome = () => {
       getAllHaircuts();
     }
   };
-
-  useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, [isLoading]);
 
   const getHaircutsWishlist = () => {
     // Fetch the user’s wishlist of haircuts
@@ -271,6 +264,12 @@ const Welcome = () => {
     onClickHaircut(-1, "Aucune coiffure sélectionnée");
   }
 
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [isLoading]);
 
   useEffect(() => {
     getFilteredCuts();
