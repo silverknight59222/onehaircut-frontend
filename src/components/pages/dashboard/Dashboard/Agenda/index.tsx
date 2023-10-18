@@ -94,15 +94,12 @@ export const Agenda = () => {
             targetDate.setDate(today.getDate() + difference);
 
             const formattedDate = targetDate.toISOString().split('T')[0];
-            console.log(formattedDate,"shfjasdfh")
-
-
        
           setEvents((pre) => [
             ...pre,
             {
               id: event.id,
-              title: event.user.name + " - " + coiffeurAleatoire.nom,
+              title: event.user.name + " - " + coiffeurAleatoire.nom + " " +  "Duration " + event.haircuts.base_duration + " Min",
               clientId: event.user.id,
               start: `${formattedDate}T${event.booking_slots[0].start}:00`,
               end:`${formattedDate}T${event.booking_slots[event.booking_slots.length-1].end}:00`,

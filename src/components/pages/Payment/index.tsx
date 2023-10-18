@@ -102,6 +102,23 @@ const Index = () => {
       setIsModal(true)
     }else{
     setIsLoading(true)
+
+      const targetDayOfWeek = slotData.slot[0].day; 
+
+      const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const number= daysOfWeek.indexOf(targetDayOfWeek);
+      const today = new Date();
+      const currentDayOfWeek = today.getDay();
+      let difference = number - currentDayOfWeek;
+      if (difference < 0) {
+          difference += 7;
+      }
+      const targetDate = new Date(today);
+      targetDate.setDate(today.getDate() + difference);
+
+      const formattedDate = targetDate.toISOString().split('T')[0];
+
+
     const data={
       user_id: user ? Number(JSON.parse(user).id) : null,
       hair_salon_id: Number(salonData.id),
@@ -110,7 +127,7 @@ const Index = () => {
       amount: !haircutPrize ? servicePrize : !servicePrize ? haircutPrize : haircutPrize && servicePrize ? haircutPrize + servicePrize : 0,
       salon_haircut_id: haircutData.id,
       services: serviceIds,
-      date:datetime
+      date:formattedDate
     }
     await client.createBooking(data)
     .then(resp=>{
