@@ -30,20 +30,20 @@ const DropdownMenu = ({
 
     return (
         <div
-            className={`relative flex  items-center px-3 border-1 font-normal text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 ${`${width ? width : 'w-40'} ${rounded ? rounded : 'rounded-md'} ${height ? height : 'h-8'} ${borderClr ? borderClr : 'border-black'} ${disabled ? 'bg-[rgba(171,171,171,0.10)] cursor-default' : backgroundClr ? `${backgroundClr} cursor-pointer` : 'bg-white cursor-pointer'}`}`}
+            className={`relative flex  items-center border-1 font-normal text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 ${`${width ? width : 'w-40'} ${rounded ? rounded : 'rounded-md'} ${height ? height : 'h-8'} ${borderClr ? borderClr : 'border-black'} ${disabled ? 'bg-[rgba(171,171,171,0.10)] cursor-default' : backgroundClr ? `${backgroundClr} cursor-pointer` : 'bg-white cursor-pointer'}`}`}
             onClick={toggleDropdown}>
 
-            <p className="text-sm">{selectedItem}</p>
+            <p className="text-sm p-2">{selectedItem}</p>
             <div className="absolute right-3">
                 <DownArrow />
             </div>
 
             {isOpen && (
-                <div className={`absolute m-0 top-8 px-3 flex flex-col border-1 ${`${width ? width : 'w-40'} ${rounded ? rounded : 'rounded-md'}  ${borderClr ? borderClr : 'border-black'} ${disabled ? 'bg-[rgba(171,171,171,0.10)] cursor-default' : backgroundClr ? `${backgroundClr} cursor-pointer` : 'bg-white cursor-pointer'}`} `}
+                <div className={`absolute m-0 top-8 p-2 flex flex-col border-1 ${`${width ? width : 'w-40'} ${rounded ? rounded : 'rounded-md'}  ${borderClr ? borderClr : 'border-black'} ${disabled ? 'bg-[rgba(171,171,171,0.10)] cursor-default' : backgroundClr ? `${backgroundClr} cursor-pointer` : 'bg-white cursor-pointer'}`} `}
                 // style={{ width: width }}
                 >
                     {dropdownItems.map((item) => (
-                        <p className='text-sm'
+                        <p className='text-sm hover:bg-grey pl-2'
                             key={item}
                             onClick={() => handleItemClick(item)}>
                             {item}

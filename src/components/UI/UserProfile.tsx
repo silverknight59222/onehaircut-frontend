@@ -107,7 +107,7 @@ const UserProfile = ({ isDashboard }: UserProfileProfile) => {
     <div ref={dropdownRef} className="relative">
       {isLoading && loadingView()}
       <div
-        className={`w-12 h-12 flex items-center justify-center pb-1 ${ColorsThemeA.standardBorderGray} hover:shadow-md rounded-full cursor-pointer transition-transform duration-300 transform hover:scale-110`}
+        className={`w-12 h-12 flex items-center justify-center pb-1 ${ColorsThemeA.ohcBorder} hover:shadow-md rounded-full cursor-pointer transition-transform duration-300 transform hover:scale-110`}
         onClick={() => setIsDropdown(!isDropdown)}
       >
         <UserIcon />
@@ -121,7 +121,7 @@ const UserProfile = ({ isDashboard }: UserProfileProfile) => {
                   <div
                     key={index}
                     onClick={() => onDropdownItemClick(item.route)}
-                    className="flex gap-x-5 px-6 py-3 hover:bg-[#F5F5F5] cursor-pointer"
+                    className="flex gap-x-5 px-6 py-3 hover:bg-[#f5f5f5] cursor-pointer"
                   >
                     {item.icon}
                     <p>{item.name}</p>

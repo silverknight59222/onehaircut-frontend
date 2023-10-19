@@ -25,7 +25,9 @@ const Welcome = () => {
   // Retrieve user and haircut information from local storage
   const user = getLocalStorage("user");
   const userId = user ? Number(JSON.parse(user).id) : null;
-  const haircut = JSON.parse(String(getLocalStorage("haircut")))
+  const haircutRaw = getLocalStorage("haircut");
+  const haircut = haircutRaw ? JSON.parse(haircutRaw) : null;
+
   // Define filters state variables
   const [ethnicityFilters, setEthnicityFilters] = useState<string[]>([]);
   const [lengthFilters, setLengthFilters] = useState<string[]>([]);
@@ -39,20 +41,30 @@ const Welcome = () => {
   const [isPreview, setIsPreview] = useState(false); // Initialiser à false pour afficher la coiffure par défaut
   const [selectedHaircut, setSelectedHaircut] = useState({ id: 0, name: '', image: '' }) // Store the selected haircut
   const [wishlist, setWishlist] = useState<string[]>([]) // Store user’s wishlist of haircuts
+  const [page, setPage] = useState(1);
 
 
-  const getAllHaircuts = () => {
+  const getAllHaircuts = async () => {
     // Fetch all available haircuts from the API
     setIsLoading(true);
-    dashboard.getAllHaircuts()
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await dashboard.getAllHaircuts(page)
       .then((res) => {
-        if (res.data.data.length > 0) {
-          setSalonHaircut(res.data.data);
-        }
+          setSalonHaircut([...salonHaircut, ...res.data.data]);
+          setPage(prevPage => prevPage + 1);
+          setIsLoading(false)
       })
       .catch(error => console.log(error))
-      .finally(() => setIsLoading(false))
   }
+
+  const handleScroll = () => {
+    if (isLoading) return;
+
+    if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight)
+    {
+      getAllHaircuts();
+    }
+  };
 
   const getHaircutsWishlist = () => {
     // Fetch the user’s wishlist of haircuts
@@ -254,6 +266,12 @@ const Welcome = () => {
     onClickHaircut(-1, "Aucune coiffure sélectionnée");
   }
 
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [isLoading]);
 
   useEffect(() => {
     getFilteredCuts();
@@ -328,16 +346,18 @@ const Welcome = () => {
         </div>
 
         {isLoggedIn && (
-          <div className="flex py-4 mx-3 gap-3 sm:gap-12 md:gap-20 items-center justify-center bg-white w-full fixed bottom-0">
-            <div className="p-2 sm:p-4 md:p-5 text-center border-[#FE3462] border-2 rounded-2xl cursor-pointer ml-3">
+          <div className="flex py-4 mx-3 gap-3 sm:gap-12 md:gap-20 items-center justify-center bg-white w-full fixed bottom-8">
+            <div className={`p-2 sm:p-4 md:p-5 text-center ${Theme_A.button.medLargeBlackButton}`}>
               Démonstration d’utilisation
             </div>
-            <div onClick={() => router.push('/login')} className="p-2 sm:p-4 md:p-5 text-white text-center rounded-2xl cursor-pointer bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo">
+            <div onClick={() => router.push('/login')} className={`p-2 sm:p-4 md:p-5 text-center ${Theme_A.button.medLargeGradientButton}`}>
               Connexion / Inscription
             </div>
+            {/*
             <div className="p-2 sm:p-4 md:p-5 text-center border-[#FE3462] border-2 rounded-2xl cursor-pointer mr-3">
               Envie d’offrir un cadeau ?
             </div>
+            */}
           </div>
 
         )}
