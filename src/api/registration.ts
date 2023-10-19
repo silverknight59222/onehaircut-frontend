@@ -9,6 +9,7 @@ export interface CreateIntentParams {
 export interface SalonRegisterParams {
   user_id: string;
   salon_name: string;
+  salon_description: string;
   country: string,
   city: string,
   state: string,
@@ -19,6 +20,7 @@ export interface SalonRegisterParams {
   payment_method: string;
   plan_id: string;
   plan_name: string;
+  salon_description: string
 }
 const registration = {
   getAllPlans: async () => {

@@ -4,12 +4,15 @@ import DashboardLayout from "@/layout/DashboardLayout";
 import {
   BgDashboardPricingTable,
   CheckedIcon,
-  CircleRight,
+  LogoCircleFixRight,
   PackageCheckedIcon,
   PackageUnCheckedIcon,
   RegistrationCheckedIcon,
 } from "@/components/utilis/Icons";
 import MobilePricingTable from "../registration/MobilePricingTable";
+import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
+import { The_Nautigal } from "next/font/google";
+import Footer from "@/components/UI/Footer";
 
 const Subscription = () => {
   const [isAutomaticRenewal, setIsAutomaticRenewal] = useState(false);
@@ -27,21 +30,22 @@ const Subscription = () => {
   return (
     <div>
       <div className="hidden sm:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
-        <CircleRight />
+        <LogoCircleFixRight />
       </div>
       <DashboardLayout>
         <div className="mt-16 px-4 lg:px-11">
           <div className="flex items-center justify-center">
-            <div className="w-80 h-10 flex items-center justify-between rounded-3xl bg-[#FAFAFA] shadow-[rgba(220,215,215,0.34)] text-xs font-semibold">
+            {/* TODO: slide button not working */}
+            {/* <div className="w-80 h-10 flex items-center justify-between rounded-3xl bg-[#FAFAFA] shadow-[rgba(220,215,215,0.34)] text-xs font-semibold">
               <p className="text-[#0E0D0D] pl-5 cursor-pointer">
                 Paiement mensuel
               </p>
               <p className="text-white bg-[#3C3A3A] rounded-3xl py-2.5 px-5 cursor-pointer">
                 Paiement Annuel
               </p>
-            </div>
+            </div> */}
           </div>
-          <div className="flex flex-col xl:flex-row items-center xl:items-start justify-center gap-4 2xl:gap-12 mt-10 lg:mt-52">
+          <div className="z-10  flex-col xl:flex-row items-center xl:items-start justify-center gap-4 2xl:gap-12 mt-10 lg:mt-52">
             <div className="hidden lg:block relative">
               <BgDashboardPricingTable />
               <div className="rounded-xl py-4 px-5">
@@ -64,7 +68,7 @@ const Subscription = () => {
                   <div
                     style={{
                       background:
-                        "linear-gradient(162deg, #FE2569 0%, #FD4C55 42.71%, #FF8637 86.46%, #FFE30F 100%)",
+                        `${ColorsThemeA.ohcBigVerticalGradient_B}`,
                     }}
                     className="w-56 absolute -top-40 left-[216px] flex flex-col items-center justify-center py-6 rounded-[20px] shadow-[-71px_56px_56px_0px_rgba(255,125,60,0.13)]"
                   >
@@ -84,19 +88,18 @@ const Subscription = () => {
                         </div>
                       );
                     })}
-                    <div className="mt-3 h-16">
-                      <p className="text-white font-medium text-xl text-center">
-                        79 $<span className="text-2xl">/ mois</span>
+                    <div className="mt-3 h-6">
+                      <p className="text-black font-semibold text-xl text-center">
+                        79 €<span className="text-2xl">/ mois</span>
                       </p>
-                      <p className="text-white text-xs font-semibold">
-                        *1 % de tax de service
-                      </p>
-                    </div>
-                    <div className="flex items-center justify-center text-white font-semibold rounded-3xl -mb-12 w-44 h-12 bg-[#070E06]">
-                      Plan actuel
                     </div>
                   </div>
-                  <div className="w-52 absolute -top-40 left-[440px] flex flex-col items-center justify-center py-6 rounded-[20px]">
+                  <div className="w-48 absolute left-[230px] top-[650px]  flex items-center justify-center text-white font-semibold rounded-3xl -mb-12 h-12 bg-black">
+                    {/* <div className={`${Theme_A.button.medBlackColoredButton} w-52 absolute left-[224px] top-[650px]  flex items-center justify-center`}> */}
+                    Abo actuel
+                  </div>
+                  {/* Regular side */}
+                  <div className=" z-10 bg-white w-52 absolute -top-40 left-[440px] flex flex-col items-center justify-center py-6 rounded-[20px]">
                     <div className="text-3xl font-semibold text-black w-48 text-center mb-16">
                       OneHaircut Regular
                     </div>
@@ -107,7 +110,7 @@ const Subscription = () => {
                             key={index}
                             className="flex items-center justify-center w-full h-16 border-b-2 border-[#E4E8E9] py-4"
                           >
-                            {index < 6 ? (
+                            {index < 5 ? (
                               <RegistrationCheckedIcon />
                             ) : (
                               <PackageUnCheckedIcon />
@@ -116,20 +119,21 @@ const Subscription = () => {
                         );
                       })}
                     </div>
-                    <div className="w-full h-16 flex flex-col items-center justify-center py-4">
-                      <p className="text-black font-medium text-2xl">Gratuit</p>
-                      <p className="text-black text-xs font-medium ml-16">
-                        *5 % de tax de service
-                      </p>
+                    <div className="w-full h-1 flex flex-col items-center justify-center py-4">
+                      <p className="text-black font-medium text-2xl pt-6">Gratuit</p>
                     </div>
+                  </div>
+                  {/* <div className={`w-52 absolute left-[450px] top-[650px]  flex items-center justify-center ${Theme_A.button.medWhiteColoredButton}`}> */}
+                  <div className="z-10 w-48 absolute left-[450px] top-[650px]  flex items-center justify-center text-black font-semibold border border-[#000000] rounded-3xl -mb-12 h-12 bg-white hover:scale-105 transition-transform hover:shadow-md">
+                    Choisir
                   </div>
                 </div>
               </div>
             </div>
             <div className="relative z-10 flex items-center justify-center w-full lg:hidden">
-            <MobilePricingTable />
-          </div>
-            <div className="relative z-20 w-full sm:w-[415px] flex flex-col items-center justify-center sm:-mt-5 lg:mt-10 xl:mt-0">
+              <MobilePricingTable />
+            </div>
+            <div className="relative z-10 w-full sm:w-[415px] flex flex-col  sm:-mt-5 lg:mt-20 xl:mt-20">
               <div className="py-4 px-5 2xl:text-xl text-center text-black whitespace-nowrap bg-[#F4F4F6] font-medium border border-[#9B9B9B] rounded-xl">
                 <p>Renouvellement de l’abonnement le: </p>
                 <p className="text-center mt-1">12 / 07 / 2024</p>
@@ -138,11 +142,10 @@ const Subscription = () => {
                   className="flex items-center justify-start gap-3 mt-4 cursor-pointer"
                 >
                   <div
-                    className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${
-                      isAutomaticRenewal
-                        ? "bg-gradient-to-b from-pink-500 to-orange-500 border-white"
-                        : "border-[#767676]"
-                    }`}
+                    className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${isAutomaticRenewal
+                      ? ColorsThemeA.ohcVerticalGradient_A
+                      : "border-[#767676]"
+                      }`}
                   >
                     {isAutomaticRenewal && (
                       <CheckedIcon width="15" height="10" />
@@ -151,13 +154,14 @@ const Subscription = () => {
                   <p>Renouvellement&nbsp;Automatique</p>
                 </div>
               </div>
-              <button className="w-52 h-14 flex items-center justify-center bg-[#F4F4F6] border border-secondary rounded-xl mt-4 text-black font-medium">
+              <button className="w-40 h-10 flex items-center justify-center bg-[#ffffff] border border-secondary rounded-xl mt-40 mb-6 text-black font-normal hover:scale-90 transition-transform hover:bg-red-500 hover:font-bold">
                 Clôturer le compte
               </button>
             </div>
           </div>
         </div>
       </DashboardLayout>
+      <Footer />
     </div>
   );
 };

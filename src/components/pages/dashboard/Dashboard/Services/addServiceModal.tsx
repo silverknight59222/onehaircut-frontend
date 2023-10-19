@@ -4,6 +4,8 @@ import { CheckedIcon, CrossIcon, SearcIcon } from "@/components/utilis/Icons";
 import useSnackbar from "@/hooks/useSnackbar";
 import userLoader from "@/hooks/useLoader";
 import React, { useEffect, useState } from "react";
+import { Theme_A, ColorsThemeA } from "@/components/utilis/Themes";
+import '../../../../utilis/StylesOHC.css';
 interface AddServiceModalType {
   setShowAddServiceModal: (value: boolean) => void;
   fetchAllServices: () => void;
@@ -41,7 +43,7 @@ const AddServiceModal = (props: AddServiceModalType) => {
     duration: "",
     price: "",
     service: "",
-       age: "",
+    age: "",
     percent: "",
   });
   const Types = [
@@ -271,27 +273,27 @@ const AddServiceModal = (props: AddServiceModalType) => {
   }, [typeFilters, search]);
 
   return (
-    <div className="relative bg-white lg:min-w-[850px]  rounded-xl px-5 pb-5">
+    <div className="bg-white w-9/12 max-h-full rounded-xl px-5 pb-5 relative">
       {isLoading && loadingView()}
-      <div className="w-full flex items-center justify-end pt-2">
+      <div className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2">
         <div
-          className="cursor-pointer my-2 py-1 px-2 rounded-lg bg-gradient-to-r from-pink-500 to-orange-500 shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+          className={`${Theme_A.button.crossButtonStd}  shadow-md hover:scale-90`}
           onClick={() => props.setShowAddServiceModal(false)}
         >
-          <CrossIcon width="12" />
+          <CrossIcon width="18" height="26" />
         </div>
       </div>
       <div className="flex gap-2 w-full items-baseline justify-center">
         <div className="relative flex items-center justify-center pb-5">
           <input
             type="text"
-            className="max-w-[300px] text-sm py-2 px-4 outline-none rounded-full bg-white border border-[#EDEDED] shadow-[0px_11px_26px_0px_rgba(176,176,176,0.25)]"
-            placeholder="Nom coiffure"
+            className="max-w-[300px] text-sm py-2 px-4 mt-4 outline-none rounded-full bg-white border border-[#EDEDED] shadow-inner"
+            placeholder="Nom du service"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
           <div className="relative">
-            <div className="absolute right-1 -top-4 cursor-pointer p-2 rounded-full bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
+            <div className={`absolute right-1 -top-2 cursor-pointer p-2 rounded-full shadow-sm hover:scale-90 ${ColorsThemeA.OhcGradient_A}`}>
               <SearcIcon />
             </div>
           </div>
@@ -300,7 +302,7 @@ const AddServiceModal = (props: AddServiceModalType) => {
           <div
             className={
               typeFilters.length > 0
-                ? "flex gap-4 rounded-full bg-gray-500 border border-[#EDEDED] p-1 text-sm text-white"
+                ? "flex gap-4 rounded-full bg-stone-800 border border-[#EDEDED] p-1 text-sm text-white"
                 : "flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373]"
             }
           >
@@ -315,11 +317,10 @@ const AddServiceModal = (props: AddServiceModalType) => {
                   onClick={() => onClickTypeCheckbox(item.value)}
                 >
                   <div
-                    className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${
-                      typeFilters.includes(item.value)
-                        ? "bg-gradient-to-b from-pink-500 to-orange-500"
-                        : "bg-[#D6D6D6]"
-                    }`}
+                    className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${typeFilters.includes(item.value)
+                      ? `bg-gradient-to-b ${ColorsThemeA.OhcGradient_A}`
+                      : "bg-[#D6D6D6]"
+                      }`}
                   >
                     <CheckedIcon />
                   </div>
@@ -330,13 +331,13 @@ const AddServiceModal = (props: AddServiceModalType) => {
           </div>
         </div>
       </div>
-      <div className="flex flex-col md:flex-col items-center justify-center gap-4 ">
-        <div className="gap-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 h-80 xl:max-h-[480px] lg:w-[620px] overflow-y-auto rounded-xl items-start">
+      <div className=" items-center justify-center">
+        <div className="bg-white max-h-[250px] lg:max-h-[500px] shadow-inner dynamic-grid rounded-xl items-start">
           {showServices().map((item, index) => {
             return (
-              <div key={index} className="flex items-center gap-3">
+              <div key={index} className="flex items-center">
                 <div
-                  className="flex flex-col justify-start gap-2 w-48 h-[170px] border border-grey rounded-[21px] py-3 px-3 shadow-[0px_4px_18px_0px_rgba(132,132,132,0.25)] cursor-pointer"
+                  className={`flex flex-col justify-start gap-2 w-48 h-[170px] border border-stone-200 rounded-[21px] py-3 px-3 shadow-lg cursor-pointer ${Theme_A.behaviour.cardBehaviour}`}
                   onClick={() => selectService(item.id)}
                 >
                   <div className="flex items-center justify-between">
@@ -344,11 +345,10 @@ const AddServiceModal = (props: AddServiceModalType) => {
                       {item.name}
                     </p>
                     <div
-                      className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${
-                        selectedService?.includes(item.id)
-                          ? "bg-gradient-to-b from-pink-500 to-orange-500"
-                          : "bg-[#D6D6D6]"
-                      }`}
+                      className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${selectedService?.includes(item.id)
+                        ? `bg-gradient-to-b ${ColorsThemeA.OhcGradient_A}`
+                        : "bg-[#D6D6D6]"
+                        }`}
                     >
                       <CheckedIcon />
                     </div>
@@ -404,43 +404,46 @@ const AddServiceModal = (props: AddServiceModalType) => {
             );
           })}
         </div>
-        <div className="flex flex-col gap-4 h-full items-start">
+        <div className="flex flex-col gap-4 h-full items-start mt-2">
           <p className="text-sm text-[#A0A0A0]">
-            Age and percent is only applicable to services with type discount
+            Age et rabais ne sont applicable que pour les prestations de type remise (discount)
           </p>
           <div className="flex flex-col md:flex-row  gap-4 h-full items-center md:items-start justify-center w-full">
             <div className="flex flex-col gap-4 h-full items-start">
-              <div className="max-w-[300px] w-[200px]">
+              <div className="max-w-[300px] w-[200px] relative">
                 <input
                   type="number"
                   placeholder="Durée"
-                  className="w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
+                  className="w-48 p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
                   value={service.duration}
                   onChange={(e) => onChangeDuration(e.target.value)}
                 />
                 {error.duration && (
-                  <p className="text-xs text-red-700 ml-3 mt-1">
+                  <p className={`${Theme_A.checkers.errorText}`}>
                     {error.duration}*
                   </p>
                 )}
+                <span className="absolute right-3 top-1/2 transform -translate-y-1/2">min</span>
               </div>
-              <div className="max-w-[300px] w-[200px]">
+              <div className="max-w-[300px] w-[200px] relative">
                 <input
                   type="number"
                   placeholder="Prix"
-                  className="w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
+                  className="w-48 p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
                   value={service.price}
                   onChange={(e) => onChangePrice(e.target.value)}
                 />
                 {error.price && (
-                  <p className="text-xs text-red-700 ml-3 mt-1">
+                  <p className={`${Theme_A.checkers.errorText}`}>
                     {error.price}*
                   </p>
                 )}
+                <span className="absolute right-3 top-1/2 transform -translate-y-1/2">€</span>
               </div>
+
             </div>
             <div className="flex flex-col gap-4 h-full items-start">
-              <div className="max-w-[300px] w-[200px]">
+              <div className="max-w-[300px] w-[200px] relative">
                 <input
                   type="number"
                   placeholder="Age"
@@ -455,15 +458,17 @@ const AddServiceModal = (props: AddServiceModalType) => {
                   onChange={(e) => onChangeAge(e.target.value)}
                 />
                 {error.age && (
-                  <p className="text-xs text-red-700 ml-3 mt-1">
+                  <p className={`${Theme_A.checkers.errorText}`}>
                     {error.age}*
                   </p>
                 )}
+                <span className="absolute right-3 top-1/2 transform -translate-y-1/2">années</span>
               </div>
-              <div className="max-w-[300px] w-[200px]">
+              <div className="max-w-[300px] w-[200px] relative">
                 <input
                   type="number"
-                  placeholder="Percent"
+                  placeholder="Rabais"
+
                   className={
                     discountParamsDisable
                       ? "w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none bg-slate-200"
@@ -475,29 +480,31 @@ const AddServiceModal = (props: AddServiceModalType) => {
                   onChange={(e) => onChangePercent(e.target.value)}
                 />
                 {error.percent && (
-                  <p className="text-xs text-red-700 ml-3 mt-1">
+                  <p className={`${Theme_A.checkers.errorText}`}>
                     {error.percent}*
                   </p>
                 )}
+                <span className="absolute right-3 top-1/2 transform -translate-y-1/2">€</span>
               </div>
             </div>
           </div>
           <div className="mt-4 flex gap-4 items-center justify-center w-full">
             <button
-              className="text-white font-medium text-base rounded-md py-2 px-4 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+              className={`${Theme_A.button.medWhiteColoredButton}`}
               onClick={() => props.setShowAddServiceModal(false)}
             >
-              Cancel
+              Annuler
             </button>
             <button
-              className="text-white font-medium text-base rounded-md py-2 px-4 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+              // className="text-white font-medium text-base rounded-md py-2 px-4 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+              className={`${Theme_A.button.mediumGradientButton}`}
               onClick={() => onSubmit()}
             >
-              Add Service
+              Ajouter prestations
             </button>
           </div>
           {error.service && (
-            <p className="text-xs text-red-700 ml-20 mt-1 text-center">
+            <p className={`${Theme_A.checkers.errorText}`}>
               {error.service}*
             </p>
           )}

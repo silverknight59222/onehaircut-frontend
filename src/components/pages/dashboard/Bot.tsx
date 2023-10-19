@@ -2,7 +2,7 @@
 import { CircleRight, CrossIcon } from "@/components/utilis/Icons";
 import DashboardLayout from "@/layout/DashboardLayout";
 import React, { useState } from "react";
-
+import { LogoCircleFixRight } from "@/components/utilis/Icons";
 const Bot = () => {
   const [selectedTab, setSelectedTab] = useState(0);
   const items1 = [
@@ -31,7 +31,7 @@ const Bot = () => {
   return (
     <div>
       <div className="hidden sm:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
-        <CircleRight />
+        <LogoCircleFixRight />
       </div>
       <DashboardLayout>
         <div className="flex flex-col md:flex-row items-start justify-center gap-6 xl:gap-14 2xl:gap-28">

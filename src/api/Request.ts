@@ -4,7 +4,8 @@ import { toast } from "react-toastify";
 
 const request = axios.create({
   baseURL: "https://api-server.onehaircut.com/public/api/web/",
-  // baseURL: 'http://localhost:8000/api/web/',
+  // baseURL: process.env.REACT_APP_API_URL + '/api/web/',
+  // baseURL: "http://localhost:8000/api/web/",
   withCredentials: false,
 });
 

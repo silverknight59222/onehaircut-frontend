@@ -41,13 +41,13 @@ const Revenue = () => {
       status: "Encaissé",
     },
   ];
-  const items=[
-    {title: 'Jason', color:'#329DF3', value: 20, reveal: 20},
-    {title: 'Melinda', color:'#FF4A4A', value: 17},
-    {title: 'Karim', color:'#7ABF50', value: 13},
-    {title: 'Dyone', color:'#FFC107', value: 9,},
-    {title: 'Deborah', color:'#FF8737', value: 23},
-    {title: 'Daniel', color:'#2A5782', value: 18},
+  const items = [
+    { title: 'Jason', color: '#329DF3', value: 20, reveal: 20 },
+    { title: 'Melinda', color: '#FF4A4A', value: 17 },
+    { title: 'Karim', color: '#7ABF50', value: 13 },
+    { title: 'Dyone', color: '#FFC107', value: 9, },
+    { title: 'Deborah', color: '#FF8737', value: 23 },
+    { title: 'Daniel', color: '#2A5782', value: 18 },
   ]
   const defaultLabelStyle = {
     fontSize: '5px',
@@ -133,6 +133,7 @@ const Revenue = () => {
                   </tbody>
                 </table>
               </div>
+
               <div className="flex items-center gap-2 mt-3">
                 <Image
                   src="/assets/downloadIcon.png"
@@ -212,22 +213,22 @@ const Revenue = () => {
               </div>
               <div className="flex flex-col sm:flex-row items-center justify-center gap-10 sm:gap-20 md:gap-36 2xl:gap-24 pt-7 pb-4 px-6 bg-white rounded-lg shadow-[0px_4px_33px_0px_rgba(176,176,176,0.25)]">
                 <div className="w-80">
-                <PieChart
-                  data={items}
-                  label={({ dataEntry }) => dataEntry.value + '%'}
-                  labelStyle={{
-                    ...defaultLabelStyle,
-                  }}
-                  radius={35}
-                  labelPosition={115}
-                />
+                  <PieChart
+                    data={items}
+                    label={({ dataEntry }) => dataEntry.value + '%'}
+                    labelStyle={{
+                      ...defaultLabelStyle,
+                    }}
+                    radius={35}
+                    labelPosition={115}
+                  />
                 </div>
                 <div className="flex sm:block flex-wrap items-center justify-center gap-x-8 gap-y-4">
-                  {items.map((item,index)=>{
+                  {items.map((item, index) => {
                     return <div key={index} className="flex items-center gap-3 mb-3">
-                      <div className={`w-8 h-4 rounded-xl bg-[${item.color}]`}/>
+                      <div className={`w-8 h-4 rounded-xl bg-[${item.color}]`} />
                       <p className="font-semibold text-[#ABABAB]">{item.title}</p>
-                      </div>
+                    </div>
                   })}
                 </div>
               </div>

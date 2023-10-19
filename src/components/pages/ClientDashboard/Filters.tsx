@@ -1,6 +1,6 @@
 "use client";
 import BaseDropdown from '@/components/UI/BaseDropdown';
-import { CircleRight, TickIcon } from '@/components/utilis/Icons';
+import { CircleRight, LogoCircleFixRight, TickIcon } from '@/components/utilis/Icons';
 import ClientDashboardLayout from '@/layout/ClientDashboardLayout'
 import React, { useState } from 'react'
 import StarRatings from "react-star-ratings";
@@ -31,7 +31,7 @@ const Filters = () => {
     return (
         <div>
             <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
-                <CircleRight />
+                <LogoCircleFixRight />
             </div>
             <ClientDashboardLayout>
                 <div className="mt-14 mb-5 px-5 sm:px-10">
@@ -142,7 +142,7 @@ const Filters = () => {
                                     <div className='flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-24 lg:flex-col xl:flex-row lg:items-start xl:items-center lg:gap-5 xl:gap-24 mt-6 sm:mt-3'>
                                         <div>
                                             <p className="text-black text-sm mb-2">Code postal</p>
-                                            <div className='flex items-center justify-center w-52 h-8 rounded-md shadow-inner shadow-[0px_3px_7px_0px_rgba(0,0,0,0.14)]'>1033</div>
+                                            <div className='flex items-center justify-center w-52 h-8 rounded-md shadow-inner'>1033</div>
                                         </div>
                                         <div>
                                             <p className="text-black text-sm mb-2">Geolocalisation</p>

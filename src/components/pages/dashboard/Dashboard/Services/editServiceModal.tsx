@@ -5,6 +5,7 @@ import useSnackbar from "@/hooks/useSnackbar";
 import userLoader from "@/hooks/useLoader";
 import React, { useState } from "react";
 import { SalonService } from "./index";
+import { Theme_A } from "@/components/utilis/Themes";
 interface EditServiceModalType {
   setShowEditServiceModal: (value: boolean) => void;
   service: SalonService;
@@ -82,7 +83,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
   const onSubmit = async () => {
     if (!service.duration) {
       setError((prev) => {
-        return { ...prev, duration: "Duration is required" };
+        return { ...prev, duration: "Durée requise" };
       });
       return;
     } else {
@@ -92,7 +93,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
     }
     if (!service.price) {
       setError((prev) => {
-        return { ...prev, price: "Price is required" };
+        return { ...prev, price: "Prix requis" };
       });
       return;
     } else {
@@ -102,7 +103,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
     }
     if (props.service.age && !service.age) {
       setError((prev) => {
-        return { ...prev, age: "Age is required" };
+        return { ...prev, age: "Age requis" };
       });
       return;
     } else {
@@ -112,7 +113,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
     }
     if (props.service.percent && !service.percent) {
       setError((prev) => {
-        return { ...prev, percent: "Percent is required" };
+        return { ...prev, percent: "Pourcentage requis" };
       });
       return;
     } else {
@@ -134,10 +135,10 @@ const EditServiceModal = (props: EditServiceModalType) => {
       .updateSalonServices(props.service.id, data)
       .then((res) => {
         props.fetchAllServices();
-        showSnackbar("success", "Salon Service updated successfully.");
+        showSnackbar("success", "Prestation actualisée");
       })
       .catch((err) => {
-        showSnackbar("error", "Failed to update salon service");
+        showSnackbar("error", "Actualisation de préstation");
       })
       .finally(() => {
         setIsLoading(false);
@@ -149,10 +150,10 @@ const EditServiceModal = (props: EditServiceModalType) => {
       .deleteSalonServices(props.service.id)
       .then((res) => {
         props.fetchAllServices();
-        showSnackbar("success", "Salon Service deleted successfully.");
+        showSnackbar("success", "Prestation supprimée");
       })
       .catch((err) => {
-        showSnackbar("error", "Failed to delete salon service");
+        showSnackbar("error", "Echec de suppression");
       })
       .finally(() => {
         setIsLoading(false);
@@ -162,18 +163,18 @@ const EditServiceModal = (props: EditServiceModalType) => {
   return (
     <div className="relative bg-white rounded-xl px-5 pb-5">
       {isLoading && loadingView()}
-      <div className="w-full flex items-center justify-end pt-2">
+      <div className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2">
         <div
-          className="cursor-pointer my-2 py-1 px-2 rounded-lg bg-gradient-to-r from-pink-500 to-orange-500 shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+          className={`${Theme_A.button.crossButtonSmall} shadow-md hover:scale-90`}
           onClick={() => props.setShowEditServiceModal(false)}
         >
-          <CrossIcon width="12" />
+          <CrossIcon width="18" height="26" />
         </div>
       </div>
       <div>
         <div className="flex flex-col gap-4 h-full items-start">
           <div className="mb-2 max-w-[300px] max-h-[150px] overflow-auto px-2">
-            <div className="text-base font-semibold">
+            <div className="text-base font-semibold mt-4">
               {props.service.service.name}
             </div>
             <div className="text-sm text-[#737373]">
@@ -222,14 +223,14 @@ const EditServiceModal = (props: EditServiceModalType) => {
               <div
                 className={
                   props.service.age && props.service.percent
-                    ? "max-w-[300px] w-[150px]"
-                    : "max-w-[300px] w-[350px]"
+                    ? "max-w-[300px] w-[150px] relative"
+                    : "max-w-[300px] w-[350px] relative"
                 }
               >
                 <input
                   type="number"
                   placeholder="Durée"
-                  className="w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
+                  className={`w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-inner outline-none bg-stone-100 ${Theme_A.behaviour.fieldFocused_C}`}
                   value={service.duration}
                   onChange={(e) => onChangeDuration(e.target.value)}
                 />
@@ -238,18 +239,19 @@ const EditServiceModal = (props: EditServiceModalType) => {
                     {error.duration}*
                   </p>
                 )}
+                <span className="text-gray-500 text-sm absolute right-3 top-1/2 transform -translate-y-1/2">Durée(min)</span>
               </div>
               <div
                 className={
                   props.service.age && props.service.percent
-                    ? "max-w-[300px] w-[150px]"
-                    : "max-w-[300px] w-[350px]"
+                    ? "max-w-[300px] w-[150px] relative"
+                    : "max-w-[300px] w-[350px] relative"
                 }
               >
                 <input
                   type="number"
                   placeholder="Prix"
-                  className="w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
+                  className={`w-full p-3 placeholder:text-[#959595] text-sm  placeholder:text-base rounded-md shadow-inner outline-none bg-stone-100 ${Theme_A.behaviour.fieldFocused_C}`}
                   value={service.price}
                   onChange={(e) => onChangePrice(e.target.value)}
                 />
@@ -258,15 +260,17 @@ const EditServiceModal = (props: EditServiceModalType) => {
                     {error.price}*
                   </p>
                 )}
+                <span className="text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2">Prix(€)</span>
               </div>
+
             </div>
             {props.service.age && props.service.percent && (
               <div className="flex flex-col gap-4 items-center">
-                <div className="max-w-[300px] w-[150px]">
+                <div className="max-w-[300px] w-[150px] relative">
                   <input
                     type="number"
                     placeholder="Age"
-                    className="w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
+                    className={`w-full p-3 placeholder:text-[#959595] text-sm  placeholder:text-base rounded-md shadow-inner outline-none bg-stone-100 ${Theme_A.behaviour.fieldFocused_C}`}
                     value={service.age}
                     onChange={(e) => onChangeAge(e.target.value)}
                   />
@@ -275,12 +279,13 @@ const EditServiceModal = (props: EditServiceModalType) => {
                       {error.age}*
                     </p>
                   )}
+                  <span className="text-gray-500  absolute right-3 top-1/2 transform -translate-y-1/2">Age(années)</span>
                 </div>
-                <div className="max-w-[300px] w-[150px]">
+                <div className="max-w-[300px] w-[150px] relative">
                   <input
                     type="number"
                     placeholder="Percent"
-                    className="w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
+                    className={`w-full p-3 placeholder:text-[#959595] text-sm placeholder:text-base rounded-md shadow-inner outline-none bg-stone-100 ${Theme_A.behaviour.fieldFocused_C}`}
                     value={service.percent}
                     onChange={(e) => onChangePercent(e.target.value)}
                   />
@@ -289,28 +294,29 @@ const EditServiceModal = (props: EditServiceModalType) => {
                       {error.percent}*
                     </p>
                   )}
+                  <span className="text-gray-500 absolute right-3 top-1/2 transform -translate-y-1/2">Rabais(%)</span>
                 </div>
               </div>
             )}
           </div>
           <div className="mt-4 flex gap-4 items-center justify-center w-full">
             <button
-              className="text-white font-medium text-lg rounded-md py-2 px-4 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+              className={`${Theme_A.button.medWhiteColoredButton} text-md`}
               onClick={() => props.setShowEditServiceModal(false)}
             >
-              Cancel
+              Annuler
             </button>
             <button
-              className="text-white font-medium text-lg rounded-md py-2 px-4 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+              className={`${Theme_A.button.medWhiteColoredButton}`}
               onClick={() => deleteService()}
             >
-              Delete
+              Supprimer
             </button>
             <button
-              className="text-white font-medium text-lg rounded-md py-2 px-4 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+              className={`${Theme_A.button.mediumGradientButton}`}
               onClick={() => onSubmit()}
             >
-              Update
+              Actualiser
             </button>
           </div>
         </div>

@@ -10,6 +10,10 @@ import {
   SearcIcon,
   SelectedIcon,
 } from "@/components/utilis/Icons";
+import ScrollToTopButton from "@/components/utilis/Helper";
+import { Theme_A } from "@/components/utilis/Themes";
+import { ColorsThemeA } from "@/components/utilis/Themes";
+import Footer from "@/components/UI/Footer";
 
 export interface HaircutDetails {
   id: number;
@@ -517,13 +521,13 @@ const Hairstyles = () => {
     ) {
       setSelectedHaircutsMapping([]);
     } else {
-      if(
+      if (
         ethnicityFilters.length > 0 ||
         genderFilters ||
         lengthFilters.length > 0 ||
         search !== ""
       ) {
-      setSelectedHaircutsMapping(filteredHaircuts);
+        setSelectedHaircutsMapping(filteredHaircuts);
       } else {
         setSelectedHaircutsMapping(haircutList);
       }
@@ -554,11 +558,11 @@ const Hairstyles = () => {
               <div
                 className={
                   ethnicityFilters.length > 0
-                    ? "flex gap-4 rounded-full bg-stone-800 border border-[#EDEDED] p-1 text-sm text-white shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)]"
-                    : "flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373] shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)]"
+                    ? `${Theme_A.browingFilters.proHairstyleFilterON}`
+                    : `${Theme_A.browingFilters.proHairstyleFilterOFF}`
                 }
               >
-                <div className="px-4 cursor-pointer">Ethnic Groups</div>
+                <div className="px-4 cursor-pointer">Groupe Ethnique</div>
               </div>
               <div className="hidden group-hover:block absolute top-[30px] bg-white z-10 text-sm text-[#737373] rounded-lg border min-w-[134px] ">
                 {Ethnicity.map((item, index) => {
@@ -569,11 +573,10 @@ const Hairstyles = () => {
                       onClick={() => onClickEthnicityCheckbox(item.name)}
                     >
                       <div
-                        className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 ${
-                          ethnicityFilters.includes(item.name)
-                            ? "bg-gradient-to-b from-pink-500 to-orange-500"
-                            : "bg-[#D6D6D6]"
-                        }`}
+                        className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 ${ethnicityFilters.includes(item.name)
+                          ? `${ColorsThemeA.ohcVerticalGradient_A}`
+                          : `${ColorsThemeA.inactivButtonColor}`
+                          }`}
                       >
                         <CheckedIcon />
                       </div>
@@ -587,11 +590,11 @@ const Hairstyles = () => {
               <div
                 className={
                   genderFilters.length > 0
-                    ? "flex gap-4 rounded-full bg-stone-800 border border-[#EDEDED] p-1 text-sm text-white shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)]"
-                    : "flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373] shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)]"
+                    ? `${Theme_A.browingFilters.proHairstyleFilterON}`
+                    : `${Theme_A.browingFilters.proHairstyleFilterOFF}`
                 }
               >
-                <div className="px-4 cursor-pointer">Gender</div>
+                <div className="px-4 cursor-pointer">Genre</div>
               </div>
               <div className="hidden group-hover:block absolute top-[30px] bg-white z-10 text-sm text-[#737373] rounded-lg border min-w-[134px]">
                 {Gender.map((item, index) => {
@@ -602,11 +605,10 @@ const Hairstyles = () => {
                       onClick={() => onClickGenderCheckbox(item.name)}
                     >
                       <div
-                        className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${
-                          genderFilters.includes(item.name)
-                            ? "bg-gradient-to-b from-pink-500 to-orange-500"
-                            : "bg-[#D6D6D6]"
-                        }`}
+                        className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${genderFilters.includes(item.name)
+                          ? `${ColorsThemeA.ohcVerticalGradient_A}`
+                          : `${ColorsThemeA.inactivButtonColor}`
+                          }`}
                       >
                         <CheckedIcon />
                       </div>
@@ -620,11 +622,11 @@ const Hairstyles = () => {
               <div
                 className={
                   lengthFilters.length > 0
-                    ? "flex gap-4 rounded-full bg-stone-800 border border-[#EDEDED] p-1 text-sm text-white shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)]"
-                    : "flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373] shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)]"
+                    ? `${Theme_A.browingFilters.proHairstyleFilterON}`
+                    : `${Theme_A.browingFilters.proHairstyleFilterOFF}`
                 }
               >
-                <div className="px-4 cursor-pointer">Length</div>
+                <div className={`${Theme_A.shapes.standardShape} " " ${Theme_A.behaviour.buttonHoverBehaviour_1}`}>Longueur</div>
               </div>
               <div className="hidden group-hover:block absolute top-[30px] bg-white z-10 text-sm text-[#737373] rounded-lg border min-w-[134px]">
                 {Length.map((item, index) => {
@@ -635,11 +637,10 @@ const Hairstyles = () => {
                       onClick={() => onClickLengthCheckbox(item.name)}
                     >
                       <div
-                        className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${
-                          lengthFilters.includes(item.name)
-                            ? "bg-gradient-to-b from-pink-500 to-orange-500"
-                            : "bg-[#D6D6D6]"
-                        }`}
+                        className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${lengthFilters.includes(item.name)
+                          ? `${ColorsThemeA.ohcVerticalGradient_A}`
+                          : `${ColorsThemeA.inactivButtonColor}`
+                          }`}
                       >
                         <CheckedIcon />
                       </div>
@@ -654,44 +655,42 @@ const Hairstyles = () => {
             <div
               className={
                 haircutList.length &&
-                selectedHaircutsMapping.length === haircutList.length
-                  ? "flex gap-4 rounded-full bg-stone-800 border border-[#EDEDED] p-1 text-sm text-white shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)]"
-                  : "flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373] shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)]"
+                  selectedHaircutsMapping.length === haircutList.length
+                  ? `${Theme_A.browingFilters.proHairstyleFilterON}`
+                  : `${Theme_A.browingFilters.proHairstyleFilterOFF}`
               }
               onClick={selectAllHaircuts}
             >
-              <div className="hover:bg-stone-800 hover:text-white rounded-full px-4 cursor-pointer transform hover:scale-110 transition-transform">Select All</div>
+              <div className={`${Theme_A.behaviour.buttonHoverBehaviour_2}`}>Select All</div>
             </div>
           </div>
           <div className="relative flex">
             <input
               type="text"
-              className="min-w-[300px] text-sm py-2 px-4 outline-none rounded-full bg-white border border-[#EDEDED] shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)]"
+              className={`${Theme_A.Bars.searchBar_1}`}
               placeholder="Nom coiffure"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
-            <div className="absolute right-1 top-[3px] cursor-pointer p-2 rounded-full bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
+            <div className={`${Theme_A.shapes.smallSearchCircle}`}>
               <SearcIcon />
             </div>
           </div>
           <div>
             <div className="flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373]">
               <div
-                className={`hover:bg-stone-800 hover:text-white rounded-full py-1 px-4 cursor-pointer transition duration-50 ${
-                  activeMenu === "added" && "bg-stone-800 text-white"
-                }`}
+                className={`${Theme_A.behaviour.buttonHoverBehaviour_3} ${activeMenu === "added" && "bg-stone-800 text-white"
+                  }`}
                 onClick={() => setActiveMenu("added")}
               >
-                Show Added Haircuts
+                Coiffures ajoutées
               </div>
               <div
-                className={`hover:bg-stone-800 hover:text-white rounded-full py-1 px-4 cursor-pointer transition duration-50 ${
-                  activeMenu === "new" && "bg-stone-800 text-white"
-                }`}
+                className={`${Theme_A.behaviour.buttonHoverBehaviour_3}  ${activeMenu === "new" && "bg-stone-800 text-white"
+                  }`}
                 onClick={onToggleHairstyle}
               >
-                Add New Haircuts
+                Coiffure non dispensées
               </div>
             </div>
           </div>
@@ -700,14 +699,14 @@ const Hairstyles = () => {
       <div className="flex flex-col md:flex-row gap-8">
         <div className="bg-lightGrey rounded-3xl p-4 md:sticky md:top-0 h-max">
           <div className="flex items-center justify-center gap-2">
-          <h2 className="text-lg font-semibold text-center">
-            Configurations des coiffures
-          </h2>
-          {(selectedHaircutsMapping.length > 0 && activeMenu === 'new') && <div className="text-sm py-1 px-[10px] rounded-full text-white bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo">{selectedHaircutsMapping.length}</div>}
+            <h2 className={`${Theme_A.textFont.headerH3}`}>
+              Configurations des coiffures
+            </h2>
+            {(selectedHaircutsMapping.length > 0 && activeMenu === 'new') && <div className={`${Theme_A.indicators.counterIndicator}`}>{selectedHaircutsMapping.length}</div>}
           </div>
           <div className="flex items-center justify-center">
             {getSelectedImage() ? (
-              <div className="relative w-72 h-72">
+              <div className={`${Theme_A.hairstyleCards.cardSize.big}`}>
                 <Image
                   src={getSelectedImage()}
                   fill={true}
@@ -716,7 +715,7 @@ const Hairstyles = () => {
                 />
               </div>
             ) : (
-              <div className="mt-2 flex items-center justify-center w-36 h-36 bg-zinc-200 border-1 border-black rounded-2xl shadow-md ">
+              <div className={`${Theme_A.thumbnails.selectHaircutThumbnail}`}>
                 Select Haircut
               </div>
             )}
@@ -731,7 +730,7 @@ const Hairstyles = () => {
                   type="number"
                   name="prix"
                   placeholder="40"
-                  className="w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)]"
+                  className={`${Theme_A.fields.configurationField}`}
                   value={form.base_price}
                   onChange={(e) => onChangeInput(e.target.value, "base_price")}
                 />
@@ -748,7 +747,7 @@ const Hairstyles = () => {
                 <input
                   type="number"
                   placeholder="35 min"
-                  className="w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)]"
+                  className={`${Theme_A.fields.configurationField}`}
                   value={form.base_duration}
                   onChange={(e) =>
                     onChangeInput(e.target.value, "base_duration")
@@ -764,7 +763,7 @@ const Hairstyles = () => {
             <div className="mt-2">
               <div>
                 <p className="text-medium text-sm text-grey italic text-center">
-                Ajustement selon la longueur initiale de cheveux
+                  Ajustement selon la longueur initiale de cheveux
                 </p>
               </div>
               <div className="flex items-center gap-x-4 mt-4">
@@ -772,7 +771,7 @@ const Hairstyles = () => {
                 <div>
                   <input
                     type="number"
-                    className="w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)]"
+                    className={`${Theme_A.fields.configurationField}`}
                     value={form.court_price_length}
                     onChange={(e) =>
                       onChangeInput(e.target.value, "court_price_length")
@@ -782,7 +781,7 @@ const Hairstyles = () => {
                 <div className="flex gap-2 items-center">
                   <input
                     type="number"
-                    className="w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)]"
+                    className={`${Theme_A.fields.configurationField}`}
                     value={form.court_duration_length}
                     onChange={(e) =>
                       onChangeInput(e.target.value, "court_duration_length")
@@ -796,7 +795,7 @@ const Hairstyles = () => {
                 <div>
                   <input
                     type="number"
-                    className="w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)]"
+                    className={`${Theme_A.fields.configurationField}`}
                     value={form.moyen_price_length}
                     onChange={(e) =>
                       onChangeInput(e.target.value, "moyen_price_length")
@@ -806,7 +805,7 @@ const Hairstyles = () => {
                 <div className="flex gap-2 items-center">
                   <input
                     type="number"
-                    className="w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)]"
+                    className={`${Theme_A.fields.configurationField}`}
                     value={form.moyen_duration_length}
                     onChange={(e) =>
                       onChangeInput(e.target.value, "moyen_duration_length")
@@ -820,7 +819,7 @@ const Hairstyles = () => {
                 <div>
                   <input
                     type="number"
-                    className="w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)]"
+                    className={`${Theme_A.fields.configurationField}`}
                     value={form.long_price_length}
                     onChange={(e) =>
                       onChangeInput(e.target.value, "long_price_length")
@@ -830,7 +829,7 @@ const Hairstyles = () => {
                 <div className="flex gap-2 items-center">
                   <input
                     type="number"
-                    className="w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)]"
+                    className={`${Theme_A.fields.configurationField}`}
                     value={form.long_duration_length}
                     onChange={(e) =>
                       onChangeInput(e.target.value, "long_duration_length")
@@ -851,7 +850,7 @@ const Hairstyles = () => {
                 <div>
                   <input
                     type="number"
-                    className="w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)]"
+                    className={`${Theme_A.fields.configurationField}`}
                     value={form.fin_price_type}
                     onChange={(e) =>
                       onChangeInput(e.target.value, "fin_price_type")
@@ -861,7 +860,7 @@ const Hairstyles = () => {
                 <div className="flex gap-2 items-center">
                   <input
                     type="number"
-                    className="w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)]"
+                    className={`${Theme_A.fields.configurationField}`}
                     value={form.fin_duration_type}
                     onChange={(e) =>
                       onChangeInput(e.target.value, "fin_duration_type")
@@ -875,7 +874,7 @@ const Hairstyles = () => {
                 <div>
                   <input
                     type="number"
-                    className="w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)]"
+                    className={`${Theme_A.fields.configurationField}`}
                     value={form.moyen_price_type}
                     onChange={(e) =>
                       onChangeInput(e.target.value, "moyen_price_type")
@@ -885,7 +884,7 @@ const Hairstyles = () => {
                 <div className="flex gap-2 items-center">
                   <input
                     type="number"
-                    className="w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)]"
+                    className={`${Theme_A.fields.configurationField}`}
                     value={form.moyen_duration_type}
                     onChange={(e) =>
                       onChangeInput(e.target.value, "moyen_duration_type")
@@ -899,7 +898,7 @@ const Hairstyles = () => {
                 <div>
                   <input
                     type="number"
-                    className="w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)]"
+                    className={`${Theme_A.fields.configurationField}`}
                     value={form.epais_price_type}
                     onChange={(e) =>
                       onChangeInput(e.target.value, "epais_price_type")
@@ -909,7 +908,7 @@ const Hairstyles = () => {
                 <div className="flex gap-2 items-center">
                   <input
                     type="number"
-                    className="w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)]"
+                    className={`${Theme_A.fields.configurationField}`}
                     value={form.epais_duration_type}
                     onChange={(e) =>
                       onChangeInput(e.target.value, "epais_duration_type")
@@ -921,86 +920,84 @@ const Hairstyles = () => {
             </div>
             {!(activeMenu === "added" && selectedSalonHaircut.id >= 0) ? (
               <div className="flex items-center justify-center gap-4 mt-4">
-              <button onClick={addSalonHaircuts} className="text-white font-medium text-sm rounded-md px-4 py-2 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-md transform hover:scale-110 transition-transform">
+                <button onClick={addSalonHaircuts} className={`${Theme_A.button.mediumGradientButton}`}>
                   Ajouter
-              </button>
-          </div>
-          
+                </button>
+              </div>
+
             ) : (
               <div className="flex items-center justify-center gap-4 mt-4 w-full">
                 <button
-                  className="w-full text-white font-medium text-sm rounded-md px-4 py-2 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+                  className={`${Theme_A.button.medWhiteColoredButton}`}
                   onClick={() => {
                     setForm(defaultFormDetails);
                     setSelectedSalonHaircut(defaultHaircut);
-                  }}
-                >
-                  Clear
+                  }}>
+                  Annuler
                 </button>
                 <button
                   onClick={updateSalonHaircuts}
-                  className="w-full text-white font-medium text-sm rounded-md px-4 py-2 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
-                >
-                  Update
+                  className={`${Theme_A.button.mediumGradientButton}`}>
+                  Mettre &agrave; jour
                 </button>
               </div>
             )}
             {error.select_haircut && (
-              <p className="text-xs text-red-700 ml-3 mt-1">
+              <p className={`${Theme_A.checkers.errorText}`}>
                 {error.select_haircut}*
               </p>
             )}
           </div>
         </div>
         {activeMenu === "new" ? (
-          <div className=" relative flex-1 flex flex-wrap h-max gap-8">
+          <div className={`${Theme_A.behaviour.cardWindowBehaviour}`}>
             {haircuts().map((item, index) => {
               return (
                 <>
-                <div
-                  key={index}
-                  className="shadow-md rounded-xl my-2 cursor-pointer hover:outline outline-1 outline-stone-400"
-                  onClick={() => selectHaircut(item)}
-                >
-                  <div className="relative w-max px-4 pt-4 bg-gradient-to-r from-white via-stone-50 to-zinc-300 rounded-t-xl ">
-                    <div className="relative w-32 h-32">
-                    <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public/${item.image}`} fill={true} alt="" />
+                  <div
+                    key={index}
+                    className={`${Theme_A.behaviour.cardBehaviour}`}
+                    onClick={() => selectHaircut(item)}
+                  >
+                    <div className={`${Theme_A.hairstyleCards.cardgradientTop}`}>
+                      <div className={`${Theme_A.hairstyleCards.cardSize.med}`}>
+                        <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public/${item.image}`} fill={true} alt="" />
+                      </div>
+                      <div className={`${Theme_A.hairstyleCards.checkbubbleOFF}`}>
+                        {selectedHaircutsMapping.filter(
+                          (haircut) => haircut.id === item.id
+                        ).length > 0 && <SelectedIcon />}
+                      </div>
                     </div>
-                    <div className="transform hover:scale-125 transition-transform absolute top-5 right-5 w-6 h-6 rounded-full bg-zinc-50">
-                      {selectedHaircutsMapping.filter(
-                        (haircut) => haircut.id === item.id
-                      ).length > 0 && <SelectedIcon />}
+                    <div className={`${Theme_A.hairstyleCards.cardGradientBott}`}>
+                      <p className={`${Theme_A.hairstyleCards.cardText}`}>
+                        {item.name}
+                      </p>
                     </div>
                   </div>
-                  <div className="rounded-b-xl bg-gradient-to-r from-white via-stone-100 to-zinc-300">
-                    <p className="rounded-b-xl flex items-center justify-center py-2 text-sm text-black font-medium">
-                      {item.name}
-                    </p>
-                  </div>
-                </div>
                 </>
               );
             })}
           </div>
         ) : (
-          <div className="flex-1 flex flex-wrap h-max gap-8 overflow-scroll">
+          <div className={`${Theme_A.behaviour.cardWindowBehaviour}`}>
             {haircuts().map((item, index) => {
               return (
                 <div
                   key={index}
-                  className="shadow-md rounded-xl my-2 cursor-pointer "
+                  className={`${Theme_A.behaviour.cardBehaviour}`}
                   onClick={() => selectSalonHaircut(index)}
                 >
-                  <div className="relative w-max px-4 pt-4 bg-[#F5F5F5] rounded-t-xl">
-                    <div className=" ~ h-32">
+                  <div className={`${Theme_A.hairstyleCards.selectedCardGradientTop}`}>
+                    <div className={`${Theme_A.hairstyleCards.cardSize.med}`}>
                       <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public/${item.image}`} fill={true} alt="" />
                     </div>
-                    <div className="absolute top-5 right-5 w-6 h-6 rounded-full bg-[#D9D9D9]">
+                    <div className={`${Theme_A.hairstyleCards.checkbubbleOFF}`}>
                       {selectedSalonHaircut?.id === item.id && <SelectedIcon />}
                     </div>
                   </div>
-                  <div className="rounded-b-xl bg-gradient-to-r from-pinkGradientFrom via-pinkGradientVia to-pinkGradientTo">
-                    <p className="rounded-b-xl flex items-center justify-center py-2 text-sm text-black font-medium">
+                  <div className={`${Theme_A.hairstyleCards.selectedCardGradientBott}`}>
+                    <p className={`${Theme_A.hairstyleCards.cardText}`}>
                       {item.name}
                     </p>
                   </div>
@@ -1010,6 +1007,7 @@ const Hairstyles = () => {
           </div>
         )}
       </div>
+      <Footer />
     </div>
   );
 };

@@ -2,6 +2,8 @@
 import React, { useState } from "react";
 import BaseModal from "@/components/UI/BaseModal";
 import Image from "next/image";
+import Footer from "@/components/UI/Footer";
+import { Theme_A } from "@/components/utilis/Themes";
 
 const AddPartner = () => {
   const [isModal, setIsModal] = useState(false);
@@ -10,12 +12,12 @@ const AddPartner = () => {
     <div>
       <div>
         <div className="flex flex-col md:flex-row items-center gap-4 md:gap-7 mb-10 mt-20">
-          <button className="text-white font-medium text-xl rounded-xl w-[290px] h-14 bg-gradient-to-r from-pink-500 to-orange-500 shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]">
+          <button className={`${Theme_A.button.bigGradientButton}`}>
             Envoyer une demande
           </button>
-          <button className="flex items-center justify-between border border-secondary w-56 h-14 rounded-xl text-black font-semibold text-xl px-5">
+          <button className={`${Theme_A.button.bigWhiteColoredButton}`}>
             <p>Demande reçu</p>
-            <div className="bg-secondary w-6 h-6 text-white rounded-full flex items-center justify-center text-sm">
+            <div className={`${Theme_A.indicators.counterIndicator}`}>
               1
             </div>
           </button>
@@ -38,7 +40,7 @@ const AddPartner = () => {
             placeholder="Adresse mail"
             className="w-full h-[60px] px-3 placeholder:text-[#959595] placeholder:text-lg rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none mt-6"
           />
-          <button className="border border-secondary w-48 h-14 rounded-xl text-secondary font-semibold text-xl mt-10">
+          <button className={`${Theme_A.button.bigWhiteColoredButton}`}>
             Rechercher
           </button>
           <div className="bg-darkGrey rounded-3xl py-5 px-5 my-10 w-[280px] lg:w-[440px]">
@@ -48,13 +50,13 @@ const AddPartner = () => {
             </p>
             <p className="text-base text text-[#868484]">happycut@hotmail.fr</p>
           </div>
-          <div className="flex flex-col md:flex-row items-center gap-4 md:gap-7">
-            <button className="border border-secondary w-full md:w-48 h-14 rounded-xl text-secondary font-semibold text-xl">
+          <div className="flex flex-col md:flex-row items-center gap-4 m:gap-7">
+            <button className={`${Theme_A.button.bigWhiteColoredButton}`}>
               Détail
             </button>
             <button
               onClick={() => setIsModal(true)}
-              className="text-white font-medium text-xl rounded-xl w-full md:w-[290px] h-14 bg-gradient-to-r from-pink-500 to-orange-500 shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+              className={`${Theme_A.button.bigGradientButton}`}
             >
               Envoyer une demande
             </button>
@@ -80,6 +82,7 @@ const AddPartner = () => {
           </div>
         </BaseModal>
       )}
+      <Footer />
     </div>
   );
 };

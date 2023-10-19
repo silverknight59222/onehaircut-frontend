@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import {
-  LogoCircle,
   LogoIcon,
   RegistrationCheckedIcon,
   RegistrationUnCheckedIcon,
@@ -101,7 +100,7 @@ const Page = ({ params }: Params) => {
       {isLoading && loadingView()}
       <div>
         <div className="fixed -z-40 -left-32 md:-left-28 -bottom-32 md:-bottom-28 overflow-hidden hidden md:block">
-          <LogoCircle />
+          {/* <LogoCircle /> */}
         </div>
         <div className="flex flex-row items-center justify-center border-b border-[#EBF0F2]">
           <div onClick={()=>router.push('/')} className="w-full flex items-center justify-start gap-5 px-4 md:px-14 py-5 cursor-pointer">

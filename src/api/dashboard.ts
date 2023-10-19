@@ -18,10 +18,19 @@ interface SalonHaircut {
   haircut_id: number,
   servicesIDs: number[]
 }
+interface MessageParam{
+ client_id: number,
+ professional_id:number,
+ message: string,
+ by: string,
+}
 
 const dashboard = {
   getHairSalon: async (id: number) => {
     return await request.get<any>(`/hair_salon/${id}`);
+  },
+  updateHairSalonLogo: async (id: number) => {
+    return await request.post<any>(`/hair_salon_logo_update/${id}`);
   },
   getAllHairDressers: async (id: number) => {
     return await request.get<any>(`/hair_dresser/${id}`);
@@ -59,8 +68,8 @@ const dashboard = {
   getAllSalonHaircuts: async (id: number) => {
     return await request.get<any>(`/salon_haircuts_by_hair_salon/${id}`);
   },
-  getAllHaircuts: async () => {
-    return await request.get<any>(`/haircuts`);
+  getAllHaircuts: async (page: number) => {
+    return await request.get<any>(`/haircuts/${page}`);
   },
   getAllHaircutBySalon: async (id: number) => {
     return await request.get<any>(`/filtered_haircuts/${id}`);
@@ -92,14 +101,14 @@ const dashboard = {
   addWishList: async (params: WishlistParams) => {
     return await request.post(`/wishlist`, params);
   },
-  removeFromWishList: async (id: number) => {
-    return await request.delete(`/wishlist/${id}`);
+  removeFromWishList: async (haircutId: number, userId:number) => {
+    return await request.delete(`/wishlist/${haircutId}/${userId}`);
   },
   addSalonWishList: async (params: SalonWishlistParams) => {
     return await request.post(`/salon_wishlist`, params);
   },
-  removeFromSalonWishList: async (id: number) => {
-    return await request.delete(`/salon_wishlist/${id}`);
+  removeFromSalonWishList: async (salonId: number, userId:number) => {
+    return await request.delete(`/salon_wishlist/${salonId}/${userId}`);
   },
   getSalonsByHaircut: async (params: SalonHaircut) => {
     return await request.post(`/hair_salon_by_haircut_and_services`, params);
@@ -122,9 +131,18 @@ const dashboard = {
   updateSalonSlot: async ( data:any) => {
     return await request.post<any>(`update_multiple_slot`, data);
   },
-  getAllBookings: async () => {
-  return await request.get<any>(`bookings`);
-  }
+  getBookingsByHairsalon: async (id: number) => {
+  return await request.get<any>(`bookings/${id}`);
+  },
+  getClientsBySalon: async (id: number) => {
+    return await request.get(`/fetch_clients_by_salon/${id}`);
+  },
+  getChat: async (clientId: number, professionalId:number) => {
+    return await request.get(`/fetch_chat/${clientId}/${professionalId}`);
+  },
+  sendMessage: async ( param: MessageParam) => {
+    return await request.post<any>(`send_message`, param);
+  },
 };
 
 export { dashboard };
