@@ -306,7 +306,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
           className="relative flex items-center justify-center md:justify-end gap-4"
         >
           {!isLoggedIn &&
-            <button onClick={() => router.push('/registration')} className="w-52 2xl:w-60 h-11 text-white font-semibold bg-background-gradient rounded-3xl">
+            <button onClick={() => router.push('/registration')} className="w-52 2xl:w-60 h-11 text-white font-semibold bg-background-gradient rounded-3xl shadow-sm hover:shadow-lg transform hover:scale-105 transition-transform ">
               Enregistre mon salon
             </button>}
           {/* {isLoggedIn ? (

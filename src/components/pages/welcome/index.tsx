@@ -330,16 +330,18 @@ const Welcome = () => {
         </div>
 
         {isLoggedIn && (
-          <div className="flex py-4 mx-3 gap-3 sm:gap-12 md:gap-20 items-center justify-center bg-white w-full fixed bottom-0">
-            <div className="p-2 sm:p-4 md:p-5 text-center border-[#FE3462] border-2 rounded-2xl cursor-pointer ml-3">
+          <div className="flex py-4 mx-3 gap-3 sm:gap-12 md:gap-20 items-center justify-center bg-white w-full fixed bottom-8">
+            <div className={`p-2 sm:p-4 md:p-5 text-center ${Theme_A.button.medLargeBlackButton}`}>
               Démonstration d’utilisation
             </div>
-            <div onClick={() => router.push('/login')} className="p-2 sm:p-4 md:p-5 text-white text-center rounded-2xl cursor-pointer bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo">
+            <div onClick={() => router.push('/login')} className={`p-2 sm:p-4 md:p-5 text-center ${Theme_A.button.medLargeGradientButton}`}>
               Connexion / Inscription
             </div>
+            {/*
             <div className="p-2 sm:p-4 md:p-5 text-center border-[#FE3462] border-2 rounded-2xl cursor-pointer mr-3">
               Envie d’offrir un cadeau ?
             </div>
+            */}
           </div>
 
         )}
