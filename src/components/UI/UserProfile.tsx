@@ -32,42 +32,42 @@ const UserProfile = ({ isDashboard }: UserProfileProfile) => {
   const dropdownItems = [
     {
       name: "Compte",
-      icon: <DashboardIcon width="18" height="18" />,
+      icon: <DashboardIcon width="18" height="18" color="#000000" />,
       route: "/client/dashboard",
     },
     {
       name: "Messages",
-      icon: <MessageIcon width="18" height="18" />,
+      icon: <MessageIcon width="18" height="18" color="#000000" />,
       route: "/client/messages",
     },
     {
       name: "Favoris",
-      icon: <StarGreyIcon width="18" height="18" />,
+      icon: <StarGreyIcon width="18" height="18" color="#FFFFFF" />,
       route: "/client/favorites",
     },
     {
       name: "Portrait",
-      icon: <PortraitIcon width="18" height="18" />,
+      icon: <PortraitIcon width="18" height="18" color="#000000" />,
       route: "/client/portrait",
     },
     {
       name: "Filtre",
-      icon: <FilterIcon width="18" height="18" />,
+      icon: <FilterIcon width="18" height="18" color="#000000" />,
       route: "/client/filters",
     },
     {
       name: "Reservation",
-      icon: <ReservationIcon width="18" height="18" />,
+      icon: <ReservationIcon width="18" height="18" color="#000000" />,
       route: "/client/currentreservation",
     },
     {
       name: "Historique",
-      icon: <HistoryIcon width="18" height="18" />,
+      icon: <HistoryIcon width="18" height="18" color="#000000" />,
       route: "/client/history",
     },
     {
       name: "Aide",
-      icon: <HelpIcon width="20" height="20" />,
+      icon: <HelpIcon width="20" height="20" color="#000000" />,
       route: ""
     },
   ];

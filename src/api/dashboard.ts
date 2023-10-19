@@ -128,6 +128,9 @@ const dashboard = {
   updateSalonTiming: async (id: number, data:any) => {
     return await request.post<any>(`hair_salon_open_times/${id}`, data);
   },
+  updateSalonIsMobile: async (id:number, data:any) => {
+    return await request.post<any>(`hair_salon_is_mobile/${id}`, data);
+  },
   updateSalonSlot: async ( data:any) => {
     return await request.post<any>(`update_multiple_slot`, data);
   },
