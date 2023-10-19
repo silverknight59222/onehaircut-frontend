@@ -126,9 +126,9 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
       name: "No",
     }
   ];
-  const rangeSelector = (event, newValue: any) => {
+  const rangeSelector = (event: any, newValue: any) => {
     setRangeFilter(newValue);
-  };
+};
   const onClickGenderCheckbox = (gender: string) => {
     onGenderFilter && onGenderFilter(gender === 'Homme' ? 'men' : gender === 'Femme' ? 'women' : 'Mix')
     if (genderFilters === gender) {
@@ -167,8 +167,9 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
     onMobileFilters && onMobileFilters(mobileFilters)
   }, [mobileFilters])
   useEffect(() => {
-    onRangeFilters && onRangeFilters(rangeFilters)
-  }, [rangeFilters])
+    onRangeFilters && onRangeFilters(rangeFilters.map(num => num.toString()))
+}, [rangeFilters])
+
 
   useEffect(() => {
     const user = getLocalStorage("user");
