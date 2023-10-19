@@ -35,7 +35,7 @@ const SalonChoice = () => {
     let user = getLocalStorage("user");
     const userId = user ? Number(JSON.parse(user).id) : null;
     const getHaircut = getLocalStorage("haircut") as string;
-    const haircut = user ? JSON.parse(getHaircut) : null;
+    const haircut = JSON.parse(getHaircut) || null;
     const [isLoading, setIsLoading] = useState(false);
     const { loadingView } = userLoader();
     const showSnackbar = useSnackbar();
@@ -46,7 +46,6 @@ const SalonChoice = () => {
     const [nameSearch, setNameSearch] = useState<string>('');
     const [filteredMobile, setFilteredMobile] = useState<string[]>([]);
     const [filtereRange, setRangeFilter] = useState([2, 100]);
-
     const { isLoaded } = useJsApiLoader({
         googleMapsApiKey: 'AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E',
         libraries: ['places'],
@@ -79,7 +78,6 @@ const SalonChoice = () => {
     };
     // Fonction pour récupérer tous les salons
     const getAllSalons = async () => {
-        const haircut = getLocalStorage('haircut')
         const services = getLocalStorage('ServiceIds')
         const servicesData = services ? JSON.parse(services) : null
         const serviceIds: number[] = []
