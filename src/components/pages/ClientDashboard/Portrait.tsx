@@ -19,7 +19,13 @@ const TextToDsplayifNoPic =
         </p>
     </div>
 
-
+const SubTextToDisplay =
+    ["Profil légèrement gauche",
+        "Profil gauche",
+        "Profil de face",
+        "Profil légèrement droite",
+        "Profil droite"
+    ]
 
 
 const Portrait = () => {
@@ -120,7 +126,7 @@ const Portrait = () => {
             return;
         }
         const fileUploaded = event.target.files[0];
-        setProfileLeftImage(URL.createObjectURL(fileUploaded));
+        setProfileRightImage(URL.createObjectURL(fileUploaded));
     };
     // handle the click to modify the pic
     const handleClickRight = () => {
@@ -151,24 +157,29 @@ const Portrait = () => {
     };
 
 
-    // For removing
+    // Handle removing profil picture
     const RemoveHaircutWishlist = async (e: any, profil: string) => {
-        // Handle removing profil picture
-        e.stopPropagation()
-        // if (userId) {
-        //     let data = {
-        //         user_id: userId,
-        //         haircut_id: haircutId
-        //     }
+        // TODO Add backend
 
-        // await dashboard.removeFromWishList(haircutId, userId) // TODO replace with correct function
-        // .then(response => {
-        //     // getWishlistHaircuts()
-        //     showSnackbar('succès', 'Photo de profil supprimée')
-        // })
-        // .catch(error => {
-        //     showSnackbar('erreur', 'Photo non supprimée!')
-        // })
+        e.stopPropagation()
+        if (profil == SubTextToDisplay[0]) {
+            setProfileLeft2Image(null)
+        }
+        else if (profil == SubTextToDisplay[1]) {
+            setProfileLeftImage(null)
+        }
+        else if (profil == SubTextToDisplay[2]) {
+            setProfileImage(null)
+        }
+        else if (profil == SubTextToDisplay[3]) {
+            setProfileRight2Image(null)
+        }
+        else if (profil == SubTextToDisplay[4]) {
+            setProfileRightImage(null)
+        }
+        else {
+            // nothing
+        }
 
     }
 
@@ -189,7 +200,7 @@ const Portrait = () => {
                     </div>
                     {img && (
                         <div
-                            onClick={(e) => RemoveHaircutWishlist(e, "LightLeft")}
+                            onClick={(e) => RemoveHaircutWishlist(e, subtitle)}
                             className={`absolute -top-5 -right-3 flex items-center w-6 h-6 cursor-pointer rounded-md ${Theme_A.button.crossButtonSmall} z-10`}>
                             <CrossIcon width="18" height="18" />
                         </div>)}
@@ -246,22 +257,22 @@ const Portrait = () => {
                     <div className="flex flex-col sm:flex-row  sm:items-start justify-center gap-14">
                         {/* Left side of the head placed left */}
                         <div className="flex sm:flex-col  gap-10 -mt-6 sm:-mt-0">
-                            {profilPicToDisplay(handleClickLeft2, profileLeft2Image, "Profil légèrement gauche", 32)}
+                            {profilPicToDisplay(handleClickLeft2, profileLeft2Image, SubTextToDisplay[0], 32)}
 
-                            {profilPicToDisplay(handleClickLeft, profileLeftImage, "Profil gauche", 32)}
+                            {profilPicToDisplay(handleClickLeft, profileLeftImage, SubTextToDisplay[1], 32)}
                         </div>
 
                         {/* Straight side in the middle */}
 
                         {/* <div className="w-40 gap-10 -mt-6 sm:-mt-0"> */}
-                        {profilPicToDisplay(handleClick, profileImage, "Profil de face", 52)}
+                        {profilPicToDisplay(handleClick, profileImage, SubTextToDisplay[2], 52)}
                         {/* </div> */}
 
                         {/* Right side of the face on the right */}
                         <div className="flex sm:flex-col  gap-10 -mt-6 sm:-mt-0">
-                            {profilPicToDisplay(handleClickRight2, profileRight2Image, "Profil légèrement droite", 32)}
+                            {profilPicToDisplay(handleClickRight2, profileRight2Image, SubTextToDisplay[3], 32)}
 
-                            {profilPicToDisplay(handleClickRight, profileRightImage, "Profil droite", 32)}
+                            {profilPicToDisplay(handleClickRight, profileRightImage, SubTextToDisplay[4], 32)}
                         </div>
                     </div>
                     <div className="flex flex-col md:flex-row items-center md:items-start justify-center gap-10 mt-10">
