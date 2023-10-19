@@ -41,20 +41,30 @@ const Welcome = () => {
   const [isPreview, setIsPreview] = useState(false); // Initialiser à false pour afficher la coiffure par défaut
   const [selectedHaircut, setSelectedHaircut] = useState({ id: 0, name: '', image: '' }) // Store the selected haircut
   const [wishlist, setWishlist] = useState<string[]>([]) // Store user’s wishlist of haircuts
+  const [page, setPage] = useState(1);
 
 
-  const getAllHaircuts = () => {
+  const getAllHaircuts = async () => {
     // Fetch all available haircuts from the API
     setIsLoading(true);
-    dashboard.getAllHaircuts()
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await dashboard.getAllHaircuts(page)
       .then((res) => {
-        if (res.data.data.length > 0) {
-          setSalonHaircut(res.data.data);
-        }
+          setSalonHaircut([...salonHaircut, ...res.data.data]);
+          setPage(prevPage => prevPage + 1);
+          setIsLoading(false)
       })
       .catch(error => console.log(error))
-      .finally(() => setIsLoading(false))
   }
+
+  const handleScroll = () => {
+    if (isLoading) return;
+
+    if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight)
+    {
+      getAllHaircuts();
+    }
+  };
 
   const getHaircutsWishlist = () => {
     // Fetch the user’s wishlist of haircuts
@@ -256,6 +266,12 @@ const Welcome = () => {
     onClickHaircut(-1, "Aucune coiffure sélectionnée");
   }
 
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [isLoading]);
 
   useEffect(() => {
     getFilteredCuts();
