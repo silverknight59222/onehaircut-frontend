@@ -1,7 +1,7 @@
 "use client";
 import { client } from "@/api/clientSide";
 import { dashboard } from "@/api/dashboard";
-import { getLocalStorage, removeFromLocalStorage } from "@/api/storage";
+import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/storage";
 import Navbar from "@/components/shared/Navbar";
 import {
   CardIcon,
@@ -21,18 +21,27 @@ const Index = () => {
   const showSnackbar=useSnackbar()
   const user = getLocalStorage("user");
   const haircut=getLocalStorage("haircut")
+  const hairTime=getLocalStorage("slotTime")
+  const haircutTime = hairTime ? JSON.parse(hairTime) : null
+  const durationData=getLocalStorage('serviceDuration')
+  const durationTime = durationData ? JSON.parse(durationData) : null
+  const priceData=getLocalStorage('servicePrice')
+  const servicePrice = priceData ? JSON.parse(priceData) : null
+  const hairTimeData=+haircutTime + durationTime
   const haircutData = haircut ? JSON.parse(haircut) : null
   const salon=getLocalStorage('selectedSalon')
   const salonData= salon ? JSON.parse(salon) : null
   const services=getLocalStorage('ServiceIds')
   const servicesData=services ? JSON.parse(services) : null
+  const datetime=getLocalStorage('selectDate')
   const slot = getLocalStorage('slotData')
   const slotData= slot ? JSON.parse(slot) : null
-  const [haircutPrize,setHaircutPrize]=useState()
+  const [haircutPrize,setHaircutPrize]=useState(0)
   const [servicePrize,setServicePrize]=useState<number>()
   const { loadingView } = userLoader();
   const [isLoading, setIsLoading] = useState(false);
   const [isModal,setIsModal]=useState(false)
+  const [duration,setDuration]=useState("")
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [stripePromise, setStripePromise] = useState<string>("pk_test_51IkzH1ExivflHCSmgQfNoQAWOnOcfKopp26Ct493No4QtWa8Cv6HEf9933YbMXcrs6wVR7YjWslQV58IikPujC5U006Imw8zpO");
@@ -82,7 +91,7 @@ const Index = () => {
           }
         })
       });
-      setServicePrize(price)
+      setServicePrize(price+servicePrice)
     })
     .catch(err=>{
       console.log(err)
@@ -97,21 +106,40 @@ const Index = () => {
       setIsModal(true)
     }else{
     setIsLoading(true)
+
+      const targetDayOfWeek = slotData.slot[0].day; 
+
+      const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+      const number= daysOfWeek.indexOf(targetDayOfWeek);
+      const today = new Date();
+      const currentDayOfWeek = today.getDay();
+      let difference = number - currentDayOfWeek;
+      if (difference < 0) {
+          difference += 7;
+      }
+      const targetDate = new Date(today);
+      targetDate.setDate(today.getDate() + difference);
+
+      const formattedDate = targetDate.toISOString().split('T')[0];
+
+
     const data={
       user_id: user ? Number(JSON.parse(user).id) : null,
       hair_salon_id: Number(salonData.id),
       slot_ids:slotData.slot.map((prevSlot:any) => prevSlot.id),
       hair_dresser_id: slotData.hairDresser.id,
-      amount: !haircutPrize ? servicePrize : !servicePrize ? haircutPrize : haircutPrize && servicePrize ? haircutPrize + servicePrize : 0,
+      amount: haircutPrize ? haircutPrize + servicePrice :"",
       salon_haircut_id: haircutData.id,
-      services: serviceIds
+      services: serviceIds,
+      date:formattedDate
     }
     await client.createBooking(data)
     .then(resp=>{
-      removeFromLocalStorage('haircut')
-      removeFromLocalStorage('slotData')
-      removeFromLocalStorage('ServiceIds')
-      removeFromLocalStorage('selectedSalon')
+      // removeFromLocalStorage('haircut')
+      // removeFromLocalStorage('slotData')
+      // removeFromLocalStorage('ServiceIds')
+      // removeFromLocalStorage('selectedSalon')
+       setLocalStorage("plan_type",haircutPrize)
       showSnackbar("success", 'Booking Created Successfully');
       router.push('/confirm-payment')
     })
@@ -136,7 +164,43 @@ const Index = () => {
       arr.push(service.id)
     })
     setServiceIds(arr)
+
+    if(hairTimeData>30 && !Number.isInteger(hairTimeData/30)){
+      const i=Math.floor(hairTimeData/30)
+      const ppp=30*(i+1)-hairTimeData
+      const newTime = calculateTimeAfterSeparatingMinutes(slotData.slot[slotData.slot.length-1].end, ppp);
+      setDuration(newTime)
+    }else if(hairTimeData>30 && Number.isInteger(hairTimeData/30)){
+      const i=Math.floor(hairTimeData/30)
+      const ppp=0
+      const newTime = calculateTimeAfterSeparatingMinutes(slotData.slot[slotData.slot.length-1].end, ppp);
+      setDuration(newTime)
+    }
+    else {
+      var value=0;
+      if(hairTimeData==30){
+         value=0
+      }else{
+        value=30-hairTimeData
+      }
+      const newTime = calculateTimeAfterSeparatingMinutes(slotData.slot[0].end, value);
+      setDuration(newTime)
+    }
   },[])
+
+  function calculateTimeAfterSeparatingMinutes(timeString:any, minutesToSeparate:any) {
+    const [hours, minutes] = timeString.split(':').map(Number);
+    const totalMinutes = hours * 60 + minutes;
+    const newTotalMinutes = totalMinutes - minutesToSeparate;
+    let newHours = Math.floor(newTotalMinutes / 60);
+    let newMinutes = newTotalMinutes % 60;
+    if (newHours < 0) {
+      newHours += 24;
+    }
+    const newTimeString = `${newHours.toString().padStart(2, '0')}:${newMinutes.toString().padStart(2, '0')}`;
+  
+    return newTimeString;
+  }
   return (
     <div>
       {isLoading && loadingView()}
@@ -167,14 +231,17 @@ const Index = () => {
               </p> : ''}
               {salonData && <p className="text-base"><span className="font-semibold text-lg">Hair Salon: </span>{salonData.name}</p>}
               {slotData && <p className="text-base"><span className="font-semibold text-lg">Hair Dresser: </span>{slotData.hairDresser.name}</p>}
-              {slotData && <p className="text-base"><span className="font-semibold text-lg">Slot: </span>{slotData.slot[0].day} {slotData.slot.map((prevSlot:any)=>{return <>{prevSlot.start}</>})}</p>} 
+              {slotData && <p className="text-base"><span className="font-semibold text-lg">Slot: </span>{slotData.slot[0].day}</p>}
+              {slotData && <p className="text-base"><span className="font-semibold text-lg">Start: </span>{slotData.slot[0].start}</p>}
+              {slotData && <p className="text-base"><span className="font-semibold text-lg">End: </span>{duration}</p>}
+              {slotData && <p className="text-base"><span className="font-semibold text-lg">Duration: </span>{hairTimeData} Minutes</p>}
             </div>
             <div className="flex items-center justify-between border-t-2 border-[#CBCBCB] pt-9 mt-9">
               <button onClick={()=>router.push('/')} className="w-36 h-14 flex items-center justify-center border border-secondary rounded-xl text-xl text-black font-semibold">
                 Modifier
               </button>
               <p className="text-5xl md:text-6xl text-black font-semibold">
-                ${!haircutPrize ? servicePrize : !servicePrize ? haircutPrize : haircutPrize && servicePrize && haircutPrize + servicePrize }
+               ${!haircutPrize ? servicePrize : !servicePrize ? haircutPrize+servicePrice : haircutPrize && servicePrize && haircutPrize + servicePrice }
               </p>
             </div>
           </div>

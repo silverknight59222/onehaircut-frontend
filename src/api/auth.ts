@@ -4,6 +4,10 @@ export type LoginParams = {
   email: string;
   password: string;
 };
+export type ForgotParams = {
+  email: string;
+};
+
 export type SignupParams = {
   name: string;
   phone: string;
@@ -27,6 +31,12 @@ export type LoginResponse = {
 const Auth = {
   login: async (params: LoginParams) => {
     return await request.post<LoginResponse>(`/login`, params);
+  },
+  forgot: async (params: ForgotParams) => {
+    return await request.post(`/forgot-password`, params);
+  },
+  reset: async (params: ForgotParams) => {
+    return await request.post(`/password-reset`, params);
   },
   logout: async () => {
     return await request.post(`/logout`);

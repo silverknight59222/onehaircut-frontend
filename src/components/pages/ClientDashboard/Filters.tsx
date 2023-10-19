@@ -142,7 +142,7 @@ const Filters = () => {
                                     <div className='flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-24 lg:flex-col xl:flex-row lg:items-start xl:items-center lg:gap-5 xl:gap-24 mt-6 sm:mt-3'>
                                         <div>
                                             <p className="text-black text-sm mb-2">Code postal</p>
-                                            <div className='flex items-center justify-center w-52 h-8 rounded-md shadow-inner shadow-[0px_3px_7px_0px_rgba(0,0,0,0.14)]'>1033</div>
+                                            <div className='flex items-center justify-center w-52 h-8 rounded-md shadow-inner'>1033</div>
                                         </div>
                                         <div>
                                             <p className="text-black text-sm mb-2">Geolocalisation</p>

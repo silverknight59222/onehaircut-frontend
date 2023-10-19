@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState, useRef } from "react";
 import StarRatings from "react-star-ratings";
 import userLoader from "@/hooks/useLoader";
-import { getLocalStorage } from "@/api/storage";
+import { getLocalStorage,setLocalStorage } from "@/api/storage";
 import { Theme_A } from "@/components/utilis/Themes";
 import ChatModal from "./ChatModal";
 import { GoogleMap, Marker, useJsApiLoader, LoadScript } from '@react-google-maps/api';
@@ -19,6 +19,7 @@ import SalonPicModal from "./SalonPicModal";
 import PerfSampleModal from "./PerfSampleModal";
 import MapIcon from "@/components/utilis/Icons";
 import ReactDOMServer from 'react-dom/server';
+import { dashboard } from '@/api/dashboard';
 
 
 const temp = getLocalStorage("haircut")
@@ -43,6 +44,8 @@ interface SalonProfile {
 
 const SearchSalon = () => {
   const [selectedImage, setSelectedImage] = useState("");
+  const [serviceDuration, setServiceDuration] = useState<Number>();
+  const [servicePrice, setServicePrice] = useState<Number>();
   const [isLoading, setIsLoading] = useState(false);
   const [salonProfile, setSalonProfile] = useState<SalonProfile>({ name: '', rating: '', user_id: 0, salon_images: [{ image: '', is_cover: true }], salon_hairdressers: [{ name: '', profile_image: '' }] })
   const router = useRouter();
@@ -51,6 +54,7 @@ const SearchSalon = () => {
   const haircut=getLocalStorage("haircut")
   const haircutData = haircut ? JSON.parse(haircut) : null
   const salon = getLocalStorage('selectedSalon')
+  const services_ids = getLocalStorage('ServiceIds')
   const salonId = salon ? JSON.parse(salon).id : null
 
   //TODO Import salon availability times
@@ -67,20 +71,57 @@ const SearchSalon = () => {
 
   const getAllHairDresser = async () => {
     setIsLoading(true);
+    console.log(salonId, haircutData.id)
     if (salonId) {
-      await client.getSalonDetail(salonId,haircutData.id)
+
+      await client.getSalonDetail(salonId,haircutData.id, services_ids)
         .then((resp) => {
           setSalonProfile(resp.data.data[0])
-          setHairCut(resp.data.salon_haircut)
+          setHairCut(resp.data.data[0].salon_haircut)
           setIsLoading(false);
+          setLocalStorage('slotTime', resp.data.salon_haircut.base_duration)
         }).catch(error => {
           console.log(error)
         })
     }
   };
 
+  const getAllSalons = async () => {
+    const services = getLocalStorage('ServiceIds')
+    const servicesData = services ? JSON.parse(services) : null
+    const serviceIds: number[] = []
+    servicesData.forEach((service: { name: string, id: number }) => {
+        serviceIds.push(service.id)
+        
+    })
+    // Code pour obtenir des informations sur les salons depuis l'API
+    setIsLoading(true);
+    if (haircut) {
+        const data = {
+          hair_salon_id: salonId,
+          service_ids: serviceIds
+        }
+        await dashboard.getSaloneTimeDuration(data)
+            .then((res) => {
+                setIsLoading(false);
+                const totalPrice = res.data.data.reduce((sum, item:any) => sum + (+item.price), 0);
+                const totalDuration = res.data.data.reduce((sum, item:any) => sum + (+item.duration), 0);
+                setServicePrice(totalPrice)
+                setServiceDuration(totalDuration)
+
+                setLocalStorage('servicePrice',totalPrice)
+                setLocalStorage('serviceDuration',totalDuration)
+            })
+            .catch(error => {
+                setIsLoading(false);
+                console.log(error)
+            })
+    }
+}
+
   useEffect(() => {
     getAllHairDresser()
+    getAllSalons()
   }, [])
   useEffect(() => {
     salonProfile.salon_images.forEach((img) => {
@@ -124,8 +165,7 @@ const SearchSalon = () => {
   const openPerfSampleModal = () => {
     setIsPerfSampleModalOpen(true);
   };
-
-  console.log(hairCut,"sdfhjksda")
+  
 
   //GOOGLE MAP 
   //TODO Centrer par rapport aux coordonnées du salon
@@ -157,7 +197,7 @@ const SearchSalon = () => {
       {isLoading && loadingView()}
 
       {/* Barre de navigation */}
-      <Navbar isSalonPage={true} />
+      <Navbar isSalonPage={false} />
       <div className="mt-2 mb-5 px-5 md:px-10 2xl:px-14">
         <div className='flex items-start cursor-pointer mt-8 mb-8 sm:mx-10 2xl:mx-14 text-stone-800' onClick={() => router.push('/salons')}>
           <BackArrow />
@@ -343,7 +383,7 @@ const SearchSalon = () => {
                     Prix total :
                   </p>
                   <p className="text-md xl:text-lg font-normal text-black">
-                  {hairCut.base_price}
+                  {salonProfile.final_price}
                   </p>
                 </div>
 
@@ -353,7 +393,7 @@ const SearchSalon = () => {
                     Dur&eacute;e totale :
                   </p>
                   <p className="text-md xl:text-lg font-normal text-black">
-                    {hairCut.base_duration}
+                    {+hairCut.base_duration + serviceDuration}
                   </p>
                 </div>
               </div>

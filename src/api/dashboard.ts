@@ -2,6 +2,7 @@ import { request } from "./Request";
 export interface ResponseType {
   message: string;
   status: number;
+  data:[]
 }
 
 interface WishlistParams{
@@ -41,6 +42,9 @@ const dashboard = {
   addHairDresser: async (params: any) => {
     return await request.post<ResponseType>(`/hair_dresser`, params);
   },
+  getSaloneTimeDuration: async (params: any) => {
+    return await request.post<ResponseType>(`/service`, params);
+  },
   updateHairDresser: async (id: number,params: any) => {
     return await request.post<ResponseType>(`/hair_dresser/${id}`, params);
   },
@@ -68,8 +72,8 @@ const dashboard = {
   getAllSalonHaircuts: async (id: number) => {
     return await request.get<any>(`/salon_haircuts_by_hair_salon/${id}`);
   },
-  getAllHaircuts: async () => {
-    return await request.get<any>(`/haircuts`);
+  getAllHaircuts: async (page: number) => {
+    return await request.get<any>(`/haircuts/${page}`);
   },
   getAllHaircutBySalon: async (id: number) => {
     return await request.get<any>(`/filtered_haircuts/${id}`);
@@ -127,6 +131,9 @@ const dashboard = {
   },
   updateSalonTiming: async (id: number, data:any) => {
     return await request.post<any>(`hair_salon_open_times/${id}`, data);
+  },
+  updateSalonIsMobile: async (id:number, data:any) => {
+    return await request.post<any>(`hair_salon_is_mobile/${id}`, data);
   },
   updateSalonSlot: async ( data:any) => {
     return await request.post<any>(`update_multiple_slot`, data);

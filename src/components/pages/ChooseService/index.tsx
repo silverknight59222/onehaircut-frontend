@@ -197,11 +197,11 @@ const ServiceChoose = () => {
     // Charger tous les services au montage du composant.
     useEffect(() => {
         getAllServices()
-        if(servicesData){
-            servicesData.forEach((item: {name: string, id: string}) => {
-                setSelectedService((prevState) => [...prevState, String(item.id)]);
-            });
-        }
+        // if(servicesData){
+        //     servicesData.forEach((item: {name: string, id: string}) => {
+        //         setSelectedService((prevState) => [...prevState, String(item.id)]);
+        //     });
+        // }
     }, [])
 
     // Filtrage des services lors de la modification de la recherche ou du type filtré.
@@ -213,7 +213,10 @@ const ServiceChoose = () => {
     // JSX retourné pour le rendu du composant.
     return (
         <div>
-            <Navbar isServicesPage={true} onTypeSelect={(type) => setFilteredType(type)} onServiceSearch={(value: string) => setSearch(value)} />
+            <Navbar 
+            isServicesPage={true} 
+            onTypeSelect={(type) => setFilteredType(type)} 
+            onServiceSearch={(value: string) => setSearch(value)} />
             <div className='flex items-center cursor-pointer mt-10 mb-8 sm:mx-10 2xl:mx-14 text-stone-800' onClick={() => router.push('/')}>
                 <BackArrow />
                 <p className={`${Theme_A.textFont.navigationGreyFont}`}>Retour aux coiffures</p>
