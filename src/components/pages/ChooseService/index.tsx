@@ -197,11 +197,11 @@ const ServiceChoose = () => {
     // Charger tous les services au montage du composant.
     useEffect(() => {
         getAllServices()
-        if(servicesData){
-            servicesData.forEach((item: {name: string, id: string}) => {
-                setSelectedService((prevState) => [...prevState, String(item.id)]);
-            });
-        }
+        // if(servicesData){
+        //     servicesData.forEach((item: {name: string, id: string}) => {
+        //         setSelectedService((prevState) => [...prevState, String(item.id)]);
+        //     });
+        // }
     }, [])
 
     // Filtrage des services lors de la modification de la recherche ou du type filtré.

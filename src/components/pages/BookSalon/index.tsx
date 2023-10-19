@@ -26,6 +26,8 @@ const BookSalon = () => {
   const [hairCut, setHairCut] = useState({});
   const { loadingView } = userLoader();
   const salon=getLocalStorage('selectedSalon')
+  const duration=getLocalStorage('serviceDuration')
+  const durationTime = duration ? JSON.parse(duration) : null
   const salonId= salon ? JSON.parse(salon).id : null
   const items = [
     { name: "Type de coiffure", desc: "Curly" },
@@ -108,8 +110,8 @@ const BookSalon = () => {
     const currentIndex = slots.findIndex((item) => item.id === slot.id);
     if (currentIndex !== -1) {
       const selectedObjects = [];
-      const ddd=+getLocalStorage('slotTime')
-      const time=+ddd
+      const ddd=Number(getLocalStorage('slotTime'))
+      const time=+ddd + durationTime
       if(Number.isInteger(time/30)){
         for (let i = currentIndex; i <= currentIndex + time/30-1; i++) {
           if (slots[i]) {

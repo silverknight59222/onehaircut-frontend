@@ -19,6 +19,7 @@ import SalonPicModal from "./SalonPicModal";
 import PerfSampleModal from "./PerfSampleModal";
 import MapIcon from "@/components/utilis/Icons";
 import ReactDOMServer from 'react-dom/server';
+import { dashboard } from '@/api/dashboard';
 
 
 const temp = getLocalStorage("haircut")
@@ -43,6 +44,8 @@ interface SalonProfile {
 
 const SearchSalon = () => {
   const [selectedImage, setSelectedImage] = useState("");
+  const [serviceDuration, setServiceDuration] = useState<Number>();
+  const [servicePrice, setServicePrice] = useState<Number>();
   const [isLoading, setIsLoading] = useState(false);
   const [salonProfile, setSalonProfile] = useState<SalonProfile>({ name: '', rating: '', user_id: 0, salon_images: [{ image: '', is_cover: true }], salon_hairdressers: [{ name: '', profile_image: '' }] })
   const router = useRouter();
@@ -80,8 +83,42 @@ const SearchSalon = () => {
     }
   };
 
+  const getAllSalons = async () => {
+    const services = getLocalStorage('ServiceIds')
+    const servicesData = services ? JSON.parse(services) : null
+    const serviceIds: number[] = []
+    servicesData.forEach((service: { name: string, id: number }) => {
+        serviceIds.push(service.id)
+        
+    })
+    // Code pour obtenir des informations sur les salons depuis l'API
+    setIsLoading(true);
+    if (haircut) {
+        const data = {
+          hair_salon_id: salonId,
+          service_ids: serviceIds
+        }
+        await dashboard.getSaloneTimeDuration(data)
+            .then((res) => {
+                setIsLoading(false);
+                const totalPrice = res.data.data.reduce((sum, item:any) => sum + (+item.price), 0);
+                const totalDuration = res.data.data.reduce((sum, item:any) => sum + (+item.duration), 0);
+                setServicePrice(totalPrice)
+                setServiceDuration(totalDuration)
+
+                setLocalStorage('servicePrice',totalPrice)
+                setLocalStorage('serviceDuration',totalDuration)
+            })
+            .catch(error => {
+                setIsLoading(false);
+                console.log(error)
+            })
+    }
+}
+
   useEffect(() => {
     getAllHairDresser()
+    getAllSalons()
   }, [])
   useEffect(() => {
     salonProfile.salon_images.forEach((img) => {
@@ -342,7 +379,7 @@ const SearchSalon = () => {
                     Prix total :
                   </p>
                   <p className="text-md xl:text-lg font-normal text-black">
-                  {hairCut.base_price}
+                  {servicePrice+hairCut.base_price}
                   </p>
                 </div>
 
@@ -352,7 +389,7 @@ const SearchSalon = () => {
                     Dur&eacute;e totale :
                   </p>
                   <p className="text-md xl:text-lg font-normal text-black">
-                    {hairCut.base_duration}
+                    {+hairCut.base_duration + serviceDuration}
                   </p>
                 </div>
               </div>

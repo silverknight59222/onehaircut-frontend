@@ -23,7 +23,11 @@ const Index = () => {
   const haircut=getLocalStorage("haircut")
   const hairTime=getLocalStorage("slotTime")
   const haircutTime = hairTime ? JSON.parse(hairTime) : null
-  const hairTimeData=+haircutTime
+  const durationData=getLocalStorage('serviceDuration')
+  const durationTime = durationData ? JSON.parse(durationData) : null
+  const priceData=getLocalStorage('servicePrice')
+  const servicePrice = priceData ? JSON.parse(priceData) : null
+  const hairTimeData=+haircutTime + durationTime
   const haircutData = haircut ? JSON.parse(haircut) : null
   const salon=getLocalStorage('selectedSalon')
   const salonData= salon ? JSON.parse(salon) : null
@@ -32,7 +36,7 @@ const Index = () => {
   const datetime=getLocalStorage('selectDate')
   const slot = getLocalStorage('slotData')
   const slotData= slot ? JSON.parse(slot) : null
-  const [haircutPrize,setHaircutPrize]=useState()
+  const [haircutPrize,setHaircutPrize]=useState(0)
   const [servicePrize,setServicePrize]=useState<number>()
   const { loadingView } = userLoader();
   const [isLoading, setIsLoading] = useState(false);
@@ -87,7 +91,7 @@ const Index = () => {
           }
         })
       });
-      setServicePrize(price)
+      setServicePrize(price+servicePrice)
     })
     .catch(err=>{
       console.log(err)
@@ -124,7 +128,7 @@ const Index = () => {
       hair_salon_id: Number(salonData.id),
       slot_ids:slotData.slot.map((prevSlot:any) => prevSlot.id),
       hair_dresser_id: slotData.hairDresser.id,
-      amount: !haircutPrize ? servicePrize : !servicePrize ? haircutPrize : haircutPrize && servicePrize ? haircutPrize + servicePrize : 0,
+      amount: haircutPrize ? haircutPrize + servicePrice :"",
       salon_haircut_id: haircutData.id,
       services: serviceIds,
       date:formattedDate
@@ -237,7 +241,7 @@ const Index = () => {
                 Modifier
               </button>
               <p className="text-5xl md:text-6xl text-black font-semibold">
-                ${!haircutPrize ? servicePrize : !servicePrize ? haircutPrize : haircutPrize && servicePrize && haircutPrize + servicePrize }
+               ${!haircutPrize ? servicePrize : !servicePrize ? haircutPrize+servicePrice : haircutPrize && servicePrize && haircutPrize + servicePrice }
               </p>
             </div>
           </div>

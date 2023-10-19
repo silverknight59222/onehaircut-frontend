@@ -13,6 +13,8 @@ const Index = () => {
   const salonAddress = JSON.parse(getLocalStorage("salon_address") as string);
   const salonType = getLocalStorage("salon_type") as string;
   const planType = JSON.parse(getLocalStorage("plan_type") as string);
+  const priceData=getLocalStorage('servicePrice')
+  const servicePrice = priceData ? JSON.parse(priceData) : null
   const items = [
     { name: "Nom", desc: userInfo ? userInfo.name : '-' },
     { name: "Nom du salon", desc: salonName ? salonName : '-' },
@@ -58,7 +60,7 @@ const Index = () => {
               </div>
               <div className="flex items-center justify-end mt-4">
                 <p className="text-black text-3xl font-medium ">
-                  Total: <span className="text-4xl font-semibold">${ planType ? planType : '-'}</span>
+                  Total: <span className="text-4xl font-semibold">${ planType ? planType+servicePrice : '-'}</span>
                 </p>
               </div>
               <div className="border-t-2 border-[#CBCBCB] pt-9 mt-4">
