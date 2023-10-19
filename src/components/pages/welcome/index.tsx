@@ -25,7 +25,9 @@ const Welcome = () => {
   // Retrieve user and haircut information from local storage
   const user = getLocalStorage("user");
   const userId = user ? Number(JSON.parse(user).id) : null;
-  const haircut = JSON.parse(String(getLocalStorage("haircut")))
+  const haircutRaw = getLocalStorage("haircut");
+  const haircut = haircutRaw ? JSON.parse(haircutRaw) : null;
+
   // Define filters state variables
   const [ethnicityFilters, setEthnicityFilters] = useState<string[]>([]);
   const [lengthFilters, setLengthFilters] = useState<string[]>([]);
