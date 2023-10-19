@@ -2,6 +2,7 @@ import { request } from "./Request";
 export interface ResponseType {
   message: string;
   status: number;
+  data:[]
 }
 
 interface WishlistParams{
@@ -40,6 +41,9 @@ const dashboard = {
   },
   addHairDresser: async (params: any) => {
     return await request.post<ResponseType>(`/hair_dresser`, params);
+  },
+  getSaloneTimeDuration: async (params: any) => {
+    return await request.post<ResponseType>(`/service`, params);
   },
   updateHairDresser: async (id: number,params: any) => {
     return await request.post<ResponseType>(`/hair_dresser/${id}`, params);

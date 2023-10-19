@@ -11,6 +11,7 @@ export interface Booking {
     id: string;
     title: string;
     start: string;
+    end:string;
     coiffeur: Coiffeur;
     backgroundColor?: string;
     textColor?: string;

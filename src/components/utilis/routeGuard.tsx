@@ -9,7 +9,7 @@ export const RouteGuard = ({ children }: any) => {
 	const isSalonAuthenticated = getLocalStorage('auth-token');
 	const userItem = getLocalStorage('user');
 	const user = userItem ? JSON.parse(userItem) : null;
-	let publicRoutes = ['/', '/login', '/signup', '/services', '/salons', '/registration', '/book-salon', '/salon', '/payment', '/confirm-payment', '/confidentiality'];
+	let publicRoutes = ['/', '/login', '/signup','/forgot','/[id]', '/services', '/salons', '/registration', '/book-salon', '/salon', '/payment', '/confirm-payment', '/confidentiality'];
 	let professionalRoutes = ['/dashboard', '/dashboard/client-activity', '/dashboard/visites', '/dashboard/revenue', '/dashboard/messages', '/dashboard/settings', '/dashboard/subscription', '/dashboard/bot'];
 	let freeSubscriptionRoutes = ['/dashboard', '/dashboard/client-activity', '/dashboard/revenue', '/dashboard/messages', '/dashboard/settings', '/dashboard/subscription'];
 	let clientRoutes = ['/client/dashboard', '/client/favorites', '/client/filters', '/client/history', '/client/messages', '/client/portrait', '/client/currentreservation'];
@@ -28,10 +28,10 @@ export const RouteGuard = ({ children }: any) => {
 		router.push('/login');
 	}
 
-	let pathIsProtected = publicRoutes.indexOf(`/${pathname.split('/')[1]}`) === -1;
-	if (isBrowser() && !isSalonAuthenticated && pathIsProtected) {
-		router.push('/login');
-	}
+	// let pathIsProtected = publicRoutes.indexOf(`/${pathname.split('/')[1]}/${pathname.split('/')[1]}`) === -1;
+	// if (isBrowser() && !isSalonAuthenticated && pathIsProtected) {
+	// 	router.push('/login');
+	// }
 	return children;
 
 };

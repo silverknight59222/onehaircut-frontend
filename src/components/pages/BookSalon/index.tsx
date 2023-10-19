@@ -26,6 +26,8 @@ const BookSalon = () => {
   const [hairCut, setHairCut] = useState({});
   const { loadingView } = userLoader();
   const salon=getLocalStorage('selectedSalon')
+  const duration=getLocalStorage('serviceDuration')
+  const durationTime = duration ? JSON.parse(duration) : null
   const salonId= salon ? JSON.parse(salon).id : null
   const items = [
     { name: "Type de coiffure", desc: "Curly" },
@@ -82,9 +84,17 @@ const BookSalon = () => {
   const onSelectedDate=(date: Date)=>{
     setSelectedDate(date)
   }
+  console.log(selectedDate?.getDate(),"sjfdjshf")
+
 
   const onContinue=()=>{
     setLocalStorage('slotData', JSON.stringify({hairDresser: selectedHairdresser, slot: selectedSlot}))
+    const year = String(selectedDate?.getFullYear());
+    const month = String(selectedDate?.getMonth() + 1).padStart(2, '0');  // Month is zero-indexed
+    const day = String(selectedDate?.getDate()).padStart(2, '0');
+    console.log(year,month,day)
+    setLocalStorage('selectDate',`${year}-${month}-${day}`)
+
     route.push('/payment')
   }
 
@@ -100,15 +110,24 @@ const BookSalon = () => {
     const currentIndex = slots.findIndex((item) => item.id === slot.id);
     if (currentIndex !== -1) {
       const selectedObjects = [];
-      // const ddd=+hairCut.base_duration
-      const ddd=+hairCut.base_duration
-      for (let i = currentIndex; i <= currentIndex + Math.floor(ddd/30); i++) {
-        if (slots[i]) {
-          selectedObjects.push(slots[i]);
+      const ddd=Number(getLocalStorage('slotTime'))
+      const time=+ddd + durationTime
+      if(Number.isInteger(time/30)){
+        for (let i = currentIndex; i <= currentIndex + time/30-1; i++) {
+          if (slots[i]) {
+            selectedObjects.push(slots[i]);
+          }
         }
+        setSelectedSlot(selectedObjects)
+      }else{
+        for (let i = currentIndex; i <= currentIndex + Math.floor(time/30); i++) {
+          if (slots[i]) {
+            selectedObjects.push(slots[i]);
+          }
+        }
+        setSelectedSlot(selectedObjects)
       }
-      setSelectedSlot(selectedObjects);
-    }
+    };
   };
 
 
@@ -192,11 +211,12 @@ const BookSalon = () => {
             {slots.length ?
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-10 gap-y-7">
               {slots.map((slot, index) => {
+                const ddd=true
                 return (
                   <div
                     key={index}
-                    onClick={()=>onSelectSlot(slot)}
-                    className={`w-32 h-14 flex items-center justify-center text-xl font-semibold border rounded-2xl cursor-pointer text-black ${
+                    onClick={()=>{slot.is_booked ? "":onSelectSlot(slot)}}
+                    className={`w-32 h-14 flex items-center justify-center text-xl font-semibold border rounded-2xl ${slot.is_booked ? "bg-[#6c6c6c]":""}  ${slot.is_booked ? "":"cursor-pointer"}  text-black ${
                       selectedSlot.some((item:any)=>item.id===slot.id)
                         ? "bg-[#fbd3c6] text-[#473c38]"
                         : "bg-white border-[#BABABA]"
