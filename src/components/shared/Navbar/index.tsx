@@ -171,6 +171,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
 }, [rangeFilters])
 
 
+
   useEffect(() => {
     const user = getLocalStorage("user");
     const userId = user ? Number(JSON.parse(user).id) : null;
