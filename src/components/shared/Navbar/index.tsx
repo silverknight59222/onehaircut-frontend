@@ -167,8 +167,8 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
     onMobileFilters && onMobileFilters(mobileFilters)
   }, [mobileFilters])
   useEffect(() => {
-    onRangeFilters && onRangeFilters(rangeFilters.map(num => num.toString()))
-  }, [rangeFilters])
+    onRangeFilters && onRangeFilters(rangeFilters.map(String))
+  }, [rangeFilters]);
 
 
   useEffect(() => {
@@ -418,7 +418,14 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
                         onChange={rangeSelector}
                         valueLabelDisplay="auto"
                       />
-                      Min: {rangeFilters[0]} Max:{rangeFilters[1]}
+                      <div>
+                        &#91;
+                        <span style={{ fontSize: '0.8em', fontWeight: '500', color: '#747474' }}>
+                          {rangeFilters[0]}€ &#8211; {rangeFilters[1]}€
+                        </span>
+                        &#93;
+                      </div>
+
                     </div>
                   </div>
                 )}

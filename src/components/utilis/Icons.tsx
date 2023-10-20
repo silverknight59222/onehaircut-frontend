@@ -1,10 +1,13 @@
 import React from "react";
 
-export interface IconType {
+type IconType = {
+  width?: number | string;
+  height?: number | string;
   color?: string;
-  width?: string;
-  height?: string;
-}
+  stroke?: string;
+  strokeWidth?: string; // Add this line
+};
+
 export const DashboardIcon = (IconStyle: IconType) => {
   return (
     <svg
@@ -2073,6 +2076,7 @@ export const SelectedPaymentIcon = () => {
   );
 };
 
+
 export const StarIcon = (IconStyle: IconType) => {
   return (
     <svg
@@ -2085,10 +2089,14 @@ export const StarIcon = (IconStyle: IconType) => {
       <path
         d="M15.2502 15.2353L24.6857 14.418L16.4195 9.59751L18.2932 0.566492L11.3559 6.64466L3.08961 1.82412L7.02492 10.4387L0.0479687 16.5518L9.44591 15.7379L13.3656 24.3181L15.2502 15.2353Z"
         fill={IconStyle.color ? IconStyle.color : "#989898"}
+        stroke={IconStyle.stroke ? IconStyle.stroke : "none"}
+        strokeWidth={IconStyle.strokeWidth ? IconStyle.strokeWidth : "1"}
       />
     </svg>
   );
 };
+
+
 
 export const StarGreyIcon = (IconStyle: IconType) => {
   return (

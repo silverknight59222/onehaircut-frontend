@@ -18,9 +18,9 @@ import Footer from '@/components/UI/Footer';
 import MapIcon from "@/components/utilis/Icons";
 import { MapIconRed } from '@/components/utilis/Icons';
 import ReactDOMServer from 'react-dom/server';
+
 // TODO IMPORT TO USE ADRESSES 
 //import axios from 'axios'; 
-
 
 
 // Composant principal SalonChoice
@@ -289,7 +289,7 @@ const SalonChoice = () => {
                 isSalonPage={true}
                 onCitySearch={(value: string) => setCitySearch(value)}
                 onNameSearch={(value: string) => setNameSearch(value)}
-                onMobileFilters={(mobile) => setFilteredMobile(mobile)}
+                onMobileFilters={(mobile) => setFilteredMobile([mobile])}
                 onRangeFilters={(range: string[]) => {
                     const numberArray = range.map(item => parseInt(item, 10));
                     setRangeFilter(numberArray);
@@ -368,7 +368,8 @@ const SalonChoice = () => {
                                                     fontWeight: 'bold',
                                                     zIndex: salon.id === selectedSalon.id ? 2 : 1, // Ajout du zIndex
                                                 }}>
-                                                    {`${salon.id}0$`}
+                                                    {/* TODO CHANGE THE VALUE BY REAL ONE */}
+                                                    {`${salon.id}0€`}
 
                                                 </div>
                                             </OverlayView>
@@ -399,7 +400,9 @@ const SalonChoice = () => {
                                         <div className='relative mb-4 ' style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                             {!isLoggedIn &&
                                                 <div onClick={(e) => onWishlist(e, salon.id)} className="absolute right-6 top-6 z-20 cursor-pointer">
-                                                    <StarIcon width='35' height='35' color={wishlist.includes(String(salon.id)) ? "#FF0000" : ""} />
+                                                    <StarIcon width='35' height='35'
+                                                        color={wishlist.includes(String(salon.id)) ? "#FF5B5B" : ""}
+                                                        stroke={wishlist.includes(String(salon.id)) ? "#FFFFFF" : ""} />
                                                 </div>}
                                             <Image
                                                 src={salon.salon_images.length && salon.salon_images[index].is_cover ? salon.salon_images[index].image.includes('api-server') ? salon.salon_images[index].image : `https://api-server.onehaircut.com/public${salon.salon_images[index].image}` : salon.logo.includes('api-server') ? salon.logo : `https://api-server.onehaircut.com/public${salon.logo}`}
@@ -413,6 +416,7 @@ const SalonChoice = () => {
                                         {/* Nom et prix du salon */}
                                         <div className="flex items-start justify-between text-black text-lg font-semibold px-3 pt-2 ">
                                             <p className='w-36'>{salon.name}</p>
+                                            {/* TODO PRICE SHOULD BE IN EUROS HERE */}
                                             <p className={`p-2 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white`}> ${salon.final_price}</p>
                                         </div>
 

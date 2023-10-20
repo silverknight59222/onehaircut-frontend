@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState, useRef } from "react";
 import StarRatings from "react-star-ratings";
 import userLoader from "@/hooks/useLoader";
-import { getLocalStorage,setLocalStorage } from "@/api/storage";
+import { getLocalStorage, setLocalStorage } from "@/api/storage";
 import { Theme_A } from "@/components/utilis/Themes";
 import ChatModal from "./ChatModal";
 import { GoogleMap, Marker, useJsApiLoader, LoadScript } from '@react-google-maps/api';
@@ -51,7 +51,7 @@ const SearchSalon = () => {
   const router = useRouter();
   const [hairCut, setHairCut] = useState({});
   const { loadingView } = userLoader();
-  const haircut=getLocalStorage("haircut")
+  const haircut = getLocalStorage("haircut")
   const haircutData = haircut ? JSON.parse(haircut) : null
   const salon = getLocalStorage('selectedSalon')
   const services_ids = getLocalStorage('ServiceIds')
@@ -74,7 +74,7 @@ const SearchSalon = () => {
     console.log(salonId, haircutData.id)
     if (salonId) {
 
-      await client.getSalonDetail(salonId,haircutData.id, services_ids)
+      await client.getSalonDetail(salonId, haircutData.id, services_ids)
         .then((resp) => {
           setSalonProfile(resp.data.data[0])
           setHairCut(resp.data.data[0].salon_haircut)
@@ -91,33 +91,33 @@ const SearchSalon = () => {
     const servicesData = services ? JSON.parse(services) : null
     const serviceIds: number[] = []
     servicesData.forEach((service: { name: string, id: number }) => {
-        serviceIds.push(service.id)
-        
+      serviceIds.push(service.id)
+
     })
     // Code pour obtenir des informations sur les salons depuis l'API
     setIsLoading(true);
     if (haircut) {
-        const data = {
-          hair_salon_id: salonId,
-          service_ids: serviceIds
-        }
-        await dashboard.getSaloneTimeDuration(data)
-            .then((res) => {
-                setIsLoading(false);
-                const totalPrice = res.data.data.reduce((sum, item:any) => sum + (+item.price), 0);
-                const totalDuration = res.data.data.reduce((sum, item:any) => sum + (+item.duration), 0);
-                setServicePrice(totalPrice)
-                setServiceDuration(totalDuration)
+      const data = {
+        hair_salon_id: salonId,
+        service_ids: serviceIds
+      }
+      await dashboard.getSaloneTimeDuration(data)
+        .then((res) => {
+          setIsLoading(false);
+          const totalPrice = res.data.data.reduce((sum, item: any) => sum + (+item.price), 0);
+          const totalDuration = res.data.data.reduce((sum, item: any) => sum + (+item.duration), 0);
+          setServicePrice(totalPrice)
+          setServiceDuration(totalDuration)
 
-                setLocalStorage('servicePrice',totalPrice)
-                setLocalStorage('serviceDuration',totalDuration)
-            })
-            .catch(error => {
-                setIsLoading(false);
-                console.log(error)
-            })
+          setLocalStorage('servicePrice', totalPrice)
+          setLocalStorage('serviceDuration', totalDuration)
+        })
+        .catch(error => {
+          setIsLoading(false);
+          console.log(error)
+        })
     }
-}
+  }
 
   useEffect(() => {
     getAllHairDresser()
@@ -165,7 +165,7 @@ const SearchSalon = () => {
   const openPerfSampleModal = () => {
     setIsPerfSampleModalOpen(true);
   };
-  
+
 
   //GOOGLE MAP 
   //TODO Centrer par rapport aux coordonnées du salon
@@ -383,7 +383,7 @@ const SearchSalon = () => {
                     Prix total :
                   </p>
                   <p className="text-md xl:text-lg font-normal text-black">
-                  {salonProfile.final_price}
+                    {salonProfile.final_price}
                   </p>
                 </div>
 
