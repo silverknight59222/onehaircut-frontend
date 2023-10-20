@@ -167,8 +167,9 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
     onMobileFilters && onMobileFilters(mobileFilters)
   }, [mobileFilters])
   useEffect(() => {
-    onRangeFilters && onRangeFilters(rangeFilters)
+    onRangeFilters && onRangeFilters(rangeFilters.map(num => num.toString()))
   }, [rangeFilters])
+
 
   useEffect(() => {
     const user = getLocalStorage("user");
