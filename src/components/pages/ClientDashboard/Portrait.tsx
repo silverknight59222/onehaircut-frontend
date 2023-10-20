@@ -288,15 +288,15 @@ const Portrait = () => {
                             <p className="text-black text-sm">
                                 Genre
                             </p>
-                            <DropdownMenu dropdownItems={Gender} backgroundClr={ColorsThemeA.standardBorderGray}
-                                fctToCallOnClick={handleNewGender} />
+                            <DropdownMenu dropdownItems={Gender}
+                                fctToCallOnClick={handleNewGender} menuName="Genre"/>
                         </div>
                         <div className="flex flex-col gap-2">
                             <p className="text-black text-sm">
                                 Groupe ethnique
                             </p>
-                            <DropdownMenu dropdownItems={Ethnicity} backgroundClr={ColorsThemeA.standardBorderGray}
-                                fctToCallOnClick={handleNewEthnicity} />
+                            <DropdownMenu dropdownItems={Ethnicity}
+                                fctToCallOnClick={handleNewEthnicity} menuName="Groupe"/>
                         </div>
                     </div>
                 </div>
