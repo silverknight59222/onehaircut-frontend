@@ -50,9 +50,9 @@ const Welcome = () => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     await dashboard.getAllHaircuts(page)
       .then((res) => {
-          setSalonHaircut([...salonHaircut, ...res.data.data]);
-          setPage(prevPage => prevPage + 1);
-          setIsLoading(false)
+        setSalonHaircut([...salonHaircut, ...res.data.data]);
+        setPage(prevPage => prevPage + 1);
+        setIsLoading(false)
       })
       .catch(error => console.log(error))
   }
@@ -60,8 +60,7 @@ const Welcome = () => {
   const handleScroll = () => {
     if (isLoading) return;
 
-    if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight)
-    {
+    if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight) {
       getAllHaircuts();
     }
   };
