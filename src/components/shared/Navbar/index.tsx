@@ -128,7 +128,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
   ];
   const rangeSelector = (event: any, newValue: any) => {
     setRangeFilter(newValue);
-};
+  };
   const onClickGenderCheckbox = (gender: string) => {
     onGenderFilter && onGenderFilter(gender === 'Homme' ? 'men' : gender === 'Femme' ? 'women' : 'Mix')
     if (genderFilters === gender) {
@@ -168,8 +168,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
   }, [mobileFilters])
   useEffect(() => {
     onRangeFilters && onRangeFilters(rangeFilters.map(num => num.toString()))
-}, [rangeFilters])
-
+  }, [rangeFilters])
 
 
   useEffect(() => {

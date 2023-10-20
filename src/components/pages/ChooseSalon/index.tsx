@@ -53,17 +53,16 @@ const SalonChoice = () => {
     const filteredCityHandler = () => {
         const filteredSalons = salons.filter((salon) => {
             const cityNameMatches = citySearch
-                ? salon.city_name && salon.city_name.toLowerCase().includes(citySearch.toLowerCase())
+                ? salon.city_name.toLowerCase().includes(citySearch.toLowerCase())
                 : true; // If citySearch is empty, consider it as a match
 
             const salonNameMatches = nameSearch
                 ? salon.name.toLowerCase().includes(nameSearch.toLowerCase())
                 : true; // If nameSearch is empty, consider it as a match
 
-            const salonMobileMatches = 
+            const salonMobileMatches =
                 filteredMobile.length === 0 ||
-                (salon.is_mobile && filteredMobile.includes(salon.is_mobile.toLowerCase()));
-            
+                filteredMobile.includes(salon.is_mobile.toLowerCase());
 
             const salonInRange = filtereRange[0] <= salon.base_price && salon.base_price <= filtereRange[1];
 
@@ -290,7 +289,7 @@ const SalonChoice = () => {
                 isSalonPage={true}
                 onCitySearch={(value: string) => setCitySearch(value)}
                 onNameSearch={(value: string) => setNameSearch(value)}
-                onMobileFilters={(mobile: string) => setFilteredMobile([mobile])}
+                onMobileFilters={(mobile) => setFilteredMobile(mobile)}
                 onRangeFilters={(range: string[]) => {
                     const numberArray = range.map(item => parseInt(item, 10));
                     setRangeFilter(numberArray);

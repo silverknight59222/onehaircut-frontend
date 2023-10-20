@@ -20,7 +20,6 @@ const infoInterfaceIni: infoInterface =
 
 // design choices:
 const inputFieldsDesign = `w-full p-3 placeholder:text-[#959595] placeholder:text-base ${Theme_A.behaviour.fieldFocused_B}${Theme_A.fields.inputField}`
-const inputFieldsDesignNoW = `p-3 placeholder:text-[#959595] placeholder:text-base ${Theme_A.behaviour.fieldFocused_B}${Theme_A.fields.inputField}`
 
 const Account = () => {
     const showSnackbar = useSnackbar();
@@ -186,23 +185,27 @@ const Account = () => {
     ////////////////////////////////////////////////////
     ///////////////////// ADDRESS 
     ////////////////////////////////////////////////////
-    const [streetNbField, newStreetNbField] = useState("");
-    const [streetField, newStreetField] = useState("");
-    const [postCodeField, newPostCodeField] = useState("");
-    const [cityField, newCityField] = useState("");
+    const [addressField, newAddressField] = useState("");
     const setNewAddress = (value: string) => {
-        newStreetField(value);
+        newAddressField(value);
     };
 
     const onSubmitAdd = async () => {
-
-        setError((prev) => {
-            return { ...prev, text: "" };
-        });
-        // TODO: save the address for the future
-        showSnackbar("success", "Salon Service added successfully.");
-        setIsModalAdd(false);
-
+        if (addressField.length > 8) { // TODO modify
+            setError((prev) => {
+                return { ...prev, text: "Entrez une address correcte" };
+            });
+            return;
+        }
+        else {
+            setError((prev) => {
+                return { ...prev, text: "" };
+            });
+            // TODO: save the address for the future
+            showSnackbar("success", "Salon Service added successfully.");
+            setIsModalAdd(false);
+        }
+        // 
     }
 
 
@@ -215,42 +218,13 @@ const Account = () => {
                         {error.text}
                     </p>
                 )}
-                <div className="flex flex-row gap-x-2">
-                    <input
-                        type="text"
-                        id="StreetNb"
-                        className={`w-[80px] ${inputFieldsDesignNoW}`}
-                        placeholder="Numero"
-                        maxLength={7}
-                        value={streetNbField}
-                        onChange={(e) => newStreetNbField(e.target.value)}
-                    />
-                    <input
-                        placeholder="Nom de rue"
-                        className={`${inputFieldsDesignNoW}`}
-                        value={streetField}
-                        maxLength={100}
-                        onChange={(e) => setNewAddress(e.target.value)}
-                    />
-                </div>
-                <div className="flex flex-row gap-x-2">
-                    <input
-                        type="text"
-                        id="PostCode"
-                        className={`w-[60px] ${inputFieldsDesignNoW}`}
-                        placeholder="Code postal"
-                        maxLength={5}
-                        value={postCodeField}
-                        onChange={(e) => newPostCodeField(e.target.value)}
-                    />
-                    <input
-                        placeholder="Ville"
-                        className={`${inputFieldsDesignNoW}`}
-                        value={cityField}
-                        maxLength={100}
-                        onChange={(e) => newCityField(e.target.value)}
-                    />
-                </div>
+                <input
+                    placeholder="Nouvelle adresse"
+                    className={`${inputFieldsDesign}`}
+                    value={addressField}
+                    maxLength={100}
+                    onChange={(e) => setNewAddress(e.target.value)}
+                />
             </div>
             <div className="mt-4 flex gap-4 items-center justify-center w-full">
                 <button
@@ -310,14 +284,7 @@ const Account = () => {
                     className={`${inputFieldsDesign}`}
                     value={phoneField}
                     maxLength={15}
-                    onChange={(e) => {
-                        const inputElement = e.target as HTMLInputElement;
-                        const value = inputElement.value;
-                        let sanitizedValue = value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
-                        inputElement.value = sanitizedValue;
-
-                        setPhoneField(inputElement.value)
-                    }}
+                    onChange={(e) => setPhoneField(e.target.value)}
                 />
             </div>
             <div className="mt-4 flex gap-4 items-center justify-center w-full">
@@ -347,7 +314,7 @@ const Account = () => {
     };
 
     const onSubmitBankCard = async () => {
-        if (false) { // TODO check
+        if (addressField.length < 10) { // TODO check
             setError((prev) => {
                 return { ...prev, text: "Entrez un numero de carte correct" };
             });
@@ -396,15 +363,20 @@ const Account = () => {
         </div>;
 
     ////////////////////////////////////////////////////
-    //NOTIFICATIONS
+    ///////////////////// Account Notification  
+    ////////////////////////////////////////////////////
+
+    const [NotifAccountEmail, setPNotifAccountEmail] = useState(false);
+    const [NotifAccountWhatsapp, setPNotifAccountWhatsapp] = useState(false);
+    const [NotifAccount, setNotifAccount] = useState("");
 
     // function to display the preferences
-    const displayNotif = (email: boolean, whatsapp: boolean, setState: React.Dispatch<React.SetStateAction<string>>) => {
+    const displayNotifAccount = () => {
         let text = ""
-        if (email) {
+        if (NotifAccountEmail) {
             text = "Email"
         }
-        if (whatsapp) {
+        if (NotifAccountWhatsapp) {
             if (text != "") {
                 text = text + " + "
             }
@@ -415,21 +387,12 @@ const Account = () => {
         }
 
         // set the text to be displayed
-        setState(text)
+        setNotifAccount(text)
     }
-
-    ////////////////////////////////////////////////////
-    ///////////////////// Account Notification  
-    ////////////////////////////////////////////////////
-
-    const [NotifAccountEmail, setPNotifAccountEmail] = useState(false);
-    const [NotifAccountWhatsapp, setPNotifAccountWhatsapp] = useState(false);
-    const [NotifAccount, setNotifAccount] = useState("");
-
 
     const onSubmitAccountNotif = () => {
         // TODO: save preferences for the future
-        displayNotif(NotifAccountEmail, NotifAccountWhatsapp, setNotifAccount) // update text to be displayed
+        displayNotifAccount() // update text to be displayed
         // setShowItem(informations);
         setSelectedTab(3);
         setShowItem(notifications);
@@ -478,152 +441,14 @@ const Account = () => {
             <div className="mt-4 flex gap-4 items-center justify-center w-full">
                 <button
                     className={`${Theme_A.button.medWhiteColoredButton}`}
-                    onClick={() => setIsModalNotifAccount(false)}>
+                    onClick={() => setIsModalNotifAccount(false)}
+                >
                     Annuler
                 </button>
                 <button
                     className={`${Theme_A.button.mediumGradientButton}`}
-                    onClick={() => onSubmitAccountNotif()}         >
-                    Actualiser
-                </button>
-            </div>
-        </div>;
-
-    ////////////////////////////////////////////////////
-    ///////////////////// Reminder Notification  
-    ////////////////////////////////////////////////////
-
-    const [NotifReminderEmail, setPNotifReminderEmail] = useState(false);
-    const [NotifReminderWhatsapp, setPNotifReminderWhatsapp] = useState(false);
-    const [NotifReminder, setNotifReminder] = useState("");
-
-    const onSubmitReminderNotif = () => {
-        // TODO: save preferences for the future
-        displayNotif(NotifReminderEmail, NotifReminderWhatsapp, setNotifReminder) // update text to be displayed
-        // setShowItem(informations);
-        setSelectedTab(3);
-        setShowItem(notifications);
-        showSnackbar("succès", "Préférence actualisée");
-        setIsModalNotifReminders(false)
-
-    }
-
-    // display the field for the account modifications
-    const modifReminderNotif: React.JSX.Element =
-        <div>
-            <div className="flex flex-col items-center justify-center gap-4">
-                <p className="text-xl font-semibold text-black text-center">
-                    Notifications concernants votre compte sont émises par</p>
-                <div className="items-start">
-                    <div
-                        onClick={() => setPNotifReminderEmail(!NotifReminderEmail)}
-                        className="flex items-center justify-start gap-3 mt-4 cursor-pointer"
-                    >
-                        <div className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${NotifReminderEmail
-                            ? ColorsThemeA.ohcVerticalGradient_A
-                            : "border-[#767676]"
-                            }`}
-                        >
-                            {NotifReminderEmail && (
-                                <CheckedIcon width="15" height="10" />)}
-                        </div>
-                        <p>Emails</p>
-                    </div>
-                    <div
-                        onClick={() => setPNotifReminderWhatsapp(!NotifReminderWhatsapp)}
-                        className="flex items-center justify-start gap-3 mt-4 cursor-pointer"
-                    >
-                        <div className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${NotifReminderWhatsapp
-                            ? ColorsThemeA.ohcVerticalGradient_A
-                            : "border-[#767676]"
-                            }`}
-                        >
-                            {NotifReminderWhatsapp && (
-                                <CheckedIcon width="15" height="10" />)}
-                        </div>
-                        <p>Whatsapp</p>
-                    </div>
-                </div>
-            </div>
-            <div className="mt-4 flex gap-4 items-center justify-center w-full">
-                <button
-                    className={`${Theme_A.button.medWhiteColoredButton}`}
-                    onClick={() => setIsModalNotifReminders(false)}    >
-                    Annuler
-                </button>
-                <button
-                    className={`${Theme_A.button.mediumGradientButton}`}
-                    onClick={() => onSubmitReminderNotif()}  >
-                    Actualiser
-                </button>
-            </div>
-        </div>;
-
-    ////////////////////////////////////////////////////
-    ///////////////////// Reminder Notification  
-    ////////////////////////////////////////////////////
-
-    const [NotifMsgEmail, setPNotifMsgEmail] = useState(false);
-    const [NotifMsgWhatsapp, setPNotifMsgWhatsapp] = useState(false);
-    const [NotifMsg, setNotifMsg] = useState("");
-
-    const onSubmitMsgNotif = () => {
-        // TODO: save preferences for the future
-        displayNotif(NotifMsgEmail, NotifMsgWhatsapp, setNotifMsg) // update text to be displayed
-        // setShowItem(informations);
-        setSelectedTab(3);
-        setShowItem(notifications);
-        showSnackbar("succès", "Préférence actualisée");
-        setIsModalNotifMsg(false)
-
-    }
-
-    // display the field for the account modifications
-    const modifMsgNotif: React.JSX.Element =
-        <div>
-            <div className="flex flex-col items-center justify-center gap-4">
-                <p className="text-xl font-semibold text-black text-center">
-                    Notifications concernants votre compte sont émises par</p>
-                <div className="items-start">
-                    <div
-                        onClick={() => setPNotifMsgEmail(!NotifMsgEmail)}
-                        className="flex items-center justify-start gap-3 mt-4 cursor-pointer"
-                    >
-                        <div className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${NotifMsgEmail
-                            ? ColorsThemeA.ohcVerticalGradient_A
-                            : "border-[#767676]"
-                            }`}
-                        >
-                            {NotifMsgEmail && (
-                                <CheckedIcon width="15" height="10" />)}
-                        </div>
-                        <p>Emails</p>
-                    </div>
-                    <div
-                        onClick={() => setPNotifMsgWhatsapp(!NotifMsgWhatsapp)}
-                        className="flex items-center justify-start gap-3 mt-4 cursor-pointer"
-                    >
-                        <div className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${NotifMsgWhatsapp
-                            ? ColorsThemeA.ohcVerticalGradient_A
-                            : "border-[#767676]"
-                            }`}
-                        >
-                            {NotifMsgWhatsapp && (
-                                <CheckedIcon width="15" height="10" />)}
-                        </div>
-                        <p>Whatsapp</p>
-                    </div>
-                </div>
-            </div>
-            <div className="mt-4 flex gap-4 items-center justify-center w-full">
-                <button
-                    className={`${Theme_A.button.medWhiteColoredButton}`}
-                    onClick={() => setIsModalNotifMsg(false)}    >
-                    Annuler
-                </button>
-                <button
-                    className={`${Theme_A.button.mediumGradientButton}`}
-                    onClick={() => onSubmitMsgNotif()}  >
+                    onClick={() => onSubmitAccountNotif()}
+                >
                     Actualiser
                 </button>
             </div>
@@ -634,8 +459,8 @@ const Account = () => {
     // TODO: add information about the client coming from backend in "desc".
     const informations: infoInterface[] = [
         { name: "Nom légal", desc: "Dimitri Bala", modif: false, popup: emptyPopup },
-        { name: "Adresse", desc: streetNbField + "" + streetField, modif: true, popup: modifAddress },
-        { name: "Numéro de téléphone", desc: phoneField, modif: true, popup: modifPhone },
+        { name: "Adresse", desc: "Information non fournie", modif: true, popup: modifAddress },
+        { name: "Numéro de téléphone", desc: "+41 ** *** 62 92", modif: true, popup: modifPhone },
         { name: "Adresse e-mail", desc: "b***9@gmail.com", modif: false, popup: emptyPopup },
         { name: "Pièce d'identité officielle", desc: "Information non fournie", modif: false, popup: emptyPopup },
         { name: "Statut", desc: "Etudiant - vérifié", modif: false, popup: emptyPopup },
@@ -647,8 +472,8 @@ const Account = () => {
 
     let notifications: infoInterface[] = [
         { name: "Activité du compte", desc: NotifAccount, modif: true, popup: modifAccountNotif },
-        { name: "Rappels", desc: NotifReminder, modif: true, popup: modifReminderNotif },
-        { name: "Messages", desc: NotifMsg, modif: true, popup: modifMsgNotif },
+        { name: "Rappels", desc: "E-mail + Whatsapp", modif: true, popup: emptyPopup },
+        { name: "Messages", desc: "E-mail + Whatsapp", modif: true, popup: emptyPopup },
     ];
 
     const payments: infoInterface[] = [
@@ -742,22 +567,6 @@ const Account = () => {
                         <BaseModal close={() => setIsModalNotifAccount(false)}>
                             <div>
                                 {modifAccountNotif}
-                            </div>
-                        </BaseModal>)}
-
-                    {/*  Notification Reminders */}
-                    {isModalNotifReminders && (
-                        <BaseModal close={() => setIsModalNotifReminders(false)}>
-                            <div>
-                                {modifReminderNotif}
-                            </div>
-                        </BaseModal>)}
-
-                    {/*  Notification Messages */}
-                    {isModalNotifMsg && (
-                        <BaseModal close={() => setIsModalNotifMsg(false)}>
-                            <div>
-                                {modifMsgNotif}
                             </div>
                         </BaseModal>)}
 
