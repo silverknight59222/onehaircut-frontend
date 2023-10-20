@@ -59,8 +59,8 @@ const Welcome = () => {
 
   const handleScroll = () => {
     if (isLoading) return;
-
-    if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight)
+    
+    if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight-30)
     {
       getAllHaircuts();
     }
