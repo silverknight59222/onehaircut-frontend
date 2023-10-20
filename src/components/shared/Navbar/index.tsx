@@ -126,7 +126,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
       name: "No",
     }
   ];
-  const rangeSelector = (event, newValue: any) => {
+  const rangeSelector = (event: any, newValue: any) => {
     setRangeFilter(newValue);
   };
   const onClickGenderCheckbox = (gender: string) => {

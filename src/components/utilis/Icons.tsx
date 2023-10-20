@@ -3013,7 +3013,7 @@ export const AddPlusIcon = () => {
 
 export const FilterIcon = (IconStyle: { width?: string, height?: string, color?: string }) => {
   return (
-    <svg width={width} height={height} viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg width={IconStyle.width} height={IconStyle.height} viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M16.9312 1.8457H1.28467" stroke="#767676" strokeWidth="2" />
       <path d="M1.28467 8H17.2157" stroke="#767676" strokeWidth="2" />
       <path d="M17.5 13.8457H1" stroke="#767676" strokeWidth="2" />
