@@ -125,7 +125,7 @@ const Favorites = () => {
                                 {haircuts.length} favorites
                             </div>
                         </div>
-                        <div className="lg:absolute -top-10 ml-72  w-9/12 overflow-scroll mt-3 mr-48">
+                        <div className="lg:absolute -top-10 ml-72  w-9/12 overflow-auto mt-3 mr-48">
                             <table>
                                 <tbody className="flex items-center  gap-8 pb-2">
                                     {haircuts.map((item, index) => {
@@ -159,14 +159,14 @@ const Favorites = () => {
                     </div>
 
                     {/* Salons' part */}
-                    <div className="w-full relative flex flex-col items-center justify-center my-72 ">
+                    <div className="w-full relative flex flex-col items-center justify-center mt-40">
                         <div className="w-full">
                             <p className="text-black text-3xl mb-3">Salons</p>
                             <div className={`h-7 flex items-center rounded-xl text-white px-5 bg-gradient-to-r from-zinc-800 via-zinc-400 to-zinc-100`} >
                                 {salons.length} favorites
                             </div>
                         </div>
-                        <div className="lg:absolute -top-10 ml-72  w-9/12 overflow-scroll mt-3 mr-48">
+                        <div className="lg:absolute -top-10 ml-72  w-9/12 overflow-auto mt-3 mr-48">
                             <table>
                                 <tbody className="flex items-center  gap-8 pb-2">
                                     {salons.map((item, index) => {

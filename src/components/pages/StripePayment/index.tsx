@@ -95,6 +95,7 @@ function StripePayment() {
       });
   };
   const handleSubmit = async (e: any) => {
+    const userInfo = JSON.parse(getLocalStorage("user_Info") as string);
     e.preventDefault();
     if (!stripe || !elements) {
       return;
@@ -113,6 +114,7 @@ function StripePayment() {
         })
         .then(function (result) {
           registerSalon(result.paymentMethod?.id);
+          window.open("https://api.whatsapp.com/send?phone=" + userInfo.phone + "&text=Booking Success!", '_blank');
         })
         .catch(function (error) {
           setIsLoading(false)
