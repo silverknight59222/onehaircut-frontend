@@ -4,6 +4,7 @@ import { CircleRight, LogoCircleFixRight, TickIcon } from '@/components/utilis/I
 import ClientDashboardLayout from '@/layout/ClientDashboardLayout'
 import React, { useState } from 'react'
 import StarRatings from "react-star-ratings";
+import DropdownMenu from "@/components/UI/DropDownMenu";
 
 const Filters = () => {
     const [selectedTab, setSelectedTab] = useState(0);
@@ -27,6 +28,26 @@ const Filters = () => {
 
         }
     };
+
+
+    const WishGender = [
+        "Femme",
+        "Homme",
+        "Mixte",]
+    const WishLength = [
+        "Court",
+        "Moyen",
+        "Long",]
+
+    // handling the change of Gender
+    const handleNewGender = (item: string) => {
+        // TODO: add backend to save the new preference
+    }
+    // handling the change of length
+    const handleNewLength = (item: string) => {
+        // TODO: add backend to save the new preference
+    }
+
 
     return (
         <div>
@@ -55,11 +76,17 @@ const Filters = () => {
                         </div>
                         {selectedTab === 0 ?
                             <div className="relative z-10 w-full lg:w-[630px] h-[630px] sm:h-[590px] mt-5 md:mt-0 rounded-3xl bg-white py-6 px-6 sm:px-10 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)]">
+
+                                {/* Separator Color */}
                                 <div className='border-b border-[#D8D8D8] pb-12'>
-                                    <p className='text-black text-lg mb-4'>Coiffure</p>
+
+                                    {/* Title of the Section COIFFURE */}
+                                    <p className='text-black text-lg mb-4 font-semibold'>Coiffure</p>
                                     <div>
-                                        <p className="text-black text-sm mb-2">Longueur de cheveux actuelle</p>
-                                        <BaseDropdown dropdownItems={['Long']} />
+                                        {/* Dropdown longueur coiffure*/}
+                                        <p className="text-black text-sm mb-2"></p>
+                                        <DropdownMenu dropdownItems={WishLength}
+                                            fctToCallOnClick={handleNewLength} menuName="Longueur cheveux" />
                                     </div>
                                     <div className='flex flex-col sm:flex-row lg:flex-col xl:flex-row sm:items-center lg:items-start xl:items-center sm:justify-between mt-5'>
                                         <div>
