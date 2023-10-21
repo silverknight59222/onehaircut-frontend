@@ -15,7 +15,6 @@ import UserProfile from "@/components/UI/UserProfile";
 import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
-import { styled } from '@material-ui/core/styles';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 
 
@@ -239,6 +238,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
         rail: {
           color: '#000000', //colorForTheUnfilledPart
           height: '4px',  // Adjust for desired thickness
+          borderRadius: '16px',
         },
         valueLabel: {
           color: '#000000', // The color of the value label that appears on hover

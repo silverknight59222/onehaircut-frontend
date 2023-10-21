@@ -5,6 +5,10 @@ import ClientDashboardLayout from '@/layout/ClientDashboardLayout'
 import React, { useState } from 'react'
 import StarRatings from "react-star-ratings";
 import DropdownMenu from "@/components/UI/DropDownMenu";
+import Slider from '@material-ui/core/Slider';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+import { Typography } from '@material-ui/core';
+import { Theme_A } from '@/components/utilis/Themes';
 
 const Filters = () => {
     const [selectedTab, setSelectedTab] = useState(0);
@@ -29,7 +33,53 @@ const Filters = () => {
         }
     };
 
+    // For the Slider
+    const theme = createTheme({
+        palette: {
+            primary: {
+                main: '#3B3A3A',
+            },
+            secondary: {
+                main: '#ec5657',
+            },
+        },
+        overrides: {
+            MuiSlider: {
+                thumb: {
+                    color: '#000000',
+                    width: 14, // Set the desired width
+                    height: 14, // Set the desired height
+                    border: '3px solid #000000',
+                    boxShadow: '0px 0px 0px 4px rgb(236, 86, 87, 0.1)',
+                    backgroundColor: '#FFFF', // The interior color of the thumb
+                    borderRadius: '50%',// This makes it a circle
+                    '&:hover, &.Mui-focusVisible': {
+                        /* Applies a sharp, translucent black halo shadow around the thumb. */
+                        boxShadow: '0px 0px 0px 8px rgb(236, 86, 87, 0.5)',
+                    },
+                },
+                track: {
+                    height: '4px',  // Adjust for desired thickness
+                    color: '#ec5657',
+                    background: 'linear-gradient(90deg, red, orange)',
+                },
+                rail: {
+                    color: '#000000', //colorForTheUnfilledPart
+                    height: '4px',  // Adjust for desired thickness
+                    borderRadius: '16px',
+                },
+                valueLabel: {
+                    color: '#000000', // The color of the value label that appears on hover
+                },
+            },
+        },
+    });
 
+    const handleSliderChange = (event: any, newValue: any) => {
+        setSliderRange(newValue);
+    };
+
+    //For Dropdown lists
     const WishGender = [
         "Feminine",
         "Masculine",
@@ -55,6 +105,19 @@ const Filters = () => {
     const handleNewSetCurrentLength = (item: string) => {
         // TODO: add backend to save the new preference
     }
+
+    const [currentLength, setCurrentLength] = useState('');
+    const [desiredLength, setDesiredLength] = useState('');
+    const [hairstyleTrend, setHairstyleTrend] = useState('');
+    const [sliderRange, setSliderRange] = useState([0, 500]);
+
+    const resetDropdowns = () => {
+        setCurrentLength('');
+        setDesiredLength('');
+        setHairstyleTrend('');
+        // Reset the slider value
+        setSliderRange([0, 500]);
+    };
 
     return (
         <div>
@@ -82,43 +145,65 @@ const Filters = () => {
                             })}
                         </div>
                         {selectedTab === 0 ?
-                            <div className="relative z-10 w-full lg:w-[630px] h-[630px] sm:h-[590px] mt-5 md:mt-0 rounded-3xl bg-white py-6 px-6 sm:px-10 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)]">
+                            <div className="relative z-10 w-full lg:w-[630px] mt-5 md:mt-0 rounded-3xl bg-white py-6 px- sm:px-10 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)]">
 
-                                {/* Separator Color */}
-                                <div className='border-b border-[#D8D8D8] pb-12'>
+                                {/* Title of the Section coiffure */}
+                                <p className='text-black text-lg mb-4 font-semibold'>Coiffure</p>
 
-                                    {/* Title of the Section coiffure */}
-                                    <p className='text-black text-lg mb-4 font-semibold'>Coiffure</p>
-                                    <div>
-                                        {/* Dropdown longueur coiffure*/}
+                                {/* Main flex container for the first line */}
+                                <div className="flex justify-evenly items-center">
+                                    {/* Dropdown longueur coiffure */}
+                                    <div className="flex items-center">
                                         <p className="text-black text-sm mb-2"></p>
-                                        <DropdownMenu dropdownItems={WishLength}
-                                            fctToCallOnClick={handleNewWishLength} menuName="cheveux actuelle" />
+                                        <DropdownMenu dropdownItems={WishLength} fctToCallOnClick={handleNewWishLength} menuName="cheveux actuelle" />
                                     </div>
 
-                                    <div className='flex flex-col sm:flex-row lg:flex-col xl:flex-row sm:items-center lg:items-start xl:items-center sm:justify-between mt-5'>
-
-                                        {/* Dropdown Tendance genre coiffure*/}
-                                        <div>
-                                            <DropdownMenu dropdownItems={WishGender}
-                                                fctToCallOnClick={handleNewWishLength} menuName="Tendance da la coiffure" />
-                                        </div>
-                                        <div className='flex items-center justify-start sm:justify-center gap-6 mt-5 sm:mt-0 lg:mt-5 xl:mt-0'>
-
-                                            <div className='flex items-center gap-4'>
-                                                {/* Dropdown Tendance genre coiffure*/}
-                                                <div>
-                                                    <DropdownMenu dropdownItems={WishLength}
-                                                        fctToCallOnClick={handleNewSetCurrentLength} menuName="Longueur recherchée" />
-                                                </div>
-                                            </div>
-                                        </div>
+                                    {/* Dropdown "Longueur recherchée" */}
+                                    <div className="flex items-center">
+                                        <DropdownMenu dropdownItems={WishLength} fctToCallOnClick={handleNewSetCurrentLength} menuName="Longueur recherchée" />
                                     </div>
                                 </div>
 
+                                {/* Flex container for the second line */}
+                                <div className='flex flex-col sm:flex-row lg:flex-col xl:flex-row sm:items-center lg:justify-evenly xl:justify-evenly sm:justify-evenly mt-6'>
+                                    {/* Dropdown "Longueur recherchée" */}
+                                    <div className="flex items-center">
+                                        <DropdownMenu dropdownItems={WishGender} fctToCallOnClick={handleNewWishLength} menuName="Tendance da la coiffure" />
+                                    </div>
 
-                                <div>
-                                    {/* Title of the Section coiffure */}
+                                    {/* Slider */}
+                                    <ThemeProvider theme={theme}>
+                                        <div className="relative z-20 w-64 pt-3 px-4 text-black rounded-3xl text-center">
+                                            <p className="text-black text-md mb-2 font-md">Budget</p>
+                                            <div className="flex flex-col items-center justify-center w-full">
+                                                <Typography id="range-slider" gutterBottom>
+                                                </Typography>
+                                                <Slider
+                                                    value={sliderRange}
+                                                    onChange={handleSliderChange}
+                                                    valueLabelDisplay="auto"
+                                                    min={0}
+                                                    max={500}
+                                                    style={{ width: '80%' }}
+                                                />
+                                                <div className="mt-0 mb-1">
+                                                    &#91;
+                                                    <span style={{ fontSize: '0.8em', fontWeight: '500', color: '#757575' }}>
+                                                        {sliderRange[0]}€ &#8211; {sliderRange[1]}€
+                                                    </span>
+                                                    &#93;
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </ThemeProvider>
+                                </div>
+                                {/* Centered "Réinitialiser" button */}
+                                <div className="flex justify-center mt-4">
+                                    <button className={`${Theme_A.button.medBlackColoredButton}`}>Réinitialiser</button>
+                                </div>
+
+                                {/* Title of the Section coiffure */}
+                                {/*
                                     <p className='text-black text-lg mb-4 font-semibold mt-4'>Popularit&eacute;</p>
                                     <div className='flex flex-col sm:flex-row lg:flex-col xl:flex-row items-start sm:items-center lg:items-start xl:items-center justify-between'>
                                         <div>
@@ -150,8 +235,7 @@ const Filters = () => {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <button className='absolute bottom-6 left-12 w-28 h-11 border border-black rounded-2xl text-sm text-black shadow-[3px_3px_10px_2px_rgba(0,0,0,0.07)]'>Réinitialiser</button>
+                                    */}
                             </div>
                             :
                             <div className="relative z-10 w-full lg:w-[500px] xl:w-[630px] h-[1100px] sm:h-[890px] lg:h-[1100px] xl:h-[890px] mt-5 md:mt-0 rounded-3xl bg-white py-6 px-6 sm:px-10 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)]">
@@ -260,13 +344,14 @@ const Filters = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <button className='absolute bottom-6 left-12 w-28 h-11 border border-black rounded-2xl text-sm text-black shadow-[3px_3px_10px_2px_rgba(0,0,0,0.07)]'>Réinitialiser</button>
+                                <button className={`absolute bottom-6 left-12  ${Theme_A.button.medBlackColoredButton}`}>Réinitialiser</button>
+
                             </div>
                         }
                     </div>
                 </div>
-            </ClientDashboardLayout>
-        </div>
+            </ClientDashboardLayout >
+        </div >
     )
 }
 export default Filters
