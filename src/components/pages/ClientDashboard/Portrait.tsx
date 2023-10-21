@@ -39,6 +39,11 @@ const Portrait = () => {
         "Asian",
         "Occidental",
         "Oriental",]
+    const Length = [
+        "Court",
+        "Moyen",
+        "Long",]
+
 
     // functions for filters
     // handling the change of gender
@@ -47,6 +52,10 @@ const Portrait = () => {
     }
     // handling the change of ethnicity
     const handleNewEthnicity = (item: string) => {
+        // TODO: add backend to save the new preference
+    }
+    // handling the change of Length
+    const handleNewLength = (item: string) => {
         // TODO: add backend to save the new preference
     }
 
@@ -304,6 +313,11 @@ const Portrait = () => {
 
                             <DropdownMenu dropdownItems={Ethnicity}
                                 fctToCallOnClick={handleNewEthnicity} menuName="Groupe ethnique" />
+                        </div>
+                        <div className="flex flex-col gap-2">
+
+                            <DropdownMenu dropdownItems={Length}
+                                fctToCallOnClick={handleNewLength} menuName="Longueur cheveux" />
                         </div>
                     </div>
                 </div>
