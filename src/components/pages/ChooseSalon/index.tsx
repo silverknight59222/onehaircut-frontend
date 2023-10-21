@@ -35,7 +35,8 @@ const SalonChoice = () => {
     let user = getLocalStorage("user");
     const userId = user ? Number(JSON.parse(user).id) : null;
     const getHaircut = getLocalStorage("haircut") as string;
-    const haircut = JSON.parse(getHaircut) || null;
+    const haircut = getHaircut ? JSON.parse(getHaircut) : null;
+
     const [isLoading, setIsLoading] = useState(false);
     const { loadingView } = userLoader();
     const showSnackbar = useSnackbar();
@@ -392,12 +393,12 @@ const SalonChoice = () => {
                                     key={index}
                                     onClick={() => setSelectedSalon({ name: salon.name, id: salon.id })}
                                     className={`relative bg-stone-100 rounded-2xl border hover:border-stone-400 cursor-pointer ${selectedSalon.id === salon.id && 'border-2 border-red-300 shadow-xl'}`}
-                                    style={{ width: '100%', aspectRatio: '1/1', display: 'flex', flexDirection: 'column', minWidth: '300px', minHeight: '300px' }}
+                                    style={{ width: '100%', aspectRatio: '1/1', display: 'flex', flexDirection: 'column', minWidth: '200px', maxWidth: '450px', minHeight: '200px', maxHeight: '420px' }}
                                 >
                                     {/* Contenu de la vignette */}
                                     <div className="flex flex-col p-4 shadow-md rounded-2xl " style={{ flexGrow: 1 }}>
 
-                                        <div className='relative mb-4 ' style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <div className='relative mb-4 hover:scale-105 transition duration-1000 m-2' style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                             {!isLoggedIn &&
                                                 <div onClick={(e) => onWishlist(e, salon.id)} className="absolute right-6 top-6 z-20 cursor-pointer">
                                                     <StarIcon width='35' height='35'

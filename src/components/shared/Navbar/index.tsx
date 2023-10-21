@@ -124,12 +124,21 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
   ];
   const Mobile = [
     {
-      name: "Yes",
+      name: "Tous",
+      value: ""
     },
     {
-      name: "No",
+      name: "Oui",
+      value: "yes"
+    },
+    {
+      name: "Non",
+      value: "no"
     }
   ];
+
+
+
   const rangeSelector = (event: any, newValue: any) => {
     setRangeFilter(newValue);
   };
@@ -158,9 +167,19 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
       setLengthFilters((prev) => [...prev, length]);
     }
   };
-  const onClickMobileCheckbox = (mobile: string) => {
-    setMobileFilters(mobile);
+  const onClickMobileCheckbox = (value: string) => {
+    if (value === "all") {
+      setMobileFilters('');
+    } else if (mobileFilters === value) {
+      setMobileFilters('');  // Reset or clear the filter if it's already selected
+    } else {
+      setMobileFilters(value);  // Otherwise, set the filter to the selected mobile value
+    }
   };
+
+
+
+
   useEffect(() => {
     onEthnicityFilters && onEthnicityFilters(ethnicityFilters)
   }, [ethnicityFilters])
@@ -203,7 +222,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
           color: '#000000',
           width: 14, // Set the desired width
           height: 14, // Set the desired height
-          border: '3px solid #ec5657',
+          border: '3px solid #000000',
           boxShadow: '0px 0px 0px 4px rgb(236, 86, 87, 0.1)',
           backgroundColor: '#FFFF', // The interior color of the thumb
           borderRadius: '50%',// This makes it a circle
@@ -215,6 +234,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
         track: {
           height: '4px',  // Adjust for desired thickness
           color: '#ec5657',
+          background: 'linear-gradient(90deg, red, orange)',
         },
         rail: {
           color: '#000000', //colorForTheUnfilledPart
@@ -379,7 +399,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
                 <input
                   type="text"
                   placeholder="Ville"
-                  className={`text-base px-4 p-2 rounded-full outline-none ${Theme_A.behaviour.fieldFocused_C}`}
+                  className={`text-base px-4 p-2 rounded-xl outline-none ${Theme_A.behaviour.fieldFocused_C}`}
                   onChange={onSearch && isWelcomePage ?
                     (e) => onSearch(e.target.value) :
                     onCitySearch && isSalonPage ? (e) => onCitySearch(e.target.value) : () => { }}
@@ -390,7 +410,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
                 <input
                   type="text"
                   placeholder="Nom Salon"
-                  className={`text-base px-4 p-2 rounded-full outline-none ${Theme_A.behaviour.fieldFocused_C}`}
+                  className={`text-base px-4 p-2 rounded-xl outline-none ${Theme_A.behaviour.fieldFocused_C}`}
                   onChange={onNameSearch && isWelcomePage ?
                     () => { } :
                     onNameSearch && isSalonPage ? (e) => onNameSearch(e.target.value) : () => { }}
@@ -408,7 +428,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
 
                   }}
                 >
-                  Mobile
+                  Mobilit&eacute;
                 </p>
                 {showDesktopLength && isSalonPage && (
                   <div className="absolute top-[75px] -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
@@ -417,20 +437,21 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
                         <div
                           key={index}
                           className="flex w-full cursor-pointer mb-[19px]  transform hover:scale-110"
-                          onClick={() => onClickMobileCheckbox(item.name.toLowerCase())}
+                          onClick={() => onClickMobileCheckbox(item.value)}
                         >
                           <div
-                            className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  transform hover:scale-105 
-                              ? "bg-gradient-to-b from-pink-500 to-orange-500"
-                              : "bg-[#D6D6D6]"
-                              }`}
+                            className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105 
+                            ${mobileFilters === item.value ? ColorsThemeA.ohcVerticalGradient_A : "bg-[#D6D6D6]"}`}
                           >
-                            <input type="radio" name="radio" />
+                            <CheckedIcon />
                           </div>
                           <p className="ml-2">{item.name}</p>
                         </div>
                       );
                     })}
+
+
+
                   </div>
                 )}
               </div>
