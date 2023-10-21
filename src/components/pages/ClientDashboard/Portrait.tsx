@@ -296,18 +296,14 @@ const Portrait = () => {
                     </p>
                     <div className="flex flex-col sm:flex-row  sm:items-start justify-center gap-14 mb-40">
                         <div className="flex flex-col gap-2">
-                            <p className="text-black text-sm">
-                                Genre
-                            </p>
+
                             <DropdownMenu dropdownItems={Gender}
-                                fctToCallOnClick={handleNewGender} />
+                                fctToCallOnClick={handleNewGender} menuName="Genre" />
                         </div>
                         <div className="flex flex-col gap-2">
-                            <p className="text-black text-sm">
-                                Groupe ethnique
-                            </p>
+
                             <DropdownMenu dropdownItems={Ethnicity}
-                                fctToCallOnClick={handleNewEthnicity} />
+                                fctToCallOnClick={handleNewEthnicity} menuName="Groupe ethnique" />
                         </div>
                     </div>
                 </div>
