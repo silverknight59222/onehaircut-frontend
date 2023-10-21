@@ -31,23 +31,30 @@ const Filters = () => {
 
 
     const WishGender = [
-        "Femme",
-        "Homme",
-        "Mixte",]
+        "Feminine",
+        "Masculine",
+        "Mixte",
+    ];
     const WishLength = [
         "Court",
         "Moyen",
-        "Long",]
+        "Long",
+    ];
+
+
 
     // handling the change of Gender
-    const handleNewGender = (item: string) => {
+    const handleNewWishGender = (item: string) => {
+        // TODO: add backend to save the new preference
+    }
+    // handling the change of wishes length
+    const handleNewWishLength = (item: string) => {
         // TODO: add backend to save the new preference
     }
     // handling the change of length
-    const handleNewLength = (item: string) => {
+    const handleNewSetCurrentLength = (item: string) => {
         // TODO: add backend to save the new preference
     }
-
 
     return (
         <div>
@@ -80,43 +87,39 @@ const Filters = () => {
                                 {/* Separator Color */}
                                 <div className='border-b border-[#D8D8D8] pb-12'>
 
-                                    {/* Title of the Section COIFFURE */}
+                                    {/* Title of the Section coiffure */}
                                     <p className='text-black text-lg mb-4 font-semibold'>Coiffure</p>
                                     <div>
                                         {/* Dropdown longueur coiffure*/}
                                         <p className="text-black text-sm mb-2"></p>
                                         <DropdownMenu dropdownItems={WishLength}
-                                            fctToCallOnClick={handleNewLength} menuName="Longueur cheveux" />
+                                            fctToCallOnClick={handleNewWishLength} menuName="cheveux actuelle" />
                                     </div>
+
                                     <div className='flex flex-col sm:flex-row lg:flex-col xl:flex-row sm:items-center lg:items-start xl:items-center sm:justify-between mt-5'>
+
+                                        {/* Dropdown Tendance genre coiffure*/}
                                         <div>
-                                            <p className="text-black text-sm mb-2">Tendance de la coiffure</p>
-                                            <BaseDropdown dropdownItems={['Feminine']} />
+                                            <DropdownMenu dropdownItems={WishGender}
+                                                fctToCallOnClick={handleNewWishLength} menuName="Tendance da la coiffure" />
                                         </div>
                                         <div className='flex items-center justify-start sm:justify-center gap-6 mt-5 sm:mt-0 lg:mt-5 xl:mt-0'>
-                                            <div>
-                                                <p className="text-black text-sm mb-2">Couleur</p>
-                                                <div className='flex items-center gap-4'>
-                                                    <div onClick={() => checkboxClickHandler('Couleur')} className={`w-6 h-6 flex items-center justify-center cursor-pointer border border-black rounded ${selectedItems.includes('Couleur') ? 'bg-black' : 'bg-white'}`}>
-                                                        <TickIcon />
-                                                    </div>
-                                                    <BaseDropdown dropdownItems={['Blond']} width='w-24' />
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <p className="text-black text-sm mb-2">Longueur</p>
-                                                <div className='flex items-center gap-4'>
-                                                    <div onClick={() => checkboxClickHandler('Longueur')} className={`w-6 h-6 flex items-center justify-center cursor-pointer border border-black rounded ${selectedItems.includes('Longueur') ? 'bg-black' : 'bg-white'}`}>
-                                                        <TickIcon />
-                                                    </div>
-                                                    <BaseDropdown dropdownItems={['Moyen']} width='w-24' />
+
+                                            <div className='flex items-center gap-4'>
+                                                {/* Dropdown Tendance genre coiffure*/}
+                                                <div>
+                                                    <DropdownMenu dropdownItems={WishLength}
+                                                        fctToCallOnClick={handleNewSetCurrentLength} menuName="Longueur recherchée" />
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+
+
                                 <div>
-                                    <p className='text-black text-lg my-3'>Popularité</p>
+                                    {/* Title of the Section coiffure */}
+                                    <p className='text-black text-lg mb-4 font-semibold mt-4'>Popularit&eacute;</p>
                                     <div className='flex flex-col sm:flex-row lg:flex-col xl:flex-row items-start sm:items-center lg:items-start xl:items-center justify-between'>
                                         <div>
                                             <p className='text-black text-sm'>Minimum</p>
@@ -266,5 +269,4 @@ const Filters = () => {
         </div>
     )
 }
-
 export default Filters

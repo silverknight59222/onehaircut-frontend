@@ -54,8 +54,8 @@ const Portrait = () => {
     const handleNewEthnicity = (item: string) => {
         // TODO: add backend to save the new preference
     }
-    // handling the change of Length
-    const handleNewLength = (item: string) => {
+    // handling the change of length
+    const handleNewSetCurrentLength = (item: string) => {
         // TODO: add backend to save the new preference
     }
 
@@ -317,7 +317,7 @@ const Portrait = () => {
                         <div className="flex flex-col gap-2">
 
                             <DropdownMenu dropdownItems={Length}
-                                fctToCallOnClick={handleNewLength} menuName="Longueur cheveux" />
+                                fctToCallOnClick={handleNewSetCurrentLength} menuName="Longueur cheveux" />
                         </div>
                     </div>
                 </div>
