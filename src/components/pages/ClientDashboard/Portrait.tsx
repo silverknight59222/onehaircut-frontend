@@ -1,8 +1,8 @@
 "use client";
 import { dashboard } from "@/api/dashboard";
 import DropdownMenu from "@/components/UI/DropDownMenu";
-import { CircleRight, CrossIcon, LogoCircleFixRight } from "@/components/utilis/Icons";
-import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
+import { CrossIcon, LogoCircleFixRight } from "@/components/utilis/Icons";
+import { Theme_A } from "@/components/utilis/Themes";
 import ClientDashboardLayout from "@/layout/ClientDashboardLayout";
 import Image from "next/image";
 import React, { useState } from "react";
