@@ -64,7 +64,7 @@ const SalonChoice = () => {
                 filteredMobile.length === 0 ||
                 filteredMobile.includes(salon.is_mobile.toLowerCase());
 
-            const salonInRange = filtereRange[0] <= salon.base_price && salon.base_price <= filtereRange[1];
+            const salonInRange = filtereRange[0] <= salon.final_price && salon.final_price <= filtereRange[1];
 
             return (
                 cityNameMatches &&

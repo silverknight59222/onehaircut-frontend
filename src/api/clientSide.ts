@@ -1,21 +1,21 @@
 import { request } from "./Request";
 
-interface SlotParam{
+interface SlotParam {
     date: string
 }
 
-interface BookingParams{
-    user_id: number|null,
+interface BookingParams {
+    user_id: number | null,
     hair_salon_id: number,
     slot_id: number,
     hair_dresser_id: number,
-    amount: number|undefined,
+    amount: number | undefined,
     salon_haircut_id: number,
     services: number[],
 }
-const client={
-    getSalonDetail: async (id: string,hairId:string, services_ids:[]) => {
-        return await request.post(`/hair_salon_by_id/${id}/${hairId}`, {services: services_ids});
+const client = {
+    getSalonDetail: async (id: string, hairId: string, services_ids: any) => {
+        return await request.post(`/hair_salon_by_id/${id}/${hairId}`, { services: services_ids });
     },
     getSlots: async (id: number, params: SlotParam) => {
         return await request.post(`/fetch_slots_by_hair_dresser/${id}`, params);
