@@ -147,61 +147,62 @@ const Filters = () => {
                         {selectedTab === 0 ?
                             <div className="relative z-10 w-full lg:w-[630px] mt-5 md:mt-0 rounded-3xl bg-white py-6 px- sm:px-10 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)]">
 
-                                {/* Title of the Section coiffure */}
-                                <p className='text-black text-lg mb-4 font-semibold'>Coiffure</p>
+                                {/* Title of the Section "Coiffure" */}
+                                <p className="text-black text-lg mb-4 font-semibold">Coiffure</p>
 
-                                {/* Main flex container for the first line */}
-                                <div className="flex justify-evenly items-center">
-                                    {/* Dropdown longueur coiffure */}
-                                    <div className="flex items-center">
-                                        <p className="text-black text-sm mb-2"></p>
-                                        <DropdownMenu dropdownItems={WishLength} fctToCallOnClick={handleNewWishLength} menuName="cheveux actuelle" />
+                                <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-6 md:gap-10 lg:gap-6 xl:gap-10">
+                                    {/* First Column */}
+                                    <div className="flex flex-col items-center">
+                                        {/* Dropdown for "cheveux actuelle" */}
+                                        <div className="flex items-center justify-center mb-2 mr-10"> {/* Increased horizontal spacing */}
+                                            <p className="text-black text-sm mb-2 mr-10"></p>
+                                            <DropdownMenu dropdownItems={WishLength} fctToCallOnClick={handleNewWishLength} menuName="cheveux actuelle" />
+                                        </div>
+
+                                        {/* Dropdown for "Longueur recherchée" */}
+                                        <div className="flex items-center justify-center mb-2"> {/* Increased horizontal spacing */}
+                                            <DropdownMenu dropdownItems={WishLength} fctToCallOnClick={handleNewSetCurrentLength} menuName="Longueur recherchée" />
+                                        </div>
                                     </div>
 
-                                    {/* Dropdown "Longueur recherchée" */}
-                                    <div className="flex items-center">
-                                        <DropdownMenu dropdownItems={WishLength} fctToCallOnClick={handleNewSetCurrentLength} menuName="Longueur recherchée" />
-                                    </div>
-                                </div>
+                                    {/* Second Column */}
+                                    <div className="flex flex-col items-center">
+                                        {/* Dropdown for "Tendance de la coiffure" */}
+                                        <div className="flex items-center justify-center mb-2"> {/* Increased horizontal spacing */}
+                                            <DropdownMenu dropdownItems={WishGender} fctToCallOnClick={handleNewWishLength} menuName="Tendance de la coiffure" />
+                                        </div>
 
-                                {/* Flex container for the second line */}
-                                <div className='flex flex-col sm:flex-row lg:flex-col xl:flex-row sm:items-center lg:justify-evenly xl:justify-evenly sm:justify-evenly mt-6'>
-                                    {/* Dropdown "Longueur recherchée" */}
-                                    <div className="flex items-center">
-                                        <DropdownMenu dropdownItems={WishGender} fctToCallOnClick={handleNewWishLength} menuName="Tendance da la coiffure" />
-                                    </div>
-
-                                    {/* Slider */}
-                                    <ThemeProvider theme={theme}>
-                                        <div className="relative z-20 w-64 pt-3 px-4 text-black rounded-3xl text-center">
-                                            <p className="text-black text-md mb-2 font-md">Budget</p>
-                                            <div className="flex flex-col items-center justify-center w-full">
-                                                <Typography id="range-slider" gutterBottom>
-                                                </Typography>
-                                                <Slider
-                                                    value={sliderRange}
-                                                    onChange={handleSliderChange}
-                                                    valueLabelDisplay="auto"
-                                                    min={0}
-                                                    max={500}
-                                                    style={{ width: '80%' }}
-                                                />
-                                                <div className="mt-0 mb-1">
-                                                    &#91;
-                                                    <span style={{ fontSize: '0.8em', fontWeight: '500', color: '#757575' }}>
-                                                        {sliderRange[0]}€ &#8211; {sliderRange[1]}€
-                                                    </span>
-                                                    &#93;
+                                        {/* Slider for budget */}
+                                        <ThemeProvider theme={theme}>
+                                            <div className="relative z-20 w-full">
+                                                <p className="text-black text-md mb-2 font-md text-center">Budget</p>
+                                                <div className="flex flex-col items-center justify-center">
+                                                    <Typography id="range-slider" gutterBottom></Typography>
+                                                    <Slider
+                                                        value={sliderRange}
+                                                        onChange={handleSliderChange}
+                                                        valueLabelDisplay="auto"
+                                                        min={0}
+                                                        max={500}
+                                                        style={{ width: '90%' }}
+                                                    />
+                                                    <div className="mt-2 text-center"> {/* Increased horizontal spacing */}
+                                                        &#91;
+                                                        <span style={{ fontSize: '0.8em', fontWeight: '500', color: '#757575' }}>
+                                                            {sliderRange[0]}€ &#8211; {sliderRange[1]}€
+                                                        </span>
+                                                        &#93;
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </ThemeProvider>
+                                        </ThemeProvider>
+                                    </div>
                                 </div>
+
                                 {/* Centered "Réinitialiser" button */}
                                 <div className="flex justify-center mt-4">
                                     <button className={`${Theme_A.button.medBlackColoredButton}`}>Réinitialiser</button>
                                 </div>
-
                                 {/* Title of the Section coiffure */}
                                 {/*
                                     <p className='text-black text-lg mb-4 font-semibold mt-4'>Popularit&eacute;</p>
