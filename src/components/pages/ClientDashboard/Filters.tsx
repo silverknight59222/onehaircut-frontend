@@ -4,15 +4,14 @@ import ClientDashboardLayout from '@/layout/ClientDashboardLayout'
 import React, { useState } from 'react'
 import StarRatings from "react-star-ratings";
 import DropdownMenu from "@/components/UI/DropDownMenu";
-import Slider from '@material-ui/core/Slider';
-import { createTheme, ThemeProvider } from '@material-ui/core/styles';
-import { TextField, Typography, } from '@material-ui/core';
+import { ThemeProvider } from '@material-ui/core/styles';
+import { TextField, } from '@material-ui/core';
 import { Theme_A, ColorsThemeA } from '@/components/utilis/Themes';
 import Footer from '@/components/UI/Footer';
 import EUCountriesList from '@/components/shared/Navbar/EUCountries';
 import ComponentTheme from '@/components/UI/ComponentTheme';
 import CustomSlider from '@/components/UI/OHC_Slider';
-
+import BaseModal from '@/components/UI/BaseModal';
 
 const Filters = () => {
     const [selectedTab, setSelectedTab] = useState(0);
@@ -98,6 +97,23 @@ const Filters = () => {
         return ''; // Use the default color or your desired color
     };
 
+    // For rating search
+    // function to show the popup to rate the haircut given in argument
+
+    const [MinRating, setMinRating] = useState(1); // Initialize with the default rating value
+    const [MaxRating, setMaxRating] = useState(5); // Initialize with the default rating value
+    const handleMinRatingChange = (newRating: number) => {
+        if (newRating <= MaxRating) {
+            setMinRating(newRating); // Update the MinRating state with the new rating value
+        }
+    };
+
+    const handleMaxRatingChange = (newRating: number) => {
+        if (newRating >= MinRating) {
+            setMaxRating(newRating); // Update the MaxRating state with the new rating value
+        }
+    };
+
     return (
         <div>
             <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
@@ -161,6 +177,7 @@ const Filters = () => {
                                                 onChange={handleBudgetSliderChange}
                                                 min={0}
                                                 max={250}
+                                                unit="€"
                                                 label="Budget" // Provide a label prop if your CustomSlider component expects it
                                                 valueLabelDisplay="auto"
                                             />
@@ -224,8 +241,8 @@ const Filters = () => {
 
 
                                     {/* Dropdown for "Country */}
-                                    <div className="flex items-center justify-center mb-2 mr-10">
-                                        <p className="text-black text-sm mb-2 mr-10 "></p>
+                                    <div className="flex items-center justify-center mb-2 mr-12 ">
+                                        <p className="text-black text-sm"></p>
                                         <DropdownMenu dropdownItems={EUCountriesList()} fctToCallOnClick={handleNewWishLength} menuName="Pays" />
                                     </div>
                                     <div>
@@ -258,7 +275,22 @@ const Filters = () => {
                                         </ThemeProvider>
                                     </div>
 
-                                    {/* TODO ADD GEOLOCALISATION FUNCTIONNALITY
+                                    {/* Slider for Arround Address Searching circle */}
+                                    <div className="relative z-20 w-full">
+                                        <CustomSlider
+                                            theme={ComponentTheme}
+                                            value={zoneSliderRange}
+                                            onChange={handleZoneSliderChange}
+                                            min={0}
+                                            max={30}
+                                            unit="km"
+                                            label="Zone de recherche" // Provide a label prop if your CustomSlider component expects it
+                                            valueLabelDisplay="auto"
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* TODO ADD GEOLOCALISATION FUNCTIONNALITY
                                     <div>
                                         <p className="text-black text-sm mb-2">Utiliser la Geolocalisation</p>
                                         <div onClick={() => checkboxClickHandler('Geolocalisation')} className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded ${selectedItems.includes('Geolocalisation')
@@ -270,65 +302,45 @@ const Filters = () => {
                                     </div>
                                         */}
 
-                                    {/* Slider for Arround Address Searching circle */}
-                                    <ThemeProvider theme={ComponentTheme}>
-                                        <div className="relative z-20 w-full">
-                                            <p className="text-black text-md mb-2 font-md text-center">Zone de recherche</p>
-                                            <div className="flex flex-col items-center justify-center">
-                                                <Typography id="range-slider" gutterBottom></Typography>
-                                                <Slider
-                                                    value={zoneSliderRange}
-                                                    onChange={handleZoneSliderChange}
-                                                    valueLabelDisplay="auto"
-                                                    min={0}
-                                                    max={30}
-                                                    style={{ width: '100%' }}
-                                                />
-                                                <div className="mt-2 text-center"> {/* Increased horizontal spacing */}
-                                                    &#91;
-                                                    <span style={{ fontSize: '0.8em', fontWeight: '500', color: '#757575' }}>
-                                                        {zoneSliderRange[0]}km &#8211; {zoneSliderRange[1]}km
-                                                    </span>
-                                                    &#93;
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </ThemeProvider>
-                                </div>
 
                                 <div className='border-y border-[#D8D8D8] py-4 mt-6'>
 
 
                                     {/* Title of the Section "Classement" */}
                                     <div>
-                                        <p className="text-black text-lg mt-4 mb-8 font-semibold">Classement</p>
+                                        <p className="text-black text-lg mt-4 mb-8 font-semibold">Note du salon</p>
                                         <div className='flex flex-col sm:flex-row lg:flex-col xl:flex-row items-start sm:items-center lg:items-start xl:items-center justify-between'>
                                             <div>
                                                 <p className='text-black text-sm'>Minimum</p>
                                                 <div className='flex items-center gap-4'>
                                                     <StarRatings
-                                                        rating={3.5}
+                                                        rating={MinRating}
                                                         starRatedColor="#FEDF10"
                                                         starSpacing="4px"
                                                         starDimension="15px"
                                                         numberOfStars={5}
-                                                        name="rating"
+                                                        name="MinRating"
+                                                        changeRating={handleMinRatingChange} // Pass the function to update the rating value
                                                     />
-                                                    <p className='text-black text-sm'>3.5 / 5</p>
+                                                    <p className='text-black text-sm'>{MinRating} / 5</p>
                                                 </div>
+
+
+
                                             </div>
                                             <div className='mt-5 sm:mt-0 lg:mt-5 xl:mt-0'>
                                                 <p className='text-black text-sm'>Maximum</p>
                                                 <div className='flex items-center gap-4'>
                                                     <StarRatings
-                                                        rating={4.5}
+                                                        rating={MaxRating}
                                                         starRatedColor="#FEDF10"
                                                         starSpacing="4px"
                                                         starDimension="15px"
                                                         numberOfStars={5}
-                                                        name="rating"
+                                                        name="MinRating"
+                                                        changeRating={handleMaxRatingChange} // Pass the function to update the rating value
                                                     />
-                                                    <p className='text-black text-sm'>4.5 / 5</p>
+                                                    <p className='text-black text-sm'>{MaxRating} / 5</p>
                                                 </div>
                                             </div>
                                         </div>
