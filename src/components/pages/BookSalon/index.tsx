@@ -27,6 +27,7 @@ const BookSalon = () => {
   const { loadingView } = userLoader();
   const salon=getLocalStorage('selectedSalon')
   const duration=getLocalStorage('serviceDuration')
+  const service_ids=getLocalStorage('ServiceIds')
   const durationTime = duration ? JSON.parse(duration) : null
   const salonId= salon ? JSON.parse(salon).id : null
   const items = [
@@ -39,7 +40,7 @@ const BookSalon = () => {
   const getAllHairDresser = async () => {
     if(salonId){
     setIsLoading(true);
-    await client.getSalonDetail(salonId,haircutData.id)
+    await client.getSalonDetail(salonId, haircutData.id, service_ids)
       .then((resp) => {
         setHairDressers(resp.data.data[0].salon_hairdressers)
         setHairCut(resp.data.salon_haircut)
