@@ -49,7 +49,8 @@ const SearchSalon = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [salonProfile, setSalonProfile] = useState<SalonProfile>({ name: '', rating: '', user_id: 0, salon_images: [{ image: '', is_cover: true }], salon_hairdressers: [{ name: '', profile_image: '' }] })
   const router = useRouter();
-  const [hairCut, setHairCut] = useState({});
+  const [hairCutPrice, setHairCutPrice] = useState<Number>();
+  const [hairCutDuration, setHairCutDuration] = useState<Number>();
   const { loadingView } = userLoader();
   const haircut=getLocalStorage("haircut")
   const haircutData = haircut ? JSON.parse(haircut) : null
@@ -74,10 +75,11 @@ const SearchSalon = () => {
     console.log(salonId, haircutData.id)
     if (salonId) {
 
-      await client.getSalonDetail(salonId,haircutData.id, services_ids)
+      await client.getSalonDetail(salonId,haircutData.id)
         .then((resp) => {
           setSalonProfile(resp.data.data[0])
-          setHairCut(resp.data.data[0].salon_haircut)
+          setHairCutPrice(resp.data.salon_haircut.base_price)
+          setHairCutDuration(+resp.data.salon_haircut.base_duration)
           setIsLoading(false);
           setLocalStorage('slotTime', resp.data.salon_haircut.base_duration)
         }).catch(error => {
@@ -383,7 +385,7 @@ const SearchSalon = () => {
                     Prix total :
                   </p>
                   <p className="text-md xl:text-lg font-normal text-black">
-                  {/* {salonProfile.final_price} */}
+                  {servicePrice + hairCutPrice}
                   </p>
                 </div>
 
@@ -393,7 +395,7 @@ const SearchSalon = () => {
                     Dur&eacute;e totale :
                   </p>
                   <p className="text-md xl:text-lg font-normal text-black">
-                    {/* {+hairCut.base_duration + serviceDuration} */}
+                  {serviceDuration + hairCutDuration}
                   </p>
                 </div>
               </div>
