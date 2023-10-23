@@ -40,7 +40,7 @@ const BookSalon = () => {
   const getAllHairDresser = async () => {
     if(salonId){
     setIsLoading(true);
-    await client.getSalonDetail(salonId, haircutData.id, service_ids)
+    await client.getSalonDetail(salonId, haircutData.id)
       .then((resp) => {
         setHairDressers(resp.data.data[0].salon_hairdressers)
         setHairCut(resp.data.salon_haircut)
@@ -211,17 +211,16 @@ const BookSalon = () => {
           <div className="flex items-center justify-center mt-12 mb-4">
             {slots.length ?
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-10 gap-y-7">
-              {slots.map((slot, index) => {
-                const ddd=true
+              {slots.map((slot:any, index) => {
                 return (
                   <div
                     key={index}
                     onClick={()=>{slot.is_booked ? "":onSelectSlot(slot)}}
-                    className={`w-32 h-14 flex items-center justify-center text-xl font-semibold border rounded-2xl ${slot.is_booked ? "bg-[#6c6c6c]":""}  ${slot.is_booked ? "":"cursor-pointer"}  text-black ${
+                    className={`w-32 h-14 flex items-center justify-center text-xl font-semibold border rounded-2xl  ${slot.is_booked ? "":"cursor-pointer"}  text-black ${
                       selectedSlot.some((item:any)=>item.id===slot.id)
                         ? "bg-[#fbd3c6] text-[#473c38]"
-                        : "bg-white border-[#BABABA]"
-                    }`}         
+                        : "border-[#b8b8b8]"
+                    } ${slot.is_booked && "bg-[#4d4a4a]"}`}         
                   >
                     {slot.start}
                   </div>

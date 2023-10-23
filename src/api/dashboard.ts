@@ -42,6 +42,9 @@ const dashboard = {
   addHairDresser: async (params: any) => {
     return await request.post<ResponseType>(`/hair_dresser`, params);
   },
+  getSaloneTimeDurationData: async (params: any) => {
+    return await request.post<ResponseType>(`/service`, params);
+  },
   getSaloneTimeDuration: async (params: any) => {
     return await request.get<ResponseType>(`/service`, params);
   },

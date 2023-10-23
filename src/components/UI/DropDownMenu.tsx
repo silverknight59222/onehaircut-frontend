@@ -66,6 +66,8 @@ const DropdownMenu = ({
     dropdownItems = [""],
     menuName = '',
     fctToCallOnClick = (item: string) => { },
+    labelId = '',
+    selectId = '',
 }) => {
     const classes = useStyles();
     const [selectedItem, setSelectedItem] = useState('');
@@ -79,14 +81,14 @@ const DropdownMenu = ({
         <div>
             <FormControl className={classes.formControl}>
                 <InputLabel
-                    id="demo-simple-select-helper-label"
+                    id={labelId}
                     className={classes.inputLabel}
                 >
                     {menuName}
                 </InputLabel>
                 <Select
-                    labelId="demo-simple-select-helper-label"
-                    id="demo-simple-select-helper"
+                    labelId={labelId}
+                    id={labelId}
                     value={selectedItem}
                     onChange={(event) => handleChange(event.target.value)}
                     className={classes.select}

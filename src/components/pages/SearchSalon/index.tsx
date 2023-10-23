@@ -44,18 +44,21 @@ interface SalonProfile {
 
 const SearchSalon = () => {
   const [selectedImage, setSelectedImage] = useState("");
-  const [serviceDuration, setServiceDuration] = useState<Number>();
-  const [servicePrice, setServicePrice] = useState<Number>();
+  const [serviceDuration, setServiceDuration] = useState<Number>(0);
+  const [servicePrice, setServicePrice] = useState<Number>(0);
   const [isLoading, setIsLoading] = useState(false);
   const [salonProfile, setSalonProfile] = useState<SalonProfile>({ name: '', rating: '', user_id: 0, salon_images: [{ image: '', is_cover: true }], salon_hairdressers: [{ name: '', profile_image: '' }] })
   const router = useRouter();
-  const [hairCut, setHairCut] = useState({});
+  const [hairCutPrice, setHairCutPrice] = useState<Number>();
+  const [hairCutDuration, setHairCutDuration] = useState<Number>();
   const { loadingView } = userLoader();
   const haircut = getLocalStorage("haircut")
   const haircutData = haircut ? JSON.parse(haircut) : null
   const salon = getLocalStorage('selectedSalon')
   const services_ids = getLocalStorage('ServiceIds')
   const salonId = salon ? JSON.parse(salon).id : null
+  const services=getLocalStorage('ServiceIds')
+  const servicesData=services ? JSON.parse(services) : null
 
   //TODO Import salon availability times
   const hours = [
@@ -71,13 +74,12 @@ const SearchSalon = () => {
 
   const getAllHairDresser = async () => {
     setIsLoading(true);
-    console.log(salonId, haircutData.id)
     if (salonId) {
-
-      await client.getSalonDetail(salonId, haircutData.id, services_ids)
+      await client.getSalonDetail(salonId,haircutData.id)
         .then((resp) => {
           setSalonProfile(resp.data.data[0])
-          setHairCut(resp.data.data[0].salon_haircut)
+          setHairCutPrice(resp.data.salon_haircut.base_price)
+          setHairCutDuration(+resp.data.salon_haircut.base_duration)
           setIsLoading(false);
           setLocalStorage('slotTime', resp.data.salon_haircut.base_duration)
         }).catch(error => {
@@ -96,26 +98,29 @@ const SearchSalon = () => {
     })
     // Code pour obtenir des informations sur les salons depuis l'API
     setIsLoading(true);
-    if (haircut) {
-      const data = {
-        hair_salon_id: salonId,
-        service_ids: serviceIds
-      }
-      await dashboard.getSaloneTimeDuration(data)
-        .then((res) => {
-          setIsLoading(false);
-          const totalPrice = res.data.data.reduce((sum, item: any) => sum + (+item.price), 0);
-          const totalDuration = res.data.data.reduce((sum, item: any) => sum + (+item.duration), 0);
-          setServicePrice(totalPrice)
-          setServiceDuration(totalDuration)
+    if (haircut && serviceIds.length>0) {
+        const data = {
+          hair_salon_id: salonId,
+          service_ids: serviceIds
+        }
+        await dashboard.getSaloneTimeDurationData(data)
+            .then((res) => {
+                setIsLoading(false);
+                const totalPrice = res.data.data.reduce((sum, item:any) => sum + (+item.price), 0);
+                const totalDuration = res.data.data.reduce((sum, item:any) => sum + (+item.duration), 0);
+                setServicePrice(totalPrice)
+                setServiceDuration(totalDuration)
 
-          setLocalStorage('servicePrice', totalPrice)
-          setLocalStorage('serviceDuration', totalDuration)
-        })
-        .catch(error => {
-          setIsLoading(false);
-          console.log(error)
-        })
+                setLocalStorage('servicePrice',totalPrice)
+                setLocalStorage('serviceDuration',totalDuration)
+            })
+            .catch(error => {
+                setIsLoading(false);
+                console.log(error)
+            })
+    }else{
+      setLocalStorage('servicePrice',0)
+      setLocalStorage('serviceDuration',0)
     }
   }
 
@@ -383,7 +388,7 @@ const SearchSalon = () => {
                     Prix total :
                   </p>
                   <p className="text-md xl:text-lg font-normal text-black">
-                    {salonProfile.final_price}
+                  {servicePrice + hairCutPrice}
                   </p>
                 </div>
 
@@ -393,17 +398,16 @@ const SearchSalon = () => {
                     Dur&eacute;e totale :
                   </p>
                   <p className="text-md xl:text-lg font-normal text-black">
-                    {+hairCut.base_duration + serviceDuration}
+                  {serviceDuration + hairCutDuration}
                   </p>
                 </div>
               </div>
               <div className="flex justify-between w-full">
-                {/* Nom de la coiffure*/}
                 <p className="text-md xl:text-lg font-semibold text-black">
-                  {haircut.name} :
+                 Nom de la coiffure :
                 </p>
                 <p className="text-md xl:text-lg font-normal text-black">
-                  [Votre valeur ici]
+                {haircutData.name}
                 </p>
               </div>
               <div className="flex justify-between w-full">
@@ -412,7 +416,7 @@ const SearchSalon = () => {
                   Dur&eacute;e de la coiffure :
                 </p>
                 <p className="text-md xl:text-lg font-normal text-black">
-                  [Votre valeur ici]
+                   {hairCutDuration}
                 </p>
               </div>
               <div className="flex justify-between w-full">
@@ -421,7 +425,11 @@ const SearchSalon = () => {
                   Nom des prestations:
                 </p>
                 <p className="text-md xl:text-lg font-normal text-black">
-                  [Votre valeur ici]
+                {servicesData ? <p>
+                  {servicesData.map((item: {name: string, id: number},index: number)=>{
+                    return <p key={index} className="text-base">{++index}. {item.name}</p>
+                  })}
+              </p> : ''}
                 </p>
               </div>
               <div className="flex justify-between w-full">
@@ -430,11 +438,9 @@ const SearchSalon = () => {
                   Dur&eacute;e des prestations :
                 </p>
                 <p className="text-md xl:text-lg font-normal text-black">
-                  [Votre valeur ici]
+                {serviceDuration}
                 </p>
               </div>
-
-
             </div>
           </div>
         </div>
