@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+
+import { useState } from 'react'
 import { useRouter } from "next/navigation";
 import Sidebar from "@/components/shared/Sidebar";
 import {
@@ -32,7 +33,7 @@ const ClientDashboardLayout = ({ children }: DashboardLayout) => {
     { icon: "MessageIcon", title: "Filtres", route: "/client/filters" },
     { icon: "ReservationIcon", title: "Réservations en cours", route: "/client/currentreservation" },
     { icon: "HistoryIcon", title: "Historique", route: "/client/history" },
-    { icon: "HelpIcon", title: "Aide", route: "" },
+    { icon: "HelpIcon", title: "Aide", route: "/client/help" },
   ];
   const SidebarHandler = () => {
     setIsSidebar(!isSidebar);
