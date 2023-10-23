@@ -215,11 +215,11 @@ const BookSalon = () => {
                   <div
                     key={index}
                     onClick={()=>{slot.is_booked ? "":onSelectSlot(slot)}}
-                    className={`w-32 h-14 flex items-center justify-center text-xl font-semibold border rounded-2xl ${slot.is_booked ? "bg-[#5f5f5f]":""}  ${slot.is_booked ? "":"cursor-pointer"}  text-black ${
+                    className={`w-32 h-14 flex items-center justify-center text-xl font-semibold border rounded-2xl  ${slot.is_booked ? "":"cursor-pointer"}  text-black ${
                       selectedSlot.some((item:any)=>item.id===slot.id)
                         ? "bg-[#fbd3c6] text-[#473c38]"
-                        : "bg-white border-[#BABABA]"
-                    }`}         
+                        : "border-[#b8b8b8]"
+                    } ${slot.is_booked && "bg-[#4d4a4a]"}`}         
                   >
                     {slot.start}
                   </div>
