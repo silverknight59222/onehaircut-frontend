@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import Forgot from '@/components/pages/forgot'
+import Forgot from '@/components/pages/forgot-password'
 
 const page = () => {
 	return (
