@@ -54,7 +54,7 @@ const Welcome = () => {
           setPage(prevPage => prevPage + 1);
           setIsLoading(false)
       })
-      .catch(error => console.log(error))
+      .catch(error => setIsLoading(false))
   }
 
   const handleScroll = () => {
