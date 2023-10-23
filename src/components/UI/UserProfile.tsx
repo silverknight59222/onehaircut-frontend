@@ -68,7 +68,7 @@ const UserProfile = ({ isDashboard }: UserProfileProfile) => {
     {
       name: "Aide",
       icon: <HelpIcon width="20" height="20" color="#000000" />,
-      route: ""
+      route: "/client/help"
     },
   ];
 
