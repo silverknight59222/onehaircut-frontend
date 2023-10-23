@@ -40,7 +40,7 @@ const BookSalon = () => {
   const getAllHairDresser = async () => {
     if(salonId){
     setIsLoading(true);
-    await client.getSalonDetail(salonId, haircutData.id, service_ids)
+    await client.getSalonDetail(salonId, haircutData.id)
       .then((resp) => {
         setHairDressers(resp.data.data[0].salon_hairdressers)
         setHairCut(resp.data.salon_haircut)
