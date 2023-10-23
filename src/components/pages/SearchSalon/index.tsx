@@ -101,7 +101,7 @@ const SearchSalon = () => {
           hair_salon_id: salonId,
           service_ids: serviceIds
         }
-        await dashboard.getSaloneTimeDuration(data)
+        await dashboard.getSaloneTimeDurationData(data)
             .then((res) => {
                 setIsLoading(false);
                 const totalPrice = res.data.data.reduce((sum, item:any) => sum + (+item.price), 0);
@@ -383,7 +383,7 @@ const SearchSalon = () => {
                     Prix total :
                   </p>
                   <p className="text-md xl:text-lg font-normal text-black">
-                  {salonProfile.final_price}
+                  {/* {salonProfile.final_price} */}
                   </p>
                 </div>
 
@@ -393,14 +393,14 @@ const SearchSalon = () => {
                     Dur&eacute;e totale :
                   </p>
                   <p className="text-md xl:text-lg font-normal text-black">
-                    {+hairCut.base_duration + serviceDuration}
+                    {/* {+hairCut.base_duration + serviceDuration} */}
                   </p>
                 </div>
               </div>
               <div className="flex justify-between w-full">
                 {/* Nom de la coiffure*/}
                 <p className="text-md xl:text-lg font-semibold text-black">
-                  {haircut.name} :
+                  {/* {haircut.name} : */}
                 </p>
                 <p className="text-md xl:text-lg font-normal text-black">
                   [Votre valeur ici]

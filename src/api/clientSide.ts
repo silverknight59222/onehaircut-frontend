@@ -14,8 +14,8 @@ interface BookingParams{
     services: number[],
 }
 const client={
-    getSalonDetail: async (id: string,hairId:string, services_ids:[]) => {
-        return await request.post(`/hair_salon_by_id/${id}/${hairId}`, {services: services_ids});
+    getSalonDetail: async (id: string,hairId:string) => {
+        return await request.get(`/hair_salon_by_id/${id}/${hairId}`);
     },
     getSlots: async (id: number, params: SlotParam) => {
         return await request.post(`/fetch_slots_by_hair_dresser/${id}`, params);
