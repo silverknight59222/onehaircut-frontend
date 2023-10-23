@@ -95,7 +95,7 @@ const ClientDashboardLayout = ({ children }: DashboardLayout) => {
             </div>
             <div className="flex items-center justify-end gap-4">
 
-              <div className="w-14 h-14 flex items-center justify-center pb-1 border-2 border-secondary rounded-full cursor-pointer"
+              <div className="w-14 h-14 flex items-center justify-center pb-1 border-2 border-secondary rounded-full cursor-pointer transform hover:scale-110 transition-transform"
                 onClick={() => setIsUserDropDwn(!isUserDropDwn)}>
                 <UserIcon />
               </div>
