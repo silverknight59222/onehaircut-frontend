@@ -4,8 +4,16 @@ interface SalonImages{
 	image: string,
 	is_cover: boolean
 }
+
+export type Address = {
+	id: number;
+	city: string;
+	state: string;
+	country: string;
+}
+
 export type SalonDetails = {
-	address: string;
+	address: Address;
 	city_name: string;
 	id: number;
 	is_primary: 1;
