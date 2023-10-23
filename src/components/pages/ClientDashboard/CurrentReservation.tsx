@@ -4,7 +4,10 @@ import { CircleRight, LogoCircleFixRight } from "@/components/utilis/Icons";
 import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 import ClientDashboardLayout from "@/layout/ClientDashboardLayout";
 import Image from "next/image";
-import React from "react";
+import ChatModal from "../SearchSalon/ChatModal";
+import React, { useEffect, useState, useRef } from "react";
+
+
 
 
 const Currentreservation = () => {
@@ -27,11 +30,33 @@ const Currentreservation = () => {
         { name: 'Telephone', desc: '03 22 55 66 77' },
     ]
 
+
+    // FOR CHAT MODAL 
+    // Créez un état pour suivre si le Chat modal est ouvert ou fermé
+    const [isChatModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [message, setMessage] = useState<string>('');
+    const [messages, setMessages] = useState<Array<{ content: string, sent: boolean }>>([]);
+    const closeChatModal = () => {
+        setIsModalOpen(false);
+    };
+    // Cette fonction sera appelée lorsque l'utilisateur clique sur le bouton pour ouvrir le modal
+    const openChatModal = () => {
+        setIsModalOpen(true);
+    };
+
     return (
         <div>
             <div className="hidden lg:block fixed -right-2 md:-right-2 -bottom-2 md:-bottom-2 z-10">
                 <LogoCircleFixRight />
             </div>
+            {isChatModalOpen && (
+                <ChatModal
+                    isModalOpen={isChatModalOpen}
+                    closeModal={closeChatModal}
+                    professionalData="" // TODO ADD TRUE SALON LINK
+                    className="z-1000 opacity-100"
+                />
+            )}
             <ClientDashboardLayout>
                 <div className="flex flex-col items-center justify-center mt-10 mb-5 px-6 sm:px-10 md:px-20">
                     <p className="text-black font-medium text-3xl text-center mb-8">
@@ -61,9 +86,10 @@ const Currentreservation = () => {
                                     })}
                                 </div>
                                 <div className='flex  justify-start mt-10 sm:mt-5'>
-                                    <button className={`xl:w-full ${Theme_A.button.medBlackColoredButton}`}>
+                                    <button onClick={openChatModal} className={`xl:w-full ${Theme_A.button.medBlackColoredButton}`}>
                                         Contacter le salon
                                     </button>
+
                                 </div>
                             </div>
 

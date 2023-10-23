@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@babel/preset-react": "^7.22.15",
+    "@emotion/react": "^11.11.1",
+    "@emotion/styled": "^11.11.0",
     "@fullcalendar/common": "^5.11.5",
     "@fullcalendar/interaction": "^6.1.9",
     "@fullcalendar/react": "^6.1.9",

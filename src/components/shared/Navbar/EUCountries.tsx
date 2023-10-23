@@ -1,0 +1,55 @@
+import React from 'react';
+
+const EUCountriesList = () => {
+  const paysEurope = [
+    'Albanie',
+    'Andorre',
+    'Autriche',
+    'Biélorussie',
+    'Belgique',
+    'Bosnie-Herzégovine',
+    'Bulgarie',
+    'Croatie',
+    'Chypre',
+    'République tchèque',
+    'Danemark',
+    'Estonie',
+    'Finlande',
+    'France',
+    'Allemagne',
+    'Grèce',
+    'Hongrie',
+    'Islande',
+    'Irlande',
+    'Italie',
+    'Kosovo',
+    'Lettonie',
+    'Liechtenstein',
+    'Lituanie',
+    'Luxembourg',
+    'Malte',
+    'Moldavie',
+    'Monaco',
+    'Monténégro',
+    'Pays-Bas',
+    'Macédoine du Nord',
+    'Norvège',
+    'Pologne',
+    'Portugal',
+    'Roumanie',
+    'Russie',
+    'Saint-Marin',
+    'Serbie',
+    'Slovaquie',
+    'Slovénie',
+    'Espagne',
+    'Suède',
+    'Suisse',
+    'Ukraine',
+    'Royaume-Uni',
+  ];
+
+  return paysEurope; // Return the array of country names
+};
+
+export default EUCountriesList;
