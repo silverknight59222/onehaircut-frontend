@@ -4,7 +4,6 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
-import { useEffect } from 'react';
 
 const useStyles = makeStyles((theme) => ({
     formControl: {
@@ -69,25 +68,22 @@ const DropdownMenu = ({
     fctToCallOnClick = (item: string) => { },
     labelId = '',
     selectId = '',
-    defaultSelected = '', // Utilize the defaultSelected prop
 }) => {
     const classes = useStyles();
-    const [selectedItem, setSelectedItem] = useState(defaultSelected); // Set the default value using defaultSelected
+    const [selectedItem, setSelectedItem] = useState('');
 
     const handleChange = (item: any) => {
         setSelectedItem(item);
         fctToCallOnClick(item);
     };
 
-    // Update the selectedItem when the defaultSelected prop changes
-    useEffect(() => {
-        setSelectedItem(defaultSelected);
-    }, [defaultSelected]);
-
     return (
         <div>
             <FormControl className={classes.formControl}>
-                <InputLabel id={labelId} className={classes.inputLabel}>
+                <InputLabel
+                    id={labelId}
+                    className={classes.inputLabel}
+                >
                     {menuName}
                 </InputLabel>
                 <Select
@@ -109,9 +105,9 @@ const DropdownMenu = ({
                         PaperProps: {
                             style: {
                                 marginTop: '10px',
-                                borderRadius: '15px', // for rounded modal corners
-                            },
-                        },
+                                borderRadius: '15px',  // for rounded modal corners
+                            }
+                        }
                     }}
                 >
                     {dropdownItems.map((item, index) => (
@@ -131,4 +127,3 @@ const DropdownMenu = ({
 };
 
 export default DropdownMenu;
-

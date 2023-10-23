@@ -1,7 +1,7 @@
 "use client";
 import { LogoCircleFixRight, CheckedIcon } from '@/components/utilis/Icons';
 import ClientDashboardLayout from '@/layout/ClientDashboardLayout'
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import StarRatings from "react-star-ratings";
 import DropdownMenu from "@/components/UI/DropDownMenu";
 import { ThemeProvider } from '@material-ui/core/styles';
@@ -11,13 +11,11 @@ import Footer from '@/components/UI/Footer';
 import EUCountriesList from '@/components/shared/Navbar/EUCountries';
 import ComponentTheme from '@/components/UI/ComponentTheme';
 import CustomSlider from '@/components/UI/OHC_Slider';
-
+import BaseModal from '@/components/UI/BaseModal';
 
 const Filters = () => {
     const [selectedTab, setSelectedTab] = useState(0);
-    const [selectedItems, SetAtHome] = useState<String[]>(['Geolocalisation', 'Utilisation de produits particuliers',])
-    const daysOfWeek = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
-
+    const [selectedItems, setSelectedItems] = useState<String[]>(['Geolocalisation', 'Utilisation de produits particuliers', 'Matinée', 'Après-Midi', 'Soirée', 'Couleur'])
     const items = [
         "Recherche Coiffure",
         "Recherche Salon ",
@@ -31,9 +29,9 @@ const Filters = () => {
             const tempArray = [...selectedItems];
             const index = tempArray.indexOf(value);
             tempArray.splice(index, 1);
-            SetAtHome(() => tempArray);
+            setSelectedItems(() => tempArray);
         } else {
-            SetAtHome((prevState) => [...prevState, value]);
+            setSelectedItems((prevState) => [...prevState, value]);
 
         }
     };
@@ -70,20 +68,34 @@ const Filters = () => {
     const handleNewSetCurrentLength = (item: string) => {
         // TODO: add backend to save the new preference
     }
-    // handling the change of length
-    const handleNewSetCountry = (item: string) => {
-        // TODO: add backend to save the new preference
-    }
 
     const [currentLength, setCurrentLength] = useState('');
     const [desiredLength, setDesiredLength] = useState('');
     const [hairstyleTrend, setHairstyleTrend] = useState('');
-    const [CountryDefault, setCountry] = useState('');
     const [budgetSliderRange, setBudgetSliderRange] = useState([0, 200]);
     const [zoneSliderRange, setZoneSliderRange] = useState([0, 15]);
 
+    const resetDropdowns1 = () => {
+        setCurrentLength('');
+        setDesiredLength('');
+        setHairstyleTrend('');
+        // Reset the slider value
+        setBudgetSliderRange([0, 250]);
+    };
+    const resetDropdowns2 = () => {
+        // Reset the slider value
+        setBudgetSliderRange([0, 15]);
+    };
+
     // For TextField Customization : 
-    const [ZipCodeValue, setZipCodeValue] = useState('');
+    const [inputValue, setInputValue] = useState('');
+    // Determine the border color based on the input length
+    const getBorderColor = () => {
+        if (inputValue.length < 4) {
+            return ComponentTheme.palette.warning.main; // Use the warning color
+        }
+        return ''; // Use the default color or your desired color
+    };
 
     // For rating search
     // function to show the popup to rate the haircut given in argument
@@ -100,41 +112,6 @@ const Filters = () => {
         if (newRating >= MinRating) {
             setMaxRating(newRating); // Update the MaxRating state with the new rating value
         }
-    };
-
-    // Update the selectedItem when the CountryDefault prop changes
-    useEffect(() => {
-        setCountry(CountryDefault);
-    }, [CountryDefault]); // Add CountryDefault as a dependency
-
-    const resetAllValues_1 = () => {
-
-        // Reset the dropdown values
-        setCurrentLength('');
-        setDesiredLength('');
-        setHairstyleTrend('');
-
-        // Reset the slider values
-        setBudgetSliderRange([0, 250]);
-    };
-
-
-    const resetAllValues_2 = () => {
-        // Reset the selected items array
-        SetAtHome(['Geolocalisation', 'Utilisation de produits particuliers']);
-
-        // Reset to the default value, which is an empty string
-        setCountry('');
-
-        // Reset the slider values
-        setZoneSliderRange([0, 15]);
-
-        // Reset the input field
-        setZipCodeValue('');
-
-        // Reset the rating values
-        setMinRating(1);
-        setMaxRating(5);
     };
 
     return (
@@ -210,7 +187,7 @@ const Filters = () => {
 
                                 {/* Centered "Réinitialiser" button */}
                                 <div className="flex justify-center mt-12">
-                                    <button onClick={resetAllValues_1} className={`${Theme_A.button.medBlackColoredButton}`}>Réinitialiser</button>
+                                    <button className={`${Theme_A.button.medBlackColoredButton}`}>Réinitialiser</button>
                                 </div>
 
                                 {/* TODO ADD POPULARITY FOR NEXT RELEASE 
@@ -266,14 +243,7 @@ const Filters = () => {
                                     {/* Dropdown for "Country */}
                                     <div className="flex items-center justify-center mb-2 mr-12 ">
                                         <p className="text-black text-sm"></p>
-                                        <DropdownMenu
-                                            dropdownItems={EUCountriesList()}
-                                            menuName="Pays"
-                                            fctToCallOnClick={handleNewSetCountry}
-                                            labelId='Pays'
-                                            selectId='Pays'
-                                            defaultSelected={CountryDefault} // Pass the default value as a prop
-                                        />
+                                        <DropdownMenu dropdownItems={EUCountriesList()} fctToCallOnClick={handleNewWishLength} menuName="Pays" />
                                     </div>
                                     <div>
                                         <p className="text-black text-sm mb-2">Coiffure à domicile </p>
@@ -294,13 +264,8 @@ const Filters = () => {
                                                 id="outlined-basic"
                                                 label="Code postal"
                                                 variant="outlined"
-                                                value={ZipCodeValue}
-                                                onChange={(e) => {
-                                                    const inputValue = e.target.value;
-                                                    // Use regular expression to allow only up to 5 numeric characters
-                                                    const numericValue = inputValue.replace(/[^0-9]/g, '').slice(0, 5);
-                                                    setZipCodeValue(numericValue);
-                                                }}
+                                                value={inputValue}
+                                                onChange={(e) => setInputValue(e.target.value)}
                                                 InputProps={{
                                                     style: {
                                                         borderRadius: '12px',
@@ -386,23 +351,34 @@ const Filters = () => {
                                 {/* Title of the Section "Disponibilite" */}
                                 <div>
                                     <p className="text-black text-lg mb-8 mt-6 font-semibold">Disponibilit&eacute;</p>
-
-                                    {/* Check box pour choisir les jours de préférences */}
-                                    <div className="flex justify-between">
-                                        {daysOfWeek.map((day) => (
-                                            <div key={day} className="flex flex-col items-center justify-center">
-                                                <p className="text-black text-sm mb-2">{day}</p>
-                                                <div
-                                                    onClick={() => checkboxClickHandler(day)}
-                                                    className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded hover:scale-125 transition duration-300 ${selectedItems.includes(day)
-                                                        ? ColorsThemeA.ohcVerticalGradient_A
-                                                        : "bg-[#D6D6D6]"
-                                                        }`}
-                                                >
-                                                    <CheckedIcon />
-                                                </div>
+                                    <div className='flex items-center lg:justify-center gap-10 sm:gap-40 lg:gap-20 xl:gap-40'>
+                                        <div className='flex flex-col items-center justify-center'>
+                                            <p className="text-black text-sm mb-2">Matinée</p>
+                                            <div onClick={() => checkboxClickHandler('Matinée')} className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded ${selectedItems.includes('Matinée')
+                                                ? ColorsThemeA.ohcVerticalGradient_A
+                                                : "bg-[#D6D6D6]"
+                                                }`}>
+                                                <CheckedIcon />
                                             </div>
-                                        ))}
+                                        </div>
+                                        <div className='flex flex-col items-center justify-center'>
+                                            <p className="text-black text-sm mb-2">Après-Midi</p>
+                                            <div onClick={() => checkboxClickHandler('Après-Midi')} className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded ${selectedItems.includes('Après-Midi')
+                                                ? ColorsThemeA.ohcVerticalGradient_A
+                                                : "bg-[#D6D6D6]"
+                                                }`}>
+                                                <CheckedIcon />
+                                            </div>
+                                        </div>
+                                        <div className='flex flex-col items-center justify-center'>
+                                            <p className="text-black text-sm mb-2">Soirée</p>
+                                            <div onClick={() => checkboxClickHandler('Soirée')} className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded ${selectedItems.includes('Soirée')
+                                                ? ColorsThemeA.ohcVerticalGradient_A
+                                                : "bg-[#D6D6D6]"
+                                                }`}>
+                                                <CheckedIcon />
+                                            </div>
+                                        </div>
                                     </div>
 
                                     {/* TODO ADD PRODUIT WHEN SHOP FUNCTIONNALITY IS RELEASED
@@ -431,7 +407,7 @@ const Filters = () => {
                                 */}
                                 </div>
                                 <div className="flex justify-center mt-12">
-                                    <button onClick={resetAllValues_2} className={`${Theme_A.button.medBlackColoredButton}`}>Réinitialiser</button>
+                                    <button className={`${Theme_A.button.medBlackColoredButton}`}>Réinitialiser</button>
                                 </div>
                             </div>
                         }
