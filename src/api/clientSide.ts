@@ -1,15 +1,15 @@
 import { request } from "./Request";
 
-interface SlotParam{
+interface SlotParam {
     date: string
 }
 
-interface BookingParams{
-    user_id: number|null,
+interface BookingParams {
+    user_id: number | null,
     hair_salon_id: number,
     slot_id: number,
     hair_dresser_id: number,
-    amount: number|undefined,
+    amount: number | undefined,
     salon_haircut_id: number,
     services: number[],
 }

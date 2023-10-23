@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState, useRef } from "react";
 import StarRatings from "react-star-ratings";
 import userLoader from "@/hooks/useLoader";
-import { getLocalStorage,setLocalStorage } from "@/api/storage";
+import { getLocalStorage, setLocalStorage } from "@/api/storage";
 import { Theme_A } from "@/components/utilis/Themes";
 import ChatModal from "./ChatModal";
 import { GoogleMap, Marker, useJsApiLoader, LoadScript } from '@react-google-maps/api';
@@ -52,7 +52,7 @@ const SearchSalon = () => {
   const [hairCutPrice, setHairCutPrice] = useState<Number>();
   const [hairCutDuration, setHairCutDuration] = useState<Number>();
   const { loadingView } = userLoader();
-  const haircut=getLocalStorage("haircut")
+  const haircut = getLocalStorage("haircut")
   const haircutData = haircut ? JSON.parse(haircut) : null
   const salon = getLocalStorage('selectedSalon')
   const services_ids = getLocalStorage('ServiceIds')
@@ -93,8 +93,8 @@ const SearchSalon = () => {
     const servicesData = services ? JSON.parse(services) : null
     const serviceIds: number[] = []
     servicesData.forEach((service: { name: string, id: number }) => {
-        serviceIds.push(service.id)
-        
+      serviceIds.push(service.id)
+
     })
     // Code pour obtenir des informations sur les salons depuis l'API
     setIsLoading(true);
@@ -119,7 +119,7 @@ const SearchSalon = () => {
                 console.log(error)
             })
     }
-}
+  }
 
   useEffect(() => {
     getAllHairDresser()
@@ -167,7 +167,7 @@ const SearchSalon = () => {
   const openPerfSampleModal = () => {
     setIsPerfSampleModalOpen(true);
   };
-  
+
 
   //GOOGLE MAP 
   //TODO Centrer par rapport aux coordonnées du salon
