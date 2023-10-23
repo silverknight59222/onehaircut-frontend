@@ -118,6 +118,9 @@ const SearchSalon = () => {
                 setIsLoading(false);
                 console.log(error)
             })
+    }else{
+      setLocalStorage('servicePrice',0)
+      setLocalStorage('serviceDuration',0)
     }
   }
 
