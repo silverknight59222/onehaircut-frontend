@@ -171,9 +171,10 @@ const Hairdressers = () => {
     const data = new FormData();
     const user = getLocalStorage("user");
     const userId = user ? Number(JSON.parse(user).id) : null;
+    const salonId = Number(getLocalStorage("salon_id"));
     data.append(
       "hair_salon_id",
-      userId as unknown as Blob
+      salonId as unknown as Blob
     );
     data.append("name", hairDresser.name);
     data.append("email", hairDresser.email);
@@ -221,10 +222,11 @@ const Hairdressers = () => {
   const getAllHairDresser = async () => {
     const user = getLocalStorage("user");
     const userId = user ? Number(JSON.parse(user).id) : null;
+    const salonId = Number(getLocalStorage("salon_id"));
     if (userId) {
       setIsLoading(true);
       await dashboard
-        .getAllHairDressers(userId)
+        .getAllHairDressers(salonId)
         .then((resp) => {
           if (resp.data.data.length) {
             setHairDressers(resp.data.data);
@@ -236,10 +238,11 @@ const Hairdressers = () => {
   const getAllAvatars = async () => {
     const user = getLocalStorage("user");
     const userId = user ? Number(JSON.parse(user).id) : null;
+    const salonId = Number(getLocalStorage("salon_id"));
     if (userId) {
       setIsLoading(true);
       await dashboard
-        .getAllAvatars(userId)
+        .getAllAvatars(salonId)
         .then((resp) => {
           setAvatars(resp.data.data);
         })

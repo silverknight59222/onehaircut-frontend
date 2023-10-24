@@ -97,9 +97,10 @@ export const HairdresserSlots = () => {
   const getAllHairDresser = async () => {
     const user = getLocalStorage("user");
     const userId = user ? Number(JSON.parse(user).id) : null;
+    const salonId = Number(getLocalStorage('salon_id'));
     if (userId) {
       setIsLoading(true);
-      await dashboard.getAllHairDressers(userId).then((resp) => {
+      await dashboard.getAllHairDressers(salonId).then((resp) => {
         if (selectedSalonHairDresser.name) {
           const Hairdresser = selectedSalonHairDresser.name;
           setSelectedSalonHairDresser(defaultHairDresser);
