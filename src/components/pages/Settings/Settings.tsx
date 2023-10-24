@@ -22,6 +22,7 @@ export interface settingsStruct {
 const settingsMenu: settingsStruct[] = [
   { name: "Informations générales", display: SalonInfos },
   { name: "Horaires", display: OpenningHours },
+  { name: "Reglage des roles", display: SalonInfos },
   { name: "Promotions", display: PromotionsSettings },
   { name: "Notifications", display: BotSettings },
   { name: "Paiements", display: PayementSettings },
