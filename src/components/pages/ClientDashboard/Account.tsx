@@ -1,10 +1,11 @@
 import { CheckedIcon, LogoCircleFixRight } from "@/components/utilis/Icons";
 import ClientDashboardLayout from "@/layout/ClientDashboardLayout";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BaseModal from "@/components/UI/BaseModal";
 import Footer from "@/components/UI/Footer";
 import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 import useSnackbar from "@/hooks/useSnackbar";
+import { client } from "@/api/clientSide";
 
 interface infoInterface {
     name: string;
@@ -399,7 +400,7 @@ const Account = () => {
     //NOTIFICATIONS
 
     // function to display the preferences
-    const displayNotif = (email: boolean, whatsapp: boolean, setState: React.Dispatch<React.SetStateAction<string>>) => {
+    const displayNotif = (email: boolean, whatsapp: boolean, index: any) => {
         let text = ""
         if (email) {
             text = "Email"
@@ -415,7 +416,7 @@ const Account = () => {
         }
 
         // set the text to be displayed
-        setState(text)
+        notifications[index].desc = text
     }
 
     ////////////////////////////////////////////////////
@@ -425,14 +426,30 @@ const Account = () => {
     const [NotifAccountEmail, setPNotifAccountEmail] = useState(false);
     const [NotifAccountWhatsapp, setPNotifAccountWhatsapp] = useState(false);
     const [NotifAccount, setNotifAccount] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
 
-
-    const onSubmitAccountNotif = () => {
-        // TODO: save preferences for the future
-        displayNotif(NotifAccountEmail, NotifAccountWhatsapp, setNotifAccount) // update text to be displayed
+    const onSubmitAccountNotif = async () => {
+        // saved account activity notifications prefrences
+        setIsLoading(true)
+        await client.savePrefrences({
+            type: "account_activity",
+            email: NotifAccountEmail,
+            whatsapp: NotifAccountWhatsapp
+        })
+            .then(resp => {
+                displayNotif(resp.data.account_activity.emails, resp.data.account_activity.whatsapp, 0) // update text to be displayed                
+                displayNotif(resp.data.reminders.emails, resp.data.reminders.whatsapp, 1) // update text to be displayed
+                displayNotif(resp.data.messages.emails, resp.data.messages.whatsapp, 2) // update text to be displayed
+                setShowItem(notifications);
+            })
+            .catch(err => {
+                console.log(err)
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
         // setShowItem(informations);
         setSelectedTab(3);
-        setShowItem(notifications);
         showSnackbar("succès", "Préférence actualisée");
         setIsModalNotifAccount(false)
 
@@ -497,12 +514,28 @@ const Account = () => {
     const [NotifReminderWhatsapp, setPNotifReminderWhatsapp] = useState(false);
     const [NotifReminder, setNotifReminder] = useState("");
 
-    const onSubmitReminderNotif = () => {
-        // TODO: save preferences for the future
-        displayNotif(NotifReminderEmail, NotifReminderWhatsapp, setNotifReminder) // update text to be displayed
+    const onSubmitReminderNotif = async () => {
+        // saved reminders notifications prefrences
+        setIsLoading(true)
+        await client.savePrefrences({
+            type: "reminders",
+            email: NotifReminderEmail,
+            whatsapp: NotifReminderWhatsapp
+        })
+            .then(resp => {
+                displayNotif(resp.data.account_activity.emails, resp.data.account_activity.whatsapp, 0) // update text to be displayed                
+                displayNotif(resp.data.reminders.emails, resp.data.reminders.whatsapp, 1) // update text to be displayed
+                displayNotif(resp.data.messages.emails, resp.data.messages.whatsapp, 2) // update text to be displayed
+                setShowItem(notifications);
+            })
+            .catch(err => {
+                console.log(err)
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
         // setShowItem(informations);
         setSelectedTab(3);
-        setShowItem(notifications);
         showSnackbar("succès", "Préférence actualisée");
         setIsModalNotifReminders(false)
 
@@ -567,12 +600,29 @@ const Account = () => {
     const [NotifMsgWhatsapp, setPNotifMsgWhatsapp] = useState(false);
     const [NotifMsg, setNotifMsg] = useState("");
 
-    const onSubmitMsgNotif = () => {
-        // TODO: save preferences for the future
-        displayNotif(NotifMsgEmail, NotifMsgWhatsapp, setNotifMsg) // update text to be displayed
+    const onSubmitMsgNotif = async () => {
+        // saved messages notifications prefrences
+        setIsLoading(true)
+        await client.savePrefrences({
+            type: "messages",
+            email: NotifMsgEmail,
+            whatsapp: NotifMsgWhatsapp
+        })
+            .then(resp => {
+                displayNotif(resp.data.account_activity.emails, resp.data.account_activity.whatsapp, 0) // update text to be displayed                
+                displayNotif(resp.data.reminders.emails, resp.data.reminders.whatsapp, 1) // update text to be displayed
+                displayNotif(resp.data.messages.emails, resp.data.messages.whatsapp, 2) // update text to be displayed
+                setShowItem(notifications);
+            })
+            .catch(err => {
+                console.log(err)
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
+
         // setShowItem(informations);
         setSelectedTab(3);
-        setShowItem(notifications);
         showSnackbar("succès", "Préférence actualisée");
         setIsModalNotifMsg(false)
 
@@ -646,9 +696,9 @@ const Account = () => {
     ];
 
     let notifications: infoInterface[] = [
-        { name: "Activité du compte", desc: NotifAccount, modif: true, popup: modifAccountNotif },
-        { name: "Rappels", desc: NotifReminder, modif: true, popup: modifReminderNotif },
-        { name: "Messages", desc: NotifMsg, modif: true, popup: modifMsgNotif },
+        { name: "Activité du compte", desc: "", modif: true, popup: modifAccountNotif },
+        { name: "Rappels", desc: "", modif: true, popup: modifReminderNotif },
+        { name: "Messages", desc: "", modif: true, popup: modifMsgNotif },
     ];
 
     const payments: infoInterface[] = [
@@ -672,7 +722,7 @@ const Account = () => {
     const onSelectTab = (item: string, index: number) => {
         setSelectedTab(index);
         if (item === "Notifications") {
-            setShowItem(notifications);
+            fetchPrefrences() //fetching notifications prefrences on index tab
         }
         else if (item === "Moyens de paiements") {
             setShowItem(payments);
@@ -694,7 +744,21 @@ const Account = () => {
         }
     };
 
+    const fetchPrefrences = async () => {
+        const resp = await client.getSavePrefrences()
 
+        setPNotifAccountEmail(resp.data.account_activity.emails)
+        setPNotifAccountWhatsapp(resp.data.account_activity.whatsapp)
+        setPNotifReminderEmail(resp.data.reminders.emails)
+        setPNotifReminderWhatsapp(resp.data.reminders.whatsapp)
+        setPNotifMsgEmail(resp.data.messages.emails)
+        setPNotifMsgWhatsapp(resp.data.messages.whatsapp)
+
+        displayNotif(resp.data.account_activity.emails, resp.data.account_activity.whatsapp, 0) // update text to be displayed                
+        displayNotif(resp.data.reminders.emails, resp.data.reminders.whatsapp, 1) // update text to be displayed
+        displayNotif(resp.data.messages.emails, resp.data.messages.whatsapp, 2) // update text to be displayed
+        setShowItem(notifications);
+    }
 
     return (
         <div>
