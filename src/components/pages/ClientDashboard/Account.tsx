@@ -6,10 +6,13 @@ import Footer from "@/components/UI/Footer";
 import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 import useSnackbar from "@/hooks/useSnackbar";
 // import PhoneInput from 'react-phone-input-2'
-import { Value } from 'react-phone-number-input'
+import Input from 'react-phone-number-input/input'
 import PhoneInput from 'react-phone-number-input'
+import { Value } from 'react-phone-number-input'
+import 'react-phone-number-input/style.css'
 import { E164Number } from 'libphonenumber-js/core';
 import PaymentForm from "@/components/shared/Payement";
+
 
 interface infoInterface {
     name: string;
@@ -25,7 +28,7 @@ const infoInterfaceIni: infoInterface =
 
 // design choices:
 const inputFieldsDesign = `w-full p-3 placeholder:text-[#959595] placeholder:text-base ${Theme_A.behaviour.fieldFocused_B}${Theme_A.fields.inputField}`
-const inputFieldsDesignNoW = `p-3 placeholder:text-[#959595] placeholder:text-base ${Theme_A.behaviour.fieldFocused_B}${Theme_A.fields.inputField}`
+const inputFieldsDesignNoW = `border-2 p-3 placeholder:text-[#959595] placeholder:text-base ${Theme_A.behaviour.fieldFocused_B}${Theme_A.fields.inputField}`
 
 const Account = () => {
     const showSnackbar = useSnackbar();
@@ -298,30 +301,29 @@ const Account = () => {
     }
 
     const modifPhone: React.JSX.Element =
-        <div>
-            <div className="flex flex-col items-center justify-center gap-4">
-                <p className="text-xl font-semibold text-black text-center">Modification du numéro</p>
+        <div >
+            <div className="flex-col items-center justify-center gap-4 ">
+                <p className="text-xl font-semibold text-black text-center mb-8">
+                    Modification du numéro</p>
                 {errorPop && (
                     <p className={`${Theme_A.checkers.errorText}`}>
                         {errorPop}
                     </p>
                 )}
-                <div className="">
+                <div className={`w-60 ml-20 ${inputFieldsDesignNoW}`}>
                     <PhoneInput
-                        className={`${inputFieldsDesign}`}
-
-                        disabled={false}
-                        enableSearch={true}
+                        style={{ height: 8 }}
+                        // className={`${inputFieldsDesign}`}
+                        // inputComponent={{ phoneInput }}
                         // containerClass={containerClass}
                         defaultCountry={'FR'}
                         value={phoneField}
-                        // inputClass={`${inputFieldsDesign}`}
                         placeholder={"Nouveau numéro"}
                         onChange={phone => setNewPhone(phone)}
                     />
                 </div>
             </div>
-            <div className="mt-4 flex gap-4 items-center justify-center w-full">
+            <div className="mt-8 flex gap-4 items-center justify-center w-full">
                 <button
                     className={`${Theme_A.button.medWhiteColoredButton}`}
                     onClick={() => setIsModalPhone(false)}
