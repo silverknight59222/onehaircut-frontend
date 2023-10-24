@@ -96,7 +96,9 @@ const Login = () => {
 				// if(searchParams.get('redirect') === 'payment'){
 				// 	router.push("/payment");
 				// }
-				if (res.user.role === 'salon_professional') {
+				const salonRoles = ['salon_professional', 'admin', 'staff'];
+				// if (res.user.role === 'salon_professional' || ) {
+				if (salonRoles.indexOf(res.user.role) != -1) {
 					router.push("/dashboard");
 				} else {
 					router.push("/client/dashboard");
