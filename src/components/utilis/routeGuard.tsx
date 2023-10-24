@@ -13,6 +13,7 @@ export const RouteGuard = ({ children }: any) => {
 	let professionalRoutes = ['/dashboard', '/dashboard/client-activity', '/dashboard/visites', '/dashboard/revenue', '/dashboard/messages', '/dashboard/settings', '/dashboard/subscription', '/dashboard/bot'];
 	let freeSubscriptionRoutes = ['/dashboard', '/dashboard/client-activity', '/dashboard/revenue', '/dashboard/messages', '/dashboard/settings', '/dashboard/subscription'];
 	let clientRoutes = ['/client/dashboard', '/client/favorites', '/client/filters', '/client/history', '/client/messages', '/client/portrait', '/client/currentreservation', '/client/help'];
+	const salonRoles = ['salon_professional', 'admin', 'staff'];
 
 	let index = -1;
 	if (publicRoutes.includes(`/${pathname.split('/')[1]}`)) {
@@ -20,6 +21,8 @@ export const RouteGuard = ({ children }: any) => {
 	} else if (user && user.role === 'client') {
 		index = clientRoutes.indexOf(pathname)
 	} else if (user && user.role === 'salon_professional' && user.subscription) {
+		index = professionalRoutes.indexOf(pathname)
+	} else if (user && salonRoles.indexOf(user.role)) {
 		index = professionalRoutes.indexOf(pathname)
 	} else if (user && user.role === 'salon_professional' && !user.subscription) {
 		index = freeSubscriptionRoutes.indexOf(pathname)
