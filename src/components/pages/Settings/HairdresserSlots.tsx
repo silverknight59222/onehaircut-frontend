@@ -8,6 +8,7 @@ import { CheckedIcon, DownArrow } from "@/components/utilis/Icons";
 import React from "react";
 import { Theme_A } from "@/components/utilis/Themes";
 import { ColorsThemeA } from "@/components/utilis/Themes";
+import BaseDropdown from '@/components/UI/BaseDropdown';
 
 // Define the types/interfaces for the data
 interface HairdresserSlot {
@@ -97,9 +98,11 @@ export const HairdresserSlots = () => {
   const getAllHairDresser = async () => {
     const user = getLocalStorage("user");
     const userId = user ? Number(JSON.parse(user).id) : null;
+    const salonId = Number(getLocalStorage('salon_id'));
     if (userId) {
       setIsLoading(true);
-      await dashboard.getAllHairDressers(userId).then((resp) => {
+      await dashboard.getAllHairDressers(salonId).then((resp) => {
+        console.log(resp.data.data);
         if (selectedSalonHairDresser.name) {
           const Hairdresser = selectedSalonHairDresser.name;
           setSelectedSalonHairDresser(defaultHairDresser);
@@ -236,6 +239,10 @@ export const HairdresserSlots = () => {
                 </div>
               </div>
 
+              <div>
+                <BaseDropdown dropdownItems={['Monday', 'Tuesday', 'Wednesday']} />
+              </div>
+
               {/* Boutons pour changer le statut des créneaux horaires, s'affichent seulement si un coiffeur est sélectionné */}
               {selectedSalonHairDresser.id > 0 && (
                 <div className="flex items-center justify-center gap-4 rounded-2xl text-lg">
@@ -272,7 +279,7 @@ export const HairdresserSlots = () => {
                   return (
                     <div
                       key={index}
-                      className={`flex items-center justify-center py-2 px-2 text-basefont-medium border-2 rounded-lg w-36 border-gray-200 cursor-pointer
+                      className={`flex items-center justify-center py-2 px-2 text-basefont-medium border-2 rounded-lg w-72 border-gray-200 cursor-pointer
                       ${slot.status === 1 && "bg-white text-black"}
                         ${slot.status === 0 && "bg-white text-black opacity-50"
                         } 

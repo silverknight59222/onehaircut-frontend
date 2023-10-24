@@ -7,7 +7,28 @@ import ReactDOM from 'react-dom';
 
 
 /* Scroll to the top button function */
+function hasPermission(permission: string): boolean {
+    // Get the user data from local storage
+    const userData = localStorage.getItem('user');
 
+    // Check if user data exists
+    if (userData) {
+        // Parse the user data from JSON
+        const user = JSON.parse(userData);
+        if(user.role == 'salon_professional') {
+            return true;
+        }
+        // Check if the user has a permissions array
+        if (Array.isArray(user.permissions)) {
+            // Check if the desired permission exists in the permissions array
+            if (user.permissions.includes(permission)) {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}
 function ScrollToTopButton() {
     const [isVisible, setIsVisible] = useState(false);
 

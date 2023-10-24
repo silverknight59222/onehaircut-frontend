@@ -37,6 +37,7 @@ const Hairdressers = () => {
     email: "",
     profile_image: defaultImage,
     avatar: defaultImage,
+    role: "admin",
   };
   const defaultAvatars = {
     man: [],
@@ -110,6 +111,36 @@ const Hairdressers = () => {
       email: email,
     }));
   };
+  const onChangeRole = (role: string) => {
+    if (!role.length) {
+      setError((prev) => {
+        return { ...prev, role: "Un role est requis" };
+      });
+    } else {
+      setError((prev) => {
+        return { ...prev, role: "" };
+      });
+    }
+    setHairDresser((prevState) => ({
+      ...prevState,
+      role: role,
+    }));
+  };
+  const onChangePassword = (password: string) => {
+    if (!password.length) {
+      setError((prev) => {
+        return { ...prev, password: "Un password est requis" };
+      });
+    } else {
+      setError((prev) => {
+        return { ...prev, password: "" };
+      });
+    }
+    setHairDresser((prevState) => ({
+      ...prevState,
+      password: password,
+    }));
+  };
   const handleAvatarPrevious = () => {
     const newIndex = avatarIndex - 1;
     if (showAvatar === "men") {
@@ -171,12 +202,15 @@ const Hairdressers = () => {
     const data = new FormData();
     const user = getLocalStorage("user");
     const userId = user ? Number(JSON.parse(user).id) : null;
+    const salonId = Number(getLocalStorage("salon_id"));
     data.append(
       "hair_salon_id",
-      userId as unknown as Blob
+      salonId as unknown as Blob
     );
     data.append("name", hairDresser.name);
     data.append("email", hairDresser.email);
+    data.append("role", hairDresser.role);
+    data.append("password", hairDresser.password);
     data.append("avatar_id", avatarIndex as unknown as Blob);
     if (hairDresser.profile_image.size > 0) {
       data.append(
@@ -221,10 +255,11 @@ const Hairdressers = () => {
   const getAllHairDresser = async () => {
     const user = getLocalStorage("user");
     const userId = user ? Number(JSON.parse(user).id) : null;
+    const salonId = Number(getLocalStorage("salon_id"));
     if (userId) {
       setIsLoading(true);
       await dashboard
-        .getAllHairDressers(userId)
+        .getAllHairDressers(salonId)
         .then((resp) => {
           if (resp.data.data.length) {
             setHairDressers(resp.data.data);
@@ -236,10 +271,11 @@ const Hairdressers = () => {
   const getAllAvatars = async () => {
     const user = getLocalStorage("user");
     const userId = user ? Number(JSON.parse(user).id) : null;
+    const salonId = Number(getLocalStorage("salon_id"));
     if (userId) {
       setIsLoading(true);
       await dashboard
-        .getAllAvatars(userId)
+        .getAllAvatars(salonId)
         .then((resp) => {
           setAvatars(resp.data.data);
         })
@@ -265,6 +301,8 @@ const Hairdressers = () => {
       hair_salon_id: hairDresser.hair_salon_id,
       name: hairDresser.name,
       email: hairDresser.email,
+      role: hairDresser.role,
+      password: hairDresser.password,
     }));
     setProfileImage(hairDresser.profile_image);
     setAvatarIndex(hairDresser.avatar_id);
@@ -344,6 +382,31 @@ const Hairdressers = () => {
             />
             {error.email && (
               <p className="text-xs text-red-700 ml-3 mt-1">{error.email}*</p>
+            )}
+          </div>
+          <div className="w-full max-w-[450px]">
+            <label className={`${Theme_A.textFont.headerH4}`} htmlFor="emailInput">Password</label>
+            <input
+              type="password"
+              placeholder="Password"
+              className={`w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none ${Theme_A.behaviour.fieldFocused_C}`}
+              onChange={(e) => onChangePassword(e.target.value)}
+            />
+            {error.password && (
+              <p className="text-xs text-red-700 ml-3 mt-1">{error.password}*</p>
+            )}
+          </div>
+          <div className="w-full max-w-[450px]">
+            <label className={`${Theme_A.textFont.headerH4}`} htmlFor="emailInput">Role</label>
+
+            <select
+              className={`w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none ${Theme_A.behaviour.fieldFocused_C}`}
+              name="role" onChange={(e) => onChangeRole(e.target.value)}>
+              <option value="admin">Admin</option>
+              <option value="staff">Staff</option>
+            </select>
+            {error.email && (
+              <p className="text-xs text-red-700 ml-3 mt-1">{error.role}*</p>
             )}
           </div>
           <input
@@ -459,7 +522,7 @@ const Hairdressers = () => {
                       <Image
                         fill={true}
                         src={
-                          item.profile_image ? (item.profile_image.includes('https://api-server.onehaircut.com/public') ? item.profile_image : `https://api-server.onehaircut.com/public${item.profile_image}`) :  `https://api-server.onehaircut.com/public${item.avatar.image}`
+                          item.profile_image ? (item.profile_image.includes('https://api-server.onehaircut.com/public') ? item.profile_image : `https://api-server.onehaircut.com/public${item.profile_image}`) : `https://api-server.onehaircut.com/public${item.avatar.image}`
                         }
                         alt="image"
                       />
