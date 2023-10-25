@@ -46,7 +46,7 @@ const ClientDashboardLayout = ({ children }: DashboardLayout) => {
 
   const dropdownItems = [
     {
-      name: "Déconnextion",
+      name: "Déconnexion",
       icon: <LogoutIcon width='25' height='25' />,
       route: "/client/dashboard",
     },
