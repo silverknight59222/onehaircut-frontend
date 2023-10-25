@@ -77,11 +77,11 @@ const SearchSalon = () => {
     if (salonId) {
       await client.getSalonDetail(salonId,haircutData.id)
         .then((resp) => {
-          setSalonProfile(resp.data.data[0])
-          setHairCutPrice(resp.data.salon_haircut.base_price)
-          setHairCutDuration(+resp.data.salon_haircut.base_duration)
           setIsLoading(false);
-          setLocalStorage('slotTime', resp.data.salon_haircut.base_duration)
+          setSalonProfile(resp.data.data[0])
+          setHairCutPrice(resp.data.data[0].salon_haircut.base_price)
+          setHairCutDuration(+resp.data.data[0].salon_haircut.base_duration)
+          setLocalStorage('slotTime', resp.data.data[0].salon_haircut.base_duration)
         }).catch(error => {
           console.log(error)
         })
@@ -110,7 +110,6 @@ const SearchSalon = () => {
                 const totalDuration = res.data.data.reduce((sum, item:any) => sum + (+item.duration), 0);
                 setServicePrice(totalPrice)
                 setServiceDuration(totalDuration)
-
                 setLocalStorage('servicePrice',totalPrice)
                 setLocalStorage('serviceDuration',totalDuration)
             })
