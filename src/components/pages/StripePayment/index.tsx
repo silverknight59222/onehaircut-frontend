@@ -114,7 +114,7 @@ function StripePayment() {
         })
         .then(function (result) {
           registerSalon(result.paymentMethod?.id);
-          window.open("https://api.whatsapp.com/send?phone=" + userInfo.phone + "&text=Booking Success!", '_blank');
+          // window.open("https://api.whatsapp.com/send?phone=" + userInfo.phone + "&text=Booking Success!", '_blank');
         })
         .catch(function (error) {
           setIsLoading(false)

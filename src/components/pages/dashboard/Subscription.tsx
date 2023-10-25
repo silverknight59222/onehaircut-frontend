@@ -13,8 +13,11 @@ import MobilePricingTable from "../registration/MobilePricingTable";
 import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 import { The_Nautigal } from "next/font/google";
 import Footer from "@/components/UI/Footer";
+import BaseModal from "@/components/UI/BaseModal";
+import { useRouter } from "next/navigation";
 
 const Subscription = () => {
+  const router = useRouter();
   const [isAutomaticRenewal, setIsAutomaticRenewal] = useState(false);
   const packageNames = [
     "Agenda dynamique",
@@ -27,6 +30,11 @@ const Subscription = () => {
     "OnehairBot Assistant",
     "Personnalisation de l'Interface",
   ];
+  const [isModal,setIsModal]=useState(false);
+
+  const handleClickPro = () => {
+    setIsModal(true);
+  }
   return (
     <div>
       <div className="hidden sm:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
@@ -36,14 +44,14 @@ const Subscription = () => {
         <div className="mt-16 px-4 lg:px-11">
           <div className="flex items-center justify-center">
             {/* TODO: slide button not working */}
-            {/* <div className="w-80 h-10 flex items-center justify-between rounded-3xl bg-[#FAFAFA] shadow-[rgba(220,215,215,0.34)] text-xs font-semibold">
+            <div className="w-80 h-10 flex items-center justify-between rounded-3xl bg-[#FAFAFA] shadow-[rgba(220,215,215,0.34)] text-xs font-semibold">
               <p className="text-[#0E0D0D] pl-5 cursor-pointer">
                 Paiement mensuel
               </p>
               <p className="text-white bg-[#3C3A3A] rounded-3xl py-2.5 px-5 cursor-pointer">
                 Paiement Annuel
               </p>
-            </div> */}
+            </div>
           </div>
           <div className="z-10  flex-col xl:flex-row items-center xl:items-start justify-center gap-4 2xl:gap-12 mt-10 lg:mt-52">
             <div className="hidden lg:block relative">
@@ -89,9 +97,11 @@ const Subscription = () => {
                       );
                     })}
                     <div className="mt-3 h-6">
-                      <p className="text-black font-semibold text-xl text-center">
-                        79 €<span className="text-2xl">/ mois</span>
-                      </p>
+                      <button className="text-white font-semibold text-center" onClick={handleClickPro}>
+                        <span className="text-2xl">69 $ / mois</span>
+                        <br/>
+                        <p className="text-xs">*1 % de tax de service</p>
+                      </button>
                     </div>
                   </div>
                   <div className="w-48 absolute left-[230px] top-[650px]  flex items-center justify-center text-white font-semibold rounded-3xl -mb-12 h-12 bg-black">
@@ -99,7 +109,7 @@ const Subscription = () => {
                     Abo actuel
                   </div>
                   {/* Regular side */}
-                  <div className=" z-10 bg-white w-52 absolute -top-40 left-[440px] flex flex-col items-center justify-center py-6 rounded-[20px]">
+                  <div className=" z-10 w-52 absolute -top-40 left-[440px] flex flex-col items-center justify-center py-6 rounded-[20px]">
                     <div className="text-3xl font-semibold text-black w-48 text-center mb-16">
                       OneHaircut Regular
                     </div>
@@ -120,7 +130,10 @@ const Subscription = () => {
                       })}
                     </div>
                     <div className="w-full h-1 flex flex-col items-center justify-center py-4">
-                      <p className="text-black font-medium text-2xl pt-6">Gratuit</p>
+                      <button className="text-black font-medium text-2xl pt-6">Gratuit
+                        <br/>
+                        <p className="text-xs">*5 % de tax de service</p>
+                      </button>
                     </div>
                   </div>
                   {/* <div className={`w-52 absolute left-[450px] top-[650px]  flex items-center justify-center ${Theme_A.button.medWhiteColoredButton}`}> */}
@@ -162,6 +175,16 @@ const Subscription = () => {
         </div>
       </DashboardLayout>
       <Footer />
+      {isModal &&
+      <BaseModal close={() => setIsModal(false)}>
+        <div className="my-3">
+          <p className="text-center text-xl font-semibold mb-5">You need to login to create booking!</p>
+          <div className=' flex items-center justify-center gap-6'>
+            <button onClick={() => setIsModal(false)} className='w-32 h-12 flex items-center justify-center border border-black rounded-xl'>Cancel</button>
+            <button onClick={()=>router.push('/login?redirect=payment')} className={`w-32 h-12 flex items-center justify-center rounded-xl text-white bg-background-gradient`}>Login</button>
+          </div>
+        </div>
+      </BaseModal>}
     </div>
   );
 };
