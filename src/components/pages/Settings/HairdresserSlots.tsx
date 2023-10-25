@@ -8,7 +8,7 @@ import { CheckedIcon, DownArrow } from "@/components/utilis/Icons";
 import React from "react";
 import { Theme_A } from "@/components/utilis/Themes";
 import { ColorsThemeA } from "@/components/utilis/Themes";
-import BaseDropdown from '@/components/UI/BaseDropdown';
+import DropdownMenu from "@/components/UI/DropDownMenu";
 
 // Define the types/interfaces for the data
 interface HairdresserSlot {
@@ -41,6 +41,7 @@ export const HairdresserSlots = () => {
   const [hairdressersList, setHairdressersList] = useState<
     HairdressersWithSlots[]
   >([]);
+  const[day, setDay] = useState('');
 
   // An example of state with a default hairdresser to initialize the state
   const defaultHairDresser = {
@@ -83,6 +84,42 @@ export const HairdresserSlots = () => {
     }
   };
 
+  const Weekday = [
+    "Dimanche",
+    "Lundi",
+    "Mardi",
+    "Mercredi",
+    "Jeudi",
+    "Vendredi",
+    "Samedi",
+  ];
+
+  const handleSelectWeekday = (item: string) => {
+    switch(item) {
+      case 'Dimanche':
+        setDay("Sunday");
+        break;
+      case 'Lundi':
+        setDay("Monday");
+        break;
+      case 'Mardi':
+        setDay("Tuesday");
+        break;
+      case 'Mercredi':
+        setDay("Wednesday");
+        break;
+      case 'Jeudi':
+        setDay("Thursday");
+        break;
+      case 'Vendredi':
+        setDay("Friday");
+        break;
+      case 'Samedi':
+        setDay("Saturday");
+        break;
+    }
+  } 
+
   // Use useEffect to attach/detach click event to document
   useEffect(() => {
     document.addEventListener("click", closeSelectBox);
@@ -102,7 +139,6 @@ export const HairdresserSlots = () => {
     if (userId) {
       setIsLoading(true);
       await dashboard.getAllHairDressers(salonId).then((resp) => {
-        console.log(resp.data.data);
         if (selectedSalonHairDresser.name) {
           const Hairdresser = selectedSalonHairDresser.name;
           setSelectedSalonHairDresser(defaultHairDresser);
@@ -239,9 +275,11 @@ export const HairdresserSlots = () => {
                 </div>
               </div>
 
-              <div>
-                <BaseDropdown dropdownItems={['Monday', 'Tuesday', 'Wednesday']} />
-              </div>
+              {selectedSalonHairDresser.id > 0 && (
+                <div className="flex items-center justify-center gap-4 rounded-2xl text-lg">
+                  <DropdownMenu dropdownItems={Weekday} fctToCallOnClick={handleSelectWeekday} menuName="Weekday"/>
+                </div>
+              )}
 
               {/* Boutons pour changer le statut des créneaux horaires, s'affichent seulement si un coiffeur est sélectionné */}
               {selectedSalonHairDresser.id > 0 && (
@@ -277,6 +315,7 @@ export const HairdresserSlots = () => {
               <div className="flex items-center justify-center gap-4 flex-wrap mt-4 w-full">
                 {selectedSalonHairDresser.slots.map((slot, index) => {
                   return (
+                    slot.day == day && 
                     <div
                       key={index}
                       className={`flex items-center justify-center py-2 px-2 text-basefont-medium border-2 rounded-lg w-72 border-gray-200 cursor-pointer
