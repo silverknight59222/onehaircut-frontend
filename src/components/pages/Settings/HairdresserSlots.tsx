@@ -41,6 +41,7 @@ export const HairdresserSlots = () => {
   const [hairdressersList, setHairdressersList] = useState<
     HairdressersWithSlots[]
   >([]);
+  const [hairdresserNames, setHairdresserNames] = useState<string[]>();
   const[day, setDay] = useState('');
 
   // An example of state with a default hairdresser to initialize the state
@@ -132,6 +133,7 @@ export const HairdresserSlots = () => {
   useEffect(() => {
     checkboxClickHandler(selectedItems);
   }, [selectedItems]);
+  
   const getAllHairDresser = async () => {
     const user = getLocalStorage("user");
     const userId = user ? Number(JSON.parse(user).id) : null;
@@ -153,6 +155,7 @@ export const HairdresserSlots = () => {
         } else {
           setHairdressersList(resp.data.data);
         }
+        setHairdresserNames(hairdressersList.map((item) => item.name));
       }).catch(() => { }).finally(() => {
         setIsLoading(false);
       });
@@ -223,13 +226,12 @@ export const HairdresserSlots = () => {
             <div className="flex flex-col md:flex-row items-center justify-between my-2 w-full gap-3 mb-3">
 
               {/* Boîte de sélection du coiffeur */}
-              <div>
+              {/* <div>
                 <div
                   ref={dropdownRef}
                   className={`relative ${selectedSalonHairDresser.id ? "w-40" : "w-60"
                     }`}
                 >
-                  {/* Texte du bouton : Nom du coiffeur ou invite à sélectionner */}
                   <button
                     onClick={() => setIsDropdown(!isDropdown)}
                     className={
@@ -246,7 +248,6 @@ export const HairdresserSlots = () => {
                     />
                   </button>
 
-                  {/* Liste déroulante des coiffeurs */}
                   {isDropdown && (
                     <div className="mt-2 z-10 absolute w-full rounded-xl border border-checkbox bg-white p-6">
                       {hairdressersList.map((item, index) => {
@@ -262,10 +263,8 @@ export const HairdresserSlots = () => {
                                 : "bg-[#D6D6D6]"
                                 }`}
                             >
-                              {/* Icône de case cochée */}
                               <CheckedIcon />
                             </div>
-                            {/* Nom du coiffeur */}
                             <p className="ml-2">{item.name}</p>
                           </div>
                         );
@@ -273,8 +272,10 @@ export const HairdresserSlots = () => {
                     </div>
                   )}
                 </div>
+              </div> */}
+              <div className="flex items-center justify-center gap-4 rounded-2xl text-lg">
+                <DropdownMenu dropdownItems={hairdressersList.map((item) => item.name)} fctToCallOnClick={getSelectedHairdresser} menuName="Hairdresser"/>
               </div>
-
               {selectedSalonHairDresser.id > 0 && (
                 <div className="flex items-center justify-center gap-4 rounded-2xl text-lg">
                   <DropdownMenu dropdownItems={Weekday} fctToCallOnClick={handleSelectWeekday} menuName="Weekday"/>
@@ -282,32 +283,7 @@ export const HairdresserSlots = () => {
               )}
 
               {/* Boutons pour changer le statut des créneaux horaires, s'affichent seulement si un coiffeur est sélectionné */}
-              {selectedSalonHairDresser.id > 0 && (
-                <div className="flex items-center justify-center gap-4 rounded-2xl text-lg">
-
-                  {/* Bouton pour marquer les créneaux comme disponibles */}
-                  <div
-                    onClick={() => ChangeStatus("s")}
-                    className={`py-3 px-4 rounded-lg text-sm ${selectedSlots.length > 0
-                      ? `${Theme_A.button.mediumGradientButton}`
-                      : "bg-gray-200 text-black cursor-default"
-                      }`}
-                  >
-                    Etre disponible
-                  </div>
-                  <div
-                    onClick={() => ChangeStatus("Non disponible")}
-                    className={`py-3 px-4 rounded-lg text-sm ${selectedSlots.length > 0
-                      ? `${Theme_A.button.medWhiteColoredButton}`
-                      : "bg-gray-200 text-black cursor-default"
-                      }`}
-                  >
-                    Etre indisponible
-                  </div>
-
-                  {/* Bouton pour marquer les créneaux comme non disponibles */}
-                </div>
-              )}
+              
             </div>
 
             {/* Affichage des créneaux horaires */}
@@ -342,6 +318,32 @@ export const HairdresserSlots = () => {
                 Les plages horaires du coiffeur sélectionné s'afficheront ici
               </div>
             )}
+            {selectedSalonHairDresser.id > 0 && (
+                <div className="flex items-center justify-center gap-4 rounded-2xl text-lg mt-5">
+
+                  {/* Bouton pour marquer les créneaux comme disponibles */}
+                  <div
+                    onClick={() => ChangeStatus("Disponible")}
+                    className={`py-3 px-4 rounded-lg text-sm ${selectedSlots.length > 0
+                      ? `${Theme_A.button.mediumGradientButton}`
+                      : "bg-gray-200 text-black cursor-default"
+                      }`}
+                  >
+                    Etre disponible
+                  </div>
+                  <div
+                    onClick={() => ChangeStatus("Non disponible")}
+                    className={`py-3 px-4 rounded-lg text-sm ${selectedSlots.length > 0
+                      ? `${Theme_A.button.medWhiteColoredButton}`
+                      : "bg-gray-200 text-black cursor-default"
+                      }`}
+                  >
+                    Etre indisponible
+                  </div>
+
+                  {/* Bouton pour marquer les créneaux comme non disponibles */}
+                </div>
+              )}
           </div>
         </div>
       )

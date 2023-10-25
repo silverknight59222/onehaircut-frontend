@@ -15,6 +15,7 @@ import { The_Nautigal } from "next/font/google";
 import Footer from "@/components/UI/Footer";
 import BaseModal from "@/components/UI/BaseModal";
 import { useRouter } from "next/navigation";
+import PaymentModal from "./PaymentModal";
 
 const Subscription = () => {
   const router = useRouter();
@@ -32,6 +33,15 @@ const Subscription = () => {
   ];
   const [isModal,setIsModal]=useState(false);
 
+  const handleClickPay = () => {
+    console.log("PAY");
+  }
+
+  // const modifBankCard: React.JSX.Element =
+  //   <div>
+  //       <PaymentModal handleClickPay={handleClickPay} />
+  //   </div >;
+
   const handleClickPro = () => {
     setIsModal(true);
   }
@@ -44,14 +54,14 @@ const Subscription = () => {
         <div className="mt-16 px-4 lg:px-11">
           <div className="flex items-center justify-center">
             {/* TODO: slide button not working */}
-            <div className="w-80 h-10 flex items-center justify-between rounded-3xl bg-[#FAFAFA] shadow-[rgba(220,215,215,0.34)] text-xs font-semibold">
+            {/* <div className="w-80 h-10 flex items-center justify-between rounded-3xl bg-[#FAFAFA] shadow-[rgba(220,215,215,0.34)] text-xs font-semibold">
               <p className="text-[#0E0D0D] pl-5 cursor-pointer">
                 Paiement mensuel
               </p>
               <p className="text-white bg-[#3C3A3A] rounded-3xl py-2.5 px-5 cursor-pointer">
                 Paiement Annuel
               </p>
-            </div>
+            </div> */}
           </div>
           <div className="z-10  flex-col xl:flex-row items-center xl:items-start justify-center gap-4 2xl:gap-12 mt-10 lg:mt-52">
             <div className="hidden lg:block relative">
@@ -137,9 +147,9 @@ const Subscription = () => {
                     </div>
                   </div>
                   {/* <div className={`w-52 absolute left-[450px] top-[650px]  flex items-center justify-center ${Theme_A.button.medWhiteColoredButton}`}> */}
-                  <div className="z-10 w-48 absolute left-[450px] top-[650px]  flex items-center justify-center text-black font-semibold border border-[#000000] rounded-3xl -mb-12 h-12 bg-white hover:scale-105 transition-transform hover:shadow-md">
+                  {/* <div className="z-10 w-48 absolute left-[450px] top-[650px]  flex items-center justify-center text-black font-semibold border border-[#000000] rounded-3xl -mb-12 h-12 bg-white hover:scale-105 transition-transform hover:shadow-md">
                     Choisir
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
@@ -175,16 +185,13 @@ const Subscription = () => {
         </div>
       </DashboardLayout>
       <Footer />
-      {isModal &&
-      <BaseModal close={() => setIsModal(false)}>
-        <div className="my-3">
-          <p className="text-center text-xl font-semibold mb-5">You need to login to create booking!</p>
-          <div className=' flex items-center justify-center gap-6'>
-            <button onClick={() => setIsModal(false)} className='w-32 h-12 flex items-center justify-center border border-black rounded-xl'>Cancel</button>
-            <button onClick={()=>router.push('/login?redirect=payment')} className={`w-32 h-12 flex items-center justify-center rounded-xl text-white bg-background-gradient`}>Login</button>
-          </div>
-        </div>
-      </BaseModal>}
+      {isModal && (
+        <BaseModal close={() => setIsModal(false)}>
+            <div>
+                <PaymentModal/>
+            </div>
+        </BaseModal>)
+      }
     </div>
   );
 };
