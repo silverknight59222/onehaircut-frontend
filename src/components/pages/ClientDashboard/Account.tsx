@@ -12,6 +12,7 @@ import { Value } from 'react-phone-number-input'
 import 'react-phone-number-input/style.css'
 import { E164Number } from 'libphonenumber-js/core';
 import PaymentForm from "@/components/shared/Payement";
+import { TextField } from "@material-ui/core";
 
 
 interface infoInterface {
@@ -27,8 +28,8 @@ const infoInterfaceIni: infoInterface =
     { name: "", desc: "", modif: false, popup: emptyPopup }
 
 // design choices:
-const inputFieldsDesign = `w-full p-3 placeholder:text-[#959595] placeholder:text-base ${Theme_A.behaviour.fieldFocused_B}${Theme_A.fields.inputField}`
-const inputFieldsDesignNoW = `border-2 p-3 placeholder:text-[#959595] placeholder:text-base ${Theme_A.behaviour.fieldFocused_B}${Theme_A.fields.inputField}`
+const inputFieldsDesign = `w-full p-3 placeholder:text-[#959595] placeholder:text-base ${ColorsThemeA.ohcBorder} ${Theme_A.behaviour.fieldFocused_B}${Theme_A.fields.inputField}`
+const inputFieldsDesignNoW = `border-2 border-red-500 p-3 placeholder:text-[#959595] placeholder:text-base ${Theme_A.behaviour.fieldFocused_B}${Theme_A.fields.inputField}`
 
 const Account = () => {
     const showSnackbar = useSnackbar();
@@ -143,30 +144,41 @@ const Account = () => {
                         {error.text}
                     </p>
                 )}
-                <input
-                    // type=""
-                    placeholder="Ancien mot de passe"
-                    className={`${inputFieldsDesign}`}
+                <TextField className={`${inputFieldsDesign}`}
+                    id="oldPswrd"
+                    label="Ancien mot de passe"
+                    variant="outlined"
                     value={passwordField.old}
-                    maxLength={30}
                     onChange={(e) => setOldPassword(e.target.value)}
+                    InputProps={{
+                        style: {
+                            borderRadius: '12px',
+                        },
+                    }}
                 />
-                <input
-                    // type=""
-                    placeholder="Nouveau mot de passe"
-                    className={`${inputFieldsDesign}`}
+                <TextField className={`${inputFieldsDesign}`}
+                    id="NewPswrd1"
+                    label="Nouveau mot de passe"
+                    variant="outlined"
                     value={passwordField.new}
-                    maxLength={30}
                     onChange={(e) => setNewPassword(e.target.value)}
+                    InputProps={{
+                        style: {
+                            borderRadius: '12px',
+                        },
+                    }}
                 />
-
-                <input
-                    // type=""
-                    placeholder="Nouveau mot de passe"
-                    className={` ${inputFieldsDesign}`}
+                <TextField className={`${inputFieldsDesign}`}
+                    id="NewPswrd2"
+                    label="Répéter nouveau mot de passe"
+                    variant="outlined"
                     value={passwordField.new2}
-                    maxLength={30}
                     onChange={(e) => setNew2Password(e.target.value)}
+                    InputProps={{
+                        style: {
+                            borderRadius: '12px',
+                        },
+                    }}
                 />
             </div>
             <div className="mt-4 flex gap-4 items-center justify-center w-full">
@@ -219,40 +231,59 @@ const Account = () => {
                     </p>
                 )}
                 <div className="flex flex-row gap-x-2">
-                    <input
-                        type="text"
-                        id="StreetNb"
-                        className={`w-[80px] ${inputFieldsDesignNoW}`}
-                        placeholder="Nr rue"
-                        maxLength={7}
-                        value={streetNbField}
-                        onChange={(e) => newStreetNbField(e.target.value)}
-                    />
-                    <input
-                        placeholder="Nom de rue"
-                        className={`${inputFieldsDesignNoW}`}
+                    <div className="w-40">
+                        <TextField className={`${inputFieldsDesign}`}
+                            id="StreetNb"
+                            label="Numero"
+                            variant="outlined"
+                            value={streetNbField}
+                            onChange={(e) => newStreetNbField(e.target.value)}
+                            InputProps={{
+                                style: { borderRadius: '12px' },
+                            }}
+                        />
+                    </div>
+                    <TextField className={`${inputFieldsDesign}`}
+                        id="StreetName"
+                        label="Rue"
+                        variant="outlined"
                         value={streetField}
-                        maxLength={100}
                         onChange={(e) => setNewAddress(e.target.value)}
+                        InputProps={{
+                            style: { borderRadius: '12px' },
+                        }}
                     />
                 </div>
                 <div className="flex flex-row gap-x-2">
-                    <input
-                        type="text"
-                        id="PostCode"
-                        className={`w-[80px] ${inputFieldsDesignNoW}`}
-                        placeholder="Code postal"
-                        maxLength={5}
-                        value={postCodeField}
-                        onChange={(e) => newPostCodeField(e.target.value)}
+                    <div className="w-40">
+                        <TextField className={`${inputFieldsDesign}`}
+                            id="PostCode"
+                            label="Code postal"
+                            variant="outlined"
+                            value={postCodeField}
+                            onChange={(e) => newPostCodeField(e.target.value)}
+                            InputProps={{
+                                style: { borderRadius: '12px' },
+                            }}
+                        />
+                    </div>
+                    <TextField className={`${inputFieldsDesign}`}
+                        id="City"
+                        label="Ville"
+                        variant="outlined"
+                        value={cityField}
+                        onChange={(e) => newCityField(e.target.value)}
+                        InputProps={{
+                            style: { borderRadius: '12px' },
+                        }}
                     />
-                    <input
+                    {/* <input
                         placeholder="Ville"
                         className={`${inputFieldsDesignNoW}`}
                         value={cityField}
                         maxLength={100}
                         onChange={(e) => newCityField(e.target.value)}
-                    />
+                    /> */}
                 </div>
             </div>
             <div className="mt-4 flex gap-4 items-center justify-center w-full">
