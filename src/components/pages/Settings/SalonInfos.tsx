@@ -266,17 +266,17 @@ const SalonInfos = () => {
             )}
             {/* Affichage des adresses dans la vignette principale */}
             <div className="flex">
-                <h4 className="flex items-center justify- ml-12 font-semibold text-xl">
+                <h4 className="flex items-center justify- ml-6 mb-2 font-semibold text-lg">
                     Adresses
                 </h4>
             </div>
 
 
             <div className="flex">
-                <div className="flex-1 py-5 pl-5 ml-8">
+                <div className="flex-1 py-5 pl-5 ml-8 ">
 
                     <ul>
-                        <li className="text-sm text-gray-500 uppercase font-semibold">
+                        <li className="text-sm mb-2 text-gray-400 uppercase font-semibold">
                             Adresse de l'établissement
                         </li>
                         {renderListItem("Nom", "Max Mustermann")}
@@ -287,7 +287,7 @@ const SalonInfos = () => {
                 </div>
                 <div className="flex-1 py-5 pl-1 overflow-hidden ml-4">
                     <ul>
-                        <li className="text-sm text-gray-600 uppercase font-semibold mr-2">
+                        <li className="text-sm mb-2 text-gray-400 uppercase font-semibold mr-2">
                             Adresse de facturation
                         </li>
                         {renderListItem("Nom", "Rick Astley")}
@@ -308,7 +308,7 @@ const SalonInfos = () => {
             <hr className=" mx-16 border-gray-300 h-4" />
 
 
-            <h4 className="flex items-center justify- ml-12 mb-4 font-semibold text-lg">
+            <h4 className="flex items-center justify- ml-6 mb-8 font-semibold text-lg">
                 Type d'établissement
             </h4>
             <div className="flex items-center justify-center mb-2"> {/* Increased horizontal spacing */}
@@ -317,8 +317,16 @@ const SalonInfos = () => {
 
             {/* Séparation */}
             <hr className=" mx-16 border-gray-300 h-4" />
+
+            <div className="flex">
+                <h4 className="flex items-center justify- ml-6 mb-2 font-semibold text-lg">
+                    Zone de mobilité
+                </h4>
+            </div>
             {/* fin Affichage des adresses dans la vignette principale */}
         </div>
+
+
     );
 };
 
