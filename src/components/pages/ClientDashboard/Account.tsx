@@ -57,6 +57,7 @@ const Account = () => {
     const [isModalNotifReminders, setIsModalNotifReminders] = useState(false);
     // Modal for messages notification
     const [isModalNotifMsg, setIsModalNotifMsg] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     // function to hadnle the click on the modify 
     const handleModifierClick = (item: infoInterface) => {
@@ -426,99 +427,6 @@ const Account = () => {
     }
 
     ////////////////////////////////////////////////////
-    ///////////////////// Account Notification  
-    ////////////////////////////////////////////////////
-
-    const [NotifAccountEmail, setPNotifAccountEmail] = useState(false);
-    const [NotifAccountWhatsapp, setPNotifAccountWhatsapp] = useState(false);
-    const [NotifAccount, setNotifAccount] = useState("");
-    const [isLoading, setIsLoading] = useState(false);
-
-    const onSubmitAccountNotif = async () => {
-        // saved account activity notifications prefrences
-        setIsLoading(true)
-        await client.savePrefrences({
-            type: "account_activity",
-            email: NotifAccountEmail,
-            whatsapp: NotifAccountWhatsapp
-        })
-            .then(resp => {
-                if (resp.data.account_activity) {
-                    displayNotif(resp.data.account_activity.emails, resp.data.account_activity.whatsapp, 0) // update text to be displayed                
-                }
-                if (resp.data.reminders) {
-                    displayNotif(resp.data.reminders.emails, resp.data.reminders.whatsapp, 1) // update text to be displayed
-                }
-                if (resp.data.messages) {
-                    displayNotif(resp.data.messages.emails, resp.data.messages.whatsapp, 2) // update text to be displayed
-                }
-                setShowItem(notifications);
-            })
-            .catch(err => {
-                console.log(err)
-            })
-            .finally(() => {
-                setIsLoading(false)
-            })
-        // setShowItem(informations);
-        setSelectedTab(3);
-        showSnackbar("succès", "Préférence actualisée");
-        setIsModalNotifAccount(false)
-
-    }
-
-    // display the field for the account modifications
-    const modifAccountNotif: React.JSX.Element =
-        <div>
-            <div className="flex flex-col items-center justify-center gap-4">
-                <p className="text-xl font-semibold text-black text-center">
-                    Notifications concernants votre compte sont émises par</p>
-                <div className="items-start">
-                    <div
-                        onClick={() => setPNotifAccountEmail(!NotifAccountEmail)}
-                        className="flex items-center justify-start gap-3 mt-4 cursor-pointer"
-                    >
-                        <div className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${NotifAccountEmail
-                            ? ColorsThemeA.ohcVerticalGradient_A
-                            : "border-[#767676]"
-                            }`}
-                        >
-                            {NotifAccountEmail && (
-                                <CheckedIcon width="15" height="10" />)}
-                        </div>
-                        <p>Emails</p>
-                    </div>
-                    <div
-                        onClick={() => setPNotifAccountWhatsapp(!NotifAccountWhatsapp)}
-                        className="flex items-center justify-start gap-3 mt-4 cursor-pointer"
-                    >
-                        <div className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${NotifAccountWhatsapp
-                            ? ColorsThemeA.ohcVerticalGradient_A
-                            : "border-[#767676]"
-                            }`}
-                        >
-                            {NotifAccountWhatsapp && (
-                                <CheckedIcon width="15" height="10" />)}
-                        </div>
-                        <p>Whatsapp</p>
-                    </div>
-                </div>
-            </div>
-            <div className="mt-4 flex gap-4 items-center justify-center w-full">
-                <button
-                    className={`${Theme_A.button.medWhiteColoredButton}`}
-                    onClick={() => setIsModalNotifAccount(false)}>
-                    Annuler
-                </button>
-                <button
-                    className={`${Theme_A.button.mediumGradientButton}`}
-                    onClick={() => onSubmitAccountNotif()}         >
-                    Actualiser
-                </button>
-            </div>
-        </div>;
-
-    ////////////////////////////////////////////////////
     ///////////////////// Reminder Notification  
     ////////////////////////////////////////////////////
 
@@ -535,14 +443,11 @@ const Account = () => {
             whatsapp: NotifReminderWhatsapp
         })
             .then(resp => {
-                if (resp.data.account_activity) {
-                    displayNotif(resp.data.account_activity.emails, resp.data.account_activity.whatsapp, 0) // update text to be displayed                
-                }
                 if (resp.data.reminders) {
-                    displayNotif(resp.data.reminders.emails, resp.data.reminders.whatsapp, 1) // update text to be displayed
+                    displayNotif(resp.data.reminders.emails, resp.data.reminders.whatsapp, 0) // update text to be displayed
                 }
                 if (resp.data.messages) {
-                    displayNotif(resp.data.messages.emails, resp.data.messages.whatsapp, 2) // update text to be displayed
+                    displayNotif(resp.data.messages.emails, resp.data.messages.whatsapp, 1) // update text to be displayed
                 }
                 setShowItem(notifications);
             })
@@ -627,14 +532,11 @@ const Account = () => {
             whatsapp: NotifMsgWhatsapp
         })
             .then(resp => {
-                if (resp.data.account_activity) {
-                    displayNotif(resp.data.account_activity.emails, resp.data.account_activity.whatsapp, 0) // update text to be displayed                
-                }
                 if (resp.data.reminders) {
-                    displayNotif(resp.data.reminders.emails, resp.data.reminders.whatsapp, 1) // update text to be displayed
+                    displayNotif(resp.data.reminders.emails, resp.data.reminders.whatsapp, 0) // update text to be displayed
                 }
                 if (resp.data.messages) {
-                    displayNotif(resp.data.messages.emails, resp.data.messages.whatsapp, 2) // update text to be displayed
+                    displayNotif(resp.data.messages.emails, resp.data.messages.whatsapp, 1) // update text to be displayed
                 }
                 setShowItem(notifications);
             })
@@ -720,7 +622,6 @@ const Account = () => {
     ];
 
     let notifications: infoInterface[] = [
-        { name: "Activité du compte", desc: "", modif: true, popup: modifAccountNotif },        
         { name: "Rappels", desc: "Notification de rappel avant une réservation", modif: true, popup: modifReminderNotif },
         { name: "Messages", desc: "Notification en cas de message sur le chat OneHairCut", modif: true, popup: modifMsgNotif },
     ];
@@ -769,20 +670,15 @@ const Account = () => {
     const fetchPrefrences = async () => {
         const resp = await client.getSavePrefrences()
 
-        if (resp.data.account_activity) {
-            setPNotifAccountEmail(resp.data.account_activity.emails)
-            setPNotifAccountWhatsapp(resp.data.account_activity.whatsapp)
-            displayNotif(resp.data.account_activity.emails, resp.data.account_activity.whatsapp, 0) // update text to be displayed                
-        }
         if (resp.data.reminders) {
             setPNotifReminderEmail(resp.data.reminders.emails)
             setPNotifReminderWhatsapp(resp.data.reminders.whatsapp)
-            displayNotif(resp.data.reminders.emails, resp.data.reminders.whatsapp, 1) // update text to be displayed
+            displayNotif(resp.data.reminders.emails, resp.data.reminders.whatsapp, 0) // update text to be displayed
         }
         if (resp.data.messages) {
             setPNotifMsgEmail(resp.data.messages.emails)
             setPNotifMsgWhatsapp(resp.data.messages.whatsapp)
-            displayNotif(resp.data.messages.emails, resp.data.messages.whatsapp, 2) // update text to be displayed
+            displayNotif(resp.data.messages.emails, resp.data.messages.whatsapp, 1) // update text to be displayed
         }
         setShowItem(notifications);
     }
