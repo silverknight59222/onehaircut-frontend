@@ -1,6 +1,6 @@
 import { CheckedIcon, LogoCircleFixRight } from "@/components/utilis/Icons";
 import ClientDashboardLayout from "@/layout/ClientDashboardLayout";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BaseModal from "@/components/UI/BaseModal";
 import Footer from "@/components/UI/Footer";
 import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
@@ -217,6 +217,7 @@ const Account = () => {
         // TODO: save the address for the future
         showSnackbar("success", "Salon Service added successfully.");
         setIsModalAdd(false);
+        setShowItem(informations);
 
     }
 
@@ -277,13 +278,6 @@ const Account = () => {
                             style: { borderRadius: '12px' },
                         }}
                     />
-                    {/* <input
-                        placeholder="Ville"
-                        className={`${inputFieldsDesignNoW}`}
-                        value={cityField}
-                        maxLength={100}
-                        onChange={(e) => newCityField(e.target.value)}
-                    /> */}
                 </div>
             </div>
             <div className="mt-4 flex gap-4 items-center justify-center w-full">
@@ -328,6 +322,7 @@ const Account = () => {
             // TODO: save phone for the future
             showSnackbar("success", "Téléphone actualisé");
             setIsModalPhone(false)
+            setShowItem(informations);
         }
     }
 
@@ -568,14 +563,30 @@ const Account = () => {
 
 
     // TODO: add information about the client coming from backend in "desc".
-    const informations: infoInterface[] = [
+    let informations: infoInterface[] = [
         { name: "Nom légal", desc: "Dimitri Bala", modif: false, popup: emptyPopup },
-        { name: "Adresse", desc: streetNbField + " " + streetField + " " + postCodeField + " " + cityField, modif: true, popup: modifAddress },
-        { name: "Numéro de téléphone", desc: phoneField, modif: true, popup: modifPhone },
+        { name: "Adresse", desc: `${streetNbField} ${streetField} ${postCodeField} ${cityField}`, modif: true, popup: modifAddress },
+        { name: "Numéro de téléphone", desc: `${phoneField}`, modif: true, popup: modifPhone },
         { name: "Adresse e-mail", desc: "b***9@gmail.com", modif: false, popup: emptyPopup },
         // { name: "Pièce d'identité officielle", desc: "Information non fournie", modif: false, popup: emptyPopup },
         // { name: "Statut", desc: "Etudiant - vérifié", modif: false, popup: emptyPopup },
     ];
+
+    // Use useEffect to update informations when state variables change
+    useEffect(() => {
+        // Update the informations variable whenever any state variable changes
+        informations = [
+            { name: "Nom légal", desc: "Dimitri Bala", modif: false, popup: emptyPopup },
+            {
+                name: "Adresse",
+                desc: `${streetNbField} ${streetField} ${postCodeField} ${cityField}`,
+                modif: true,
+                popup: modifAddress,
+            },
+            { name: "Numéro de téléphone", desc: `${phoneField}`, modif: true, popup: modifPhone },
+            { name: "Adresse e-mail", desc: "b***9@gmail.com", modif: false, popup: emptyPopup },
+        ];
+    }, [streetNbField, streetField, postCodeField, cityField, phoneField]);
 
     const password: infoInterface[] = [
         { name: "Mot de passe", desc: "", modif: true, popup: modifPassWord },
