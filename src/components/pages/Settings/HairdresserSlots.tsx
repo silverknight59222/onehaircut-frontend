@@ -43,6 +43,8 @@ export const HairdresserSlots = () => {
   >([]);
   const [hairdresserNames, setHairdresserNames] = useState<string[]>();
   const[day, setDay] = useState('');
+  const [selectedWeekday, setSelectedWeekday] = useState<string>('');
+  const [selectedHairdresser, setSelectedHairdresser] = useState<string>('');
 
   // An example of state with a default hairdresser to initialize the state
   const defaultHairDresser = {
@@ -119,6 +121,7 @@ export const HairdresserSlots = () => {
         setDay("Saturday");
         break;
     }
+    setSelectedWeekday(item);
   } 
 
   // Use useEffect to attach/detach click event to document
@@ -169,6 +172,7 @@ export const HairdresserSlots = () => {
         setSelectedSalonHairDresser(hairdresser);
       }
     });
+    setSelectedHairdresser(item);
   };
 
   // Function to select a slot
@@ -274,11 +278,11 @@ export const HairdresserSlots = () => {
                 </div>
               </div> */}
               <div className="flex items-center justify-center gap-4 rounded-2xl text-lg">
-                <DropdownMenu dropdownItems={hairdressersList.map((item) => item.name)} fctToCallOnClick={getSelectedHairdresser} menuName="Hairdresser"/>
+                <DropdownMenu dropdownItems={hairdressersList.map((item) => item.name)} fctToCallOnClick={getSelectedHairdresser} menuName="Hairdresser" selectId={selectedHairdresser}/>
               </div>
               {selectedSalonHairDresser.id > 0 && (
                 <div className="flex items-center justify-center gap-4 rounded-2xl text-lg">
-                  <DropdownMenu dropdownItems={Weekday} fctToCallOnClick={handleSelectWeekday} menuName="Weekday"/>
+                  <DropdownMenu dropdownItems={Weekday} fctToCallOnClick={handleSelectWeekday} menuName="Weekday" selectId={selectedWeekday}/>
                 </div>
               )}
 
