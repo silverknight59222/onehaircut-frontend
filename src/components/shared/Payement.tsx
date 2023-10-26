@@ -12,7 +12,7 @@ const PaymentForm: React.FC = () => {
 
     return (
         <div className="min-w-screen min-h-full bg-white flex items-center justify-center px-2 pb-2 pt-2">
-            <div className="w-full mx-auto rounded-lg bg-white shadow-lg p-5 text-gray-700" style={{ maxWidth: '600px' }}>
+            <div className="w-full mx-auto rounded-lg bg-white p-5 text-gray-700" style={{ maxWidth: '600px' }}>
                 <div className="mb-10">
                     <h1 className="text-center font-bold text-xl uppercase">Secure payment info</h1>
                 </div>
