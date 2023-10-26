@@ -29,6 +29,9 @@ const client={
     getSavePrefrences: async () => {
         return await request.get(`/user/get_saved_prefrences`);
     },
+    getMyBookings: async () => {
+        return await request.get(`/my_histories`);
+    }
 }
 const user_api =  {
     getUsers: async () => {
