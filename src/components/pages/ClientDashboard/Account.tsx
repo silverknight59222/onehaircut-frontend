@@ -1,10 +1,11 @@
 import { CheckedIcon, LogoCircleFixRight } from "@/components/utilis/Icons";
 import ClientDashboardLayout from "@/layout/ClientDashboardLayout";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BaseModal from "@/components/UI/BaseModal";
 import Footer from "@/components/UI/Footer";
 import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 import useSnackbar from "@/hooks/useSnackbar";
+import { client } from "@/api/clientSide";
 // import PhoneInput from 'react-phone-input-2'
 import Input from 'react-phone-number-input/input'
 import PhoneInput from 'react-phone-number-input'
@@ -12,6 +13,7 @@ import { Value } from 'react-phone-number-input'
 import 'react-phone-number-input/style.css'
 import { E164Number } from 'libphonenumber-js/core';
 import PaymentForm from "@/components/shared/Payement";
+import { TextField } from "@material-ui/core";
 
 
 interface infoInterface {
@@ -27,8 +29,8 @@ const infoInterfaceIni: infoInterface =
     { name: "", desc: "", modif: false, popup: emptyPopup }
 
 // design choices:
-const inputFieldsDesign = `w-full p-3 placeholder:text-[#959595] placeholder:text-base ${Theme_A.behaviour.fieldFocused_B}${Theme_A.fields.inputField}`
-const inputFieldsDesignNoW = `border-2 p-3 placeholder:text-[#959595] placeholder:text-base ${Theme_A.behaviour.fieldFocused_B}${Theme_A.fields.inputField}`
+const inputFieldsDesign = `w-full p-3 placeholder:text-[#959595] placeholder:text-base ${ColorsThemeA.ohcBorder} ${Theme_A.behaviour.fieldFocused_B}${Theme_A.fields.inputField}`
+const inputFieldsDesignNoW = `border-2 border-red-500 p-3 placeholder:text-[#959595] placeholder:text-base ${Theme_A.behaviour.fieldFocused_B}${Theme_A.fields.inputField}`
 
 const Account = () => {
     const showSnackbar = useSnackbar();
@@ -143,30 +145,41 @@ const Account = () => {
                         {error.text}
                     </p>
                 )}
-                <input
-                    // type=""
-                    placeholder="Ancien mot de passe"
-                    className={`${inputFieldsDesign}`}
+                <TextField className={`${inputFieldsDesign}`}
+                    id="oldPswrd"
+                    label="Ancien mot de passe"
+                    variant="outlined"
                     value={passwordField.old}
-                    maxLength={30}
                     onChange={(e) => setOldPassword(e.target.value)}
+                    InputProps={{
+                        style: {
+                            borderRadius: '12px',
+                        },
+                    }}
                 />
-                <input
-                    // type=""
-                    placeholder="Nouveau mot de passe"
-                    className={`${inputFieldsDesign}`}
+                <TextField className={`${inputFieldsDesign}`}
+                    id="NewPswrd1"
+                    label="Nouveau mot de passe"
+                    variant="outlined"
                     value={passwordField.new}
-                    maxLength={30}
                     onChange={(e) => setNewPassword(e.target.value)}
+                    InputProps={{
+                        style: {
+                            borderRadius: '12px',
+                        },
+                    }}
                 />
-
-                <input
-                    // type=""
-                    placeholder="Nouveau mot de passe"
-                    className={` ${inputFieldsDesign}`}
+                <TextField className={`${inputFieldsDesign}`}
+                    id="NewPswrd2"
+                    label="Répéter nouveau mot de passe"
+                    variant="outlined"
                     value={passwordField.new2}
-                    maxLength={30}
                     onChange={(e) => setNew2Password(e.target.value)}
+                    InputProps={{
+                        style: {
+                            borderRadius: '12px',
+                        },
+                    }}
                 />
             </div>
             <div className="mt-4 flex gap-4 items-center justify-center w-full">
@@ -219,40 +232,59 @@ const Account = () => {
                     </p>
                 )}
                 <div className="flex flex-row gap-x-2">
-                    <input
-                        type="text"
-                        id="StreetNb"
-                        className={`w-[80px] ${inputFieldsDesignNoW}`}
-                        placeholder="Nr rue"
-                        maxLength={7}
-                        value={streetNbField}
-                        onChange={(e) => newStreetNbField(e.target.value)}
-                    />
-                    <input
-                        placeholder="Nom de rue"
-                        className={`${inputFieldsDesignNoW}`}
+                    <div className="w-40">
+                        <TextField className={`${inputFieldsDesign}`}
+                            id="StreetNb"
+                            label="Numero"
+                            variant="outlined"
+                            value={streetNbField}
+                            onChange={(e) => newStreetNbField(e.target.value)}
+                            InputProps={{
+                                style: { borderRadius: '12px' },
+                            }}
+                        />
+                    </div>
+                    <TextField className={`${inputFieldsDesign}`}
+                        id="StreetName"
+                        label="Rue"
+                        variant="outlined"
                         value={streetField}
-                        maxLength={100}
                         onChange={(e) => setNewAddress(e.target.value)}
+                        InputProps={{
+                            style: { borderRadius: '12px' },
+                        }}
                     />
                 </div>
                 <div className="flex flex-row gap-x-2">
-                    <input
-                        type="text"
-                        id="PostCode"
-                        className={`w-[80px] ${inputFieldsDesignNoW}`}
-                        placeholder="Code postal"
-                        maxLength={5}
-                        value={postCodeField}
-                        onChange={(e) => newPostCodeField(e.target.value)}
+                    <div className="w-40">
+                        <TextField className={`${inputFieldsDesign}`}
+                            id="PostCode"
+                            label="Code postal"
+                            variant="outlined"
+                            value={postCodeField}
+                            onChange={(e) => newPostCodeField(e.target.value)}
+                            InputProps={{
+                                style: { borderRadius: '12px' },
+                            }}
+                        />
+                    </div>
+                    <TextField className={`${inputFieldsDesign}`}
+                        id="City"
+                        label="Ville"
+                        variant="outlined"
+                        value={cityField}
+                        onChange={(e) => newCityField(e.target.value)}
+                        InputProps={{
+                            style: { borderRadius: '12px' },
+                        }}
                     />
-                    <input
+                    {/* <input
                         placeholder="Ville"
                         className={`${inputFieldsDesignNoW}`}
                         value={cityField}
                         maxLength={100}
                         onChange={(e) => newCityField(e.target.value)}
-                    />
+                    /> */}
                 </div>
             </div>
             <div className="mt-4 flex gap-4 items-center justify-center w-full">
@@ -374,7 +406,7 @@ const Account = () => {
     //NOTIFICATIONS
 
     // function to display the preferences
-    const displayNotif = (email: boolean, whatsapp: boolean, setState: React.Dispatch<React.SetStateAction<string>>) => {
+    const displayNotif = (email: boolean, whatsapp: boolean, index: any) => {
         let text = ""
         if (email) {
             text = "Email"
@@ -390,9 +422,95 @@ const Account = () => {
         }
 
         // set the text to be displayed
-        setState(text)
+        notifications[index].desc = text
     }
 
+    ////////////////////////////////////////////////////
+    ///////////////////// Account Notification  
+    ////////////////////////////////////////////////////
+
+    const [NotifAccountEmail, setPNotifAccountEmail] = useState(false);
+    const [NotifAccountWhatsapp, setPNotifAccountWhatsapp] = useState(false);
+    const [NotifAccount, setNotifAccount] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+
+    const onSubmitAccountNotif = async () => {
+        // saved account activity notifications prefrences
+        setIsLoading(true)
+        await client.savePrefrences({
+            type: "account_activity",
+            email: NotifAccountEmail,
+            whatsapp: NotifAccountWhatsapp
+        })
+            .then(resp => {
+                displayNotif(resp.data.account_activity.emails, resp.data.account_activity.whatsapp, 0) // update text to be displayed                
+                displayNotif(resp.data.reminders.emails, resp.data.reminders.whatsapp, 1) // update text to be displayed
+                displayNotif(resp.data.messages.emails, resp.data.messages.whatsapp, 2) // update text to be displayed
+                setShowItem(notifications);
+            })
+            .catch(err => {
+                console.log(err)
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
+        // setShowItem(informations);
+        setSelectedTab(3);
+        showSnackbar("succès", "Préférence actualisée");
+        setIsModalNotifAccount(false)
+
+    }
+
+    // display the field for the account modifications
+    const modifAccountNotif: React.JSX.Element =
+        <div>
+            <div className="flex flex-col items-center justify-center gap-4">
+                <p className="text-xl font-semibold text-black text-center">
+                    Notifications concernants votre compte sont émises par</p>
+                <div className="items-start">
+                    <div
+                        onClick={() => setPNotifAccountEmail(!NotifAccountEmail)}
+                        className="flex items-center justify-start gap-3 mt-4 cursor-pointer"
+                    >
+                        <div className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${NotifAccountEmail
+                            ? ColorsThemeA.ohcVerticalGradient_A
+                            : "border-[#767676]"
+                            }`}
+                        >
+                            {NotifAccountEmail && (
+                                <CheckedIcon width="15" height="10" />)}
+                        </div>
+                        <p>Emails</p>
+                    </div>
+                    <div
+                        onClick={() => setPNotifAccountWhatsapp(!NotifAccountWhatsapp)}
+                        className="flex items-center justify-start gap-3 mt-4 cursor-pointer"
+                    >
+                        <div className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${NotifAccountWhatsapp
+                            ? ColorsThemeA.ohcVerticalGradient_A
+                            : "border-[#767676]"
+                            }`}
+                        >
+                            {NotifAccountWhatsapp && (
+                                <CheckedIcon width="15" height="10" />)}
+                        </div>
+                        <p>Whatsapp</p>
+                    </div>
+                </div>
+            </div>
+            <div className="mt-4 flex gap-4 items-center justify-center w-full">
+                <button
+                    className={`${Theme_A.button.medWhiteColoredButton}`}
+                    onClick={() => setIsModalNotifAccount(false)}>
+                    Annuler
+                </button>
+                <button
+                    className={`${Theme_A.button.mediumGradientButton}`}
+                    onClick={() => onSubmitAccountNotif()}         >
+                    Actualiser
+                </button>
+            </div>
+        </div>;
 
     ////////////////////////////////////////////////////
     ///////////////////// Reminder Notification  
@@ -402,12 +520,28 @@ const Account = () => {
     const [NotifReminderWhatsapp, setPNotifReminderWhatsapp] = useState(false);
     const [NotifReminder, setNotifReminder] = useState("");
 
-    const onSubmitReminderNotif = () => {
-        // TODO: save preferences for the future
-        displayNotif(NotifReminderEmail, NotifReminderWhatsapp, setNotifReminder) // update text to be displayed
+    const onSubmitReminderNotif = async () => {
+        // saved reminders notifications prefrences
+        setIsLoading(true)
+        await client.savePrefrences({
+            type: "reminders",
+            email: NotifReminderEmail,
+            whatsapp: NotifReminderWhatsapp
+        })
+            .then(resp => {
+                displayNotif(resp.data.account_activity.emails, resp.data.account_activity.whatsapp, 0) // update text to be displayed                
+                displayNotif(resp.data.reminders.emails, resp.data.reminders.whatsapp, 1) // update text to be displayed
+                displayNotif(resp.data.messages.emails, resp.data.messages.whatsapp, 2) // update text to be displayed
+                setShowItem(notifications);
+            })
+            .catch(err => {
+                console.log(err)
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
         // setShowItem(informations);
         setSelectedTab(3);
-        setShowItem(notifications);
         showSnackbar("succès", "Préférence actualisée");
         setIsModalNotifReminders(false)
 
@@ -472,12 +606,29 @@ const Account = () => {
     const [NotifMsgWhatsapp, setPNotifMsgWhatsapp] = useState(false);
     const [NotifMsg, setNotifMsg] = useState("");
 
-    const onSubmitMsgNotif = () => {
-        // TODO: save preferences for the future
-        displayNotif(NotifMsgEmail, NotifMsgWhatsapp, setNotifMsg) // update text to be displayed
+    const onSubmitMsgNotif = async () => {
+        // saved messages notifications prefrences
+        setIsLoading(true)
+        await client.savePrefrences({
+            type: "messages",
+            email: NotifMsgEmail,
+            whatsapp: NotifMsgWhatsapp
+        })
+            .then(resp => {
+                displayNotif(resp.data.account_activity.emails, resp.data.account_activity.whatsapp, 0) // update text to be displayed                
+                displayNotif(resp.data.reminders.emails, resp.data.reminders.whatsapp, 1) // update text to be displayed
+                displayNotif(resp.data.messages.emails, resp.data.messages.whatsapp, 2) // update text to be displayed
+                setShowItem(notifications);
+            })
+            .catch(err => {
+                console.log(err)
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
+
         // setShowItem(informations);
         setSelectedTab(3);
-        setShowItem(notifications);
         showSnackbar("succès", "Préférence actualisée");
         setIsModalNotifMsg(false)
 
@@ -551,6 +702,7 @@ const Account = () => {
     ];
 
     let notifications: infoInterface[] = [
+        { name: "Activité du compte", desc: "", modif: true, popup: modifAccountNotif },        
         { name: "Rappels", desc: "Notification de rappel avant une réservation", modif: true, popup: modifReminderNotif },
         { name: "Messages", desc: "Notification en cas de message sur le chat OneHairCut", modif: true, popup: modifMsgNotif },
     ];
@@ -574,7 +726,7 @@ const Account = () => {
     const onSelectTab = (item: string, index: number) => {
         setSelectedTab(index);
         if (item === "Notifications") {
-            setShowItem(notifications);
+            fetchPrefrences() //fetching notifications prefrences on index tab
         }
         else if (item === "Moyens de paiements") {
             setShowItem(payments);
@@ -596,7 +748,21 @@ const Account = () => {
         }
     };
 
+    const fetchPrefrences = async () => {
+        const resp = await client.getSavePrefrences()
 
+        setPNotifAccountEmail(resp.data.account_activity.emails)
+        setPNotifAccountWhatsapp(resp.data.account_activity.whatsapp)
+        setPNotifReminderEmail(resp.data.reminders.emails)
+        setPNotifReminderWhatsapp(resp.data.reminders.whatsapp)
+        setPNotifMsgEmail(resp.data.messages.emails)
+        setPNotifMsgWhatsapp(resp.data.messages.whatsapp)
+
+        displayNotif(resp.data.account_activity.emails, resp.data.account_activity.whatsapp, 0) // update text to be displayed                
+        displayNotif(resp.data.reminders.emails, resp.data.reminders.whatsapp, 1) // update text to be displayed
+        displayNotif(resp.data.messages.emails, resp.data.messages.whatsapp, 2) // update text to be displayed
+        setShowItem(notifications);
+    }
 
     return (
         <div>

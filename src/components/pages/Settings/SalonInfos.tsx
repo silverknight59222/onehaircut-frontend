@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { EditIcon } from "@/components/utilis/Icons";
 import { Theme_A } from "@/components/utilis/Themes";
 import BaseModal from "@/components/UI/BaseModal";
+import DropdownMenu from "@/components/UI/DropDownMenu";
 
 const SalonInfos = () => {
     const [isModal, setIsModal] = useState(false);
@@ -146,6 +147,23 @@ const SalonInfos = () => {
         searchBillingCityByPostalCode(billingPostalCode);
     }, [billingPostalCode]);
 
+
+
+    //For Dropdown lists Type of salon
+    const SalonTypeList = [
+        "Barber-shop",
+        "Salon pour hommes",
+        "Salon pour femmes",
+        "Coiffeur mobile homme",
+        "Coiffeuse mobile femme",
+        "Salon mixte",
+    ];
+    // handling the change of Salon type change
+    const SaveSalonType = (item: string) => {
+        // TODO: add backend to save the new preference
+    }
+    /************************************************************************************************************************** */
+
     return (
         // ...
         <div className={`w-[500px] h-max bg-white rounded-2xl py-4 shadow-lg`}>
@@ -248,9 +266,17 @@ const SalonInfos = () => {
             )}
             {/* Affichage des adresses dans la vignette principale */}
             <div className="flex">
-                <div className="flex-1 py-5 pl-5 ml-8">
+                <h4 className="flex items-center justify- ml-6 mb-2 font-semibold text-lg">
+                    Adresses
+                </h4>
+            </div>
+
+
+            <div className="flex">
+                <div className="flex-1 py-5 pl-5 ml-8 ">
+
                     <ul>
-                        <li className="text-md text-gray-800 uppercase font-semibold">
+                        <li className="text-sm mb-2 text-gray-400 uppercase font-semibold">
                             Adresse de l'établissement
                         </li>
                         {renderListItem("Nom", "Max Mustermann")}
@@ -261,7 +287,7 @@ const SalonInfos = () => {
                 </div>
                 <div className="flex-1 py-5 pl-1 overflow-hidden ml-4">
                     <ul>
-                        <li className="text-md text-gray-800 uppercase font-semibold">
+                        <li className="text-sm mb-2 text-gray-400 uppercase font-semibold mr-2">
                             Adresse de facturation
                         </li>
                         {renderListItem("Nom", "Rick Astley")}
@@ -277,8 +303,30 @@ const SalonInfos = () => {
                     <EditIcon />
                 </div>
             </div>
+
+            {/* Séparation */}
+            <hr className=" mx-16 border-gray-300 h-4" />
+
+
+            <h4 className="flex items-center justify- ml-6 mb-8 font-semibold text-lg">
+                Type d'établissement
+            </h4>
+            <div className="flex items-center justify-center mb-2"> {/* Increased horizontal spacing */}
+                <DropdownMenu dropdownItems={SalonTypeList} fctToCallOnClick={SaveSalonType} menuName="Type d'établissement" />
+            </div>
+
+            {/* Séparation */}
+            <hr className=" mx-16 border-gray-300 h-4" />
+
+            <div className="flex">
+                <h4 className="flex items-center justify- ml-6 mb-2 font-semibold text-lg">
+                    Zone de mobilité
+                </h4>
+            </div>
             {/* fin Affichage des adresses dans la vignette principale */}
         </div>
+
+
     );
 };
 
