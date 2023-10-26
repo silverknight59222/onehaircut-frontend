@@ -23,11 +23,11 @@ export interface settingsStruct {
 const settingsMenu: settingsStruct[] = [
   { name: "Générales", display: SalonInfos },
   { name: "Horaires", display: OpenningHours },
-  { name: "Reglage des roles", display: RolesSettings },
-  { name: "Promotions", display: PromotionsSettings },
-  { name: "Notifications", display: BotSettings },
+  { name: "Accès des rôles", display: RolesSettings },
   { name: "Paiements", display: PayementSettings },
-  { name: "Bot", display: BotSettings }
+  { name: "Notifications", display: BotSettings },
+  { name: "OnehairBot", display: BotSettings },
+  { name: "Promotions", display: PromotionsSettings },
 ]
 
 
