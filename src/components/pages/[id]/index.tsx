@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Auth } from "@/api/auth";
 import userLoader from "@/hooks/useLoader";
@@ -70,6 +70,12 @@ const Reset = ({email,token}:any) =>
 
       return isValidated;
     }}
+
+    useEffect(()=>{
+      localStorage.removeItem("user")
+      localStorage.removeItem("auth-token")
+      router.push(`/forgot?token=${token}&email=${email}`);
+    },[])
 
     const onReset = async () => {
       if (!validatePassword()) {
