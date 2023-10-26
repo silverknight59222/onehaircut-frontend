@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
@@ -77,6 +77,10 @@ const DropdownMenu = ({
         setSelectedItem(item);
         fctToCallOnClick(item);
     };
+
+    useEffect(() => {
+        setSelectedItem(selectId);
+    });
 
     return (
         <div>
