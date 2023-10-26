@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+
+import { useState } from 'react'
 import { useRouter } from "next/navigation";
 import Sidebar from "@/components/shared/Sidebar";
 import {
@@ -32,7 +33,7 @@ const ClientDashboardLayout = ({ children }: DashboardLayout) => {
     { icon: "MessageIcon", title: "Filtres", route: "/client/filters" },
     { icon: "ReservationIcon", title: "Réservations en cours", route: "/client/currentreservation" },
     { icon: "HistoryIcon", title: "Historique", route: "/client/history" },
-    { icon: "HelpIcon", title: "Aide", route: "" },
+    { icon: "HelpIcon", title: "Aide", route: "/client/help" },
   ];
   const SidebarHandler = () => {
     setIsSidebar(!isSidebar);
@@ -45,7 +46,7 @@ const ClientDashboardLayout = ({ children }: DashboardLayout) => {
 
   const dropdownItems = [
     {
-      name: "Déconnextion",
+      name: "Déconnexion",
       icon: <LogoutIcon width='25' height='25' />,
       route: "/client/dashboard",
     },
@@ -95,7 +96,7 @@ const ClientDashboardLayout = ({ children }: DashboardLayout) => {
             </div>
             <div className="flex items-center justify-end gap-4">
 
-              <div className="w-14 h-14 flex items-center justify-center pb-1 border-2 border-secondary rounded-full cursor-pointer"
+              <div className="w-14 h-14 flex items-center justify-center pb-1 border-2 border-secondary rounded-full cursor-pointer transform hover:scale-110 transition-transform"
                 onClick={() => setIsUserDropDwn(!isUserDropDwn)}>
                 <UserIcon />
               </div>

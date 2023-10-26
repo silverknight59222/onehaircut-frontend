@@ -68,6 +68,7 @@ const DropdownMenu = ({
     fctToCallOnClick = (item: string) => { },
     labelId = '',
     selectId = '',
+    defaultSelected='',
 }) => {
     const classes = useStyles();
     const [selectedItem, setSelectedItem] = useState('');

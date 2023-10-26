@@ -19,6 +19,12 @@ const TextToDsplayifNoPic =
         </p>
     </div>
 
+const DefaultProfilFace = <Image src='/assets/PortraitClient/ProfilFace.jpg' alt='' fill={true} className='rounded-3xl ' />
+const DefaultProfilLeft = <Image src='/assets/PortraitClient/ProfilLeft.jpg' alt='' fill={true} className='rounded-3xl ' />
+const DefaultProfilLeft2 = <Image src='/assets/PortraitClient/ProfilLeft2.png' alt='' fill={true} className='rounded-3xl ' />
+const DefaultProfilRight = <Image src='/assets/PortraitClient/ProfilRight.png' alt='' fill={true} className='rounded-3xl ' />
+const DefaultProfilRight2 = <Image src='/assets/PortraitClient/ProfilRight2.jpg' alt='' fill={true} className='rounded-3xl ' />
+
 const SubTextToDisplay =
     ["Profil légèrement gauche",
         "Profil gauche",
@@ -192,7 +198,7 @@ const Portrait = () => {
 
     }
 
-    const profilPicToDisplay = (clickFct: () => void, img: string | null, subtitle: string, picSize: number) => {
+    const profilPicToDisplay = (clickFct: () => void, img: string | null, subtitle: string, picSize: number, defaultPic: React.JSX.Element) => {
         return (
             <div className=" flex flex-col gap-2 items-center transform hover:scale-105 transition-transform "
                 onClick={clickFct}
@@ -204,7 +210,7 @@ const Portrait = () => {
                         {img ? (
                             <Image src={img} fill={true} alt="Profile Image" />
                         ) : (
-                            TextToDsplayifNoPic
+                            defaultPic
                         )}
                     </div>
                     {img && (
@@ -266,22 +272,22 @@ const Portrait = () => {
                     <div className="flex flex-col sm:flex-row  sm:items-start justify-center gap-14">
                         {/* Left side of the head placed left */}
                         <div className="flex sm:flex-col  gap-10 -mt-6 sm:-mt-0">
-                            {profilPicToDisplay(handleClickLeft2, profileLeft2Image, SubTextToDisplay[0], 32)}
+                            {profilPicToDisplay(handleClickLeft2, profileLeft2Image, SubTextToDisplay[0], 32, DefaultProfilLeft2)}
 
-                            {profilPicToDisplay(handleClickLeft, profileLeftImage, SubTextToDisplay[1], 32)}
+                            {profilPicToDisplay(handleClickLeft, profileLeftImage, SubTextToDisplay[1], 32, DefaultProfilLeft)}
                         </div>
 
                         {/* Straight side in the middle */}
 
                         {/* <div className="w-40 gap-10 -mt-6 sm:-mt-0"> */}
-                        {profilPicToDisplay(handleClick, profileImage, SubTextToDisplay[2], 52)}
+                        {profilPicToDisplay(handleClick, profileImage, SubTextToDisplay[2], 52, DefaultProfilFace)}
                         {/* </div> */}
 
                         {/* Right side of the face on the right */}
                         <div className="flex sm:flex-col  gap-10 -mt-6 sm:-mt-0">
-                            {profilPicToDisplay(handleClickRight2, profileRight2Image, SubTextToDisplay[3], 32)}
+                            {profilPicToDisplay(handleClickRight2, profileRight2Image, SubTextToDisplay[3], 32, DefaultProfilRight2)}
 
-                            {profilPicToDisplay(handleClickRight, profileRightImage, SubTextToDisplay[4], 32)}
+                            {profilPicToDisplay(handleClickRight, profileRightImage, SubTextToDisplay[4], 32, DefaultProfilRight)}
                         </div>
                     </div>
                     <div className="flex flex-col md:flex-row items-center md:items-start justify-center gap-10 mt-10">

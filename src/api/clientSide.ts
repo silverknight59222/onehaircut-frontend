@@ -30,5 +30,18 @@ const client={
         return await request.get(`/user/get_saved_prefrences`);
     },
 }
-
-export { client };
+const user_api =  {
+    getUsers: async () => {
+        return await request.get(`/user/list`);
+    },
+    saveUsers: async (data:any) => {
+        return await request.post(`/user/store`, data);
+    },
+    deleteUser: async (data:any) => {
+        return await request.delete(`/user/delete/${data.id}`);
+    },
+    getPermission: async (role:any) => {
+        return await request.get(`/permissions/${role}`);
+    }
+}
+export { client, user_api };

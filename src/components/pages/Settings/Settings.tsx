@@ -13,13 +13,17 @@ import { Theme_A } from "@/components/utilis/Themes";
 import BotSettings from "./BotSettings";
 import PromotionsSettings from "./PromotionsSettings";
 import PayementSettings from "./PayementSettings";
+import SalonInfos from "./SalonInfos";
+import RolesSettings from "./RolesSettings";
 export interface settingsStruct {
   name: string;
   display: () => React.JSX.Element;
 }
 
 const settingsMenu: settingsStruct[] = [
+  { name: "Générales", display: SalonInfos },
   { name: "Horaires", display: OpenningHours },
+  { name: "Reglage des roles", display: RolesSettings },
   { name: "Promotions", display: PromotionsSettings },
   { name: "Notifications", display: BotSettings },
   { name: "Paiements", display: PayementSettings },
@@ -47,11 +51,11 @@ const Settings = () => {
         <div className="flex gap-4">
           {/* DISPLAY SETTINGS MENU */}
           {!isLoading && (
-            <div className="max-w-[200px] h-max flex flex-col items-left justify-center text-center px-2 py-6 gap-8 rounded-2xl bg-white text- font-medium text-[#909090] shadow-md">
+            <div className="max-w-[300px] h-max flex flex-col items-left justify-center text-center px-2 py-6 gap-8 rounded-2xl bg-white text- font-medium text-[#909090] shadow-md">
               {settingsMenu.map((item) => {
                 return (
                   <p
-                    className={` cursor-pointer  ${activeMenu === item.name &&
+                    className={` cursor-pointer ml-2 mr-2 ${activeMenu === item.name &&
                       " text-black "
                       }`}
                     onClick={() => setActiveMenu(item.name)}

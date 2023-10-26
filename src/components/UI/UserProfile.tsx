@@ -9,6 +9,7 @@ import {
   FilterIcon,
   ReservationIcon,
   HistoryIcon,
+  LogoutIcon,
 }
   from "../utilis/Icons";
 import { useRouter } from "next/navigation";
@@ -68,7 +69,7 @@ const UserProfile = ({ isDashboard }: UserProfileProfile) => {
     {
       name: "Aide",
       icon: <HelpIcon width="20" height="20" color="#000000" />,
-      route: ""
+      route: "/client/help"
     },
   ];
 
@@ -132,9 +133,10 @@ const UserProfile = ({ isDashboard }: UserProfileProfile) => {
           }
           <div
             onClick={onLogout}
-            className={`w-full flex flex-col items-center justify-center hover:bg-[#F5F5F5] cursor-pointer ${!isDashboard ? 'mt-2 px-6 py-3' : 'px-6 pt-1 pb-2'}`}
+            className={`w-full flex flex-row items-center justify-center hover:bg-[#F5F5F5] cursor-pointer gap-4 ${!isDashboard ? 'mt-2 px-6 py-3' : 'px-6 pt-1 pb-2'}`}
           >
-            <p>Logout</p>
+            <LogoutIcon width='25' height='25' />
+            <p>Déconnexion</p>
           </div>
         </div>
       )}

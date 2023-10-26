@@ -43,6 +43,8 @@
     "react-loader-spinner": "^5.3.4",
     "react-minimal-pie-chart": "^8.4.0",
     "react-move": "^6.5.0",
+    "react-phone-input-2": "^2.15.1",
+    "react-phone-number-input": "^3.3.7",
     "react-player": "^2.12.0",
     "react-star-ratings": "^2.3.0",
     "react-toastify": "^9.1.3",

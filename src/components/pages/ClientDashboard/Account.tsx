@@ -6,6 +6,15 @@ import Footer from "@/components/UI/Footer";
 import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 import useSnackbar from "@/hooks/useSnackbar";
 import { client } from "@/api/clientSide";
+// import PhoneInput from 'react-phone-input-2'
+import Input from 'react-phone-number-input/input'
+import PhoneInput from 'react-phone-number-input'
+import { Value } from 'react-phone-number-input'
+import 'react-phone-number-input/style.css'
+import { E164Number } from 'libphonenumber-js/core';
+import PaymentForm from "@/components/shared/Payement";
+import { TextField } from "@material-ui/core";
+
 
 interface infoInterface {
     name: string;
@@ -20,8 +29,8 @@ const infoInterfaceIni: infoInterface =
     { name: "", desc: "", modif: false, popup: emptyPopup }
 
 // design choices:
-const inputFieldsDesign = `w-full p-3 placeholder:text-[#959595] placeholder:text-base ${Theme_A.behaviour.fieldFocused_B}${Theme_A.fields.inputField}`
-const inputFieldsDesignNoW = `p-3 placeholder:text-[#959595] placeholder:text-base ${Theme_A.behaviour.fieldFocused_B}${Theme_A.fields.inputField}`
+const inputFieldsDesign = `w-full p-3 placeholder:text-[#959595] placeholder:text-base ${ColorsThemeA.ohcBorder} ${Theme_A.behaviour.fieldFocused_B}${Theme_A.fields.inputField}`
+const inputFieldsDesignNoW = `border-2 border-red-500 p-3 placeholder:text-[#959595] placeholder:text-base ${Theme_A.behaviour.fieldFocused_B}${Theme_A.fields.inputField}`
 
 const Account = () => {
     const showSnackbar = useSnackbar();
@@ -44,8 +53,6 @@ const Account = () => {
     const [isModalPswrd, setIsModalPswrd] = useState(false);
     // Modal for credit card
     const [isModalCreditCard, setIsModalCreditCard] = useState(false);
-    // Modal for account notification
-    const [isModalNotifAccount, setIsModalNotifAccount] = useState(false);
     // Modal for Reminders notification
     const [isModalNotifReminders, setIsModalNotifReminders] = useState(false);
     // Modal for messages notification
@@ -62,11 +69,8 @@ const Account = () => {
         else if (item.name == "Mot de passe") {
             setIsModalPswrd(true) // Show the modal to modify password
         }
-        else if (item.name == "Carte de crédit") {
+        else if (item.name == "Moyen de payement préféré") {
             setIsModalCreditCard(true) // Show the modal to modify credit card
-        }
-        else if (item.name == "Activité du compte") {
-            setIsModalNotifAccount(true) // Show the modal to modify account activity
         }
         else if (item.name == "Rappels") {
             setIsModalNotifReminders(true) // Show the modal to modify reminders
@@ -141,30 +145,41 @@ const Account = () => {
                         {error.text}
                     </p>
                 )}
-                <input
-                    // type=""
-                    placeholder="Ancien mot de passe"
-                    className={`${inputFieldsDesign}`}
+                <TextField className={`${inputFieldsDesign}`}
+                    id="oldPswrd"
+                    label="Ancien mot de passe"
+                    variant="outlined"
                     value={passwordField.old}
-                    maxLength={30}
                     onChange={(e) => setOldPassword(e.target.value)}
+                    InputProps={{
+                        style: {
+                            borderRadius: '12px',
+                        },
+                    }}
                 />
-                <input
-                    // type=""
-                    placeholder="Nouveau mot de passe"
-                    className={`${inputFieldsDesign}`}
+                <TextField className={`${inputFieldsDesign}`}
+                    id="NewPswrd1"
+                    label="Nouveau mot de passe"
+                    variant="outlined"
                     value={passwordField.new}
-                    maxLength={30}
                     onChange={(e) => setNewPassword(e.target.value)}
+                    InputProps={{
+                        style: {
+                            borderRadius: '12px',
+                        },
+                    }}
                 />
-
-                <input
-                    // type=""
-                    placeholder="Nouveau mot de passe"
-                    className={` ${inputFieldsDesign}`}
+                <TextField className={`${inputFieldsDesign}`}
+                    id="NewPswrd2"
+                    label="Répéter nouveau mot de passe"
+                    variant="outlined"
                     value={passwordField.new2}
-                    maxLength={30}
                     onChange={(e) => setNew2Password(e.target.value)}
+                    InputProps={{
+                        style: {
+                            borderRadius: '12px',
+                        },
+                    }}
                 />
             </div>
             <div className="mt-4 flex gap-4 items-center justify-center w-full">
@@ -217,40 +232,59 @@ const Account = () => {
                     </p>
                 )}
                 <div className="flex flex-row gap-x-2">
-                    <input
-                        type="text"
-                        id="StreetNb"
-                        className={`w-[80px] ${inputFieldsDesignNoW}`}
-                        placeholder="Numero"
-                        maxLength={7}
-                        value={streetNbField}
-                        onChange={(e) => newStreetNbField(e.target.value)}
-                    />
-                    <input
-                        placeholder="Nom de rue"
-                        className={`${inputFieldsDesignNoW}`}
+                    <div className="w-40">
+                        <TextField className={`${inputFieldsDesign}`}
+                            id="StreetNb"
+                            label="Numero"
+                            variant="outlined"
+                            value={streetNbField}
+                            onChange={(e) => newStreetNbField(e.target.value)}
+                            InputProps={{
+                                style: { borderRadius: '12px' },
+                            }}
+                        />
+                    </div>
+                    <TextField className={`${inputFieldsDesign}`}
+                        id="StreetName"
+                        label="Rue"
+                        variant="outlined"
                         value={streetField}
-                        maxLength={100}
                         onChange={(e) => setNewAddress(e.target.value)}
+                        InputProps={{
+                            style: { borderRadius: '12px' },
+                        }}
                     />
                 </div>
                 <div className="flex flex-row gap-x-2">
-                    <input
-                        type="text"
-                        id="PostCode"
-                        className={`w-[60px] ${inputFieldsDesignNoW}`}
-                        placeholder="Code postal"
-                        maxLength={5}
-                        value={postCodeField}
-                        onChange={(e) => newPostCodeField(e.target.value)}
+                    <div className="w-40">
+                        <TextField className={`${inputFieldsDesign}`}
+                            id="PostCode"
+                            label="Code postal"
+                            variant="outlined"
+                            value={postCodeField}
+                            onChange={(e) => newPostCodeField(e.target.value)}
+                            InputProps={{
+                                style: { borderRadius: '12px' },
+                            }}
+                        />
+                    </div>
+                    <TextField className={`${inputFieldsDesign}`}
+                        id="City"
+                        label="Ville"
+                        variant="outlined"
+                        value={cityField}
+                        onChange={(e) => newCityField(e.target.value)}
+                        InputProps={{
+                            style: { borderRadius: '12px' },
+                        }}
                     />
-                    <input
+                    {/* <input
                         placeholder="Ville"
                         className={`${inputFieldsDesignNoW}`}
                         value={cityField}
                         maxLength={100}
                         onChange={(e) => newCityField(e.target.value)}
-                    />
+                    /> */}
                 </div>
             </div>
             <div className="mt-4 flex gap-4 items-center justify-center w-full">
@@ -273,10 +307,11 @@ const Account = () => {
     ////////////////////////////////////////////////////
     ///////////////////// PHONE 
     ////////////////////////////////////////////////////
-
     const [phoneField, setPhoneField] = useState("");
-    const setNewPhone = (value: string) => {
-        setPhoneField(value);
+    const setNewPhone = (value?: Value) => {
+        if (value != undefined) {
+            setPhoneField(value);
+        }
     };
 
     const onSubmitPhone = async () => {
@@ -298,30 +333,29 @@ const Account = () => {
     }
 
     const modifPhone: React.JSX.Element =
-        <div>
-            <div className="flex flex-col items-center justify-center gap-4">
-                <p className="text-xl font-semibold text-black text-center">Modification du numéro</p>
+        <div >
+            <div className="flex-col items-center justify-center gap-4 ">
+                <p className="text-xl font-semibold text-black text-center mb-8">
+                    Modification du numéro</p>
                 {errorPop && (
                     <p className={`${Theme_A.checkers.errorText}`}>
                         {errorPop}
                     </p>
                 )}
-                <input
-                    placeholder="Nouveau numéro"
-                    className={`${inputFieldsDesign}`}
-                    value={phoneField}
-                    maxLength={15}
-                    onChange={(e) => {
-                        const inputElement = e.target as HTMLInputElement;
-                        const value = inputElement.value;
-                        let sanitizedValue = value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
-                        inputElement.value = sanitizedValue;
-
-                        setPhoneField(inputElement.value)
-                    }}
-                />
+                <div className={`w-60 ml-20 ${inputFieldsDesignNoW}`}>
+                    <PhoneInput
+                        style={{ height: 8 }}
+                        // className={`${inputFieldsDesign}`}
+                        // inputComponent={{ phoneInput }}
+                        // containerClass={containerClass}
+                        defaultCountry={'FR'}
+                        value={phoneField}
+                        placeholder={"Nouveau numéro"}
+                        onChange={phone => setNewPhone(phone)}
+                    />
+                </div>
             </div>
-            <div className="mt-4 flex gap-4 items-center justify-center w-full">
+            <div className="mt-8 flex gap-4 items-center justify-center w-full">
                 <button
                     className={`${Theme_A.button.medWhiteColoredButton}`}
                     onClick={() => setIsModalPhone(false)}
@@ -340,11 +374,11 @@ const Account = () => {
     ////////////////////////////////////////////////////
     ///////////////////// Bank card 
     ////////////////////////////////////////////////////
-    let currentCardNumb = 11223399; // TODO: give the client's card number
-    const currentExpireDate = "01/2023";
-    const [BankeCardNumb, newBankeCardNumb] = useState(currentCardNumb);
+    const [BankCardExpMonth, setBankCardExpMonth] = useState("");
+    const [BankCardExpYear, setBankCardExpYear] = useState("");
+    const [BankeCardNumb, newBankeCardNumb] = useState("");
     const setNewBankCard = (value: string) => {
-        newBankeCardNumb(+value);
+        newBankeCardNumb(value);
     };
 
     const onSubmitBankCard = async () => {
@@ -365,36 +399,8 @@ const Account = () => {
 
     const modifBankCard: React.JSX.Element =
         <div>
-            <div className="flex flex-col items-center justify-center gap-4">
-                <p className="text-xl font-semibold text-black text-center">Modification de la carte</p>
-                {error && (
-                    <p className={`${Theme_A.checkers.errorText}`}>
-                        {error.text}
-                    </p>
-                )}
-                <input
-                    placeholder="Numéro de la carte bancaire"
-                    className={` ${inputFieldsDesign}`}
-                    value={BankeCardNumb}
-                    maxLength={15}
-                    onChange={(e) => setNewBankCard(e.target.value)}
-                />
-            </div>
-            <div className="mt-4 flex gap-4 items-center justify-center w-full">
-                <button
-                    className={`${Theme_A.button.medWhiteColoredButton}`}
-                    onClick={() => setIsModalCreditCard(false)}
-                >
-                    Annuler
-                </button>
-                <button
-                    className={`${Theme_A.button.mediumGradientButton}`}
-                    onClick={() => onSubmitBankCard()}
-                >
-                    Actualiser
-                </button>
-            </div>
-        </div>;
+            <PaymentForm />
+        </div >;
 
     ////////////////////////////////////////////////////
     //NOTIFICATIONS
@@ -547,7 +553,7 @@ const Account = () => {
             <div className="flex flex-col items-center justify-center gap-4">
                 <p className="text-xl font-semibold text-black text-center">
                     Notifications concernants votre compte sont émises par</p>
-                <div className="items-start">
+                <div className="flex flex-row items-start gap-3">
                     <div
                         onClick={() => setPNotifReminderEmail(!NotifReminderEmail)}
                         className="flex items-center justify-start gap-3 mt-4 cursor-pointer"
@@ -578,7 +584,7 @@ const Account = () => {
                     </div>
                 </div>
             </div>
-            <div className="mt-4 flex gap-4 items-center justify-center w-full">
+            <div className="mt-8 flex gap-4 items-center justify-center w-full">
                 <button
                     className={`${Theme_A.button.medWhiteColoredButton}`}
                     onClick={() => setIsModalNotifReminders(false)}    >
@@ -634,7 +640,7 @@ const Account = () => {
             <div className="flex flex-col items-center justify-center gap-4">
                 <p className="text-xl font-semibold text-black text-center">
                     Notifications concernants votre compte sont émises par</p>
-                <div className="items-start">
+                <div className="flex flex-row items-start gap-3">
                     <div
                         onClick={() => setPNotifMsgEmail(!NotifMsgEmail)}
                         className="flex items-center justify-start gap-3 mt-4 cursor-pointer"
@@ -665,7 +671,7 @@ const Account = () => {
                     </div>
                 </div>
             </div>
-            <div className="mt-4 flex gap-4 items-center justify-center w-full">
+            <div className="mt-4 flex gap-8 items-center justify-center w-full">
                 <button
                     className={`${Theme_A.button.medWhiteColoredButton}`}
                     onClick={() => setIsModalNotifMsg(false)}    >
@@ -684,11 +690,11 @@ const Account = () => {
     // TODO: add information about the client coming from backend in "desc".
     const informations: infoInterface[] = [
         { name: "Nom légal", desc: "Dimitri Bala", modif: false, popup: emptyPopup },
-        { name: "Adresse", desc: streetNbField + "" + streetField, modif: true, popup: modifAddress },
+        { name: "Adresse", desc: streetNbField + " " + streetField + " " + postCodeField + " " + cityField, modif: true, popup: modifAddress },
         { name: "Numéro de téléphone", desc: phoneField, modif: true, popup: modifPhone },
         { name: "Adresse e-mail", desc: "b***9@gmail.com", modif: false, popup: emptyPopup },
-        { name: "Pièce d'identité officielle", desc: "Information non fournie", modif: false, popup: emptyPopup },
-        { name: "Statut", desc: "Etudiant - vérifié", modif: false, popup: emptyPopup },
+        // { name: "Pièce d'identité officielle", desc: "Information non fournie", modif: false, popup: emptyPopup },
+        // { name: "Statut", desc: "Etudiant - vérifié", modif: false, popup: emptyPopup },
     ];
 
     const password: infoInterface[] = [
@@ -696,15 +702,13 @@ const Account = () => {
     ];
 
     let notifications: infoInterface[] = [
-        { name: "Activité du compte", desc: "", modif: true, popup: modifAccountNotif },
-        { name: "Rappels", desc: "", modif: true, popup: modifReminderNotif },
-        { name: "Messages", desc: "", modif: true, popup: modifMsgNotif },
+        { name: "Activité du compte", desc: "", modif: true, popup: modifAccountNotif },        
+        { name: "Rappels", desc: "Notification de rappel avant une réservation", modif: true, popup: modifReminderNotif },
+        { name: "Messages", desc: "Notification en cas de message sur le chat OneHairCut", modif: true, popup: modifMsgNotif },
     ];
 
     const payments: infoInterface[] = [
-        // TODO: Add real card number of client
-        { name: "Carte de crédit", desc: "4212 **** **** ****", modif: true, popup: modifBankCard },
-        { name: "Paypal", desc: "Bientôt disponible", modif: false, popup: emptyPopup },
+        { name: 'Moyen de payement préféré', desc: "4212 **** **** ****", modif: true, popup: modifBankCard },
     ];
 
     const confidentiality: infoInterface[] = [
@@ -712,7 +716,7 @@ const Account = () => {
     ];
 
     const languages: infoInterface[] = [
-        { name: "Langue actuelle", desc: "Francais", modif: true, popup: emptyPopup },
+        { name: "Langue actuelle", desc: "Francais", modif: false, popup: emptyPopup },
     ];
 
 
@@ -798,14 +802,6 @@ const Account = () => {
                         <BaseModal close={() => setIsModalCreditCard(false)}>
                             <div>
                                 {modifBankCard}
-                            </div>
-                        </BaseModal>)}
-
-                    {/*  Notification account */}
-                    {isModalNotifAccount && (
-                        <BaseModal close={() => setIsModalNotifAccount(false)}>
-                            <div>
-                                {modifAccountNotif}
                             </div>
                         </BaseModal>)}
 
