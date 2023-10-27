@@ -9,7 +9,7 @@ const useStyles = makeStyles((theme) => ({
     formControl: {
         minWidth: 200,
         marginBottom: theme.spacing(2),
-        border: '1px solid ' + theme.palette.grey[400],
+        border: '2px solid ' + theme.palette.grey[500],
         textAlign: 'center',
         borderRadius: '10px',
         '& .MuiInput-underline:before': {
@@ -68,7 +68,7 @@ const DropdownMenu = ({
     fctToCallOnClick = (item: string) => { },
     labelId = '',
     selectId = '',
-    defaultSelected='',
+    defaultSelected = '',
 }) => {
     const classes = useStyles();
     const [selectedItem, setSelectedItem] = useState('');
