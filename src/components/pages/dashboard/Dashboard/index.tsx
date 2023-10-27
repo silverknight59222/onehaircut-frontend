@@ -9,28 +9,28 @@ const Dashboard = () => {
       text: "Revenue projetés",
       gradient: "bg-gradient-to-t from-red-700 via-red-500 to-red-500",
       borderClr: "bg-[#FE5352]",
-      icon: <ProjectIncomeIcon/>,
+      icon: <ProjectIncomeIcon />,
     },
     {
       numbers: "325",
       text: "Nouveaux clients",
       gradient: "bg-gradient-to-b from-blue-400 to-blue-600",
       borderClr: "bg-[#15BAF2]",
-      icon: <DashboardUsersIcon/>,
+      icon: <DashboardUsersIcon />,
     },
     {
       numbers: "3,567",
       text: "Coiffures effectuées",
       gradient: "bg-gradient-to-b from-[#7ABF50] to-[#629E3E]",
       borderClr: "bg-[#7ABF50]",
-      icon: <CompletedHairStyleIcon/>,
+      icon: <CompletedHairStyleIcon />,
     },
     {
       numbers: "4,7/5",
       text: "",
       gradient: "bg-gradient-to-b from-[#FF266A] to-[#DE235E]",
       borderClr: "bg-[#FF266A]",
-      icon: <DashboardHeartIcon/>,
+      icon: <DashboardHeartIcon />,
     },
   ];
   const messages = [
@@ -57,7 +57,7 @@ const Dashboard = () => {
       profit: "4456",
     },
   ];
-  
+
   return (
     <div className="px-4 lg:px-6">
       <Footer />
@@ -166,8 +166,8 @@ const Dashboard = () => {
         </div>
       </div>
     </div>
-    
-      );
+
+  );
 };
 
 export default Dashboard;

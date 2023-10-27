@@ -3,15 +3,14 @@ import Switch from "@material-ui/core/Switch";
 import { ThemeProvider } from "@material-ui/core";
 import ComponentTheme from "@/components/UI/ComponentTheme";
 import BaseModal from "@/components/UI/BaseModal";
-
+import { user_api } from "@/api/clientSide";
 interface RolePermissions {
     [role: string]: number[]; // Définir une signature d'index
 }
 
 
 const RolesSettings = () => {
-    const [showModal, setShowModal] = useState(false);
-    const [selectedRole, setSelectedRole] = useState("Admin");
+    const [selectedRole, setSelectedRole] = useState("admin");
     const [switches, setSwitches] = useState<{ [key: number]: boolean }>({
         1: false,
         2: false,
@@ -26,32 +25,34 @@ const RolesSettings = () => {
         11: false,
         12: false,
     });
+    const [otherSwitches, setOtherSwitches] = useState([]);
+    const [settingSwitches, setSettingSwitches] = useState([]);
 
 
     const rolePermissions: RolePermissions = {
-        Admin: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
-        Staff: [1, 2, 3, 6, 7, 8],
+        admin: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+        staff: [1, 2, 3, 6, 7, 8],
     };
 
     //stocker les états des commutateurs pour chaque rôle. 
     //TODO : REPLACE STATE WITH SAVED VALUES
     const [roleSwitches, setRoleSwitches] = useState<{ [key: string]: { [key: number]: boolean } }>({
-        Admin: {
+        admin: {
             // ... Définir les états initiaux pour les commutateurs d'Admin
-            1: true,
-            2: true,
-            3: true,
-            4: true,
-            5: true,
+            1: false,
+            2: false,
+            3: false,
+            4: false,
+            5: false,
             6: true, // Définir le switch de "Agenda" sur true pour le rendre coché
-            7: true,
-            8: true,
-            9: true,
-            10: true,
-            11: true,
-            12: true,
+            7: false,
+            8: false,
+            9: false,
+            10: false,
+            11: false,
+            12: false,
         },
-        Staff: {
+        staff: {
             // ... Définir les états initiaux pour les commutateurs d'Admin
             1: false,
             2: false,
@@ -70,23 +71,11 @@ const RolesSettings = () => {
 
     //Reglage switches
     const [modalSwitchesByRole, setModalSwitchesByRole] = useState<{ [key: string]: { [key: number]: boolean } }>({
-        Admin: {
-            13: false,
-            14: false,
-            15: false,
-            16: false,
-            17: false,
-            18: false,
-            19: false,
+        admin: {
+
         },
-        Staff: {
-            13: false,
-            14: false,
-            15: false,
-            16: false,
-            17: false,
-            18: false,
-            19: false,
+        staff: {
+
         },
     });
 
@@ -102,23 +91,84 @@ const RolesSettings = () => {
                 const id = Number(key);
                 updatedSwitches[id] = permissionsForRole.includes(id);
             }
-
             return updatedSwitches;
         });
     };
 
 
     // Mise à jour les états des commutateurs en fonction du rôle sélectionné
-    const toggleSwitch = (id: number) => {
+    const toggleSwitch = async (id: number) => {
+        const updatedRoleSwitches = { ...roleSwitches[selectedRole] };
+        updatedRoleSwitches[id] = !updatedRoleSwitches[id];
+
+        // Prepare an array of permissions to update
+        const permissionsToUpdate = [];
+
+        // Loop through updatedRoleSwitches to find permissions with the updated state
+        for (const permissionId in updatedRoleSwitches) {
+            if (updatedRoleSwitches[permissionId]) {
+                permissionsToUpdate.push(Number(permissionId));
+            }
+        }
+
+        // Make the API call to update permissions
+        const requestData = {
+            permissions: permissionsToUpdate,
+            role_name: selectedRole.toLowerCase(),
+        };
+        const response = await user_api.updatePermission(requestData);
+
         setRoleSwitches((prevRoleSwitches) => ({
             ...prevRoleSwitches,
-            [selectedRole]: {
-                ...prevRoleSwitches[selectedRole],
-                [id]: !prevRoleSwitches[selectedRole][id],
-            },
+            [selectedRole]: updatedRoleSwitches,
         }));
+
+        return {
+            previous: roleSwitches[selectedRole],
+            updated: updatedRoleSwitches,
+        };
     };
 
+    // Update the state when you interact with the switches in the modal
+    const handleModalSwitch = (id: number) => {
+        setModalSwitchesByRole((prevModalSwitchesByRole) => ({
+            ...prevModalSwitchesByRole,
+            [selectedRole]: {
+                ...prevModalSwitchesByRole[selectedRole],
+                [id]: !prevModalSwitchesByRole[selectedRole][id],
+            },
+        }));
+
+
+    };
+
+    // Function to make the API call with updated permissions
+    const updatePermissions = async () => {
+        const updatedRoleSwitches = { ...roleSwitches[selectedRole] };
+        const updatedPermissions = modalSwitchesByRole[selectedRole];
+        const permissionsToUpdate = [];
+
+        // Combine the original roleSwitches with the updatedPermissions
+        const combinedPermissions = { ...updatedRoleSwitches, ...updatedPermissions };
+
+        for (const permissionId in combinedPermissions) {
+            if (combinedPermissions[permissionId]) {
+                permissionsToUpdate.push(Number(permissionId));
+            }
+        }
+
+        const requestData = {
+            permissions: permissionsToUpdate,
+            role_name: selectedRole.toLowerCase(),
+        };
+
+        try {
+            const response = await user_api.updatePermission(requestData);
+            console.log("Permissions updated successfully:", response);
+        } catch (error) {
+            console.error("Error updating permissions:", error);
+        }
+    };
 
     // Fonction réutilisable pour générer des cases à cocher avec étiquette
     const renderCheckboxWithLabel = (
@@ -165,36 +215,41 @@ const RolesSettings = () => {
 
     const openModal = () => {
         setIsModal(true);
-        if (!modalSwitchesByRole[selectedRole]) {
-            setModalSwitchesByRole({
-                ...modalSwitchesByRole,
-                [selectedRole]: {
-                    13: false,
-                    14: false,
-                    15: false,
-                    16: false,
-                    17: false,
-                    18: false,
-                    19: false,
-                },
-            });
-        }
     };
 
     const closeModal = () => {
         setIsModal(false);
+        updatePermissions();
     };
-    const [modalSwitches, setModalSwitches] = useState<{ [key: number]: boolean }>({
-        13: false,
-        14: false,
-        15: false,
-        16: false,
-        17: false,
-        18: false,
-        19: false,
-    });
 
+    // Function to fetch permissions based on the role
+    const fetchPermissions = async (role: string) => {
+        try {
+            const permissions = await user_api.getAllPermission();
+            setOtherSwitches(permissions.data.data.other);
+            setSettingSwitches(permissions.data.data.setting_permissions);
+            const response = await user_api.getPermission(role);
 
+            const permissionsForRole = rolePermissions[role];
+            const roleSwitchesCopy = { ...roleSwitches };
+            const updatedSwitches = { ...switches };
+
+            permissionsForRole.forEach((id) => {
+                updatedSwitches[id] = response.data.data.other.some((e: any) => e.id === id);
+                roleSwitchesCopy[role][id] = updatedSwitches[id];
+            });
+
+            setSwitches(updatedSwitches);
+            setRoleSwitches(roleSwitchesCopy);
+        } catch (error) {
+            console.error("Error fetching permissions:", error);
+        }
+    };
+
+    // Use the useEffect hook to fetch permissions when the component mounts or when the role changes
+    useEffect(() => {
+        fetchPermissions(selectedRole);
+    }, [selectedRole]);
 
     const renderRoleContent = () => {
         return (
@@ -208,22 +263,7 @@ const RolesSettings = () => {
                     </div>
 
                     {/* Utilisation de la fonction réutilisable pour générer des cases à cocher avec étiquette */}
-                    {[
-                        { id: 1, label: "Dashboard" },
-                        { id: 2, label: "Coiffeurs" },
-                        { id: 3, label: "Image du Salon" },
-                        { id: 4, label: "Coifures" },
-                        { id: 5, label: "Prestation" },
-                        { id: 6, label: "Agenda" },
-                        { id: 7, label: "Ajouter un salon partenaire" },
-                        { id: 8, label: "Revenue" },
-                        { id: 9, label: "Message" },
-                        { id: 10, label: "Reglages" },
-                        { id: 11, label: "Abonnement" },
-                        { id: 12, label: "Onehairbot" },
-                        /* ***************************** */
-
-                    ].map((item) =>
+                    {otherSwitches.map((item: any) =>
                         renderCheckboxWithLabel(
                             item.id,
                             item.label,
@@ -239,28 +279,12 @@ const RolesSettings = () => {
 
                                 {/* Commutateurs du modal pour les nouveaux droits */}
                                 {/* TODO : MAKE THIS LIST DYNAMIC TO HAVE ALL SETTING PAGES ? */}
-                                {[
-                                    { id: 13, label: "Générales" },
-                                    { id: 14, label: "Horaires" },
-                                    { id: 15, label: "Réglage des roles" },
-                                    { id: 16, label: "Paiements" },
-                                    { id: 17, label: "Notifications" },
-                                    { id: 18, label: "Promotions" },
-                                    { id: 19, label: "Onehairbot" },
-                                ].map((item) =>
+                                {settingSwitches.map((item: any) =>
                                     renderCheckboxWithLabel(
                                         item.id,
                                         item.label,
-                                        modalSwitchesByRole[selectedRole][item.id], // Utilisez les états du modal spécifiques au rôle actuel
-                                        (checked) => {
-                                            setModalSwitchesByRole((prevModalSwitchesByRole) => ({
-                                                ...prevModalSwitchesByRole,
-                                                [selectedRole]: {
-                                                    ...prevModalSwitchesByRole[selectedRole],
-                                                    [item.id]: checked,
-                                                },
-                                            }));
-                                        }
+                                        modalSwitchesByRole[selectedRole][item.id], // Use modal switches state
+                                        () => handleModalSwitch(item.id) // Handle the modal switch
                                     )
                                 )}
 
@@ -268,6 +292,13 @@ const RolesSettings = () => {
                             </div>
                         </BaseModal>
                     )}
+
+                    {/* <button
+                        className="text-sm ml-6 shadow-sm text-white p-1 bg-stone-700 border-stone-300 rounded-lg cursor-pointer hover:scale-105 hover:shadow-md transition duration-300"
+                        onClick={updatePermissions} // Call updatePermissions to save the changes
+                    >
+                        Save
+                    </button> */}
                 </div>
             </ThemeProvider>
 
@@ -283,20 +314,20 @@ const RolesSettings = () => {
             {/* ADMIN / STAFF TITRE  */}
             <div className="flex justify-center items-center">
                 <button
-                    className={`text-xl font-semibold focus:outline-none mr-32 p-2 hover:bg-stone-200 hover:text-black hover:rounded-lg ${selectedRole === "Admin"
+                    className={`text-xl font-semibold focus:outline-none mr-32 p-2 ${selectedRole === "admin"
                         ? "bg-stone-700 text-white rounded-md"
                         : "bg-white text-stone-800"
                         }`}
-                    onClick={() => handleRoleClick("Admin")} // Passer "Admin" en tant que chaîne de caractères
+                    onClick={() => handleRoleClick("admin")} // Passer "Admin" en tant que chaîne de caractères
                 >
                     Admin
                 </button>
                 <button
-                    className={`text-xl font-semibold focus:outline-none p-2 hover:bg-stone-200 hover:text-black hover:rounded-lg ${selectedRole === "Staff"
+                    className={`text-xl font-semibold focus:outline-none p-2 ${selectedRole === "staff"
                         ? "bg-stone-700 text-white rounded-md"
                         : "bg-white text-stone-800"
                         }`}
-                    onClick={() => handleRoleClick("Staff")} // Passer "Staff" en tant que chaîne de caractères
+                    onClick={() => handleRoleClick("staff")} // Passer "Staff" en tant que chaîne de caractères
                 >
                     Staff
                 </button>
