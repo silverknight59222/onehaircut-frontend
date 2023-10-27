@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { EditIcon } from "@/components/utilis/Icons";
+import { EditIcon, CheckedIcon } from "@/components/utilis/Icons";
 import { Theme_A } from "@/components/utilis/Themes";
 import BaseModal from "@/components/UI/BaseModal";
 import DropdownMenu from "@/components/UI/DropDownMenu";
+import { ColorsThemeA } from "@/components/utilis/Themes";
+import CustomSlider from "@/components/UI/OHC_Slider";
+import ComponentTheme from "@/components/UI/ComponentTheme";
 
 const SalonInfos = () => {
     const [isModal, setIsModal] = useState(false);
@@ -12,6 +15,9 @@ const SalonInfos = () => {
     const [billingPostalCode, setBillingPostalCode] = useState("");
     const [billingCity, setBillingCity] = useState(""); // État pour la ville de facturation
     const [isCheckboxChecked, setIsCheckboxChecked] = useState(false); // État pour la checkbox
+    const [SelectedSalonType, setSelectedSalonType] = useState<string>('');
+    const [SalonType, setSalonType] = useState('');
+
 
     const openModal = () => {
         setIsModal(true);
@@ -154,14 +160,52 @@ const SalonInfos = () => {
         "Barber-shop",
         "Salon pour hommes",
         "Salon pour femmes",
-        "Coiffeur mobile homme",
-        "Coiffeuse mobile femme",
+        "Coiffeur/euse mobile homme",
+        "Coiffeur/euse mobile femme",
         "Salon mixte",
     ];
     // handling the change of Salon type change
     const SaveSalonType = (item: string) => {
         // TODO: add backend to save the new preference
     }
+
+    //For mobility checkbox
+    const [isMobilityAllowed, setIsMobilityAllowed] = useState(false); // État de la checkbox
+    const handleCheckboxChange = (event: any) => {
+        setIsMobilityAllowed(event.target.checked);
+    };
+    const [selectedWeekday, setSelectedWeekday] = useState<string>('');
+    const HandleSelectedSalonType = (item: string) => {
+        switch (item) {
+            case 'Barber-shop':
+                setSalonType("Barber-shop");
+                break;
+            case 'Salon pour hommes':
+                setSalonType("Salon pour hommes");
+                break;
+            case 'Salon pour femmes':
+                setSalonType("Salon pour femmes");
+                break;
+            case 'Coiffeur/euse mobile homme':
+                setSalonType("Coiffeur/euse mobile homme");
+                break;
+            case 'Coiffeur/euse mobile femme':
+                setSalonType("Coiffeur/euse mobile femme");
+                break;
+            case 'Salon mixte':
+                setSalonType("Salon mixte'");
+                break;
+        }
+        setSelectedSalonType(item);
+    }
+
+    //For the slider :
+    // Reset the slider values
+    const [zoneSliderRange, setZoneSliderRange] = useState([0, 15]);
+    const handleZoneSliderChange = (event: any, newValue: any) => {
+        setZoneSliderRange(newValue);
+    };
+
     /************************************************************************************************************************** */
 
     return (
@@ -305,24 +349,75 @@ const SalonInfos = () => {
             </div>
 
             {/* Séparation */}
-            <hr className=" mx-16 border-gray-300 h-4" />
+            <hr className="mx-16 border-gray-300 h-4" />
 
-
+            {/* TYPE D ETABLISSEMENT */}
             <h4 className="flex items-center justify- ml-6 mb-8 font-semibold text-lg">
                 Type d'établissement
             </h4>
-            <div className="flex items-center justify-center mb-2"> {/* Increased horizontal spacing */}
-                <DropdownMenu dropdownItems={SalonTypeList} fctToCallOnClick={SaveSalonType} menuName="Type d'établissement" />
+            <div className="flex items-center justify-center mb-2 "> {/* Increased horizontal spacing */}
+                {/* DropDown + Vignette avec image */}
+                <div className="flex items-center">
+                    <DropdownMenu
+                        dropdownItems={SalonTypeList}
+                        fctToCallOnClick={HandleSelectedSalonType}
+                        menuName="Type d'établissement"
+                        selectId={SelectedSalonType}
+                    />
+                    <img
+                        src="chemin_de_votre_image.png"
+                        alt="Icon"
+                        className="w-24 h-24 mr-4 ml-8 bg-stone-300 rounded-lg mb-4 "
+                    />
+                </div>
             </div>
+
 
             {/* Séparation */}
             <hr className=" mx-16 border-gray-300 h-4" />
 
-            <div className="flex">
-                <h4 className="flex items-center justify- ml-6 mb-2 font-semibold text-lg">
+
+            {/* ZONE DE MOBILITE */}
+            <div className="flex flex-col">
+                {/* Titre "Zone de mobilité" */}
+                <h4 className="flex ml-6 mb-2 font-semibold text-lg">
                     Zone de mobilité
                 </h4>
+
+                {/* Checkbox et label "Autoriser la mobilité" */}
+                <div className="flex-1 py-5 pl-5 ml-8 flex items-center"> {/* Utilisez flex items-center ici */}
+                    <div onClick={() => setIsMobilityAllowed(!isMobilityAllowed)} className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded ${isMobilityAllowed
+                        ? ColorsThemeA.ohcVerticalGradient_A
+                        : "bg-[#D6D6D6]"
+                        }`}>
+                        <CheckedIcon />
+                    </div>
+                    <label htmlFor="mobilityZone" className="ml-2 text-sm text-gray-900">
+                        Coiffure à domicile
+                    </label>
+                </div>
+
+                {/* Label supplémentaire qui apparaît si la checkbox est cochée */}
+                {isMobilityAllowed && (
+                    <div className="relative items-center justify-center w-64 mx-auto"> {/* Utilisez mx-auto pour centrer */}
+                        <CustomSlider
+                            theme={ComponentTheme}
+                            value={zoneSliderRange}
+                            onChange={handleZoneSliderChange}
+                            min={0}
+                            max={30}
+                            unit="km"
+                            label="Zone de mobilité" // Fournissez une prop label si votre composant CustomSlider l'attend
+                            valueLabelDisplay="auto"
+                        />
+                    </div>
+                )}
             </div>
+
+
+
+
+
             {/* fin Affichage des adresses dans la vignette principale */}
         </div>
 

@@ -283,7 +283,7 @@ const RolesSettings = () => {
             {/* ADMIN / STAFF TITRE  */}
             <div className="flex justify-center items-center">
                 <button
-                    className={`text-xl font-semibold focus:outline-none mr-32 p-2 ${selectedRole === "Admin"
+                    className={`text-xl font-semibold focus:outline-none mr-32 p-2 hover:bg-stone-200 hover:text-black hover:rounded-lg ${selectedRole === "Admin"
                         ? "bg-stone-700 text-white rounded-md"
                         : "bg-white text-stone-800"
                         }`}
@@ -292,7 +292,7 @@ const RolesSettings = () => {
                     Admin
                 </button>
                 <button
-                    className={`text-xl font-semibold focus:outline-none p-2 ${selectedRole === "Staff"
+                    className={`text-xl font-semibold focus:outline-none p-2 hover:bg-stone-200 hover:text-black hover:rounded-lg ${selectedRole === "Staff"
                         ? "bg-stone-700 text-white rounded-md"
                         : "bg-white text-stone-800"
                         }`}
@@ -303,8 +303,8 @@ const RolesSettings = () => {
 
             </div>
 
-            {/* Separation */}
-            <div className="flex flex-row-reverse p-3 bg-stone-200 mt-4"></div>
+            {/* Séparation */}
+            <hr className=" mx-16 border-gray-300 h-4 mt-4" />
 
             {renderRoleContent()}
         </div>
