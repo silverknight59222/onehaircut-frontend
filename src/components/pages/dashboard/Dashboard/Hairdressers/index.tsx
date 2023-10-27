@@ -14,6 +14,9 @@ import {
 import { Theme_A } from "@/components/utilis/Themes";
 import { EditIcon, LogoCircleFixLeft } from "@/components/utilis/Icons";
 import Footer from "@/components/UI/Footer";
+import DropdownMenu from "@/components/UI/DropDownMenu";
+import { TextField, ThemeProvider } from "@material-ui/core";
+import ComponentTheme from "@/components/UI/ComponentTheme";
 interface AllAvatars {
   man: Avatar[];
   woman: Avatar[];
@@ -56,7 +59,13 @@ const Hairdressers = () => {
   const [error, setError] = useState({
     name: "",
     email: "",
+    password: "",
+    role: ""
   });
+  const WishLength = [
+    "Admin",
+    "Staff",
+  ];
   let totalAvatars: number;
   if (showAvatar === "women") {
     totalAvatars = avatars.woman.length;
@@ -362,11 +371,25 @@ const Hairdressers = () => {
           </div>
           <div className="w-full max-w-[450px]">
             <label className={`${Theme_A.textFont.headerH4}`} htmlFor="emailInput">Pr&eacute;nom </label>
-            <input
+            {/* <input
               placeholder="Prénom coiffeur"
               className={`w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none ${Theme_A.behaviour.fieldFocused_C}`}
               value={hairDresser.name}
               onChange={(e) => onChangeName(e.target.value)}
+            /> */}
+            <TextField
+              id="outlined-basic"
+              label="Prénom coiffeur"
+              variant="outlined"
+              value={hairDresser.name}
+              onChange={(e) => {
+                onChangeName(e.target.value)
+              }}
+              InputProps={{
+                style: {
+                  borderRadius: '12px',
+                },
+              }}
             />
             {error.name && (
               <p className="text-xs text-red-700 ml-3 mt-1">{error.name}*</p>
@@ -374,11 +397,25 @@ const Hairdressers = () => {
           </div>
           <div className="w-full max-w-[450px]">
             <label className={`${Theme_A.textFont.headerH4}`} htmlFor="emailInput">Adresse mail</label>
-            <input
+            {/* <input
               placeholder="Adresse mail"
               className={`w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none ${Theme_A.behaviour.fieldFocused_C}`}
               value={hairDresser.email}
               onChange={(e) => onChangeEmail(e.target.value)}
+            /> */}
+            <TextField
+              id="outlined-basic"
+              label="Adresse mail"
+              variant="outlined"
+              value={hairDresser.email}
+              onChange={(e) => {
+                onChangeEmail(e.target.value)
+              }}
+              InputProps={{
+                style: {
+                  borderRadius: '12px',
+                },
+              }}
             />
             {error.email && (
               <p className="text-xs text-red-700 ml-3 mt-1">{error.email}*</p>
@@ -386,25 +423,40 @@ const Hairdressers = () => {
           </div>
           <div className="w-full max-w-[450px]">
             <label className={`${Theme_A.textFont.headerH4}`} htmlFor="emailInput">Password</label>
-            <input
+            {/* <input
               type="password"
               placeholder="Password"
               className={`w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none ${Theme_A.behaviour.fieldFocused_C}`}
               onChange={(e) => onChangePassword(e.target.value)}
+            /> */}
+            <TextField
+              id="outlined-basic"
+              label="Password"
+              variant="outlined"
+              value=''
+              onChange={(e) => {
+                onChangePassword(e.target.value)
+              }}
+              InputProps={{
+                style: {
+                  borderRadius: '12px',
+                },
+              }}
             />
             {error.password && (
               <p className="text-xs text-red-700 ml-3 mt-1">{error.password}*</p>
             )}
           </div>
           <div className="w-full max-w-[450px]">
-            <label className={`${Theme_A.textFont.headerH4}`} htmlFor="emailInput">Role</label>
 
+            <DropdownMenu dropdownItems={WishLength} fctToCallOnClick={onChangeRole} menuName="Role" />
+            {/* 
             <select
               className={`w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none ${Theme_A.behaviour.fieldFocused_C}`}
               name="role" onChange={(e) => onChangeRole(e.target.value)}>
               <option value="admin">Admin</option>
               <option value="staff">Staff</option>
-            </select>
+            </select> */}
             {error.email && (
               <p className="text-xs text-red-700 ml-3 mt-1">{error.role}*</p>
             )}

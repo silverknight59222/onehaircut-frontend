@@ -331,8 +331,8 @@ const SalonInfos = () => {
                 </div>
                 <div className="flex-1 py-5 pl-1 overflow-hidden ml-4">
                     <ul>
-                        <li className="text-sm mb-2 text-gray-400 uppercase font-semibold mr-2">
-                            Adresse de facturation
+                        <li className="text-sm mb-2 text-gray-400 uppercase font-semibold">
+                            Adresse de <br /> facturation
                         </li>
                         {renderListItem("Nom", "Rick Astley")}
                         {renderListItem("Adresse", "Rickrolled 11")}
@@ -341,7 +341,7 @@ const SalonInfos = () => {
                     </ul>
                 </div>
                 <div
-                    className={`${Theme_A.servicesCards.modifyButton} mr-4 shadow-md  transition-transform duration-300 transform hover:scale-125`}
+                    className={`${Theme_A.servicesCards.modifyButton} mr-8 shadow-md  transition-transform duration-300 transform hover:scale-125`}
                     onClick={openModal}
                 >
                     <EditIcon />
