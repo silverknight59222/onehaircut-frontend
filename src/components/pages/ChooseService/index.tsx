@@ -56,11 +56,18 @@ const ServiceChoose = () => {
     const dropdownRef = React.useRef() as React.MutableRefObject<HTMLInputElement>
     const temp = getLocalStorage("haircut")
     const haircut = temp ? JSON.parse(String(temp)) : null
-    const service=getLocalStorage('ServiceIds')
-    const servicesData=service ? JSON.parse(service) : null
 
     // Obtention de tous les services.
     const getAllServices = () => {
+        const serviceIds = getLocalStorage('ServiceIds')
+        console.log(serviceIds)
+        if (serviceIds) {
+            const serviceIdsList = [];
+            JSON.parse(serviceIds).forEach(service => {
+                serviceIdsList.push(String(service.id))
+            });
+            setSelectedService(serviceIdsList)
+        }
         setIsLoading(true);
         dashboard.getServicesByHaircut()
             .then((res) => {
@@ -228,7 +235,7 @@ const ServiceChoose = () => {
                 <div className='flex flex-col items-center'>
                     <div className='w-full flex flex-col md:flex-row items-center justify-between mt-14'>
                         <div className='flex flex-col sm:flex-row items-center gap-5 mb-5 md:mb-0'>
-                            <p className='text-stone-600 text-lg font-semibold bg-[#F7F7F7] shadow-inner rounded-lg px-7 py-3'>{haircut.name}</p>
+                            { haircut && <p className='text-stone-600 text-lg font-semibold bg-[#F7F7F7] shadow-inner rounded-lg px-7 py-3'>{haircut.name}</p> }
                             {selectedService.length ? (
                                 <p className='text-xl text-stone-600 bg-[#F7F7F7] shadow-inner rounded-lg px-7 py-3'>
                                     <span className='font-semibold'>
@@ -240,7 +247,7 @@ const ServiceChoose = () => {
                                 <p></p>
                             )}
                         </div>
-                        <button disabled={!haircut && !selectedService.length} onClick={onContinue} className={`flex items-center justify-center text-lg text-white font-medium w-full md:w-52 h-14 rounded-xl px-4 ${Theme_A.button.medLargeGradientButton}`}>Continue</button>
+                        {(haircut || selectedService.length != 0) && <button onClick={onContinue} className={`flex items-center justify-center text-lg text-white font-medium w-full md:w-52 h-14 rounded-xl px-4 ${Theme_A.button.medLargeGradientButton}`}>Continue</button>}
                     </div>
                     <div className='mt-8 mb-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-x-9 gap-y-5 '>
                         {showServices().map((service, index) => {
