@@ -153,6 +153,9 @@ const dashboard = {
   sendMessage: async ( param: MessageParam) => {
     return await request.post<any>(`send_message`, param);
   },
+  sendWhatsapp: async (data:any) => {
+    return await request.post<any>(`send_whatsapp`, data);
+  },
 };
 
 export { dashboard };

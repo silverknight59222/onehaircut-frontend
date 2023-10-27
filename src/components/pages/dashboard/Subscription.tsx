@@ -16,6 +16,9 @@ import Footer from "@/components/UI/Footer";
 import BaseModal from "@/components/UI/BaseModal";
 import { useRouter } from "next/navigation";
 import PaymentModal from "./PaymentModal";
+import { dashboard } from "@/api/dashboard";
+// import Twilio from 'twilio';
+import * as twilio from 'twilio';
 
 const Subscription = () => {
   const router = useRouter();
@@ -42,7 +45,31 @@ const Subscription = () => {
   //       <PaymentModal handleClickPay={handleClickPay} />
   //   </div >;
 
-  const handleClickPro = () => {
+  const handleClickPro = async () => {
+    const accountSid = 'AC99a58b7c8d4cdeab1c149da8f1d02afe';
+    const authToken = '383a31d3080accbe3a0c3f992eeb6854';
+    const data = {
+      accountSid : accountSid,
+      authToken : authToken
+    }
+    // const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+    await dashboard.sendWhatsapp(data).then((resp) => {
+      console.log(resp.data.data);
+    }); 
+
+    
+    // const client = twilio(accountSid, authToken);
+    // const client = require('twilio')(accountSid, authToken);
+
+
+    // client.messages.create({
+    //   body: 'Booking Success!',
+    //   from: 'whatsapp:+14155238886', // Your Twilio WhatsApp-enabled phone number
+    //   to: 'whatsapp:+1234567890', // The recipient's WhatsApp number
+    // })
+    // .then(message => console.log(message.sid))
+    // .catch(error => console.error(error));
+
     setIsModal(true);
   }
   return (
