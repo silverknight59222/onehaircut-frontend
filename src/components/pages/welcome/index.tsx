@@ -6,7 +6,7 @@ import { dashboard } from "@/api/dashboard";
 import userLoader from "@/hooks/useLoader";
 import { Haircut } from "@/types";
 import Navbar from "@/components/shared/Navbar";
-import { getLocalStorage, setLocalStorage } from "@/api/storage";
+import { getLocalStorage, setLocalStorage, removeFromLocalStorage } from "@/api/storage";
 import { useRouter } from "next/navigation";
 import useSnackbar from "@/hooks/useSnackbar";
 import ScrollToTopButton from "@/components/utilis/Helper";
@@ -266,6 +266,11 @@ const Welcome = () => {
   }
 
   useEffect(() => {
+    removeFromLocalStorage('ServiceIds')
+    removeFromLocalStorage('haircut') // reset hair cut when user land on welcome page every time
+  }, [])
+
+  useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -316,7 +321,6 @@ const Welcome = () => {
           <div
             className={`${Theme_A.button.bigWhiteGreyButton} shadow-sm hover:shadow-md cursor-pointer `}
             onClick={() => {
-              onServiceOnlyClick();
               router.push('/services');
             }}
           >
