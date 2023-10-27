@@ -29,6 +29,12 @@ const client={
     getSavePrefrences: async () => {
         return await request.get(`/user/get_saved_prefrences`);
     },
+    getUserProfile: async () => {
+        return await request.get(`/user_profile`);
+    },
+    updateUserProfile: async (params: any) => {
+        return await request.post(`/update_user_profile`, params);
+    },
 }
 const user_api =  {
     getUsers: async () => {
