@@ -54,7 +54,7 @@ const SalonChoice = () => {
     const filteredCityHandler = () => {
         const filteredSalons = salons.filter((salon) => {
             const cityNameMatches = citySearch
-                ? salon.city_name.toLowerCase().includes(citySearch.toLowerCase())
+                ? salon.address.city.toLowerCase().includes(citySearch.toLowerCase())
                 : true; // If citySearch is empty, consider it as a match
 
             const salonNameMatches = nameSearch
@@ -86,25 +86,27 @@ const SalonChoice = () => {
             serviceIds.push(service.id)
         })
         // Code pour obtenir des informations sur les salons depuis l'API
-        setIsLoading(true);
-        if (haircut) {
-            const data = {
-                haircut_id: haircut.id,
-                servicesIDs: serviceIds
-            }
-            await dashboard.getSalonsByHaircut(data)
-                .then((res) => {
-                    setIsLoading(false);
-                    if (res.data.data.length > 0) {
-                        setSalons(res.data.data);
-                        setFilteredSalons(res.data.data);
-                    }
-                })
-                .catch(error => {
-                    setIsLoading(false);
-                    console.log(error)
-                })
+        // setIsLoading(true);
+
+        let data = {
+            servicesIds: serviceIds,
+            haircut_id: null
         }
+        if (haircut) {
+            data['haircut_id'] = haircut.id
+        }
+        await dashboard.getSalonsByHaircut(data)
+            .then((res) => {
+                setIsLoading(false);
+                if (res.data.data.length > 0) {
+                    setSalons(res.data.data);
+                    setFilteredSalons(res.data.data);
+                }
+            })
+            .catch(error => {
+                setIsLoading(false);
+                console.log(error)
+            })
     }
     // Fonction pour obtenir la liste de souhaits des salons
     const getSalonsWishlist = () => {
@@ -180,11 +182,11 @@ const SalonChoice = () => {
     }, [])
 
     // Autre appel useEffect basé sur l'état des salons
-    useEffect(() => {
-        if (!isLoggedIn) {
-            getSalonsWishlist()
-        }
-    }, [salons])
+    // useEffect(() => {
+    //     if (!isLoggedIn) {
+    //         getSalonsWishlist()
+    //     }
+    // }, [salons])
 
     useEffect(() => {
         filteredCityHandler()
@@ -406,7 +408,7 @@ const SalonChoice = () => {
                                                         stroke={wishlist.includes(String(salon.id)) ? "#FFFFFF" : ""} />
                                                 </div>}
                                             <Image
-                                                src={salon.salon_images.length && salon.salon_images[index].is_cover ? salon.salon_images[index].image.includes('api-server') ? salon.salon_images[index].image : `https://api-server.onehaircut.com/public${salon.salon_images[index].image}` : salon.logo.includes('api-server') ? salon.logo : `https://api-server.onehaircut.com/public${salon.logo}`}
+                                                src={salon.salon_cover_image ? `https://api-server.onehaircut.com/public${salon.salon_cover_image.image}` :  `https://api-server.onehaircut.com/public${salon.logo}`}
                                                 fill={true}
                                                 alt="image"
                                                 style={{ objectFit: 'cover', height: '100%', width: '100%', display: 'block' }}
@@ -422,7 +424,7 @@ const SalonChoice = () => {
                                         </div>
 
                                         {/* Évaluation et nombre d'avis */}
-                                        <div className='flex items-center gap-1 text-xs text-[#7B7B7B] px-3 pt-1'>
+                                        <div className='flex items-center text-xs text-[#7B7B7B] px-3 pt-1'>
                                             <StarRatings
                                                 rating={salon.rating}
                                                 starRatedColor="#FEDF10"
@@ -432,7 +434,7 @@ const SalonChoice = () => {
                                                 name="rating"
                                             />
                                             <p className='border-r border-[#A7A7A7] pr-1'>{salon.rating}</p>
-                                            <p>348 avis</p>
+                                            <p>{salon.ratings_count} d'avis</p>
                                         </div>
                                     </div>
                                 </div>
