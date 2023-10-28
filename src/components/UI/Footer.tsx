@@ -9,9 +9,9 @@ const Footer: React.FC = () => {
         <div className="flex space-x-4">
           <span>© 2022 Balextrade LLC Tous droits réserv&eacute;s.</span>
           <span className="mx-2">•</span>
-          <a href="#lien1" className="font-semibold hover:underline">Confidentialit&eacute;</a>
+          <a onClick={() => window.open('/confidentiality')} className="font-semibold hover:underline">Confidentialit&eacute;</a>
           <span className="mx-2">•</span>
-          <a href="#lien2" className="font-semibold hover:underline">Conditions g&eacute;n&eacute;rales</a>
+          <a onClick={() => window.open('/terms')} className="font-semibold hover:underline">Conditions g&eacute;n&eacute;rales</a>
           <span className="mx-2">•</span>
           <a href="#lien3" className="font-semibold hover:underline">Mentions l&eacute;gales</a>
         </div>
