@@ -110,7 +110,7 @@ const Account = () => {
     };
 
     const onSubmitPassword = async () => {
-        if (passwordField.new != passwordField.new2) { // TODO modify
+        if (passwordField.new != passwordField.new2) {
             setError((prev) => {
                 return { ...prev, text: "Nouveaux mots de passe différents" };
             });
@@ -123,6 +123,25 @@ const Account = () => {
             return;
         }
         else {
+            await client.resetPassword({
+                old_password: passwordField.old,
+                new_password: passwordField.new,
+                repeat_password: passwordField.new2,
+            })
+                .then(resp => {
+                    console.log(resp)
+                    setIsModalPswrd(false);
+                    showSnackbar("success", resp.data.message);
+                    passwordField.old = "";
+                    passwordField.new = "";
+                    passwordField.new2 = "";
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+                .finally(() => {
+                    setIsLoading(false);
+                })
             setError((prev) => {
                 return { ...prev, text: "" };
             });

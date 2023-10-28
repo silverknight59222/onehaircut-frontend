@@ -35,6 +35,9 @@ const client={
     updateUserProfile: async (params: any) => {
         return await request.post(`/update_user_profile`, params);
     },
+    resetPassword: async (params: any) => {
+        return await request.post(`/client_password_reset`, params);
+    },
 }
 const user_api =  {
     getUsers: async () => {
