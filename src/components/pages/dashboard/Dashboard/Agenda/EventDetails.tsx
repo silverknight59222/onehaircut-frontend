@@ -28,7 +28,7 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
   const [message, setMessage] = useState("");
   const user = getLocalStorage("user");
   const userData = user ? JSON.parse(user) : null
-  const [chats,setChats]=useState<Chat[]>([])
+  const [chats, setChats] = useState<Chat[]>([])
   // Reprise du nom du client et du coiffeur
   const [nomClient, nomCoiffeur] = props.event.title.split(" - ");
 
@@ -71,14 +71,14 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     getChat()
-  },[])
+  }, [])
   return (
     <div className="relative bg-white rounded-xl px-5 pb-5 shadow-lg mt-10 bg- modal">
       {/* Icône de fermeture */}
       <div
-        className={`absolute -right-3 -top-7 cursor-pointer my-3 rounded-lg ${ColorsThemeA.ohcVerticalGradient_A} shadow-md flex items-center justify-center`}
+        className={`absolute -right-3 -top-7 cursor-pointer my-3 rounded-lg ${ColorsThemeA.ohcVerticalGradient_A} shadow-md flex items-center justify-center hover:scale-90 transition duration-300`}
         onClick={() => props.setModal(undefined)}
         style={{ width: '35px', height: '35px' }} // Augmentez ces valeurs pour agrandir le carré
       >
@@ -132,11 +132,11 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
           {/* Conversation */}
           <div className=" border border-gray-300 rounded-xl p-2 rounded-bl-lg overflow-auto h-40 bg-stone-100 shadow-inner mb-2 ">
             {chats.map((msg, index) => (
-              <div key={`msg-${index}`} className={`${msg.by==='professional' ? 'text-right' : 'text-left '} mb-2`}>
+              <div key={`msg-${index}`} className={`${msg.by === 'professional' ? 'text-right' : 'text-left '} mb-2`}>
                 <div
-                  className={`inline-block p-2 text-xs outline-1 ${msg.by==='professional' ? 'rounded-l-lg rounded-b-lg outline outline-orange-500 bg-stone-100 ' : 'rounded-r-lg rounded-b-lg outline outline-stone-400 bg-white'}`}
+                  className={`inline-block p-2 text-xs outline-1 ${msg.by === 'professional' ? 'rounded-l-lg rounded-b-lg outline outline-orange-500 bg-stone-100 ' : 'rounded-r-lg rounded-b-lg outline outline-stone-400 bg-white'}`}
                 >
-                  <strong>{msg.by==='professional' ? 'Vous:' : 'Client:'}</strong> {msg.message}
+                  <strong>{msg.by === 'professional' ? 'Vous:' : 'Client:'}</strong> {msg.message}
                 </div>
               </div>
             ))}
@@ -149,10 +149,10 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Écrire un message"
-              className="flex-grow border border-gray-300 rounded-xl p-2 min-w-0 focus:outline-none focus:border-red-500 shadow-inner"
+              className="flex-grow border border-gray-300 rounded-xl p-2 min-w-0 focus:outline-none focus:border-red-500 shadow-inner "
 
             />
-            <button type="button" onClick={sendMessage} className="transform hover:scale-105 " > <ChatSendIcon /> </button>
+            <button type="button" onClick={sendMessage} className="hover:scale-125 transition duration-300 " > <ChatSendIcon /> </button>
           </div>
         </div>
       </div>
