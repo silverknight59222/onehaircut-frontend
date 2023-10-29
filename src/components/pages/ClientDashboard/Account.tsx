@@ -57,6 +57,7 @@ const Account = () => {
     const [isModalNotifReminders, setIsModalNotifReminders] = useState(false);
     // Modal for messages notification
     const [isModalNotifMsg, setIsModalNotifMsg] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     // function to hadnle the click on the modify 
     const handleModifierClick = (item: infoInterface) => {
@@ -419,8 +420,7 @@ const Account = () => {
         // set the text to be displayed
         notifications[index].desc = text
     }
-
-    const [isLoading, setIsLoading] = useState(false);
+    
 
     ////////////////////////////////////////////////////
     ///////////////////// Reminder Notification  
@@ -439,9 +439,12 @@ const Account = () => {
             whatsapp: NotifReminderWhatsapp
         })
             .then(resp => {
-                displayNotif(resp.data.account_activity.emails, resp.data.account_activity.whatsapp, 0) // update text to be displayed                
-                displayNotif(resp.data.reminders.emails, resp.data.reminders.whatsapp, 1) // update text to be displayed
-                displayNotif(resp.data.messages.emails, resp.data.messages.whatsapp, 2) // update text to be displayed
+                if (resp.data.reminders) {
+                    displayNotif(resp.data.reminders.emails, resp.data.reminders.whatsapp, 0) // update text to be displayed
+                }
+                if (resp.data.messages) {
+                    displayNotif(resp.data.messages.emails, resp.data.messages.whatsapp, 1) // update text to be displayed
+                }
                 setShowItem(notifications);
             })
             .catch(err => {
@@ -525,9 +528,12 @@ const Account = () => {
             whatsapp: NotifMsgWhatsapp
         })
             .then(resp => {
-                displayNotif(resp.data.account_activity.emails, resp.data.account_activity.whatsapp, 0) // update text to be displayed                
-                displayNotif(resp.data.reminders.emails, resp.data.reminders.whatsapp, 1) // update text to be displayed
-                displayNotif(resp.data.messages.emails, resp.data.messages.whatsapp, 2) // update text to be displayed
+                if (resp.data.reminders) {
+                    displayNotif(resp.data.reminders.emails, resp.data.reminders.whatsapp, 0) // update text to be displayed
+                }
+                if (resp.data.messages) {
+                    displayNotif(resp.data.messages.emails, resp.data.messages.whatsapp, 1) // update text to be displayed
+                }
                 setShowItem(notifications);
             })
             .catch(err => {
@@ -676,14 +682,16 @@ const Account = () => {
     const fetchPrefrences = async () => {
         const resp = await client.getSavePrefrences()
 
-        setPNotifReminderEmail(resp.data.reminders.emails)
-        setPNotifReminderWhatsapp(resp.data.reminders.whatsapp)
-        setPNotifMsgEmail(resp.data.messages.emails)
-        setPNotifMsgWhatsapp(resp.data.messages.whatsapp)
-
-        displayNotif(resp.data.account_activity.emails, resp.data.account_activity.whatsapp, 0) // update text to be displayed                
-        displayNotif(resp.data.reminders.emails, resp.data.reminders.whatsapp, 1) // update text to be displayed
-        displayNotif(resp.data.messages.emails, resp.data.messages.whatsapp, 2) // update text to be displayed
+        if (resp.data.reminders) {
+            setPNotifReminderEmail(resp.data.reminders.emails)
+            setPNotifReminderWhatsapp(resp.data.reminders.whatsapp)
+            displayNotif(resp.data.reminders.emails, resp.data.reminders.whatsapp, 0) // update text to be displayed
+        }
+        if (resp.data.messages) {
+            setPNotifMsgEmail(resp.data.messages.emails)
+            setPNotifMsgWhatsapp(resp.data.messages.whatsapp)
+            displayNotif(resp.data.messages.emails, resp.data.messages.whatsapp, 1) // update text to be displayed
+        }
         setShowItem(notifications);
     }
 

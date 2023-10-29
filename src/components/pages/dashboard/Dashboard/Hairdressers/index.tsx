@@ -14,6 +14,13 @@ import {
 import { Theme_A } from "@/components/utilis/Themes";
 import { EditIcon, LogoCircleFixLeft } from "@/components/utilis/Icons";
 import Footer from "@/components/UI/Footer";
+import DropdownMenu from "@/components/UI/DropDownMenu";
+import { TextField, ThemeProvider } from "@material-ui/core";
+import ComponentTheme from "@/components/UI/ComponentTheme";
+import BaseModal from "@/components/UI/BaseModal";
+import { ColorsThemeA } from "@/components/utilis/Themes";
+
+
 interface AllAvatars {
   man: Avatar[];
   woman: Avatar[];
@@ -56,7 +63,17 @@ const Hairdressers = () => {
   const [error, setError] = useState({
     name: "",
     email: "",
+    password: "",
+    role: "",
+    text: "",
   });
+  let [errorPop, setErrorPop] = useState("")
+
+
+  const RoleList = [
+    "Admin",
+    "Staff",
+  ];
   let totalAvatars: number;
   if (showAvatar === "women") {
     totalAvatars = avatars.woman.length;
@@ -349,6 +366,68 @@ const Hairdressers = () => {
     getAllAvatars();
   }, []);
 
+
+  // To open the modal when clic on EDIT 
+  const [isModal, setIsModal] = useState(false);
+
+  const openModal = () => {
+    setIsModal(true);
+  };
+  const closeModal = () => {
+    setIsModal(false);
+  };
+
+  // design choices:
+  const inputFieldsDesign = `w-full p-3 placeholder:text-[#959595] placeholder:text-base ${ColorsThemeA.ohcBorder} ${Theme_A.behaviour.fieldFocused_B}${Theme_A.fields.inputField}`
+  const inputFieldsDesignNoW = `border-2 border-red-500 p-3 placeholder:text-[#959595] placeholder:text-base ${Theme_A.behaviour.fieldFocused_B}${Theme_A.fields.inputField}`
+
+  ////////////////////////////////////////////////////
+  ///////////////////// PASSWORD 
+  ////////////////////////////////////////////////////
+  const [passwordField, renewPassword] = useState({
+    old: "",
+    new: "",
+    new2: "",
+  });
+  const setOldPassword = (value: string) => {
+    renewPassword((prev) => {
+      return { ...prev, old: value };
+    });
+  };
+  const setNewPassword = (value: string) => {
+    renewPassword((prev) => {
+      return { ...prev, new: value };
+    });
+  };
+  const setNew2Password = (value: string) => {
+    renewPassword((prev) => {
+      return { ...prev, new2: value };
+    });
+  };
+
+
+  const onSubmitPassword = async () => {
+    if (passwordField.new != passwordField.new2) { // TODO modify
+      setError((prev) => {
+        return { ...prev, text: "Nouveaux mots de passe différents" };
+      });
+      return;
+    }
+    else if (passwordField.new.length < 8) {
+      setError((prev) => {
+        return { ...prev, text: "Nouveaux mots de passe trop petits" };
+      });
+      return;
+    }
+    else {
+      setError((prev) => {
+        return { ...prev, text: "" };
+      });
+    }
+  }
+
+
+
   return (
     <>
       {isLoading && loadingView()}
@@ -360,55 +439,173 @@ const Hairdressers = () => {
           <div className={`${Theme_A.textFont.headerH2} underline`}>
             Ajouter un nouveau coiffeur
           </div>
-          <div className="w-full max-w-[450px]">
-            <label className={`${Theme_A.textFont.headerH4}`} htmlFor="emailInput">Pr&eacute;nom </label>
-            <input
-              placeholder="Prénom coiffeur"
-              className={`w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none ${Theme_A.behaviour.fieldFocused_C}`}
-              value={hairDresser.name}
-              onChange={(e) => onChangeName(e.target.value)}
-            />
-            {error.name && (
-              <p className="text-xs text-red-700 ml-3 mt-1">{error.name}*</p>
-            )}
-          </div>
-          <div className="w-full max-w-[450px]">
-            <label className={`${Theme_A.textFont.headerH4}`} htmlFor="emailInput">Adresse mail</label>
-            <input
-              placeholder="Adresse mail"
-              className={`w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none ${Theme_A.behaviour.fieldFocused_C}`}
-              value={hairDresser.email}
-              onChange={(e) => onChangeEmail(e.target.value)}
-            />
-            {error.email && (
-              <p className="text-xs text-red-700 ml-3 mt-1">{error.email}*</p>
-            )}
-          </div>
-          <div className="w-full max-w-[450px]">
-            <label className={`${Theme_A.textFont.headerH4}`} htmlFor="emailInput">Password</label>
-            <input
-              type="password"
-              placeholder="Password"
-              className={`w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none ${Theme_A.behaviour.fieldFocused_C}`}
-              onChange={(e) => onChangePassword(e.target.value)}
-            />
-            {error.password && (
-              <p className="text-xs text-red-700 ml-3 mt-1">{error.password}*</p>
-            )}
-          </div>
-          <div className="w-full max-w-[450px]">
-            <label className={`${Theme_A.textFont.headerH4}`} htmlFor="emailInput">Role</label>
 
+          <div className="flex items-center justify-center">
+            {/* PRENOM DU COIFFEUR */}
+            <div className="w-auto max-w-[450px] mr-8">
+              <TextField
+                id="outlined-basic"
+                label="Prénom coiffeur"
+                variant="outlined"
+                value={hairDresser.name}
+                onChange={(e) => {
+                  onChangeName(e.target.value)
+                }}
+                InputProps={{
+                  style: {
+                    borderRadius: '12px',
+                  },
+                }}
+              />
+              {error.name && (
+                <p className="text-xs text-red-700 ml-3 mt-1">{error.name}*</p>
+              )}
+            </div>
+
+
+            {/* ADRESSE EMAIL  */}
+            <div className="w-auto max-w-[450px]">
+              <TextField
+                id="outlined-basic"
+                label="Adresse mail"
+                variant="outlined"
+                value={hairDresser.email}
+                onChange={(e) => {
+                  onChangeEmail(e.target.value)
+                }}
+                InputProps={{
+                  style: {
+                    borderRadius: '12px',
+                  },
+                }}
+              />
+              {error.email && (
+                <p className="text-xs text-red-700 ml-3 mt-1">{error.email}*</p>
+              )}
+            </div>
+          </div>
+
+
+          {isModal && (
+            <BaseModal close={closeModal}>
+              {/* Contenu du modal */}
+              <div className="relative z-1000">
+                <div className="flex flex-col items-center justify-center gap-4">
+                  <p className="text-xl font-semibold text-black text-center">Modification du mot de passe</p>
+
+
+                  {error && (
+                    <p className={`${Theme_A.checkers.errorText}`}>
+                      {error.text}
+                    </p>
+                  )}
+                  <TextField className={`${inputFieldsDesign} mt-4`}
+                    id="oldPswrd"
+                    label="Ancien mot de passe"
+                    variant="outlined"
+                    value={passwordField.old}
+                    onChange={(e) => setOldPassword(e.target.value)}
+                    InputProps={{
+                      style: {
+                        borderRadius: '12px',
+                      },
+                    }}
+                  />
+                  <TextField className={`${inputFieldsDesign}`}
+                    id="NewPswrd1"
+                    label="Nouveau mot de passe"
+                    variant="outlined"
+                    value={passwordField.new}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    InputProps={{
+                      style: {
+                        borderRadius: '12px',
+                      },
+                    }}
+                  />
+                  <TextField className={`${inputFieldsDesign}`}
+                    id="NewPswrd2"
+                    label="Répéter nouveau mot de passe"
+                    variant="outlined"
+                    value={passwordField.new2}
+                    onChange={(e) => setNew2Password(e.target.value)}
+                    InputProps={{
+                      style: {
+                        borderRadius: '12px',
+                      },
+                    }}
+                  />
+                </div>
+                <div className="mt-8 flex gap-4 items-center justify-center w-full">
+                  <button
+                    className={`${Theme_A.button.medWhiteColoredButton}`}
+                    onClick={() => closeModal()}
+                  >
+                    Annuler
+                  </button>
+                  <button
+                    className={`${Theme_A.button.mediumGradientButton}`}
+                    onClick={() => onSubmitPassword()}
+                  >
+                    Actualiser
+                  </button>
+                </div>
+              </div>
+            </BaseModal>
+          )}
+
+          <div className="flex items-center justify-center">
+            {/* MOT DE PASSE */}
+            <div className="w-auto max-w-[450px]">
+              <TextField
+                disabled
+                id="outlined-basic"
+                label="Mot de passe"
+                variant="outlined"
+                value=''
+                onChange={(e) => {
+                  onChangePassword(e.target.value)
+                }}
+                InputProps={{
+                  style: {
+                    borderRadius: '12px',
+                  },
+                }}
+              />
+              {error.password && (
+                <p className="text-xs text-red-700 ml-3 mt-1">{error.password}*</p>
+              )}
+            </div>
+
+            {/* Edit PASSOWRD */}
+            <button
+              className="text-sm ml-6 shadow-sm text-white p-3 bg-stone-700  border-stone-300 rounded-lg cursor-pointer hover:scale-105 hover:shadow-md transition duration-300"
+              onClick={openModal} // Ouvrir le modal lorsque le bouton "Edit" est cliqué
+            >
+              Edit
+            </button>
+          </div>
+
+
+
+          {/* ROLE */}
+          <div className="w-auto max-w-[450px]">
+            <DropdownMenu dropdownItems={RoleList} fctToCallOnClick={onChangeRole} menuName="Role" />
+            {/* 
             <select
               className={`w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none ${Theme_A.behaviour.fieldFocused_C}`}
               name="role" onChange={(e) => onChangeRole(e.target.value)}>
               <option value="admin">Admin</option>
               <option value="staff">Staff</option>
-            </select>
+            </select> */}
             {error.email && (
               <p className="text-xs text-red-700 ml-3 mt-1">{error.role}*</p>
             )}
           </div>
+
+
+
+          {/* CHARGEMENT IMAGE */}
           <input
             type="file"
             ref={hiddenFileInput}
@@ -482,19 +679,19 @@ const Hairdressers = () => {
               Cr&eacute;er le profil
             </button>
           ) : (
-            <div className="flex items-center gap-3">
+            <div className="flex items-center justify-center gap-3 mb-2">
               <button
                 className={`${Theme_A.button.mediumGradientButton} py-3`}
                 onClick={() => addDresser(true)}
               >
-                Update
+                Mettre à jour
               </button>
 
               <button
                 onClick={onClear}
                 className={`${Theme_A.button.medWhiteColoredButton} py-3`}
               >
-                Clear
+                Annuler
               </button>
               <button
                 onClick={onDeleteHairDresser}
@@ -505,6 +702,12 @@ const Hairdressers = () => {
             </div>
           )}
         </div>
+
+
+
+        {/* SECTION DROITE */}
+
+        {/* COIFFEUR DISPONIBLE */}
         <div className="h-[940px] w-full xl:w-2/5 overflow-auto flex flex-col items-center justify-start gap-8 bg-lightGrey rounded-3xl p-4 md:p-12">
           <div className={`${Theme_A.textFont.headerH2} underline`}>
             Coiffeur(s)/-euse(s) disponible(s)
