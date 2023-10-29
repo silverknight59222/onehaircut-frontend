@@ -194,16 +194,16 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
       router.push(route)
     }
   }
-  const applyPermissions = (menus:any) => {
+  const applyPermissions = (menus: any) => {
     const temp = getLocalStorage("user");
     const user = temp ? JSON.parse(temp) : null;
-    if(user.permissions) {
-      menus.forEach((m:any, k:number) => {
-        if(user.permissions.indexOf(m.title) == -1) {
+    if (user.permissions) {
+      menus.forEach((m: any, k: number) => {
+        if (user.permissions.indexOf(m.title) == -1) {
           // delete menus[k];
-        } 
+        }
       });
-    }    
+    }
   }
   // Use effect to fetch data on component mount
   useEffect(() => {
@@ -293,12 +293,12 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
   const SetCurrentDescription = () => {
 
   }
-  const handleClick = async() => {
+  const handleClick = async () => {
     closeModal();
     SetCurrentLogo();
     SetCurrentDescription();
     console.log(image, textDescription);
-    const response = await user_api.updateSaloonInformation({'description': textDescription, 'logo_base64': image});
+    const response = await user_api.updateSaloonInformation({ 'description': textDescription, 'logo_base64': image });
     console.log(response.data.data.hair_salon.logo);
     setImageUrl(response.data.data.hair_salon.logo);
     // Ajoutez d'autres fonctions ici si nécessaire...
@@ -346,7 +346,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
                 <img
                   src={imageUrl}
                   alt="profile"
-                  className="rounded-full absolute inset-0 m-auto shadow-md transform transition-transform duration-300 group-hover:scale-90 hover:shadow-inner border-2 border-stone-700"
+                  className="rounded-full absolute inset-0 m-auto shadow-md transform transition-transform duration-300 group-hover:scale-90 hover:shadow-inner border-2 border-stone-700 h-24 w-24"
                 />
               </div>
 

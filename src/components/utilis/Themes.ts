@@ -76,7 +76,8 @@ export const Theme_A = {
   },
   fields: {
     configurationField: "w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] focus:ring-2 focus:bg-transparent focus:ring-red-300 focus:border-stone-200 ",
-    inputField: `outline-none rounded-lg shadow-inner`
+    inputField: `outline-none rounded-lg shadow-inner`,
+    inputField2: "text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
   },
   footer: {
     mainFooter:
