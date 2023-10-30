@@ -142,22 +142,38 @@ const BookSalon = () => {
             <Image src="/assets/salon9.png" alt="" fill={true} />
           </div>
           <div>
-            <p className="w-80 lg:w-[400px] xl:w-[500px] text-3xl font-bold text-black border-b-2 border-[#696969] pb-3">
-              Golden Barber
-            </p>
-            <div className="flex flex-col gap-3 text-xl font-medium text-black mt-6">
-              {items.map((item, index) => {
-                return (
-                  <div
-                    key={index}
+            {salon && <p className="w-80 lg:w-[400px] xl:w-[500px] text-3xl font-bold text-black border-b-2 border-[#696969] pb-3">
+              {salon.name}
+            </p>}
+              {salon && <div className="flex flex-col gap-3 text-xl font-medium text-black mt-6">
+                <div className="flex flex-col gap-3 text-xl font-medium text-black mt-6">
+                  {haircutData && <div
                     className="flex items-center gap-2 text-black text-xl"
                   >
-                    <p className="font-semibold">{item.name}: </p>
-                    <p>{item.desc}</p>
+                    <p className="font-semibold">Type de coiffure: </p>
+                    <p>{haircutData.name}</p>
+                  </div>}
+                  <div
+                    className="flex items-center gap-2 text-black text-xl"
+                  >
+
+                    <p className="font-semibold">Couleur: </p>
+                    <p>Blond</p>
                   </div>
-                );
-              })}
-            </div>
+                  <div
+                    className="flex items-center gap-2 text-black text-xl"
+                  >
+                    <p className="font-semibold">Durée: </p>
+                    <p>{salon.total_duration} mins</p>
+                  </div>
+                  <div
+                    className="flex items-center gap-2 text-black text-xl"
+                  >
+                    <p className="font-semibold">Lieu: </p>
+                    <p>à domicile</p>
+                  </div>
+                </div>
+            </div>}
             <button className="w-80 h-16 text-xl text-white font-semibold mt-4 bg-background-gradient rounded-2xl">
               Revenir au choix de coiffure
             </button>
