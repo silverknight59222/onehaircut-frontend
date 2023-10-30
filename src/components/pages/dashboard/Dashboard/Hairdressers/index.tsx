@@ -519,7 +519,7 @@ const Hairdressers = () => {
           </div>
           <div className="w-full max-w-[450px]">
             <DropdownMenu
-              dropdownItems={WishLength}
+              dropdownItems={RoleList}
               menuName="Role"
               fctToCallOnClick={onChangeRole}
               labelId='role'
