@@ -509,7 +509,7 @@ const Account = () => {
         <div>
             <div className="flex flex-col items-center justify-center gap-4">
                 <p className="text-xl font-semibold text-black text-center">
-                    Notifications concernants votre compte sont émises par</p>
+                    Préférences de notifications de rappels</p>
                 <div className="flex flex-row items-start gap-3">
                     <div
                         onClick={() => setPNotifReminderEmail(!NotifReminderEmail)}
@@ -596,7 +596,7 @@ const Account = () => {
         <div>
             <div className="flex flex-col items-center justify-center gap-4">
                 <p className="text-xl font-semibold text-black text-center">
-                    Notifications concernants votre compte sont émises par</p>
+                    Préférences de notifications de messages</p>
                 <div className="flex flex-row items-start gap-3">
                     <div
                         onClick={() => setPNotifMsgEmail(!NotifMsgEmail)}
