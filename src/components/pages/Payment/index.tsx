@@ -130,14 +130,12 @@ const Index = () => {
       hair_salon_id: Number(salonData.id),
       slot_ids:slotData.slot.map((prevSlot:any) => prevSlot.id),
       hair_dresser_id: slotData.hairDresser.id,
-      amount: haircutPrize ? haircutPrize + servicePrice :"",
-      salon_haircut_id: haircutData.id,
-      services: serviceIds,
+      amount: salonData.final_price,
+      salon_haircut_id: salonData.haircut ? salonData.haircut.id : null,
+      services: salonData.services || [],
       date:formattedDate
     }
 
-    
-    
     await client.createBooking(data)
     .then(resp=>{
       // removeFromLocalStorage('haircut')
@@ -247,7 +245,7 @@ const Index = () => {
                 Modifier
               </button>
               <p className="text-5xl md:text-6xl text-black font-semibold">
-               ${!haircutPrize ? servicePrize : !servicePrize ? haircutPrize+servicePrice : haircutPrize && servicePrize && haircutPrize + servicePrice }
+               ${salonData.final_price}
               </p>
             </div>
           </div>
@@ -268,12 +266,12 @@ const Index = () => {
           <div className="w-full flex items-center justify-center">
           {mounted && (
                 <div className="mt-7 w-full md:w-5/12 lg:w-4/12">
-                  <Elements
+                  {/* <Elements
                     stripe={loadStripe(stripePromise)}
                     options={options}
                   >
                     <StripePayment/>
-                  </Elements>
+                  </Elements> */}
                 </div>
                 )}
                 </div>
