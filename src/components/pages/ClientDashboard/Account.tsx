@@ -110,42 +110,39 @@ const Account = () => {
     };
 
     const onSubmitPassword = async () => {
-        if (passwordField.new != passwordField.new2) {
-            setError((prev) => {
-                return { ...prev, text: "Nouveaux mots de passe différents" };
-            });
-            return;
-        }
-        else if (passwordField.new.length < 8) {
-            setError((prev) => {
-                return { ...prev, text: "Nouveaux mots de passe trop petits" };
-            });
-            return;
-        }
-        else {
-            await client.resetPassword({
+        try {
+            let resp = await client.resetPassword({
                 old_password: passwordField.old,
                 new_password: passwordField.new,
                 repeat_password: passwordField.new2,
             })
-                .then(resp => {
-                    console.log(resp)
-                    setIsModalPswrd(false);
-                    showSnackbar("success", resp.data.message);
-                    passwordField.old = "";
-                    passwordField.new = "";
-                    passwordField.new2 = "";
-                })
-                .catch(err => {
-                    console.log(err)
-                })
-                .finally(() => {
-                    setIsLoading(false);
-                })
+            console.log(resp)
+            setIsModalPswrd(false);
+            showSnackbar("success", resp.data.message);
+            passwordField.old = "";
+            passwordField.new = "";
+            passwordField.new2 = "";
+        } catch (error) {
+            console.log(error.response)
             setError((prev) => {
-                return { ...prev, text: "" };
+                return { ...prev, text: error.response.data.message };
             });
+            if (error.response.data.errors.old_password) {
+                showSnackbar("error", error.response.data.errors.old_password[0]);
+            }
+            if (error.response.data.errors.new_password) {
+                showSnackbar("error", error.response.data.errors.new_password[0]);
+            }
+            if (error.response.data.errors.repeat_password) {
+                showSnackbar("error", error.response.data.errors.repeat_password[0]);
+            }
+            return
+        } finally {
+            setIsLoading(false);
         }
+        setError((prev) => {
+            return { ...prev, text: "" };
+        });
     }
 
     const [error, setError] = useState({
@@ -750,7 +747,6 @@ const Account = () => {
     }
 
     const setUserInfo = async (data) => {
-        console.log('in set user');
 
         // to update informations description which is displayed
         informations[0].desc = data.name;

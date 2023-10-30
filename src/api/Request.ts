@@ -35,6 +35,9 @@ request.interceptors.response.use(
     if (response.status >= 400 || response.status === 401) {
       toast.error(error.message);
     }
+    if (response.status == 422) {
+      throw error;
+    }
     throw error.response.data.status;
   }
 );
