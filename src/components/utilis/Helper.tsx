@@ -4,8 +4,18 @@ import {
 } from "@/components/utilis/Icons";
 import { Theme_A } from './Themes';
 import ReactDOM from 'react-dom';
-
-
+// get the permission and apply permissions
+const applyPermissions = (menus: any) => {
+    const temp = localStorage.getItem("user");
+    const user = temp ? JSON.parse(temp) : null;
+    if (user.role != 'salon_professional' && user.permissions.length > 0) {
+      menus.forEach((m: any, k: number) => {
+        if (user.permissions.indexOf(m.title) == -1) {
+          delete menus[k];
+        }
+      });
+    }
+  }
 /* Scroll to the top button function */
 function hasPermission(permission: string): boolean {
     // Get the user data from local storage
