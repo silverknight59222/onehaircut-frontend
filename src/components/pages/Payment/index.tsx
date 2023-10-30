@@ -237,8 +237,8 @@ const Index = () => {
               {slotData && <p className="text-base"><span className="font-semibold text-lg">Hair Dresser: </span>{slotData.hairDresser.name}</p>}
               {slotData && <p className="text-base"><span className="font-semibold text-lg">Slot: </span>{slotData.slot[0].day}</p>}
               {slotData && <p className="text-base"><span className="font-semibold text-lg">Start: </span>{slotData.slot[0].start}</p>}
-              {slotData && <p className="text-base"><span className="font-semibold text-lg">End: </span>{duration}</p>}
-              {slotData && <p className="text-base"><span className="font-semibold text-lg">Duration: </span>{hairTimeData} Minutes</p>}
+              {slotData && <p className="text-base"><span className="font-semibold text-lg">End: </span>{slotData.slot[slotData.slot.length-1].end}</p>}
+              {slotData && <p className="text-base"><span className="font-semibold text-lg">Duration: </span>{salonData.total_duration} Minutes</p>}
             </div>
             <div className="flex items-center justify-between border-t-2 border-[#CBCBCB] pt-9 mt-9">
               <button onClick={()=>router.push('/')} className="w-36 h-14 flex items-center justify-center border border-secondary rounded-xl text-xl text-black font-semibold">

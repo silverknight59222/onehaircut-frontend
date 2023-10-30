@@ -106,29 +106,28 @@ const BookSalon = () => {
     if (currentIndex !== -1) {
       const selectedObjects = [];
       const ddd=Number(getLocalStorage('slotTime'))
-      const time=+ddd + durationTime
+      const time = durationTime
+
+      let maxValue = currentIndex
       if(Number.isInteger(time/30)){
-        for (let i = currentIndex; i <= currentIndex + time/30-1; i++) {
-          if (slots[i]) {
-            if (slots[i].is_booked) {
-              selectedObjects.splice(0)
-              break;  
-            }
-            selectedObjects.push(slots[i]);
-          } else {
-            selectedObjects.splice(0)
-            break;
-          }
-        }
-        setSelectedSlot(selectedObjects)
+        maxValue = currentIndex + time/30-1
       }else{
-        for (let i = currentIndex; i <= currentIndex + Math.floor(time/30); i++) {
-          if (slots[i]) {
-            selectedObjects.push(slots[i]);
-          }
-        }
-        setSelectedSlot(selectedObjects)
+        maxValue = currentIndex + Math.floor(time/30)
       }
+
+      for (let i = currentIndex; i <= maxValue; i++) {
+        if (slots[i]) {
+          if (slots[i].is_booked) {
+            selectedObjects.splice(0)
+            break;  
+          }
+          selectedObjects.push(slots[i]);
+        } else {
+          selectedObjects.splice(0)
+          break;
+        }
+      }
+      setSelectedSlot(selectedObjects)
     };
   };
 
