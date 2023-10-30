@@ -29,7 +29,8 @@ export type SalonDetails = {
 	range: number[],
 	base_price: number,
 	service_price:number,
-	final_price: number
+	final_price: number,
+	openTimes: any[]
 };
 
 export type FileDetails = {

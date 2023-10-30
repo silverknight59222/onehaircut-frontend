@@ -186,6 +186,11 @@ const ServiceChoose = () => {
         }
     };
 
+    const onServiceSelect = (event: React.ChangeEvent<HTMLSelectElement>, name: string, serviceId: number, serviceRequirements: string[]) => {
+        event.stopPropagation();
+        onServiceclick(name, serviceId, serviceRequirements)
+    }
+
     // Fermeture de la boîte de sélection lors du clic en dehors de celle-ci.
     const closeSelectBox = ({ target }: MouseEvent): void => {
         if (!dropdownRef.current?.contains(target as Node)) {
@@ -220,10 +225,10 @@ const ServiceChoose = () => {
     // JSX retourné pour le rendu du composant.
     return (
         <div>
-            <Navbar 
-            isServicesPage={true} 
-            onTypeSelect={(type) => setFilteredType(type)} 
-            onServiceSearch={(value: string) => setSearch(value)} />
+            <Navbar
+                isServicesPage={true}
+                onTypeSelect={(type) => setFilteredType(type)}
+                onServiceSearch={(value: string) => setSearch(value)} />
             <div className='flex items-center cursor-pointer mt-10 mb-8 sm:mx-10 2xl:mx-14 text-stone-800' onClick={() => router.push('/')}>
                 <BackArrow />
                 <p className={`${Theme_A.textFont.navigationGreyFont}`}>Retour aux coiffures</p>
@@ -235,7 +240,7 @@ const ServiceChoose = () => {
                 <div className='flex flex-col items-center'>
                     <div className='w-full flex flex-col md:flex-row items-center justify-between mt-14'>
                         <div className='flex flex-col sm:flex-row items-center gap-5 mb-5 md:mb-0'>
-                            { haircut && <p className='text-stone-600 text-lg font-semibold bg-[#F7F7F7] shadow-inner rounded-lg px-7 py-3'>{haircut.name}</p> }
+                            {haircut && <p className='text-stone-600 text-lg font-semibold bg-[#F7F7F7] shadow-inner rounded-lg px-7 py-3'>{haircut.name}</p>}
                             {selectedService.length ? (
                                 <p className='text-xl text-stone-600 bg-[#F7F7F7] shadow-inner rounded-lg px-7 py-3'>
                                     <span className='font-semibold'>
@@ -260,16 +265,13 @@ const ServiceChoose = () => {
                                     </div>
                                     {service.type === 'coloration' ? (
                                         <div ref={dropdownRef} onClick={(e) => e.stopPropagation()} className='relative'>
-                                            <div onMouseEnter={(e) => onDropdown(e, index)} className='w-28 h-6 flex items-center justify-center rounded-md border border-[#CACACA] bg-white text-xs text-[#6F6F6F] shadow-[0px_1px_2px_0px_rgba(204,204,204,0.54)]'>
-                                                {service.colors[0].color}
-                                            </div>
-                                            {selectedDropdown === index && (
-                                                <div style={{ zIndex: 100 }} className={`absolute w-32 h-52 overflow-auto flex flex-col gap-2 py-2 px-3 mt-1 rounded-md outline outline-1 border border-stone-300 bg-white text-xs text-[#6F6F6F] font-semibold shadow-lg`}>
-                                                    {service.colors.map((item, index) => (
-                                                        <p key={index}>{item.color}</p>
-                                                    ))}
-                                                </div>
-                                            )}
+                                            <select onChange={(event) => onServiceSelect(event, service.name, service.id, service.requirements)} className='w-28 h-6 flex items-center justify-center rounded-md border border-[#CACACA] bg-white text-xs text-[#6F6F6F] shadow-[0px_1px_2px_0px_rgba(204,204,204,0.54)]'>
+                                                {service.colors.map((option, index) => (
+                                                    <option key={index} value={option.color} className={`absolute w-32 h-52 overflow-auto flex flex-col gap-2 py-2 px-3 mt-1 rounded-md outline outline-1 border border-stone-300 bg-white text-xs text-[#6F6F6F] font-semibold shadow-lg`}>
+                                                        {option.color}
+                                                    </option>
+                                                ))}
+                                            </select>
                                         </div>
                                     ) : (
                                         <div style={{ position: 'absolute', right: '10px', bottom: '10px' }}>

@@ -166,8 +166,8 @@ const SalonChoice = () => {
 
     // Fonction pour continuer avec le salon sélectionné
     const onContinue = () => {
-        router.push(`salon/profile`)
         setLocalStorage('selectedSalon', JSON.stringify(selectedSalon))
+        router.push(`salon/profile`)
     }
 
     // Utilisation de useEffect pour récupérer les données lors du montage du composant
@@ -276,13 +276,6 @@ const SalonChoice = () => {
         id: number;
     };
 
-    const handleSelectSalon = (salonId: number) => {
-        const foundSalon = salons.find(s => s.id === salonId);
-        setSelectedSalon(foundSalon ? foundSalon : { name: '', id: null });
-    };
-
-
-
     // Rendu du composant
     return (
         <div className='w-full'>
@@ -348,7 +341,7 @@ const SalonChoice = () => {
                                             <Marker
                                                 key={index}
                                                 position={positions[index]} // Utiliser la position du salon
-                                                onClick={() => setSelectedSalon({ name: salon.name, id: salon.id })}
+                                                onClick={() => setSelectedSalon(salon)}
                                                 icon={{
                                                     url: salon.id === selectedSalon.id ? MapIconRedUrl : mapIconUrl,
                                                     scaledSize: salon.id === selectedSalon.id ? new window.google.maps.Size(70, 90) : new window.google.maps.Size(60, 80),
@@ -393,7 +386,7 @@ const SalonChoice = () => {
                             {filteredSalons.map((salon, index) => (
                                 <div
                                     key={index}
-                                    onClick={() => setSelectedSalon({ name: salon.name, id: salon.id })}
+                                    onClick={() => setSelectedSalon(salon)}
                                     className={`relative bg-stone-100 rounded-2xl border hover:border-stone-400 cursor-pointer ${selectedSalon.id === salon.id && 'border-2 border-red-300 shadow-xl'}`}
                                     style={{ width: '100%', aspectRatio: '1/1', display: 'flex', flexDirection: 'column', minWidth: '200px', maxWidth: '450px', minHeight: '200px', maxHeight: '420px' }}
                                 >

@@ -25,11 +25,12 @@ const BookSalon = () => {
   const [slots,setSlots]=useState<Slot[]>([])
   const [hairCut, setHairCut] = useState({});
   const { loadingView } = userLoader();
-  const salon=getLocalStorage('selectedSalon')
-  const duration=getLocalStorage('serviceDuration')
+  const salonData=getLocalStorage('selectedSalon')
+
   const service_ids=getLocalStorage('ServiceIds')
-  const durationTime = duration ? JSON.parse(duration) : null
-  const salonId= salon ? JSON.parse(salon).id : null
+  
+  const salon= salonData ? JSON.parse(salonData) : null
+  const durationTime = salon?.total_duration
   const items = [
     { name: "Type de coiffure", desc: "Curly" },
     { name: "Couleur", desc: "Blond" },
@@ -37,20 +38,22 @@ const BookSalon = () => {
     { name: "Lieu", desc: "à domicile" },
   ];
 
+  useEffect(()=>{
+    setSelectedDate(new Date())
+    getAllHairDresser()
+  },[])
+
+  useEffect(()=>{
+    getSlots()
+  },[selectedHairdresser, selectedDate])
+
   const getAllHairDresser = async () => {
-    if(salonId){
-    setIsLoading(true);
-    await client.getSalonDetail(salonId, haircutData.id)
-      .then((resp) => {
-        setHairDressers(resp.data.data[0].salon_hairdressers)
-        setHairCut(resp.data.salon_haircut)
-        setSelectedHairdresser({name: resp.data.data[0].salon_hairdressers[0].name, id: resp.data.data[0].salon_hairdressers[0].id})
-    }).catch(error=>{
-      console.log(error)
-    })
-    .finally(()=>{
+    if(salon){
+      setIsLoading(true);
+      setHairDressers(salon?.salon_hairdressers)
+      setHairCut(salon?.haircut)
+      setSelectedHairdresser({name: salon?.salon_hairdressers[0].name, id: salon?.salon_hairdressers[0].id})
       setIsLoading(false);
-    })
   }
   };
 
@@ -58,13 +61,11 @@ const BookSalon = () => {
       setIsLoading(true);
       if(selectedHairdresser.id && selectedDate){
       const data={
-        date: DateFormat(selectedDate, true)
+        date: selectedDate.toLocaleDateString().replaceAll("/", "-")
       }
       await client.getSlots(selectedHairdresser.id, data)
         .then((resp) => {
-          if (resp.data.data.length) {
-            setSlots(resp.data.data);
-          }          
+          setSlots(resp.data.data);
         })
         .catch(err=>console.log(err))
         .finally(()=>{
@@ -84,6 +85,7 @@ const BookSalon = () => {
   }
   const onSelectedDate=(date: Date)=>{
     setSelectedDate(date)
+    setSelectedSlot([])
   }
   console.log(selectedDate?.getDate(),"sjfdjshf")
 
@@ -99,14 +101,6 @@ const BookSalon = () => {
     route.push('/payment')
   }
 
-  useEffect(()=>{
-    setSelectedDate(new Date())
-    getAllHairDresser()
-  },[])
-  useEffect(()=>{
-    getSlots()
-  },[selectedHairdresser, selectedDate])
-
   const onSelectSlot = (slot:any) => {
     const currentIndex = slots.findIndex((item) => item.id === slot.id);
     if (currentIndex !== -1) {
@@ -116,7 +110,14 @@ const BookSalon = () => {
       if(Number.isInteger(time/30)){
         for (let i = currentIndex; i <= currentIndex + time/30-1; i++) {
           if (slots[i]) {
+            if (slots[i].is_booked) {
+              selectedObjects.splice(0)
+              break;  
+            }
             selectedObjects.push(slots[i]);
+          } else {
+            selectedObjects.splice(0)
+            break;
           }
         }
         setSelectedSlot(selectedObjects)
@@ -203,7 +204,7 @@ const BookSalon = () => {
                 <CalenderIcon />
               </div>
               {showCalender &&
-                <DatePicker close={()=>setShowCalender(false)} onSelectedDate={onSelectedDate}/>
+                <DatePicker startDate={new Date()} close={()=>setShowCalender(false)} onSelectedDate={onSelectedDate}/>
               }
             </div>
             <p className='text-[#A0A0A0] text-lg font-medium bg-[#F7F7F7] rounded-lg px-6 py-3'>{selectedDate && DateFormat(selectedDate)}</p>
