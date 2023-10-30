@@ -18,7 +18,17 @@ export type TopbarType = {
 	tabHandler: (tab: string) => void;
 	SidebarHandler: () => void;
 };
-
+const applyPermissions = (menus: any) => {
+    const temp = localStorage.getItem("user");
+    const user = temp ? JSON.parse(temp) : null;
+    if (user.role != 'salon_professional' && user.permissions.length > 0) {
+      menus.forEach((m: any, k: number) => {
+        if (user.permissions.indexOf(m.title) == -1) {
+          delete menus[k];
+        }
+      });
+    }
+  }
 const Topbar = ({ isDashboard, tabHandler, SidebarHandler }: TopbarType) => {
 	const [salonDetail, setSalonDetails] = useState<SalonDetails[]>();
 	const [activeSalon, setActiveSalon] = useState<SalonDetails>();
@@ -49,6 +59,7 @@ const Topbar = ({ isDashboard, tabHandler, SidebarHandler }: TopbarType) => {
 	};
 
 	useEffect(() => {
+		applyPermissions(topbarItems);
 		const user = getLocalStorage("user");
 		const userId = user ? Number(JSON.parse(user).id) : null;
 		if (userId) 
