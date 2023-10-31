@@ -53,6 +53,9 @@ const client={
     getUserFilterPrefrences: async () => {
         return await request.get(`/user_filter_prefrences`);
     },
+    resetFilterPreferences: async (params: any) => {
+        return await request.post(`/reset_filter_preferences`, params);
+    },
 }
 const user_api =  {
     getUsers: async () => {

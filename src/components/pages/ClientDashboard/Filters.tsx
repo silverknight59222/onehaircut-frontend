@@ -103,38 +103,56 @@ const Filters = () => {
 
     // Update the selectedItem when the CountryDefault prop changes
     useEffect(() => {
-        filterPrefrences();
+        fetchFilterPrefrences();
         setCountry(CountryDefault);
     }, [CountryDefault]); // Add CountryDefault as a dependency
 
-    const resetAllValues_1 = () => {
-
-        // Reset the dropdown values
-        setCurrentLength('');
-        setDesiredLength('');
-        setHairstyleTrend('');
-
-        // Reset the slider values
-        setBudgetSliderRange([0, 250]);
+    const resetAllValues_1 = async () => {
+        setIsLoading(true)
+        await client.resetFilterPreferences({
+            tab: 'hairstyle-search',
+            current_hair: '',
+            length_sought: '',
+            hairstyle_trend: '',
+            budget: [0, 200],
+        })
+            .then(resp => {
+                console.log(resp.data);
+                showSnackbar("succès", "Les préférences ont été réinitialisées avec succès");
+            })
+            .catch(err => {
+                console.log(err)
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
+        fetchFilterPrefrences();
     };
 
 
-    const resetAllValues_2 = () => {
-        // Reset the selected items array
-        SetAtHome(['Geolocalisation', 'Utilisation de produits particuliers']);
+    const resetAllValues_2 = async () => {
+        setIsLoading(true)
+        await client.resetFilterPreferences({
+            tab: 'salon-search',
+            country: CountryDefault,
+            hairdressing_at_home: false,
+            postal_code: '',
+            search_area: [0, 15],
+            ratings: 1,
+            availability: '',
+        })
+            .then(resp => {
+                console.log(resp.data);
+                showSnackbar("succès", "Les préférences ont été réinitialisées avec succès");
+            })
+            .catch(err => {
+                console.log(err)
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
 
-        // Reset to the default value, which is an empty string
-        setCountry('');
-
-        // Reset the slider values
-        setZoneSliderRange([0, 15]);
-
-        // Reset the input field
-        setZipCodeValue('');
-
-        // Reset the rating values
-        setMinRating(1);
-        setMaxRating(5);
+        fetchFilterPrefrences();
     };
 
     const updateHairStyleSearch = async () => {
@@ -147,7 +165,7 @@ const Filters = () => {
         })
             .then(resp => {
                 console.log(resp.data);
-                showSnackbar("succès", "Préférences mises à jour avec succès");
+                showSnackbar("succès", "Les préférences ont été réinitialisées avec succès");
             })
             .catch(err => {
                 console.log(err)
@@ -155,6 +173,7 @@ const Filters = () => {
             .finally(() => {
                 setIsLoading(false)
             })
+        fetchFilterPrefrences();
     }
 
     const updateSearchSalon = async () => {
@@ -177,9 +196,10 @@ const Filters = () => {
             .finally(() => {
                 setIsLoading(false)
             })
+        fetchFilterPrefrences();
     }
 
-    const filterPrefrences = async () => {
+    const fetchFilterPrefrences = async () => {
         const resp = await client.getUserFilterPrefrences();
         console.log(resp.data);
 
