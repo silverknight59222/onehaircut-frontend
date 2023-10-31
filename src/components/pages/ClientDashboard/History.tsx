@@ -64,6 +64,7 @@ const History = () => {
   };
 
   const Histories = async () => {
+    setIsLoading(true)
     client.getMyBookings()
       .then((resp) => {
         console.log(resp.data)

@@ -40,6 +40,9 @@ const client={
     },
     getMyBookings: async () => {
         return await request.get(`/my_histories`);
+    },
+    getMyReservations: async () => {
+        return await request.get(`/my_reservations`);
     }
 }
 const user_api =  {
