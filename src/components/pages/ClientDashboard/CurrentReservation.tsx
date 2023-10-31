@@ -6,29 +6,9 @@ import ClientDashboardLayout from "@/layout/ClientDashboardLayout";
 import Image from "next/image";
 import ChatModal from "../SearchSalon/ChatModal";
 import React, { useEffect, useState, useRef } from "react";
-
-
-
+import { client } from "@/api/clientSide";
 
 const Currentreservation = () => {
-
-    // TODO: get information from the current reservation
-    const items = [
-        { name: 'Date', desc: '13 Janvier 2024' },
-        { name: 'Heure', desc: '13:00' },
-        { name: 'Coiffure', desc: 'Fondu haut' },
-        { name: 'Couleur', desc: 'Aucune' },
-        { name: 'Prix coiffure', desc: '45 euro' },
-        { name: 'Prestation', desc: 'Brushing' },
-        { name: 'Prix prestation', desc: '15 euro' },
-        { name: 'Coiffeur', desc: 'Karim' },
-    ]
-
-    const itemsSalons = [
-        { name: 'Salon', desc: 'Golden Barber' },
-        { name: 'Addresse du salon', desc: '215 avenue Saint-Martin 75001 Paris' },
-        { name: 'Telephone', desc: '03 22 55 66 77' },
-    ]
 
 
     // FOR CHAT MODAL 
@@ -43,6 +23,18 @@ const Currentreservation = () => {
     const openChatModal = () => {
         setIsModalOpen(true);
     };
+
+    const [items, setItems] = useState([]);
+
+    const allReservations = async () => {
+        const resp = await client.getMyReservations();
+        console.log(resp.data);
+        setItems(resp.data);
+    }
+
+    useEffect(() => {
+        allReservations();
+    }, [])
 
     return (
         <div>
@@ -63,42 +55,78 @@ const Currentreservation = () => {
                         Réservations à venir
                     </p>
                     {/* <p className='text-sm text-black font-semibold mb-2'>15/04/2023</p> */}
-                    <div className={`relative z-10 w-full xl:w-[800px]  rounded-3xl bg-white border-2 border-zinc-100 py-6 px-12 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)]`}>
-                        <div className='flex flex-col-reverse sm:flex-row items-center sm:items-start justify-between'>
-                            <div className='flex flex-col items-center sm:items-start justify-center sm:justify-start gap-5 mt-5 sm:mt-0'>
-                                {items.map((item, index) => {
-                                    return <div key={index}>
-                                        <p className='text-[#444343] font-bold text-center sm:text-start'>{item.name}</p>
-                                        <p className='text-[#666] text-sm text-center sm:text-start'>{item.desc}</p>
-                                    </div>
-                                })}
-                            </div>
-                            <div>
-                                <div className="relative xl:w-[200px] xl:h-[200px] lg:w-[150px] lg:h-[150px] sm:w-[100px] sm:h-[100px] mb-5">
-                                    <Image src='/assets/img1.png' alt='' fill={true} className='rounded-3xl ' />
-                                </div>
-                                <div className='flex flex-col items-center sm:items-start justify-center sm:justify-start gap-4 mt-5 sm:mt-0'>
-                                    {itemsSalons.map((item, index) => {
-                                        return <div key={index}>
-                                            <p className='text-[#494949] font-bold text-center sm:text-start'>{item.name}</p>
-                                            <p className='text-[#666] text-sm text-center sm:text-start'>{item.desc}</p>
+                    {!items.length && <p className="text-3xl">Aucune Réservation Disponible</p>}
+                    {items.map((item, index) => {
+                        return (
+                            <div key={index} className={`relative z-10 w-full xl:w-[800px]  rounded-3xl bg-white border-2 border-zinc-100 py-6 px-12 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)] mb-3`}>
+                                <div className='flex flex-col-reverse sm:flex-row items-center sm:items-start justify-between'>
+                                    <div className='flex flex-col items-center sm:items-start justify-center sm:justify-start gap-5 mt-5 sm:mt-0'>
+                                        <div>
+                                            <p className='text-[#444343] font-bold text-center sm:text-start'>Date</p>
+                                            <p className='text-[#666] text-sm text-center sm:text-start'>{item.date}</p>
                                         </div>
-                                    })}
-                                </div>
-                                <div className='flex  justify-start mt-10 sm:mt-5'>
-                                    <button onClick={openChatModal} className={`xl:w-full ${Theme_A.button.medBlackColoredButton}`}>
-                                        Contacter le salon
-                                    </button>
+                                        <div>
+                                            <p className='text-[#444343] font-bold text-center sm:text-start'>Heure</p>
+                                            <p className='text-[#666] text-sm text-center sm:text-start'>{item.total_duration}</p>
+                                        </div>
+                                        <div>
+                                            <p className='text-[#444343] font-bold text-center sm:text-start'>Coiffure</p>
+                                            <p className='text-[#666] text-sm text-center sm:text-start'>{item.salon_haircut.haircut.name}</p>
+                                        </div>
+                                        <div>
+                                            <p className='text-[#444343] font-bold text-center sm:text-start'>Couleur</p>
+                                            <p className='text-[#666] text-sm text-center sm:text-start'>this is Couleur</p>
+                                        </div>
+                                        <div>
+                                            <p className='text-[#444343] font-bold text-center sm:text-start'>Prix coiffure</p>
+                                            <p className='text-[#666] text-sm text-center sm:text-start'>{item.salon_haircut.base_price}</p>
+                                        </div>
+                                        <div>
+                                            <p className='text-[#444343] font-bold text-center sm:text-start'>Prestation</p>
+                                            <p className='text-[#666] text-sm text-center sm:text-start'>this is Prestation</p>
+                                        </div>
+                                        <div>
+                                            <p className='text-[#444343] font-bold text-center sm:text-start'>Prix prestation</p>
+                                            <p className='text-[#666] text-sm text-center sm:text-start'>this is Prix prestation</p>
+                                        </div>
+                                        <div>
+                                            <p className='text-[#444343] font-bold text-center sm:text-start'>Coiffeur</p>
+                                            <p className='text-[#666] text-sm text-center sm:text-start'>{item.hair_dresser_info.name}</p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div className="relative xl:w-[200px] xl:h-[200px] lg:w-[150px] lg:h-[150px] sm:w-[100px] sm:h-[100px] mb-5">
+                                            <Image src='/assets/img1.png' alt='' fill={true} className='rounded-3xl ' />
+                                        </div>
+                                        <div className='flex flex-col items-center sm:items-start justify-center sm:justify-start gap-4 mt-5 sm:mt-0'>
+                                            <div>
+                                                <p className='text-[#494949] font-bold text-center sm:text-start'>Salon</p>
+                                                <p className='text-[#666] text-sm text-center sm:text-start'>{item.salon_info.name}</p>
+                                            </div>
+                                            <div>
+                                                <p className='text-[#494949] font-bold text-center sm:text-start'>Addresse du salon</p>
+                                                <p className='text-[#666] text-sm text-center sm:text-start'>{item.hair_salon.address.city} {item.hair_salon.address.state} {item.hair_salon.address.country}</p>
+                                            </div>
+                                            <div>
+                                                <p className='text-[#494949] font-bold text-center sm:text-start'>Telephone</p>
+                                                <p className='text-[#666] text-sm text-center sm:text-start'>this is Telephone</p>
+                                            </div>
+                                        </div>
+                                        <div className='flex  justify-start mt-10 sm:mt-5'>
+                                            <button onClick={openChatModal} className={`xl:w-full ${Theme_A.button.medBlackColoredButton}`}>
+                                                Contacter le salon
+                                            </button>
+                                        </div>
+                                    </div>
 
+                                </div>
+                                <div
+                                    className='flex mt-10 items-center justify-center cursor-pointer '>
+                                    <p className="text-xs text-[#666] underline transform hover:scale-105 transition-transform hover:text-red-500 hover:font-medium"> Annuler cette réservation </p>
                                 </div>
                             </div>
-
-                        </div>
-                        <div
-                            className='flex mt-10 items-center justify-center cursor-pointer '>
-                            <p className="text-xs text-[#666] underline transform hover:scale-105 transition-transform hover:text-red-500 hover:font-medium"> Annuler cette réservation </p>
-                        </div>
-                    </div>
+                        )
+                    })}
                 </div>
             </ClientDashboardLayout>
             <Footer />

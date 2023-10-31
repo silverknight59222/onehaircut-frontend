@@ -40,7 +40,22 @@ const client={
     },
     getMyBookings: async () => {
         return await request.get(`/my_histories`);
-    }
+    },
+    getMyReservations: async () => {
+        return await request.get(`/my_reservations`);
+    },
+    storeHairstylePreferences: async (params: any) => {
+        return await request.post(`/save_hairstyle_preferences`, params);
+    },
+    storeSalonPreferences: async (params: any) => {
+        return await request.post(`/save_salon_preferences`, params);
+    },
+    getUserFilterPrefrences: async () => {
+        return await request.get(`/user_filter_prefrences`);
+    },
+    resetFilterPreferences: async (params: any) => {
+        return await request.post(`/reset_filter_preferences`, params);
+    },
 }
 const user_api =  {
     getUsers: async () => {
