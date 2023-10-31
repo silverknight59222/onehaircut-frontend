@@ -43,7 +43,10 @@ const client={
     },
     getMyReservations: async () => {
         return await request.get(`/my_reservations`);
-    }
+    },
+    storeUserPreferences: async (params: any) => {
+        return await request.post(`/save_user_preferences`, params);
+    },
 }
 const user_api =  {
     getUsers: async () => {

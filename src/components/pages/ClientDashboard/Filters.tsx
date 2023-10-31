@@ -11,7 +11,7 @@ import Footer from '@/components/UI/Footer';
 import EUCountriesList from '@/components/shared/Navbar/EUCountries';
 import ComponentTheme from '@/components/UI/ComponentTheme';
 import CustomSlider from '@/components/UI/OHC_Slider';
-
+import { client } from '@/api/clientSide';
 
 const Filters = () => {
     const [selectedTab, setSelectedTab] = useState(0);
@@ -39,6 +39,8 @@ const Filters = () => {
     };
 
     const handleBudgetSliderChange = (event: any, newValue: any) => {
+        console.log('in budget slider')
+        console.log(newValue)
         setBudgetSliderRange(newValue);
     };
     const handleZoneSliderChange = (event: any, newValue: any) => {
@@ -59,16 +61,19 @@ const Filters = () => {
 
 
     // handling the change of Gender
-    const handleNewWishGender = (item: string) => {
+    const handleWishGender = (item: string) => {
         // TODO: add backend to save the new preference
+        setHairstyleTrend(item);
     }
     // handling the change of wishes length
-    const handleNewWishLength = (item: string) => {
+    const handleCurrentLength = (item: string) => {
         // TODO: add backend to save the new preference
+        setCurrentLength(item);
     }
     // handling the change of length
-    const handleNewSetCurrentLength = (item: string) => {
+    const handleLengthSought = (item: string) => {
         // TODO: add backend to save the new preference
+        setDesiredLength(item);
     }
     // handling the change of length
     const handleNewSetCountry = (item: string) => {
@@ -137,6 +142,52 @@ const Filters = () => {
         setMaxRating(5);
     };
 
+    const [isLoading, setIsLoading] = useState(false);
+    const updateHairStyleSearch = async () => {
+        setIsLoading(true)
+        await client.storeUserPreferences({
+            tab: 'hairstyle-search',
+            current_hair: currentLength,
+            length_sought: desiredLength,
+            hairstyle_trend: hairstyleTrend,
+            budget: budgetSliderRange,
+        })
+            .then(resp => {
+                console.log(resp.data)
+                setCurrentLength(resp.data.current_hair);
+                setDesiredLength(resp.data.length_sought);
+                setHairstyleTrend(resp.data.hairstyle_trend);
+                setBudgetSliderRange([resp.data.budget[0], resp.data.budget[1]]);
+            })
+            .catch(err => {
+                console.log(err)
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
+    }
+
+    const updateSearchSalon = async () => {
+        console.log('in updateSearchSalon')
+        setIsLoading(true)
+        await client.storeUserPreferences({
+            tab: 'search-salon',
+            current_hair: streetNbField,
+            hairstyle_trend: streetField,
+            length_sought: postCodeField,
+            budget: '',
+        })
+            .then(resp => {
+                console.log(resp.data)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
+    }
+
     return (
         <div>
             <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
@@ -176,12 +227,12 @@ const Filters = () => {
                                         {/* Dropdown for "cheveux actuelle" */}
                                         <div className="flex items-center justify-center mb-2 mr-10"> {/* Increased horizontal spacing */}
                                             <p className="text-black text-sm mb-2 mr-10"></p>
-                                            <DropdownMenu dropdownItems={WishLength} fctToCallOnClick={handleNewWishLength} menuName="cheveux actuelle" />
+                                            <DropdownMenu dropdownItems={WishLength.map((item) => item)} fctToCallOnClick={handleCurrentLength} selectId={currentLength} menuName="cheveux actuelle" />
                                         </div>
 
                                         {/* Dropdown for "Longueur recherchée" */}
                                         <div className="flex items-center justify-center mb-2"> {/* Increased horizontal spacing */}
-                                            <DropdownMenu dropdownItems={WishLength} fctToCallOnClick={handleNewSetCurrentLength} menuName="Longueur recherchée" />
+                                            <DropdownMenu dropdownItems={WishLength.map((item) => item)} fctToCallOnClick={handleLengthSought} selectId={desiredLength} menuName="Longueur recherchée" />
                                         </div>
                                     </div>
 
@@ -189,7 +240,7 @@ const Filters = () => {
                                     <div className="flex flex-col items-center">
                                         {/* Dropdown for "Tendance de la coiffure" */}
                                         <div className="flex items-center justify-center mb-2"> {/* Increased horizontal spacing */}
-                                            <DropdownMenu dropdownItems={WishGender} fctToCallOnClick={handleNewWishLength} menuName="Tendance de la coiffure" />
+                                            <DropdownMenu dropdownItems={WishGender.map((item) => item)} fctToCallOnClick={handleWishGender} selectId={hairstyleTrend} menuName="Tendance de la coiffure" />
                                         </div>
 
                                         {/* Slider for budget */}
@@ -211,6 +262,11 @@ const Filters = () => {
                                 {/* Centered "Réinitialiser" button */}
                                 <div className="flex justify-center mt-12">
                                     <button onClick={resetAllValues_1} className={`${Theme_A.button.medBlackColoredButton}`}>Réinitialiser</button>
+                                    <button
+                                        onClick={updateHairStyleSearch}
+                                        className={`${Theme_A.button.mediumGradientButton} ml-3`}>
+                                        Mise à jour
+                                    </button>
                                 </div>
 
                                 {/* TODO ADD POPULARITY FOR NEXT RELEASE 
@@ -432,6 +488,11 @@ const Filters = () => {
                                 </div>
                                 <div className="flex justify-center mt-12">
                                     <button onClick={resetAllValues_2} className={`${Theme_A.button.medBlackColoredButton}`}>Réinitialiser</button>
+                                    <button
+                                        onClick={updateSearchSalon}
+                                        className={`${Theme_A.button.mediumGradientButton} ml-3`}>
+                                        Mise à jour
+                                    </button>
                                 </div>
                             </div>
                         }
