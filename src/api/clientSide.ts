@@ -44,8 +44,14 @@ const client={
     getMyReservations: async () => {
         return await request.get(`/my_reservations`);
     },
-    storeUserPreferences: async (params: any) => {
-        return await request.post(`/save_user_preferences`, params);
+    storeHairstylePreferences: async (params: any) => {
+        return await request.post(`/save_hairstyle_preferences`, params);
+    },
+    storeSalonPreferences: async (params: any) => {
+        return await request.post(`/save_salon_preferences`, params);
+    },
+    getUserFilterPrefrences: async () => {
+        return await request.get(`/user_filter_prefrences`);
     },
 }
 const user_api =  {

@@ -12,6 +12,7 @@ import EUCountriesList from '@/components/shared/Navbar/EUCountries';
 import ComponentTheme from '@/components/UI/ComponentTheme';
 import CustomSlider from '@/components/UI/OHC_Slider';
 import { client } from '@/api/clientSide';
+import useSnackbar from '@/hooks/useSnackbar';
 
 const Filters = () => {
     const [selectedTab, setSelectedTab] = useState(0);
@@ -58,7 +59,7 @@ const Filters = () => {
         "Moyen",
         "Long",
     ];
-
+    const showSnackbar = useSnackbar();
 
     // handling the change of Gender
     const handleWishGender = (item: string) => {
@@ -85,13 +86,7 @@ const Filters = () => {
     const [budgetSliderRange, setBudgetSliderRange] = useState([0, 200]);
     const [zoneSliderRange, setZoneSliderRange] = useState([0, 15]);
     const [HairdressingAtHome, setHairdressingAtHome] = useState(false);
-
-    // For TextField Customization : 
     const [ZipCodeValue, setZipCodeValue] = useState('');
-
-    // For rating search
-    // function to show the popup to rate the haircut given in argument
-
     const [MinRating, setMinRating] = useState(1); // Initialize with the default rating value
     const [MaxRating, setMaxRating] = useState(5); // Initialize with the default rating value
     const handleMinRatingChange = (newRating: number) => {
@@ -108,6 +103,7 @@ const Filters = () => {
 
     // Update the selectedItem when the CountryDefault prop changes
     useEffect(() => {
+        filterPrefrences();
         setCountry(CountryDefault);
     }, [CountryDefault]); // Add CountryDefault as a dependency
 
@@ -143,19 +139,15 @@ const Filters = () => {
 
     const updateHairStyleSearch = async () => {
         setIsLoading(true)
-        await client.storeUserPreferences({
-            tab: 'hairstyle-search',
+        await client.storeHairstylePreferences({
             current_hair: currentLength,
             length_sought: desiredLength,
             hairstyle_trend: hairstyleTrend,
             budget: budgetSliderRange,
         })
             .then(resp => {
-                console.log(resp.data)
-                setCurrentLength(resp.data.current_hair);
-                setDesiredLength(resp.data.length_sought);
-                setHairstyleTrend(resp.data.hairstyle_trend);
-                setBudgetSliderRange([resp.data.budget[0], resp.data.budget[1]]);
+                console.log(resp.data);
+                showSnackbar("succès", "Préférences mises à jour avec succès");
             })
             .catch(err => {
                 console.log(err)
@@ -166,10 +158,8 @@ const Filters = () => {
     }
 
     const updateSearchSalon = async () => {
-        console.log('in updateSearchSalon')
         setIsLoading(true)
-        await client.storeUserPreferences({
-            tab: 'search-salon',
+        await client.storeSalonPreferences({
             country: CountryDefault,
             hairdressing_at_home: HairdressingAtHome,
             postal_code: ZipCodeValue,
@@ -178,7 +168,8 @@ const Filters = () => {
             availability: '',
         })
             .then(resp => {
-                console.log(resp.data)
+                console.log(resp.data);
+                showSnackbar("succès", "Préférences mises à jour avec succès");
             })
             .catch(err => {
                 console.log(err)
@@ -186,6 +177,21 @@ const Filters = () => {
             .finally(() => {
                 setIsLoading(false)
             })
+    }
+
+    const filterPrefrences = async () => {
+        const resp = await client.getUserFilterPrefrences();
+        console.log(resp.data);
+
+        setCurrentLength(resp.data.current_hair);
+        setDesiredLength(resp.data.length_sought);
+        setHairstyleTrend(resp.data.hairstyle_trend);
+        setBudgetSliderRange([resp.data.budget[0], resp.data.budget[1]]);
+        setCountry(resp.data.country);
+        setHairdressingAtHome(resp.data.hairdressing_at_home);
+        setZipCodeValue(resp.data.postal_code);
+        setZoneSliderRange([resp.data.search_area[0], resp.data.search_area[1]]);
+        setMinRating(resp.data.ratings);
     }
 
     return (
