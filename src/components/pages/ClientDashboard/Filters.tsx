@@ -62,30 +62,29 @@ const Filters = () => {
 
     // handling the change of Gender
     const handleWishGender = (item: string) => {
-        // TODO: add backend to save the new preference
         setHairstyleTrend(item);
     }
     // handling the change of wishes length
     const handleCurrentLength = (item: string) => {
-        // TODO: add backend to save the new preference
         setCurrentLength(item);
     }
     // handling the change of length
     const handleLengthSought = (item: string) => {
-        // TODO: add backend to save the new preference
         setDesiredLength(item);
     }
     // handling the change of length
     const handleNewSetCountry = (item: string) => {
-        // TODO: add backend to save the new preference
+        setCountry(item);
     }
 
+    const [isLoading, setIsLoading] = useState(false);
     const [currentLength, setCurrentLength] = useState('');
     const [desiredLength, setDesiredLength] = useState('');
     const [hairstyleTrend, setHairstyleTrend] = useState('');
     const [CountryDefault, setCountry] = useState('');
     const [budgetSliderRange, setBudgetSliderRange] = useState([0, 200]);
     const [zoneSliderRange, setZoneSliderRange] = useState([0, 15]);
+    const [HairdressingAtHome, setHairdressingAtHome] = useState(false);
 
     // For TextField Customization : 
     const [ZipCodeValue, setZipCodeValue] = useState('');
@@ -142,7 +141,6 @@ const Filters = () => {
         setMaxRating(5);
     };
 
-    const [isLoading, setIsLoading] = useState(false);
     const updateHairStyleSearch = async () => {
         setIsLoading(true)
         await client.storeUserPreferences({
@@ -172,10 +170,12 @@ const Filters = () => {
         setIsLoading(true)
         await client.storeUserPreferences({
             tab: 'search-salon',
-            current_hair: streetNbField,
-            hairstyle_trend: streetField,
-            length_sought: postCodeField,
-            budget: '',
+            country: CountryDefault,
+            hairdressing_at_home: HairdressingAtHome,
+            postal_code: ZipCodeValue,
+            search_area: zoneSliderRange,
+            ratings: MinRating,
+            availability: '',
         })
             .then(resp => {
                 console.log(resp.data)
@@ -327,17 +327,24 @@ const Filters = () => {
                                             menuName="Pays"
                                             fctToCallOnClick={handleNewSetCountry}
                                             labelId='Pays'
-                                            selectId='Pays'
+                                            selectId={CountryDefault}
                                             defaultSelected={CountryDefault} // Pass the default value as a prop
                                         />
                                     </div>
                                     <div>
                                         <p className="text-black text-sm mb-2">Coiffure à domicile </p>
-                                        <div onClick={() => checkboxClickHandler('à domicile')} className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded ${selectedItems.includes('à domicile')
-                                            ? ColorsThemeA.ohcVerticalGradient_A
-                                            : "bg-[#D6D6D6]"
-                                            }`}>
-                                            <CheckedIcon />
+                                        <div
+                                            onClick={() => setHairdressingAtHome(!HairdressingAtHome)}
+                                            className="flex items-center justify-center gap-3 mt-4 cursor-pointer"
+                                        >
+                                            <div className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${HairdressingAtHome
+                                                ? ColorsThemeA.ohcVerticalGradient_A
+                                                : "border-[#767676]"
+                                                }`}
+                                            >
+                                                {HairdressingAtHome && (
+                                                    <CheckedIcon width="15" height="10" />)}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
