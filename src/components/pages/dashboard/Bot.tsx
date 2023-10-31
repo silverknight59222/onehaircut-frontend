@@ -232,7 +232,7 @@ const Bot = () => {
 
             <div
               onClick={() => setIsModal(true)}
-              className={`w-56 2xl:w-64 h-16 mb-6 flex items-center justify-center text-white font-semibold rounded-xl shadow-green-800 shadow-md  border-green-200 border-1 bg-gradient-to-br from-green-700 via-green-600 to-green-500 cursor-pointer transform hover:scale-105 transition-transform duration-300 hover:bg-gradient-to-r`}
+              className={`w-56 2xl:w-auto h-12 mb-6 flex items-center justify-center text-white font-small rounded-xl shadow-md hover:shadow-xl border-green-400 border-1 bg-gradient-to-br from-green-700 via-green-600 to-green-500 cursor-pointer transform hover:scale-105 transition-transform duration-300 `}
             >
               Lancer une analyse
             </div>
