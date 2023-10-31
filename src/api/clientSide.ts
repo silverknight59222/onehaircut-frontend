@@ -56,6 +56,9 @@ const client={
     resetFilterPreferences: async (params: any) => {
         return await request.post(`/reset_filter_preferences`, params);
     },
+    storeUserPotrait: async (params: any) => {
+        return await request.post(`/save_user_potrait`, params);
+    },
 }
 const user_api =  {
     getUsers: async () => {
