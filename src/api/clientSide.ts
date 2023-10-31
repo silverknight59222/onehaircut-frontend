@@ -59,6 +59,9 @@ const client={
     storeUserPotrait: async (params: any) => {
         return await request.post(`/save_user_potrait`, params);
     },
+    getUserPotrait: async () => {
+        return await request.get(`/fetch_user_potrait`);
+    },
 }
 const user_api =  {
     getUsers: async () => {
