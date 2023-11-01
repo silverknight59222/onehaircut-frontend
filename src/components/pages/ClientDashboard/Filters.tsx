@@ -104,8 +104,7 @@ const Filters = () => {
     // Update the selectedItem when the CountryDefault prop changes
     useEffect(() => {
         fetchFilterPrefrences();
-        setCountry(CountryDefault);
-    }, [CountryDefault]); // Add CountryDefault as a dependency
+    }, []);
 
     const resetAllValues_1 = async () => {
         setIsLoading(true)
