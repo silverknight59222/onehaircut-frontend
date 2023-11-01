@@ -51,7 +51,7 @@ const client={
         return await request.post(`/save_salon_preferences`, params);
     },
     getUserFilterPrefrences: async () => {
-        return await request.get(`/user_filter_prefrences`);
+        return await request.get(`/user_filter_preferences`);
     },
     resetFilterPreferences: async (params: any) => {
         return await request.post(`/reset_filter_preferences`, params);
