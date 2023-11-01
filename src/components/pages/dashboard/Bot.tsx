@@ -1,7 +1,7 @@
 "use client";
 import { LogoCircleFixRight, CrossIcon } from "@/components/utilis/Icons";
 import DashboardLayout from "@/layout/DashboardLayout";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 import Footer from "@/components/UI/Footer";
 import { useRouter } from "next/navigation";
@@ -89,7 +89,7 @@ const Bot = () => {
   // advises category to show
   const [showItem, setShowItem] = useState(advisesVisibility);
 
-  let optimizationMenu = [
+  const [optimizationMenu, setOptimizationMenu] = useState([
     { title: "Visibilité", count: 2, checked: false },
     { title: "Agencement agenda", count: 3, checked: true },
     { title: "Coiffures dispensées", count: 0, checked: true },
@@ -97,7 +97,10 @@ const Bot = () => {
     { title: "Performance du staff", count: 0, checked: true },
     { title: "Fidélisation client", count: 1, checked: true },
     // { title: "Shop", count: "" }, // TODO add in the future with the shop
-  ];
+  ]);
+
+  // Copy of optimizationMenu
+  const [optimizationCopy, setOptimizationCopy] = useState([...optimizationMenu])
 
   const onSelectTab = (item: string, index: number) => {
     setSelectedTab(index);
@@ -141,14 +144,7 @@ const Bot = () => {
     })
   }
 
-  // function to handle the click on a switch
-  const onClickSwitch = (switchNb: number, currentCheck: boolean) => {
-    // if (switchNb <= optimizationMenu.length) {
-    // reverse the value
-    optimizationMenu[switchNb].checked = !currentCheck
-    // }
-  }
-
+  // to display the checkboxes
   const renderCheckboxWithLabel = (
     label: string,
     checked: boolean,
@@ -164,12 +160,10 @@ const Bot = () => {
             color="primary"
             checked={checked}
             onChange={handleChange}
-            disabled={label === "Agenda"} // Désactiver le switch pour le label "Agenda"
           />
           <label
             // htmlFor={`checkbox${id}`}
-            className={`text-base font-medium text-navy-700 ${checked ? "text-success" : label === "Agenda" ? "text-disabled" : "text-danger"
-              }`}
+            className={`text-base font-medium text-navy-700 `}
           >
             {label}
           </label>
@@ -178,10 +172,45 @@ const Bot = () => {
     );
   };
 
-  const toggleSwitch = async (id: number) => {
-    const updateSwitches = { ...optimizationMenu };
-    updateSwitches[id].checked = !updateSwitches[id].checked;
+  // function to handle the click on the switch
+  const toggleSwitch = (id: number) => {
+    // Create a local copy of the optimizationMenuCopy
+    const updatedMenu = [...optimizationCopy];
+
+    // Toggle the checked property of the selected item
+    updatedMenu[id].checked = !updatedMenu[id].checked;
+
+    // Update the state with the new menu
+    setOptimizationCopy(updatedMenu);
   };
+
+  // function to handle the click on the validate button
+  const onValidate = () => {
+    // Copy the values from the copy back to the original array
+    setOptimizationMenu([...optimizationCopy]);
+
+    // Close the window
+    setIsModal(false);
+  };
+
+
+  // function to handle the click on analyze
+  const onStartAnalyze = () => {
+    // Create a copy of the optimizationMenu
+    // setOptimizationMenuCopy([...optimizationMenu]);
+    // show window
+    setIsModal(true)
+  }
+
+  const onAnnuler = () => {
+    // Reset the copy to match the original menu
+    setOptimizationCopy([...optimizationMenu]);
+
+    // Close the window
+    setIsModal(false);
+  };
+
+
 
 
   return (
@@ -190,33 +219,35 @@ const Bot = () => {
       {isModal &&
         <BaseModal close={() => setIsModal(false)}>
           <div>
-            <p className='text-black text-center font-medium text-xl pb-5'>Choisissez les catégories</p>
+            <p className='text-black text-center font-semibold text-xl pb-5'>Choisissez les catégories à analyser</p>
             <div className=" gap-5 mt-6 ">
-              {optimizationMenu.map((item, index) => {
+              {optimizationCopy.map((item, index) => {
                 return (
-                  // <div className="flex flex-row gap-x-4">
-
-                  //   <Switch
-                  //     color="primary"
-                  //     checked={item.checked}
-                  //     onChange={() => onClickSwitch(index, item.checked)}
-                  //   />
-                  //   <div className={`flex items-center justify-center rounded-2xl `}                    >
-                  //     {item.title}
-                  //   </div>
-                  // </div>
-                  // <div>
-                  renderCheckboxWithLabel(item.title, item.checked, () => toggleSwitch(index))
-                  // </div>
+                  // renderCheckboxWithLabel(item.title, item.checked, () => toggleSwitch(index))
+                  <div className="mt-4 flex items-center justify-between">
+                    <div className="flex items-center">
+                      <Switch key="BotList"
+                        color="primary"
+                        checked={item.checked}
+                        onChange={() => toggleSwitch(index)}
+                      />
+                      <label key={index}
+                        htmlFor={`checkbox${index}`}
+                        className={`text-base font-medium text-navy-700 `}
+                      >
+                        {item.title}
+                      </label>
+                    </div>
+                  </div>
                 );
               })}
             </div>
             <div className='flex items-center justify-center gap-6 pt-10'>
               <button
-                onClick={() => setIsModal(false)}
+                onClick={() => onAnnuler()}
                 className={`w-32 h-12 flex items-center justify-center rounded-xl text-black ${Theme_A.button.medWhiteColoredButton}`}>Annuler</button>
               <button
-                onClick={() => { }}
+                onClick={() => onValidate()}
                 className={`w-32 h-12 flex items-center justify-center rounded-xl text-white ${Theme_A.button.mediumGradientButton}`}>Valider</button>
             </div>
           </div>
@@ -231,7 +262,7 @@ const Bot = () => {
           <div>
 
             <div
-              onClick={() => setIsModal(true)}
+              onClick={() => onStartAnalyze()}
               className={`w-56 2xl:w-64 h-16 mb-6 flex items-center justify-center text-white font-semibold rounded-xl shadow-green-800 shadow-md  border-green-200 border-1 bg-gradient-to-br from-green-700 via-green-600 to-green-500 cursor-pointer transform hover:scale-105 transition-transform duration-300 hover:bg-gradient-to-r`}
             >
               Lancer une analyse
