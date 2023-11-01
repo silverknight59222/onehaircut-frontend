@@ -26,6 +26,7 @@ export const ColorsThemeA = {
 export const Theme_A = {
   Bars: {
     searchBar_1: `min-w-[300px] text-sm py-2 px-4 outline-none rounded-full bg-white border border-[#EDEDED] shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)] focus:ring-2 focus:bg-transparent focus:ring-red-300 `,
+    searchBar_2: "min-w-[300px] text-sm py-2 px-4 outline-none rounded-full text-black shadow-inner placeholder-gray-500 text-base transition duration-500 ease-in-out transform border-transparent bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-Gray-300 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400",
     proTopBar: {
       standardShape: `w-full flex items-center justify-center font-semibold bg-stone-50 opacity-100 border-x-2 border-stone-100 shadow-inner cursor-pointer rounded-lg px-5 h-11 hover:border-secondary hover:bg-gradient-to-b from-red-100 to-transparent`,
       activatedColor: "border border-red-50 bg-gradient-to-b from-red-100 to-transparent",
@@ -76,6 +77,7 @@ export const Theme_A = {
   },
   fields: {
     configurationField: "w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] focus:ring-2 focus:bg-transparent focus:ring-red-300 focus:border-stone-200 ",
+    configurationField2: " w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-inner text-black placeholder-gray-400 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-Gray-800 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400",
     inputField: `outline-none rounded-lg shadow-inner`,
     inputField2: "text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
   },

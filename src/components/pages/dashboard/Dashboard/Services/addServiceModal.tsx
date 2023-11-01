@@ -414,7 +414,7 @@ const AddServiceModal = (props: AddServiceModalType) => {
                 <input
                   type="number"
                   placeholder="Durée"
-                  className="w-48 p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
+                  className={` ${Theme_A.fields.configurationField2} w-48 px-3 py-4`}
                   value={service.duration}
                   onChange={(e) => onChangeDuration(e.target.value)}
                 />
@@ -429,7 +429,7 @@ const AddServiceModal = (props: AddServiceModalType) => {
                 <input
                   type="number"
                   placeholder="Prix"
-                  className="w-48 p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
+                  className={` ${Theme_A.fields.configurationField2} w-48 px-3 py-4`}
                   value={service.price}
                   onChange={(e) => onChangePrice(e.target.value)}
                 />
@@ -449,8 +449,8 @@ const AddServiceModal = (props: AddServiceModalType) => {
                   placeholder="Age"
                   className={
                     discountParamsDisable
-                      ? "w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none bg-slate-200"
-                      : "w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
+                      ? ` ${Theme_A.fields.configurationField2} bg-stone-100 w-48 px-3 py-4 cursor-not-allowed`
+                      : ` ${Theme_A.fields.configurationField2} w-48 px-3 py-4`
                   }
                   value={service.age}
                   maxLength={100}
@@ -471,8 +471,8 @@ const AddServiceModal = (props: AddServiceModalType) => {
 
                   className={
                     discountParamsDisable
-                      ? "w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none bg-slate-200"
-                      : "w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none"
+                      ? ` ${Theme_A.fields.configurationField2} bg-stone-100 w-48 px-3 py-4 cursor-not-allowed`
+                      : ` ${Theme_A.fields.configurationField2} w-48 px-3 py-4`
                   }
                   value={service.percent}
                   maxLength={100}
