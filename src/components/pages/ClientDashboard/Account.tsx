@@ -89,39 +89,39 @@ const Account = () => {
     ///////////////////// PASSWORD 
     ////////////////////////////////////////////////////
     const [passwordField, renewPassword] = useState({
-        old: "",
-        new: "",
-        new2: "",
+        oldPassword: "",
+        newPassword: "",
+        confirmPassword: "",
     });
     const setOldPassword = (value: string) => {
         renewPassword((prev) => {
-            return { ...prev, old: value };
+            return { ...prev, oldPassword: value };
         });
     };
     const setNewPassword = (value: string) => {
         renewPassword((prev) => {
-            return { ...prev, new: value };
+            return { ...prev, newPassword: value };
         });
     };
-    const setNew2Password = (value: string) => {
+    const setConfirmPassword = (value: string) => {
         renewPassword((prev) => {
-            return { ...prev, new2: value };
+            return { ...prev, confirmPassword: value };
         });
     };
 
     const onSubmitPassword = async () => {
         try {
             let resp = await client.resetPassword({
-                old_password: passwordField.old,
-                new_password: passwordField.new,
-                repeat_password: passwordField.new2,
+                old_password: passwordField.oldPassword,
+                new_password: passwordField.newPassword,
+                repeat_password: passwordField.confirmPassword,
             })
             console.log(resp)
             setIsModalPswrd(false);
             showSnackbar("success", resp.data.message);
-            passwordField.old = "";
-            passwordField.new = "";
-            passwordField.new2 = "";
+            passwordField.oldPassword = "";
+            passwordField.newPassword = "";
+            passwordField.confirmPassword = "";
         } catch (error) {
             console.log(error.response)
             setError((prev) => {
@@ -165,7 +165,7 @@ const Account = () => {
                     id="oldPswrd"
                     label="Ancien mot de passe"
                     variant="outlined"
-                    value={passwordField.old}
+                    value={passwordField.oldPassword}
                     onChange={(e) => setOldPassword(e.target.value)}
                     InputProps={{
                         style: {
@@ -177,7 +177,7 @@ const Account = () => {
                     id="NewPswrd1"
                     label="Nouveau mot de passe"
                     variant="outlined"
-                    value={passwordField.new}
+                    value={passwordField.newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     InputProps={{
                         style: {
@@ -189,8 +189,8 @@ const Account = () => {
                     id="NewPswrd2"
                     label="Répéter nouveau mot de passe"
                     variant="outlined"
-                    value={passwordField.new2}
-                    onChange={(e) => setNew2Password(e.target.value)}
+                    value={passwordField.confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                     InputProps={{
                         style: {
                             borderRadius: '12px',
