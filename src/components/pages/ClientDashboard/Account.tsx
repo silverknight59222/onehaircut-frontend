@@ -122,17 +122,17 @@ const Account = () => {
       };
     const setOldPassword = (value: string) => {
         setPasswordField((prev) => {
-            return { ...prev, old: value };
+            return { ...prev, oldPassword: value };
         });
     };
     const setNewPassword = (value: string) => {
         setPasswordField((prev) => {
-            return { ...prev, new: value };
+            return { ...prev, newPassword: value };
         });
     };
     const setNew2Password = (value: string) => {
         setPasswordField((prev) => {
-            return { ...prev, new2: value };
+            return { ...prev, confirmPassword: value };
         });
     };
 
