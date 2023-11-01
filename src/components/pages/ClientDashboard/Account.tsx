@@ -480,7 +480,7 @@ const Account = () => {
     const onSubmitReminderNotif = async () => {
         // saved reminders notifications prefrences
         setIsLoading(true)
-        await client.savePrefrences({
+        await client.saveNotificationsPreferences({
             type: "reminders",
             email: NotifReminderEmail,
             whatsapp: NotifReminderWhatsapp
@@ -569,7 +569,7 @@ const Account = () => {
     const onSubmitMsgNotif = async () => {
         // saved messages notifications prefrences
         setIsLoading(true)
-        await client.savePrefrences({
+        await client.saveNotificationsPreferences({
             type: "messages",
             email: NotifMsgEmail,
             whatsapp: NotifMsgWhatsapp
@@ -711,7 +711,7 @@ const Account = () => {
     };
 
     const fetchPrefrences = async () => {
-        const resp = await client.getSavePrefrences()
+        const resp = await client.getNotificationsPreferences()
 
         if (resp.data.reminders) {
             setPNotifReminderEmail(resp.data.reminders.emails)

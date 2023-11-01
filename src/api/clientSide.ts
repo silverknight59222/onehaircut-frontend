@@ -23,11 +23,11 @@ const client={
     createBooking: async (params: BookingParams) => {
         return await request.post(`/booking`, params);
     },
-    savePrefrences: async (params: any) => {
-        return await request.post(`/user/save_prefrences`, params);
+    saveNotificationsPreferences: async (params: any) => {
+        return await request.post(`/save_notifications_preferences`, params);
     },
-    getSavePrefrences: async () => {
-        return await request.get(`/user/get_saved_prefrences`);
+    getNotificationsPreferences: async () => {
+        return await request.get(`/fetch_notifications_preferences`);
     },
     getUserProfile: async () => {
         return await request.get(`/user_profile`);
