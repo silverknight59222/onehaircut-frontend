@@ -1,7 +1,7 @@
 "use client";
 import { LogoCircleFixRight, CrossIcon } from "@/components/utilis/Icons";
 import DashboardLayout from "@/layout/DashboardLayout";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 import Footer from "@/components/UI/Footer";
 import { useRouter } from "next/navigation";
@@ -22,7 +22,7 @@ const Bot = () => {
 
   // ADVISES PART
   // TODO: these arrays must be filled by the BE
-  let advisesVisibility: adviseInterface[] = [
+  const [advisesVisibility, setAdvisesVisibility] = useState([
     {
       title: "Images de vitrine peu attractives",
       desc: "Les clients parcourent que peu les photos de votre salon avant de partir. ",
@@ -38,49 +38,55 @@ const Bot = () => {
       desc: "Descriptif du salon manquant : Décrivez votre salon avec passion et précision pour attirer les clients. Exemple : Salon moderne offrant des coupes tendance, colorations éclatantes et styles personnalisés. Expérience capillaire exceptionnelle dans une ambiance conviviale. Rejoignez-nous pour briller avec style !'",
       route: "",
     },
-  ]
-  let advisesAgenda: adviseInterface[] = [
+  ])
+
+  const [advisesAgenda, setAdvisesAgenda] = useState([
     {
       title: "Titre",
       desc: "",
       route: "",
     },
-  ]
-  let advisesHaircuts: adviseInterface[] = [
+  ])
+
+  const [advisesHaircuts, setAdvisesHaircuts] = useState([
     {
       title: "",
       desc: "",
       route: "",
     },
-  ]
-  let advisesChat: adviseInterface[] = [
+  ])
+
+  const [advisesChat, setAdvisesChat] = useState([
     {
       title: "",
       desc: "",
       route: "",
     },
-  ]
-  let advisesStaff: adviseInterface[] = [
+  ])
+
+  const [advisesStaff, setAdvisesStaff] = useState([
     {
       title: "",
       desc: "",
       route: "",
     },
-  ]
-  let advisesClientFidelity: adviseInterface[] = [
+  ])
+
+  const [advisesClientFidelity, setAdvisesClientFidelity] = useState([
     {
       title: "",
       desc: "",
       route: "",
     },
-  ]
-  let advisesShop: adviseInterface[] = [
+  ])
+
+  const [advisesShop, setAdvisesShop] = useState([
     {
       title: "",
       desc: "",
       route: "",
     },
-  ]
+  ])
 
 
   const router = useRouter() // for navigating to the page where the advise is showed
@@ -89,7 +95,7 @@ const Bot = () => {
   // advises category to show
   const [showItem, setShowItem] = useState(advisesVisibility);
 
-  let optimizationMenu = [
+  const [optimizationMenu, setOptimizationMenu] = useState([
     { title: "Visibilité", count: 2, checked: false },
     { title: "Agencement agenda", count: 3, checked: true },
     { title: "Coiffures dispensées", count: 0, checked: true },
@@ -97,7 +103,10 @@ const Bot = () => {
     { title: "Performance du staff", count: 0, checked: true },
     { title: "Fidélisation client", count: 1, checked: true },
     // { title: "Shop", count: "" }, // TODO add in the future with the shop
-  ];
+  ]);
+
+  // Copy of optimizationMenu
+  const [optimizationCopy, setOptimizationCopy] = useState([...optimizationMenu])
 
   const onSelectTab = (item: string, index: number) => {
     setSelectedTab(index);
@@ -131,24 +140,66 @@ const Bot = () => {
 
   // function to acknowledge the advise and delete it
   const acknowledgeAdvise = (adviseToDelete: adviseInterface) => {
-    let i = 0
-    showItem.forEach(itemAdvise => {
-      if (itemAdvise == adviseToDelete) {
-        // advise found, aknowledge it
-        showItem.slice
-      }
-      i++
-    })
+    if (showItem == advisesVisibility) {
+      // Use the filter method to create a new array without the item to remove
+      const updatedMenu = advisesVisibility.filter((item) => item.title !== adviseToDelete.title);
+
+      // Update the state with the new menu
+      setShowItem(updatedMenu);
+      setAdvisesVisibility(updatedMenu);
+    }
+    else if (showItem == advisesAgenda) {
+      // Use the filter method to create a new array without the item to remove
+      const updatedMenu = advisesAgenda.filter((item) => item.title !== adviseToDelete.title);
+
+      // Update the state with the new menu
+      setShowItem(updatedMenu);
+      setAdvisesAgenda(updatedMenu);
+    }
+    else if (showItem == advisesHaircuts) {
+      // Use the filter method to create a new array without the item to remove
+      const updatedMenu = advisesHaircuts.filter((item) => item.title !== adviseToDelete.title);
+
+      // Update the state with the new menu
+      setShowItem(updatedMenu);
+      setAdvisesHaircuts(updatedMenu);
+    }
+    else if (showItem == advisesChat) {
+      // Use the filter method to create a new array without the item to remove
+      const updatedMenu = advisesChat.filter((item) => item.title !== adviseToDelete.title);
+
+      // Update the state with the new menu
+      setShowItem(updatedMenu);
+      setAdvisesChat(updatedMenu);
+    }
+    else if (showItem == advisesStaff) {
+      // Use the filter method to create a new array without the item to remove
+      const updatedMenu = advisesStaff.filter((item) => item.title !== adviseToDelete.title);
+
+      // Update the state with the new menu
+      setShowItem(updatedMenu);
+      setAdvisesStaff(updatedMenu);
+    }
+    else if (showItem == advisesClientFidelity) {
+      // Use the filter method to create a new array without the item to remove
+      const updatedMenu = advisesClientFidelity.filter((item) => item.title !== adviseToDelete.title);
+
+      // Update the state with the new menu
+      setShowItem(updatedMenu);
+      setAdvisesClientFidelity(updatedMenu);
+    }
+    else if (showItem == advisesShop) {
+      // Use the filter method to create a new array without the item to remove
+      const updatedMenu = advisesShop.filter((item) => item.title !== adviseToDelete.title);
+
+      // Update the state with the new menu
+      setShowItem(updatedMenu);
+      setAdvisesShop(updatedMenu);
+    }
   }
 
-  // function to handle the click on a switch
-  const onClickSwitch = (switchNb: number, currentCheck: boolean) => {
-    // if (switchNb <= optimizationMenu.length) {
-    // reverse the value
-    optimizationMenu[switchNb].checked = !currentCheck
-    // }
-  }
 
+  // to display the checkboxes
   const renderCheckboxWithLabel = (
     label: string,
     checked: boolean,
@@ -164,12 +215,10 @@ const Bot = () => {
             color="primary"
             checked={checked}
             onChange={handleChange}
-            disabled={label === "Agenda"} // Désactiver le switch pour le label "Agenda"
           />
           <label
             // htmlFor={`checkbox${id}`}
-            className={`text-base font-medium text-navy-700 ${checked ? "text-success" : label === "Agenda" ? "text-disabled" : "text-danger"
-              }`}
+            className={`text-base font-medium text-navy-700 `}
           >
             {label}
           </label>
@@ -178,45 +227,86 @@ const Bot = () => {
     );
   };
 
+  // function to handle the click on the switch
   const toggleSwitch = async (id: number) => {
-    const updateSwitches = { ...optimizationMenu };
-    updateSwitches[id].checked = !updateSwitches[id].checked;
+    // Create a local copy of the optimizationMenuCopy
+    let updatedMenu = [...optimizationCopy];
+
+    // Toggle the checked property of the selected item
+    updatedMenu[id].checked = !updatedMenu[id].checked;
+
+    // Update the state with the new menu
+    setOptimizationCopy(updatedMenu);
+    console.info(optimizationMenu)
+    console.info(optimizationCopy)
   };
+
+  // function to handle the click on the validate button
+  const onValidate = () => {
+    // Copy the values from the copy back to the original array
+    setOptimizationMenu([...optimizationCopy]);
+
+    // Close the window
+    setIsModal(false);
+  };
+
+
+  // function to handle the click on analyze
+  const onStartAnalyze = () => {
+    // Create a copy of the optimizationMenu
+    setOptimizationCopy([...optimizationMenu]);
+    // show window
+    setIsModal(true)
+  }
+
+  const onAnnuler = () => {
+    // Reset the copy to match the original menu
+    setOptimizationCopy(optimizationMenu);
+
+    // Close the window
+    setIsModal(false);
+
+    console.info(optimizationMenu)
+  };
+
+
 
 
   return (
     <div>
       {/* Modal to display the categories to be analyzed */}
       {isModal &&
-        <BaseModal close={() => setIsModal(false)}>
+        <BaseModal close={() => onAnnuler()}>
           <div>
-            <p className='text-black text-center font-medium text-xl pb-5'>Choisissez les catégories</p>
+            <p className='text-black text-center font-semibold text-xl pb-5'>Choisissez les catégories à analyser</p>
             <div className=" gap-5 mt-6 ">
-              {optimizationMenu.map((item, index) => {
+              {optimizationCopy.map((item, index) => {
                 return (
-                  // <div className="flex flex-row gap-x-4">
-
-                  //   <Switch
-                  //     color="primary"
-                  //     checked={item.checked}
-                  //     onChange={() => onClickSwitch(index, item.checked)}
-                  //   />
-                  //   <div className={`flex items-center justify-center rounded-2xl `}                    >
-                  //     {item.title}
-                  //   </div>
-                  // </div>
-                  // <div>
-                  renderCheckboxWithLabel(item.title, item.checked, () => toggleSwitch(index))
-                  // </div>
+                  // renderCheckboxWithLabel(item.title, item.checked, () => toggleSwitch(index))
+                  <div className="mt-4 flex items-center justify-between">
+                    <div className="flex items-center">
+                      <Switch key="BotList"
+                        color="primary"
+                        checked={item.checked}
+                        onChange={() => toggleSwitch(index)}
+                      />
+                      <label key={index}
+                        htmlFor={`checkbox${index}`}
+                        className={`text-base font-medium text-navy-700 `}
+                      >
+                        {item.title}
+                      </label>
+                    </div>
+                  </div>
                 );
               })}
             </div>
             <div className='flex items-center justify-center gap-6 pt-10'>
               <button
-                onClick={() => setIsModal(false)}
+                onClick={() => onAnnuler()}
                 className={`w-32 h-12 flex items-center justify-center rounded-xl text-black ${Theme_A.button.medWhiteColoredButton}`}>Annuler</button>
               <button
-                onClick={() => { }}
+                onClick={() => onValidate()}
                 className={`w-32 h-12 flex items-center justify-center rounded-xl text-white ${Theme_A.button.mediumGradientButton}`}>Valider</button>
             </div>
           </div>
@@ -231,7 +321,7 @@ const Bot = () => {
           <div>
 
             <div
-              onClick={() => setIsModal(true)}
+              onClick={() => onStartAnalyze()}
               className={`w-56 2xl:w-auto h-12 mb-6 flex items-center justify-center text-white font-small rounded-xl shadow-md hover:shadow-xl border-green-400 border-1 bg-gradient-to-br from-green-700 via-green-600 to-green-500 cursor-pointer transform hover:scale-105 transition-transform duration-300 `}
             >
               Lancer une analyse
@@ -265,7 +355,7 @@ const Bot = () => {
                   key={index}
                   className="relative z-10 w-full md:w-[450px] xl:w-[690px] 2xl:w-[850px] py-6 flex flex-col xl:flex-row items-start xl:items-end justify-between rounded-xl bg-white mb-7 px-8 shadow-xl">
                   <div
-                    onClick={(e) => acknowledgeAdvise(item)}
+                    onClick={() => acknowledgeAdvise(item)}
                     className={`absolute -top-5 -right-3 flex items-center w-6 h-6 cursor-pointer rounded-md ${Theme_A.button.crossButtonSmall} z-10`}>
                     <CrossIcon width="18" height="18" />
                   </div>
