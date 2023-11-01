@@ -230,7 +230,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
                 <input
                   type="number"
                   placeholder="Durée"
-                  className={`w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-inner outline-none bg-stone-100 ${Theme_A.behaviour.fieldFocused_C}`}
+                  className={`w-full px-3 py-4 ${Theme_A.fields.configurationField2}`}
                   value={service.duration}
                   onChange={(e) => onChangeDuration(e.target.value)}
                 />
@@ -251,7 +251,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
                 <input
                   type="number"
                   placeholder="Prix"
-                  className={`w-full p-3 placeholder:text-[#959595] text-sm  placeholder:text-base rounded-md shadow-inner outline-none bg-stone-100 ${Theme_A.behaviour.fieldFocused_C}`}
+                  className={`w-full px-3 py-4 ${Theme_A.fields.configurationField2}`}
                   value={service.price}
                   onChange={(e) => onChangePrice(e.target.value)}
                 />
