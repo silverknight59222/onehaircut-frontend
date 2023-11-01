@@ -22,7 +22,7 @@ const Bot = () => {
 
   // ADVISES PART
   // TODO: these arrays must be filled by the BE
-  let advisesVisibility: adviseInterface[] = [
+  const [advisesVisibility, setAdvisesVisibility] = useState([
     {
       title: "Images de vitrine peu attractives",
       desc: "Les clients parcourent que peu les photos de votre salon avant de partir. ",
@@ -38,49 +38,55 @@ const Bot = () => {
       desc: "Descriptif du salon manquant : Décrivez votre salon avec passion et précision pour attirer les clients. Exemple : Salon moderne offrant des coupes tendance, colorations éclatantes et styles personnalisés. Expérience capillaire exceptionnelle dans une ambiance conviviale. Rejoignez-nous pour briller avec style !'",
       route: "",
     },
-  ]
-  let advisesAgenda: adviseInterface[] = [
+  ])
+
+  const [advisesAgenda, setAdvisesAgenda] = useState([
     {
       title: "Titre",
       desc: "",
       route: "",
     },
-  ]
-  let advisesHaircuts: adviseInterface[] = [
+  ])
+
+  const [advisesHaircuts, setAdvisesHaircuts] = useState([
     {
       title: "",
       desc: "",
       route: "",
     },
-  ]
-  let advisesChat: adviseInterface[] = [
+  ])
+
+  const [advisesChat, setAdvisesChat] = useState([
     {
       title: "",
       desc: "",
       route: "",
     },
-  ]
-  let advisesStaff: adviseInterface[] = [
+  ])
+
+  const [advisesStaff, setAdvisesStaff] = useState([
     {
       title: "",
       desc: "",
       route: "",
     },
-  ]
-  let advisesClientFidelity: adviseInterface[] = [
+  ])
+
+  const [advisesClientFidelity, setAdvisesClientFidelity] = useState([
     {
       title: "",
       desc: "",
       route: "",
     },
-  ]
-  let advisesShop: adviseInterface[] = [
+  ])
+
+  const [advisesShop, setAdvisesShop] = useState([
     {
       title: "",
       desc: "",
       route: "",
     },
-  ]
+  ])
 
 
   const router = useRouter() // for navigating to the page where the advise is showed
@@ -134,15 +140,64 @@ const Bot = () => {
 
   // function to acknowledge the advise and delete it
   const acknowledgeAdvise = (adviseToDelete: adviseInterface) => {
-    let i = 0
-    showItem.forEach(itemAdvise => {
-      if (itemAdvise == adviseToDelete) {
-        // advise found, aknowledge it
-        showItem.slice
-      }
-      i++
-    })
+    if (showItem == advisesVisibility) {
+      // Use the filter method to create a new array without the item to remove
+      const updatedMenu = advisesVisibility.filter((item) => item.title !== adviseToDelete.title);
+
+      // Update the state with the new menu
+      setShowItem(updatedMenu);
+      setAdvisesVisibility(updatedMenu);
+    }
+    else if (showItem == advisesAgenda) {
+      // Use the filter method to create a new array without the item to remove
+      const updatedMenu = advisesAgenda.filter((item) => item.title !== adviseToDelete.title);
+
+      // Update the state with the new menu
+      setShowItem(updatedMenu);
+      setAdvisesAgenda(updatedMenu);
+    }
+    else if (showItem == advisesHaircuts) {
+      // Use the filter method to create a new array without the item to remove
+      const updatedMenu = advisesHaircuts.filter((item) => item.title !== adviseToDelete.title);
+
+      // Update the state with the new menu
+      setShowItem(updatedMenu);
+      setAdvisesHaircuts(updatedMenu);
+    }
+    else if (showItem == advisesChat) {
+      // Use the filter method to create a new array without the item to remove
+      const updatedMenu = advisesChat.filter((item) => item.title !== adviseToDelete.title);
+
+      // Update the state with the new menu
+      setShowItem(updatedMenu);
+      setAdvisesChat(updatedMenu);
+    }
+    else if (showItem == advisesStaff) {
+      // Use the filter method to create a new array without the item to remove
+      const updatedMenu = advisesStaff.filter((item) => item.title !== adviseToDelete.title);
+
+      // Update the state with the new menu
+      setShowItem(updatedMenu);
+      setAdvisesStaff(updatedMenu);
+    }
+    else if (showItem == advisesClientFidelity) {
+      // Use the filter method to create a new array without the item to remove
+      const updatedMenu = advisesClientFidelity.filter((item) => item.title !== adviseToDelete.title);
+
+      // Update the state with the new menu
+      setShowItem(updatedMenu);
+      setAdvisesClientFidelity(updatedMenu);
+    }
+    else if (showItem == advisesShop) {
+      // Use the filter method to create a new array without the item to remove
+      const updatedMenu = advisesShop.filter((item) => item.title !== adviseToDelete.title);
+
+      // Update the state with the new menu
+      setShowItem(updatedMenu);
+      setAdvisesShop(updatedMenu);
+    }
   }
+
 
   // to display the checkboxes
   const renderCheckboxWithLabel = (
@@ -173,15 +228,17 @@ const Bot = () => {
   };
 
   // function to handle the click on the switch
-  const toggleSwitch = (id: number) => {
+  const toggleSwitch = async (id: number) => {
     // Create a local copy of the optimizationMenuCopy
-    const updatedMenu = [...optimizationCopy];
+    let updatedMenu = [...optimizationCopy];
 
     // Toggle the checked property of the selected item
     updatedMenu[id].checked = !updatedMenu[id].checked;
 
     // Update the state with the new menu
     setOptimizationCopy(updatedMenu);
+    console.info(optimizationMenu)
+    console.info(optimizationCopy)
   };
 
   // function to handle the click on the validate button
@@ -197,17 +254,19 @@ const Bot = () => {
   // function to handle the click on analyze
   const onStartAnalyze = () => {
     // Create a copy of the optimizationMenu
-    // setOptimizationMenuCopy([...optimizationMenu]);
+    setOptimizationCopy([...optimizationMenu]);
     // show window
     setIsModal(true)
   }
 
   const onAnnuler = () => {
     // Reset the copy to match the original menu
-    setOptimizationCopy([...optimizationMenu]);
+    setOptimizationCopy(optimizationMenu);
 
     // Close the window
     setIsModal(false);
+
+    console.info(optimizationMenu)
   };
 
 
@@ -217,7 +276,7 @@ const Bot = () => {
     <div>
       {/* Modal to display the categories to be analyzed */}
       {isModal &&
-        <BaseModal close={() => setIsModal(false)}>
+        <BaseModal close={() => onAnnuler()}>
           <div>
             <p className='text-black text-center font-semibold text-xl pb-5'>Choisissez les catégories à analyser</p>
             <div className=" gap-5 mt-6 ">
@@ -296,7 +355,7 @@ const Bot = () => {
                   key={index}
                   className="relative z-10 w-full md:w-[450px] xl:w-[690px] 2xl:w-[850px] py-6 flex flex-col xl:flex-row items-start xl:items-end justify-between rounded-xl bg-white mb-7 px-8 shadow-xl">
                   <div
-                    onClick={(e) => acknowledgeAdvise(item)}
+                    onClick={() => acknowledgeAdvise(item)}
                     className={`absolute -top-5 -right-3 flex items-center w-6 h-6 cursor-pointer rounded-md ${Theme_A.button.crossButtonSmall} z-10`}>
                     <CrossIcon width="18" height="18" />
                   </div>
