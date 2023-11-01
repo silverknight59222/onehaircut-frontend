@@ -1,5 +1,7 @@
 import { CompletedHairStyleIcon, DashboardHeartIcon, DashboardUsersIcon, ProjectIncomeIcon } from "@/components/utilis/Icons";
 import React from "react";
+import "chart.js/auto";
+import ChartjsLineChart from '@/views/charts/chartjs/ChartjsLineChart'
 import Footer from "@/components/UI/Footer";
 
 const Dashboard = () => {
@@ -57,7 +59,7 @@ const Dashboard = () => {
       profit: "4456",
     },
   ];
-  
+
   return (
     <div className="px-4 lg:px-6">
       <Footer />
@@ -86,6 +88,23 @@ const Dashboard = () => {
               </div>
             );
           })}
+        </div>
+      </div>
+      <div className="mt-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="p-6 bg-[rgba(255,255,255,0.69)] rounded-[20px] shadow-[0px_26px_31px_0px_rgba(176, 176, 176, 0.10)]">
+            {/* Revenue chart */}
+            <div>
+              <ChartjsLineChart
+                  white="#ffffff"
+                  primary="#3498db"
+                  secondary="#2ecc71"
+                  labelColor="#9b9b9b"
+                  borderColor="#eaeaea"
+                  legendColor="#606060"
+              />
+            </div>
+          </div>
         </div>
       </div>
       <div className="mt-12 flex md:flex-row flex-col items-start gap-12">
@@ -166,7 +185,7 @@ const Dashboard = () => {
         </div>
       </div>
     </div>
-    
+
       );
 };
 
