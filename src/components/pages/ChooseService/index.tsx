@@ -265,13 +265,13 @@ const ServiceChoose = () => {
                                     </div>
                                     {service.type === 'coloration' ? (
                                         <div ref={dropdownRef} onClick={(e) => e.stopPropagation()} className='relative'>
-                                            <select onChange={(event) => onServiceSelect(event, service.name, service.id, service.requirements)} className='w-28 h-6 flex items-center justify-center rounded-md border border-[#CACACA] bg-white text-xs text-[#6F6F6F] shadow-[0px_1px_2px_0px_rgba(204,204,204,0.54)]'>
+                                            {/* <select onChange={(event) => onServiceSelect(event, service.name, service.id, service.requirements)} className='w-28 h-6 flex items-center justify-center rounded-md border border-[#CACACA] bg-white text-xs text-[#6F6F6F] shadow-[0px_1px_2px_0px_rgba(204,204,204,0.54)]'>
                                                 {service.colors.map((option, index) => (
                                                     <option key={index} value={option.color} className={`absolute w-32 h-52 overflow-auto flex flex-col gap-2 py-2 px-3 mt-1 rounded-md outline outline-1 border border-stone-300 bg-white text-xs text-[#6F6F6F] font-semibold shadow-lg`}>
                                                         {option.color}
                                                     </option>
                                                 ))}
-                                            </select>
+                                            </select> */}
                                         </div>
                                     ) : (
                                         <div style={{ position: 'absolute', right: '10px', bottom: '10px' }}>
