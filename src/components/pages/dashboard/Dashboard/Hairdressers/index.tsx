@@ -439,165 +439,71 @@ const Hairdressers = () => {
           <div className={`${Theme_A.textFont.headerH2} underline`}>
             Ajouter un nouveau coiffeur
           </div>
-
-          <div className="flex items-center justify-center">
-            {/* PRENOM DU COIFFEUR */}
-            <div className="w-auto max-w-[450px] mr-8">
-              <TextField
-                id="outlined-basic"
-                label="Prénom coiffeur"
-                variant="outlined"
-                value={hairDresser.name}
-                onChange={(e) => {
-                  onChangeName(e.target.value)
-                }}
-                InputProps={{
-                  style: {
-                    borderRadius: '12px',
-                  },
-                }}
-              />
-              {error.name && (
-                <p className="text-xs text-red-700 ml-3 mt-1">{error.name}*</p>
-              )}
-            </div>
+          <div className="w-full max-w-[450px]">
 
 
-            {/* ADRESSE EMAIL  */}
-            <div className="w-auto max-w-[450px]">
-              <TextField
-                id="outlined-basic"
-                label="Adresse mail"
-                variant="outlined"
-                value={hairDresser.email}
-                onChange={(e) => {
-                  onChangeEmail(e.target.value)
-                }}
-                InputProps={{
-                  style: {
-                    borderRadius: '12px',
-                  },
-                }}
-              />
-              {error.email && (
-                <p className="text-xs text-red-700 ml-3 mt-1">{error.email}*</p>
-              )}
-            </div>
+            <label className={`${Theme_A.textFont.headerH4}`} htmlFor="emailInput">Pr&eacute;nom </label>
+            <input
+              placeholder="Prénom"
+              className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 
+              focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+              value={hairDresser.name}
+              onChange={(e) => onChangeName(e.target.value)}
+            />
+            {error.name && (
+              <p className="text-xs text-red-700 ml-3 mt-1">{error.name}*</p>
+            )}
           </div>
 
 
-          {isModal && (
-            <BaseModal close={closeModal}>
-              {/* Contenu du modal */}
-              <div className="relative z-1000">
-                <div className="flex flex-col items-center justify-center gap-4">
-                  <p className="text-xl font-semibold text-black text-center">Modification du mot de passe</p>
+          <div className="w-full max-w-[450px]">
+            <label className={`${Theme_A.textFont.headerH4}`} htmlFor="emailInput">Adresse mail</label>
+            <input
+              placeholder="Adresse mail"
+              className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 
+              focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+              value={hairDresser.email}
+              onChange={(e) => onChangeEmail(e.target.value)}
+            />
+            {error.email && (
+              <p className="text-xs text-red-700 ml-3 mt-1">{error.email}*</p>
+            )}
+          </div>
 
 
-                  {error && (
-                    <p className={`${Theme_A.checkers.errorText}`}>
-                      {error.text}
-                    </p>
-                  )}
-                  <TextField className={`${inputFieldsDesign} mt-4`}
-                    id="oldPswrd"
-                    label="Ancien mot de passe"
-                    variant="outlined"
-                    value={passwordField.old}
-                    onChange={(e) => setOldPassword(e.target.value)}
-                    InputProps={{
-                      style: {
-                        borderRadius: '12px',
-                      },
-                    }}
-                  />
-                  <TextField className={`${inputFieldsDesign}`}
-                    id="NewPswrd1"
-                    label="Nouveau mot de passe"
-                    variant="outlined"
-                    value={passwordField.new}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    InputProps={{
-                      style: {
-                        borderRadius: '12px',
-                      },
-                    }}
-                  />
-                  <TextField className={`${inputFieldsDesign}`}
-                    id="NewPswrd2"
-                    label="Répéter nouveau mot de passe"
-                    variant="outlined"
-                    value={passwordField.new2}
-                    onChange={(e) => setNew2Password(e.target.value)}
-                    InputProps={{
-                      style: {
-                        borderRadius: '12px',
-                      },
-                    }}
-                  />
-                </div>
-                <div className="mt-8 flex gap-4 items-center justify-center w-full">
-                  <button
-                    className={`${Theme_A.button.medWhiteColoredButton}`}
-                    onClick={() => closeModal()}
-                  >
-                    Annuler
-                  </button>
-                  <button
-                    className={`${Theme_A.button.mediumGradientButton}`}
-                    onClick={() => onSubmitPassword()}
-                  >
-                    Actualiser
-                  </button>
-                </div>
-              </div>
-            </BaseModal>
-          )}
-
-          <div className="flex items-center justify-center">
-            {/* MOT DE PASSE */}
-            <div className="w-auto max-w-[450px]">
-              <TextField
-                disabled
-                id="outlined-basic"
-                label="Mot de passe"
-                variant="outlined"
-                value=''
-                onChange={(e) => {
-                  onChangePassword(e.target.value)
-                }}
-                InputProps={{
-                  style: {
-                    borderRadius: '12px',
-                  },
-                }}
-              />
-              {error.password && (
-                <p className="text-xs text-red-700 ml-3 mt-1">{error.password}*</p>
-              )}
-            </div>
-
-            {/* Edit PASSOWRD */}
-            <button
-              className="text-sm ml-6 shadow-sm text-white p-3 bg-stone-700  border-stone-300 rounded-lg cursor-pointer hover:scale-105 hover:shadow-md transition duration-300"
-              onClick={openModal} // Ouvrir le modal lorsque le bouton "Edit" est cliqué
-            >
-              Edit
-            </button>
+          <div className="w-full max-w-[450px]">
+            <label className={`${Theme_A.textFont.headerH4}`} htmlFor="emailInput">Mot de passe</label>
+            <input
+              type="password"
+              placeholder="Mot de passe"
+              className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 
+              focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+              onChange={(e) => onChangePassword(e.target.value)}
+            />
+            {error.password && (
+              <p className="text-xs text-red-700 ml-3 mt-1">{error.password}*</p>
+            )}
           </div>
 
 
 
-          {/* ROLE */}
-          <div className="w-auto max-w-[450px]">
-            <DropdownMenu dropdownItems={RoleList} fctToCallOnClick={onChangeRole} menuName="Role" />
-            {/* 
+          <div className="w-full max-w-[450px]">
+            {/* <DropdownMenu
+              dropdownItems={RoleList}
+              menuName="Role"
+              fctToCallOnClick={onChangeRole}
+              labelId='role'
+              selectId='admin'
+              defaultSelected={'admin'} // Pass the default value as a prop
+            /> */}
+            {/* <DropdownMenu dropdownItems={WishLength} fctToCallOnClick={onChangeRole} menuName="Role" /> */}
+
             <select
-              className={`w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none ${Theme_A.behaviour.fieldFocused_C}`}
+              className={`w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md border border:stone-400 shadow-md  ${Theme_A.behaviour.fieldFocused_B}`}
               name="role" onChange={(e) => onChangeRole(e.target.value)}>
               <option value="admin">Admin</option>
               <option value="staff">Staff</option>
-            </select> */}
+            </select>
             {error.email && (
               <p className="text-xs text-red-700 ml-3 mt-1">{error.role}*</p>
             )}

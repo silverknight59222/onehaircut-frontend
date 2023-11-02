@@ -197,10 +197,10 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
   const applyPermissions = (menus: any) => {
     const temp = getLocalStorage("user");
     const user = temp ? JSON.parse(temp) : null;
-    if (user.permissions) {
+    if (user.role != 'salon_professional' && user.permissions.length > 0) {
       menus.forEach((m: any, k: number) => {
         if (user.permissions.indexOf(m.title) == -1) {
-          // delete menus[k];
+          delete menus[k];
         }
       });
     }

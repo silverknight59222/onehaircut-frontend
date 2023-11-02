@@ -16,6 +16,7 @@ import PayementSettings from "./PayementSettings";
 import SalonInfos from "./SalonInfos";
 import RolesSettings from "./RolesSettings";
 import Unavailability from "./Unavailability";
+import NotificationsSettings from "./Notifications";
 export interface settingsStruct {
   name: string;
   display: () => React.JSX.Element;
@@ -27,9 +28,9 @@ const settingsMenu: settingsStruct[] = [
   { name: "Indisponibilités", display: Unavailability },
   { name: "Accès des rôles", display: RolesSettings },
   { name: "Paiements", display: PayementSettings },
-  { name: "Notifications", display: BotSettings },
-  { name: "OnehairBot", display: BotSettings },
-  { name: "Promotions", display: PromotionsSettings },
+  { name: "Notifications", display: NotificationsSettings },
+  //{ name: "OnehairBot", display: BotSettings },
+  //{ name: "Promotions", display: PromotionsSettings },
 ]
 
 

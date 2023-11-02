@@ -63,6 +63,11 @@ const Forgot = () => {
 		await Auth.forgot(userInfo)
 			.then((resp) => {
 				showSnackbar('success', resp.data.message)
+				setUserInfo((prevState) => ({
+					...prevState,
+					email: "",
+				}));
+
 			})
 			.catch((err) => {
 				showSnackbar('error', 'Le mot de passe et l\'adresse e-mail sont obligatoires.')

@@ -22,15 +22,15 @@ const RolesSettings = () => {
         8: false,
         9: false,
         10: false,
-        11: false,
-        12: false,
+        18: false,
+        19: false,
     });
     const [otherSwitches, setOtherSwitches] = useState([]);
     const [settingSwitches, setSettingSwitches] = useState([]);
 
 
     const rolePermissions: RolePermissions = {
-        admin: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12],
+        admin: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 18, 19],
         staff: [1, 2, 3, 6, 7, 8],
     };
 
@@ -49,8 +49,8 @@ const RolesSettings = () => {
             8: false,
             9: false,
             10: false,
-            11: false,
-            12: false,
+            18: false,
+            19: false,
         },
         staff: {
             // ... Définir les états initiaux pour les commutateurs d'Admin
@@ -64,18 +64,18 @@ const RolesSettings = () => {
             8: false,
             9: false,
             10: false,
-            11: false,
-            12: false,
+            18: false,
+            19: false,
         },
     });
 
     //Reglage switches
     const [modalSwitchesByRole, setModalSwitchesByRole] = useState<{ [key: string]: { [key: number]: boolean } }>({
         admin: {
-
+            11: false, 12: false, 13: false, 14: false, 15: false, 16: false, 17: false
         },
         staff: {
-
+            11: false, 12: false, 13: false, 14: false, 15: false, 16: false, 17: false
         },
     });
 
@@ -177,6 +177,7 @@ const RolesSettings = () => {
         checked: boolean,
         onChange: (checked: boolean) => void
     ) => {
+        // console.log(id, label, checked, onChange);
         const handleChange = () => {
             onChange(!checked);
         };
@@ -314,18 +315,18 @@ const RolesSettings = () => {
             {/* ADMIN / STAFF TITRE  */}
             <div className="flex justify-center items-center">
                 <button
-                    className={`text-xl font-semibold focus:outline-none mr-32 p-2 ${selectedRole === "admin"
-                        ? "bg-stone-700 text-white rounded-md"
-                        : "bg-white text-stone-800"
+                    className={`text-xl font-semibold focus:outline-none mr-32 p-2 rounded-md ${selectedRole === "admin"
+                        ? "bg-stone-700 text-white "
+                        : "bg-white text-stone-800 hover:bg-stone-200"
                         }`}
                     onClick={() => handleRoleClick("admin")} // Passer "Admin" en tant que chaîne de caractères
                 >
                     Admin
                 </button>
                 <button
-                    className={`text-xl font-semibold focus:outline-none p-2 ${selectedRole === "staff"
-                        ? "bg-stone-700 text-white rounded-md"
-                        : "bg-white text-stone-800"
+                    className={`text-xl font-semibold focus:outline-none p-2 rounded-md ${selectedRole === "staff"
+                        ? "bg-stone-700 text-white "
+                        : "bg-white text-stone-800 hover:bg-stone-200"
                         }`}
                     onClick={() => handleRoleClick("staff")} // Passer "Staff" en tant que chaîne de caractères
                 >
