@@ -62,19 +62,33 @@ const History = () => {
   const rebook = (booking: BookingInfoStruct) => {
     //TODO add backend function
   };
+  const [page, setPage] = useState(1);
 
   const Histories = async () => {
     setIsLoading(true)
-    client.getMyBookings()
+    client.getMyHistories(page)
       .then((resp) => {
         console.log(resp.data)
+        setPage(prevPage => prevPage + 1);
         setHistories(resp.data)
       })
       .finally(() => setIsLoading(false));
   }
+
+  const handleScroll = () => {
+    if (isLoading) return;
+
+    if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 30) {
+      Histories();
+    }
+  };
+
   useEffect(() => {
-    Histories();
-  }, [])
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [isLoading])
 
   return (
     <div>

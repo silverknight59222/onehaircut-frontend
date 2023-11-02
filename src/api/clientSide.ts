@@ -38,8 +38,8 @@ const client={
     resetPassword: async (params: any) => {
         return await request.post(`/client_password_reset`, params);
     },
-    getMyBookings: async () => {
-        return await request.get(`/my_histories`);
+    getMyHistories: async (page: number) => {
+        return await request.get(`/my_histories/${page}`);
     },
     getMyReservations: async () => {
         return await request.get(`/my_reservations`);
