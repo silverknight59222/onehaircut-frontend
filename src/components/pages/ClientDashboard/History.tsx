@@ -62,19 +62,33 @@ const History = () => {
   const rebook = (booking: BookingInfoStruct) => {
     //TODO add backend function
   };
+  const [page, setPage] = useState(1);
 
   const Histories = async () => {
     setIsLoading(true)
-    client.getMyBookings()
+    client.getMyHistories(page)
       .then((resp) => {
         console.log(resp.data)
+        setPage(prevPage => prevPage + 1);
         setHistories(resp.data)
       })
       .finally(() => setIsLoading(false));
   }
+
+  const handleScroll = () => {
+    if (isLoading) return;
+
+    if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 30) {
+      Histories();
+    }
+  };
+
   useEffect(() => {
-    Histories();
-  }, [])
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [isLoading])
 
   return (
     <div>
@@ -134,7 +148,7 @@ const History = () => {
 
                         </div>
                         <div className='w-[150px]'>
-                          <Image src={item.image} alt='' width={150} height={150} className='rounded-3xl' />
+                          <Image src={`https://api-server.onehaircut.com/public${item.salon_haircut.haircut.image}`} alt='' width={150} height={150} className='rounded-3xl' />
                           <div className='justify-center items-center mt-3 bg-zinc-100 rounded-2xl p-1'>
                             <StarRatings
                               rating={item.note}
