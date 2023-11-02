@@ -41,8 +41,8 @@ const client={
     getMyHistories: async (page: number) => {
         return await request.get(`/my_histories/${page}`);
     },
-    getMyReservations: async () => {
-        return await request.get(`/my_reservations`);
+    getMyReservations: async (page: number) => {
+        return await request.get(`/my_reservations/${page}`);
     },
     storeHairstylePreferences: async (params: any) => {
         return await request.post(`/save_hairstyle_preferences`, params);

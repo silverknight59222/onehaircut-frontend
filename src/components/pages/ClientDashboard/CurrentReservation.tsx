@@ -25,16 +25,35 @@ const Currentreservation = () => {
     };
 
     const [items, setItems] = useState([]);
+    const [isLoading, setIsLoading] = useState(false);
+    const [page, setPage] = useState(1);
 
     const allReservations = async () => {
-        const resp = await client.getMyReservations();
-        console.log(resp.data);
-        setItems(resp.data);
+        setIsLoading(true);
+        client.getMyReservations(page)
+            .then((resp) => {
+                console.log(resp.data);
+                setItems(resp.data);
+                setIsLoading(false);
+                setPage(prevPage => prevPage + 1);
+            })
+            .finally(() => setIsLoading(false));
     }
 
+    const handleScroll = () => {
+        if (isLoading) return;
+
+        if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 30) {
+            allReservations();
+        }
+    };
+
     useEffect(() => {
-        allReservations();
-    }, [])
+        window.addEventListener('scroll', handleScroll);
+        return () => {
+            window.removeEventListener('scroll', handleScroll);
+        };
+    }, [isLoading])
 
     return (
         <div>
