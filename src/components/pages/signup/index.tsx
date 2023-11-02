@@ -6,6 +6,7 @@ import userLoader from '@/hooks/useLoader';
 import useSnackbar from '@/hooks/useSnackbar';
 import { LogoCircleFixLeft, LogoIcon } from "@/components/utilis/Icons";
 import Link from "next/link";
+import { Theme_A } from "@/components/utilis/Themes";
 
 const Signup = () => {
 	const router = useRouter();
@@ -15,20 +16,20 @@ const Signup = () => {
 	const defaultUserInfo = {
 		email: "",
 		password: "",
-        name: '',
-        phone: '',
-		role:'client'
+		name: '',
+		phone: '',
+		role: 'client'
 	};
 	const [error, setError] = useState({
 		email: '',
 		password: '',
-        name: '',
-        phone: '',
+		name: '',
+		phone: '',
 	})
 	const [userInfo, setUserInfo] = useState(defaultUserInfo);
 	const [isLoading, setIsLoading] = useState(false);
 
-    const setUserName = (e: string) => {
+	const setUserName = (e: string) => {
 		if (!e.length) {
 			setError((prev => {
 				return { ...prev, name: 'Un name est requis' }
@@ -44,7 +45,7 @@ const Signup = () => {
 		}));
 	};
 
-    const setUserPhone = (e: string) => {
+	const setUserPhone = (e: string) => {
 		if (!e.length) {
 			setError((prev => {
 				return { ...prev, phone: 'Un phone est requis' }
@@ -112,7 +113,7 @@ const Signup = () => {
 				return { ...prev, password: '' }
 			}))
 		}
-        if (!userInfo.name) {
+		if (!userInfo.name) {
 			setError((prev => {
 				return { ...prev, name: 'Mot de passe requis' }
 			}))
@@ -122,7 +123,7 @@ const Signup = () => {
 				return { ...prev, name: '' }
 			}))
 		}
-        if (!userInfo.phone) {
+		if (!userInfo.phone) {
 			setError((prev => {
 				return { ...prev, phone: 'Mot de passe requis' }
 			}))
@@ -161,77 +162,91 @@ const Signup = () => {
 				<div className="mt-8">
 					<LogoIcon />
 				</div>
-				<div className="z-10 mt-8 md:mt-12 w-full md:w-[767px] md:rounded-3xl md:bg-white md:shadow-[0px_16px_58px_6px_rgba(172,172,172,0.15)] px-4 sm:px-16 md:px-24">
+
+
+				<div className="z-10 mt-8 md:mt-12 w-full bg-white border-2 border-stone-300 shadow-lg md:w-[767px] md:rounded-3xl px-4 sm:px-16 md:px-24">
 					<div className="flex flex-col items-center justify-center">
+
+						{/* SIGN UP */}
 						<p className="text-black font-medium text-3xl my-8 md:my-12">
 							Sign up
 						</p>
-                        <div className="w-full mt-1">
-							<div className="w-full h-[60px] p-[1px] flex items-center justify-center rounded-xl bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo">
-								<div className="w-full h-[58px] rounded-[11px] bg-white flex items-center justify-center">
-									<input
-										placeholder="Name"
-										type="text"
-										className="w-full h-[58px] rounded-[11px] outline-none px-4"
-										value={userInfo.name}
-										onChange={(e) => setUserName(e.target.value)}
-									/>
-								</div>
+
+						{/* NAME */}
+						<div className="w-full mt-1">
+							<div className="flex items-center justify-center ">
+								<input
+									placeholder="Name"
+									type="text"
+									className={`w-full h-[60px] ${Theme_A.fields.configurationField2}`}
+									value={userInfo.name}
+									onChange={(e) => setUserName(e.target.value)}
+								/>
 							</div>
 							{error.name && <p className="text-xs text-red-700 ml-4 mt-2">{error.name}*</p>}
 						</div>
-                        <div className="w-full mt-8">
-							<div className="w-full h-[60px] p-[1px] flex items-center justify-center rounded-xl bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo">
-								<div className="w-full h-[58px] rounded-[11px] bg-white flex items-center justify-center">
-									<input
-										placeholder="Phone"
-										type="text"
-										className="w-full h-[58px] rounded-[11px] outline-none px-4"
-										value={userInfo.phone}
-										onChange={(e) => setUserPhone(e.target.value)}
-									/>
-								</div>
+
+
+
+						{/* PHONE NUMBER */}
+						<div className="w-full mt-8">
+							<div className="flex items-center justify-center">
+								<input
+									placeholder="Phone number"
+									type="text"
+									className={`w-full h-[60px] ${Theme_A.fields.configurationField2}`}
+									value={userInfo.phone}
+									onChange={(e) => setUserPhone(e.target.value)}
+								/>
 							</div>
 							{error.phone && <p className="text-xs text-red-700 ml-4 mt-2">{error.phone}*</p>}
 						</div>
+
+
+						{/* EMAIL ADDRESS*/}
 						<div className="w-full  mt-8">
-							<div className="w-full h-[60px] p-[1px] flex items-center justify-center rounded-xl bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo">
-								<div className="w-full h-[58px] rounded-[11px] bg-white flex items-center justify-center">
-									<input
-										placeholder="Adresse email"
-										className="w-full h-[58px] rounded-[11px] outline-none px-4"
-										value={userInfo.email}
-										onChange={(e) => setUserMail(e.target.value)}
-									/>
-								</div>
+							<div className="flex items-center justify-center ">
+								<input
+									placeholder="Adresse email"
+									className={`w-full h-[60px] ${Theme_A.fields.configurationField2}`}
+									value={userInfo.email}
+									onChange={(e) => setUserMail(e.target.value)}
+								/>
 							</div>
 							{error.email && <p className="text-xs text-red-700 ml-4 mt-2">{error.email}*</p>}
 						</div>
+
+
+						{/* PASSWORD*/}
 						<div className="w-full mt-8">
-							<div className="w-full h-[60px] p-[1px] flex items-center justify-center rounded-xl bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo">
-								<div className="w-full h-[58px] rounded-[11px] bg-white flex items-center justify-center">
-									<input
-										placeholder="Mot de passe"
-										type="password"
-										className="w-full h-[58px] rounded-[11px] outline-none px-4"
-										value={userInfo.password}
-										onChange={(e) => setUserPassword(e.target.value)}
-									/>
-								</div>
+							<div className="flex items-center justify-center">
+								<input
+									placeholder="Mot de passe"
+									type="password"
+									className={`w-full h-[60px] ${Theme_A.fields.configurationField2}`}
+									value={userInfo.password}
+									onChange={(e) => setUserPassword(e.target.value)}
+								/>
 							</div>
 							{error.password && <p className="text-xs text-red-700 ml-4 mt-2">{error.password}*</p>}
 						</div>
+
+
+						{/* SIGN UP BUTTON*/}
 						<button
-							className="text-white font-medium text-xl rounded-xl w-full h-14 my-8 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]"
+							className={`w-full h-12 mt-8 ${Theme_A.button.medLargeGradientButton}`}
 							onClick={onSignup}
 						>
 							<p>Sign Up</p>
 						</button>
 					</div>
+
+
+					{/* BACK TO LOGIN*/}
 					<div className="w-full flex flex-row items-end justify-end gap-2 mt-12 md:mt-16 mb-4">
-						<p className="text-xs text-black mb-[3px]">Pas encore de compte ? </p>
+						<p className="text-xs text-black mb-[3px]">Vous avez déjà un compte ? </p>
 						<p className="text-black text-base border-b border-black transition duration-150 hover:border-secondary hover:text-secondary">
-							<Link href={{ pathname: '/login' }}>Signup</Link>
+							<Link href={{ pathname: '/login' }}>Login</Link>
 						</p>
 					</div>
 				</div>
