@@ -213,7 +213,6 @@ const Reset = ({ email, token }: any) => {
               </button>
             </div>
             <hr className="my-4" />
-            <hr className="my-4" />
             <div className="w-full flex flex-row items-end justify-between gap-2 mt-4 mb-4">
               <div className="flex items-center gap-2">
                 <p className="text-black text-base border-b border-black transition duration-150 hover:border-secondary hover:text-secondary">
