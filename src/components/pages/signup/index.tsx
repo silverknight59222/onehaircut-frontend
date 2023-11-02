@@ -7,6 +7,7 @@ import useSnackbar from '@/hooks/useSnackbar';
 import { LogoCircleFixLeft, LogoIcon } from "@/components/utilis/Icons";
 import Link from "next/link";
 import { Theme_A } from "@/components/utilis/Themes";
+import CustomInput from "@/components/UI/CustomInput";
 
 const Signup = () => {
 	const router = useRouter();
@@ -18,7 +19,8 @@ const Signup = () => {
 		password: "",
 		name: '',
 		phone: '',
-		role: 'client'
+		role: 'client',
+		repeatPassword: "",
 	};
 	const [error, setError] = useState({
 		email: '',
@@ -139,19 +141,37 @@ const Signup = () => {
 		if (!validateSignup()) {
 			return;
 		}
+
+		// Vérifier si les mots de passe correspondent
+		if (userInfo.password !== userInfo.repeatPassword) {
+			setError((prev) => ({
+				...prev,
+				password: "Les mots de passe ne correspondent pas",
+			}));
+			return;
+		}
+
 		setIsLoading(true);
+
 		Auth.signup(userInfo)
 			.then((resp) => {
-				showSnackbar('success', 'Utilisateur créé avec succès.')
+				showSnackbar("success", "Utilisateur créé avec succès.");
 				router.push("/login");
 			})
 			.catch((err) => {
-				showSnackbar('error', "Le nom, le téléphone, le mot de passe et l'adresse e-mail sont requis.")
+				showSnackbar(
+					"error",
+					"Le nom, le téléphone, le mot de passe et l'adresse e-mail sont requis."
+				);
 			})
 			.finally(() => {
 				setIsLoading(false);
-			})
+			});
 	};
+
+
+
+
 	return (
 		<>
 			{isLoading && loadingView()}
@@ -174,67 +194,68 @@ const Signup = () => {
 
 						{/* NAME */}
 						<div className="w-full mt-1">
-							<div className="flex items-center justify-center ">
-								<input
-									placeholder="Name"
-									type="text"
-									className={`w-full h-[60px] ${Theme_A.fields.configurationField2}`}
-									value={userInfo.name}
-									onChange={(e) => setUserName(e.target.value)}
-								/>
-							</div>
-							{error.name && <p className="text-xs text-red-700 ml-4 mt-2">{error.name}*</p>}
+							<CustomInput
+								id="Name"
+								label="Nom"
+								value={userInfo.name}
+								onChange={(e) => setUserName(e.target.value)}
+								error={error.name}
+							/>
 						</div>
-
 
 
 						{/* PHONE NUMBER */}
 						<div className="w-full mt-8">
-							<div className="flex items-center justify-center">
-								<input
-									placeholder="Phone number"
-									type="text"
-									className={`w-full h-[60px] ${Theme_A.fields.configurationField2}`}
-									value={userInfo.phone}
-									onChange={(e) => setUserPhone(e.target.value)}
-								/>
-							</div>
-							{error.phone && <p className="text-xs text-red-700 ml-4 mt-2">{error.phone}*</p>}
+							<CustomInput
+								id="Téléphone"
+								label="Téléphone"
+								value={userInfo.phone}
+								onChange={(e) => setUserPhone(e.target.value)}
+								error={error.phone}
+							/>
 						</div>
 
 
 						{/* EMAIL ADDRESS*/}
-						<div className="w-full  mt-8">
-							<div className="flex items-center justify-center ">
-								<input
-									placeholder="Adresse email"
-									className={`w-full h-[60px] ${Theme_A.fields.configurationField2}`}
-									value={userInfo.email}
-									onChange={(e) => setUserMail(e.target.value)}
-								/>
-							</div>
-							{error.email && <p className="text-xs text-red-700 ml-4 mt-2">{error.email}*</p>}
-						</div>
-
-
-						{/* PASSWORD*/}
 						<div className="w-full mt-8">
-							<div className="flex items-center justify-center">
-								<input
-									placeholder="Mot de passe"
+							<CustomInput
+								id="Adresse email"
+								label="Adresse email"
+								value={userInfo.email}
+								onChange={(e) => setUserMail(e.target.value)}
+								error={error.email}
+							/>
+						</div>
+
+
+						{/* PASSWORD */}
+						<div className="w-full mt-8">
+							<div className="flex items-center justify-between">
+								<CustomInput
+									id="Mot de passe"
+									label="Mot de passe"
 									type="password"
-									className={`w-full h-[60px] ${Theme_A.fields.configurationField2}`}
 									value={userInfo.password}
-									onChange={(e) => setUserPassword(e.target.value)}
+									onChange={(e) => setUserInfo({ ...userInfo, password: e.target.value })}
+									error={error.password}
+								/>
+								<p className="mr-6 "> </p>
+								<CustomInput
+									id="Répétez votre mot de passe"
+									label="Répétez votre mot de passe"
+									type="password"
+									value={userInfo.repeatPassword}
+									onChange={(e) => setUserInfo({ ...userInfo, repeatPassword: e.target.value })}
+									error={error.password}
 								/>
 							</div>
-							{error.password && <p className="text-xs text-red-700 ml-4 mt-2">{error.password}*</p>}
 						</div>
+
 
 
 						{/* SIGN UP BUTTON*/}
 						<button
-							className={`w-full h-12 mt-8 ${Theme_A.button.medLargeGradientButton}`}
+							className={`w-full h-14 mt-8 ${Theme_A.button.medLargeGradientButton}`}
 							onClick={onSignup}
 						>
 							<p>Sign Up</p>
