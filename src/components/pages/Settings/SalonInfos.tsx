@@ -29,6 +29,7 @@ const SalonInfos = () => {
     const [SalonType, setSalonType] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const showSnackbar = useSnackbar();
+    const [addressResponse, setAddressResponse] = useState("");
 
     const openModal = () => {
         setIsModal(true);
@@ -45,9 +46,9 @@ const SalonInfos = () => {
             inputMode="text"
             maxLength={50}
             className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
-        onInput={(e) => {
-            // Nothing to do on a single character change
-        }}
+            onInput={(e) => {
+                // Nothing to do on a single character change
+            }}
         />
     );
 
@@ -167,6 +168,7 @@ const SalonInfos = () => {
 
     // Utilisez useEffect pour déclencher la recherche de la ville lorsque le code postal change
     useEffect(() => {
+        fetchAdress();
         searchCityByPostalCode(postalCode);
     }, [postalCode]);
 
@@ -268,6 +270,12 @@ const SalonInfos = () => {
                 setIsLoading(false);
             })
     };
+
+    const fetchAdress = async () => {
+        const resp = await client.getAddresses()
+        console.log(resp.data);
+        setAddressResponse(resp.data);
+    }
 
     /************************************************************************************************************************** */
 
@@ -469,10 +477,24 @@ const SalonInfos = () => {
                         <li className="text-sm mb-2 text-gray-400 uppercase font-semibold">
                             Adresse de l'établissement
                         </li>
-                        {renderListItem("Nom", "Max Mustermann")}
-                        {renderListItem("Adresse", "Musterstrasse 1")}
-                        {renderListItem("PLZ", "4020 Linz")}
-                        {renderListItem("Pays", "Suisse")}
+                        <li className="text-sm text-gray-400 italic">
+                            Nom : {addressResponse.name}
+                        </li>
+                        <li className="text-sm text-gray-400 italic">
+                            Adresse : {addressResponse.street}
+                        </li>
+                        <li className="text-sm text-gray-400 italic">
+                            Code postal : {addressResponse.zipcode}
+                        </li>
+                        <li className="text-sm text-gray-400 italic">
+                            Ville : {addressResponse.city}
+                        </li>
+                        <li className="text-sm text-gray-400 italic">
+                            État : {addressResponse.state}
+                        </li>
+                        <li className="text-sm text-gray-400 italic">
+                            Pays : {addressResponse.country}
+                        </li>
                     </ul>
                 </div>
                 <div className="flex-1 py-5 pl-1 overflow-hidden ml-4">
@@ -480,10 +502,24 @@ const SalonInfos = () => {
                         <li className="text-sm mb-2 text-gray-400 uppercase font-semibold">
                             Adresse de <br /> facturation
                         </li>
-                        {renderListItem("Nom", "Rick Astley")}
-                        {renderListItem("Adresse", "Rickrolled 11")}
-                        {renderListItem("PLZ", "1000 Vienna")}
-                        {renderListItem("Pays", "Autriche")}
+                        <li className="text-sm text-gray-400 italic">
+                            Nom : {addressResponse.billing_name}
+                        </li>
+                        <li className="text-sm text-gray-400 italic">
+                            Adresse : {addressResponse.billing_street}
+                        </li>
+                        <li className="text-sm text-gray-400 italic">
+                            Code postal : {addressResponse.billing_zip_code}
+                        </li>
+                        <li className="text-sm text-gray-400 italic">
+                            Ville : {addressResponse.billing_city}
+                        </li>
+                        <li className="text-sm text-gray-400 italic">
+                            État : {addressResponse.billing_state}
+                        </li>
+                        <li className="text-sm text-gray-400 italic">
+                            Pays : {addressResponse.billing_country}
+                        </li>
                     </ul>
                 </div>
                 <div

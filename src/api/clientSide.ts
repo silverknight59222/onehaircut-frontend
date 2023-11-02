@@ -32,6 +32,9 @@ const client={
     storeAddresses: async (params: any) => {
         return await request.post(`/save_addresses`, params);
     },
+    getAddresses: async () => {
+        return await request.get(`/fetch_addresses`);
+    },
 }
 const user_api =  {
     getUsers: async () => {
