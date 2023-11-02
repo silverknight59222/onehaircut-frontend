@@ -140,11 +140,11 @@ const Reset = ({ email, token }: any) => {
           <div className="flex flex-col items-center justify-center">
  
             <div className="w-full mt-10">
-              <div className="flex w-full flex-col items-center justify-center gap-4">
+              <div className="flex w-full flex-col items-center justify-center gap-4 mb-10">
                 <p className="text-xl w-fullfont-semibold text-black text-center">Modification du mot de passe</p>
                 </div>
                 <TextField 
-                  className={`${inputFieldsDesign}`}
+                  className={` ${inputFieldsDesign}`}
                   id="passwordInput"
                   label="Nouveau mot de passe"
                   type={newPasswordVisibility ? 'text' : 'password'}
