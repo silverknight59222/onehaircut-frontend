@@ -83,27 +83,20 @@ const ServiceChoose = () => {
     const onServiceclick = (name: string, serviceId: number, serviceRequirements: string[]) => {
         setSelectedRequirements([])
         setIsCorrectInfo(false)
-        if (serviceRequirements.length && !selectedRequirementIds.includes(String(serviceId))) {
+        if (serviceRequirements.length && !selectedService.includes(String(serviceId))) {
             setRequirements({ name: name, id: serviceId, arr: serviceRequirements })
             setIsModal(true)
         } else {
-            selectedRequirementIds.forEach((item, index) => {
-                if (item === String(serviceId)) {
-                    selectedRequirementIds.splice(index, 1)
-                }
-            })
             serviceCheckedHandler(serviceId)
         }
     }
 
     // Validation d'une exigence.
     const onValidateRequirement = (id: number) => {
-        setSelectedRequirementIds([...selectedRequirementIds, String(id)])
         if ((requirements.arr.length === selectedRequirements.length) && isCorrectInfo) {
             setIsModal(false)
             serviceCheckedHandler(requirements.id)
         }
-
     }
 
     // Gestion du service sélectionné/désélectionné.
