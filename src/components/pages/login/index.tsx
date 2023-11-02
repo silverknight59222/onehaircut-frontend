@@ -9,6 +9,7 @@ import { LogoCircleFixLeft, LogoIcon } from "@/components/utilis/Icons";
 import Link from "next/link";
 import { EyeIcon, EyeClosedIcon } from "@/components/utilis/Icons";
 import { Theme_A } from "@/components/utilis/Themes";
+import CustomInput from "@/components/UI/CustomInput";
 
 const Login = () => {
 	const router = useRouter();
@@ -129,37 +130,43 @@ const Login = () => {
 
 						{/* ADRESSE EMAIL */}
 						<div className="w-full mt-6">
-							<label className="block text-left text-black mb-2 font-medium" htmlFor="emailInput">Adresse email</label>
-							<div className="flex items-center justify-center">
-								<input
-									id="emailInput"
-									placeholder="Adresse email"
-									className={`w-full h-[60px] ${Theme_A.fields.configurationField2}`}
-									value={userInfo.email}
-									onChange={(e) => setUserMail(e.target.value)}
-								/>
-							</div>
-							{error.email && <p className="text-xs text-red-700 ml-4 mt-2">{error.email}*</p>}
+							<CustomInput
+								id="emailInput"
+								label="Adresse email"
+								value={userInfo.email}
+								onChange={(e) => setUserMail(e.target.value)}
+								error={error.email}
+								isEmail={true} // Activez la vérification d'e-mail en utilisant isEmail={true}
+							/>
 						</div>
 
 						{/* MOT DE PASSE */}
-						<div className="w-full mt-6">
-							<label className="block text-left text-black mb-2 font-medium" htmlFor="passwordInput">Mot de passe</label>
-							<div className="w-full h-[58px] rounded-[11px] bg-white flex items-center justify-between">
-								<input
-									id="passwordInput"
-									placeholder="Mot de passe"
-									type={showPassword ? "text" : "password"}
-									className={`w-full h-[60px] ${Theme_A.fields.configurationField2}`}
-									value={userInfo.password}
-									onChange={(e) => setUserPassword(e.target.value)}
-								/>
-								<button onClick={() => setShowPassword(!showPassword)} className="p-4">
-									{showPassword ? <EyeClosedIcon /> : <EyeIcon />}
-								</button>
+						<div className="w-full mt-8">
+							<div className="w-full h-[58px] rounded-[11px] bg-white flex items-center">
+								<div className="flex-grow">
+									<CustomInput
+										id="passwordInput"
+										label="Mot de passe"
+										type={showPassword ? "text" : "password"}
+										value={userInfo.password}
+										onChange={(e) => setUserPassword(e.target.value)}
+										error={error.password}
+									/>
+								</div>
+								<div className="flex items-center">
+									<button
+										onClick={() => setShowPassword(!showPassword)}
+										className="p-2 flex-none outline-none focus:outline-none"
+									>
+										{showPassword ? <EyeClosedIcon /> : <EyeIcon />}
+									</button>
+								</div>
 							</div>
-							{error.password && <p className="text-xs text-red-700 ml-4 mt-2">{error.password}*</p>}
 						</div>
+
+
+
+
 
 
 						<button

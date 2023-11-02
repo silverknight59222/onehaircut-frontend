@@ -224,6 +224,7 @@ const Signup = () => {
 								value={userInfo.email}
 								onChange={(e) => setUserMail(e.target.value)}
 								error={error.email}
+								isEmail={true}
 							/>
 						</div>
 
@@ -264,7 +265,7 @@ const Signup = () => {
 
 
 					{/* BACK TO LOGIN*/}
-					<div className="w-full flex flex-row items-end justify-end gap-2 mt-12 md:mt-16 mb-4">
+					<div className="w-full flex flex-row items-end justify-end gap-2 mt-12 mb-4">
 						<p className="text-xs text-black mb-[3px]">Vous avez déjà un compte ? </p>
 						<p className="text-black text-base border-b border-black transition duration-150 hover:border-secondary hover:text-secondary">
 							<Link href={{ pathname: '/login' }}>Login</Link>
