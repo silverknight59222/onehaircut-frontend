@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Theme_A } from '../utilis/Themes';
-
 /////////////////////////////////////////////
 // File to get the payement information (credit card and paypal)
 /////////////////////////////////////////////
@@ -12,9 +11,9 @@ const PaymentForm: React.FC = () => {
 
     return (
         <div className="min-w-screen min-h-full bg-white flex items-center justify-center px-2 pb-2 pt-2">
-            <div className="w-full mx-auto rounded-lg bg-white p-5 text-gray-700" style={{ maxWidth: '600px' }}>
+            <div className="w-full mx-auto rounded-lg bg-white p-5 text-gray-700 " style={{ maxWidth: '600px' }}>
                 <div className="mb-10">
-                    <h1 className="text-center font-bold text-xl uppercase">Secure payment info</h1>
+                    <h1 className="text-center font-bold text-xl uppercase">Informations de paiement sécurisé</h1>
                 </div>
                 <div className="mb-3 flex -mx-2">
                     <div className="px-2" onClick={() => setCardSide(true)}>
@@ -33,20 +32,28 @@ const PaymentForm: React.FC = () => {
                 {cardSide == true &&
                     (<div>
                         <div className="mb-3">
-                            <label className="font-bold text-sm mb-2 ml-1">Name on card</label>
+                            <label className="font-bold text-sm mb-2 ml-1">Nom sur la carte</label>
                             <div>
-                                <input className="w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors" placeholder="Jean Martin" type="text" />
+                                <input
+                                    className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 
+              focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-stone-400 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+                                    placeholder="Jean Martin"
+                                    type="text" />
                             </div>
                         </div>
                         <div className="mb-3">
-                            <label className="font-bold text-sm mb-2 ml-1">Card number</label>
+                            <label className="font-bold text-sm mb-2 ml-1">Numéro de carte</label>
                             <div>
-                                <input className="w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors" placeholder="0000 0000 0000 0000" type="text" />
+                                <input
+                                    className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 
+                                 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-stone-400 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+                                    placeholder="0000 0000 0000 0000"
+                                    type="text" />
                             </div>
                         </div>
                         <div className="mb-3 -mx-2 flex items-end">
                             <div className="px-2 w-1/2">
-                                <label className="font-bold text-sm mb-2 ml-1">Expiration date</label>
+                                <label className="font-bold text-sm mb-2 ml-1">Date d'expiration</label>
                                 <div>
                                     <select className="form-select w-full px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors cursor-pointer">
                                         <option value="01">01 - Janvier</option>
@@ -80,20 +87,24 @@ const PaymentForm: React.FC = () => {
                             </div>
                         </div>
                         <div className="mb-10">
-                            <label className="font-bold text-sm mb-2 ml-1">Security code</label>
+                            <label className="font-bold text-sm mb-2 ml-1">CCV</label>
                             <div>
-                                <input className="w-32 px-3 py-2 mb-1 border-2 border-gray-200 rounded-md focus:outline-none focus:border-indigo-500 transition-colors" placeholder="000" type="text" />
+                                <input
+                                    className="text-black placeholder-gray-600 w-20 px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 
+                                 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-stone-400 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+                                    placeholder="000"
+                                    type="text" />
                             </div>
                         </div>
                         <div>
                             <button className={`${Theme_A.button.mediumGradientButton}`}>
-                                <i className="mdi mdi-lock-outline mr-1"></i> Confirmer
+                                <i className="items-end justify-end"></i> Confirmer
                             </button>
                         </div>
                     </div>)
                 }
                 {cardSide == false &&
-                    <div className='my-8 justify-center'>
+                    <div className='my-8 justify-end items-center '>
                         <button className={`${Theme_A.button.mediumGradientButton}`}>
                             <i className="mdi mdi-lock-outline mr-1"></i> Se connecter avec Paypal
                         </button>

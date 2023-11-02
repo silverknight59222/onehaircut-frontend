@@ -472,7 +472,7 @@ const Account = () => {
         // set the text to be displayed
         notifications[index].desc = text
     }
-    
+
 
     ////////////////////////////////////////////////////
     ///////////////////// Reminder Notification  
@@ -631,7 +631,7 @@ const Account = () => {
                             ? ColorsThemeA.ohcVerticalGradient_A
                             : "border-[#767676]"
                             }`}
-                        >
+                        >infoInterface
                             {NotifMsgWhatsapp && (
                                 <CheckedIcon width="15" height="10" />)}
                         </div>
