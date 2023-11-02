@@ -98,10 +98,8 @@ const SalonChoice = () => {
         await dashboard.getSalonsByHaircut(data)
             .then((res) => {
                 setIsLoading(false);
-                if (res.data.data.length > 0) {
-                    setSalons(res.data.data);
-                    setFilteredSalons(res.data.data);
-                }
+                setSalons(res.data.data);
+                setFilteredSalons(res.data.data);
             })
             .catch(error => {
                 setIsLoading(false);

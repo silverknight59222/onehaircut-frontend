@@ -120,10 +120,14 @@ const History = () => {
                       <div className='flex flex-col-reverse sm:flex-row items-center sm:items-start justify-between'>
                         <div className='flex flex-col items-center sm:items-start justify-center sm:justify-start gap-2 mt-5 sm:mt-0'>
 
-                          <p className='text-[#444343] font-bold text-center sm:text-start'>{item.date}</p>
-                          <p className='text-[#666] text-sm text-center sm:text-start'>Heure: {item.Heure}</p>
-                          <p className='text-[#666] text-sm text-center sm:text-start'>Coiffure: { }</p>
-                          <p className='text-[#666] text-sm text-center sm:text-start'>Préstation: {"None"}</p>
+                          <p className='text-[#444343] font-bold text-center sm:text-start'>{item.redable_date}</p>
+                          <p className='text-[#666] text-sm text-center sm:text-start'>Heure: {item.total_duration} mins</p>
+                          {item.salon_haircut && <p className='text-[#666] text-sm text-center sm:text-start'>Coiffure: {item.salon_haircut.haircut.name }</p>}
+                          {!item.salon_haircut && <p className='text-[#666] text-sm text-center sm:text-start'>Coiffure: {"None"}</p>}
+
+                          {<p className='text-[#666] text-sm text-center sm:text-start'>Préstations: {"None"}</p>}
+                          <p className='text-[#666] text-sm text-center sm:text-start'>Préstations: {"None"}</p>
+
                           <p className='text-[#666] text-sm text-center sm:text-start'>Prix: {item.amount} euro</p>
                           <p className='text-[#666] text-sm text-center sm:text-start'>Salon: {item.hair_salon.name}</p>
                           <p className='text-[#666] text-sm text-center sm:text-start'>Coiffeur: {item.hair_dresser.name}</p>

@@ -159,7 +159,7 @@ const SearchSalon = () => {
       {isLoading && loadingView()}
 
       {/* Barre de navigation */}
-      <Navbar isSalonPage={false} />
+      <Navbar hideSearchBar={true} />
       <div className="mt-2 mb-5 px-5 md:px-10 2xl:px-14">
         <div className='flex items-start cursor-pointer mt-8 mb-8 sm:mx-10 2xl:mx-14 text-stone-800' onClick={() => router.push('/salons')}>
           <BackArrow />
@@ -281,10 +281,10 @@ const SearchSalon = () => {
               </div>}
               {/* Description du salon */}
               <div className="mt-5 p-4 bg-gray-100 w-full lg:w-[400px] 2xl:w-[720px] rounded-xl ">
-                <p className="text-black text-lg">
+                {salonProfile && <p className="text-black text-lg">
                   {/* TODO lien vers la description du salon {salonProfile.description} */}
-                  "Bienvenue à L'Etoile Capillaire, où passion et créativité transforment vos cheveux en œuvres d'art. Ici, chaque rendez-vous est une expérience unique et personnalisée."
-                </p>
+                  {salonProfile.description}
+                </p>}
               </div>
             </div>
 

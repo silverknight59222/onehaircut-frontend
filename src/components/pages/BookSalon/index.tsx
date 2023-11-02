@@ -135,7 +135,7 @@ const BookSalon = () => {
   return (
     <div>
       {isLoading && loadingView()}
-      <Navbar isBookSalon={true}/>
+      <Navbar hideSearchBar={true} />
       <div className="flex flex-col items-center justify-center mt-16 mb-5 px-6 md:px-10 2xl:px-14">
         <div className="flex flex-col md:flex-row items-center justify-center gap-16">
           <div className="relative w-[350px] lg:w-[500px] xl:w-[588px] h-[350px] lg:h-[450px] xl:h-[516px] rounded-[70px]">
@@ -156,9 +156,6 @@ const BookSalon = () => {
                   <div
                     className="flex items-center gap-2 text-black text-xl"
                   >
-
-                    <p className="font-semibold">Couleur: </p>
-                    <p>Blond</p>
                   </div>
                   <div
                     className="flex items-center gap-2 text-black text-xl"

@@ -208,7 +208,7 @@ const Index = () => {
   return (
     <div>
       {isLoading && loadingView()}
-      <Navbar isBookSalon={true} />
+      <Navbar hideSearchBar={true} />
       <div className="flex flex-col items-center justify-center mt-16 mb-5 px-6">
         <div className="w-full md:w-auto flex md:block flex-col items-center justify-center">
           <p className="text-2xl md:text-4xl text-black font-medium text-center md:text-start mb-4">

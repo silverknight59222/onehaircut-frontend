@@ -19,8 +19,7 @@ const Index = () => {
     { name: "Nom", desc: userInfo ? userInfo.name : '-' },
     { name: "Nom du salon", desc: salon?.name},
     { name: "Adresse du salon", desc: `${salon?.address?.city}, ${salon?.address?.state}, ${salon?.address?.country}` },
-    { name: "Type de salon", desc: salon?.type.replace("_", " ") },
-    { name: "Type de régime", desc: planType ? planType.name : '-' }
+    { name: "Type de salon", desc: salon?.type.replace("_", " ") }
   ];
   return (
     <div>
