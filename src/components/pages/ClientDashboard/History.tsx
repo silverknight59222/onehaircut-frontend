@@ -130,7 +130,7 @@ const History = () => {
 
                         </div>
                         <div className='w-[150px]'>
-                          <Image src={item.image} alt='' width={150} height={150} className='rounded-3xl' />
+                          <Image src={`https://api-server.onehaircut.com/public${item.salon_haircut.haircut.image}`} alt='' width={150} height={150} className='rounded-3xl' />
                           <div className='justify-center items-center mt-3 bg-zinc-100 rounded-2xl p-1'>
                             <StarRatings
                               rating={item.note}
