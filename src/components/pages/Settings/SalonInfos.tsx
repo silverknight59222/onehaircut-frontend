@@ -6,26 +6,34 @@ import DropdownMenu from "@/components/UI/DropDownMenu";
 import { ColorsThemeA } from "@/components/utilis/Themes";
 import CustomSlider from "@/components/UI/OHC_Slider";
 import ComponentTheme from "@/components/UI/ComponentTheme";
+import Autocomplete from "react-google-autocomplete";
+import { client } from "@/api/clientSide";
+import useSnackbar from "@/hooks/useSnackbar";
 
 const SalonInfos = () => {
     const [isModal, setIsModal] = useState(false);
-    const [isBillingAddressVisible, setIsBillingAddressVisible] = useState(true);
+    const [name, setName] = useState("");
+    const [street, setStreet] = useState("");
     const [postalCode, setPostalCode] = useState("");
-    const [city, setCity] = useState(""); // État pour la ville
+    const [city, setCity] = useState("");
+    const [state, setState] = useState("");
+    const [country, setCountry] = useState("");
+    const [billingName, setBillingName] = useState("");
+    const [billingStreet, setBillingStreet] = useState("");
     const [billingPostalCode, setBillingPostalCode] = useState("");
-    const [billingCity, setBillingCity] = useState(""); // État pour la ville de facturation
-    const [isCheckboxChecked, setIsCheckboxChecked] = useState(false); // État pour la checkbox
+    const [billingCity, setBillingCity] = useState("");
+    const [billingState, setBillingState] = useState("");
+    const [billingCountry, setBillingCountry] = useState("");
+    const [isBillingAddressSame, setIsBillingAddressSame] = useState(false);
     const [SelectedSalonType, setSelectedSalonType] = useState<string>('');
     const [SalonType, setSalonType] = useState('');
-
+    const [isLoading, setIsLoading] = useState(false);
+    const showSnackbar = useSnackbar();
 
     const openModal = () => {
         setIsModal(true);
     };
     const closeModal = () => {
-        setIsModal(false);
-    };
-    const SaveAddress = () => {
         setIsModal(false);
     };
 
@@ -37,9 +45,9 @@ const SalonInfos = () => {
             inputMode="text"
             maxLength={50}
             className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
-            onInput={(e) => {
-                // Nothing to do on a single character change
-            }}
+        onInput={(e) => {
+            // Nothing to do on a single character change
+        }}
         />
     );
 
@@ -220,6 +228,47 @@ const SalonInfos = () => {
         setZoneSliderRange(newValue);
     };
 
+    const setAddressData = async (place: any,) => {
+        setCity(place.address_components[0].long_name);
+        setState(place.address_components[2].long_name);
+        setCountry(place.address_components[3].long_name);
+        setStreet(place.formatted_address);
+    };
+
+    const handleChange = (e: any) => {
+        setStreet(e.target.value);
+    };
+
+    const SaveAddress = async () => {
+        setIsLoading(true);
+        await client.storeAddresses({
+            name: name,
+            street: street,
+            zipcode: postalCode,
+            city: city,
+            state: state,
+            country: country,
+            billing_name: billingName,
+            billing_street: billingStreet,
+            billing_zipcode: billingPostalCode,
+            billing_city: billingCity,
+            billing_state: billingState,
+            billing_country: billingCountry,
+            is_billing_address_same: isBillingAddressSame,
+        })
+            .then((resp) => {
+                console.log(resp);
+                showSnackbar("succès", "Adresse mise à jour avec succès");
+                setIsModal(false);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+            .finally(() => {
+                setIsLoading(false);
+            })
+    };
+
     /************************************************************************************************************************** */
 
     return (
@@ -236,23 +285,64 @@ const SalonInfos = () => {
                             </div>
                         </div>
                         <div className="px-5 pb-5">
-                            {renderTextInputField("Nom")}
-                            {renderTextInputField("Adresse")}
+                            <input
+                                placeholder="Nom"
+                                type="text"
+                                value={name}
+                                onChange={(e) => setName(e.target.value)}
+                                maxLength={50}
+                                className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+                            />
+                            <Autocomplete
+                                className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+                                apiKey='AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E'
+                                onPlaceSelected={(place) => {
+                                    console.log(place);
+                                    setAddressData(place)
+                                }}
+                                value={street}
+                                onChange={handleChange}
+                                options={{
+                                    types: ['geocode'],
+                                    componentRestrictions: { country: "in" },
+                                }}
+                                placeholder="Address"
+                                defaultValue=""
+                            />
                             <div className="flex">
                                 <div className="flex-grow w-1/4 pr-2">
-                                    {renderZipField("Code Postal")}
+                                    <input
+                                        placeholder="Code Postal"
+                                        type="text"
+                                        value={postalCode}
+                                        onChange={(e) => setPostalCode(e.target.value)}
+                                        maxLength={50}
+                                        className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+                                    />
+                                    <input
+                                        placeholder="État"
+                                        type="text"
+                                        value={state}
+                                        onChange={(e) => setState(e.target.value)}
+                                        maxLength={50}
+                                        className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+                                    />
                                 </div>
                                 <div className="flex-grow">
                                     <input
                                         placeholder="Ville"
                                         type="text"
                                         className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
-                                        value={city} // Valeur de la ville mise à jour automatiquement
-                                        onClick={() => {
-                                            setCity('');
-                                            setPostalCode('');
-
-                                        }}
+                                        value={city}
+                                        onChange={(e) => setCity(e.target.value)}
+                                    />
+                                    <input
+                                        placeholder="Pays"
+                                        type="text"
+                                        value={country}
+                                        onChange={(e) => setCountry(e.target.value)}
+                                        maxLength={50}
+                                        className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
                                     />
                                 </div>
                             </div>
@@ -260,8 +350,8 @@ const SalonInfos = () => {
                                 <input
                                     type="checkbox"
                                     className="w-4 h-4 text-black bg-gray-300 border-none rounded-xl focus:ring-transparent"
-                                    checked={isCheckboxChecked} // Utilisation de l'état de la checkbox
-                                    onChange={() => setIsCheckboxChecked(!isCheckboxChecked)} // Mettre à jour l'état de la checkbox
+                                    checked={isBillingAddressSame} // Utilisation de l'état de la checkbox
+                                    onChange={() => setIsBillingAddressSame(!isBillingAddressSame)} // Mettre à jour l'état de la checkbox
                                 />
                                 <label htmlFor="safeAdress" className="block ml-2 text-sm text-gray-900">
                                     Adresse de facturation
@@ -270,7 +360,7 @@ const SalonInfos = () => {
                         </div>
 
                         {/* Adresse de facturation */}
-                        {!isCheckboxChecked && isBillingAddressVisible && (
+                        {!isBillingAddressSame && (
                             <div className="flex">
                                 <div className="flex-1 py-5 pl-5 overflow-hidden">
                                     <h1 className="inline text-2xl font-semibold leading-none">Adresse de facturation</h1>
@@ -278,25 +368,59 @@ const SalonInfos = () => {
                                 <div className="flex-none pt-2.5 pr-2.5 pl-1" />
                             </div>
                         )}
-                        {!isCheckboxChecked && isBillingAddressVisible && (
+                        {!isBillingAddressSame && (
                             <div className="px-5 pb-5">
-                                {renderTextInputField("Nom")}
-                                {renderTextInputField("Adresse de facturation")}
+                                <input
+                                    placeholder="Nom de Facturation"
+                                    type="text"
+                                    value={billingName}
+                                    onChange={(e) => setBillingName(e.target.value)}
+                                    maxLength={50}
+                                    className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+                                />
+                                <input
+                                    placeholder="Adresse de facturation"
+                                    type="text"
+                                    value={billingStreet}
+                                    onChange={(e) => setBillingStreet(e.target.value)}
+                                    maxLength={50}
+                                    className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+                                />
                                 <div className="flex">
                                     <div className="flex-grow w-1/4 pr-2">
-                                        {renderInputFieldBilling("Code Postal", "number")}
+                                        <input
+                                            placeholder="Code postal de facturation"
+                                            type="text"
+                                            value={billingPostalCode}
+                                            onChange={(e) => setBillingPostalCode(e.target.value)}
+                                            maxLength={50}
+                                            className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+                                        />
+                                        <input
+                                            placeholder="État de facturation"
+                                            type="text"
+                                            value={billingState}
+                                            onChange={(e) => setBillingState(e.target.value)}
+                                            maxLength={50}
+                                            className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+                                        />
                                     </div>
                                     <div className="flex-grow">
                                         <input
                                             placeholder="Ville de facturation"
                                             type="text"
                                             className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
-                                            value={billingCity} // Valeur de la ville mise à jour automatiquement
-                                            onClick={() => {
-                                                setBillingCity('');
-                                                setBillingPostalCode('');
-
-                                            }}
+                                            value={billingCity}
+                                            onChange={(e) => setBillingCity(e.target.value)}
+                                            maxLength={50}
+                                        />
+                                        <input
+                                            placeholder="Pays de facturation"
+                                            type="text"
+                                            value={billingCountry}
+                                            onChange={(e) => setBillingCountry(e.target.value)}
+                                            maxLength={50}
+                                            className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
                                         />
                                     </div>
                                 </div>

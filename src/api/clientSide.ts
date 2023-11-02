@@ -29,6 +29,9 @@ const client={
     getSavePrefrences: async () => {
         return await request.get(`/user/get_saved_prefrences`);
     },
+    storeAddresses: async (params: any) => {
+        return await request.post(`/save_addresses`, params);
+    },
 }
 const user_api =  {
     getUsers: async () => {
