@@ -231,9 +231,11 @@ const SalonInfos = () => {
     };
 
     const setAddressData = async (place: any,) => {
+        console.log(place)
         setCity(place.address_components[0].long_name);
         setState(place.address_components[2].long_name);
         setCountry(place.address_components[3].long_name);
+        setPostalCode(place.address_components[6].long_name)
         setStreet(place.formatted_address);
     };
 
@@ -296,7 +298,7 @@ const SalonInfos = () => {
         // ...
         <div className={`w-[500px] h-max bg-white rounded-2xl py-4 shadow-lg`}>
             {isModal && (
-                <BaseModal close={() => setIsModal(false)}>
+                <BaseModal close={() => setIsModal(false)} width="w-[600px]">
                     <div className="relative z-100">
                         {/* Contenu du Modal Adresse */}
                         <div className="flex">
@@ -317,16 +319,18 @@ const SalonInfos = () => {
                             <Autocomplete
                                 className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
                                 apiKey='AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E'
-                                onPlaceSelected={(place) => {
-                                    console.log(place);
+                                onPlaceSelected={(place) => {                                    
                                     setAddressData(place)
                                 }}
                                 value={street}
-                                onChange={handleChange}
                                 options={{
-                                    types: ['geocode'],
-                                    componentRestrictions: { country: "CH" },
-                                }}
+                                    types: ["geocode"],
+                                    fields:[
+                                        'address_components',
+                                        'geometry.location'                                        
+                                    ]                         
+                                  }}                                
+                                onChange={handleChange}                                
                                 placeholder="Address"
                                 defaultValue=""
                             />
