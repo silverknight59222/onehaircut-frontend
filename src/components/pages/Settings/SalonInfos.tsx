@@ -30,8 +30,7 @@ const SalonInfos = () => {
     const [isLoading, setIsLoading] = useState(false);
     const showSnackbar = useSnackbar();
     const [addressResponse, setAddressResponse] = useState("");
-    const [fullAddress, setfullAddress] = useState("");
-    const [fullbillingAddress, setfullbillingAddress] = useState("");
+
     const openModal = () => {
         setIsModal(true);
     };
@@ -227,7 +226,6 @@ const SalonInfos = () => {
     //For the slider :
     // Reset the slider values
     const [zoneSliderRange, setZoneSliderRange] = useState([0, 15]);
-
     const handleZoneSliderChange = (event: any, newValue: any) => {
         setZoneSliderRange(newValue);
     };
@@ -254,22 +252,24 @@ const SalonInfos = () => {
         }
     }
     const setAddressData = async (place: any,) => {
-
+        console.log("------------------------------------");
+        console.log(place);
+        console.log("------------------------------------");
         place.address_components.map((item, index) => {
             setAddressFields(item.types[0], item.long_name);
         });
-        setfullAddress((street ? street + ", " : "") + (city ? city + ", " : "") + (state ? state + ", " : "") + (country ? country : ""))
-
     }
     const billingAddressIsSame = (args = "none") => {
+        console.log("Entered  billing from");
+        console.log(
+            args
+        )
         setBillingCity(city);
         setBillingCountry(country);
         setBillingName(name);
         setBillingPostalCode(postalCode);
         setBillingState(state);
         setBillingStreet(street);
-        setfullbillingAddress((billingStreet ? billingStreet + ", " : "") + (billingCity ? billingCity + ", " : "") + (billingState ? billingState + ", " : "") + (billingCountry ? billingCountry : ""))
-
     }
     const handleChange = (e: any) => {
         setStreet(e.target.value);
@@ -308,8 +308,6 @@ const SalonInfos = () => {
 
     const fetchAdress = async () => {
         const resp = await client.getAddresses()
-        setfullAddress((resp.data.street ? resp.data.street + ", " : "") + (resp.data.city ? resp.data.city + ", " : "") + (resp.data.state ? resp.data.state + ", " : "") + (resp.data.country ? resp.data.country : ""));
-        setfullbillingAddress((resp.data.billing_street ? resp.data.billing_street + ", " : "") + (resp.data.billing_city ? resp.data.billing_city + ", " : "") + (resp.data.billing_state ? resp.data.billing_state + ", " : "") + (resp.data.billing_country ? resp.data.billing_country : ""))
         setAddressResponse(resp.data);
         setName(resp.data.name);
         setStreet(resp.data.street);
@@ -356,7 +354,7 @@ const SalonInfos = () => {
                                 onPlaceSelected={(place) => {
                                     setAddressData(place)
                                 }}
-                                value={fullAddress}
+                                value={street}
                                 options={{
                                     types: ["geocode"],
                                     fields: [
@@ -443,7 +441,7 @@ const SalonInfos = () => {
                                 <input
                                     placeholder="Adresse de facturation"
                                     type="text"
-                                    value={fullbillingAddress}
+                                    value={billingStreet}
                                     onChange={(e) => setBillingStreet(e.target.value)}
                                     maxLength={50}
                                     className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
@@ -538,7 +536,7 @@ const SalonInfos = () => {
                             Nom : {addressResponse.name}
                         </li>
                         <li className="text-sm text-gray-400 italic">
-                            Adresse : {fullAddress}
+                            Adresse : {addressResponse.street}
                         </li>
                         <li className="text-sm text-gray-400 italic">
                             Code postal : {addressResponse.zipcode}
@@ -563,7 +561,7 @@ const SalonInfos = () => {
                             Nom : {addressResponse.billing_name}
                         </li>
                         <li className="text-sm text-gray-400 italic">
-                            Adresse : {fullbillingAddress}
+                            Adresse : {addressResponse.billing_street}
                         </li>
                         <li className="text-sm text-gray-400 italic">
                             Code postal : {addressResponse.billing_zip_code}
