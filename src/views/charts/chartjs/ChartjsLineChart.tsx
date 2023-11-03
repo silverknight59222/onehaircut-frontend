@@ -3,6 +3,8 @@ import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
 import { Line } from 'react-chartjs-2'
 import { ChartData, ChartOptions } from 'chart.js'
+import BaseDropdown from "@/components/UI/BaseDropdown";
+import React from "react";
 
 interface LineProps {
   white: string
@@ -89,22 +91,12 @@ const ChartjsLineChart = (props: LineProps) => {
   }
 
   return (
-      <Card>
-        <CardHeader
-            title='Revenue'
-            subheader={
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end' }}>
-                <select>
-                  <option value="thisMonth">This month</option>
-                  {/* Add other month options here */}
-                </select>
-              </div>
-            }
-        />
-        <CardContent>
-          <Line data={data} height={400} options={options} />
-        </CardContent>
-      </Card>
+    <div>
+
+      <CardContent>
+        <Line data={data} height={400} options={options} />
+      </CardContent>
+    </div>
 
   )
 }
