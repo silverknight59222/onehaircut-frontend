@@ -409,7 +409,7 @@ const SearchSalon = () => {
           </p>
           <div className="flex items-center justify-center mt-8">
             {salonProfile != null && <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 lg:gap-20 ">
-              {salonProfile.salon_hairdressers.map((hairdresser, index) => {
+              {salonProfile.salon_hairdressers!=null && salonProfile.salon_hairdressers.map((hairdresser, index) => {
                 return (
                   <div key={index} className="p-2 rounded-lg shadow-sm relative bg-gray-100 border border-stone-300">
 
