@@ -325,7 +325,7 @@ const SalonInfos = () => {
                                 onChange={handleChange}
                                 options={{
                                     types: ['geocode'],
-                                    componentRestrictions: { country: "in" },
+                                    componentRestrictions: { country: "CH" },
                                 }}
                                 placeholder="Address"
                                 defaultValue=""
