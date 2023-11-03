@@ -30,7 +30,8 @@ const SalonInfos = () => {
     const [isLoading, setIsLoading] = useState(false);
     const showSnackbar = useSnackbar();
     const [addressResponse, setAddressResponse] = useState("");
-
+    const [locationLatitude, setLocationLatitude] = useState(0.0);
+    const [locationLongitude, setLocationLongitude] = useState(0.0);
     const openModal = () => {
         setIsModal(true);
     };
@@ -252,10 +253,11 @@ const SalonInfos = () => {
         }
     }
     const setAddressData = async (place: any,) => {
-
         place.address_components.map((item, index) => {
             setAddressFields(item.types[0], item.long_name);
         });
+        setLocationLatitude(place.geometry.location.lat());
+        setLocationLongitude(place.geometry.location.lng());
     }
     const billingAddressIsSame = () => {
         setBillingCity(city);
@@ -287,6 +289,8 @@ const SalonInfos = () => {
             billing_state: billingState,
             billing_country: billingCountry,
             is_billing_address_same: isBillingAddressSame,
+            latitude:locationLatitude,
+            longitude:locationLongitude
         })
             .then((resp) => {
                 console.log(resp);
