@@ -252,24 +252,19 @@ const SalonInfos = () => {
         }
     }
     const setAddressData = async (place: any,) => {
-        console.log("------------------------------------");
-        console.log(place);
-        console.log("------------------------------------");
+
         place.address_components.map((item, index) => {
             setAddressFields(item.types[0], item.long_name);
         });
     }
-    const billingAddressIsSame = (args = "none") => {
-        console.log("Entered  billing from");
-        console.log(
-            args
-        )
+    const billingAddressIsSame = () => {
         setBillingCity(city);
         setBillingCountry(country);
         setBillingName(name);
         setBillingPostalCode(postalCode);
         setBillingState(state);
         setBillingStreet(street);
+
     }
     const handleChange = (e: any) => {
         setStreet(e.target.value);
@@ -277,7 +272,7 @@ const SalonInfos = () => {
 
     const SaveAddress = async () => {
         setIsLoading(true);
-        isBillingAddressSame ? billingAddressIsSame("Save Address") : ""
+        isBillingAddressSame ? billingAddressIsSame() : ""
         await client.storeAddresses({
             name: name,
             street: street,
@@ -410,7 +405,7 @@ const SalonInfos = () => {
                                     checked={isBillingAddressSame} // Utilisation de l'état de la checkbox
                                     onChange={() => {
                                         setIsBillingAddressSame(!isBillingAddressSame)
-                                        billingAddressIsSame ? billingAddressIsSame() : ""
+                                        isBillingAddressSame ? billingAddressIsSame() : ""
                                     }} // Mettre à jour l'état de la checkbox
                                 />
                                 <label htmlFor="safeAdress" className="block ml-2 text-sm text-gray-900">
