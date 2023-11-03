@@ -99,6 +99,49 @@ export const clientTableData = [
   // ... Add other rows with corresponding images and names here
 ];
 
+export const yourChartData = {
+  labels: ['Staff 1', 'Staff 2', 'Staff 3', 'Staff 4', 'Staff 5'],
+  datasets: [
+    {
+      maxBarThickness: 150,
+      backgroundColor: "#f6c23e", // Using yellow prop directly here for simplicity
+      borderColor: 'transparent',
+      borderRadius: { topRight: 15, topLeft: 15 },
+      data: [80, 35, 50, 65, 90]
+    }
+  ]
+}
+
+export const yourChartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  animation: { duration: 500 },
+  scales: {
+    x: {
+      display: true,
+      grid: {
+        color: "#f1f1f1" // Using borderColor prop directly here for simplicity
+      },
+      ticks: { color: "#000" } // Using labelColor prop directly here for simplicity
+    },
+    y: {
+      min: 0,
+      max: 100,
+      grid: {
+        color: "#f1f1f1" // Using borderColor prop directly here for simplicity
+      },
+      ticks: {
+        color: "#000", // Using labelColor prop directly here for simplicity
+        padding: 10
+      }
+    }
+  },
+  plugins: {
+    legend: { display: false }
+  }
+}
+
+
 // Simulate async data fetching with a promise
 const fetchData = (data: unknown) => {
   return new Promise((resolve) => {

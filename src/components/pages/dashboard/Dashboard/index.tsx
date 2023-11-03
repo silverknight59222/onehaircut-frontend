@@ -154,13 +154,70 @@ const Dashboard = () => {
         // ... Add more rows as needed
     ];
 
-  const [showDialog, setShowDialog] = useState(false);
+    const yourChartData = {
+        labels: ['Staff 1', 'Staff 2', 'Staff 3', 'Staff 4', 'Staff 5'],
+        datasets: [
+            {
+                maxBarThickness: 150,
+                backgroundColor: "#f6c23e", // Using yellow prop directly here for simplicity
+                borderColor: 'transparent',
+                borderRadius: { topRight: 15, topLeft: 15 },
+                data: [80, 35, 50, 65, 90]
+            }
+        ]
+    }
+
+    const yourChartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        animation: { duration: 500 },
+        scales: {
+            x: {
+                display: true,
+                grid: {
+                    color: "#f1f1f1" // Using borderColor prop directly here for simplicity
+                },
+                ticks: { color: "#000" } // Using labelColor prop directly here for simplicity
+            },
+            y: {
+                min: 0,
+                max: 100,
+                grid: {
+                    color: "#f1f1f1" // Using borderColor prop directly here for simplicity
+                },
+                ticks: {
+                    color: "#000", // Using labelColor prop directly here for simplicity
+                    padding: 10
+                }
+            }
+        },
+        plugins: {
+            legend: { display: false }
+        }
+    }
+
+    const yourDropdownClickHandler = (item: string) => {
+        console.log(`You selected: ${item}`);
+        // Here, you can add additional logic to handle the dropdown selection.
+    }
+
+
+    const [showDialog, setShowDialog] = useState(false);
 
 
   return (
     <div className="px-4 lg:px-6">
       <Footer />
-            <ChartjsBarChart yellow='#358DF2' labelColor='' borderColor='#ccc' />
+        <ChartjsBarChart
+            title="Occupation du personnel"
+            dropdownItems={["January", "February"]}
+            data={yourChartData}
+            options={yourChartOptions}
+            yellow="#3F8DF2"
+            labelColor="#000"
+            borderColor="#f1f1f1"
+            handleDropdownClick={yourDropdownClickHandler}
+        />
       <div>
         <p className="text-primary text-2xl font-semibold mb-3">
           Analytical Overview
