@@ -296,7 +296,7 @@ const SalonChoice = () => {
 
                 {/* Texte indiquant le nombre de salons */}
                 <p className='text-4xl font-medium text-black text-center mt-6'>
-                    {filteredSalons.length} <span className='font-bold text-gradient'>{filteredSalons.length === 1 ? 'Salon' : 'Salons'}</span> {filteredSalons.length === 1 ? 'correspond' : 'correspondent'} à vos critères
+                    {salons.length} <span className='font-bold text-gradient'>{salons.length === 1 ? 'Salon' : 'Salons'}</span> {salons.length === 1 ? 'correspond' : 'correspondent'} à vos critères
                 </p>
 
                 {/* Bouton retour et continuer */}
@@ -321,7 +321,7 @@ const SalonChoice = () => {
 
                     {/* Carte Google affichée uniquement si des salons sont disponibles */}
                     {
-                        filteredSalons.length > 0 && (
+                        salons.length > 0 && (
                             <div className={`lg:absolute lg:top-0 lg:left-0 w-full h-[400px] lg:w-[400px] lg:h-[880px] 2xl:w-[920px] 4xl:w-[920px] rounded-lg overflow-hidden lg:z-10`}>
 
                                 {/*TODO USE salon.position when data are available  */}
@@ -381,7 +381,7 @@ const SalonChoice = () => {
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-10">
 
                             {/* VIGNETTES (ITERATIONS) */}
-                            {filteredSalons.map((salon, index) => (
+                            {salons.map((salon, index) => (
                                 <div
                                     key={index}
                                     onClick={() => setSelectedSalon(salon)}
