@@ -24,7 +24,7 @@ import { AutocompleteRenderInputParams } from '@mui/material/Autocomplete'
 import axios from 'axios'
 
 // ** Types Imports
-import { AppBarSearchType } from 'src/@fake-db/types'
+import { AppBarSearchType } from '@/@fake-db/types'
 import { Settings } from '@/@core/context/settingsContext'
 
 // ** Icon Imports
@@ -34,7 +34,7 @@ import Icon from '@/@core/components/icon'
 import CustomAutocomplete from '@/@core/components/mui/autocomplete'
 
 // ** Configs Imports
-import themeConfig from 'src/configs/themeConfig'
+import themeConfig from '@/configs/themeConfig'
 
 interface Props {
   hidden: boolean
