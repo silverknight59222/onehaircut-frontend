@@ -103,18 +103,16 @@ const Currentreservation = () => {
                                         </div>}
                                         <div>
                                             <p className='text-[#444343] font-bold text-center sm:text-start'>Prestation</p>
-
-
                                             {
-                                                    item.items.filter((ele) => ele.type == 'service').map((ele, index) => {
-                                                        
-                                                            if (ele.name) {
-                                                                return (<p key={index} className='text-[#666] text-sm text-center sm:text-start'>{ele.name}.</p>);
-                                                            }
-                                                            else {
-                                                                return (<p key={index} className='text-[#666] text-sm text-center sm:text-start'>none</p>);
-                                                            }
-                                                    })
+                                                item.items.filter((ele) => ele.type == 'service').map((ele, index) => {
+
+                                                    if (ele.name) {
+                                                        return (<p key={index} className='text-[#666] text-sm text-center sm:text-start'>{ele.name}.</p>);
+                                                    }
+                                                    else {
+                                                        return (<p key={index} className='text-[#666] text-sm text-center sm:text-start'>none</p>);
+                                                    }
+                                                })
                                             }
                                             {item.items.filter((ele) => ele.type == 'service').length == 0 && <p key={index} className='text-[#666] text-sm text-center sm:text-start'>none.</p>}
                                         </div>
