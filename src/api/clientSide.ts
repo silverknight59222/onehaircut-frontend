@@ -62,6 +62,9 @@ const client={
     getUserPotrait: async () => {
         return await request.get(`/fetch_user_potrait`);
     },
+    saveBookingRating: async (data: any) => {
+        return await request.post(`/booking-rating`, data);
+    },
 }
 const user_api =  {
     getUsers: async () => {
@@ -88,6 +91,5 @@ const user_api =  {
     getSaloonInformation: async () => {
         return await request.get(`/user_profile`);
     },
-
 }
 export { client, user_api };
