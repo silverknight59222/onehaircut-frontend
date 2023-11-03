@@ -70,7 +70,7 @@ const History = () => {
   const sendRate = async () => {
     //TODO add backend function to save rate into backend
     // use itemToRate and rating
-    
+
     client.saveBookingRating({
       booking_id: itemToRate?.booking?.id,
       rating: itemToRate?.rating,
@@ -205,7 +205,7 @@ const History = () => {
                             <p className='text-[#666] text-sm text-center sm:text-start'>Prestation:</p>
                             {
                               item.items.filter((ele) => ele.type == 'service').map((ele, index) => {
-                                  return (<li key={index} className='text-[#666] text-sm text-center sm:text-start'>{ele.name}.</li>)
+                                return (<li key={index} className='text-[#666] text-sm text-center sm:text-start'>{ele.name}.</li>)
                               })
                             }
                             {item.items.filter((ele) => ele.type == 'service').length == 0 && <p key={index} className='text-[#666] text-sm text-center sm:text-start'>none.</p>}
@@ -216,8 +216,9 @@ const History = () => {
                           <p className='text-[#666] text-sm text-center sm:text-start'>Coiffeur: {item.hair_dresser.name}</p>
 
                         </div>
-                        <div className='w-[150px]'>
+                        <div className='w-[150px] mr-3'>
                           {item.salon_haircut && <Image src={`https://api-server.onehaircut.com/public${item.salon_haircut.haircut.image}`} alt='' width={150} height={150} className='rounded-3xl' />}
+                          {!item.salon_haircut && <Image src={item.hair_salon ? `https://api-server.onehaircut.com/public${item.hair_salon.logo}` : `https://api-server.onehaircut.com/public${item.hair_salon.logo}`} width={150} height={150} className='rounded-3xl' />}
                           <div className='justify-center items-center mt-3 bg-zinc-100 rounded-2xl p-1'>
                             <StarRatings
                               rating={item.rating ? item.rating.rating : 0}
