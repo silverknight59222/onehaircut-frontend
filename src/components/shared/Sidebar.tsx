@@ -226,11 +226,16 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
         setSalon(res.data.data);
       });
       user_api.getSaloonInformation().then((res) => {
-        console.log(res.data.data);
-        setImageUrl(res.data.data.hair_salon.logo);
-        setTextLength(res.data.data.hair_salon.description);
-        setTextDescription(res.data.data.hair_salon.description);
+        if (res?.data?.data?.hair_salon) {
+          setImageUrl(res.data.data.hair_salon.logo);
+          setTextLength(res.data.data.hair_salon.description);
+          setTextDescription(res.data.data.hair_salon.description);
+        } else {
+          // Gérer le cas où hair_salon ou logo est null ou undefined
+          console.error("Les données de hair_salon ou logo sont manquantes.");
+        }
       });
+
     }
 
   }, []);

@@ -11,6 +11,7 @@ import Footer from '@/components/UI/Footer';
 import EUCountriesList from '@/components/shared/Navbar/EUCountries';
 import ComponentTheme from '@/components/UI/ComponentTheme';
 import CustomSlider from '@/components/UI/OHC_Slider';
+import CustomInput from '@/components/UI/CustomInput';
 
 
 const Filters = () => {
@@ -288,26 +289,20 @@ const Filters = () => {
 
 
                                 <div className='flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-24 lg:flex-col xl:flex-row lg:items-start xl:items-center lg:gap-5 xl:gap-24 mt-6 sm:mt-3'>
-                                    <div>
-                                        <ThemeProvider theme={ComponentTheme}>
-                                            <TextField
-                                                id="outlined-basic"
-                                                label="Code postal"
-                                                variant="outlined"
-                                                value={ZipCodeValue}
-                                                onChange={(e) => {
-                                                    const inputValue = e.target.value;
-                                                    // Use regular expression to allow only up to 5 numeric characters
-                                                    const numericValue = inputValue.replace(/[^0-9]/g, '').slice(0, 5);
-                                                    setZipCodeValue(numericValue);
-                                                }}
-                                                InputProps={{
-                                                    style: {
-                                                        borderRadius: '12px',
-                                                    },
-                                                }}
-                                            />
-                                        </ThemeProvider>
+                                    <div className="w-46">
+                                        <CustomInput
+                                            id="PostCode"
+                                            label="Code postal"
+                                            value={ZipCodeValue}
+                                            onChange={(e) => {
+                                                const inputValue = e.target.value;
+                                                // Use regular expression to allow only up to 5 numeric characters
+                                                const numericValue = inputValue.replace(/[^0-9]/g, '').slice(0, 5);
+                                                setZipCodeValue(numericValue);
+                                            }}
+                                            type="number"
+                                            isZipCode={true}
+                                        />
                                     </div>
 
                                     {/* Slider for Arround Address Searching circle */}
