@@ -7,13 +7,12 @@ import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 import useSnackbar from "@/hooks/useSnackbar";
 import { client } from "@/api/clientSide";
 // import PhoneInput from 'react-phone-input-2'
-import Input from 'react-phone-number-input/input'
 import PhoneInput from 'react-phone-number-input'
 import { Value } from 'react-phone-number-input'
 import 'react-phone-number-input/style.css'
-import { E164Number } from 'libphonenumber-js/core';
 import PaymentForm from "@/components/shared/Payement";
 import { TextField } from "@material-ui/core";
+import CustomInput from "@/components/UI/CustomInput";
 
 
 interface infoInterface {
@@ -259,63 +258,54 @@ const Account = () => {
 
     const modifAddress: React.JSX.Element =
         <div>
-            <div className="flex flex-col items-center justify-center gap-4">
-                <p className="text-xl font-semibold text-black text-center">Modification de l'adresse</p>
+            <p className="text-xl font-semibold text-black text-center mb-4">Modification de l'adresse</p>
+            <div className="flex flex-col items-start justify-start gap-4">
+
                 {error && (
                     <p className={`${Theme_A.checkers.errorText}`}>
                         {error.text}
                     </p>
                 )}
-                <div className="flex flex-row gap-x-2">
-                    <div className="w-40">
-                        <TextField className={`${inputFieldsDesign}`}
+                <div className="flex flex-row gap-x-2 justify-center">
+                    <div className="w-20 mr-2">
+                        <CustomInput
                             id="StreetNb"
                             label="Numero"
-                            variant="outlined"
                             value={streetNbField}
                             onChange={(e) => newStreetNbField(e.target.value)}
-                            InputProps={{
-                                style: { borderRadius: '12px' },
-                            }}
+                            isStreetNumber={true}
+                            type="number"
                         />
                     </div>
-                    <TextField className={`${inputFieldsDesign}`}
+                    <CustomInput
                         id="StreetName"
                         label="Rue"
-                        variant="outlined"
                         value={streetField}
                         onChange={(e) => setNewAddress(e.target.value)}
-                        InputProps={{
-                            style: { borderRadius: '12px' },
-                        }}
                     />
                 </div>
-                <div className="flex flex-row gap-x-2">
+                <div className="flex flex-row gap-x-2 mt-4 mr-4">
                     <div className="w-40">
-                        <TextField className={`${inputFieldsDesign}`}
+                        <CustomInput
                             id="PostCode"
                             label="Code postal"
-                            variant="outlined"
                             value={postCodeField}
                             onChange={(e) => newPostCodeField(e.target.value)}
-                            InputProps={{
-                                style: { borderRadius: '12px' },
-                            }}
+                            type="number"
+                            isZipCode={true}
                         />
                     </div>
-                    <TextField className={`${inputFieldsDesign}`}
+                    <CustomInput
                         id="City"
                         label="Ville"
-                        variant="outlined"
                         value={cityField}
                         onChange={(e) => newCityField(e.target.value)}
-                        InputProps={{
-                            style: { borderRadius: '12px' },
-                        }}
                     />
                 </div>
             </div>
-            <div className="mt-4 flex gap-4 items-center justify-center w-full">
+
+
+            <div className="mt-10 flex gap-4 items-center justify-center w-full">
                 <button
                     className={`${Theme_A.button.medWhiteColoredButton}`}
                     onClick={() => setIsModalAdd(false)}
@@ -602,7 +592,7 @@ const Account = () => {
         <div>
             <div className="flex flex-col items-center justify-center gap-4">
                 <p className="text-xl font-semibold text-black text-center">
-                    Préférences de notifications de messages</p>
+                    Notifications concernants votre messagerie</p>
                 <div className="flex flex-row items-start gap-3">
                     <div
                         onClick={() => setPNotifMsgEmail(!NotifMsgEmail)}
