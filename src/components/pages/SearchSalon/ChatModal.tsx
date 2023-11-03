@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { dashboard } from "@/api/dashboard";
 import { getLocalStorage } from "@/api/storage";
 import { Chat } from "@/types";
+import CustomInput from "@/components/UI/CustomInput";
 
 interface Message {
     content: string;
@@ -27,7 +28,7 @@ const ChatModal: FC<ChatModalProps> = ({
     const router = useRouter();
     const user = getLocalStorage("user");
     const userData = user ? JSON.parse(user) : null
-    const [chats,setChats]=useState<Chat[]>([])
+    const [chats, setChats] = useState<Chat[]>([])
     const [message, setMessage] = useState("");
 
     const getChat = async () => {
@@ -42,26 +43,26 @@ const ChatModal: FC<ChatModalProps> = ({
 
     const onSendMessage = async () => {
         if (message) {
-          const data={
-            client_id: userData.id,
-            professional_id: professionalData.id,
-            message: message,
-            by: userData.role==='salon_professional' ? 'professional' : 'client',
+            const data = {
+                client_id: userData.id,
+                professional_id: professionalData.id,
+                message: message,
+                by: userData.role === 'salon_professional' ? 'professional' : 'client',
+            }
+            await dashboard.sendMessage(data)
+                .then(resp => {
+                    getChat()
+                    setMessage("");
+                })
+                .catch(err => {
+                    console.log(err)
+                })
         }
-        await dashboard.sendMessage(data)
-        .then(resp=>{
-            getChat()
-            setMessage("");
-        })
-        .catch(err=>{
-            console.log(err)
-        })
-        }
-      };
+    };
 
-    useEffect(()=>{
+    useEffect(() => {
         getChat()
-    },[])
+    }, [])
     return (
         <>
             {isModalOpen && (
@@ -78,16 +79,24 @@ const ChatModal: FC<ChatModalProps> = ({
                         </button>
                         <div className="border border-gray-300 rounded-xl p-2 rounded-bl-lg overflow-auto h-40 bg-stone-100 shadow-inner mb-2">
                             {chats.map((msg, index) => (
-                                <div key={`msg-${index}`} className={`${msg.by==='client' ? 'text-right' : 'text-left'} mb-2`}>
+                                <div key={`msg-${index}`} className={`${msg.by === 'client' ? 'text-right' : 'text-left'} mb-2`}>
                                     <div
-                                        className={`inline-block p-2 text-xs outline-1 ${msg.by==='client' ? 'rounded-l-lg rounded-b-lg outline outline-orange-500 bg-stone-100' : 'rounded-r-lg rounded-b-lg outline outline-stone-400 bg-white'}`}
+                                        className={`inline-block p-2 text-xs outline-1 ${msg.by === 'client' ? 'rounded-l-lg rounded-b-lg outline outline-orange-500 bg-stone-100' : 'rounded-r-lg rounded-b-lg outline outline-stone-400 bg-white'}`}
                                     >
-                                        <strong>{msg.by==='client' ? 'Vous' : professionalData.name}:</strong> {msg.message}
+                                        <strong>{msg.by === 'client' ? 'Vous' : professionalData.name}:</strong> {msg.message}
                                     </div>
                                 </div>
                             ))}
                         </div>
-                        <div className="flex gap-1">
+                        <div className="flex gap-2 w-auto mt-4">
+                            <div className="flex-grow">
+                                <CustomInput
+                                    id="sendMessageInput"
+                                    label="Écrire un message"
+                                    value={message}
+                                    onChange={(e) => setMessage(e.target.value)}
+                                />
+                                {/*
                             <input
                                 type="text"
                                 value={message}
@@ -95,7 +104,9 @@ const ChatModal: FC<ChatModalProps> = ({
                                 placeholder="Écrire un message"
                                 className="flex-grow border border-gray-300 rounded-xl p-2 min-w-0 focus:outline-none focus:border-red-500 shadow-inner"
                             />
-                            <button type="button" onClick={onSendMessage} className="transform hover:scale-105 ">
+                             */}
+                            </div>
+                            <button type="button" onClick={onSendMessage} className="transform hover:scale-105">
                                 <ChatSendIcon />
                             </button>
                         </div>
