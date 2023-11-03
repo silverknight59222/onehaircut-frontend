@@ -10,6 +10,7 @@ import Services from '@/components/pages/dashboard/Dashboard/Services'
 import AddPartner from '@/components/pages/dashboard/Dashboard/AddPartner'
 import { ColorsThemeA } from "@/components/utilis/Themes";
 import { Agenda } from "@/components/pages/dashboard/Dashboard/Agenda";
+import UsersPage from "@/components/pages/dashboard/Dashboard/Users";
 
 const Page = () => {
 const [isSidebar, setIsSidebar] = useState(true);
@@ -49,6 +50,7 @@ const [isSidebar, setIsSidebar] = useState(true);
 				{tab === 'Prestation' && <Services />}
 				{tab === 'Agenda' && <Agenda />}
 				{tab === 'Ajouter un salon partenaire' && <AddPartner />}
+				{tab === 'Users' && <UsersPage />}
 			</div>
 		</>
 	);

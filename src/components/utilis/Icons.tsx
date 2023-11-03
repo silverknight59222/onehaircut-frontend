@@ -1,10 +1,13 @@
 import React from "react";
 
-export interface IconType {
+type IconType = {
+  width?: number | string;
+  height?: number | string;
   color?: string;
-  width?: string;
-  height?: string;
-}
+  stroke?: string;
+  strokeWidth?: string; // Add this line
+};
+
 export const DashboardIcon = (IconStyle: IconType) => {
   return (
     <svg
@@ -2073,6 +2076,7 @@ export const SelectedPaymentIcon = () => {
   );
 };
 
+
 export const StarIcon = (IconStyle: IconType) => {
   return (
     <svg
@@ -2085,10 +2089,14 @@ export const StarIcon = (IconStyle: IconType) => {
       <path
         d="M15.2502 15.2353L24.6857 14.418L16.4195 9.59751L18.2932 0.566492L11.3559 6.64466L3.08961 1.82412L7.02492 10.4387L0.0479687 16.5518L9.44591 15.7379L13.3656 24.3181L15.2502 15.2353Z"
         fill={IconStyle.color ? IconStyle.color : "#989898"}
+        stroke={IconStyle.stroke ? IconStyle.stroke : "none"}
+        strokeWidth={IconStyle.strokeWidth ? IconStyle.strokeWidth : "1"}
       />
     </svg>
   );
 };
+
+
 
 export const StarGreyIcon = (IconStyle: IconType) => {
   return (
@@ -3046,3 +3054,32 @@ export const FilterIcon = (IconStyle: { width?: string, height?: string, color?:
   );
 };
 
+export const LogoutIcon = (IconStyle: { width?: string, height?: string, color?: string }) => {
+  return (
+    // <svg width=IconStyle.width} height={IconStyle.height} viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg" >
+    //   <path d="M128 213.333333c0-46.933333 38.4-85.333333 85.333333-85.333333h341.333334v85.333333H213.333333v597.333334h341.333334v85.333333H213.333333c-46.933333 0-85.333333-38.4-85.333333-85.333333V213.333333z m604.842667 256L624.64 361.130667l60.330667-60.330667 211.2 211.2-211.2 211.2-60.330667-60.330667L732.842667 554.666667H451.84v-85.333334h281.002667z" fill="white" stroke={IconStyle.color ? IconStyle.color : "#767676"} />
+    // </svg>
+    // <svg xmlns="http://www.w3.org/2000/svg" width={IconStyle.width} height={IconStyle.height} viewBox="0 0 100 100" stroke={IconStyle.color ? IconStyle.color : "#767676"}>
+    //   <rect x="35" y="30" width="30" height="40" fill="#808080" />
+    //   <polygon points="45,35 65,50 45,65" fill="#ffffff" />
+    // </svg>
+
+    // <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
+    //   <circle cx="50" cy="50" r="45" fill="#808080" />
+    //   <path d="M47.5 20L60 32.5 47.5 45" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" />
+    //   <path d="M60 32.5H30" fill="none" stroke="#ffffff" stroke-width="5" stroke-linecap="round" />
+    // </svg>
+
+    // <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
+    //   <text x="30" y="60" font-family="Arial" font-size="40" fill="#808080">C</text>
+    //   <path d="M50 35 L70 50 L50 65" fill="none" stroke="#808080" stroke-width="5" stroke-linecap="round" />
+    // </svg>
+
+    <svg width={IconStyle.width} height={IconStyle.height} viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" >
+      <path d="M868 732h-70.3c-4.8 0-9.3 2.1-12.3 5.8-7 8.5-14.5 16.7-22.4 24.5a353.84 353.84 0 0 1-112.7 75.9A352.8 352.8 0 0 1 512.4 866c-47.9 0-94.3-9.4-137.9-27.8a353.84 353.84 0 0 1-112.7-75.9 353.28 353.28 0 0 1-76-112.5C167.3 606.2 158 559.9 158 512s9.4-94.2 27.8-137.8c17.8-42.1 43.4-80 76-112.5s70.5-58.1 112.7-75.9c43.6-18.4 90-27.8 137.9-27.8 47.9 0 94.3 9.3 137.9 27.8 42.2 17.8 80.1 43.4 112.7 75.9 7.9 7.9 15.3 16.1 22.4 24.5 3 3.7 7.6 5.8 12.3 5.8H868c6.3 0 10.2-7 6.7-12.3C798 160.5 663.8 81.6 511.3 82 271.7 82.6 79.6 277.1 82 516.4 84.4 751.9 276.2 942 512.4 942c152.1 0 285.7-78.8 362.3-197.7 3.4-5.3-.4-12.3-6.7-12.3zm88.9-226.3L815 393.7c-5.3-4.2-13-.4-13 6.3v76H488c-4.4 0-8 3.6-8 8v56c0 4.4 3.6 8 8 8h314v76c0 6.7 7.8 10.5 13 6.3l141.9-112a8 8 0 0 0 0-12.6z"
+        stroke={IconStyle.color ? IconStyle.color : "#767676"} />
+    </svg>
+
+
+  );
+};

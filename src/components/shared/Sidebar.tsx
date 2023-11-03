@@ -25,6 +25,7 @@ import { dashboard } from "@/api/dashboard";
 import { usePathname, useRouter } from "next/navigation";
 import { ColorsThemeA, Theme_A } from "../utilis/Themes";
 import BaseModal from "../UI/BaseModal";
+import { user_api } from "@/api/clientSide";
 
 interface SidebarItems {
   icon: string;
@@ -193,24 +194,45 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
       router.push(route)
     }
   }
-
+  const applyPermissions = (menus: any) => {
+    const temp = getLocalStorage("user");
+    const user = temp ? JSON.parse(temp) : null;
+    if (user.role != 'salon_professional' && user.permissions.length > 0) {
+      menus.forEach((m: any, k: number) => {
+        if (user.permissions.indexOf(m.title) == -1) {
+          delete menus[k];
+        }
+      });
+    }
+  }
   // Use effect to fetch data on component mount
   useEffect(() => {
     const temp = getLocalStorage("user");
     const user = temp ? JSON.parse(temp) : null;
+    console.log(user);
     if (!user.subscription) {
       const filteredRoutes = sidebarItems.filter(route => {
         return !proRoutes.includes(route.route)
       })
       setSidebarItem(filteredRoutes)
+      applyPermissions(filteredRoutes);
+
     } else {
       setSidebarItem(sidebarItems)
     }
-    if (user.id)
+    if (user.id) {
       dashboard.getHairSalon(Number(user.id)).then((res) => {
         setSalonDetails(res.data.data);
         setSalon(res.data.data);
       });
+      user_api.getSaloonInformation().then((res) => {
+        console.log(res.data.data);
+        setImageUrl(res.data.data.hair_salon.logo);
+        setTextLength(res.data.data.hair_salon.description);
+        setTextDescription(res.data.data.hair_salon.description);
+      });
+    }
+
   }, []);
 
 
@@ -230,6 +252,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
   const initialText = ""; // Ajoutez votre texte initial ici si nécessaire
   const [textDescription, setTextDescription] = useState<string>('');
   const [textLength, setTextLength] = useState<number>(0);
+  const [imageUrl, setImageUrl] = useState<string>("/assets/user_img.png");
 
   const handleTextChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setTextDescription(e.target.value);
@@ -270,10 +293,14 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
   const SetCurrentDescription = () => {
 
   }
-  const handleClick = () => {
+  const handleClick = async () => {
     closeModal();
     SetCurrentLogo();
     SetCurrentDescription();
+    console.log(image, textDescription);
+    const response = await user_api.updateSaloonInformation({ 'description': textDescription, 'logo_base64': image });
+    console.log(response.data.data.hair_salon.logo);
+    setImageUrl(response.data.data.hair_salon.logo);
     // Ajoutez d'autres fonctions ici si nécessaire...
   };
 
@@ -317,9 +344,9 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
                 {/* Salon Logo*/}
                 {/* TODO Add and save Logo fron salon there */}
                 <img
-                  src="/assets/user_img.png"
+                  src={imageUrl}
                   alt="profile"
-                  className="rounded-full absolute inset-0 m-auto shadow-md transform transition-transform duration-300 group-hover:scale-90 hover:shadow-inner border-2 border-stone-700"
+                  className="rounded-full absolute inset-0 m-auto shadow-md transform transition-transform duration-300 group-hover:scale-90 hover:shadow-inner border-2 border-stone-700 h-24 w-24"
                 />
               </div>
 

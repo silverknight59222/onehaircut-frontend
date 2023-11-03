@@ -1,7 +1,5 @@
 import { CompletedHairStyleIcon, DashboardHeartIcon, DashboardUsersIcon, ProjectIncomeIcon } from "@/components/utilis/Icons";
 import React from "react";
-import "chart.js/auto";
-import ChartjsLineChart from '@/views/charts/chartjs/ChartjsLineChart'
 import Footer from "@/components/UI/Footer";
 
 const Dashboard = () => {
@@ -11,28 +9,28 @@ const Dashboard = () => {
       text: "Revenue projetés",
       gradient: "bg-gradient-to-t from-red-700 via-red-500 to-red-500",
       borderClr: "bg-[#FE5352]",
-      icon: <ProjectIncomeIcon/>,
+      icon: <ProjectIncomeIcon />,
     },
     {
       numbers: "325",
       text: "Nouveaux clients",
       gradient: "bg-gradient-to-b from-blue-400 to-blue-600",
       borderClr: "bg-[#15BAF2]",
-      icon: <DashboardUsersIcon/>,
+      icon: <DashboardUsersIcon />,
     },
     {
       numbers: "3,567",
       text: "Coiffures effectuées",
       gradient: "bg-gradient-to-b from-[#7ABF50] to-[#629E3E]",
       borderClr: "bg-[#7ABF50]",
-      icon: <CompletedHairStyleIcon/>,
+      icon: <CompletedHairStyleIcon />,
     },
     {
       numbers: "4,7/5",
       text: "",
       gradient: "bg-gradient-to-b from-[#FF266A] to-[#DE235E]",
       borderClr: "bg-[#FF266A]",
-      icon: <DashboardHeartIcon/>,
+      icon: <DashboardHeartIcon />,
     },
   ];
   const messages = [
@@ -88,23 +86,6 @@ const Dashboard = () => {
               </div>
             );
           })}
-        </div>
-      </div>
-      <div className="mt-12">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          <div className="p-6 bg-[rgba(255,255,255,0.69)] rounded-[20px] shadow-[0px_26px_31px_0px_rgba(176, 176, 176, 0.10)]">
-            {/* Revenue chart */}
-            <div>
-              <ChartjsLineChart
-                  white="#ffffff"
-                  primary="#3498db"
-                  secondary="#2ecc71"
-                  labelColor="#9b9b9b"
-                  borderColor="#eaeaea"
-                  legendColor="#606060"
-              />
-            </div>
-          </div>
         </div>
       </div>
       <div className="mt-12 flex md:flex-row flex-col items-start gap-12">
@@ -186,7 +167,7 @@ const Dashboard = () => {
       </div>
     </div>
 
-      );
+  );
 };
 
 export default Dashboard;

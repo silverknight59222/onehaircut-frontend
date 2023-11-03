@@ -1,11 +1,11 @@
 import React from 'react'
-import { LogoIcon, LogoCircle } from "@/components/utilis/Icons";
+import { LogoIcon, LogoCircleFixRight } from "@/components/utilis/Icons";
 
 const index = () => {
   return (
     <div className="flex flex-col mt-14 w-full items-center justify-center">
       <div className="-z-50 fixed  -left-32 md:-left-28 -bottom-32 md:-bottom-28 overflow-hidden">
-        <LogoCircle />
+        <LogoCircleFixRight />
       </div>
       <div>
         <LogoIcon />

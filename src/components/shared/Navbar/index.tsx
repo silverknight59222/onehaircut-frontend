@@ -15,6 +15,9 @@ import UserProfile from "@/components/UI/UserProfile";
 import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
+import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+
+
 interface Navbar {
   isWelcomePage?: boolean,
   isServicesPage?: boolean,
@@ -120,15 +123,24 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
   ];
   const Mobile = [
     {
-      name: "Yes",
+      name: "Tous",
+      value: ""
     },
     {
-      name: "No",
+      name: "Oui",
+      value: "yes"
+    },
+    {
+      name: "Non",
+      value: "no"
     }
   ];
+
+
+
   const rangeSelector = (event: any, newValue: any) => {
     setRangeFilter(newValue);
-};
+  };
   const onClickGenderCheckbox = (gender: string) => {
     onGenderFilter && onGenderFilter(gender === 'Homme' ? 'men' : gender === 'Femme' ? 'women' : 'Mix')
     if (genderFilters === gender) {
@@ -154,9 +166,19 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
       setLengthFilters((prev) => [...prev, length]);
     }
   };
-  const onClickMobileCheckbox = (mobile: string) => {
-    setMobileFilters(mobile);
+  const onClickMobileCheckbox = (value: string) => {
+    if (value === "all") {
+      setMobileFilters('');
+    } else if (mobileFilters === value) {
+      setMobileFilters('');  // Reset or clear the filter if it's already selected
+    } else {
+      setMobileFilters(value);  // Otherwise, set the filter to the selected mobile value
+    }
   };
+
+
+
+
   useEffect(() => {
     onEthnicityFilters && onEthnicityFilters(ethnicityFilters)
   }, [ethnicityFilters])
@@ -167,9 +189,8 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
     onMobileFilters && onMobileFilters(mobileFilters)
   }, [mobileFilters])
   useEffect(() => {
-    onRangeFilters && onRangeFilters(rangeFilters.map(num => num.toString()))
-}, [rangeFilters])
-
+    onRangeFilters && onRangeFilters(rangeFilters.map(String))
+  }, [rangeFilters]);
 
 
   useEffect(() => {
@@ -184,6 +205,49 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
       document.removeEventListener("click", closeSelectBox);
     };
   }, []);
+
+  const theme = createTheme({
+    palette: {
+      primary: {
+        main: '#3B3A3A',
+      },
+      secondary: {
+        main: '#ec5657',
+      },
+    },
+    overrides: {
+      MuiSlider: {
+        thumb: {
+          color: '#000000',
+          width: 14, // Set the desired width
+          height: 14, // Set the desired height
+          border: '3px solid #000000',
+          boxShadow: '0px 0px 0px 4px rgb(236, 86, 87, 0.1)',
+          backgroundColor: '#FFFF', // The interior color of the thumb
+          borderRadius: '50%',// This makes it a circle
+          '&:hover, &.Mui-focusVisible': {
+            /* Applies a sharp, translucent black halo shadow around the thumb. */
+            boxShadow: '0px 0px 0px 8px rgb(236, 86, 87, 0.5)',
+          },
+        },
+        track: {
+          height: '4px',  // Adjust for desired thickness
+          color: '#ec5657',
+          background: 'linear-gradient(90deg, red, orange)',
+        },
+        rail: {
+          color: '#000000', //colorForTheUnfilledPart
+          height: '4px',  // Adjust for desired thickness
+          borderRadius: '16px',
+        },
+        valueLabel: {
+          color: '#000000', // The color of the value label that appears on hover
+        },
+      },
+    },
+  });
+
+
   return (
     <div className="w-full flex flex-col items-center justify-between border-b border-[#EBF0F2] pb-3 xl:pb-0">
       <div className={`w-full flex items-center justify-between px-4 md:px-14 ${!isLoggedIn ? 'flex-co sm:flex-row' : 'flex-row'}`}>
@@ -335,7 +399,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
                 <input
                   type="text"
                   placeholder="Ville"
-                  className={`text-base px-4 p-2 rounded-full outline-none ${Theme_A.behaviour.fieldFocused_C}`}
+                  className={`text-base px-4 p-2 rounded-xl outline-none ${Theme_A.behaviour.fieldFocused_C}`}
                   onChange={onSearch && isWelcomePage ?
                     (e) => onSearch(e.target.value) :
                     onCitySearch && isSalonPage ? (e) => onCitySearch(e.target.value) : () => { }}
@@ -346,7 +410,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
                 <input
                   type="text"
                   placeholder="Nom Salon"
-                  className={`text-base px-4 p-2 rounded-full outline-none ${Theme_A.behaviour.fieldFocused_C}`}
+                  className={`text-base px-4 p-2 rounded-xl outline-none ${Theme_A.behaviour.fieldFocused_C}`}
                   onChange={onNameSearch && isWelcomePage ?
                     () => { } :
                     onNameSearch && isSalonPage ? (e) => onNameSearch(e.target.value) : () => { }}
@@ -364,7 +428,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
 
                   }}
                 >
-                  Mobile
+                  Mobilit&eacute;
                 </p>
                 {showDesktopLength && isSalonPage && (
                   <div className="absolute top-[75px] -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
@@ -373,28 +437,29 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
                         <div
                           key={index}
                           className="flex w-full cursor-pointer mb-[19px]  transform hover:scale-110"
-                          onClick={() => onClickMobileCheckbox(item.name.toLowerCase())}
+                          onClick={() => onClickMobileCheckbox(item.value)}
                         >
                           <div
-                            className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  transform hover:scale-105 
-                              ? "bg-gradient-to-b from-pink-500 to-orange-500"
-                              : "bg-[#D6D6D6]"
-                              }`}
+                            className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105 
+                            ${mobileFilters === item.value ? ColorsThemeA.ohcVerticalGradient_A : "bg-[#D6D6D6]"}`}
                           >
-                            <input type="radio" name="radio" />
+                            <CheckedIcon />
                           </div>
                           <p className="ml-2">{item.name}</p>
                         </div>
                       );
                     })}
+
+
+
                   </div>
                 )}
               </div>
             }
             {(isSalonPage) &&
-              <div className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
+              <div className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer relative"> {/* Retain relative positioning for this div */}
                 <p
-                  className={showDesktopBudget ? "rounded-xl py-2 px-7 bg-white  text-black font-semibold" : " hover:bg-white rounded-xl py-2 px-7 "}
+                  className={showDesktopBudget ? "rounded-xl py-2 px-7 bg-white text-black font-semibold" : "hover:bg-white rounded-xl py-2 px-7"}
                   onClick={() => {
                     setShowDesktopEthnicity(false);
                     setShowDesktopGender(false);
@@ -405,25 +470,32 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
                   Budget
                 </p>
                 {showDesktopBudget && isSalonPage && (
-                  <div className="absolute top-[75px] -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
-                    <div style={{
-                      margin: 'auto',
-                      display: 'block',
-                      width: 'fit-content'
-                    }}>
-
-                      <Typography id="range-slider" gutterBottom>
-                      </Typography>
-                      <Slider
-                        value={rangeFilters}
-                        onChange={rangeSelector}
-                        valueLabelDisplay="auto"
-                      />
-                      Min: {rangeFilters[0]} Max:{rangeFilters[1]}
+                  <ThemeProvider theme={theme}>
+                    <div className="absolute top-[100%] left-1/2 transform -translate-x-1/2 mt-2 z-20 w-64 pt-3 px-4 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]"> {/* Adjusted modal positioning */}
+                      <div className="flex flex-col items-center justify-center w-full"> {/* Use flex properties to center children */}
+                        <Typography id="range-slider" gutterBottom>
+                        </Typography>
+                        <Slider
+                          value={rangeFilters}
+                          onChange={rangeSelector}
+                          valueLabelDisplay="auto"
+                          style={{ width: '70%' }}
+                        />
+                        <div className="mt-0 mb-1"> {/* Adjust spacing */}
+                          &#91;
+                          <span style={{ fontSize: '0.8em', fontWeight: '500', color: '#757575' }}>
+                            {rangeFilters[0]}€ &#8211; {rangeFilters[1]}€
+                          </span>
+                          &#93;
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  </ThemeProvider>
                 )}
               </div>
+
+
+
             }
 
           </div>

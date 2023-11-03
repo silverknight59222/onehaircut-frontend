@@ -27,6 +27,7 @@ const BookSalon = () => {
   const { loadingView } = userLoader();
   const salon=getLocalStorage('selectedSalon')
   const duration=getLocalStorage('serviceDuration')
+  const service_ids=getLocalStorage('ServiceIds')
   const durationTime = duration ? JSON.parse(duration) : null
   const salonId= salon ? JSON.parse(salon).id : null
   const items = [
@@ -39,7 +40,7 @@ const BookSalon = () => {
   const getAllHairDresser = async () => {
     if(salonId){
     setIsLoading(true);
-    await client.getSalonDetail(salonId,haircutData.id)
+    await client.getSalonDetail(salonId, haircutData.id)
       .then((resp) => {
         setHairDressers(resp.data.data[0].salon_hairdressers)
         setHairCut(resp.data.salon_haircut)
@@ -215,11 +216,11 @@ const BookSalon = () => {
                   <div
                     key={index}
                     onClick={()=>{slot.is_booked ? "":onSelectSlot(slot)}}
-                    className={`w-32 h-14 flex items-center justify-center text-xl font-semibold border rounded-2xl ${slot.is_booked ? "bg-[#5f5f5f]":""}  ${slot.is_booked ? "":"cursor-pointer"}  text-black ${
+                    className={`w-32 h-14 flex items-center justify-center text-xl font-semibold border rounded-2xl  ${slot.is_booked ? "":"cursor-pointer"}  text-black ${
                       selectedSlot.some((item:any)=>item.id===slot.id)
                         ? "bg-[#fbd3c6] text-[#473c38]"
-                        : "bg-white border-[#BABABA]"
-                    }`}         
+                        : "border-[#b8b8b8]"
+                    } ${slot.is_booked && "bg-[#4d4a4a]"}`}         
                   >
                     {slot.start}
                   </div>

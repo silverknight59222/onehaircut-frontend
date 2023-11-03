@@ -52,7 +52,6 @@ function StripePayment() {
       payment_method: "",
       plan_id: "",
       plan_name: "",
-      salon_description: "abc"
     };
     const userInfo = JSON.parse(getLocalStorage("user_Info") as string);
     const salonName = getLocalStorage("salon_name") as string;
@@ -62,12 +61,12 @@ function StripePayment() {
     data.user_id = userInfo?.id;
     data.salon_name = salonName;
     data.salon_description = 'Description text here';
-    data.country=salonAddress.country
-    data.state=salonAddress.state
-    data.city=salonAddress.city
-    data.lat=salonAddress.lat
-    data.long=salonAddress.long
-    data.zone_radius=salonAddress.zone
+    data.country = salonAddress.country
+    data.state = salonAddress.state
+    data.city = salonAddress.city
+    data.lat = salonAddress.lat
+    data.long = salonAddress.long
+    data.zone_radius = salonAddress.zone
     data.salon_type = salonType;
     data.payment_method = paymentMethod || "";
     data.plan_id = planType.plan_id;
@@ -90,7 +89,7 @@ function StripePayment() {
       })
       .catch((err) => {
         showSnackbar("error", "Error Occured!");
-      }).finally(()=>{
+      }).finally(() => {
         setIsLoading(false);
       });
   };
@@ -114,7 +113,7 @@ function StripePayment() {
         })
         .then(function (result) {
           registerSalon(result.paymentMethod?.id);
-          window.open("https://api.whatsapp.com/send?phone=" + userInfo.phone + "&text=Booking Success!", '_blank');
+          // window.open("https://api.whatsapp.com/send?phone=" + userInfo.phone + "&text=Booking Success!", '_blank');
         })
         .catch(function (error) {
           setIsLoading(false)
