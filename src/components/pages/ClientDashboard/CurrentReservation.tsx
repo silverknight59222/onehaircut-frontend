@@ -27,36 +27,46 @@ const Currentreservation = () => {
     const [items, setItems] = useState([]);
     const [itemCount, setItemCount] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
-    const [page, setPage] = useState(1);
 
-    const allReservations = async () => {
+    let page = 1;
+    let isPageLoading = false
+
+    const allReservations = async (currentPage: number) => {
         setIsLoading(true);
-        client.getMyReservations(page)
+        isPageLoading = true
+        client.getMyReservations(currentPage)
             .then((resp) => {
-                setItems(prevPage => [...prevPage, ...resp.data.bookings]);
+                if (currentPage == 1) {
+                    setItems(resp.data.bookings);
+                } else {
+                    setItems(prevPage => [...prevPage, ...resp.data.bookings]);
+                }
+
                 setItemCount(resp.data.count);
                 setIsLoading(false);
-                if (resp.data.count / (page * resp.data.count)) {
-                    setPage(prevPage => prevPage + 1);
+                if (resp.data.count <= (currentPage * resp.data.perPage)) {
+                    page = -1
                 } else {
-                    setPage(-1);
+                    page = currentPage + 1
                 }
-                
             })
-            .finally(() => setIsLoading(false));
+            .finally(() => {
+                setIsLoading(false)
+                isPageLoading = false
+            });
     }
     const [totalAmountForSevice, setTotalAmountForSevice] = useState(0);
     const handleScroll = () => {
-        if (isLoading) return;
-        if (page != -1) return;
+        if (isPageLoading) return;
+        if (page == -1) return;
 
         if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 30) {
-            allReservations();
+            allReservations(page);
         }
     };
 
     useEffect(() => {
-        allReservations();
+        allReservations(page);
         window.addEventListener('scroll', handleScroll);
         return () => {
             window.removeEventListener('scroll', handleScroll);
@@ -121,7 +131,7 @@ const Currentreservation = () => {
                                         </div>
                                         <div>
                                             <p className='text-[#444343] font-bold text-center sm:text-start'>Prix prestation</p>
-                                            <p key={index} className='text-[#666] text-sm text-center sm:text-start'>{totalAmountForSevice}</p>
+                                            <p key={index} className='text-[#666] text-sm text-center sm:text-start'>{item.total_service_price}</p>
                                             {/* {item.total_amount}</p> */}
                                         </div>
                                         <div>
