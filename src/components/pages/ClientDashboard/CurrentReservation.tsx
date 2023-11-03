@@ -45,7 +45,7 @@ const Currentreservation = () => {
             })
             .finally(() => setIsLoading(false));
     }
-
+    const [totalAmountForSevice, setTotalAmountForSevice] = useState(0);
     const handleScroll = () => {
         if (isLoading) return;
         if (page != -1) return;
@@ -106,11 +106,23 @@ const Currentreservation = () => {
                                         </div>}
                                         <div>
                                             <p className='text-[#444343] font-bold text-center sm:text-start'>Prestation</p>
-                                            <p className='text-[#666] text-sm text-center sm:text-start'>this is Prestation</p>
+                                            {
+                                                item.items.filter((ele) => ele.type == 'service').map((ele, index) => {
+
+                                                    if (ele.name) {
+                                                        return (<p key={index} className='text-[#666] text-sm text-center sm:text-start'>{ele.name}.</p>);
+                                                    }
+                                                    else {
+                                                        return (<p key={index} className='text-[#666] text-sm text-center sm:text-start'>none</p>);
+                                                    }
+                                                })
+                                            }
+                                            {item.items.filter((ele) => ele.type == 'service').length == 0 && <p key={index} className='text-[#666] text-sm text-center sm:text-start'>none.</p>}
                                         </div>
                                         <div>
                                             <p className='text-[#444343] font-bold text-center sm:text-start'>Prix prestation</p>
-                                            <p className='text-[#666] text-sm text-center sm:text-start'>{item.total_amount}</p>
+                                            <p key={index} className='text-[#666] text-sm text-center sm:text-start'>{totalAmountForSevice}</p>
+                                            {/* {item.total_amount}</p> */}
                                         </div>
                                         <div>
                                             <p className='text-[#444343] font-bold text-center sm:text-start'>Coiffeur</p>

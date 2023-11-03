@@ -128,7 +128,7 @@ const History = () => {
               {/* Loop over the booking history and display them */}
               {!histories.length && <p className="text-3xl">Aucun Historique Disponible</p>}
               {
-                histories.map((item, index) => {
+                !histories.length && histories.map((item, index) => {
                   return <div key={index}>
                     <div className=" w-full sm:w-[536px] lg:w-[600px] rounded-3xl bg-white py-6 px-12 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)] opacity-95 ">
                       <div className='flex flex-col-reverse sm:flex-row items-center sm:items-start justify-between'>
