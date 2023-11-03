@@ -36,7 +36,7 @@ const Currentreservation = () => {
                 setItems(prevPage => [...prevPage, ...resp.data.bookings]);
                 setItemCount(resp.data.count);
                 setIsLoading(false);
-                if (resp.data.count / (page * resp.data.count)) {
+                if (resp.data.count <= (page * resp.data.perPage)) {
                     setPage(prevPage => prevPage + 1);
                 } else {
                     setPage(-1);

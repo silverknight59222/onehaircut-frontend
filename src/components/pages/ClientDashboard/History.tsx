@@ -63,20 +63,27 @@ const History = () => {
     //TODO add backend function
   };
   const [page, setPage] = useState(1);
+  const [itemCount, setItemCount] = useState(0);
 
   const Histories = async () => {
     setIsLoading(true)
     client.getMyHistories(page)
       .then((resp) => {
-        console.log(resp.data)
-        setPage(prevPage => prevPage + 1);
-        setHistories(resp.data)
+        setHistories(prevData => [...prevData, ...resp.data.bookings]);
+        setItemCount(resp.data.count);
+        if (resp.data.count <= (page * resp.data.perPage)) {
+          setPage(prevPage => prevPage + 1);
+        } else {
+          setPage(-1);
+        }
       })
       .finally(() => setIsLoading(false));
   }
 
+
   const handleScroll = () => {
     if (isLoading) return;
+    if (page != -1) return;
 
     if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 30) {
       Histories();
@@ -84,11 +91,12 @@ const History = () => {
   };
 
   useEffect(() => {
+    Histories();
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [isLoading])
+  }, [])
 
   return (
     <div>
@@ -128,7 +136,7 @@ const History = () => {
               {/* Loop over the booking history and display them */}
               {!histories.length && <p className="text-3xl">Aucun Historique Disponible</p>}
               {
-                !histories.length && histories.map((item, index) => {
+                histories.map((item, index) => {
                   return <div key={index}>
                     <div className=" w-full sm:w-[536px] lg:w-[600px] rounded-3xl bg-white py-6 px-12 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)] opacity-95 ">
                       <div className='flex flex-col-reverse sm:flex-row items-center sm:items-start justify-between'>
@@ -136,19 +144,27 @@ const History = () => {
 
                           <p className='text-[#444343] font-bold text-center sm:text-start'>{item.redable_date}</p>
                           <p className='text-[#666] text-sm text-center sm:text-start'>Heure: {item.total_duration} mins</p>
-                          {item.salon_haircut && <p className='text-[#666] text-sm text-center sm:text-start'>Coiffure: {item.salon_haircut.haircut.name }</p>}
+                          {item.salon_haircut && <p className='text-[#666] text-sm text-center sm:text-start'>Coiffure: {item.salon_haircut.haircut.name}</p>}
                           {!item.salon_haircut && <p className='text-[#666] text-sm text-center sm:text-start'>Coiffure: {"None"}</p>}
 
-                          {<p className='text-[#666] text-sm text-center sm:text-start'>Préstations: {"None"}</p>}
-                          <p className='text-[#666] text-sm text-center sm:text-start'>Préstations: {"None"}</p>
 
-                          <p className='text-[#666] text-sm text-center sm:text-start'>Prix: {item.amount} euro</p>
+                          <div>
+                            <p className='text-[#666] text-sm text-center sm:text-start'>Prestation:</p>
+                            {
+                              item.items.filter((ele) => ele.type == 'service').map((ele, index) => {
+                                  return (<li key={index} className='text-[#666] text-sm text-center sm:text-start'>{ele.name}.</li>)
+                              })
+                            }
+                            {item.items.filter((ele) => ele.type == 'service').length == 0 && <p key={index} className='text-[#666] text-sm text-center sm:text-start'>none.</p>}
+                          </div>
+
+                          <p className='text-[#666] text-sm text-center sm:text-start'>Prix: {item.total_amount} euro</p>
                           <p className='text-[#666] text-sm text-center sm:text-start'>Salon: {item.hair_salon.name}</p>
                           <p className='text-[#666] text-sm text-center sm:text-start'>Coiffeur: {item.hair_dresser.name}</p>
 
                         </div>
                         <div className='w-[150px]'>
-                          <Image src={`https://api-server.onehaircut.com/public${item.salon_haircut.haircut.image}`} alt='' width={150} height={150} className='rounded-3xl' />
+                          {item.salon_haircut && <Image src={`https://api-server.onehaircut.com/public${item.salon_haircut.haircut.image}`} alt='' width={150} height={150} className='rounded-3xl' />}
                           <div className='justify-center items-center mt-3 bg-zinc-100 rounded-2xl p-1'>
                             <StarRatings
                               rating={item.note}
