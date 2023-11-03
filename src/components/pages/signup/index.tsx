@@ -30,6 +30,8 @@ const Signup = () => {
 	})
 	const [userInfo, setUserInfo] = useState(defaultUserInfo);
 	const [isLoading, setIsLoading] = useState(false);
+	const [passwordMismatchError, setPasswordMismatchError] = useState("");
+
 
 	const setUserName = (e: string) => {
 		if (!e.length) {
@@ -141,15 +143,17 @@ const Signup = () => {
 		if (!validateSignup()) {
 			return;
 		}
-
 		// Vérifier si les mots de passe correspondent
 		if (userInfo.password !== userInfo.repeatPassword) {
-			setError((prev) => ({
-				...prev,
-				password: "Les mots de passe ne correspondent pas",
-			}));
+			setPasswordMismatchError("Les mots de passe ne correspondent pas");
 			return;
+		} else {
+			// Réinitialisez l'erreur si les mots de passe correspondent à nouveau
+			setPasswordMismatchError("");
 		}
+
+
+
 
 		setIsLoading(true);
 
@@ -250,6 +254,11 @@ const Signup = () => {
 									error={error.password}
 								/>
 							</div>
+							{passwordMismatchError && (
+								<p className="text-xs text-red-700 ml-4 mt-2" role="alert">
+									{passwordMismatchError}
+								</p>
+							)}
 						</div>
 
 

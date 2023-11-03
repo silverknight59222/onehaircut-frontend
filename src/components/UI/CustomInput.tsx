@@ -8,9 +8,13 @@ interface CustomInputProps {
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     error?: string | null;
     placeholder?: string;
-    type?: 'text' | 'password';
+    type?: 'text' | 'password' | 'number';
     isEmail?: boolean;
+    isStreetNumber?: boolean; // Ajoutez une nouvelle prop pour spécifier que c'est un streetNumber
+    isZipCode?: boolean; // Ajoutez une nouvelle prop pour spécifier que c'est un streetNumber
     onBlur?: () => void;
+    isPasswordMismatch?: boolean; // Nouvelle prop pour la vérification de mot de passe non identique
+
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -22,13 +26,35 @@ const CustomInput: React.FC<CustomInputProps> = ({
     placeholder,
     type = 'text',
     isEmail = false,
+    isStreetNumber = false,
+    isZipCode = false,
     onBlur,
 }) => {
     const [isInputFocused, setIsInputFocused] = useState(false);
     const [isEmailError, setIsEmailError] = useState(false);
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const inputValue = e.target.value;
+        let inputValue = e.target.value;
+
+        if (isStreetNumber) {
+            // Supprimez tous les caractères non numériques (sauf les chiffres)
+            inputValue = inputValue.replace(/[^0-9]/g, '');
+
+            // Limitez la longueur à 5 chiffres
+            if (inputValue.length > 5) {
+                inputValue = inputValue.slice(0, 5);
+            }
+        }
+
+        if (isZipCode) {
+            // Supprimez tous les caractères non numériques (sauf les chiffres)
+            inputValue = inputValue.replace(/[^0-9]/g, '');
+
+            // Limitez la longueur à 5 chiffres
+            if (inputValue.length > 5) {
+                inputValue = inputValue.slice(0, 5);
+            }
+        }
 
         if (isEmail) {
             const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
@@ -39,7 +65,12 @@ const CustomInput: React.FC<CustomInputProps> = ({
             }
         }
 
-        onChange(e);
+        onChange({
+            target: {
+                name: id,
+                value: inputValue,
+            },
+        } as React.ChangeEvent<HTMLInputElement>);
     };
 
     const handleInputBlur = () => {
@@ -90,6 +121,12 @@ const CustomInput: React.FC<CustomInputProps> = ({
                     E-mail invalide*
                 </p>
             )}
+            {error === 'Les mots de passe ne correspondent pas' && (
+                <p className="text-xs text-red-700 ml-4 mt-2" role="alert">
+                    Les mots de passe ne correspondent pas*
+                </p>
+            )}
+
         </div>
     );
 };
