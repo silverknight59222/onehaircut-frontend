@@ -25,6 +25,7 @@ const Currentreservation = () => {
     };
 
     const [items, setItems] = useState([]);
+    const [itemCount, setItemCount] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
     const [page, setPage] = useState(1);
 
@@ -32,16 +33,22 @@ const Currentreservation = () => {
         setIsLoading(true);
         client.getMyReservations(page)
             .then((resp) => {
-                console.log(resp.data);
-                setItems(resp.data);
+                setItems(prevPage => [...prevPage, ...resp.data.bookings]);
+                setItemCount(resp.data.count);
                 setIsLoading(false);
-                setPage(prevPage => prevPage + 1);
+                if (resp.data.count / (page * resp.data.count)) {
+                    setPage(prevPage => prevPage + 1);
+                } else {
+                    setPage(-1);
+                }
+                
             })
             .finally(() => setIsLoading(false));
     }
 
     const handleScroll = () => {
         if (isLoading) return;
+        if (page != -1) return;
 
         if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 30) {
             allReservations();
@@ -49,11 +56,12 @@ const Currentreservation = () => {
     };
 
     useEffect(() => {
+        allReservations();
         window.addEventListener('scroll', handleScroll);
         return () => {
             window.removeEventListener('scroll', handleScroll);
         };
-    }, [isLoading])
+    }, [])
 
     return (
         <div>
