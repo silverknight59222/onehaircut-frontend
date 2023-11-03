@@ -29,45 +29,57 @@ const termsPage = () => {
       </div>
       <div className='mx-48 mb-16'>
         <h1 className={`my-12 ${Theme_A.textFont.headerH1}`}>Conditions Générales d'Utilisation de OneHaircut</h1>
-        <p className='pb-6'> Les présentes Conditions Générales d'Utilisation (ci-après dénommées "CGU") régissent l'utilisation du site web de [Nom de l'entreprise] (ci-après dénommé "le Site") et de tous les services qui y sont proposés. En utilisant ce Site, vous acceptez de vous conformer à ces CGU. Si vous n'êtes pas d'accord avec ces conditions, veuillez ne pas utiliser le Site.</p>
-        <h1 className={`my-3 ${Theme_A.textFont.headerH4}`}>
-          1. Acceptation des Conditions</h1>
-        <p className='pb-6'>
-          En utilisant le Site, vous acceptez d'être lié par ces CGU, ainsi que par notre Politique de Confidentialité. Si vous n'acceptez pas ces conditions, veuillez ne pas utiliser notre Site.        </p>
-        <h1 className={`my-3 ${Theme_A.textFont.headerH4}`}>
-          2. Modifications des CGU</h1>
-        <p className='pb-6'>
-          Nous nous réservons le droit de modifier ces CGU à tout moment, et les modifications seront publiées sur le Site avec une date de révision mise à jour. Il est de votre responsabilité de consulter régulièrement ces CGU pour vous assurer que vous les comprenez et les acceptez.        </p>
-        <h1 className={`my-3 ${Theme_A.textFont.headerH4}`}>
-          3. Utilisation du Site</h1>
-        <p className='pb-6'>
-          Vous acceptez de ne pas utiliser le Site à des fins illégales ou interdites par ces CGU. Vous ne devez pas perturber, endommager ou interférer avec le fonctionnement normal du Site.        </p>
-        <h1 className={`my-3 ${Theme_A.textFont.headerH4}`}>
-          4. Propriété Intellectuelle</h1>
-        <p className='pb-6'>
-          Tous les contenus, marques, logos, images, textes et autres éléments du Site sont protégés par des droits de propriété intellectuelle détenus par [Nom de l'entreprise]. Vous ne pouvez pas utiliser, copier, reproduire, distribuer ou afficher ces éléments sans autorisation préalable.        </p>
-        <h1 className={`my-3 ${Theme_A.textFont.headerH4}`}>
-          5. Responsabilité</h1>
-        <p className='pb-6'>
-          Le Site est fourni "tel quel", sans garantie d'aucune sorte. [Nom de l'entreprise] ne peut être tenu responsable des dommages directs ou indirects résultant de l'utilisation du Site.        </p>
-        <h1 className={`my-3 ${Theme_A.textFont.headerH4}`}>
-          6. Liens Externes</h1>
-        <p className='pb-6'>
-          Le Site peut contenir des liens vers des sites web tiers. [Nom de l'entreprise] n'est pas responsable du contenu ou des pratiques de confidentialité de ces sites. L'utilisation de ces liens est à vos propres risques.        </p>
+        <p className='pb-6'> Les présentes conditions générales d'utilisation régissent l'accès et l'utilisation du site web OneHaircut, ainsi que de ses services associés. En accédant au site et en utilisant nos services, l'utilisateur accepte les conditions énoncées ci-dessous.</p>
 
         <h1 className={`my-3 ${Theme_A.textFont.headerH4}`}>
-          7. Résiliation</h1>
+          1. Description des services</h1>
         <p className='pb-6'>
-          [Nom de l'entreprise] se réserve le droit de mettre fin à l'accès au Site à tout moment et pour quelque raison que ce soit.       </p>
+          OneHaircut offre une plateforme en ligne destinée à la réservation de services de coiffure. Les utilisateurs peuvent réserver des créneaux horaires, personnaliser leurs préférences, et interagir avec des coiffeurs partenaires.</p>
 
         <h1 className={`my-3 ${Theme_A.textFont.headerH4}`}>
-          8. Loi Applicable</h1>
+          2. Utilisation du site</h1>
         <p className='pb-6'>
-          Ces CGU sont régies par les lois en vigueur dans [juridiction] et tout litige découlant de ces CGU sera soumis à la juridiction exclusive des tribunaux de [juridiction].        </p>
+          L'utilisateur s'engage à utiliser le site web OneHaircut de manière conforme à la loi. Toute utilisation à des fins illégales ou inappropriées est strictement interdite.</p>
 
-        <p className='pt-24'>
-          Cette politique de confidentialité a été mise à jour le [date de la dernière révision].
-        </p>
+        <h1 className={`my-3 ${Theme_A.textFont.headerH4}`}>
+          3. Compte utilisateur</h1>
+        <p className='pb-6'>
+          Pour accéder à certaines fonctionnalités du site, l'utilisateur est amené à créer un compte personnel. Les informations fournies pour la création du compte doivent être exactes et à jour. </p>
+
+        <h1 className={`my-3 ${Theme_A.textFont.headerH4}`}>
+          4. Responsabilités</h1>
+        <p className='pb-6'>
+          OneHaircut s'efforce de fournir des services de qualité, mais ne peut garantir l'exactitude, la fiabilité ou l'exhaustivité des informations affichées sur le site. Onehaircut ne peut pas être tenu responsable pour les informations erronées fournies par les coiffeurs.</p>
+
+        <h1 className={`my-3 ${Theme_A.textFont.headerH4}`}>
+          5. Propriété intellectuelle</h1>
+        <p className='pb-6'>
+          Tous les contenus présents sur le site, tels que les textes, images, logos, et marques, sont protégés par la législation sur la propriété intellectuelle. Toute reproduction ou utilisation non autorisée est interdite. </p>
+
+        <h1 className={`my-3 ${Theme_A.textFont.headerH4}`}>
+          6. Protection des données personelles</h1>
+        <p className='pb-6'>
+          Chez OneHaircut, nous attachons une importance particulière à la confidentialité et au traitement des données personnelles. Conformément à notre politique de confidentialité, nous collectons et traitons les données personnelles de nos utilisateurs dans le respect des réglementations en vigueur. Nous reconnaissons et respectons vos droits à la confidentialité et à la protection des données. En tant qu'utilisateur, vous avez le droit d'accéder à vos informations personnelles, de les corriger, de les supprimer, ou de vous opposer au traitement de ces données. Pour exercer ces droits ou pour toute demande supplémentaire concernant vos données personnelles, veuillez nous contacter via les coordonnées fournies dans la section dédiée à la confidentialité de notre site ou application.</p>
+
+        <h1 className={`my-3 ${Theme_A.textFont.headerH4}`}>
+          7. Liens externes</h1>
+        <p className='pb-6'>
+          Le site web OneHaircut peut contenir des liens vers des sites tiers, exclusivement dans le but de faciliter les transactions de paiement. Nous souhaitons souligner que ces liens sont strictement utilisés à des fins de traitement des paiements et ne sont pas associés à des publicités externes. OneHaircut décline toute responsabilité quant au contenu ou aux pratiques de ces sites tiers. Nous encourageons nos utilisateurs à consulter les politiques de confidentialité et les conditions d'utilisation de ces sites tiers, car notre responsabilité ne s'étend pas à leur contenu ou à leurs pratiques.</p>
+
+        <h1 className={`my-3 ${Theme_A.textFont.headerH4}`}>
+          8. Limitations de responsabilité</h1>
+        <p className='pb-6'>
+          OneHaircut ne peut être tenu responsable des dommages directs ou indirects résultant de l'utilisation du site ou des services proposés.</p>
+
+        <h1 className={`my-3 ${Theme_A.textFont.headerH4}`}>
+          9. Modification des conditions</h1>
+        <p className='pb-6'>
+          OneHaircut se réserve le droit de modifier les présentes conditions générales d'utilisation à tout moment. Les utilisateurs seront informés des changements apportés.</p>
+
+        <h1 className={`my-3 ${Theme_A.textFont.headerH4}`}>
+          10. Droit applicable et juridiction</h1>
+        <p className='pb-6'>
+          Les présentes conditions sont régies par la législation en vigueur. En cas de litige, les tribunaux compétents seront ceux du ressort judiciaire concerné.  </p>
 
       </div>
 
