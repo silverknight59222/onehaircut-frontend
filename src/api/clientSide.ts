@@ -86,7 +86,7 @@ const user_api =  {
         return await request.post(`/user-info`, data);
     },
     getSaloonInformation: async () => {
-        return await request.get(`/user-info`);
+        return await request.get(`/user_profile`);
     },
 
 }

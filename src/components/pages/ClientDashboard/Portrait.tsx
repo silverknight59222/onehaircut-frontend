@@ -258,14 +258,13 @@ const Portrait = () => {
     };
 
     const fetchPotraits = async () => {
-        const resp = await client.getUserPotrait();
-        console.log(resp.data);
+        const resp = await client.getUserPotrait();        
 
-        setprofileSlightlyLeftImage(resp.data.slightly_left_profile)
-        setProfileLeftImage(resp.data.left_profile);
-        setProfileImage(resp.data.front_profile);
-        setProfileSlightlyRightImage(resp.data.slightly_straight_profile);
-        setProfileRightImage(resp.data.right_profile);
+        // setprofileSlightlyLeftImage(resp.data.slightly_left_profile)
+        // setProfileLeftImage(resp.data.left_profile);
+        // setProfileImage(resp.data.front_profile);
+        // setProfileSlightlyRightImage(resp.data.slightly_straight_profile);
+        // setProfileRightImage(resp.data.right_profile);
         setGender(resp.data.gender);
         setethnicGroup(resp.data.ethnic_group);
         sethairLength(resp.data.hair_length);
