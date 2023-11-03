@@ -275,19 +275,19 @@ const SalonInfos = () => {
         const resp = await client.getAddresses()
         console.log(resp.data);
         setAddressResponse(resp.data);
-        // setName(resp.data.name);
-        // setStreet(resp.data.street);
-        // setPostalCode(resp.data.zipcode);
-        // setCity(resp.data.city);
-        // setState(resp.data.state);
-        // setCountry(resp.data.country);
-        // setIsBillingAddressSame(resp.data.is_billing_address_same);
-        // setBillingName(resp.data.billing_name);
-        // setBillingStreet(resp.data.billing_street);
-        // setBillingPostalCode(resp.data.billing_zip_code);
-        // setBillingCity(resp.data.billing_city);
-        // setBillingState(resp.data.billing_state);
-        // setBillingCountry(resp.data.billing_country);
+        setName(resp.data.name);
+        setStreet(resp.data.street);
+        setPostalCode(resp.data.zipcode);
+        setCity(resp.data.city);
+        setState(resp.data.state);
+        setCountry(resp.data.country);
+        setIsBillingAddressSame(resp.data.is_billing_address_same);
+        setBillingName(resp.data.billing_name);
+        setBillingStreet(resp.data.billing_street);
+        setBillingPostalCode(resp.data.billing_zip_code);
+        setBillingCity(resp.data.billing_city);
+        setBillingState(resp.data.billing_state);
+        setBillingCountry(resp.data.billing_country);
     }
 
     /************************************************************************************************************************** */
