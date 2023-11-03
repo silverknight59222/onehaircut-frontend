@@ -107,7 +107,7 @@ const Index = () => {
     }else{
     setIsLoading(true)
 
-      const targetDayOfWeek = slotData.slot[0].day; 
+      const targetDayOfWeek = slotData.slot[0].day;
 
       const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
       const number= daysOfWeek.indexOf(targetDayOfWeek);
@@ -198,7 +198,7 @@ const Index = () => {
       newHours += 24;
     }
     const newTimeString = `${newHours.toString().padStart(2, '0')}:${newMinutes.toString().padStart(2, '0')}`;
-  
+
     return newTimeString;
   }
   return (
@@ -224,7 +224,7 @@ const Index = () => {
                 );
               })} */}
               {haircutData ? <p className="text-base"><span className="font-semibold text-lg">Haircut: </span>{haircutData.name}</p> : ''}
-              {servicesData ? <p><span className="font-semibold text-lg">Services: </span> 
+              {servicesData ? <p><span className="font-semibold text-lg">Services: </span>
                   {servicesData.map((item: {name: string, id: number},index: number)=>{
                     return <p key={index} className="text-base">{++index}. {item.name}</p>
                   })}

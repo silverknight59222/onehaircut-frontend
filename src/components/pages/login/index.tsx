@@ -18,8 +18,8 @@ const Login = () => {
 	const searchParams = useSearchParams()
 
 	const defaultUserInfo = {
-		email: "",
-		password: "",
+		email: "dummy@user.com",
+		password: "password",
 	};
 	const [error, setError] = useState({
 		email: '',
@@ -83,31 +83,26 @@ const Login = () => {
 		return isValidated;
 	}
 	const onLogin = async () => {
-		if (!validateLogin()) {
-			return;
-		}
 		setIsLoading(true);
-		await Auth.login(userInfo)
-			.then((resp) => {
-				const res = resp.data;
-				console.log(res.user)
-				setLocalStorage("user", JSON.stringify(res.user));
-				setLocalStorage("auth-token", res.token);
-				// if(searchParams.get('redirect') === 'payment'){
-				// 	router.push("/payment");
-				// }
-				if (res.user.role === 'salon_professional') {
-					router.push("/dashboard");
-				} else {
-					router.push("/client/dashboard");
-				}
-			})
-			.catch((err) => {
-				showSnackbar('error', 'Le mot de passe et l\'adresse e-mail sont obligatoires.')
-			})
-			.finally(() => {
-				setIsLoading(false);
-			})
+
+		// Check for dummy credentials
+		if (userInfo.email === "dummy@user.com" && userInfo.password === "password") {
+			setLocalStorage("user", JSON.stringify({ name: "Dummy User", role: "salon_professional" }));
+			setLocalStorage("auth-token", "dummy_token_123456");
+			const myaRole= 'salon_professional'
+			if (searchParams.get('redirect') === 'payment') {
+				router.push("/payment");
+			} else if (myaRole === 'salon_professional') {
+				router.push("/dashboard");
+			} else {
+				router.push("/client/dashboard");
+			}
+
+			setIsLoading(false);
+		} else {
+			setIsLoading(false);
+			showSnackbar('error', 'Le mot de passe et l\'adresse e-mail sont obligatoires.');
+		}
 	};
 	return (
 		<>
