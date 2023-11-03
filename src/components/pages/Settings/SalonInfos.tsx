@@ -254,9 +254,7 @@ const SalonInfos = () => {
         }
     }
     const setAddressData = async (place: any,) => {
-        console.log("------------------------------------");
-        console.log(place);
-        console.log("------------------------------------");
+
         place.address_components.map((item, index) => {
             setAddressFields(item.types[0], item.long_name);
         });
@@ -264,10 +262,6 @@ const SalonInfos = () => {
 
     }
     const billingAddressIsSame = (args = "none") => {
-        console.log("Entered  billing from");
-        console.log(
-            args
-        )
         setBillingCity(city);
         setBillingCountry(country);
         setBillingName(name);
@@ -314,7 +308,6 @@ const SalonInfos = () => {
 
     const fetchAdress = async () => {
         const resp = await client.getAddresses()
-        console.log(resp.data);
         setfullAddress((resp.data.street ? resp.data.street + ", " : "") + (resp.data.city ? resp.data.city + ", " : "") + (resp.data.state ? resp.data.state + ", " : "") + (resp.data.country ? resp.data.country : ""));
         setfullbillingAddress((resp.data.billing_street ? resp.data.billing_street + ", " : "") + (resp.data.billing_city ? resp.data.billing_city + ", " : "") + (resp.data.billing_state ? resp.data.billing_state + ", " : "") + (resp.data.billing_country ? resp.data.billing_country : ""))
         setAddressResponse(resp.data);
@@ -363,7 +356,7 @@ const SalonInfos = () => {
                                 onPlaceSelected={(place) => {
                                     setAddressData(place)
                                 }}
-                                value={street}
+                                value={fullAddress}
                                 options={{
                                     types: ["geocode"],
                                     fields: [
@@ -450,7 +443,7 @@ const SalonInfos = () => {
                                 <input
                                     placeholder="Adresse de facturation"
                                     type="text"
-                                    value={billingStreet}
+                                    value={fullbillingAddress}
                                     onChange={(e) => setBillingStreet(e.target.value)}
                                     maxLength={50}
                                     className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
