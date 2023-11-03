@@ -2,7 +2,7 @@
 import Box from '@mui/material/Box'
 
 // ** Type Import
-import { LayoutProps } from 'src/@core/layouts/types'
+import { LayoutProps } from '@/@core/layouts/types'
 
 // ** Footer Content Component
 import FooterContent from './FooterContent'

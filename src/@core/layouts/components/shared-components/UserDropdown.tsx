@@ -15,13 +15,13 @@ import Typography from '@mui/material/Typography'
 import MenuItem, { MenuItemProps } from '@mui/material/MenuItem'
 
 // ** Icon Imports
-import Icon from 'src/@core/components/icon'
+import Icon from '@/@core/components/icon'
 
 // ** Context
-import { useAuth } from 'src/hooks/useAuth'
+import { useAuth } from '@/hooks/useAuth'
 
 // ** Type Imports
-import { Settings } from 'src/@core/context/settingsContext'
+import { Settings } from '@/@core/context/settingsContext'
 
 interface Props {
   settings: Settings

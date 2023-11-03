@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles'
 import Box, { BoxProps } from '@mui/material/Box'
 
 // ** Hooks Imports
-import useBgColor, { UseBgColorType } from 'src/@core/hooks/useBgColor'
+import useBgColor, { UseBgColorType } from '@/@core/hooks/useBgColor'
 
 const StepperWrapper = styled(Box)<BoxProps>(({ theme }) => {
   // ** Hook

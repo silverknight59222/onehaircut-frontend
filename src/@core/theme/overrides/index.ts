@@ -3,7 +3,7 @@ import { Theme } from '@mui/material/styles'
 import { ComponentsPropsList } from '@mui/material'
 
 // ** Type Import
-import { Settings } from 'src/@core/context/settingsContext'
+import { Settings } from '@/@core/context/settingsContext'
 
 export type OwnerStateThemeType = {
   theme: Theme

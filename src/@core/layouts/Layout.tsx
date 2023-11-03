@@ -2,7 +2,7 @@
 import { useEffect, useRef } from 'react'
 
 // ** Type Import
-import { LayoutProps } from 'src/@core/layouts/types'
+import { LayoutProps } from '@/@core/layouts/types'
 
 // ** Layout Components
 import VerticalLayout from './VerticalLayout'

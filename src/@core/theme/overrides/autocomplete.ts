@@ -1,9 +1,9 @@
 // ** Type Imports
 import { OwnerStateThemeType } from './'
-import { Skin } from 'src/@core/layouts/types'
+import { Skin } from '@/@core/layouts/types'
 
 // ** Util Import
-import { hexToRGBA } from 'src/@core/utils/hex-to-rgba'
+import { hexToRGBA } from '@/@core/utils/hex-to-rgba'
 
 const Autocomplete = (skin: Skin) => {
   const boxShadow = (theme: OwnerStateThemeType['theme']) => {

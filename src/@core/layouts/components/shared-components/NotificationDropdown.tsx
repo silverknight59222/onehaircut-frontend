@@ -19,13 +19,13 @@ import Icon from '@/@core/components/icon'
 import PerfectScrollbarComponent from 'react-perfect-scrollbar'
 
 // ** Type Imports
-import { ThemeColor } from 'src/@core/layouts/types'
-import { Settings } from 'src/@core/context/settingsContext'
-import { CustomAvatarProps } from 'src/@core/components/mui/avatar/types'
+import { ThemeColor } from '@/@core/layouts/types'
+import { Settings } from '@/@core/context/settingsContext'
+import { CustomAvatarProps } from '@/@core/components/mui/avatar/types'
 
 // ** Custom Components Imports
-import CustomChip from 'src/@core/components/mui/chip'
-import CustomAvatar from 'src/@core/components/mui/avatar'
+import CustomChip from '@/@core/components/mui/chip'
+import CustomAvatar from '@/@core/components/mui/avatar'
 
 // ** Util Import
 import { getInitials } from '@/@core/utils/get-initials'

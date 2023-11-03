@@ -4,10 +4,10 @@ import MuiAppBar, { AppBarProps } from '@mui/material/AppBar'
 import MuiToolbar, { ToolbarProps } from '@mui/material/Toolbar'
 
 // ** Type Imports
-import { LayoutProps } from 'src/@core/layouts/types'
+import { LayoutProps } from '@/@core/layouts/types'
 
 // ** Util Import
-import { hexToRGBA } from 'src/@core/utils/hex-to-rgba'
+import { hexToRGBA } from '@/@core/utils/hex-to-rgba'
 
 interface Props {
   hidden: LayoutProps['hidden']

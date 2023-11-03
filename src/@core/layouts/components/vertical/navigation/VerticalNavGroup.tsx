@@ -18,22 +18,22 @@ import ListItemButton from '@mui/material/ListItemButton'
 import clsx from 'clsx'
 
 // ** Icon Imports
-import Icon from 'src/@core/components/icon'
+import Icon from '@/@core/components/icon'
 
 // ** Configs Import
-import themeConfig from 'src/configs/themeConfig'
+import themeConfig from '@/configs/themeConfig'
 
 // ** Utils
-import { hasActiveChild, removeChildren } from 'src/@core/layouts/utils'
+import { hasActiveChild, removeChildren } from '@/@core/layouts/utils'
 
 // ** Type Import
-import { NavGroup, LayoutProps } from 'src/@core/layouts/types'
+import { NavGroup, LayoutProps } from '@/@core/layouts/types'
 
 // ** Custom Components Imports
 import VerticalNavItems from './VerticalNavItems'
-import UserIcon from 'src/layouts/components/UserIcon'
-import Translations from 'src/layouts/components/Translations'
-import CanViewNavGroup from 'src/layouts/components/acl/CanViewNavGroup'
+import UserIcon from '@/layouts/components/UserIcon'
+import Translations from '@/layouts/components/Translations'
+import CanViewNavGroup from '@/layouts/components/acl/CanViewNavGroup'
 
 interface Props {
   item: NavGroup

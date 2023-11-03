@@ -3,10 +3,10 @@ import { deepmerge } from '@mui/utils'
 import { PaletteMode, ThemeOptions } from '@mui/material'
 
 // ** User Theme Options
-import UserThemeOptions from 'src/layouts/UserThemeOptions'
+import UserThemeOptions from '@/layouts/UserThemeOptions'
 
 // ** Type Import
-import { Settings } from 'src/@core/context/settingsContext'
+import { Settings } from '@/@core/context/settingsContext'
 
 // ** Theme Override Imports
 import palette from './palette'

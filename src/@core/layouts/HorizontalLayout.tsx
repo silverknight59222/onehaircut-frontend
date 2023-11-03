@@ -6,19 +6,19 @@ import Box, { BoxProps } from '@mui/material/Box'
 import MuiToolbar, { ToolbarProps } from '@mui/material/Toolbar'
 
 // ** Icon Imports
-import Icon from 'src/@core/components/icon'
+import Icon from '@/@core/components/icon'
 
 // ** Theme Config Import
-import themeConfig from 'src/configs/themeConfig'
+import themeConfig from '@/configs/themeConfig'
 
 // ** Type Import
-import { LayoutProps } from 'src/@core/layouts/types'
+import { LayoutProps } from '@/@core/layouts/types'
 
 // ** Components
-import Customizer from 'src/@core/components/customizer'
+import Customizer from '@/@core/components/customizer'
 import Footer from './components/shared-components/footer'
 import Navigation from './components/horizontal/navigation'
-import ScrollToTop from 'src/@core/components/scroll-to-top'
+import ScrollToTop from '@/@core/components/scroll-to-top'
 import AppBarContent from './components/horizontal/app-bar-content'
 
 // ** Util Import

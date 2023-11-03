@@ -2,10 +2,10 @@
 import { OwnerStateThemeType } from './'
 
 // ** Theme Config Imports
-import themeConfig from 'src/configs/themeConfig'
+import themeConfig from '@/configs/themeConfig'
 
 // ** Util Import
-import { hexToRGBA } from 'src/@core/utils/hex-to-rgba'
+import { hexToRGBA } from '@/@core/utils/hex-to-rgba'
 
 const Button = () => {
   return {

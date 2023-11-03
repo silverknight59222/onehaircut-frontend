@@ -10,10 +10,10 @@ import { createTheme, responsiveFontSizes, styled, ThemeProvider } from '@mui/ma
 import PerfectScrollbar from 'react-perfect-scrollbar'
 
 // ** Type Import
-import { LayoutProps } from 'src/@core/layouts/types'
+import { LayoutProps } from '@/@core/layouts/types'
 
 // ** Theme Config
-import themeConfig from 'src/configs/themeConfig'
+import themeConfig from '@/configs/themeConfig'
 
 // ** Component Imports
 import Drawer from './Drawer'
@@ -21,10 +21,10 @@ import VerticalNavItems from './VerticalNavItems'
 import VerticalNavHeader from './VerticalNavHeader'
 
 // ** Theme Options
-import themeOptions from 'src/@core/theme/ThemeOptions'
+import themeOptions from '@/@core/theme/ThemeOptions'
 
 // ** Util Import
-import { hexToRGBA } from 'src/@core/utils/hex-to-rgba'
+import { hexToRGBA } from '@/@core/utils/hex-to-rgba'
 
 interface Props {
   navWidth: number

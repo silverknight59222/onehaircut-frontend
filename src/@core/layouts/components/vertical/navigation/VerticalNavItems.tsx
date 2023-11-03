@@ -1,5 +1,5 @@
 // ** Type Imports
-import { NavLink, NavGroup, LayoutProps, NavSectionTitle } from 'src/@core/layouts/types'
+import { NavLink, NavGroup, LayoutProps, NavSectionTitle } from '@/@core/layouts/types'
 
 // ** Custom Menu Components
 import VerticalNavLink from './VerticalNavLink'

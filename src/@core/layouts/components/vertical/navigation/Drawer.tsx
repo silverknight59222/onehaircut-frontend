@@ -3,7 +3,7 @@ import { styled } from '@mui/material/styles'
 import MuiSwipeableDrawer, { SwipeableDrawerProps } from '@mui/material/SwipeableDrawer'
 
 // ** Type Import
-import { LayoutProps } from 'src/@core/layouts/types'
+import { LayoutProps } from '@/@core/layouts/types'
 
 interface Props {
   navWidth: number

@@ -1,6 +1,6 @@
 // ** Type Imports
 import { OwnerStateThemeType } from './'
-import { Skin } from 'src/@core/layouts/types'
+import { Skin } from '@/@core/layouts/types'
 
 const Popover = (skin: Skin) => {
   const boxShadow = (theme: OwnerStateThemeType['theme']) => {

@@ -3,11 +3,11 @@ import { styled } from '@mui/material/styles'
 import Box, { BoxProps } from '@mui/material/Box'
 
 // ** Hooks
-import { useSettings } from 'src/@core/hooks/useSettings' // ** Hooks Imports
-import useBgColor, { UseBgColorType } from 'src/@core/hooks/useBgColor'
+import { useSettings } from '@/@core/hooks/useSettings' // ** Hooks Imports
+import useBgColor, { UseBgColorType } from '@/@core/hooks/useBgColor'
 
 // ** Util Import
-import { hexToRGBA } from 'src/@core/utils/hex-to-rgba'
+import { hexToRGBA } from '@/@core/utils/hex-to-rgba'
 
 // ** Styles
 import 'react-datepicker/dist/react-datepicker.css'
