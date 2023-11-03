@@ -52,7 +52,7 @@ const Portrait = () => {
         "Moyen",
         "Long",]
 
-
+    const [imagesToUpload, setImagesToUpload] = useState([]);
     const [gender, setGender] = useState('');
     const [ethnicGroup, setethnicGroup] = useState('');
     const [hairLength, sethairLength] = useState('');
@@ -87,6 +87,8 @@ const Portrait = () => {
         }
         const fileUploaded = event.target.files[0];
         setProfileImage(URL.createObjectURL(fileUploaded));
+        imagesToUpload.push({'type': 'front_profile',  'file': event.target.files[0]})
+        //setImagesToUpload([{'type': 'profile_image',  'file': event.target.files[0]}])
     };
     // handle the click to modify the pic
     const handleClick = () => {
@@ -108,6 +110,8 @@ const Portrait = () => {
         }
         const fileUploaded = event.target.files[0];
         setProfileLeftImage(URL.createObjectURL(fileUploaded));
+        imagesToUpload.push({'type': 'left_profile',  'file': event.target.files[0]})
+        //setImagesToUpload([{'type': 'left_profile',  'file': event.target.files[0]}])
     };
     // handle the click to modify the pic
     const handleClickLeft = () => {
@@ -129,6 +133,8 @@ const Portrait = () => {
         }
         const fileUploaded = event.target.files[0];
         setprofileSlightlyLeftImage(URL.createObjectURL(fileUploaded));
+        imagesToUpload.push({'type': 'slightly_left_profile',  'file': event.target.files[0]})
+        //setImagesToUpload([{'type': 'slightly_left_profile',  'file': event.target.files[0]}])
     };
     // handle the click to modify the pic
     const handleClickLeft2 = () => {
@@ -150,6 +156,8 @@ const Portrait = () => {
         }
         const fileUploaded = event.target.files[0];
         setProfileRightImage(URL.createObjectURL(fileUploaded));
+        imagesToUpload.push({'type': 'right_profile',  'file': event.target.files[0]})
+        //setImagesToUpload([{'type': 'right_profile',  'file': event.target.files[0]}])
     };
     // handle the click to modify the pic
     const handleClickRight = () => {
@@ -171,6 +179,8 @@ const Portrait = () => {
         }
         const fileUploaded = event.target.files[0];
         setProfileSlightlyRightImage(URL.createObjectURL(fileUploaded));
+        imagesToUpload.push({'type': 'slightly_right_profile',  'file': event.target.files[0]})
+        //setImagesToUpload([{'type': 'slightly_right_profile',  'file': event.target.files[0]}])
     };
     // handle the click to modify the pic
     const handleClickRight2 = () => {
@@ -181,7 +191,7 @@ const Portrait = () => {
 
 
     // Handle removing profil picture
-    const RemoveHaircutWishlist = async (e: any, profil: string) => {
+    const RemoveImage = async (e: any, profil: string) => {
         // TODO Add backend
 
         e.stopPropagation()
@@ -223,7 +233,7 @@ const Portrait = () => {
                     </div>
                     {img && (
                         <div
-                            onClick={(e) => RemoveHaircutWishlist(e, subtitle)}
+                            onClick={(e) => RemoveImage(e, subtitle)}
                             className={`absolute -top-5 -right-3 flex items-center w-6 h-6 cursor-pointer rounded-md ${Theme_A.button.crossButtonSmall} z-10`}>
                             <CrossIcon width="18" height="18" />
                         </div>)}
@@ -235,16 +245,20 @@ const Portrait = () => {
 
     const savePotraits = async () => {
         setIsLoading(true)
-        await client.storeUserPotrait({
-            slightly_left_profile: profileSlightlyLeftImage,
-            left_profile: profileLeftImage,
-            front_profile: profileImage,
-            slightly_straight_profile: profileSlightlyRightImage,
-            right_profile: profileRightImage,
-            gender: gender,
-            ethnic_group: ethnicGroup,
-            hair_length: hairLength,
-        })
+        const formData = new FormData();
+        formData.append("ethnic_group", ethnicGroup);
+        formData.append("hair_length", hairLength);
+        formData.append("gender", gender);
+        formData.append("slightly_left_profile", profileSlightlyLeftImage);
+        formData.append("left_profile", profileLeftImage);
+        formData.append("front_profile", profileImage);
+        formData.append("slightly_right_profile", profileSlightlyRightImage);
+        formData.append("right_profile", profileRightImage);        
+        imagesToUpload.forEach(image => {
+            if(image)
+                formData.append(image.type, image.file);
+        });        
+        await client.storeUserPotrait(formData)
             .then(resp => {
                 console.log(resp.data);
                 showSnackbar("succès", "Portrait enregistrés avec succès");
@@ -260,11 +274,11 @@ const Portrait = () => {
     const fetchPotraits = async () => {
         const resp = await client.getUserPotrait();        
 
-        // setprofileSlightlyLeftImage(resp.data.slightly_left_profile)
-        // setProfileLeftImage(resp.data.left_profile);
-        // setProfileImage(resp.data.front_profile);
-        // setProfileSlightlyRightImage(resp.data.slightly_straight_profile);
-        // setProfileRightImage(resp.data.right_profile);
+        setprofileSlightlyLeftImage(resp.data.slightly_left_profile)
+        setProfileLeftImage(resp.data.left_profile);
+        setProfileImage(resp.data.front_profile);
+        setProfileSlightlyRightImage(resp.data.slightly_right_profile);
+        setProfileRightImage(resp.data.right_profile);
         setGender(resp.data.gender);
         setethnicGroup(resp.data.ethnic_group);
         sethairLength(resp.data.hair_length);
