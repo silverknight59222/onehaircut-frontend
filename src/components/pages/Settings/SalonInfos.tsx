@@ -30,7 +30,8 @@ const SalonInfos = () => {
     const [isLoading, setIsLoading] = useState(false);
     const showSnackbar = useSnackbar();
     const [addressResponse, setAddressResponse] = useState("");
-
+    const [fullAddress, setfullAddress] = useState("");
+    const [fullbillingAddress, setfullbillingAddress] = useState("");
     const openModal = () => {
         setIsModal(true);
     };
@@ -112,7 +113,7 @@ const SalonInfos = () => {
     );
 
     // Fonction pour rechercher la ville en fonction du code postal
-    const searchCityByPostalCode = async (code: string, isBillingAddress = false) => {
+    const searchCityByPostalCode = async (code: string) => {
         try {
             if (code.length === 5) {
                 const apiKey = 'AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E';
@@ -123,7 +124,7 @@ const SalonInfos = () => {
                         component.types.includes('locality')
                     );
                     if (cityComponent) {
-                        if (isBillingAddress) {
+                        if (isBillingAddressSame) {
                             setBillingCity(cityComponent.long_name);
                         } else {
                             setCity(cityComponent.long_name);
@@ -169,13 +170,13 @@ const SalonInfos = () => {
     // Utilisez useEffect pour déclencher la recherche de la ville lorsque le code postal change
     useEffect(() => {
         fetchAdress();
-        searchCityByPostalCode(postalCode);
-    }, [postalCode]);
+        // searchCityByPostalCode(postalCode);
+    }, []);
 
     // Utilisez useEffect pour déclencher la recherche de la ville de facturation lorsque le code postal change
-    useEffect(() => {
-        searchBillingCityByPostalCode(billingPostalCode);
-    }, [billingPostalCode]);
+    // useEffect(() => {
+    //     // searchBillingCityByPostalCode(billingPostalCode);
+    // }, []);
 
 
 
@@ -226,25 +227,63 @@ const SalonInfos = () => {
     //For the slider :
     // Reset the slider values
     const [zoneSliderRange, setZoneSliderRange] = useState([0, 15]);
+
     const handleZoneSliderChange = (event: any, newValue: any) => {
         setZoneSliderRange(newValue);
     };
-
+    const setAddressFields = (arg: string, value: string) => {
+        switch (arg) {
+            case 'sublocality_level_1':
+                setCity(value);
+                break;
+            case 'administrative_area_level_1':
+                setState(value);
+                break;
+            case 'country':
+                setCountry(value);
+                break;
+            case 'postal_code':
+                setPostalCode(value);
+                break;
+            case 'route':
+                setStreet(value);
+                break;
+            case 'street_number':
+                setStreet(value);
+                break;
+        }
+    }
     const setAddressData = async (place: any,) => {
-        console.log(place)
-        setCity(place.address_components[0].long_name);
-        setState(place.address_components[2].long_name);
-        setCountry(place.address_components[3].long_name);
-        setPostalCode(place.address_components[6].long_name)
-        setStreet(place.formatted_address);
-    };
+        console.log("------------------------------------");
+        console.log(place);
+        console.log("------------------------------------");
+        place.address_components.map((item, index) => {
+            setAddressFields(item.types[0], item.long_name);
+        });
+        setfullAddress((street ? street + ", " : "") + (city ? city + ", " : "") + (state ? state + ", " : "") + (country ? country : ""))
 
+    }
+    const billingAddressIsSame = (args = "none") => {
+        console.log("Entered  billing from");
+        console.log(
+            args
+        )
+        setBillingCity(city);
+        setBillingCountry(country);
+        setBillingName(name);
+        setBillingPostalCode(postalCode);
+        setBillingState(state);
+        setBillingStreet(street);
+        setfullbillingAddress((billingStreet ? billingStreet + ", " : "") + (billingCity ? billingCity + ", " : "") + (billingState ? billingState + ", " : "") + (billingCountry ? billingCountry : ""))
+
+    }
     const handleChange = (e: any) => {
         setStreet(e.target.value);
     };
 
     const SaveAddress = async () => {
         setIsLoading(true);
+        isBillingAddressSame ? billingAddressIsSame("Save Address") : ""
         await client.storeAddresses({
             name: name,
             street: street,
@@ -276,6 +315,8 @@ const SalonInfos = () => {
     const fetchAdress = async () => {
         const resp = await client.getAddresses()
         console.log(resp.data);
+        setfullAddress((resp.data.street ? resp.data.street + ", " : "") + (resp.data.city ? resp.data.city + ", " : "") + (resp.data.state ? resp.data.state + ", " : "") + (resp.data.country ? resp.data.country : ""));
+        setfullbillingAddress((resp.data.billing_street ? resp.data.billing_street + ", " : "") + (resp.data.billing_city ? resp.data.billing_city + ", " : "") + (resp.data.billing_state ? resp.data.billing_state + ", " : "") + (resp.data.billing_country ? resp.data.billing_country : ""))
         setAddressResponse(resp.data);
         setName(resp.data.name);
         setStreet(resp.data.street);
@@ -319,18 +360,18 @@ const SalonInfos = () => {
                             <Autocomplete
                                 className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
                                 apiKey='AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E'
-                                onPlaceSelected={(place) => {                                    
+                                onPlaceSelected={(place) => {
                                     setAddressData(place)
                                 }}
                                 value={street}
                                 options={{
                                     types: ["geocode"],
-                                    fields:[
+                                    fields: [
                                         'address_components',
-                                        'geometry.location'                                        
-                                    ]                         
-                                  }}                                
-                                onChange={handleChange}                                
+                                        'geometry.location'
+                                    ]
+                                }}
+                                onChange={handleChange}
                                 placeholder="Address"
                                 defaultValue=""
                             />
@@ -376,7 +417,10 @@ const SalonInfos = () => {
                                     type="checkbox"
                                     className="w-4 h-4 text-black bg-gray-300 border-none rounded-xl focus:ring-transparent"
                                     checked={isBillingAddressSame} // Utilisation de l'état de la checkbox
-                                    onChange={() => setIsBillingAddressSame(!isBillingAddressSame)} // Mettre à jour l'état de la checkbox
+                                    onChange={() => {
+                                        setIsBillingAddressSame(!isBillingAddressSame)
+                                        billingAddressIsSame ? billingAddressIsSame() : ""
+                                    }} // Mettre à jour l'état de la checkbox
                                 />
                                 <label htmlFor="safeAdress" className="block ml-2 text-sm text-gray-900">
                                     Adresse de facturation
@@ -459,7 +503,10 @@ const SalonInfos = () => {
                             <div className="flex-initial pl-3">
                                 <button
                                     type="button"
-                                    onClick={SaveAddress} // TODO SAVE ADDRESS
+                                    onClick={
+
+                                        SaveAddress
+                                    } // TODO SAVE ADDRESS
                                     className={`${Theme_A.button.medBlackColoredButton} ease-in-out transition duration-300`}
                                 >
                                     <span>Enregistrer</span>
@@ -498,7 +545,7 @@ const SalonInfos = () => {
                             Nom : {addressResponse.name}
                         </li>
                         <li className="text-sm text-gray-400 italic">
-                            Adresse : {addressResponse.street}
+                            Adresse : {fullAddress}
                         </li>
                         <li className="text-sm text-gray-400 italic">
                             Code postal : {addressResponse.zipcode}
@@ -523,7 +570,7 @@ const SalonInfos = () => {
                             Nom : {addressResponse.billing_name}
                         </li>
                         <li className="text-sm text-gray-400 italic">
-                            Adresse : {addressResponse.billing_street}
+                            Adresse : {fullbillingAddress}
                         </li>
                         <li className="text-sm text-gray-400 italic">
                             Code postal : {addressResponse.billing_zip_code}
