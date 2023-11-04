@@ -666,7 +666,7 @@ const Account = () => {
                             ? ColorsThemeA.ohcVerticalGradient_A
                             : "border-[#767676]"
                             }`}
-                        >infoInterface
+                        >
                             {NotifMsgWhatsapp && (
                                 <CheckedIcon width="15" height="10" />)}
                         </div>
