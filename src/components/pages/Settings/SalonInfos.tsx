@@ -30,10 +30,23 @@ const SalonInfos = () => {
     };
 
     // Fonction pour générer les champs d'entrée Pour l'adresse standard
-    const renderInputField = (placeholder: string, type?: string) => (
+    const renderTextInputField = (placeholder: string, type?: string) => (
         <input
             placeholder={placeholder}
             type={type}
+            inputMode="text"
+            maxLength={50}
+            className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+            onInput={(e) => {
+                // Nothing to do on a single character change
+            }}
+        />
+    );
+
+    // Fonction pour générer les champs d'entrée Pour l'adresse standard
+    const renderZipField = (placeholder: string) => (
+        <input
+            placeholder={placeholder}
             inputMode="numeric"
             maxLength={5} // Limiter la longueur maximale à 5 caractères
             className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
@@ -54,6 +67,7 @@ const SalonInfos = () => {
             }}
         />
     );
+
 
     // Fonction pour générer les champs d'entrée
     const renderInputFieldBilling = (placeholder: string, type?: string) => (
@@ -222,11 +236,11 @@ const SalonInfos = () => {
                             </div>
                         </div>
                         <div className="px-5 pb-5">
-                            {renderInputField("Nom")}
-                            {renderInputField("Adresse")}
+                            {renderTextInputField("Nom")}
+                            {renderTextInputField("Adresse")}
                             <div className="flex">
                                 <div className="flex-grow w-1/4 pr-2">
-                                    {renderInputField("Code Postal", "number")}
+                                    {renderZipField("Code Postal")}
                                 </div>
                                 <div className="flex-grow">
                                     <input
@@ -234,7 +248,11 @@ const SalonInfos = () => {
                                         type="text"
                                         className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
                                         value={city} // Valeur de la ville mise à jour automatiquement
-                                        readOnly
+                                        onClick={() => {
+                                            setCity('');
+                                            setPostalCode('');
+
+                                        }}
                                     />
                                 </div>
                             </div>
@@ -262,8 +280,8 @@ const SalonInfos = () => {
                         )}
                         {!isCheckboxChecked && isBillingAddressVisible && (
                             <div className="px-5 pb-5">
-                                {renderInputField("Nom")}
-                                {renderInputField("Adresse de facturation")}
+                                {renderTextInputField("Nom")}
+                                {renderTextInputField("Adresse de facturation")}
                                 <div className="flex">
                                     <div className="flex-grow w-1/4 pr-2">
                                         {renderInputFieldBilling("Code Postal", "number")}
@@ -274,7 +292,11 @@ const SalonInfos = () => {
                                             type="text"
                                             className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
                                             value={billingCity} // Valeur de la ville mise à jour automatiquement
-                                            readOnly
+                                            onClick={() => {
+                                                setBillingCity('');
+                                                setBillingPostalCode('');
+
+                                            }}
                                         />
                                     </div>
                                 </div>
@@ -331,8 +353,8 @@ const SalonInfos = () => {
                 </div>
                 <div className="flex-1 py-5 pl-1 overflow-hidden ml-4">
                     <ul>
-                        <li className="text-sm mb-2 text-gray-400 uppercase font-semibold mr-2">
-                            Adresse de facturation
+                        <li className="text-sm mb-2 text-gray-400 uppercase font-semibold">
+                            Adresse de <br /> facturation
                         </li>
                         {renderListItem("Nom", "Rick Astley")}
                         {renderListItem("Adresse", "Rickrolled 11")}
@@ -341,7 +363,7 @@ const SalonInfos = () => {
                     </ul>
                 </div>
                 <div
-                    className={`${Theme_A.servicesCards.modifyButton} mr-4 shadow-md  transition-transform duration-300 transform hover:scale-125`}
+                    className={`${Theme_A.servicesCards.modifyButton} mr-8 shadow-md  transition-transform duration-300 transform hover:scale-125`}
                     onClick={openModal}
                 >
                     <EditIcon />
@@ -367,7 +389,7 @@ const SalonInfos = () => {
                     <img
                         src="chemin_de_votre_image.png"
                         alt="Icon"
-                        className="w-24 h-24 mr-4 ml-8 bg-stone-300 rounded-lg mb-4 "
+                        className="w-32 h-24 mr-4 ml-8 bg-stone-300 rounded-lg mb-4 "
                     />
                 </div>
             </div>

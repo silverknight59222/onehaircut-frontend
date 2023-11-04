@@ -7,13 +7,16 @@ import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 import useSnackbar from "@/hooks/useSnackbar";
 import { client } from "@/api/clientSide";
 // import PhoneInput from 'react-phone-input-2'
-import Input from 'react-phone-number-input/input'
 import PhoneInput from 'react-phone-number-input'
 import { Value } from 'react-phone-number-input'
 import 'react-phone-number-input/style.css'
-import { E164Number } from 'libphonenumber-js/core';
 import PaymentForm from "@/components/shared/Payement";
 import { TextField } from "@material-ui/core";
+import IconButton from '@mui/material/IconButton';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import InputAdornment from '@mui/material/InputAdornment';
+import CustomInput from "@/components/UI/CustomInput";
 
 
 interface infoInterface {
@@ -57,6 +60,7 @@ const Account = () => {
     const [isModalNotifReminders, setIsModalNotifReminders] = useState(false);
     // Modal for messages notification
     const [isModalNotifMsg, setIsModalNotifMsg] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     // function to hadnle the click on the modify 
     const handleModifierClick = (item: infoInterface) => {
@@ -93,6 +97,28 @@ const Account = () => {
         newPassword: "",
         confirmPassword: "",
     });
+
+      const [oldPasswordVisiblity, setOldPasswordVisiblity] = useState(false);
+      const [newPasswordVisiblity, setNewPasswordVisiblity] = useState(false);
+      const [confirmPasswordVisiblity, setConfirmPasswordVisiblity] = useState(false);
+      const togglePasswordVisibility = (field: string) => {
+        switch (field) {
+          case 'oldPassword':
+            setOldPasswordVisiblity((prev) => !prev);
+            break;
+          case 'newPassword':
+            setNewPasswordVisiblity((prev) => !prev);
+            break;
+          case 'confirmPassword':
+            setConfirmPasswordVisiblity((prev) => !prev);
+            break;
+          default:
+            setNewPasswordVisiblity((prev) => !prev);
+            setOldPasswordVisiblity((prev) => !prev);
+            setConfirmPasswordVisiblity((prev) => !prev);
+            break;
+        }
+      };
     const setOldPassword = (value: string) => {
         renewPassword((prev) => {
             return { ...prev, oldPassword: value };
@@ -115,15 +141,13 @@ const Account = () => {
                 old_password: passwordField.oldPassword,
                 new_password: passwordField.newPassword,
                 repeat_password: passwordField.confirmPassword,
-            })
-            console.log(resp)
+            })            
             setIsModalPswrd(false);
             showSnackbar("success", resp.data.message);
             passwordField.oldPassword = "";
             passwordField.newPassword = "";
             passwordField.confirmPassword = "";
-        } catch (error) {
-            console.log(error.response)
+        } catch (error) {            
             setError((prev) => {
                 return { ...prev, text: error.response.data.message };
             });
@@ -151,70 +175,96 @@ const Account = () => {
     let [errorPop, setErrorPop] = useState("")
 
     const modifPassWord: React.JSX.Element =
-        <div>
-            <div className="flex flex-col items-center justify-center gap-4">
-                <p className="text-xl font-semibold text-black text-center">Modification du mot de passe</p>
+    <div>
+      <div className="flex flex-col items-center justify-center gap-4">
+        <p className="text-xl font-semibold text-black text-center">Modification du mot de passe</p>
 
+        {error && (
+          <p className={`${Theme_A.checkers.errorText}`}>
+            {error.text}
+          </p>
+        )}
+        <TextField className={`${inputFieldsDesign}`}
+          id="oldPswrd"
+          label="Ancien mot de passe"
+          type={oldPasswordVisiblity ? 'text' : 'password'}
+          variant="outlined"
+          value={passwordField.oldPassword}
+          onChange={(e) => {
+            setOldPassword(e.target.value)
+          }}
+          InputProps={{
+            style: {
+              borderRadius: '12px',
+            },
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={() => togglePasswordVisibility('oldPassword')}>
+                  {oldPasswordVisiblity ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+        <TextField className={`${inputFieldsDesign}`}
+          id="NewPswrd1"
+          label="Nouveau mot de passe"
+          variant="outlined"
+          type={newPasswordVisiblity ? 'text' : 'password'}
+          value={passwordField.newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+          InputProps={{
+            style: {
+              borderRadius: '12px',
+            },
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={() => togglePasswordVisibility('newPassword')}>
+                {newPasswordVisiblity ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+        <TextField className={`${inputFieldsDesign}`}
+          id="NewPswrd2"
+          label="Répéter nouveau mot de passe"
+          variant="outlined"
+          type={confirmPasswordVisiblity ? 'text' : 'password'}
+          value={passwordField.confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          InputProps={{
+            style: {
+              borderRadius: '12px',
+            },
 
-                {error && (
-                    <p className={`${Theme_A.checkers.errorText}`}>
-                        {error.text}
-                    </p>
-                )}
-                <TextField className={`${inputFieldsDesign}`}
-                    id="oldPswrd"
-                    label="Ancien mot de passe"
-                    variant="outlined"
-                    value={passwordField.oldPassword}
-                    onChange={(e) => setOldPassword(e.target.value)}
-                    InputProps={{
-                        style: {
-                            borderRadius: '12px',
-                        },
-                    }}
-                />
-                <TextField className={`${inputFieldsDesign}`}
-                    id="NewPswrd1"
-                    label="Nouveau mot de passe"
-                    variant="outlined"
-                    value={passwordField.newPassword}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    InputProps={{
-                        style: {
-                            borderRadius: '12px',
-                        },
-                    }}
-                />
-                <TextField className={`${inputFieldsDesign}`}
-                    id="NewPswrd2"
-                    label="Répéter nouveau mot de passe"
-                    variant="outlined"
-                    value={passwordField.confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    InputProps={{
-                        style: {
-                            borderRadius: '12px',
-                        },
-                    }}
-                />
-            </div>
-            <div className="mt-4 flex gap-4 items-center justify-center w-full">
-                <button
-                    className={`${Theme_A.button.medWhiteColoredButton}`}
-                    onClick={() => setIsModalPswrd(!isModalPswrd)}
-                >
-                    Annuler
-                </button>
-                <button
-                    className={`${Theme_A.button.mediumGradientButton}`}
-                    onClick={() => onSubmitPassword()}
-                >
-                    Actualiser
-                </button>
-            </div>
-        </div>
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={() => togglePasswordVisibility('confirmPassword')}>
+                  {confirmPasswordVisiblity ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            ),
 
-
+          }
+          }
+        />
+      </div>
+      <div className="mt-4 flex gap-4 items-center justify-center w-full">
+        <button
+          className={`${Theme_A.button.medWhiteColoredButton}`}
+          onClick={() => setIsModalPswrd(!isModalPswrd)}
+        >
+          Annuler
+        </button>
+        <button
+          className={`${Theme_A.button.mediumGradientButton}`}
+          onClick={() => onSubmitPassword()}
+        >
+          Actualiser
+        </button>
+      </div>
+    </div>
     ////////////////////////////////////////////////////
     ///////////////////// ADDRESS 
     ////////////////////////////////////////////////////
@@ -258,63 +308,54 @@ const Account = () => {
 
     const modifAddress: React.JSX.Element =
         <div>
-            <div className="flex flex-col items-center justify-center gap-4">
-                <p className="text-xl font-semibold text-black text-center">Modification de l'adresse</p>
+            <p className="text-xl font-semibold text-black text-center mb-4">Modification de l'adresse</p>
+            <div className="flex flex-col items-start justify-start gap-4">
+
                 {error && (
                     <p className={`${Theme_A.checkers.errorText}`}>
                         {error.text}
                     </p>
                 )}
-                <div className="flex flex-row gap-x-2">
-                    <div className="w-40">
-                        <TextField className={`${inputFieldsDesign}`}
+                <div className="flex flex-row gap-x-2 justify-center">
+                    <div className="w-20 mr-2">
+                        <CustomInput
                             id="StreetNb"
                             label="Numero"
-                            variant="outlined"
                             value={streetNbField}
                             onChange={(e) => newStreetNbField(e.target.value)}
-                            InputProps={{
-                                style: { borderRadius: '12px' },
-                            }}
+                            isStreetNumber={true}
+                            type="number"
                         />
                     </div>
-                    <TextField className={`${inputFieldsDesign}`}
+                    <CustomInput
                         id="StreetName"
                         label="Rue"
-                        variant="outlined"
                         value={streetField}
                         onChange={(e) => setNewAddress(e.target.value)}
-                        InputProps={{
-                            style: { borderRadius: '12px' },
-                        }}
                     />
                 </div>
-                <div className="flex flex-row gap-x-2">
+                <div className="flex flex-row gap-x-2 mt-4 mr-4">
                     <div className="w-40">
-                        <TextField className={`${inputFieldsDesign}`}
+                        <CustomInput
                             id="PostCode"
                             label="Code postal"
-                            variant="outlined"
                             value={postCodeField}
                             onChange={(e) => newPostCodeField(e.target.value)}
-                            InputProps={{
-                                style: { borderRadius: '12px' },
-                            }}
+                            type="number"
+                            isZipCode={true}
                         />
                     </div>
-                    <TextField className={`${inputFieldsDesign}`}
+                    <CustomInput
                         id="City"
                         label="Ville"
-                        variant="outlined"
                         value={cityField}
                         onChange={(e) => newCityField(e.target.value)}
-                        InputProps={{
-                            style: { borderRadius: '12px' },
-                        }}
                     />
                 </div>
             </div>
-            <div className="mt-4 flex gap-4 items-center justify-center w-full">
+
+
+            <div className="mt-10 flex gap-4 items-center justify-center w-full">
                 <button
                     className={`${Theme_A.button.medWhiteColoredButton}`}
                     onClick={() => setIsModalAdd(false)}
@@ -467,7 +508,6 @@ const Account = () => {
         notifications[index].desc = text
     }
 
-    const [isLoading, setIsLoading] = useState(false);
 
     ////////////////////////////////////////////////////
     ///////////////////// Reminder Notification  
@@ -486,9 +526,12 @@ const Account = () => {
             whatsapp: NotifReminderWhatsapp
         })
             .then(resp => {
-                displayNotif(resp.data.account_activity.emails, resp.data.account_activity.whatsapp, 0) // update text to be displayed                
-                displayNotif(resp.data.reminders.emails, resp.data.reminders.whatsapp, 1) // update text to be displayed
-                displayNotif(resp.data.messages.emails, resp.data.messages.whatsapp, 2) // update text to be displayed
+                if (resp.data.reminders) {
+                    displayNotif(resp.data.reminders.emails, resp.data.reminders.whatsapp, 0) // update text to be displayed
+                }
+                if (resp.data.messages) {
+                    displayNotif(resp.data.messages.emails, resp.data.messages.whatsapp, 1) // update text to be displayed
+                }
                 setShowItem(notifications);
             })
             .catch(err => {
@@ -572,9 +615,12 @@ const Account = () => {
             whatsapp: NotifMsgWhatsapp
         })
             .then(resp => {
-                displayNotif(resp.data.account_activity.emails, resp.data.account_activity.whatsapp, 0) // update text to be displayed                
-                displayNotif(resp.data.reminders.emails, resp.data.reminders.whatsapp, 1) // update text to be displayed
-                displayNotif(resp.data.messages.emails, resp.data.messages.whatsapp, 2) // update text to be displayed
+                if (resp.data.reminders) {
+                    displayNotif(resp.data.reminders.emails, resp.data.reminders.whatsapp, 0) // update text to be displayed
+                }
+                if (resp.data.messages) {
+                    displayNotif(resp.data.messages.emails, resp.data.messages.whatsapp, 1) // update text to be displayed
+                }
                 setShowItem(notifications);
             })
             .catch(err => {
@@ -596,7 +642,7 @@ const Account = () => {
         <div>
             <div className="flex flex-col items-center justify-center gap-4">
                 <p className="text-xl font-semibold text-black text-center">
-                    Préférences de notifications de messages</p>
+                    Notifications concernants votre compte sont émises par</p>
                 <div className="flex flex-row items-start gap-3">
                     <div
                         onClick={() => setPNotifMsgEmail(!NotifMsgEmail)}
@@ -620,7 +666,7 @@ const Account = () => {
                             ? ColorsThemeA.ohcVerticalGradient_A
                             : "border-[#767676]"
                             }`}
-                        >
+                        >infoInterface
                             {NotifMsgWhatsapp && (
                                 <CheckedIcon width="15" height="10" />)}
                         </div>
@@ -707,14 +753,16 @@ const Account = () => {
     const fetchPrefrences = async () => {
         const resp = await client.getSavePrefrences()
 
-        setPNotifReminderEmail(resp.data.reminders.emails)
-        setPNotifReminderWhatsapp(resp.data.reminders.whatsapp)
-        setPNotifMsgEmail(resp.data.messages.emails)
-        setPNotifMsgWhatsapp(resp.data.messages.whatsapp)
-
-        displayNotif(resp.data.account_activity.emails, resp.data.account_activity.whatsapp, 0) // update text to be displayed                
-        displayNotif(resp.data.reminders.emails, resp.data.reminders.whatsapp, 1) // update text to be displayed
-        displayNotif(resp.data.messages.emails, resp.data.messages.whatsapp, 2) // update text to be displayed
+        if (resp.data.reminders) {
+            setPNotifReminderEmail(resp.data.reminders.emails)
+            setPNotifReminderWhatsapp(resp.data.reminders.whatsapp)
+            displayNotif(resp.data.reminders.emails, resp.data.reminders.whatsapp, 0) // update text to be displayed
+        }
+        if (resp.data.messages) {
+            setPNotifMsgEmail(resp.data.messages.emails)
+            setPNotifMsgWhatsapp(resp.data.messages.whatsapp)
+            displayNotif(resp.data.messages.emails, resp.data.messages.whatsapp, 1) // update text to be displayed
+        }
         setShowItem(notifications);
     }
 

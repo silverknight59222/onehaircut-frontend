@@ -26,6 +26,7 @@ export const ColorsThemeA = {
 export const Theme_A = {
   Bars: {
     searchBar_1: `min-w-[300px] text-sm py-2 px-4 outline-none rounded-full bg-white border border-[#EDEDED] shadow-[0px_3px_6px_0px_rgba(176,176,176,0.25)] focus:ring-2 focus:bg-transparent focus:ring-red-300 `,
+    searchBar_2: "min-w-[300px] text-sm py-2 px-4 outline-none rounded-full text-black shadow-inner placeholder-gray-500 text-base transition duration-500 ease-in-out transform border-transparent bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-Gray-300 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400",
     proTopBar: {
       standardShape: `w-full flex items-center justify-center font-semibold bg-stone-50 opacity-100 border-x-2 border-stone-100 shadow-inner cursor-pointer rounded-lg px-5 h-11 hover:border-secondary hover:bg-gradient-to-b from-red-100 to-transparent`,
       activatedColor: "border border-red-50 bg-gradient-to-b from-red-100 to-transparent",
@@ -56,12 +57,13 @@ export const Theme_A = {
     crossButtonStd: `cursor-pointer my-2 py-1 px-2 rounded-lg ${ColorsThemeA.ohcVerticalGradient_A} shadow-md transform hover:scale-90 transition-transform`,
     bigGradientButton: `flex items-center justify-center text-white font-semibold text-xl rounded-md px-6 py-4 mt-2 ${ColorsThemeA.OhcGradient_B} shadow-md transform hover:scale-105 transition-transform hover:shadow-[0px_3px_6px_0px_rgba(255,125,60,0.25)]`,
     bigWhiteColoredButton: `flex items-center justify-center min-w-56 h-14 rounded-xl text-black font-semibold text-xl px-8 py-2 mt-2 bg-white border border-x-red-500 border-y-orange-500 transform hover:scale-105 transition-transform hover:shadow-md`,
-    medBlackColoredButton: `text-white font-medium text-md rounded-md px-4 py-2 bg-black border border-x-red-500 border-y-orange-500 transform hover:scale-105 transition-transform hover:shadow-md`,
+    medBlackColoredButton: `text-white font-medium text-md rounded-md px-4 py-2 bg-black border border-x-red-500 border-y-orange-500 transform hover:scale-105 transition-transform hover:shadow-md cursor-pointer`,
     medWhiteColoredButton: `text-black font-medium text-md rounded-md px-4 py-2 bg-white border border-x-red-500 border-y-orange-500 transform hover:scale-105 transition-transform hover:shadow-md cursor-pointer`,
+    medStripeButton: `text-white font-medium text-md rounded-md px-4 py-2 bg-indigo-500 border border-indigo-300 transform hover:scale-105 transition duration-300 hover:shadow-md cursor-pointer`,
     medGreydButton: `flex items-center justify-center bg-white text-stone-400 font-medium text-sm border border-stone-200  rounded-md transform hover:scale-90 transition-transform hover:shadow-inner`,
     mediumGradientButton: `text-white font-medium text-md rounded-md px-4 py-2 ${ColorsThemeA.OhcGradient_A} transform hover:scale-105 transition-transform hover:shadow-[0px_7px_12px_0px_rgba(255,125,60,0.25)] cursor-pointer`,
     medLargeGradientButton: `text-white font-medium text-lg ml-2 mr-2 mb-3 rounded-md w-[278px] py-2 ${ColorsThemeA.OhcGradient_A} transform hover:scale-105 transition-transform hover:shadow-[0px_7px_12px_0px_rgba(255,125,60,0.25)]`,
-    medLargeBlackButton: `text-white font-medium text-lg ml-2 mr-2 mb-3 rounded-md w-[278px] py-2 bg-black border border-x-red-500 border-y-orange-500 transform hover:scale-105 transition-transform hover:shadow-md`,
+    medLargeBlackButton: `text-white font-medium text-lg ml-2 mr-2 mb-3 rounded-md w-[278px] py-2 bg-black border border-x-red-500 border-y-orange-500 transform hover:scale-105 transition-transform hover:shadow-md cursor-pointer`,
     smallGradientButton: `text-white font-medium text-sm rounded-md px-4 py-2 ${ColorsThemeA.OhcGradient_A}  shadow-md transform hover:scale-105 transition-transform hover:shadow-[0px_3px_6px_0px_rgba(255,125,60,0.25)]`,
     scrollToTheTopButton: `fixed bottom-10 right-10 mb-8 p-4 bg-stone-300 text-sm text-white px-6 py-2 rounded-lg transform hover:scale-105 transition-transform`,
     deleteButtonSmall: `bg-red-600 flex items-center justify-center text-white font-medium text-sm rounded-md bg-white transform hover:scale-90 transition-transform hover:shadow-md`,
@@ -76,7 +78,9 @@ export const Theme_A = {
   },
   fields: {
     configurationField: "w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] focus:ring-2 focus:bg-transparent focus:ring-red-300 focus:border-stone-200 ",
-    inputField: `outline-none rounded-lg shadow-inner`
+    configurationField2: " w-20 px-2 py-1 text-sm border outline-none rounded-lg shadow-inner text-black placeholder-gray-400 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-slate-200 focus:border-slate-500 focus:bg-slate-900 focus:text-white focus:placeholder-Gray-800 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400 ",
+    inputField: `outline-none rounded-lg shadow-inner`,
+    inputField2: "text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-slate-400"
   },
   footer: {
     mainFooter:

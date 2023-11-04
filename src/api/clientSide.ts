@@ -52,8 +52,21 @@ const user_api =  {
     deleteUser: async (data:any) => {
         return await request.delete(`/user/delete/${data.id}`);
     },
+    getAllPermission: async () => {
+        return await request.get(`/permissions`);
+    },
     getPermission: async (role:any) => {
         return await request.get(`/permissions/${role}`);
-    }
+    },
+    updatePermission: async (data:any) => {
+        return await request.post(`/roles/assign-permissions`, data);
+    },
+    updateSaloonInformation: async (data:any) => {
+        return await request.post(`/user-info`, data);
+    },
+    getSaloonInformation: async () => {
+        return await request.get(`/user-info`);
+    },
+
 }
 export { client, user_api };

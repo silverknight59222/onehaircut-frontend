@@ -15,6 +15,8 @@ import PromotionsSettings from "./PromotionsSettings";
 import PayementSettings from "./PayementSettings";
 import SalonInfos from "./SalonInfos";
 import RolesSettings from "./RolesSettings";
+import Unavailability from "./Unavailability";
+import NotificationsSettings from "./Notifications";
 export interface settingsStruct {
   name: string;
   display: () => React.JSX.Element;
@@ -23,11 +25,12 @@ export interface settingsStruct {
 const settingsMenu: settingsStruct[] = [
   { name: "Générales", display: SalonInfos },
   { name: "Horaires", display: OpenningHours },
+  { name: "Indisponibilités", display: Unavailability },
   { name: "Accès des rôles", display: RolesSettings },
   { name: "Paiements", display: PayementSettings },
-  { name: "Notifications", display: BotSettings },
-  { name: "OnehairBot", display: BotSettings },
-  { name: "Promotions", display: PromotionsSettings },
+  { name: "Notifications", display: NotificationsSettings },
+  //{ name: "OnehairBot", display: BotSettings },
+  //{ name: "Promotions", display: PromotionsSettings },
 ]
 
 
