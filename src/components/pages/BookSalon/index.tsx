@@ -25,11 +25,12 @@ const BookSalon = () => {
   const [slots,setSlots]=useState<Slot[]>([])
   const [hairCut, setHairCut] = useState({});
   const { loadingView } = userLoader();
-  const salon=getLocalStorage('selectedSalon')
-  const duration=getLocalStorage('serviceDuration')
+  const salonData=getLocalStorage('selectedSalon')
+
   const service_ids=getLocalStorage('ServiceIds')
-  const durationTime = duration ? JSON.parse(duration) : null
-  const salonId= salon ? JSON.parse(salon).id : null
+  
+  const salon= salonData ? JSON.parse(salonData) : null
+  const durationTime = salon?.total_duration
   const items = [
     { name: "Type de coiffure", desc: "Curly" },
     { name: "Couleur", desc: "Blond" },
@@ -37,20 +38,22 @@ const BookSalon = () => {
     { name: "Lieu", desc: "à domicile" },
   ];
 
+  useEffect(()=>{
+    setSelectedDate(new Date())
+    getAllHairDresser()
+  },[])
+
+  useEffect(()=>{
+    getSlots()
+  },[selectedHairdresser, selectedDate])
+
   const getAllHairDresser = async () => {
-    if(salonId){
-    setIsLoading(true);
-    await client.getSalonDetail(salonId, haircutData.id)
-      .then((resp) => {
-        setHairDressers(resp.data.data[0].salon_hairdressers)
-        setHairCut(resp.data.salon_haircut)
-        setSelectedHairdresser({name: resp.data.data[0].salon_hairdressers[0].name, id: resp.data.data[0].salon_hairdressers[0].id})
-    }).catch(error=>{
-      console.log(error)
-    })
-    .finally(()=>{
+    if(salon){
+      setIsLoading(true);
+      setHairDressers(salon?.salon_hairdressers)
+      setHairCut(salon?.haircut)
+      setSelectedHairdresser({name: salon?.salon_hairdressers[0].name, id: salon?.salon_hairdressers[0].id})
       setIsLoading(false);
-    })
   }
   };
 
@@ -58,13 +61,11 @@ const BookSalon = () => {
       setIsLoading(true);
       if(selectedHairdresser.id && selectedDate){
       const data={
-        date: DateFormat(selectedDate, true)
+        date: selectedDate.toLocaleDateString().replaceAll("/", "-")
       }
       await client.getSlots(selectedHairdresser.id, data)
         .then((resp) => {
-          if (resp.data.data.length) {
-            setSlots(resp.data.data);
-          }          
+          setSlots(resp.data.data);
         })
         .catch(err=>console.log(err))
         .finally(()=>{
@@ -84,6 +85,7 @@ const BookSalon = () => {
   }
   const onSelectedDate=(date: Date)=>{
     setSelectedDate(date)
+    setSelectedSlot([])
   }
   console.log(selectedDate?.getDate(),"sjfdjshf")
 
@@ -99,35 +101,33 @@ const BookSalon = () => {
     route.push('/payment')
   }
 
-  useEffect(()=>{
-    setSelectedDate(new Date())
-    getAllHairDresser()
-  },[])
-  useEffect(()=>{
-    getSlots()
-  },[selectedHairdresser, selectedDate])
-
   const onSelectSlot = (slot:any) => {
     const currentIndex = slots.findIndex((item) => item.id === slot.id);
     if (currentIndex !== -1) {
       const selectedObjects = [];
       const ddd=Number(getLocalStorage('slotTime'))
-      const time=+ddd + durationTime
+      const time = durationTime
+
+      let maxValue = currentIndex
       if(Number.isInteger(time/30)){
-        for (let i = currentIndex; i <= currentIndex + time/30-1; i++) {
-          if (slots[i]) {
-            selectedObjects.push(slots[i]);
-          }
-        }
-        setSelectedSlot(selectedObjects)
+        maxValue = currentIndex + time/30-1
       }else{
-        for (let i = currentIndex; i <= currentIndex + Math.floor(time/30); i++) {
-          if (slots[i]) {
-            selectedObjects.push(slots[i]);
-          }
-        }
-        setSelectedSlot(selectedObjects)
+        maxValue = currentIndex + Math.floor(time/30)
       }
+
+      for (let i = currentIndex; i <= maxValue; i++) {
+        if (slots[i]) {
+          if (slots[i].is_booked) {
+            selectedObjects.splice(0)
+            break;  
+          }
+          selectedObjects.push(slots[i]);
+        } else {
+          selectedObjects.splice(0)
+          break;
+        }
+      }
+      setSelectedSlot(selectedObjects)
     };
   };
 
@@ -135,29 +135,42 @@ const BookSalon = () => {
   return (
     <div>
       {isLoading && loadingView()}
-      <Navbar isBookSalon={true}/>
+      <Navbar hideSearchBar={true} />
       <div className="flex flex-col items-center justify-center mt-16 mb-5 px-6 md:px-10 2xl:px-14">
         <div className="flex flex-col md:flex-row items-center justify-center gap-16">
           <div className="relative w-[350px] lg:w-[500px] xl:w-[588px] h-[350px] lg:h-[450px] xl:h-[516px] rounded-[70px]">
             <Image src="/assets/salon9.png" alt="" fill={true} />
           </div>
           <div>
-            <p className="w-80 lg:w-[400px] xl:w-[500px] text-3xl font-bold text-black border-b-2 border-[#696969] pb-3">
-              Golden Barber
-            </p>
-            <div className="flex flex-col gap-3 text-xl font-medium text-black mt-6">
-              {items.map((item, index) => {
-                return (
-                  <div
-                    key={index}
+            {salon && <p className="w-80 lg:w-[400px] xl:w-[500px] text-3xl font-bold text-black border-b-2 border-[#696969] pb-3">
+              {salon.name}
+            </p>}
+              {salon && <div className="flex flex-col gap-3 text-xl font-medium text-black mt-6">
+                <div className="flex flex-col gap-3 text-xl font-medium text-black mt-6">
+                  {haircutData && <div
                     className="flex items-center gap-2 text-black text-xl"
                   >
-                    <p className="font-semibold">{item.name}: </p>
-                    <p>{item.desc}</p>
+                    <p className="font-semibold">Type de coiffure: </p>
+                    <p>{haircutData.name}</p>
+                  </div>}
+                  <div
+                    className="flex items-center gap-2 text-black text-xl"
+                  >
                   </div>
-                );
-              })}
-            </div>
+                  <div
+                    className="flex items-center gap-2 text-black text-xl"
+                  >
+                    <p className="font-semibold">Durée: </p>
+                    <p>{salon.total_duration} mins</p>
+                  </div>
+                  <div
+                    className="flex items-center gap-2 text-black text-xl"
+                  >
+                    <p className="font-semibold">Lieu: </p>
+                    <p>à domicile</p>
+                  </div>
+                </div>
+            </div>}
             <button className="w-80 h-16 text-xl text-white font-semibold mt-4 bg-background-gradient rounded-2xl">
               Revenir au choix de coiffure
             </button>
@@ -203,7 +216,7 @@ const BookSalon = () => {
                 <CalenderIcon />
               </div>
               {showCalender &&
-                <DatePicker close={()=>setShowCalender(false)} onSelectedDate={onSelectedDate}/>
+                <DatePicker startDate={new Date()} close={()=>setShowCalender(false)} onSelectedDate={onSelectedDate}/>
               }
             </div>
             <p className='text-[#A0A0A0] text-lg font-medium bg-[#F7F7F7] rounded-lg px-6 py-3'>{selectedDate && DateFormat(selectedDate)}</p>

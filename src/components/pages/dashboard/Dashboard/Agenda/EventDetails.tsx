@@ -114,7 +114,7 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
           <strong>Coiffeur : </strong>{nomCoiffeur}
         </div>
         <div className="text-center mb-[-4px]">
-          <strong>Dur&eacute;e &eacute;stim&eacute;e :</strong> {/* Ici, vous pouvez insérer la durée de la coiffure */}
+          <strong>Dur&eacute;e &eacute;stim&eacute;e :</strong> {props.event.total_duration} {/* Ici, vous pouvez insérer la durée de la coiffure */}
         </div>
         <div className="text-center mb-[-4px]">
           <strong>Pr&eacute;station :</strong> {/* Ici, vous pouvez insérer le nom des prestations */}
