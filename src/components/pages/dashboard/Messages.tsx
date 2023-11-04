@@ -11,6 +11,7 @@ import React, { useEffect, useState } from "react";
 import userLoader from "@/hooks/useLoader";
 import { Chat, ClientChat } from "@/types";
 import { Theme_A, ColorsThemeA } from "@/components/utilis/Themes";
+import CustomInput from "@/components/UI/CustomInput";
 
 const Messages = () => {
   const [clients, setClients] = useState<ClientChat[]>([])
@@ -181,10 +182,18 @@ const Messages = () => {
 
 
               {/* Input et Bouton d'Envoi */}
-              <div className="w-full flex items-center justify-center mt-auto mb-6">
-                <div className="relative w-9/12">
+              <div className="w-full flex items-center justify-center mb-2 mt-4">
+                <div className="relative w-9/12 ">
                   {/* Champ de texte pour entrer un message */}
+                  <CustomInput
+                    id="chatInput"
+                    label="Ecrire un message"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                  />
+                  {/* 
                   <input onChange={(e) => setMessage(e.target.value)} value={message} className={`w-full shadow-inner border border:bg-stone-300 ${Theme_A.behaviour.fieldFocused_C} rounded-xl h-12 outline-none px-3`} />
+                  */}
                 </div>
 
                 {/* Bouton d'envoi de message */}

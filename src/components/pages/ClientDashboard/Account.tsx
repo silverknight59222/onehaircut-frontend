@@ -115,15 +115,13 @@ const Account = () => {
                 old_password: passwordField.old,
                 new_password: passwordField.new,
                 repeat_password: passwordField.new2,
-            })
-            console.log(resp)
+            })            
             setIsModalPswrd(false);
             showSnackbar("success", resp.data.message);
             passwordField.old = "";
             passwordField.new = "";
             passwordField.new2 = "";
-        } catch (error) {
-            console.log(error.response)
+        } catch (error) {            
             setError((prev) => {
                 return { ...prev, text: error.response.data.message };
             });
@@ -616,7 +614,7 @@ const Account = () => {
                             ? ColorsThemeA.ohcVerticalGradient_A
                             : "border-[#767676]"
                             }`}
-                        >infoInterface
+                        >
                             {NotifMsgWhatsapp && (
                                 <CheckedIcon width="15" height="10" />)}
                         </div>
