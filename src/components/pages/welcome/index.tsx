@@ -6,13 +6,14 @@ import { dashboard } from "@/api/dashboard";
 import userLoader from "@/hooks/useLoader";
 import { Haircut } from "@/types";
 import Navbar from "@/components/shared/Navbar";
-import { getLocalStorage, setLocalStorage } from "@/api/storage";
+import { getLocalStorage, setLocalStorage, removeFromLocalStorage } from "@/api/storage";
 import { useRouter } from "next/navigation";
 import useSnackbar from "@/hooks/useSnackbar";
 import ScrollToTopButton from "@/components/utilis/Helper";
 import Footer from "@/components/UI/Footer";
 import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 import BaseModal from "@/components/UI/BaseModal";
+import StarRatings from "react-star-ratings";
 
 
 const Welcome = () => {
@@ -266,6 +267,11 @@ const Welcome = () => {
   }
 
   useEffect(() => {
+    removeFromLocalStorage('ServiceIds')
+    removeFromLocalStorage('haircut') // reset hair cut when user land on welcome page every time
+  }, [])
+
+  useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
@@ -316,7 +322,6 @@ const Welcome = () => {
           <div
             className={`${Theme_A.button.bigWhiteGreyButton} shadow-sm hover:shadow-md cursor-pointer `}
             onClick={() => {
-              onServiceOnlyClick();
               router.push('/services');
             }}
           >
@@ -337,13 +342,24 @@ const Welcome = () => {
                       />
                     </div>
                   }
+                  
                 </div>
+                
               </div>
               <div className="rounded-b-xl bg-gradient-to-r from-white via-stone-50 to-zinc-200">
                 <p className="rounded-b-xl flex items-center justify-center py-2 text-black font-medium">
                   {item.name}
                 </p>
               </div>
+              <div className='flex justify-center items-center mt-1 mb-2  w-50 ml-10 mr-10 rounded-2xl p-1'>
+                            <StarRatings
+                              rating={item.rating||0}
+                              starRatedColor="#FEDF10"
+                              starSpacing="2px"
+                              starDimension="20px"
+                              numberOfStars={5}
+                            />
+                          </div>
             </div>
           })}
         </div>

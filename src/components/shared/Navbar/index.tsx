@@ -23,6 +23,7 @@ interface Navbar {
   isServicesPage?: boolean,
   isSalonPage?: boolean,
   isBookSalon?: boolean,
+  hideSearchBar?: boolean,
   onSearch?: (arg0: string) => void
   onServiceSearch?: (arg0: string) => void
   onCitySearch?: (arg0: string) => void
@@ -35,7 +36,7 @@ interface Navbar {
   onTypeSelect?: (arg0: string[]) => void,
 }
 
-const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTypeSelect, onSearch, onServiceSearch, onGenderFilter, onEthnicityFilters, onLengthFilters, onMobileFilters, onCitySearch, onNameSearch, onRangeFilters }: Navbar) => {
+const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideSearchBar, onTypeSelect, onSearch, onServiceSearch, onGenderFilter, onEthnicityFilters, onLengthFilters, onMobileFilters, onCitySearch, onNameSearch, onRangeFilters }: Navbar) => {
   const [isDropdown, setIsDropdown] = useState(false);
   const [showDesktopGender, setShowDesktopGender] = useState(false);
   const [showDesktopLength, setShowDesktopLength] = useState(false);
@@ -254,7 +255,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
         <div onClick={() => router.push('/')} className="py-5 cursor-pointer">
           <LogoIcon />
         </div>
-        <div className="hidden xl:flex items-center pr-2 rounded-2xl bg-[#F7F7F7] h-[52px] shadow-md border border-stone-200">
+        {!hideSearchBar && <div className="hidden xl:flex items-center pr-2 rounded-2xl bg-[#F7F7F7] h-[52px] shadow-md border border-stone-200">
           <div
             className="flex items-center justify-center"
           >
@@ -504,7 +505,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, onTyp
               <SearcIcon />
             </div>
           )}
-        </div>
+        </div>}
         <div
           className="relative flex items-center justify-center md:justify-end gap-4"
         >
