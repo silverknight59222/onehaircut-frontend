@@ -99,7 +99,8 @@ export const Agenda = () => {
             ...pre,
             {
               id: event.id,
-              title: event.user.name + " - " + coiffeurAleatoire.nom + " " +  "Duration " + event.haircuts.base_duration + " Min",
+              title: event.user.name + " - " + coiffeurAleatoire.nom + " " +  "Duration " + event.total_duration + " Min",
+              total_duration: event.total_duration,
               clientId: event.user.id,
               start: `${formattedDate}T${event.booking_slots[0].start}:00`,
               end:`${formattedDate}T${event.booking_slots[event.booking_slots.length-1].end}:00`,

@@ -208,8 +208,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
   // Use effect to fetch data on component mount
   useEffect(() => {
     const temp = getLocalStorage("user");
-    const user = temp ? JSON.parse(temp) : null;
-    console.log(user);
+    const user = temp ? JSON.parse(temp) : null;    
     if (!user.subscription) {
       const filteredRoutes = sidebarItems.filter(route => {
         return !proRoutes.includes(route.route)
@@ -225,12 +224,19 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
         setSalonDetails(res.data.data);
         setSalon(res.data.data);
       });
-      user_api.getSaloonInformation().then((res) => {
-        console.log(res.data.data);
-        setImageUrl(res.data.data.hair_salon.logo);
-        setTextLength(res.data.data.hair_salon.description);
-        setTextDescription(res.data.data.hair_salon.description);
+      user_api.getSaloonInformation().then((res) => {                
+        if (res.data.role == 'client') {                    
+          if (res.data.front_profile) {            
+            setImageUrl(res.data?.front_profile);        
+          }
+        } else {
+          setImageUrl(res.data?.hair_salon.logo);
+          setTextLength(res.data?.hair_salon.description);
+          setTextDescription(res.data?.hair_salon.description);
+        }
+        
       });
+
     }
 
   }, []);

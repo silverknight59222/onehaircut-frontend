@@ -603,7 +603,7 @@ const SalonInfos = () => {
                     <img
                         src="chemin_de_votre_image.png"
                         alt="Icon"
-                        className="w-24 h-24 mr-4 ml-8 bg-stone-300 rounded-lg mb-4 "
+                        className="w-32 h-24 mr-4 ml-8 bg-stone-300 rounded-lg mb-4 "
                     />
                 </div>
             </div>

@@ -11,13 +11,16 @@ import Footer from '@/components/UI/Footer';
 import EUCountriesList from '@/components/shared/Navbar/EUCountries';
 import ComponentTheme from '@/components/UI/ComponentTheme';
 import CustomSlider from '@/components/UI/OHC_Slider';
+import { client } from '@/api/clientSide';
+import useSnackbar from '@/hooks/useSnackbar';
+import CustomInput from '@/components/UI/CustomInput';
 
 
 const Filters = () => {
     const [selectedTab, setSelectedTab] = useState(0);
-    const [selectedItems, SetAtHome] = useState<String[]>(['Geolocalisation', 'Utilisation de produits particuliers',])
+    const [selectedItems, SetAtHome] = useState<String[]>([])
     const daysOfWeek = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
-
+    
     const items = [
         "Recherche Coiffure",
         "Recherche Salon ",
@@ -38,7 +41,7 @@ const Filters = () => {
         }
     };
 
-    const handleBudgetSliderChange = (event: any, newValue: any) => {
+    const handleBudgetSliderChange = (event: any, newValue: any) => {        
         setBudgetSliderRange(newValue);
     };
     const handleZoneSliderChange = (event: any, newValue: any) => {
@@ -56,38 +59,34 @@ const Filters = () => {
         "Moyen",
         "Long",
     ];
-
+    const showSnackbar = useSnackbar();
 
     // handling the change of Gender
-    const handleNewWishGender = (item: string) => {
-        // TODO: add backend to save the new preference
+    const handleWishGender = (item: string) => {
+        setHairstyleTrend(item);
     }
     // handling the change of wishes length
-    const handleNewWishLength = (item: string) => {
-        // TODO: add backend to save the new preference
+    const handleCurrentLength = (item: string) => {
+        setCurrentLength(item);
     }
     // handling the change of length
-    const handleNewSetCurrentLength = (item: string) => {
-        // TODO: add backend to save the new preference
+    const handleLengthSought = (item: string) => {
+        setDesiredLength(item);
     }
     // handling the change of length
     const handleNewSetCountry = (item: string) => {
-        // TODO: add backend to save the new preference
+        setCountry(item);
     }
 
+    const [isLoading, setIsLoading] = useState(false);
     const [currentLength, setCurrentLength] = useState('');
     const [desiredLength, setDesiredLength] = useState('');
     const [hairstyleTrend, setHairstyleTrend] = useState('');
     const [CountryDefault, setCountry] = useState('');
     const [budgetSliderRange, setBudgetSliderRange] = useState([0, 200]);
     const [zoneSliderRange, setZoneSliderRange] = useState([0, 15]);
-
-    // For TextField Customization : 
+    const [HairdressingAtHome, setHairdressingAtHome] = useState(false);
     const [ZipCodeValue, setZipCodeValue] = useState('');
-
-    // For rating search
-    // function to show the popup to rate the haircut given in argument
-
     const [MinRating, setMinRating] = useState(1); // Initialize with the default rating value
     const [MaxRating, setMaxRating] = useState(5); // Initialize with the default rating value
     const handleMinRatingChange = (newRating: number) => {
@@ -104,38 +103,116 @@ const Filters = () => {
 
     // Update the selectedItem when the CountryDefault prop changes
     useEffect(() => {
-        setCountry(CountryDefault);
-    }, [CountryDefault]); // Add CountryDefault as a dependency
+        fetchFilterPrefrences();
+    }, []);
 
-    const resetAllValues_1 = () => {
-
-        // Reset the dropdown values
-        setCurrentLength('');
-        setDesiredLength('');
-        setHairstyleTrend('');
-
-        // Reset the slider values
-        setBudgetSliderRange([0, 250]);
+    const resetAllValues_1 = async () => {
+        setIsLoading(true)
+        await client.resetFilterPreferences({
+            tab: 'hairstyle-search',
+            current_hair: '',
+            length_sought: '',
+            hairstyle_trend: '',
+            budget: [0, 200],
+        })
+            .then(resp => {                
+                showSnackbar("succès", "Les préférences ont été réinitialisées avec succès");
+            })
+            .catch(err => {
+                console.log(err)
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
+        fetchFilterPrefrences();
     };
 
 
-    const resetAllValues_2 = () => {
-        // Reset the selected items array
-        SetAtHome(['Geolocalisation', 'Utilisation de produits particuliers']);
+    const resetAllValues_2 = async () => {
+        setIsLoading(true)
+        await client.resetFilterPreferences({
+            tab: 'salon-search',
+            country: CountryDefault,
+            hairdressing_at_home: false,
+            postal_code: '',
+            search_area: [0, 15],
+            ratings: 1,
+            availability: '',
+        })
+            .then(resp => {
+                console.log(resp.data);
+                showSnackbar("succès", "Les préférences ont été réinitialisées avec succès");
+            })
+            .catch(err => {
+                console.log(err)
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
 
-        // Reset to the default value, which is an empty string
-        setCountry('');
-
-        // Reset the slider values
-        setZoneSliderRange([0, 15]);
-
-        // Reset the input field
-        setZipCodeValue('');
-
-        // Reset the rating values
-        setMinRating(1);
-        setMaxRating(5);
+        fetchFilterPrefrences();
     };
+
+    const updateHairStyleSearch = async () => {
+        setIsLoading(true)
+        await client.storeHairstylePreferences({
+            current_hair: currentLength,
+            length_sought: desiredLength,
+            hairstyle_trend: hairstyleTrend,
+            budget: budgetSliderRange,
+        })
+            .then(resp => {
+                console.log(resp.data);
+                showSnackbar("succès", "Les préférences ont été réinitialisées avec succès");
+            })
+            .catch(err => {
+                console.log(err)
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
+        fetchFilterPrefrences();
+    }
+
+    const updateSearchSalon = async () => {
+        setIsLoading(true)
+        await client.storeSalonPreferences({
+            country: CountryDefault,
+            hairdressing_at_home: HairdressingAtHome,
+            postal_code: ZipCodeValue,
+            search_area: zoneSliderRange,
+            ratings: MinRating,
+            max_ratings: MaxRating,
+            availability: selectedItems,
+        })
+            .then(resp => {                
+                showSnackbar("succès", "Préférences mises à jour avec succès");
+            })
+            .catch(err => {
+                console.log(err)
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
+        fetchFilterPrefrences();
+    }
+
+    const fetchFilterPrefrences = async () => {
+        const resp = await client.getUserFilterPrefrences();        
+
+        setCurrentLength(resp.data.current_hair);
+        setDesiredLength(resp.data.length_sought);
+        setHairstyleTrend(resp.data.hairstyle_trend);
+        setBudgetSliderRange([resp.data.budget[0], resp.data.budget[1]]);
+        setCountry(resp.data.country);
+        setHairdressingAtHome(resp.data.hairdressing_at_home);
+        setZipCodeValue(resp.data.postal_code);
+        setZoneSliderRange([resp.data.search_area[0], resp.data.search_area[1]]);
+        setMinRating(resp.data.ratings);
+        if(resp.data.max_ratings)
+            setMaxRating(resp.data.max_ratings);
+        SetAtHome(resp.data.availability)
+    }
 
     return (
         <div>
@@ -176,12 +253,12 @@ const Filters = () => {
                                         {/* Dropdown for "cheveux actuelle" */}
                                         <div className="flex items-center justify-center mb-2 mr-10"> {/* Increased horizontal spacing */}
                                             <p className="text-black text-sm mb-2 mr-10"></p>
-                                            <DropdownMenu dropdownItems={WishLength} fctToCallOnClick={handleNewWishLength} menuName="cheveux actuelle" />
+                                            <DropdownMenu dropdownItems={WishLength.map((item) => item)} fctToCallOnClick={handleCurrentLength} selectId={currentLength} menuName="cheveux actuelle" />
                                         </div>
 
                                         {/* Dropdown for "Longueur recherchée" */}
                                         <div className="flex items-center justify-center mb-2"> {/* Increased horizontal spacing */}
-                                            <DropdownMenu dropdownItems={WishLength} fctToCallOnClick={handleNewSetCurrentLength} menuName="Longueur recherchée" />
+                                            <DropdownMenu dropdownItems={WishLength.map((item) => item)} fctToCallOnClick={handleLengthSought} selectId={desiredLength} menuName="Longueur recherchée" />
                                         </div>
                                     </div>
 
@@ -189,7 +266,7 @@ const Filters = () => {
                                     <div className="flex flex-col items-center">
                                         {/* Dropdown for "Tendance de la coiffure" */}
                                         <div className="flex items-center justify-center mb-2"> {/* Increased horizontal spacing */}
-                                            <DropdownMenu dropdownItems={WishGender} fctToCallOnClick={handleNewWishLength} menuName="Tendance de la coiffure" />
+                                            <DropdownMenu dropdownItems={WishGender.map((item) => item)} fctToCallOnClick={handleWishGender} selectId={hairstyleTrend} menuName="Tendance de la coiffure" />
                                         </div>
 
                                         {/* Slider for budget */}
@@ -211,6 +288,11 @@ const Filters = () => {
                                 {/* Centered "Réinitialiser" button */}
                                 <div className="flex justify-center mt-12">
                                     <button onClick={resetAllValues_1} className={`${Theme_A.button.medBlackColoredButton}`}>Réinitialiser</button>
+                                    <button
+                                        onClick={updateHairStyleSearch}
+                                        className={`${Theme_A.button.mediumGradientButton} ml-3`}>
+                                        Mise à jour
+                                    </button>
                                 </div>
 
                                 {/* TODO ADD POPULARITY FOR NEXT RELEASE 
@@ -271,43 +353,44 @@ const Filters = () => {
                                             menuName="Pays"
                                             fctToCallOnClick={handleNewSetCountry}
                                             labelId='Pays'
-                                            selectId='Pays'
+                                            selectId={CountryDefault}
                                             defaultSelected={CountryDefault} // Pass the default value as a prop
                                         />
                                     </div>
                                     <div>
                                         <p className="text-black text-sm mb-2">Coiffure à domicile </p>
-                                        <div onClick={() => checkboxClickHandler('à domicile')} className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded ${selectedItems.includes('à domicile')
-                                            ? ColorsThemeA.ohcVerticalGradient_A
-                                            : "bg-[#D6D6D6]"
-                                            }`}>
-                                            <CheckedIcon />
+                                        <div
+                                            onClick={() => setHairdressingAtHome(!HairdressingAtHome)}
+                                            className="flex items-center justify-center gap-3 mt-4 cursor-pointer"
+                                        >
+                                            <div className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${HairdressingAtHome
+                                                ? ColorsThemeA.ohcVerticalGradient_A
+                                                : "border-[#767676]"
+                                                }`}
+                                            >
+                                                {HairdressingAtHome && (
+                                                    <CheckedIcon width="15" height="10" />)}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
 
 
                                 <div className='flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-24 lg:flex-col xl:flex-row lg:items-start xl:items-center lg:gap-5 xl:gap-24 mt-6 sm:mt-3'>
-                                    <div>
-                                        <ThemeProvider theme={ComponentTheme}>
-                                            <TextField
-                                                id="outlined-basic"
-                                                label="Code postal"
-                                                variant="outlined"
-                                                value={ZipCodeValue}
-                                                onChange={(e) => {
-                                                    const inputValue = e.target.value;
-                                                    // Use regular expression to allow only up to 5 numeric characters
-                                                    const numericValue = inputValue.replace(/[^0-9]/g, '').slice(0, 5);
-                                                    setZipCodeValue(numericValue);
-                                                }}
-                                                InputProps={{
-                                                    style: {
-                                                        borderRadius: '12px',
-                                                    },
-                                                }}
-                                            />
-                                        </ThemeProvider>
+                                    <div className="w-46">
+                                        <CustomInput
+                                            id="PostCode"
+                                            label="Code postal"
+                                            value={ZipCodeValue}
+                                            onChange={(e) => {
+                                                const inputValue = e.target.value;
+                                                // Use regular expression to allow only up to 5 numeric characters
+                                                const numericValue = inputValue.replace(/[^0-9]/g, '').slice(0, 5);
+                                                setZipCodeValue(numericValue);
+                                            }}
+                                            type="number"
+                                            isZipCode={true}
+                                        />
                                     </div>
 
                                     {/* Slider for Arround Address Searching circle */}
@@ -432,6 +515,11 @@ const Filters = () => {
                                 </div>
                                 <div className="flex justify-center mt-12">
                                     <button onClick={resetAllValues_2} className={`${Theme_A.button.medBlackColoredButton}`}>Réinitialiser</button>
+                                    <button
+                                        onClick={updateSearchSalon}
+                                        className={`${Theme_A.button.mediumGradientButton} ml-3`}>
+                                        Mise à jour
+                                    </button>
                                 </div>
                             </div>
                         }

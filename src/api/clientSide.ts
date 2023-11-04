@@ -23,11 +23,47 @@ const client={
     createBooking: async (params: BookingParams) => {
         return await request.post(`/booking`, params);
     },
-    savePrefrences: async (params: any) => {
-        return await request.post(`/user/save_prefrences`, params);
+    saveNotificationsPreferences: async (params: any) => {
+        return await request.post(`/save_notifications_preferences`, params);
     },
-    getSavePrefrences: async () => {
-        return await request.get(`/user/get_saved_prefrences`);
+    getNotificationsPreferences: async () => {
+        return await request.get(`/fetch_notifications_preferences`);
+    },
+    getUserProfile: async () => {
+        return await request.get(`/user_profile`);
+    },
+    updateUserProfile: async (params: any) => {
+        return await request.post(`/update_user_profile`, params);
+    },
+    resetPassword: async (params: any) => {
+        return await request.post(`/client_password_reset`, params);
+    },
+    getMyHistories: async (page: number) => {
+        return await request.get(`/my_histories/${page}`);
+    },
+    getMyReservations: async (page: number) => {
+        return await request.get(`/my_reservations/${page}`);
+    },
+    storeHairstylePreferences: async (params: any) => {
+        return await request.post(`/save_hairstyle_preferences`, params);
+    },
+    storeSalonPreferences: async (params: any) => {
+        return await request.post(`/save_salon_preferences`, params);
+    },
+    getUserFilterPrefrences: async () => {
+        return await request.get(`/user_filter_preferences`);
+    },
+    resetFilterPreferences: async (params: any) => {
+        return await request.post(`/reset_filter_preferences`, params);
+    },
+    storeUserPotrait: async (params: any) => {
+        return await request.post(`/save_user_potrait`, params);
+    },
+    getUserPotrait: async () => {
+        return await request.get(`/fetch_user_potrait`);
+    },
+    saveBookingRating: async (data: any) => {
+        return await request.post(`/booking-rating`, data);
     },
     storeAddresses: async (params: any) => {
         return await request.post(`/save_addresses`, params);
@@ -59,8 +95,7 @@ const user_api =  {
         return await request.post(`/user-info`, data);
     },
     getSaloonInformation: async () => {
-        return await request.get(`/user-info`);
+        return await request.get(`/user_profile`);
     },
-
 }
 export { client, user_api };
