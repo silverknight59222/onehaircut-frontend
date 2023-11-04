@@ -1,15 +1,15 @@
 import { request } from "./Request";
 
-interface SlotParam{
+interface SlotParam {
     date: string
 }
 
-interface BookingParams{
-    user_id: number|null,
+interface BookingParams {
+    user_id: number | null,
     hair_salon_id: number,
     slot_id: number,
     hair_dresser_id: number,
-    amount: number|undefined,
+    amount: number | undefined,
     salon_haircut_id: number,
     services: number[],
 }
@@ -23,6 +23,38 @@ const client={
     createBooking: async (params: BookingParams) => {
         return await request.post(`/booking`, params);
     },
+    savePrefrences: async (params: any) => {
+        return await request.post(`/user/save_prefrences`, params);
+    },
+    getSavePrefrences: async () => {
+        return await request.get(`/user/get_saved_prefrences`);
+    },
 }
+const user_api =  {
+    getUsers: async () => {
+        return await request.get(`/user/list`);
+    },
+    saveUsers: async (data:any) => {
+        return await request.post(`/user/store`, data);
+    },
+    deleteUser: async (data:any) => {
+        return await request.delete(`/user/delete/${data.id}`);
+    },
+    getAllPermission: async () => {
+        return await request.get(`/permissions`);
+    },
+    getPermission: async (role:any) => {
+        return await request.get(`/permissions/${role}`);
+    },
+    updatePermission: async (data:any) => {
+        return await request.post(`/roles/assign-permissions`, data);
+    },
+    updateSaloonInformation: async (data:any) => {
+        return await request.post(`/user-info`, data);
+    },
+    getSaloonInformation: async () => {
+        return await request.get(`/user-info`);
+    },
 
-export { client };
+}
+export { client, user_api };

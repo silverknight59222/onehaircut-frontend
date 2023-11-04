@@ -211,7 +211,7 @@ const Services = () => {
                     </div>
                     {/* Modal pour l'édition du service, s'affiche si showEditServiceModal et editServiceInfo sont définis */}
                     {(showEditServiceModal && editServiceInfo) && (
-                      <div className="fixed top-0 left-0 overflow-hidden bg-black bg-opacity-50 flex items-center justify-center w-full h-full z-50">
+                      <div className="fixed top-0 left-0 overflow-hidden bg-black bg-opacity-20 flex items-center justify-center w-full h-full z-50">
                         <EditServiceModal
                           setShowEditServiceModal={setShowEditServiceModal}
                           fetchAllServices={fetchAllServices}

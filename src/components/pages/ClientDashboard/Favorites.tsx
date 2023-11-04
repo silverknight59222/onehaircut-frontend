@@ -47,6 +47,7 @@ const Favorites = () => {
                 .then((res) => {
                     if (res.data.data.length > 0) {
                         setSalons(res.data.data);
+                        console.log(res.data.data);
                     }
                     setIsLoading(false);
                 })
@@ -186,9 +187,9 @@ const Favorites = () => {
                                                         </p>
                                                     </div>
                                                     <div className="rounded-b-xl">
-                                                        <p className={`rounded-b-xl flex items-center justify-center py-2 text-lg ${ColorsThemeA.textSecondary} font-normal overflow-clip`}>
-                                                            {/* {item.hairsalon.address}  TODO uncomment */}
-                                                            63a rue Dietwiller 68440 Schlierbach  {/* comment */}
+                                                        <p className={`rounded-b-xl flex items-center text-center justify-center py-2 text-lg ${ColorsThemeA.textSecondary} font-normal overflow-clip`}>
+                                                            {item.hairsalon.address.city + " " + item.hairsalon.address.state + " " + item.hairsalon.address.country}
+                                                            {/* 63a rue Dietwiller 68440 Schlierbach  comment */}
                                                         </p>
                                                     </div>
                                                     <div

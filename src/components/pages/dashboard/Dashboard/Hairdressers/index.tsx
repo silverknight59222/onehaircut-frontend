@@ -14,6 +14,13 @@ import {
 import { Theme_A } from "@/components/utilis/Themes";
 import { EditIcon, LogoCircleFixLeft } from "@/components/utilis/Icons";
 import Footer from "@/components/UI/Footer";
+import DropdownMenu from "@/components/UI/DropDownMenu";
+import { TextField, ThemeProvider } from "@material-ui/core";
+import ComponentTheme from "@/components/UI/ComponentTheme";
+import BaseModal from "@/components/UI/BaseModal";
+import { ColorsThemeA } from "@/components/utilis/Themes";
+
+
 interface AllAvatars {
   man: Avatar[];
   woman: Avatar[];
@@ -37,6 +44,7 @@ const Hairdressers = () => {
     email: "",
     profile_image: defaultImage,
     avatar: defaultImage,
+    role: "admin",
   };
   const defaultAvatars = {
     man: [],
@@ -55,7 +63,17 @@ const Hairdressers = () => {
   const [error, setError] = useState({
     name: "",
     email: "",
+    password: "",
+    role: "",
+    text: "",
   });
+  let [errorPop, setErrorPop] = useState("")
+
+
+  const RoleList = [
+    "Admin",
+    "Staff",
+  ];
   let totalAvatars: number;
   if (showAvatar === "women") {
     totalAvatars = avatars.woman.length;
@@ -108,6 +126,36 @@ const Hairdressers = () => {
     setHairDresser((prevState) => ({
       ...prevState,
       email: email,
+    }));
+  };
+  const onChangeRole = (role: string) => {
+    if (!role.length) {
+      setError((prev) => {
+        return { ...prev, role: "Un role est requis" };
+      });
+    } else {
+      setError((prev) => {
+        return { ...prev, role: "" };
+      });
+    }
+    setHairDresser((prevState) => ({
+      ...prevState,
+      role: role,
+    }));
+  };
+  const onChangePassword = (password: string) => {
+    if (!password.length) {
+      setError((prev) => {
+        return { ...prev, password: "Un password est requis" };
+      });
+    } else {
+      setError((prev) => {
+        return { ...prev, password: "" };
+      });
+    }
+    setHairDresser((prevState) => ({
+      ...prevState,
+      password: password,
     }));
   };
   const handleAvatarPrevious = () => {
@@ -171,12 +219,15 @@ const Hairdressers = () => {
     const data = new FormData();
     const user = getLocalStorage("user");
     const userId = user ? Number(JSON.parse(user).id) : null;
+    const salonId = Number(getLocalStorage("salon_id"));
     data.append(
       "hair_salon_id",
-      userId as unknown as Blob
+      salonId as unknown as Blob
     );
     data.append("name", hairDresser.name);
     data.append("email", hairDresser.email);
+    data.append("role", hairDresser.role);
+    data.append("password", hairDresser.password);
     data.append("avatar_id", avatarIndex as unknown as Blob);
     if (hairDresser.profile_image.size > 0) {
       data.append(
@@ -221,10 +272,11 @@ const Hairdressers = () => {
   const getAllHairDresser = async () => {
     const user = getLocalStorage("user");
     const userId = user ? Number(JSON.parse(user).id) : null;
+    const salonId = Number(getLocalStorage("salon_id"));
     if (userId) {
       setIsLoading(true);
       await dashboard
-        .getAllHairDressers(userId)
+        .getAllHairDressers(salonId)
         .then((resp) => {
           if (resp.data.data.length) {
             setHairDressers(resp.data.data);
@@ -236,10 +288,11 @@ const Hairdressers = () => {
   const getAllAvatars = async () => {
     const user = getLocalStorage("user");
     const userId = user ? Number(JSON.parse(user).id) : null;
+    const salonId = Number(getLocalStorage("salon_id"));
     if (userId) {
       setIsLoading(true);
       await dashboard
-        .getAllAvatars(userId)
+        .getAllAvatars(salonId)
         .then((resp) => {
           setAvatars(resp.data.data);
         })
@@ -265,6 +318,8 @@ const Hairdressers = () => {
       hair_salon_id: hairDresser.hair_salon_id,
       name: hairDresser.name,
       email: hairDresser.email,
+      role: hairDresser.role,
+      password: hairDresser.password,
     }));
     setProfileImage(hairDresser.profile_image);
     setAvatarIndex(hairDresser.avatar_id);
@@ -311,6 +366,68 @@ const Hairdressers = () => {
     getAllAvatars();
   }, []);
 
+
+  // To open the modal when clic on EDIT 
+  const [isModal, setIsModal] = useState(false);
+
+  const openModal = () => {
+    setIsModal(true);
+  };
+  const closeModal = () => {
+    setIsModal(false);
+  };
+
+  // design choices:
+  const inputFieldsDesign = `w-full p-3 placeholder:text-[#959595] placeholder:text-base ${ColorsThemeA.ohcBorder} ${Theme_A.behaviour.fieldFocused_B}${Theme_A.fields.inputField}`
+  const inputFieldsDesignNoW = `border-2 border-red-500 p-3 placeholder:text-[#959595] placeholder:text-base ${Theme_A.behaviour.fieldFocused_B}${Theme_A.fields.inputField}`
+
+  ////////////////////////////////////////////////////
+  ///////////////////// PASSWORD 
+  ////////////////////////////////////////////////////
+  const [passwordField, renewPassword] = useState({
+    old: "",
+    new: "",
+    new2: "",
+  });
+  const setOldPassword = (value: string) => {
+    renewPassword((prev) => {
+      return { ...prev, old: value };
+    });
+  };
+  const setNewPassword = (value: string) => {
+    renewPassword((prev) => {
+      return { ...prev, new: value };
+    });
+  };
+  const setNew2Password = (value: string) => {
+    renewPassword((prev) => {
+      return { ...prev, new2: value };
+    });
+  };
+
+
+  const onSubmitPassword = async () => {
+    if (passwordField.new != passwordField.new2) { // TODO modify
+      setError((prev) => {
+        return { ...prev, text: "Nouveaux mots de passe différents" };
+      });
+      return;
+    }
+    else if (passwordField.new.length < 8) {
+      setError((prev) => {
+        return { ...prev, text: "Nouveaux mots de passe trop petits" };
+      });
+      return;
+    }
+    else {
+      setError((prev) => {
+        return { ...prev, text: "" };
+      });
+    }
+  }
+
+
+
   return (
     <>
       {isLoading && loadingView()}
@@ -323,10 +440,13 @@ const Hairdressers = () => {
             Ajouter un nouveau coiffeur
           </div>
           <div className="w-full max-w-[450px]">
+
+
             <label className={`${Theme_A.textFont.headerH4}`} htmlFor="emailInput">Pr&eacute;nom </label>
             <input
-              placeholder="Prénom coiffeur"
-              className={`w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none ${Theme_A.behaviour.fieldFocused_C}`}
+              placeholder="Prénom"
+              className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 
+              focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
               value={hairDresser.name}
               onChange={(e) => onChangeName(e.target.value)}
             />
@@ -334,11 +454,14 @@ const Hairdressers = () => {
               <p className="text-xs text-red-700 ml-3 mt-1">{error.name}*</p>
             )}
           </div>
+
+
           <div className="w-full max-w-[450px]">
             <label className={`${Theme_A.textFont.headerH4}`} htmlFor="emailInput">Adresse mail</label>
             <input
               placeholder="Adresse mail"
-              className={`w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] outline-none ${Theme_A.behaviour.fieldFocused_C}`}
+              className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 
+              focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
               value={hairDresser.email}
               onChange={(e) => onChangeEmail(e.target.value)}
             />
@@ -346,6 +469,49 @@ const Hairdressers = () => {
               <p className="text-xs text-red-700 ml-3 mt-1">{error.email}*</p>
             )}
           </div>
+
+
+          <div className="w-full max-w-[450px]">
+            <label className={`${Theme_A.textFont.headerH4}`} htmlFor="emailInput">Mot de passe</label>
+            <input
+              type="password"
+              placeholder="Mot de passe"
+              className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 
+              focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+              onChange={(e) => onChangePassword(e.target.value)}
+            />
+            {error.password && (
+              <p className="text-xs text-red-700 ml-3 mt-1">{error.password}*</p>
+            )}
+          </div>
+
+
+
+          <div className="w-full max-w-[450px]">
+            {/* <DropdownMenu
+              dropdownItems={RoleList}
+              menuName="Role"
+              fctToCallOnClick={onChangeRole}
+              labelId='role'
+              selectId='admin'
+              defaultSelected={'admin'} // Pass the default value as a prop
+            /> */}
+            {/* <DropdownMenu dropdownItems={WishLength} fctToCallOnClick={onChangeRole} menuName="Role" /> */}
+
+            <select
+              className={`w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md border border:stone-400 shadow-md  ${Theme_A.behaviour.fieldFocused_B}`}
+              name="role" onChange={(e) => onChangeRole(e.target.value)}>
+              <option value="admin">Admin</option>
+              <option value="staff">Staff</option>
+            </select>
+            {error.email && (
+              <p className="text-xs text-red-700 ml-3 mt-1">{error.role}*</p>
+            )}
+          </div>
+
+
+
+          {/* CHARGEMENT IMAGE */}
           <input
             type="file"
             ref={hiddenFileInput}
@@ -419,19 +585,19 @@ const Hairdressers = () => {
               Cr&eacute;er le profil
             </button>
           ) : (
-            <div className="flex items-center gap-3">
+            <div className="flex items-center justify-center gap-3 mb-2">
               <button
                 className={`${Theme_A.button.mediumGradientButton} py-3`}
                 onClick={() => addDresser(true)}
               >
-                Update
+                Mettre à jour
               </button>
 
               <button
                 onClick={onClear}
                 className={`${Theme_A.button.medWhiteColoredButton} py-3`}
               >
-                Clear
+                Annuler
               </button>
               <button
                 onClick={onDeleteHairDresser}
@@ -442,6 +608,12 @@ const Hairdressers = () => {
             </div>
           )}
         </div>
+
+
+
+        {/* SECTION DROITE */}
+
+        {/* COIFFEUR DISPONIBLE */}
         <div className="h-[940px] w-full xl:w-2/5 overflow-auto flex flex-col items-center justify-start gap-8 bg-lightGrey rounded-3xl p-4 md:p-12">
           <div className={`${Theme_A.textFont.headerH2} underline`}>
             Coiffeur(s)/-euse(s) disponible(s)
@@ -459,7 +631,7 @@ const Hairdressers = () => {
                       <Image
                         fill={true}
                         src={
-                          item.profile_image ? (item.profile_image.includes('https://api-server.onehaircut.com/public') ? item.profile_image : `https://api-server.onehaircut.com/public${item.profile_image}`) :  `https://api-server.onehaircut.com/public${item.avatar.image}`
+                          item.profile_image ? (item.profile_image.includes('https://api-server.onehaircut.com/public') ? item.profile_image : `https://api-server.onehaircut.com/public${item.profile_image}`) : `https://api-server.onehaircut.com/public${item.avatar.image}`
                         }
                         alt="image"
                       />

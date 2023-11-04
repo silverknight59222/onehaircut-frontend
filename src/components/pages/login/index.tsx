@@ -9,6 +9,7 @@ import { LogoCircleFixLeft, LogoIcon } from "@/components/utilis/Icons";
 import Link from "next/link";
 import { EyeIcon, EyeClosedIcon } from "@/components/utilis/Icons";
 import { Theme_A } from "@/components/utilis/Themes";
+import CustomInput from "@/components/UI/CustomInput";
 
 const Login = () => {
 	const router = useRouter();
@@ -18,8 +19,8 @@ const Login = () => {
 	const searchParams = useSearchParams()
 
 	const defaultUserInfo = {
-		email: "dummy@user.com",
-		password: "password",
+		email: "",
+		password: "",
 	};
 	const [error, setError] = useState({
 		email: '',
@@ -83,26 +84,33 @@ const Login = () => {
 		return isValidated;
 	}
 	const onLogin = async () => {
-		setIsLoading(true);
-
-		// Check for dummy credentials
-		if (userInfo.email === "dummy@user.com" && userInfo.password === "password") {
-			setLocalStorage("user", JSON.stringify({ name: "Dummy User", role: "salon_professional" }));
-			setLocalStorage("auth-token", "dummy_token_123456");
-			const myaRole= 'salon_professional'
-			if (searchParams.get('redirect') === 'payment') {
-				router.push("/payment");
-			} else if (myaRole === 'salon_professional') {
-				router.push("/dashboard");
-			} else {
-				router.push("/client/dashboard");
-			}
-
-			setIsLoading(false);
-		} else {
-			setIsLoading(false);
-			showSnackbar('error', 'Le mot de passe et l\'adresse e-mail sont obligatoires.');
+		if (!validateLogin()) {
+			return;
 		}
+		setIsLoading(true);
+		await Auth.login(userInfo)
+			.then((resp) => {
+				const res = resp.data;
+				console.log(res.user)
+				setLocalStorage("user", JSON.stringify(res.user));
+				setLocalStorage("auth-token", res.token);
+				// if(searchParams.get('redirect') === 'payment'){
+				// 	router.push("/payment");
+				// }
+				const salonRoles = ['salon_professional', 'admin', 'staff'];
+				// if (res.user.role === 'salon_professional' || ) {
+				if (salonRoles.indexOf(res.user.role) != -1) {
+					router.push("/dashboard");
+				} else {
+					router.push("/client/dashboard");
+				}
+			})
+			.catch((err) => {
+				showSnackbar('error', 'Le mot de passe et l\'adresse e-mail sont obligatoires.')
+			})
+			.finally(() => {
+				setIsLoading(false);
+			})
 	};
 	return (
 		<>
@@ -119,40 +127,48 @@ const Login = () => {
 						<p className="text-black font-medium text-3xl my-8 md:my-12">
 							Connexion
 						</p>
+
+						{/* ADRESSE EMAIL */}
 						<div className="w-full mt-6">
-							<label className="block text-left text-black mb-2 font-medium" htmlFor="emailInput">Adresse email</label>
-							<div className="w-full h-[60px] p-[1px] flex items-center justify-center rounded-xl bg-stone-300 ">
-								<div className="w-full h-[58px] rounded-[11px] bg-white flex items-center justify-center">
-									<input
-										id="emailInput"
-										placeholder="Adresse email"
-										className={`w-full h-[58px] rounded-[11px] outline-none px-4 ${Theme_A.behaviour.fieldFocused}`}
-										value={userInfo.email}
-										onChange={(e) => setUserMail(e.target.value)}
-									/>
-								</div>
-							</div>
-							{error.email && <p className="text-xs text-red-700 ml-4 mt-2">{error.email}*</p>}
+							<CustomInput
+								id="emailInput"
+								label="Adresse email"
+								value={userInfo.email}
+								onChange={(e) => setUserMail(e.target.value)}
+								error={error.email}
+								isEmail={true} // Activez la vérification d'e-mail en utilisant isEmail={true}
+							/>
 						</div>
-						<div className="w-full mt-6">
-							<label className="block text-left text-black mb-2 font-medium" htmlFor="passwordInput">Mot de passe</label>
-							<div className="w-full h-[60px] p-[1px] flex items-center justify-center rounded-xl bg-stone-300 ">
-								<div className="w-full h-[58px] rounded-[11px] bg-white flex items-center justify-between">
-									<input
+
+						{/* MOT DE PASSE */}
+						<div className="w-full mt-8">
+							<div className="w-full h-[58px] rounded-[11px] bg-white flex items-center">
+								<div className="flex-grow">
+									<CustomInput
 										id="passwordInput"
-										placeholder="Mot de passe"
+										label="Mot de passe"
 										type={showPassword ? "text" : "password"}
-										className={`w-full h-[58px] rounded-l-[11px] outline-none px-4 ${Theme_A.behaviour.fieldFocused}`}
 										value={userInfo.password}
 										onChange={(e) => setUserPassword(e.target.value)}
+										error={error.password}
 									/>
-									<button onClick={() => setShowPassword(!showPassword)} className="p-4">
+								</div>
+								<div className="flex items-center">
+									<button
+										onClick={() => setShowPassword(!showPassword)}
+										className="p-2 flex-none outline-none focus:outline-none"
+									>
 										{showPassword ? <EyeClosedIcon /> : <EyeIcon />}
 									</button>
 								</div>
 							</div>
-							{error.password && <p className="text-xs text-red-700 ml-4 mt-2">{error.password}*</p>}
 						</div>
+
+
+
+
+
+
 						<button
 							className="text-white font-medium text-xl rounded-xl w-full h-14 my-6 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_7px_12px_0px_rgba(255,125,60,0.25)] transition-transform duration-300 transform hover:scale-105"
 							onClick={onLogin}

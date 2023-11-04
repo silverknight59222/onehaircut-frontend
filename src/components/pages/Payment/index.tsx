@@ -102,6 +102,8 @@ const Index = () => {
   }
   }
   const onBooking= async ()=>{
+    const userInfo = JSON.parse(getLocalStorage("user") as string);
+    console.log(userInfo);
     if(isLoggedIn){
       setIsModal(true)
     }else{
@@ -133,6 +135,9 @@ const Index = () => {
       services: serviceIds,
       date:formattedDate
     }
+
+    
+    
     await client.createBooking(data)
     .then(resp=>{
       // removeFromLocalStorage('haircut')
@@ -141,6 +146,7 @@ const Index = () => {
       // removeFromLocalStorage('selectedSalon')
        setLocalStorage("plan_type",haircutPrize)
       showSnackbar("success", 'Booking Created Successfully');
+      window.open("https://api.whatsapp.com/send?phone=" + userInfo.phone + "&text=Booking Success!", '_blank');
       router.push('/confirm-payment')
     })
     .catch(err=>console.log(err))
@@ -183,8 +189,8 @@ const Index = () => {
       }else{
         value=30-hairTimeData
       }
-      const newTime = calculateTimeAfterSeparatingMinutes(slotData.slot[0].end, value);
-      setDuration(newTime)
+      // const newTime = calculateTimeAfterSeparatingMinutes(slotData.slot[0].end, value);
+      // setDuration(newTime)
     }
   },[])
 

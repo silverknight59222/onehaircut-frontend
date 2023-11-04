@@ -18,9 +18,9 @@ import Footer from '@/components/UI/Footer';
 import MapIcon from "@/components/utilis/Icons";
 import { MapIconRed } from '@/components/utilis/Icons';
 import ReactDOMServer from 'react-dom/server';
+
 // TODO IMPORT TO USE ADRESSES 
 //import axios from 'axios'; 
-
 
 
 // Composant principal SalonChoice
@@ -35,7 +35,8 @@ const SalonChoice = () => {
     let user = getLocalStorage("user");
     const userId = user ? Number(JSON.parse(user).id) : null;
     const getHaircut = getLocalStorage("haircut") as string;
-    const haircut = JSON.parse(getHaircut) || null;
+    const haircut = getHaircut ? JSON.parse(getHaircut) : null;
+
     const [isLoading, setIsLoading] = useState(false);
     const { loadingView } = userLoader();
     const showSnackbar = useSnackbar();
@@ -53,19 +54,18 @@ const SalonChoice = () => {
     const filteredCityHandler = () => {
         const filteredSalons = salons.filter((salon) => {
             const cityNameMatches = citySearch
-                ? salon.city_name && salon.city_name.toLowerCase().includes(citySearch.toLowerCase())
+                ? salon.city_name.toLowerCase().includes(citySearch.toLowerCase())
                 : true; // If citySearch is empty, consider it as a match
 
             const salonNameMatches = nameSearch
                 ? salon.name.toLowerCase().includes(nameSearch.toLowerCase())
                 : true; // If nameSearch is empty, consider it as a match
 
-            const salonMobileMatches = 
+            const salonMobileMatches =
                 filteredMobile.length === 0 ||
-                (salon.is_mobile && filteredMobile.includes(salon.is_mobile.toLowerCase()));
-            
+                filteredMobile.includes(salon.is_mobile.toLowerCase());
 
-            const salonInRange = filtereRange[0] <= salon.base_price && salon.base_price <= filtereRange[1];
+            const salonInRange = filtereRange[0] <= salon.final_price && salon.final_price <= filtereRange[1];
 
             return (
                 cityNameMatches &&
@@ -290,7 +290,7 @@ const SalonChoice = () => {
                 isSalonPage={true}
                 onCitySearch={(value: string) => setCitySearch(value)}
                 onNameSearch={(value: string) => setNameSearch(value)}
-                onMobileFilters={(mobile: string) => setFilteredMobile([mobile])}
+                onMobileFilters={(mobile) => setFilteredMobile([mobile])}
                 onRangeFilters={(range: string[]) => {
                     const numberArray = range.map(item => parseInt(item, 10));
                     setRangeFilter(numberArray);
@@ -369,7 +369,8 @@ const SalonChoice = () => {
                                                     fontWeight: 'bold',
                                                     zIndex: salon.id === selectedSalon.id ? 2 : 1, // Ajout du zIndex
                                                 }}>
-                                                    {`${salon.id}0$`}
+                                                    {/* TODO CHANGE THE VALUE BY REAL ONE */}
+                                                    {`${salon.id}0€`}
 
                                                 </div>
                                             </OverlayView>
@@ -392,15 +393,17 @@ const SalonChoice = () => {
                                     key={index}
                                     onClick={() => setSelectedSalon({ name: salon.name, id: salon.id })}
                                     className={`relative bg-stone-100 rounded-2xl border hover:border-stone-400 cursor-pointer ${selectedSalon.id === salon.id && 'border-2 border-red-300 shadow-xl'}`}
-                                    style={{ width: '100%', aspectRatio: '1/1', display: 'flex', flexDirection: 'column', minWidth: '300px', minHeight: '300px' }}
+                                    style={{ width: '100%', aspectRatio: '1/1', display: 'flex', flexDirection: 'column', minWidth: '200px', maxWidth: '450px', minHeight: '200px', maxHeight: '420px' }}
                                 >
                                     {/* Contenu de la vignette */}
                                     <div className="flex flex-col p-4 shadow-md rounded-2xl " style={{ flexGrow: 1 }}>
 
-                                        <div className='relative mb-4 ' style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                        <div className='relative mb-4 hover:scale-105 transition duration-1000 m-2' style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                             {!isLoggedIn &&
                                                 <div onClick={(e) => onWishlist(e, salon.id)} className="absolute right-6 top-6 z-20 cursor-pointer">
-                                                    <StarIcon width='35' height='35' color={wishlist.includes(String(salon.id)) ? "#FF0000" : ""} />
+                                                    <StarIcon width='35' height='35'
+                                                        color={wishlist.includes(String(salon.id)) ? "#FF5B5B" : ""}
+                                                        stroke={wishlist.includes(String(salon.id)) ? "#FFFFFF" : ""} />
                                                 </div>}
                                             <Image
                                                 src={salon.salon_images.length && salon.salon_images[index].is_cover ? salon.salon_images[index].image.includes('api-server') ? salon.salon_images[index].image : `https://api-server.onehaircut.com/public${salon.salon_images[index].image}` : salon.logo.includes('api-server') ? salon.logo : `https://api-server.onehaircut.com/public${salon.logo}`}
@@ -414,6 +417,7 @@ const SalonChoice = () => {
                                         {/* Nom et prix du salon */}
                                         <div className="flex items-start justify-between text-black text-lg font-semibold px-3 pt-2 ">
                                             <p className='w-36'>{salon.name}</p>
+                                            {/* TODO PRICE SHOULD BE IN EUROS HERE */}
                                             <p className={`p-2 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white`}> ${salon.final_price}</p>
                                         </div>
 

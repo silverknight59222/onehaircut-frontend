@@ -1,10 +1,19 @@
 import { CheckedIcon, LogoCircleFixRight } from "@/components/utilis/Icons";
 import ClientDashboardLayout from "@/layout/ClientDashboardLayout";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BaseModal from "@/components/UI/BaseModal";
 import Footer from "@/components/UI/Footer";
 import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 import useSnackbar from "@/hooks/useSnackbar";
+import { client } from "@/api/clientSide";
+// import PhoneInput from 'react-phone-input-2'
+import PhoneInput from 'react-phone-number-input'
+import { Value } from 'react-phone-number-input'
+import 'react-phone-number-input/style.css'
+import PaymentForm from "@/components/shared/Payement";
+import { TextField } from "@material-ui/core";
+import CustomInput from "@/components/UI/CustomInput";
+
 
 interface infoInterface {
     name: string;
@@ -19,8 +28,8 @@ const infoInterfaceIni: infoInterface =
     { name: "", desc: "", modif: false, popup: emptyPopup }
 
 // design choices:
-const inputFieldsDesign = `w-full p-3 placeholder:text-[#959595] placeholder:text-base ${Theme_A.behaviour.fieldFocused_B}${Theme_A.fields.inputField}`
-const inputFieldsDesignNoW = `p-3 placeholder:text-[#959595] placeholder:text-base ${Theme_A.behaviour.fieldFocused_B}${Theme_A.fields.inputField}`
+const inputFieldsDesign = `w-full p-3 placeholder:text-[#959595] placeholder:text-base ${ColorsThemeA.ohcBorder} ${Theme_A.behaviour.fieldFocused_B}${Theme_A.fields.inputField}`
+const inputFieldsDesignNoW = `border-2 border-red-500 p-3 placeholder:text-[#959595] placeholder:text-base ${Theme_A.behaviour.fieldFocused_B}${Theme_A.fields.inputField}`
 
 const Account = () => {
     const showSnackbar = useSnackbar();
@@ -43,12 +52,11 @@ const Account = () => {
     const [isModalPswrd, setIsModalPswrd] = useState(false);
     // Modal for credit card
     const [isModalCreditCard, setIsModalCreditCard] = useState(false);
-    // Modal for account notification
-    const [isModalNotifAccount, setIsModalNotifAccount] = useState(false);
     // Modal for Reminders notification
     const [isModalNotifReminders, setIsModalNotifReminders] = useState(false);
     // Modal for messages notification
     const [isModalNotifMsg, setIsModalNotifMsg] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     // function to hadnle the click on the modify 
     const handleModifierClick = (item: infoInterface) => {
@@ -61,11 +69,8 @@ const Account = () => {
         else if (item.name == "Mot de passe") {
             setIsModalPswrd(true) // Show the modal to modify password
         }
-        else if (item.name == "Carte de crédit") {
+        else if (item.name == "Moyen de payement préféré") {
             setIsModalCreditCard(true) // Show the modal to modify credit card
-        }
-        else if (item.name == "Activité du compte") {
-            setIsModalNotifAccount(true) // Show the modal to modify account activity
         }
         else if (item.name == "Rappels") {
             setIsModalNotifReminders(true) // Show the modal to modify reminders
@@ -140,30 +145,41 @@ const Account = () => {
                         {error.text}
                     </p>
                 )}
-                <input
-                    // type=""
-                    placeholder="Ancien mot de passe"
-                    className={`${inputFieldsDesign}`}
+                <TextField className={`${inputFieldsDesign}`}
+                    id="oldPswrd"
+                    label="Ancien mot de passe"
+                    variant="outlined"
                     value={passwordField.old}
-                    maxLength={30}
                     onChange={(e) => setOldPassword(e.target.value)}
+                    InputProps={{
+                        style: {
+                            borderRadius: '12px',
+                        },
+                    }}
                 />
-                <input
-                    // type=""
-                    placeholder="Nouveau mot de passe"
-                    className={`${inputFieldsDesign}`}
+                <TextField className={`${inputFieldsDesign}`}
+                    id="NewPswrd1"
+                    label="Nouveau mot de passe"
+                    variant="outlined"
                     value={passwordField.new}
-                    maxLength={30}
                     onChange={(e) => setNewPassword(e.target.value)}
+                    InputProps={{
+                        style: {
+                            borderRadius: '12px',
+                        },
+                    }}
                 />
-
-                <input
-                    // type=""
-                    placeholder="Nouveau mot de passe"
-                    className={` ${inputFieldsDesign}`}
+                <TextField className={`${inputFieldsDesign}`}
+                    id="NewPswrd2"
+                    label="Répéter nouveau mot de passe"
+                    variant="outlined"
                     value={passwordField.new2}
-                    maxLength={30}
                     onChange={(e) => setNew2Password(e.target.value)}
+                    InputProps={{
+                        style: {
+                            borderRadius: '12px',
+                        },
+                    }}
                 />
             </div>
             <div className="mt-4 flex gap-4 items-center justify-center w-full">
@@ -202,57 +218,61 @@ const Account = () => {
         // TODO: save the address for the future
         showSnackbar("success", "Salon Service added successfully.");
         setIsModalAdd(false);
+        setShowItem(informations);
 
     }
 
 
     const modifAddress: React.JSX.Element =
         <div>
-            <div className="flex flex-col items-center justify-center gap-4">
-                <p className="text-xl font-semibold text-black text-center">Modification de l'adresse</p>
+            <p className="text-xl font-semibold text-black text-center mb-4">Modification de l'adresse</p>
+            <div className="flex flex-col items-start justify-start gap-4">
+
                 {error && (
                     <p className={`${Theme_A.checkers.errorText}`}>
                         {error.text}
                     </p>
                 )}
-                <div className="flex flex-row gap-x-2">
-                    <input
-                        type="text"
-                        id="StreetNb"
-                        className={`w-[80px] ${inputFieldsDesignNoW}`}
-                        placeholder="Numero"
-                        maxLength={7}
-                        value={streetNbField}
-                        onChange={(e) => newStreetNbField(e.target.value)}
-                    />
-                    <input
-                        placeholder="Nom de rue"
-                        className={`${inputFieldsDesignNoW}`}
+                <div className="flex flex-row gap-x-2 justify-center">
+                    <div className="w-20 mr-2">
+                        <CustomInput
+                            id="StreetNb"
+                            label="Numero"
+                            value={streetNbField}
+                            onChange={(e) => newStreetNbField(e.target.value)}
+                            isStreetNumber={true}
+                            type="number"
+                        />
+                    </div>
+                    <CustomInput
+                        id="StreetName"
+                        label="Rue"
                         value={streetField}
-                        maxLength={100}
                         onChange={(e) => setNewAddress(e.target.value)}
                     />
                 </div>
-                <div className="flex flex-row gap-x-2">
-                    <input
-                        type="text"
-                        id="PostCode"
-                        className={`w-[60px] ${inputFieldsDesignNoW}`}
-                        placeholder="Code postal"
-                        maxLength={5}
-                        value={postCodeField}
-                        onChange={(e) => newPostCodeField(e.target.value)}
-                    />
-                    <input
-                        placeholder="Ville"
-                        className={`${inputFieldsDesignNoW}`}
+                <div className="flex flex-row gap-x-2 mt-4 mr-4">
+                    <div className="w-40">
+                        <CustomInput
+                            id="PostCode"
+                            label="Code postal"
+                            value={postCodeField}
+                            onChange={(e) => newPostCodeField(e.target.value)}
+                            type="number"
+                            isZipCode={true}
+                        />
+                    </div>
+                    <CustomInput
+                        id="City"
+                        label="Ville"
                         value={cityField}
-                        maxLength={100}
                         onChange={(e) => newCityField(e.target.value)}
                     />
                 </div>
             </div>
-            <div className="mt-4 flex gap-4 items-center justify-center w-full">
+
+
+            <div className="mt-10 flex gap-4 items-center justify-center w-full">
                 <button
                     className={`${Theme_A.button.medWhiteColoredButton}`}
                     onClick={() => setIsModalAdd(false)}
@@ -272,10 +292,11 @@ const Account = () => {
     ////////////////////////////////////////////////////
     ///////////////////// PHONE 
     ////////////////////////////////////////////////////
-
     const [phoneField, setPhoneField] = useState("");
-    const setNewPhone = (value: string) => {
-        setPhoneField(value);
+    const setNewPhone = (value?: Value) => {
+        if (value != undefined) {
+            setPhoneField(value);
+        }
     };
 
     const onSubmitPhone = async () => {
@@ -293,34 +314,34 @@ const Account = () => {
             // TODO: save phone for the future
             showSnackbar("success", "Téléphone actualisé");
             setIsModalPhone(false)
+            setShowItem(informations);
         }
     }
 
     const modifPhone: React.JSX.Element =
-        <div>
-            <div className="flex flex-col items-center justify-center gap-4">
-                <p className="text-xl font-semibold text-black text-center">Modification du numéro</p>
+        <div >
+            <div className="flex-col items-center justify-center gap-4 ">
+                <p className="text-xl font-semibold text-black text-center mb-8">
+                    Modification du numéro</p>
                 {errorPop && (
                     <p className={`${Theme_A.checkers.errorText}`}>
                         {errorPop}
                     </p>
                 )}
-                <input
-                    placeholder="Nouveau numéro"
-                    className={`${inputFieldsDesign}`}
-                    value={phoneField}
-                    maxLength={15}
-                    onChange={(e) => {
-                        const inputElement = e.target as HTMLInputElement;
-                        const value = inputElement.value;
-                        let sanitizedValue = value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
-                        inputElement.value = sanitizedValue;
-
-                        setPhoneField(inputElement.value)
-                    }}
-                />
+                <div className={`w-60 ml-20 ${inputFieldsDesignNoW}`}>
+                    <PhoneInput
+                        style={{ height: 8 }}
+                        // className={`${inputFieldsDesign}`}
+                        // inputComponent={{ phoneInput }}
+                        // containerClass={containerClass}
+                        defaultCountry={'FR'}
+                        value={phoneField}
+                        placeholder={"Nouveau numéro"}
+                        onChange={phone => setNewPhone(phone)}
+                    />
+                </div>
             </div>
-            <div className="mt-4 flex gap-4 items-center justify-center w-full">
+            <div className="mt-8 flex gap-4 items-center justify-center w-full">
                 <button
                     className={`${Theme_A.button.medWhiteColoredButton}`}
                     onClick={() => setIsModalPhone(false)}
@@ -339,11 +360,11 @@ const Account = () => {
     ////////////////////////////////////////////////////
     ///////////////////// Bank card 
     ////////////////////////////////////////////////////
-    let currentCardNumb = 11223399; // TODO: give the client's card number
-    const currentExpireDate = "01/2023";
-    const [BankeCardNumb, newBankeCardNumb] = useState(currentCardNumb);
+    const [BankCardExpMonth, setBankCardExpMonth] = useState("");
+    const [BankCardExpYear, setBankCardExpYear] = useState("");
+    const [BankeCardNumb, newBankeCardNumb] = useState("");
     const setNewBankCard = (value: string) => {
-        newBankeCardNumb(+value);
+        newBankeCardNumb(value);
     };
 
     const onSubmitBankCard = async () => {
@@ -364,42 +385,14 @@ const Account = () => {
 
     const modifBankCard: React.JSX.Element =
         <div>
-            <div className="flex flex-col items-center justify-center gap-4">
-                <p className="text-xl font-semibold text-black text-center">Modification de la carte</p>
-                {error && (
-                    <p className={`${Theme_A.checkers.errorText}`}>
-                        {error.text}
-                    </p>
-                )}
-                <input
-                    placeholder="Numéro de la carte bancaire"
-                    className={` ${inputFieldsDesign}`}
-                    value={BankeCardNumb}
-                    maxLength={15}
-                    onChange={(e) => setNewBankCard(e.target.value)}
-                />
-            </div>
-            <div className="mt-4 flex gap-4 items-center justify-center w-full">
-                <button
-                    className={`${Theme_A.button.medWhiteColoredButton}`}
-                    onClick={() => setIsModalCreditCard(false)}
-                >
-                    Annuler
-                </button>
-                <button
-                    className={`${Theme_A.button.mediumGradientButton}`}
-                    onClick={() => onSubmitBankCard()}
-                >
-                    Actualiser
-                </button>
-            </div>
-        </div>;
+            <PaymentForm />
+        </div >;
 
     ////////////////////////////////////////////////////
     //NOTIFICATIONS
 
     // function to display the preferences
-    const displayNotif = (email: boolean, whatsapp: boolean, setState: React.Dispatch<React.SetStateAction<string>>) => {
+    const displayNotif = (email: boolean, whatsapp: boolean, index: any) => {
         let text = ""
         if (email) {
             text = "Email"
@@ -415,79 +408,9 @@ const Account = () => {
         }
 
         // set the text to be displayed
-        setState(text)
+        notifications[index].desc = text
     }
 
-    ////////////////////////////////////////////////////
-    ///////////////////// Account Notification  
-    ////////////////////////////////////////////////////
-
-    const [NotifAccountEmail, setPNotifAccountEmail] = useState(false);
-    const [NotifAccountWhatsapp, setPNotifAccountWhatsapp] = useState(false);
-    const [NotifAccount, setNotifAccount] = useState("");
-
-
-    const onSubmitAccountNotif = () => {
-        // TODO: save preferences for the future
-        displayNotif(NotifAccountEmail, NotifAccountWhatsapp, setNotifAccount) // update text to be displayed
-        // setShowItem(informations);
-        setSelectedTab(3);
-        setShowItem(notifications);
-        showSnackbar("succès", "Préférence actualisée");
-        setIsModalNotifAccount(false)
-
-    }
-
-    // display the field for the account modifications
-    const modifAccountNotif: React.JSX.Element =
-        <div>
-            <div className="flex flex-col items-center justify-center gap-4">
-                <p className="text-xl font-semibold text-black text-center">
-                    Notifications concernants votre compte sont émises par</p>
-                <div className="items-start">
-                    <div
-                        onClick={() => setPNotifAccountEmail(!NotifAccountEmail)}
-                        className="flex items-center justify-start gap-3 mt-4 cursor-pointer"
-                    >
-                        <div className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${NotifAccountEmail
-                            ? ColorsThemeA.ohcVerticalGradient_A
-                            : "border-[#767676]"
-                            }`}
-                        >
-                            {NotifAccountEmail && (
-                                <CheckedIcon width="15" height="10" />)}
-                        </div>
-                        <p>Emails</p>
-                    </div>
-                    <div
-                        onClick={() => setPNotifAccountWhatsapp(!NotifAccountWhatsapp)}
-                        className="flex items-center justify-start gap-3 mt-4 cursor-pointer"
-                    >
-                        <div className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${NotifAccountWhatsapp
-                            ? ColorsThemeA.ohcVerticalGradient_A
-                            : "border-[#767676]"
-                            }`}
-                        >
-                            {NotifAccountWhatsapp && (
-                                <CheckedIcon width="15" height="10" />)}
-                        </div>
-                        <p>Whatsapp</p>
-                    </div>
-                </div>
-            </div>
-            <div className="mt-4 flex gap-4 items-center justify-center w-full">
-                <button
-                    className={`${Theme_A.button.medWhiteColoredButton}`}
-                    onClick={() => setIsModalNotifAccount(false)}>
-                    Annuler
-                </button>
-                <button
-                    className={`${Theme_A.button.mediumGradientButton}`}
-                    onClick={() => onSubmitAccountNotif()}         >
-                    Actualiser
-                </button>
-            </div>
-        </div>;
 
     ////////////////////////////////////////////////////
     ///////////////////// Reminder Notification  
@@ -497,12 +420,31 @@ const Account = () => {
     const [NotifReminderWhatsapp, setPNotifReminderWhatsapp] = useState(false);
     const [NotifReminder, setNotifReminder] = useState("");
 
-    const onSubmitReminderNotif = () => {
-        // TODO: save preferences for the future
-        displayNotif(NotifReminderEmail, NotifReminderWhatsapp, setNotifReminder) // update text to be displayed
+    const onSubmitReminderNotif = async () => {
+        // saved reminders notifications prefrences
+        setIsLoading(true)
+        await client.savePrefrences({
+            type: "reminders",
+            email: NotifReminderEmail,
+            whatsapp: NotifReminderWhatsapp
+        })
+            .then(resp => {
+                if (resp.data.reminders) {
+                    displayNotif(resp.data.reminders.emails, resp.data.reminders.whatsapp, 0) // update text to be displayed
+                }
+                if (resp.data.messages) {
+                    displayNotif(resp.data.messages.emails, resp.data.messages.whatsapp, 1) // update text to be displayed
+                }
+                setShowItem(notifications);
+            })
+            .catch(err => {
+                console.log(err)
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
         // setShowItem(informations);
         setSelectedTab(3);
-        setShowItem(notifications);
         showSnackbar("succès", "Préférence actualisée");
         setIsModalNotifReminders(false)
 
@@ -514,7 +456,7 @@ const Account = () => {
             <div className="flex flex-col items-center justify-center gap-4">
                 <p className="text-xl font-semibold text-black text-center">
                     Notifications concernants votre compte sont émises par</p>
-                <div className="items-start">
+                <div className="flex flex-row items-start gap-3">
                     <div
                         onClick={() => setPNotifReminderEmail(!NotifReminderEmail)}
                         className="flex items-center justify-start gap-3 mt-4 cursor-pointer"
@@ -545,7 +487,7 @@ const Account = () => {
                     </div>
                 </div>
             </div>
-            <div className="mt-4 flex gap-4 items-center justify-center w-full">
+            <div className="mt-8 flex gap-4 items-center justify-center w-full">
                 <button
                     className={`${Theme_A.button.medWhiteColoredButton}`}
                     onClick={() => setIsModalNotifReminders(false)}    >
@@ -567,12 +509,32 @@ const Account = () => {
     const [NotifMsgWhatsapp, setPNotifMsgWhatsapp] = useState(false);
     const [NotifMsg, setNotifMsg] = useState("");
 
-    const onSubmitMsgNotif = () => {
-        // TODO: save preferences for the future
-        displayNotif(NotifMsgEmail, NotifMsgWhatsapp, setNotifMsg) // update text to be displayed
+    const onSubmitMsgNotif = async () => {
+        // saved messages notifications prefrences
+        setIsLoading(true)
+        await client.savePrefrences({
+            type: "messages",
+            email: NotifMsgEmail,
+            whatsapp: NotifMsgWhatsapp
+        })
+            .then(resp => {
+                if (resp.data.reminders) {
+                    displayNotif(resp.data.reminders.emails, resp.data.reminders.whatsapp, 0) // update text to be displayed
+                }
+                if (resp.data.messages) {
+                    displayNotif(resp.data.messages.emails, resp.data.messages.whatsapp, 1) // update text to be displayed
+                }
+                setShowItem(notifications);
+            })
+            .catch(err => {
+                console.log(err)
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
+
         // setShowItem(informations);
         setSelectedTab(3);
-        setShowItem(notifications);
         showSnackbar("succès", "Préférence actualisée");
         setIsModalNotifMsg(false)
 
@@ -583,8 +545,8 @@ const Account = () => {
         <div>
             <div className="flex flex-col items-center justify-center gap-4">
                 <p className="text-xl font-semibold text-black text-center">
-                    Notifications concernants votre compte sont émises par</p>
-                <div className="items-start">
+                    Notifications concernants votre messagerie</p>
+                <div className="flex flex-row items-start gap-3">
                     <div
                         onClick={() => setPNotifMsgEmail(!NotifMsgEmail)}
                         className="flex items-center justify-start gap-3 mt-4 cursor-pointer"
@@ -607,7 +569,7 @@ const Account = () => {
                             ? ColorsThemeA.ohcVerticalGradient_A
                             : "border-[#767676]"
                             }`}
-                        >
+                        >infoInterface
                             {NotifMsgWhatsapp && (
                                 <CheckedIcon width="15" height="10" />)}
                         </div>
@@ -615,7 +577,7 @@ const Account = () => {
                     </div>
                 </div>
             </div>
-            <div className="mt-4 flex gap-4 items-center justify-center w-full">
+            <div className="mt-4 flex gap-8 items-center justify-center w-full">
                 <button
                     className={`${Theme_A.button.medWhiteColoredButton}`}
                     onClick={() => setIsModalNotifMsg(false)}    >
@@ -632,29 +594,42 @@ const Account = () => {
 
 
     // TODO: add information about the client coming from backend in "desc".
-    const informations: infoInterface[] = [
+    let informations: infoInterface[] = [
         { name: "Nom légal", desc: "Dimitri Bala", modif: false, popup: emptyPopup },
-        { name: "Adresse", desc: streetNbField + "" + streetField, modif: true, popup: modifAddress },
-        { name: "Numéro de téléphone", desc: phoneField, modif: true, popup: modifPhone },
+        { name: "Adresse", desc: `${streetNbField} ${streetField} ${postCodeField} ${cityField}`, modif: true, popup: modifAddress },
+        { name: "Numéro de téléphone", desc: `${phoneField}`, modif: true, popup: modifPhone },
         { name: "Adresse e-mail", desc: "b***9@gmail.com", modif: false, popup: emptyPopup },
-        { name: "Pièce d'identité officielle", desc: "Information non fournie", modif: false, popup: emptyPopup },
-        { name: "Statut", desc: "Etudiant - vérifié", modif: false, popup: emptyPopup },
+        // { name: "Pièce d'identité officielle", desc: "Information non fournie", modif: false, popup: emptyPopup },
+        // { name: "Statut", desc: "Etudiant - vérifié", modif: false, popup: emptyPopup },
     ];
+
+    // Use useEffect to update informations when state variables change
+    useEffect(() => {
+        // Update the informations variable whenever any state variable changes
+        informations = [
+            { name: "Nom légal", desc: "Dimitri Bala", modif: false, popup: emptyPopup },
+            {
+                name: "Adresse",
+                desc: `${streetNbField} ${streetField} ${postCodeField} ${cityField}`,
+                modif: true,
+                popup: modifAddress,
+            },
+            { name: "Numéro de téléphone", desc: `${phoneField}`, modif: true, popup: modifPhone },
+            { name: "Adresse e-mail", desc: "b***9@gmail.com", modif: false, popup: emptyPopup },
+        ];
+    }, [streetNbField, streetField, postCodeField, cityField, phoneField]);
 
     const password: infoInterface[] = [
         { name: "Mot de passe", desc: "", modif: true, popup: modifPassWord },
     ];
 
     let notifications: infoInterface[] = [
-        { name: "Activité du compte", desc: NotifAccount, modif: true, popup: modifAccountNotif },
-        { name: "Rappels", desc: NotifReminder, modif: true, popup: modifReminderNotif },
-        { name: "Messages", desc: NotifMsg, modif: true, popup: modifMsgNotif },
+        { name: "Rappels", desc: "Notification de rappel avant une réservation", modif: true, popup: modifReminderNotif },
+        { name: "Messages", desc: "Notification en cas de message sur le chat OneHairCut", modif: true, popup: modifMsgNotif },
     ];
 
     const payments: infoInterface[] = [
-        // TODO: Add real card number of client
-        { name: "Carte de crédit", desc: "4212 **** **** ****", modif: true, popup: modifBankCard },
-        { name: "Paypal", desc: "Bientôt disponible", modif: false, popup: emptyPopup },
+        { name: 'Moyen de payement préféré', desc: "4212 **** **** ****", modif: true, popup: modifBankCard },
     ];
 
     const confidentiality: infoInterface[] = [
@@ -662,7 +637,7 @@ const Account = () => {
     ];
 
     const languages: infoInterface[] = [
-        { name: "Langue actuelle", desc: "Francais", modif: true, popup: emptyPopup },
+        { name: "Langue actuelle", desc: "Francais", modif: false, popup: emptyPopup },
     ];
 
 
@@ -672,7 +647,7 @@ const Account = () => {
     const onSelectTab = (item: string, index: number) => {
         setSelectedTab(index);
         if (item === "Notifications") {
-            setShowItem(notifications);
+            fetchPrefrences() //fetching notifications prefrences on index tab
         }
         else if (item === "Moyens de paiements") {
             setShowItem(payments);
@@ -694,7 +669,21 @@ const Account = () => {
         }
     };
 
+    const fetchPrefrences = async () => {
+        const resp = await client.getSavePrefrences()
 
+        if (resp.data.reminders) {
+            setPNotifReminderEmail(resp.data.reminders.emails)
+            setPNotifReminderWhatsapp(resp.data.reminders.whatsapp)
+            displayNotif(resp.data.reminders.emails, resp.data.reminders.whatsapp, 0) // update text to be displayed
+        }
+        if (resp.data.messages) {
+            setPNotifMsgEmail(resp.data.messages.emails)
+            setPNotifMsgWhatsapp(resp.data.messages.whatsapp)
+            displayNotif(resp.data.messages.emails, resp.data.messages.whatsapp, 1) // update text to be displayed
+        }
+        setShowItem(notifications);
+    }
 
     return (
         <div>
@@ -734,14 +723,6 @@ const Account = () => {
                         <BaseModal close={() => setIsModalCreditCard(false)}>
                             <div>
                                 {modifBankCard}
-                            </div>
-                        </BaseModal>)}
-
-                    {/*  Notification account */}
-                    {isModalNotifAccount && (
-                        <BaseModal close={() => setIsModalNotifAccount(false)}>
-                            <div>
-                                {modifAccountNotif}
                             </div>
                         </BaseModal>)}
 

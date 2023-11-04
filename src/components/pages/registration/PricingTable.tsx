@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 const PricingTable = () => {
-  const router=useRouter();
+  const router = useRouter();
   const [activePlan, setActivePlan] = useState("pro");
   const packageNames = [
     "Agenda dynamique",
@@ -29,7 +29,7 @@ const PricingTable = () => {
       <div className="w-[1230px] rounded-xl py-4 px-6">
         <div className="flex">
           <div className="absolute top-24">
-            {packageNames.map((name,index) => {
+            {packageNames.map((name, index) => {
               return (
                 <p key={index} className="flex items-center text-black font-medium text-xl w-[220px] h-[100px] border-b-2 border-[#E4E8E9] pl-3 pr-5 ">
                   {name}
@@ -41,7 +41,7 @@ const PricingTable = () => {
             </div>
           </div>
           <div
-          onClick={()=>setActivePlan("pro")}
+            onClick={() => setActivePlan("pro")}
             style={{
               background: activePlan === "pro" ? "linear-gradient(162deg, #FE2569 0%, #FD4C55 42.71%, #FF8637 86.46%, #FFE30F 100%)" : "none",
             }}
@@ -53,14 +53,14 @@ const PricingTable = () => {
             <div className={activePlan === "pro" ? "flex items-center justify-center bg-[rgba(255,255,255,0.53)] mb-14 rounded-lg w-36 h-10 text-white font-semibold" : "flex items-center justify-center bg-slate-200 mb-14 rounded-lg w-36 h-10 text-black font-semibold"}>
               recommandé
             </div>
-            {packageNames.map((_,index) => {
+            {packageNames.map((_, index) => {
               return (
                 activePlan === "pro" ? (<div key={index} className="flex items-center justify-center w-full h-[100px] border-b-2 border-[#E4E8E9] py-4">
                   <PackageCheckedIcon />
                 </div>) : (
                   <div key={index} className="flex items-center justify-center w-full h-[100px] border-b-2 border-[#E4E8E9] py-4">
-                  <RegistrationCheckedIcon />
-                </div>
+                    <RegistrationCheckedIcon />
+                  </div>
                 )
               );
             })}
@@ -69,43 +69,37 @@ const PricingTable = () => {
                 79 $<span className="text-2xl">/ mois</span>
               </p>
               <div className="flex items-center gap-10 mt-1">
-                <p className={activePlan === "pro" ? "text-white font-semibold" : "text-black font-semibold"} >
-                  *5 % de tax de service{" "}
-                </p>
               </div>
             </div>
-            {activePlan === "pro" && <div onClick={()=>router.push('registration/plans?plan=pro')} className="flex items-center justify-center text-white rounded-xl -mb-12 w-44 h-12 bg-[#070E06]">
+            {activePlan === "pro" && <div onClick={() => router.push('registration/plans?plan=pro')} className="flex items-center justify-center text-white rounded-xl -mb-12 w-44 h-12 bg-[#070E06]">
               Aperçu de l’Abo
             </div>}
           </div>
-          <div onClick={()=>setActivePlan("standard")} 
-          style={{
+          <div onClick={() => setActivePlan("standard")}
+            style={{
               background: activePlan === "standard" ? "linear-gradient(162deg, #FE2569 0%, #FD4C55 42.71%, #FF8637 86.46%, #FFE30F 100%)" : "none",
             }}
-          className="w-[324px] absolute -top-24 left-[560px] flex flex-col items-center justify-center pt-6 pb-9 rounded-[20px] cursor-pointer">
+            className="w-[324px] absolute -top-24 left-[560px] flex flex-col items-center justify-center pt-6 pb-9 rounded-[20px] cursor-pointer">
             <div className={activePlan === "standard" ? "text-3xl font-semibold text-white w-48 text-center mb-24" : "text-3xl font-semibold text-black w-48 text-center mb-24"}>
               OneHaircut standard
             </div>
             <div className="w-full border-r-2 border-[#E4E8E9]">
-              {packageNames.map((_,index) => {
+              {packageNames.map((_, index) => {
                 return (
                   <div key={index} className="flex items-center justify-center w-full h-[100px] border-b-2 border-[#E4E8E9] py-4">
                     {index < 6 ?
-                    (activePlan === "standard" ? <PackageCheckedIcon /> : <RegistrationCheckedIcon />)
-                    :
-                    (activePlan === "standard" ? <PackageSelectedUnCheckedIcon /> : <PackageUnCheckedIcon />)
+                      (activePlan === "standard" ? <PackageCheckedIcon /> : <RegistrationCheckedIcon />)
+                      :
+                      (activePlan === "standard" ? <PackageSelectedUnCheckedIcon /> : <PackageUnCheckedIcon />)
                     }
                   </div>
                 );
               })}
             </div>
             <div className="w-full h-[100px] flex flex-col items-center justify-center border-r-2 border-[#E4E8E9] py-4">
-              <p className={activePlan === "standard" ? "text-white font-medium text-4xl": "text-black font-medium text-4xl" }>Gratuit</p>
-              <p className={activePlan === "standard" ? "text-white font-medium ": "text-black font-medium " }>
-                *5 % de tax de service
-              </p>
+              <p className={activePlan === "standard" ? "text-white font-medium text-4xl" : "text-black font-medium text-4xl"}>Gratuit</p>
             </div>
-            {activePlan === "standard" && <div onClick={()=>router.push('registration/plans?plan=standard')} className="flex items-center justify-center text-white rounded-xl absolute -bottom-8 w-44 h-12 bg-[#070E06]">
+            {activePlan === "standard" && <div onClick={() => router.push('registration/plans?plan=standard')} className="flex items-center justify-center text-white rounded-xl absolute -bottom-8 w-44 h-12 bg-[#070E06]">
               Aperçu de l’Abo
             </div>}
           </div>
@@ -113,19 +107,19 @@ const PricingTable = () => {
             <div className="text-3xl font-semibold text-black w-48 text-center mb-[132px]">
               Concurrents
             </div>
-            {packageNames.map((_,index) => {
+            {packageNames.map((_, index) => {
               return (
                 <div key={index} className="flex items-center justify-center w-full h-[100px] border-b-2 border-[#E4E8E9] py-4">
                   {index === 0 || index === 8 ?
-                     <RegistrationCheckedIcon />
-                     :
-                     <PackageUnCheckedIcon />
-                    }
+                    <RegistrationCheckedIcon />
+                    :
+                    <PackageUnCheckedIcon />
+                  }
                 </div>
               );
             })}
             <div className="mt-7 h-[100px]">
-              <p className={activePlan === "concorrent" ? "text-white font-medium text-4xl text-center" : "text-black font-medium text-4xl text-center" }>
+              <p className={activePlan === "concorrent" ? "text-white font-medium text-4xl text-center" : "text-black font-medium text-4xl text-center"}>
                 79 $<span className="text-2xl">/ mois</span>
               </p>
             </div>

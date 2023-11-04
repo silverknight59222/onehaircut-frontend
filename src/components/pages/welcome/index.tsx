@@ -50,9 +50,9 @@ const Welcome = () => {
     await new Promise((resolve) => setTimeout(resolve, 1000));
     await dashboard.getAllHaircuts(page)
       .then((res) => {
-          setSalonHaircut([...salonHaircut, ...res.data.data]);
-          setPage(prevPage => prevPage + 1);
-          setIsLoading(false)
+        setSalonHaircut([...salonHaircut, ...res.data.data]);
+        setPage(prevPage => prevPage + 1);
+        setIsLoading(false)
       })
       .catch(error => setIsLoading(false))
   }
@@ -60,8 +60,7 @@ const Welcome = () => {
   const handleScroll = () => {
     if (isLoading) return;
 
-    if (window.innerHeight + document.documentElement.scrollTop === document.documentElement.offsetHeight)
-    {
+    if (window.innerHeight + document.documentElement.scrollTop >= document.documentElement.offsetHeight - 30) {
       getAllHaircuts();
     }
   };
@@ -332,8 +331,12 @@ const Welcome = () => {
                   <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public${item.image}`} fill={true} alt="" className="rounded-t-xl" />
                   {!isLoggedIn &&
                     <div onClick={(e) => onWishlist(e, item.id)} className="absolute right-2 top-2 cursor-pointer">
-                      <StarIcon color={wishlist.includes(String(item.id)) ? "#ef4444" : ""} />
-                    </div>}
+                      <StarIcon
+                        color={wishlist.includes(String(item.id)) ? "#FF5B5B" : ""}
+                        stroke={wishlist.includes(String(item.id)) ? "#FFFFFF" : ""}
+                      />
+                    </div>
+                  }
                 </div>
               </div>
               <div className="rounded-b-xl bg-gradient-to-r from-white via-stone-50 to-zinc-200">

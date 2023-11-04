@@ -1,13 +1,23 @@
 "use client";
-import BaseDropdown from '@/components/UI/BaseDropdown';
-import { CircleRight, LogoCircleFixRight, TickIcon } from '@/components/utilis/Icons';
+import { LogoCircleFixRight, CheckedIcon } from '@/components/utilis/Icons';
 import ClientDashboardLayout from '@/layout/ClientDashboardLayout'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import StarRatings from "react-star-ratings";
+import DropdownMenu from "@/components/UI/DropDownMenu";
+import { ThemeProvider } from '@material-ui/core/styles';
+import { TextField, } from '@material-ui/core';
+import { Theme_A, ColorsThemeA } from '@/components/utilis/Themes';
+import Footer from '@/components/UI/Footer';
+import EUCountriesList from '@/components/shared/Navbar/EUCountries';
+import ComponentTheme from '@/components/UI/ComponentTheme';
+import CustomSlider from '@/components/UI/OHC_Slider';
+
 
 const Filters = () => {
     const [selectedTab, setSelectedTab] = useState(0);
-    const [selectedItems, setSelectedItems] = useState<String[]>(['Geolocalisation', 'Utilisation de produits particuliers', 'Matinée', 'Après-Midi', 'Soirée', 'Couleur'])
+    const [selectedItems, SetAtHome] = useState<String[]>(['Geolocalisation', 'Utilisation de produits particuliers',])
+    const daysOfWeek = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
+
     const items = [
         "Recherche Coiffure",
         "Recherche Salon ",
@@ -21,11 +31,110 @@ const Filters = () => {
             const tempArray = [...selectedItems];
             const index = tempArray.indexOf(value);
             tempArray.splice(index, 1);
-            setSelectedItems(() => tempArray);
+            SetAtHome(() => tempArray);
         } else {
-            setSelectedItems((prevState) => [...prevState, value]);
+            SetAtHome((prevState) => [...prevState, value]);
 
         }
+    };
+
+    const handleBudgetSliderChange = (event: any, newValue: any) => {
+        setBudgetSliderRange(newValue);
+    };
+    const handleZoneSliderChange = (event: any, newValue: any) => {
+        setZoneSliderRange(newValue);
+    };
+
+    //For Dropdown lists
+    const WishGender = [
+        "Feminine",
+        "Masculine",
+        "Mixte",
+    ];
+    const WishLength = [
+        "Court",
+        "Moyen",
+        "Long",
+    ];
+
+
+    // handling the change of Gender
+    const handleNewWishGender = (item: string) => {
+        // TODO: add backend to save the new preference
+    }
+    // handling the change of wishes length
+    const handleNewWishLength = (item: string) => {
+        // TODO: add backend to save the new preference
+    }
+    // handling the change of length
+    const handleNewSetCurrentLength = (item: string) => {
+        // TODO: add backend to save the new preference
+    }
+    // handling the change of length
+    const handleNewSetCountry = (item: string) => {
+        // TODO: add backend to save the new preference
+    }
+
+    const [currentLength, setCurrentLength] = useState('');
+    const [desiredLength, setDesiredLength] = useState('');
+    const [hairstyleTrend, setHairstyleTrend] = useState('');
+    const [CountryDefault, setCountry] = useState('');
+    const [budgetSliderRange, setBudgetSliderRange] = useState([0, 200]);
+    const [zoneSliderRange, setZoneSliderRange] = useState([0, 15]);
+
+    // For TextField Customization : 
+    const [ZipCodeValue, setZipCodeValue] = useState('');
+
+    // For rating search
+    // function to show the popup to rate the haircut given in argument
+
+    const [MinRating, setMinRating] = useState(1); // Initialize with the default rating value
+    const [MaxRating, setMaxRating] = useState(5); // Initialize with the default rating value
+    const handleMinRatingChange = (newRating: number) => {
+        if (newRating <= MaxRating) {
+            setMinRating(newRating); // Update the MinRating state with the new rating value
+        }
+    };
+
+    const handleMaxRatingChange = (newRating: number) => {
+        if (newRating >= MinRating) {
+            setMaxRating(newRating); // Update the MaxRating state with the new rating value
+        }
+    };
+
+    // Update the selectedItem when the CountryDefault prop changes
+    useEffect(() => {
+        setCountry(CountryDefault);
+    }, [CountryDefault]); // Add CountryDefault as a dependency
+
+    const resetAllValues_1 = () => {
+
+        // Reset the dropdown values
+        setCurrentLength('');
+        setDesiredLength('');
+        setHairstyleTrend('');
+
+        // Reset the slider values
+        setBudgetSliderRange([0, 250]);
+    };
+
+
+    const resetAllValues_2 = () => {
+        // Reset the selected items array
+        SetAtHome(['Geolocalisation', 'Utilisation de produits particuliers']);
+
+        // Reset to the default value, which is an empty string
+        setCountry('');
+
+        // Reset the slider values
+        setZoneSliderRange([0, 15]);
+
+        // Reset the input field
+        setZipCodeValue('');
+
+        // Reset the rating values
+        setMinRating(1);
+        setMaxRating(5);
     };
 
     return (
@@ -54,42 +163,58 @@ const Filters = () => {
                             })}
                         </div>
                         {selectedTab === 0 ?
-                            <div className="relative z-10 w-full lg:w-[630px] h-[630px] sm:h-[590px] mt-5 md:mt-0 rounded-3xl bg-white py-6 px-6 sm:px-10 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)]">
-                                <div className='border-b border-[#D8D8D8] pb-12'>
-                                    <p className='text-black text-lg mb-4'>Coiffure</p>
-                                    <div>
-                                        <p className="text-black text-sm mb-2">Longueur de cheveux actuelle</p>
-                                        <BaseDropdown dropdownItems={['Long']} />
-                                    </div>
-                                    <div className='flex flex-col sm:flex-row lg:flex-col xl:flex-row sm:items-center lg:items-start xl:items-center sm:justify-between mt-5'>
-                                        <div>
-                                            <p className="text-black text-sm mb-2">Tendance de la coiffure</p>
-                                            <BaseDropdown dropdownItems={['Feminine']} />
+                            <div className="relative z-10 w-full lg:w-[630px] mt-5 md:mt-0 rounded-3xl bg-white py-6 px- sm:px-10 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)]">
+
+                                {/* Title of the Section "Coiffure" */}
+                                <p className="text-black text-lg mb-4 font-semibold">Coiffure</p>
+
+                                {/* Column organization */}
+                                <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-6 md:gap-10 lg:gap-6 xl:gap-10">
+
+                                    {/* First Column */}
+                                    <div className="flex flex-col items-center">
+                                        {/* Dropdown for "cheveux actuelle" */}
+                                        <div className="flex items-center justify-center mb-2 mr-10"> {/* Increased horizontal spacing */}
+                                            <p className="text-black text-sm mb-2 mr-10"></p>
+                                            <DropdownMenu dropdownItems={WishLength} fctToCallOnClick={handleNewWishLength} menuName="cheveux actuelle" />
                                         </div>
-                                        <div className='flex items-center justify-start sm:justify-center gap-6 mt-5 sm:mt-0 lg:mt-5 xl:mt-0'>
-                                            <div>
-                                                <p className="text-black text-sm mb-2">Couleur</p>
-                                                <div className='flex items-center gap-4'>
-                                                    <div onClick={() => checkboxClickHandler('Couleur')} className={`w-6 h-6 flex items-center justify-center cursor-pointer border border-black rounded ${selectedItems.includes('Couleur') ? 'bg-black' : 'bg-white'}`}>
-                                                        <TickIcon />
-                                                    </div>
-                                                    <BaseDropdown dropdownItems={['Blond']} width='w-24' />
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <p className="text-black text-sm mb-2">Longueur</p>
-                                                <div className='flex items-center gap-4'>
-                                                    <div onClick={() => checkboxClickHandler('Longueur')} className={`w-6 h-6 flex items-center justify-center cursor-pointer border border-black rounded ${selectedItems.includes('Longueur') ? 'bg-black' : 'bg-white'}`}>
-                                                        <TickIcon />
-                                                    </div>
-                                                    <BaseDropdown dropdownItems={['Moyen']} width='w-24' />
-                                                </div>
-                                            </div>
+
+                                        {/* Dropdown for "Longueur recherchée" */}
+                                        <div className="flex items-center justify-center mb-2"> {/* Increased horizontal spacing */}
+                                            <DropdownMenu dropdownItems={WishLength} fctToCallOnClick={handleNewSetCurrentLength} menuName="Longueur recherchée" />
+                                        </div>
+                                    </div>
+
+                                    {/* Second Column */}
+                                    <div className="flex flex-col items-center">
+                                        {/* Dropdown for "Tendance de la coiffure" */}
+                                        <div className="flex items-center justify-center mb-2"> {/* Increased horizontal spacing */}
+                                            <DropdownMenu dropdownItems={WishGender} fctToCallOnClick={handleNewWishLength} menuName="Tendance de la coiffure" />
+                                        </div>
+
+                                        {/* Slider for budget */}
+                                        <div className="relative z-20 w-full">
+                                            <CustomSlider
+                                                theme={ComponentTheme}
+                                                value={budgetSliderRange}
+                                                onChange={handleBudgetSliderChange}
+                                                min={0}
+                                                max={250}
+                                                unit="€"
+                                                label="Budget" // Provide a label prop if your CustomSlider component expects it
+                                                valueLabelDisplay="auto"
+                                            />
                                         </div>
                                     </div>
                                 </div>
-                                <div>
-                                    <p className='text-black text-lg my-3'>Popularité</p>
+
+                                {/* Centered "Réinitialiser" button */}
+                                <div className="flex justify-center mt-12">
+                                    <button onClick={resetAllValues_1} className={`${Theme_A.button.medBlackColoredButton}`}>Réinitialiser</button>
+                                </div>
+
+                                {/* TODO ADD POPULARITY FOR NEXT RELEASE 
+                                    <p className='text-black text-lg mb-4 font-semibold mt-4'>Popularit&eacute;</p>
                                     <div className='flex flex-col sm:flex-row lg:flex-col xl:flex-row items-start sm:items-center lg:items-start xl:items-center justify-between'>
                                         <div>
                                             <p className='text-black text-sm'>Minimum</p>
@@ -120,39 +245,168 @@ const Filters = () => {
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                                <button className='absolute bottom-6 left-12 w-28 h-11 border border-black rounded-2xl text-sm text-black shadow-[3px_3px_10px_2px_rgba(0,0,0,0.07)]'>Réinitialiser</button>
+                                    */}
                             </div>
+
+
+                            /* ********************************************************************************************************************************************************************************** */
+
+
+                            /* SECOND PART - RECHERCHE SALON FILTER */
                             :
-                            <div className="relative z-10 w-full lg:w-[500px] xl:w-[630px] h-[1100px] sm:h-[890px] lg:h-[1100px] xl:h-[890px] mt-5 md:mt-0 rounded-3xl bg-white py-6 px-6 sm:px-10 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)]">
-                                <div>
-                                    <p className='text-black text-lg mb-4'>Localisation</p>
-                                    <div className='flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-24 lg:flex-col xl:flex-row lg:items-start xl:items-center lg:gap-5 xl:gap-24'>
-                                        <div>
-                                            <p className="text-black text-sm mb-2">Pays</p>
-                                            <BaseDropdown dropdownItems={['Suisse']} width='w-52' borderClr='border-secondary' />
-                                        </div>
-                                        <div>
-                                            <p className="text-black text-sm mb-2">à domicile </p>
-                                            <div onClick={() => checkboxClickHandler('à domicile')} className={`w-6 h-6 flex items-center justify-center cursor-pointer border border-black rounded ${selectedItems.includes('à domicile') ? 'bg-black' : 'bg-white'}`}>
-                                                <TickIcon />
-                                            </div>
-                                        </div>
+                            <div className="relative z-10 w-full lg:w-[630px] mt-5 md:mt-0 rounded-3xl bg-white py-6 px- sm:px-10 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)]">
+
+                                {/* Title of the Section "Localisation" */}
+                                <p className="text-black text-lg mb-8 font-semibold">Localisation</p>
+
+                                {/* Column organization */}
+                                <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-6 md:gap-10 lg:gap-6 xl:gap-10">
+
+
+                                    {/* Dropdown for "Country */}
+                                    <div className="flex items-center justify-center mb-2 mr-12 ">
+                                        <p className="text-black text-sm"></p>
+                                        <DropdownMenu
+                                            dropdownItems={EUCountriesList()}
+                                            menuName="Pays"
+                                            fctToCallOnClick={handleNewSetCountry}
+                                            labelId='Pays'
+                                            selectId='Pays'
+                                            defaultSelected={CountryDefault} // Pass the default value as a prop
+                                        />
                                     </div>
-                                    <div className='flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-24 lg:flex-col xl:flex-row lg:items-start xl:items-center lg:gap-5 xl:gap-24 mt-6 sm:mt-3'>
-                                        <div>
-                                            <p className="text-black text-sm mb-2">Code postal</p>
-                                            <div className='flex items-center justify-center w-52 h-8 rounded-md shadow-inner'>1033</div>
-                                        </div>
-                                        <div>
-                                            <p className="text-black text-sm mb-2">Geolocalisation</p>
-                                            <div onClick={() => checkboxClickHandler('Geolocalisation')} className={`w-6 h-6 flex items-center justify-center cursor-pointer border border-black rounded ${selectedItems.includes('Geolocalisation') ? 'bg-black' : 'bg-white'}`}>
-                                                <TickIcon />
-                                            </div>
+                                    <div>
+                                        <p className="text-black text-sm mb-2">Coiffure à domicile </p>
+                                        <div onClick={() => checkboxClickHandler('à domicile')} className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded ${selectedItems.includes('à domicile')
+                                            ? ColorsThemeA.ohcVerticalGradient_A
+                                            : "bg-[#D6D6D6]"
+                                            }`}>
+                                            <CheckedIcon />
                                         </div>
                                     </div>
                                 </div>
+
+
+                                <div className='flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-24 lg:flex-col xl:flex-row lg:items-start xl:items-center lg:gap-5 xl:gap-24 mt-6 sm:mt-3'>
+                                    <div>
+                                        <ThemeProvider theme={ComponentTheme}>
+                                            <TextField
+                                                id="outlined-basic"
+                                                label="Code postal"
+                                                variant="outlined"
+                                                value={ZipCodeValue}
+                                                onChange={(e) => {
+                                                    const inputValue = e.target.value;
+                                                    // Use regular expression to allow only up to 5 numeric characters
+                                                    const numericValue = inputValue.replace(/[^0-9]/g, '').slice(0, 5);
+                                                    setZipCodeValue(numericValue);
+                                                }}
+                                                InputProps={{
+                                                    style: {
+                                                        borderRadius: '12px',
+                                                    },
+                                                }}
+                                            />
+                                        </ThemeProvider>
+                                    </div>
+
+                                    {/* Slider for Arround Address Searching circle */}
+                                    <div className="relative z-20 w-full">
+                                        <CustomSlider
+                                            theme={ComponentTheme}
+                                            value={zoneSliderRange}
+                                            onChange={handleZoneSliderChange}
+                                            min={0}
+                                            max={30}
+                                            unit="km"
+                                            label="Zone de recherche" // Provide a label prop if your CustomSlider component expects it
+                                            valueLabelDisplay="auto"
+                                        />
+                                    </div>
+                                </div>
+
+                                {/* TODO ADD GEOLOCALISATION FUNCTIONNALITY
+                                    <div>
+                                        <p className="text-black text-sm mb-2">Utiliser la Geolocalisation</p>
+                                        <div onClick={() => checkboxClickHandler('Geolocalisation')} className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded ${selectedItems.includes('Geolocalisation')
+                                            ? ColorsThemeA.ohcVerticalGradient_A
+                                            : "bg-[#D6D6D6]"
+                                            }`}>
+                                            <CheckedIcon />
+                                        </div>
+                                    </div>
+                                        */}
+
+
+                                <div className='border-y border-[#D8D8D8] py-4 mt-6'>
+
+
+                                    {/* Title of the Section "Classement" */}
+                                    <div>
+                                        <p className="text-black text-lg mt-4 mb-8 font-semibold">Note du salon</p>
+                                        <div className='flex flex-col sm:flex-row lg:flex-col xl:flex-row items-start sm:items-center lg:items-start xl:items-center justify-between'>
+                                            <div>
+                                                <p className='text-black text-sm'>Minimum</p>
+                                                <div className='flex items-center gap-4'>
+                                                    <StarRatings
+                                                        rating={MinRating}
+                                                        starRatedColor="#FEDF10"
+                                                        starSpacing="4px"
+                                                        starDimension="15px"
+                                                        numberOfStars={5}
+                                                        name="MinRating"
+                                                        changeRating={handleMinRatingChange} // Pass the function to update the rating value
+                                                    />
+                                                    <p className='text-black text-sm'>{MinRating} / 5</p>
+                                                </div>
+
+
+
+                                            </div>
+                                            <div className='mt-5 sm:mt-0 lg:mt-5 xl:mt-0'>
+                                                <p className='text-black text-sm'>Maximum</p>
+                                                <div className='flex items-center gap-4'>
+                                                    <StarRatings
+                                                        rating={MaxRating}
+                                                        starRatedColor="#FEDF10"
+                                                        starSpacing="4px"
+                                                        starDimension="15px"
+                                                        numberOfStars={5}
+                                                        name="MinRating"
+                                                        changeRating={handleMaxRatingChange} // Pass the function to update the rating value
+                                                    />
+                                                    <p className='text-black text-sm'>{MaxRating} / 5</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                {/* Title of the Section "Disponibilite" */}
                                 <div>
+                                    <p className="text-black text-lg mb-8 mt-6 font-semibold">Disponibilit&eacute;</p>
+
+                                    {/* Check box pour choisir les jours de préférences */}
+                                    <div className="flex justify-between">
+                                        {daysOfWeek.map((day) => (
+                                            <div key={day} className="flex flex-col items-center justify-center">
+                                                <p className="text-black text-sm mb-2">{day}</p>
+                                                <div
+                                                    onClick={() => checkboxClickHandler(day)}
+                                                    className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded hover:scale-125 transition duration-300 ${selectedItems.includes(day)
+                                                        ? ColorsThemeA.ohcVerticalGradient_A
+                                                        : "bg-[#D6D6D6]"
+                                                        }`}
+                                                >
+                                                    <CheckedIcon />
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    {/* TODO ADD PRODUIT WHEN SHOP FUNCTIONNALITY IS RELEASED
+                                <div>  
                                     <p className='text-black text-lg mb-4 border-t mt-5 border-[#D8D8D8] pt-4'>Produits</p>
                                     <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-5 sm:gap-24 lg:flex-col xl:flex-row lg:items-start xl:items-center lg:gap-5 xl:gap-24'>
                                         <div>
@@ -174,70 +428,18 @@ const Filters = () => {
                                         </div>
                                     </div>
                                 </div>
-                                <div className='border-y border-[#D8D8D8] py-4 mt-5'>
-                                    <p className='text-black text-lg my-3'>Classement</p>
-                                    <div className='flex flex-col sm:flex-row lg:flex-col xl:flex-row items-start sm:items-center lg:items-start xl:items-center justify-between'>
-                                        <div>
-                                            <p className='text-black text-sm'>Minimum</p>
-                                            <div className='flex items-center gap-4'>
-                                                <StarRatings
-                                                    rating={3.5}
-                                                    starRatedColor="#FEDF10"
-                                                    starSpacing="4px"
-                                                    starDimension="15px"
-                                                    numberOfStars={5}
-                                                    name="rating"
-                                                />
-                                                <p className='text-black text-sm'>3.5 / 5</p>
-                                            </div>
-                                        </div>
-                                        <div className='mt-5 sm:mt-0 lg:mt-5 xl:mt-0'>
-                                            <p className='text-black text-sm'>Maximum</p>
-                                            <div className='flex items-center gap-4'>
-                                                <StarRatings
-                                                    rating={4.5}
-                                                    starRatedColor="#FEDF10"
-                                                    starSpacing="4px"
-                                                    starDimension="15px"
-                                                    numberOfStars={5}
-                                                    name="rating"
-                                                />
-                                                <p className='text-black text-sm'>4.5 / 5</p>
-                                            </div>
-                                        </div>
-                                    </div>
+                                */}
                                 </div>
-                                <div>
-                                    <p className='text-black text-lg mt-5 mb-3'>Disponibilité</p>
-                                    <div className='flex items-center lg:justify-center gap-10 sm:gap-40 lg:gap-20 xl:gap-40'>
-                                        <div className='flex flex-col items-center justify-center'>
-                                            <p className="text-black text-sm mb-2">Matinée</p>
-                                            <div onClick={() => checkboxClickHandler('Matinée')} className={`w-6 h-6 flex items-center justify-center cursor-pointer border border-black rounded ${selectedItems.includes('Matinée') ? 'bg-black' : 'bg-white'}`}>
-                                                <TickIcon />
-                                            </div>
-                                        </div>
-                                        <div className='flex flex-col items-center justify-center'>
-                                            <p className="text-black text-sm mb-2">Après-Midi</p>
-                                            <div onClick={() => checkboxClickHandler('Après-Midi')} className={`w-6 h-6 flex items-center justify-center cursor-pointer border border-black rounded ${selectedItems.includes('Après-Midi') ? 'bg-black' : 'bg-white'}`}>
-                                                <TickIcon />
-                                            </div>
-                                        </div>
-                                        <div className='flex flex-col items-center justify-center'>
-                                            <p className="text-black text-sm mb-2">Soirée</p>
-                                            <div onClick={() => checkboxClickHandler('Soirée')} className={`w-6 h-6 flex items-center justify-center cursor-pointer border border-black rounded ${selectedItems.includes('Soirée') ? 'bg-black' : 'bg-white'}`}>
-                                                <TickIcon />
-                                            </div>
-                                        </div>
-                                    </div>
+                                <div className="flex justify-center mt-12">
+                                    <button onClick={resetAllValues_2} className={`${Theme_A.button.medBlackColoredButton}`}>Réinitialiser</button>
                                 </div>
-                                <button className='absolute bottom-6 left-12 w-28 h-11 border border-black rounded-2xl text-sm text-black shadow-[3px_3px_10px_2px_rgba(0,0,0,0.07)]'>Réinitialiser</button>
                             </div>
                         }
                     </div>
                 </div>
-            </ClientDashboardLayout>
-        </div>
+            </ClientDashboardLayout >
+            <Footer />
+        </div >
     )
 }
-
 export default Filters

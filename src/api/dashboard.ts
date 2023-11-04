@@ -46,7 +46,7 @@ const dashboard = {
     return await request.post<ResponseType>(`/service`, params);
   },
   getSaloneTimeDuration: async (params: any) => {
-    return await request.get<any>(`/service`, params);
+    return await request.get<ResponseType>(`/service`, params);
   },
   updateHairDresser: async (id: number,params: any) => {
     return await request.post<ResponseType>(`/hair_dresser/${id}`, params);
@@ -152,6 +152,9 @@ const dashboard = {
   },
   sendMessage: async ( param: MessageParam) => {
     return await request.post<any>(`send_message`, param);
+  },
+  sendWhatsapp: async (data:any) => {
+    return await request.post<any>(`send_whatsapp`, data);
   },
 };
 
