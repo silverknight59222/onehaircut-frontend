@@ -4,6 +4,7 @@ import BaseDropdown from "@/components/UI/BaseDropdown";
 import DropdownMenu from "@/components/UI/DropDownMenu";
 import React from "react";
 import {ColorsThemeA} from "@/components/utilis/Themes";
+
 const FullTable: React.FC = () => {
     // sample headers and data for TableComponent
     const headers = [
@@ -111,18 +112,44 @@ const FullTable: React.FC = () => {
 
     return (
         <div className="p-4">
-            <DropdownMenu dropdownItems={Month} backgroundClr={ColorsThemeA.standardBorderGray}
-                          fctToCallOnClick={handleNewMonth} />
-            {/*<SummaryComponent*/}
-            {/*    totalAmount={13257}*/}
-            {/*    vat={2598.50}*/}
-            {/*    ongoingPayment={275}*/}
-            {/*    refund={365}*/}
-            {/*    cancellationRate={12}*/}
-            {/*    refundRate={5}*/}
-            {/*    ongoingTransaction={2}*/}
-            {/*    totalTransactions={480}*/}
-            {/*/>*/}
+            <div className="flex justify-center items-center">
+                {/* Absolute Positioning relative to the viewport for the Dropdown */}
+                <div className="absolute left-4 transform -translate-y-1/2" style={{left: "2%"}}>
+                    <DropdownMenu
+                        dropdownItems={Month}
+                        backgroundClr={ColorsThemeA.standardBorderGray}
+                        fctToCallOnClick={handleNewMonth}
+                        showDefaultMessage={false}
+                    />
+                </div>
+
+                {/* Centered content container */}
+                <div className="p-4">
+                    <div className="flex items-center justify-center">
+                        {/* Centered Card */}
+                        <div className="bg-white shadow-md rounded-lg overflow-hidden flex justify-center w-full max-w-xl mx-auto">
+                            <div className="p-4 border-r border-gray-300 bg-neutral-500" style={{background: "#2F2F2F4D"}}>
+                                <p className="text-gray-600 text-lg font-bold text-black-500 ">Compte enregistrée</p>
+                            </div>
+                            <div className="p-4 bg-neutral-500" style={{background: "#2F2F2F4D"}} >
+                                <p className="text-gray-600 text-lg font-bold text-black-500 ">FR **** **** **** 1985</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <SummaryComponent
+                totalAmount={13257}
+                vat={2598.50}
+                ongoingPayment={275}
+                refund={365}
+                cancellationRate={12}
+                refundRate={5}
+                ongoingTransaction={2}
+                totalTransactions={480}
+            />
             <TableComponent headers={headers} data={data} />
         </div>
     );

@@ -3,18 +3,28 @@ import React, { useMemo, useState } from "react";
 import Card from '@mui/material/Card'
 import "chart.js/auto";
 import ChartjsLineChart from '@/views/charts/chartjs/ChartjsLineChart'
-// import ApexDonutChart from '@/views/charts/chartjs/ApexDonutChart'
+import ApexDonutChart from '@/views/charts/chartjs/ApexDonutChart'
+import RechartsRadarChart from '@/views/charts/chartjs/RechartsRadarChart'
+import RechartsLineChart from '@/views/charts/chartjs/RechartsLineChart'
+import ApexLineChart from '@/views/charts/chartjs/ApexLineChart'
+import RechartsPieChart from '@/views/charts/chartjs/RechartsPieChart'
 import DynamicClientTable from '@/views/datatable/DynamicClientTable'
+import ReactApexChart from 'react-apexcharts';
 import DialogShareProject from '@/views/pages/dialog-examples/DialogShareProject'
 import Grid from '@mui/material/Grid'
 import Footer from "@/components/UI/Footer";
 import BaseDropdown from "@/components/UI/BaseDropdown";
+import RateModal from "@/components/pages/dashboard/Dashboard/ModalComponent/RateModal";
 import ProgressBar from "@/components/UI/ProgressBar";
 import { overviewData, messagesData, activityData, clientTableData } from "@/data/dashboardData";
 import DropdownMenu from "@/components/UI/DropDownMenu";
+import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import {ColorsThemeA} from "@/components/utilis/Themes";
 import FullTable from "@/views/datatable/FullTable";
 import ChartjsBarChart from '@/views/charts/chartjs/ChartjsBarChart'
+import RechartsBarChart from '@/views/charts/chartjs/RechartsBarChart'
+import RechartGroupBarChart from '@/views/charts/chartjs/RechartGroupBarChart'
+
 const Dashboard = () => {
     const overview = [
         {
@@ -46,6 +56,19 @@ const Dashboard = () => {
             icon: <DashboardHeartIcon/>,
         },
     ];
+    type ModalName = 'fullTable' | 'rate' | 'clientActivity'; // Add more modal keys as needed
+
+    const [modals, setModals] = useState<{ [key in ModalName]?: boolean }>({
+        fullTable: false,
+        rate: false,
+        clientActivity: false,
+        // ... initialize other modals as needed
+    });
+
+// Update the toggleModal function to use the ModalName type for its parameter
+    const toggleModal = (modal: ModalName) => {
+        setModals(prev => ({ ...prev, [modal]: !prev[modal] }));
+    };
   const messages = useMemo(() => messagesData, []);
   const activity = useMemo(() => activityData, []);
   const data = useMemo(() => clientTableData, []);
@@ -56,7 +79,7 @@ const Dashboard = () => {
         // TODO: add backend to save the new preference
     }
 
-  const headers = ["User", "Date dernière commande", "Visites", "Commandes",
+  const headers = ["Utilisateur", "Date dernière commande", "Visites", "Commandes",
     "Dernière commande", "Details dernière commande", "Status dernière commande", "Total payé"];
 
     const headersValue:any = [
@@ -154,53 +177,6 @@ const Dashboard = () => {
         // ... Add more rows as needed
     ];
 
-    const yourChartData = {
-        labels: ['Staff 1', 'Staff 2', 'Staff 3', 'Staff 4', 'Staff 5'],
-        datasets: [
-            {
-                maxBarThickness: 150,
-                backgroundColor: "#f6c23e", // Using yellow prop directly here for simplicity
-                borderColor: 'transparent',
-                borderRadius: { topRight: 15, topLeft: 15 },
-                data: [80, 35, 50, 65, 90]
-            }
-        ]
-    }
-
-    const yourChartOptions = {
-        responsive: true,
-        maintainAspectRatio: false,
-        animation: { duration: 500 },
-        scales: {
-            x: {
-                display: true,
-                grid: {
-                    color: "#f1f1f1" // Using borderColor prop directly here for simplicity
-                },
-                ticks: { color: "#000" } // Using labelColor prop directly here for simplicity
-            },
-            y: {
-                min: 0,
-                max: 100,
-                grid: {
-                    color: "#f1f1f1" // Using borderColor prop directly here for simplicity
-                },
-                ticks: {
-                    color: "#000", // Using labelColor prop directly here for simplicity
-                    padding: 10
-                }
-            }
-        },
-        plugins: {
-            legend: { display: false }
-        }
-    }
-
-    const yourDropdownClickHandler = (item: string) => {
-        console.log(`You selected: ${item}`);
-        // Here, you can add additional logic to handle the dropdown selection.
-    }
-
 
     const [showDialog, setShowDialog] = useState(false);
 
@@ -208,28 +184,26 @@ const Dashboard = () => {
   return (
     <div className="px-4 lg:px-6">
       <Footer />
-        <ChartjsBarChart
-            title="Occupation du personnel"
-            dropdownItems={["January", "February"]}
-            data={yourChartData}
-            options={yourChartOptions}
-            yellow="#3F8DF2"
-            labelColor="#000"
-            borderColor="#f1f1f1"
-            handleDropdownClick={yourDropdownClickHandler}
-        />
       <div>
         <p className="text-primary text-2xl font-semibold mb-3">
           Analytical Overview
         </p>
-          {/*<ApexDonutChart />*/}
-        <div className="p-4 bg-gray-200">
-          <DynamicClientTable headers={headers} data={data} />
-        </div>
+        {/*<div className="p-4 bg-gray-200">*/}
+        {/*  <DynamicClientTable headers={headers} data={data} />*/}
+        {/*</div>*/}
         <Grid container spacing={6} className='match-height'>
         <Grid item md={4} sm={6} xs={12}>
-            <DialogShareProject show={showDialog} setShow={setShowDialog}>
+            <DialogShareProject show={modals.fullTable} setShow={() => toggleModal('fullTable')}>
                 <FullTable headers={headersValue} data={dataValue} />
+            </DialogShareProject>
+            <DialogShareProject show={modals.rate} setShow={() => toggleModal('rate')}>
+                <RateModal/>
+            </DialogShareProject>
+            <DialogShareProject show={modals.clientActivity} setShow={() => toggleModal('clientActivity')}>
+                <p className="text-2xl text-[#727272] font-semibold text-left">
+                    Activités des clients
+                </p>
+                <DynamicClientTable headers={headers} data={data} />
             </DialogShareProject>
         </Grid>
         </Grid>
@@ -238,7 +212,7 @@ const Dashboard = () => {
           {overview.map((item, index) => {
             return (
               <div key={index} className="flex flex-col">
-                <div onClick={() => setShowDialog(true)} className="cursor-pointer flex p-8 bg-[rgba(255,255,255,0.69)] rounded-[20px] shadow-[0px_26px_31px_0px_rgba(176, 176, 176, 0.10)]">
+                <div onClick={() => toggleModal('fullTable')} className="cursor-pointer flex p-8 bg-[rgba(255,255,255,0.69)] rounded-[20px] shadow-[0px_26px_31px_0px_rgba(176, 176, 176, 0.10)]">
                   <div className={`flex items-center justify-center w-14 h-14 rounded-full ${item.gradient}`}>
                     {item.icon}
                   </div>
@@ -262,20 +236,12 @@ const Dashboard = () => {
                 {/* Revenue Card */}
                 <Card className="h-full">
                     <div className="flex items-center justify-between gap-3 mb-4">
-                        <p className="text-xl sm:text-2xl text-[#727272] font-semibold pl-10 mt-6">
+                        <p onClick={() => toggleModal('rate')} className="text-xl sm:text-2xl text-[#727272] font-semibold pl-10 mt-6">
                             Revenue
                         </p>
                       <span className="mr-4 mt-4">
                      <DropdownMenu dropdownItems={Month} backgroundClr={ColorsThemeA.standardBorderGray}
-                                   fctToCallOnClick={handleNewMonth} />
-                    {/*<BaseDropdown*/}
-                    {/*    dropdownItems={["This month"]}*/}
-                    {/*    width="w-36"*/}
-                    {/*    height="h-10 sm:h-11"*/}
-                    {/*    rounded="rounded-[48px]"*/}
-                    {/*    borderClr="border-[rgba(254,49,100,0.56)]"*/}
-                    {/*    backgroundClr="bg-gradient-to-b from-[rgba(254,49,100,0.08)] via-transparent to-[rgba(254,49,100,0.00)]"*/}
-                    {/*/>*/}
+                                   fctToCallOnClick={handleNewMonth} showDefaultMessage={false} />
                 </span>
                     </div>
                     <div>
@@ -332,7 +298,7 @@ const Dashboard = () => {
 
       <div className="mt-12 flex md:flex-row flex-col items-start gap-12">
         <div className="md:w-6/12 h-[294px] overflow-auto w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-[20px] shadow-[0px_26px_31px_0px_rgba(176, 176, 176, 0.10)]">
-          <p className="text-primary text-2xl font-semibold">Client Activity</p>
+          <p onClick={() => toggleModal('clientActivity')}  className="text-primary text-2xl font-semibold">Client Activity</p>
 
           <div className="relative overflow-auto">
             <table className="w-full text-sm text-left">

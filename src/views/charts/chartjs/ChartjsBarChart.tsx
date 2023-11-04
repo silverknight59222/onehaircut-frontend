@@ -87,27 +87,14 @@ const ChartjsBarChart: React.FC<ChartjsBarChartProps> = ({
   }
 
   return (
-      <Card>
-        <CardHeader
-            title={title}
-            sx={{
-              flexDirection: ['column', 'row'],
-              alignItems: ['flex-start', 'center'],
-              '& .MuiCardHeader-action': { mb: 0 },
-              '& .MuiCardHeader-content': { mb: [2, 0] }
-            }}
-            action={
-              <DropdownMenu
-                  dropdownItems={dropdownItems}
-                  backgroundClr={ColorsThemeA.standardBorderGray}
-                  fctToCallOnClick={handleNewMonth}
-              />
-            }
-        />
-        <CardContent>
-          <Bar data={data} height={400} options={options} />
-        </CardContent>
-      </Card>
+      <div>
+          <p className="text-neutral-500 font-semibold text-2xl text-center">
+          {title}
+      </p>
+          <CardContent>
+              <Bar data={data} height={400} options={options} />
+          </CardContent></div>
+
   )
 }
 

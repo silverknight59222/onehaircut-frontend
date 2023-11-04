@@ -6,6 +6,7 @@ import { ColorsThemeA, Theme_A } from '../utilis/Themes';
 
 const DropdownMenu = ({
     dropdownItems = [""],
+    showDefaultMessage = true, // showDefaultMessage defaults to false if not passed
     width = '',
     height = '',
     rounded = '',
@@ -15,7 +16,9 @@ const DropdownMenu = ({
     fctToCallOnClick = (item:string) =>{}, // Function to be called when user clicks on an item
 }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const [selectedItem, setSelectedItem] = useState('Select an option'); // Initial text
+    const [selectedItem, setSelectedItem] = useState(
+        showDefaultMessage || dropdownItems.length === 0 ? 'Select an option' : dropdownItems[0]
+    );
 
     const toggleDropdown = () => {
         if (!disabled) {

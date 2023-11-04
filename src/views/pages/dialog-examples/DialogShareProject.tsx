@@ -82,17 +82,19 @@ const options: OptionsType[] = [
 const CustomCloseButton = styled(IconButton)<IconButtonProps>(({ theme }) => ({
   top: 0,
   right: 0,
-  color: 'grey.500',
+  color: theme.palette.common.white, // Set icon color to white
   position: 'absolute',
   boxShadow: theme.shadows[2],
   transform: 'translate(10px, -10px)',
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: `${theme.palette.background.paper} !important`,
+  backgroundColor: `${theme.palette.error.main} !important`, // Set background to red
   transition: 'transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out',
   '&:hover': {
-    transform: 'translate(7px, -5px)'
+    backgroundColor: theme.palette.error.dark, // Optionally change the hover color to a darker red
+    color: theme.palette.common.white
   }
-}))
+}));
+
 
 const headers:any = [
   "Date",
@@ -215,6 +217,9 @@ const DialogShareProject = ({ show, setShow, children }) => {
         fullWidth
         open={show}
         maxWidth='md'
+        PaperProps={{
+          style: { maxWidth: 'none', width: '80%' }, // Set a specific width here
+        }}
         scroll='body'
         onClose={() => setShow(false)}
         TransitionComponent={Transition}
