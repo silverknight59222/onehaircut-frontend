@@ -18,9 +18,9 @@ import CustomInput from '@/components/UI/CustomInput';
 
 const Filters = () => {
     const [selectedTab, setSelectedTab] = useState(0);
-    const [selectedItems, SetAtHome] = useState<String[]>(['Geolocalisation', 'Utilisation de produits particuliers',])
+    const [selectedItems, SetAtHome] = useState<String[]>([])
     const daysOfWeek = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
-
+    
     const items = [
         "Recherche Coiffure",
         "Recherche Salon ",
@@ -41,9 +41,7 @@ const Filters = () => {
         }
     };
 
-    const handleBudgetSliderChange = (event: any, newValue: any) => {
-        console.log('in budget slider')
-        console.log(newValue)
+    const handleBudgetSliderChange = (event: any, newValue: any) => {        
         setBudgetSliderRange(newValue);
     };
     const handleZoneSliderChange = (event: any, newValue: any) => {
@@ -117,8 +115,7 @@ const Filters = () => {
             hairstyle_trend: '',
             budget: [0, 200],
         })
-            .then(resp => {
-                console.log(resp.data);
+            .then(resp => {                
                 showSnackbar("succès", "Les préférences ont été réinitialisées avec succès");
             })
             .catch(err => {
@@ -185,10 +182,10 @@ const Filters = () => {
             postal_code: ZipCodeValue,
             search_area: zoneSliderRange,
             ratings: MinRating,
-            availability: '',
+            max_ratings: MaxRating,
+            availability: selectedItems,
         })
-            .then(resp => {
-                console.log(resp.data);
+            .then(resp => {                
                 showSnackbar("succès", "Préférences mises à jour avec succès");
             })
             .catch(err => {
@@ -201,8 +198,7 @@ const Filters = () => {
     }
 
     const fetchFilterPrefrences = async () => {
-        const resp = await client.getUserFilterPrefrences();
-        console.log(resp.data);
+        const resp = await client.getUserFilterPrefrences();        
 
         setCurrentLength(resp.data.current_hair);
         setDesiredLength(resp.data.length_sought);
@@ -213,6 +209,9 @@ const Filters = () => {
         setZipCodeValue(resp.data.postal_code);
         setZoneSliderRange([resp.data.search_area[0], resp.data.search_area[1]]);
         setMinRating(resp.data.ratings);
+        if(resp.data.max_ratings)
+            setMaxRating(resp.data.max_ratings);
+        SetAtHome(resp.data.availability)
     }
 
     return (
