@@ -5,8 +5,10 @@ import { CrossIcon, LogoCircleFixRight } from "@/components/utilis/Icons";
 import { Theme_A } from "@/components/utilis/Themes";
 import ClientDashboardLayout from "@/layout/ClientDashboardLayout";
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Footer from '@/components/UI/Footer';
+import { client } from "@/api/clientSide";
+import useSnackbar from "@/hooks/useSnackbar";
 
 // default text if no picture to display
 const TextToDsplayifNoPic =
@@ -50,21 +52,27 @@ const Portrait = () => {
         "Moyen",
         "Long",]
 
+    const [imagesToUpload, setImagesToUpload] = useState([]);
+    const [gender, setGender] = useState('');
+    const [ethnicGroup, setethnicGroup] = useState('');
+    const [hairLength, sethairLength] = useState('');
 
     // functions for filters
     // handling the change of gender
     const handleNewGender = (item: string) => {
-        // TODO: add backend to save the new preference
+        setGender(item);
     }
     // handling the change of ethnicity
     const handleNewEthnicity = (item: string) => {
-        // TODO: add backend to save the new preference
+        setethnicGroup(item);
     }
     // handling the change of length
     const handleNewSetCurrentLength = (item: string) => {
-        // TODO: add backend to save the new preference
+        sethairLength(item);
     }
 
+    const [isLoading, setIsLoading] = useState(false);
+    const showSnackbar = useSnackbar();
 
     // -----------------------------------------------
     // for the straight picture
@@ -79,6 +87,8 @@ const Portrait = () => {
         }
         const fileUploaded = event.target.files[0];
         setProfileImage(URL.createObjectURL(fileUploaded));
+        imagesToUpload.push({'type': 'front_profile',  'file': event.target.files[0]})
+        //setImagesToUpload([{'type': 'profile_image',  'file': event.target.files[0]}])
     };
     // handle the click to modify the pic
     const handleClick = () => {
@@ -100,6 +110,8 @@ const Portrait = () => {
         }
         const fileUploaded = event.target.files[0];
         setProfileLeftImage(URL.createObjectURL(fileUploaded));
+        imagesToUpload.push({'type': 'left_profile',  'file': event.target.files[0]})
+        //setImagesToUpload([{'type': 'left_profile',  'file': event.target.files[0]}])
     };
     // handle the click to modify the pic
     const handleClickLeft = () => {
@@ -111,7 +123,7 @@ const Portrait = () => {
     // -----------------------------------------------
     // for the slightly left picture
     const hiddenFile3Input = React.useRef<HTMLInputElement | null>(null);
-    const [profileLeft2Image, setProfileLeft2Image] = useState<string | null>("");
+    const [profileSlightlyLeftImage, setprofileSlightlyLeftImage] = useState<string | null>("");
     // handle the profil pic change
     const handleProfileLeft2ImageUpload = (
         event: React.ChangeEvent<HTMLInputElement>
@@ -120,7 +132,9 @@ const Portrait = () => {
             return;
         }
         const fileUploaded = event.target.files[0];
-        setProfileLeft2Image(URL.createObjectURL(fileUploaded));
+        setprofileSlightlyLeftImage(URL.createObjectURL(fileUploaded));
+        imagesToUpload.push({'type': 'slightly_left_profile',  'file': event.target.files[0]})
+        //setImagesToUpload([{'type': 'slightly_left_profile',  'file': event.target.files[0]}])
     };
     // handle the click to modify the pic
     const handleClickLeft2 = () => {
@@ -142,6 +156,8 @@ const Portrait = () => {
         }
         const fileUploaded = event.target.files[0];
         setProfileRightImage(URL.createObjectURL(fileUploaded));
+        imagesToUpload.push({'type': 'right_profile',  'file': event.target.files[0]})
+        //setImagesToUpload([{'type': 'right_profile',  'file': event.target.files[0]}])
     };
     // handle the click to modify the pic
     const handleClickRight = () => {
@@ -153,7 +169,7 @@ const Portrait = () => {
     // -----------------------------------------------
     // for the slightly right picture
     const hiddenFile5Input = React.useRef<HTMLInputElement | null>(null);
-    const [profileRight2Image, setProfileRight2Image] = useState<string | null>("");
+    const [profileSlightlyRightImage, setProfileSlightlyRightImage] = useState<string | null>("");
     // handle the profil pic change
     const handleProfileRight2ImageUpload = (
         event: React.ChangeEvent<HTMLInputElement>
@@ -162,7 +178,9 @@ const Portrait = () => {
             return;
         }
         const fileUploaded = event.target.files[0];
-        setProfileRight2Image(URL.createObjectURL(fileUploaded));
+        setProfileSlightlyRightImage(URL.createObjectURL(fileUploaded));
+        imagesToUpload.push({'type': 'slightly_right_profile',  'file': event.target.files[0]})
+        //setImagesToUpload([{'type': 'slightly_right_profile',  'file': event.target.files[0]}])
     };
     // handle the click to modify the pic
     const handleClickRight2 = () => {
@@ -173,12 +191,12 @@ const Portrait = () => {
 
 
     // Handle removing profil picture
-    const RemoveHaircutWishlist = async (e: any, profil: string) => {
+    const RemoveImage = async (e: any, profil: string) => {
         // TODO Add backend
 
         e.stopPropagation()
         if (profil == SubTextToDisplay[0]) {
-            setProfileLeft2Image(null)
+            setprofileSlightlyLeftImage(null)
         }
         else if (profil == SubTextToDisplay[1]) {
             setProfileLeftImage(null)
@@ -187,7 +205,7 @@ const Portrait = () => {
             setProfileImage(null)
         }
         else if (profil == SubTextToDisplay[3]) {
-            setProfileRight2Image(null)
+            setProfileSlightlyRightImage(null)
         }
         else if (profil == SubTextToDisplay[4]) {
             setProfileRightImage(null)
@@ -215,7 +233,7 @@ const Portrait = () => {
                     </div>
                     {img && (
                         <div
-                            onClick={(e) => RemoveHaircutWishlist(e, subtitle)}
+                            onClick={(e) => RemoveImage(e, subtitle)}
                             className={`absolute -top-5 -right-3 flex items-center w-6 h-6 cursor-pointer rounded-md ${Theme_A.button.crossButtonSmall} z-10`}>
                             <CrossIcon width="18" height="18" />
                         </div>)}
@@ -224,6 +242,51 @@ const Portrait = () => {
             </div>
         )
     }
+
+    const savePotraits = async () => {
+        setIsLoading(true)
+        const formData = new FormData();
+        formData.append("ethnic_group", ethnicGroup);
+        formData.append("hair_length", hairLength);
+        formData.append("gender", gender);
+        formData.append("slightly_left_profile", profileSlightlyLeftImage);
+        formData.append("left_profile", profileLeftImage);
+        formData.append("front_profile", profileImage);
+        formData.append("slightly_right_profile", profileSlightlyRightImage);
+        formData.append("right_profile", profileRightImage);        
+        imagesToUpload.forEach(image => {
+            if(image)
+                formData.append(image.type, image.file);
+        });        
+        await client.storeUserPotrait(formData)
+            .then(resp => {
+                console.log(resp.data);
+                showSnackbar("succès", "Portrait enregistrés avec succès");
+            })
+            .catch(err => {
+                console.log(err)
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
+    };
+
+    const fetchPotraits = async () => {
+        const resp = await client.getUserPotrait();        
+
+        setprofileSlightlyLeftImage(resp.data.slightly_left_profile)
+        setProfileLeftImage(resp.data.left_profile);
+        setProfileImage(resp.data.front_profile);
+        setProfileSlightlyRightImage(resp.data.slightly_right_profile);
+        setProfileRightImage(resp.data.right_profile);
+        setGender(resp.data.gender);
+        setethnicGroup(resp.data.ethnic_group);
+        sethairLength(resp.data.hair_length);
+    }
+
+    useEffect(() => {
+        fetchPotraits();
+    }, []);
 
 
     return (
@@ -272,7 +335,7 @@ const Portrait = () => {
                     <div className="flex flex-col sm:flex-row  sm:items-start justify-center gap-14">
                         {/* Left side of the head placed left */}
                         <div className="flex sm:flex-col  gap-10 -mt-6 sm:-mt-0">
-                            {profilPicToDisplay(handleClickLeft2, profileLeft2Image, SubTextToDisplay[0], 32, DefaultProfilLeft2)}
+                            {profilPicToDisplay(handleClickLeft2, profileSlightlyLeftImage, SubTextToDisplay[0], 32, DefaultProfilLeft2)}
 
                             {profilPicToDisplay(handleClickLeft, profileLeftImage, SubTextToDisplay[1], 32, DefaultProfilLeft)}
                         </div>
@@ -285,7 +348,7 @@ const Portrait = () => {
 
                         {/* Right side of the face on the right */}
                         <div className="flex sm:flex-col  gap-10 -mt-6 sm:-mt-0">
-                            {profilPicToDisplay(handleClickRight2, profileRight2Image, SubTextToDisplay[3], 32, DefaultProfilRight2)}
+                            {profilPicToDisplay(handleClickRight2, profileSlightlyRightImage, SubTextToDisplay[3], 32, DefaultProfilRight2)}
 
                             {profilPicToDisplay(handleClickRight, profileRightImage, SubTextToDisplay[4], 32, DefaultProfilRight)}
                         </div>
@@ -309,22 +372,42 @@ const Portrait = () => {
                     <p className="text-stone-400 font-normal italic text-sm text-center my-10">
                         Indiquer votre genre et groupe ethnique. Ceux-ci serviront lors de la presentation des coiffures à la page d'accueil
                     </p>
-                    <div className="flex flex-col sm:flex-row  sm:items-start justify-center gap-14 mb-40">
+                    <div className="flex flex-col sm:flex-row  sm:items-start justify-center gap-14">
                         <div className="flex flex-col gap-2">
 
-                            <DropdownMenu dropdownItems={Gender}
-                                fctToCallOnClick={handleNewGender} menuName="Genre" />
+                            <DropdownMenu
+                                dropdownItems={Gender.map((item) => item)}
+                                fctToCallOnClick={handleNewGender}
+                                selectId={gender}
+                                menuName="Genre"
+                            />
                         </div>
                         <div className="flex flex-col gap-2">
 
-                            <DropdownMenu dropdownItems={Ethnicity}
-                                fctToCallOnClick={handleNewEthnicity} menuName="Groupe ethnique" />
+                            <DropdownMenu
+                                dropdownItems={Ethnicity.map((item) => item)}
+                                selectId={ethnicGroup}
+                                fctToCallOnClick={handleNewEthnicity}
+                                menuName="Groupe ethnique"
+                            />
                         </div>
                         <div className="flex flex-col gap-2">
 
-                            <DropdownMenu dropdownItems={Length}
-                                fctToCallOnClick={handleNewSetCurrentLength} menuName="Longueur cheveux" />
+                            <DropdownMenu
+                                dropdownItems={Length.map((item) => item)}
+                                selectId={hairLength}
+                                fctToCallOnClick={handleNewSetCurrentLength}
+                                menuName="Longueur cheveux"
+                            />
                         </div>
+                    </div>
+                    <div className="flex flex-row justify-center mb-40 mt-10">
+                        {/* <button onClick={resetAllValues_1} className={`${Theme_A.button.medBlackColoredButton}`}>Réinitialiser</button> */}
+                        <button
+                            onClick={savePotraits}
+                            className={`${Theme_A.button.mediumGradientButton} ml-3`}>
+                            Save
+                        </button>
                     </div>
                 </div>
             </ClientDashboardLayout >

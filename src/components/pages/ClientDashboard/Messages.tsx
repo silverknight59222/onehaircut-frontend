@@ -10,6 +10,7 @@ import { SalonDetails, Chat } from "@/types";
 import { dashboard } from "@/api/dashboard";
 import userLoader from "@/hooks/useLoader";
 import { Theme_A, ColorsThemeA } from "@/components/utilis/Themes";
+import CustomInput from "@/components/UI/CustomInput";
 
 
 const Messages = () => {
@@ -195,13 +196,24 @@ const Messages = () => {
 
                             {/* Input et Bouton d'Envoi */}
                             <div className="w-full flex items-center justify-center mt-auto mb-6">
-                                <div className="relative w-9/12">
+                                <div className="relative w-9/12 mt-4">
                                     {/* Champ de texte pour entrer un message */}
-                                    <input onChange={(e) => setMessage(e.target.value)} value={message} className={`w-full shadow-inner border border:bg-stone-300 ${Theme_A.behaviour.fieldFocused_C} rounded-xl h-12 outline-none px-3`} />
+                                    <CustomInput
+                                        id="sendMessageInput"
+                                        label="Ecrire un message"
+                                        value={message}
+                                        onChange={(e) => setMessage(e.target.value)}
+                                    />
+                                    {/*
+                                    <input onChange={(e) => setMessage(e.target.value)} 
+                                    value={message} 
+                                    className={`w-full shadow-inner border border:bg-stone-300 ${Theme_A.behaviour.fieldFocused_C} rounded-xl h-12 outline-none px-3`} 
+                                    />
+                                    */}
                                 </div>
 
                                 {/* Bouton d'envoi de message */}
-                                <div className="ml-4 hover:scale-125 transform transition-transform duration-300" onClick={onSendMessage}>
+                                <div className="ml-4 mt-4 hover:scale-125 transform transition-transform duration-300" onClick={onSendMessage}>
                                     <ChatSendIcon />
                                 </div>
                             </div>
