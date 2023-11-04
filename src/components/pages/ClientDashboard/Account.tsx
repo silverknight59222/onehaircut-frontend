@@ -12,6 +12,10 @@ import { Value } from 'react-phone-number-input'
 import 'react-phone-number-input/style.css'
 import PaymentForm from "@/components/shared/Payement";
 import { TextField } from "@material-ui/core";
+import IconButton from '@mui/material/IconButton';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import InputAdornment from '@mui/material/InputAdornment';
 import CustomInput from "@/components/UI/CustomInput";
 
 
@@ -88,35 +92,57 @@ const Account = () => {
     ////////////////////////////////////////////////////
     ///////////////////// PASSWORD 
     ////////////////////////////////////////////////////
-    const [passwordField, renewPassword] = useState({
-        old: "",
-        new: "",
-        new2: "",
+    const [passwordField, setPasswordField] = useState({
+        oldPassword: "",
+        newPassword: "",
+        confirmPassword: "",
     });
+
+      const [oldPasswordVisiblity, setOldPasswordVisiblity] = useState(false);
+      const [newPasswordVisiblity, setNewPasswordVisiblity] = useState(false);
+      const [confirmPasswordVisiblity, setConfirmPasswordVisiblity] = useState(false);
+      const togglePasswordVisibility = (field: string) => {
+        switch (field) {
+          case 'oldPassword':
+            setOldPasswordVisiblity((prev) => !prev);
+            break;
+          case 'newPassword':
+            setNewPasswordVisiblity((prev) => !prev);
+            break;
+          case 'confirmPassword':
+            setConfirmPasswordVisiblity((prev) => !prev);
+            break;
+          default:
+            setNewPasswordVisiblity((prev) => !prev);
+            setOldPasswordVisiblity((prev) => !prev);
+            setConfirmPasswordVisiblity((prev) => !prev);
+            break;
+        }
+      };
     const setOldPassword = (value: string) => {
-        renewPassword((prev) => {
-            return { ...prev, old: value };
+        setPasswordField((prev) => {
+            return { ...prev, oldPassword: value };
         });
     };
     const setNewPassword = (value: string) => {
-        renewPassword((prev) => {
-            return { ...prev, new: value };
+        setPasswordField((prev) => {
+            return { ...prev, newPassword: value };
         });
     };
     const setNew2Password = (value: string) => {
-        renewPassword((prev) => {
-            return { ...prev, new2: value };
+        setPasswordField((prev) => {
+            return { ...prev, confirmPassword: value };
         });
     };
 
     const onSubmitPassword = async () => {
-        if (passwordField.new != passwordField.new2) { // TODO modify
+        if (passwordField.newPassword != passwordField.confirmPassword) { // TODO modify
             setError((prev) => {
                 return { ...prev, text: "Nouveaux mots de passe différents" };
             });
             return;
         }
-        else if (passwordField.new.length < 8) {
+        else if (passwordField.newPassword.length < 8) {
             setError((prev) => {
                 return { ...prev, text: "Nouveaux mots de passe trop petits" };
             });
@@ -135,70 +161,96 @@ const Account = () => {
     let [errorPop, setErrorPop] = useState("")
 
     const modifPassWord: React.JSX.Element =
-        <div>
-            <div className="flex flex-col items-center justify-center gap-4">
-                <p className="text-xl font-semibold text-black text-center">Modification du mot de passe</p>
+    <div>
+      <div className="flex flex-col items-center justify-center gap-4">
+        <p className="text-xl font-semibold text-black text-center">Modification du mot de passe</p>
 
+        {error && (
+          <p className={`${Theme_A.checkers.errorText}`}>
+            {error.text}
+          </p>
+        )}
+        <TextField className={`${inputFieldsDesign}`}
+          id="oldPswrd"
+          label="Ancien mot de passe"
+          type={oldPasswordVisiblity ? 'text' : 'password'}
+          variant="outlined"
+          value={passwordField.oldPassword}
+          onChange={(e) => {
+            setOldPassword(e.target.value)
+          }}
+          InputProps={{
+            style: {
+              borderRadius: '12px',
+            },
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={() => togglePasswordVisibility('oldPassword')}>
+                  {oldPasswordVisiblity ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+        <TextField className={`${inputFieldsDesign}`}
+          id="NewPswrd1"
+          label="Nouveau mot de passe"
+          variant="outlined"
+          type={newPasswordVisiblity ? 'text' : 'password'}
+          value={passwordField.newPassword}
+          onChange={(e) => setNewPassword(e.target.value)}
+          InputProps={{
+            style: {
+              borderRadius: '12px',
+            },
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={() => togglePasswordVisibility('newPassword')}>
+                {newPasswordVisiblity ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            ),
+          }}
+        />
+        <TextField className={`${inputFieldsDesign}`}
+          id="NewPswrd2"
+          label="Répéter nouveau mot de passe"
+          variant="outlined"
+          type={confirmPasswordVisiblity ? 'text' : 'password'}
+          value={passwordField.confirmPassword}
+          onChange={(e) => setNew2Password(e.target.value)}
+          InputProps={{
+            style: {
+              borderRadius: '12px',
+            },
 
-                {error && (
-                    <p className={`${Theme_A.checkers.errorText}`}>
-                        {error.text}
-                    </p>
-                )}
-                <TextField className={`${inputFieldsDesign}`}
-                    id="oldPswrd"
-                    label="Ancien mot de passe"
-                    variant="outlined"
-                    value={passwordField.old}
-                    onChange={(e) => setOldPassword(e.target.value)}
-                    InputProps={{
-                        style: {
-                            borderRadius: '12px',
-                        },
-                    }}
-                />
-                <TextField className={`${inputFieldsDesign}`}
-                    id="NewPswrd1"
-                    label="Nouveau mot de passe"
-                    variant="outlined"
-                    value={passwordField.new}
-                    onChange={(e) => setNewPassword(e.target.value)}
-                    InputProps={{
-                        style: {
-                            borderRadius: '12px',
-                        },
-                    }}
-                />
-                <TextField className={`${inputFieldsDesign}`}
-                    id="NewPswrd2"
-                    label="Répéter nouveau mot de passe"
-                    variant="outlined"
-                    value={passwordField.new2}
-                    onChange={(e) => setNew2Password(e.target.value)}
-                    InputProps={{
-                        style: {
-                            borderRadius: '12px',
-                        },
-                    }}
-                />
-            </div>
-            <div className="mt-4 flex gap-4 items-center justify-center w-full">
-                <button
-                    className={`${Theme_A.button.medWhiteColoredButton}`}
-                    onClick={() => setIsModalPswrd(!isModalPswrd)}
-                >
-                    Annuler
-                </button>
-                <button
-                    className={`${Theme_A.button.mediumGradientButton}`}
-                    onClick={() => onSubmitPassword()}
-                >
-                    Actualiser
-                </button>
-            </div>
-        </div>
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={() => togglePasswordVisibility('confirmPassword')}>
+                  {confirmPasswordVisiblity ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            ),
 
-
+          }
+          }
+        />
+      </div>
+      <div className="mt-4 flex gap-4 items-center justify-center w-full">
+        <button
+          className={`${Theme_A.button.medWhiteColoredButton}`}
+          onClick={() => setIsModalPswrd(!isModalPswrd)}
+        >
+          Annuler
+        </button>
+        <button
+          className={`${Theme_A.button.mediumGradientButton}`}
+          onClick={() => onSubmitPassword()}
+        >
+          Actualiser
+        </button>
+      </div>
+    </div>
     ////////////////////////////////////////////////////
     ///////////////////// ADDRESS 
     ////////////////////////////////////////////////////
