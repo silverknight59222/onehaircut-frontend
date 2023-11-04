@@ -51,9 +51,9 @@ const SalonPicModal: FC<SalonPicModalProps> = ({
                             Elle est centrée et redimensionnée pour s'adapter au conteneur tout en conservant son aspect.
                             */}
                             <img
-                                src={images[mainImageIndex]?.image.includes('https://api-server.onehaircut.com/public')
+                                src={images[mainImageIndex]?.image.includes('https://api.onehaircut.com')
                                     ? images[mainImageIndex]?.image
-                                    : `https://api-server.onehaircut.com/public${images[mainImageIndex]?.image}`}
+                                    : `https://api.onehaircut.com${images[mainImageIndex]?.image}`}
                                 alt="Image principale du salon"
                                 className="absolute top-0 bottom-0 left-0 right-0 m-auto object-contain max-h-full max-w-full"
                             />
@@ -93,9 +93,9 @@ const SalonPicModal: FC<SalonPicModalProps> = ({
                                 {images.map((img, idx) => (
                                     <img
                                         key={idx}
-                                        src={img.image.includes('https://api-server.onehaircut.com/public')
+                                        src={img.image.includes('https://api.onehaircut.com')
                                             ? img.image
-                                            : `https://api-server.onehaircut.com/public${img.image}`}
+                                            : `https://api.onehaircut.com${img.image}`}
                                         alt={`Thumbnail ${idx}`}
                                         className={`w-24 h-24 object-cover rounded-md cursor-pointer ${mainImageIndex === idx ? 'border-2 border-red-500' : ''}`}
                                         onClick={() => setMainImageIndex(idx)}

@@ -167,7 +167,7 @@ const ImagesContainer = ({
                 <div className={`w-32 h-32 relative flex items-center`}>
                   {updateMode || selectedImage ? (
                     <Image
-                      src={updateMode ? updateMode.image.includes('api-server') ? updateMode.image : `https://api-server.onehaircut.com/public${updateMode.image}` : selectedImage}
+                      src={updateMode ? updateMode.image.includes('api-server') ? updateMode.image : `https://api.onehaircut.com${updateMode.image}` : selectedImage}
                       fill={true}
                       alt={
                         type === "showcase"
@@ -244,7 +244,7 @@ const ImagesContainer = ({
                         }`}
                     >
                       <div className="relative w-32 h-32">
-                        <Image fill={true} src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public${item.image}`} alt="image" />
+                        <Image fill={true} src={item.image.includes('https://api.onehaircut.com') ? item.image : `https://api.onehaircut.com${item.image}`} alt="image" />
                       </div>
                       {!item.is_cover && type === "showcase" && (
                         <div

@@ -141,7 +141,7 @@ const Currentreservation = () => {
                                     </div>
                                     <div>
                                         {item.salon_haircut && <div className="relative xl:w-[200px] xl:h-[200px] lg:w-[150px] lg:h-[150px] sm:w-[100px] sm:h-[100px] mb-5">
-                                            <Image src={`https://api-server.onehaircut.com/public${item.salon_haircut.haircut.image}`} alt='' fill={true} className='rounded-3xl ' />
+                                            <Image src={`https://api.onehaircut.com${item.salon_haircut.haircut.image}`} alt='' fill={true} className='rounded-3xl ' />
                                         </div>}
                                         <div className='flex flex-col items-center sm:items-start justify-center sm:justify-start gap-4 mt-5 sm:mt-0'>
                                             <div>

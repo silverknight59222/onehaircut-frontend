@@ -198,9 +198,9 @@ const BookSalon = () => {
                   <div className="relative">
                     <div className="relative w-[263px] h-[334px] rounded-2xl">
                       { hairdresser.profile_image ?
-                      <Image src={'https://api-server.onehaircut.com/public' + hairdresser.profile_image } alt="" fill={true} />
+                      <Image src={'https://api.onehaircut.com' + hairdresser.profile_image } alt="" fill={true} />
                       :
-                      <Image src={'https://api-server.onehaircut.com/public' + hairdresser.avatar.image } alt="" fill={true} />
+                      <Image src={'https://api.onehaircut.com' + hairdresser.avatar.image } alt="" fill={true} />
                       }
                     </div>
                   </div>
