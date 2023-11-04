@@ -236,6 +236,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
         }
         
       });
+
     }
 
   }, []);
