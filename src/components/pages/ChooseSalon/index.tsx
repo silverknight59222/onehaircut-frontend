@@ -424,7 +424,6 @@ const SalonChoice = () => {
                                                 numberOfStars={5}
                                                 name="rating"
                                             />
-                                            <p className='border-r border-[#A7A7A7] pr-1'>{salon.rating}</p>
                                             <p>{salon.ratings_count} d'avis</p>
                                         </div>
                                     </div>
