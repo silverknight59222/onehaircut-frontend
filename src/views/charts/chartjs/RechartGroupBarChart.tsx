@@ -33,57 +33,46 @@ interface PickerProps {
     end: Date | number
 }
 
+interface RechartsGroupBarChartProps {
+    direction: 'ltr' | 'rtl',
+    data: Array<any>, // This will be your data array prop
+    barFills: { [key: string]: string }, // Object containing fill colors for each dataKey
+    legends: Array<{ key: string, color: string, text: string }>, // Array of legend items
+}
+
 const dataForRechart = [
     {
-        name: 'Page A',
-        uv: 4000,
-        pv: 2400,
-        tv: 3000,
-        amt: 2400,
+        name: 'Staff 1',
+        Service: 25,  // Approximated from image
+        Prestation: 50,  // Approximated from image
+        Total: 75,  // Approximated from image
     },
     {
-        name: 'Page B',
-        uv: 3000,
-        pv: 1398,
-        tv: 3000,
-        amt: 2210,
+        name: 'Staff 2',
+        Service: 50,  // Approximated from image
+        Prestation: 75,  // Approximated from image
+        Total: 100,  // Approximated from image
     },
     {
-        name: 'Page C',
-        uv: 2000,
-        pv: 9800,
-        tv: 3000,
-        amt: 2290,
+        name: 'Staff 3',
+        Service: 35,  // Approximated from image
+        Prestation: 60,  // Approximated from image
+        Total: 90,  // Approximated from image
     },
     {
-        name: 'Page D',
-        uv: 2780,
-        pv: 3908,
-        tv: 3000,
-        amt: 2000,
+        name: 'Staff 4',
+        Service: 20,  // Approximated from image
+        Prestation: 80,  // Approximated from image
+        Total: 95,  // Approximated from image
     },
     {
-        name: 'Page E',
-        uv: 1890,
-        pv: 4800,
-        tv: 3000,
-        amt: 2181,
-    },
-    {
-        name: 'Page F',
-        uv: 2390,
-        pv: 3800,
-        tv: 3000,
-        amt: 2500,
-    },
-    {
-        name: 'Page G',
-        uv: 3490,
-        pv: 4300,
-        tv: 3000,
-        amt: 2100,
+        name: 'Staff 5',
+        Service: 30,  // Approximated from image
+        Prestation: 45,  // Approximated from image
+        Total: 70,  // Approximated from image
     },
 ];
+
 
 const CustomTooltip = (data: TooltipProps<any, any>) => {
     const { active, payload } = data
@@ -110,7 +99,8 @@ const CustomTooltip = (data: TooltipProps<any, any>) => {
     return null
 }
 
-const RechartsGroupBarChart = ({ direction }: Props) => {
+const RechartsGroupBarChart = ({ direction, data, barFills, legends }: RechartsGroupBarChartProps) => {
+
     // ** States
     const [endDate, setEndDate] = useState<DateType>(null)
     const [startDate, setStartDate] = useState<DateType>(null)
@@ -148,65 +138,31 @@ const RechartsGroupBarChart = ({ direction }: Props) => {
         setEndDate(end)
     }
 
-    // @ts-ignore
     return (
-        <Card>
-            <CardHeader
-                title='Brand Turnover'
-                sx={{
-                    flexDirection: ['column', 'row'],
-                    alignItems: ['flex-start', 'center'],
-                    '& .MuiCardHeader-action': { mb: 0 },
-                    '& .MuiCardHeader-content': { mb: [2, 0] }
-                }}
-                action={
-                    'hello'
-                    // <DatePicker
-                    //   selectsRange
-                    //   id='recharts-bar'
-                    //   endDate={endDate}
-                    //   selected={startDate}
-                    //   startDate={startDate}
-                    //   onChange={handleOnChange}
-                    //   placeholderText='Click to select a date'
-                    //   customInput={<CustomInput start={startDate as Date | number} end={endDate as Date | number} />}
-                    // />
-                }
-            />
             <CardContent>
-                <Box sx={{ mb: 4, display: 'flex', flexWrap: 'wrap' }}>
-                    <Box sx={{ mr: 6, display: 'flex', alignItems: 'center', '& svg': { mr: 1.5, color: '#826af9' } }}>
-                        <Icon icon='mdi:circle' fontSize='0.75rem' />
-                        <Typography variant='body2'>Apple</Typography>
-                    </Box>
-                    <Box sx={{ mr: 6, display: 'flex', alignItems: 'center', '& svg': { mr: 1.5, color: '#9f87ff' } }}>
-                        <Icon icon='mdi:circle' fontSize='0.75rem' />
-                        <Typography variant='body2'>Samsung</Typography>
-                    </Box>
-                    <Box sx={{ mr: 6, display: 'flex', alignItems: 'center', '& svg': { mr: 1.5, color: '#d2b0ff' } }}>
-                        <Icon icon='mdi:circle' fontSize='0.75rem' />
-                        <Typography variant='body2'>Oneplus</Typography>
-                    </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center', '& svg': { mr: 1.5, color: '#f8d3ff' } }}>
-                        <Icon icon='mdi:circle' fontSize='0.75rem' />
-                        <Typography variant='body2'>Motorola</Typography>
-                    </Box>
-                </Box>
                 <Box sx={{ height: 350 }}>
                     <ResponsiveContainer>
-                        <BarChart height={350} data={dataForRechart} barSize={40} style={{ direction }} margin={{ left: 0 }}>
+                        <BarChart height={350} data={data} barSize={40} style={{ direction }} margin={{ left: 0 }}>
                             <CartesianGrid strokeDasharray='3 3' />
                             <XAxis dataKey='name' reversed={direction === 'rtl'} />
                             <YAxis orientation={direction === 'rtl' ? 'right' : 'left'} />
                             <Tooltip content={CustomTooltip} />
-                            <Bar dataKey="pv" fill="#8884d8" background={{ fill: '#eee' }} />
-                            <Bar dataKey="uv" fill="#82ca9d" />
-                            <Bar dataKey="tv" fill="#72ca9d" />
+                            {Object.entries(barFills).map(([key, fill]) => (
+                                <Bar key={key} dataKey={key} fill={fill} background={{ fill: '#eee' }} />
+                            ))}
                         </BarChart>
                     </ResponsiveContainer>
                 </Box>
+
+                <Box sx={{ mt: 3, ml:6, display: 'flex', flexWrap: 'wrap' }}>
+                    {legends.map((legend, index) => (
+                        <Box key={index} sx={{ mr: 6, display: 'flex', alignItems: 'center', '& svg': { mr: 1.5, color: legend.color } }}>
+                            <Icon icon='mdi:circle' fontSize='0.75rem' />
+                            <Typography variant='body2'>{legend.text}</Typography>
+                        </Box>
+                    ))}
+                </Box>
             </CardContent>
-        </Card>
     )
 }
 

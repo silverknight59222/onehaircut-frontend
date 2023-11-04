@@ -29,7 +29,7 @@ const data = [
     { day: 'Vendredi', visits: 523 },
     { day: 'Samedi', visits: 345 },
     { day: 'Dimanche', visits: 255 },
-];1 
+];1
 
 const CustomTooltip = (data: TooltipProps<any, any>) => {
   const { active, payload } = data
@@ -58,8 +58,6 @@ const CustomTooltip = (data: TooltipProps<any, any>) => {
 
 const RechartsRadarChart = () => {
   return (
-      <Card>
-          <CardHeader title='Répartition visites sur les jours de la semaine' />
           <CardContent>
               <Box sx={{ height: 350 }}>
                   <ResponsiveContainer>
@@ -73,7 +71,6 @@ const RechartsRadarChart = () => {
                   </ResponsiveContainer>
               </Box>
           </CardContent>
-      </Card>
   )
 }
 

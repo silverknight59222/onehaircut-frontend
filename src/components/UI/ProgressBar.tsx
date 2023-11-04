@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { CircularProgressbarWithChildren, buildStyles } from "react-circular-progressbar";
+import { Typography } from '@mui/material';
+
 
 interface ProgressBar {
     value?: number;
@@ -17,8 +19,19 @@ const ProgressBar = ({ value, name, number, color, rotation }: ProgressBar) => {
         const r = Math.round(Math.min(255, parseInt(color.slice(1, 3), 16) * (1 - factor)));
         const g = Math.round(Math.min(255, parseInt(color.slice(3, 5), 16) * (1 - factor)));
         const b = Math.round(Math.min(255, parseInt(color.slice(5, 7), 16) * (1 - factor)));
-        return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+
+return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
     }
+
+    const TooltipOverlay = ({ value, name, number }: { value?: number, name: string, number?: number }) => (
+        <div className="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+            <div className="text-center p-4 rounded shadow-lg text-white">
+                <Typography variant="h6" component="div">{name}</Typography>
+                <Typography variant="body1" component="div">{value ? `${value}%` : 'N/A'}</Typography>
+            </div>
+        </div>
+    );
+
 
     return (
         <div
@@ -41,6 +54,7 @@ const ProgressBar = ({ value, name, number, color, rotation }: ProgressBar) => {
                 <p className="font-semibold text-[#656565] text-center w-32 mt-2 hover:text-black">{name}</p>
                 <p className="text-3xl font-semibold text-black hover:text-gray-600">{number ? number : '-'}</p>
             </CircularProgressbarWithChildren>
+            {isHovered && <TooltipOverlay value={value} name={name} number={number} />}
         </div>
     );
 };

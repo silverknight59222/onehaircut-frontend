@@ -76,6 +76,52 @@ export const activityData = [
   },
 ];
 
+export const activityClientData = [
+  {
+    user: "Angelina vitale",
+    Date: "12/07/2023",
+    Status: "En cours",
+  },
+  {
+    user: "Amanda louis",
+    Date: "12/07/2023",
+    Status: "Effectuée",
+  },
+  {
+    user: "Amanda louis",
+    Date: "12/07/2023",
+    Status: "Demande de remboursement",
+  },
+  {
+    user: "Amanda louis",
+    Date: "12/07/2023",
+    Status: "Remboursé(e)",
+  },
+];
+
+export const TopClientData = [
+  {
+    Utilisateur: "Angelina vitale",
+    Date: "Carré plongeant",
+    Status: "89",
+  },
+  {
+    Utilisateur: "Doppler",
+    Date: "plongeant",
+    Status: "77",
+  },
+  {
+    Utilisateur: "louis",
+    Date: "Carré",
+    Status: "62",
+  },
+  {
+    Utilisateur: "Amanda Remboursé",
+    Date: "plongeant",
+    Status: "51",
+  },
+];
+
 export const clientTableData = [
   {
     user: {
@@ -159,6 +205,106 @@ export const clientTableData = [
       name: "Angelina vitale",
       discount: "-10%",
       icon: "/path_to_icon_image.png"
+    },
+    Date: "12/07/2023",
+    Visites: 287,
+    Commandes: 30,
+    Dernière: "54 CHF",
+    Details: "Detail",
+    Status: "En cours",
+    Total: "5946 CHF",
+    styles: {
+      Status: { color: 'red' },  // Set the font color of 'Status' to red
+      Details: { textDecoration: 'underline' }  // Add this line to underline 'Details'
+    }
+  },
+
+  // ... Add other rows with corresponding images and names here
+];
+
+export const topClientTableData = [
+  {
+    user: {
+      image: '/assets/salon_types/BarberShop.png',
+      name: "Angelina vitale",
+      discount: "",
+      icon: ""
+    },
+    Date: "12/07/2023",
+    Visites: 287,
+    Commandes: 30,
+    Dernière: "54 CHF",
+    Details: "Detail",
+    Status: "En cours",
+    Total: "5946 CHF",
+    styles: {
+      Status: { color: 'red' },  // Set the font color of 'Status' to red
+      Details: { textDecoration: 'underline' }  // Add this line to underline 'Details'
+    }
+  },
+  {
+    user: {
+      image: '/assets/salon_types/BarberShop.png',
+      name: "Angelina vitale",
+      discount: "",
+      icon: ""
+    },
+    Date: "12/07/2023",
+    Visites: 287,
+    Commandes: 30,
+    Dernière: "54 CHF",
+    Details: "Detail",
+    Status: "En cours",
+    Total: "5946 CHF",
+    styles: {
+      Status: { color: 'red' },  // Set the font color of 'Status' to red
+      Details: { textDecoration: 'underline' }  // Add this line to underline 'Details'
+    }
+  },
+  {
+    user: {
+      image: '/assets/salon_types/BarberShop.png',
+      name: "Angelina vitale",
+      discount: "",
+      icon: ""
+    },
+    Date: "12/07/2023",
+    Visites: 287,
+    Commandes: 30,
+    Dernière: "54 CHF",
+    Details: "Detail",
+    Status: "En cours",
+    Total: "5946 CHF",
+    styles: {
+      Status: { color: 'red' },  // Set the font color of 'Status' to red
+      Details: { textDecoration: 'underline' }  // Add this line to underline 'Details'
+    }
+  },
+  {
+    user: {
+      image: '/assets/salon_types/BarberShop.png',
+      name: "Angelina vitale",
+      discount: "",
+      icon: ""
+    },
+    Date: "12/07/2023",
+    Visites: 287,
+    Commandes: 30,
+    Dernière: "54 CHF",
+    Details: "Detail",
+    Status: "En cours",
+    Total: "5946 CHF",
+    styles: {
+      Status: { color: 'red' },  // Set the font color of 'Status' to red
+      Details: { textDecoration: 'underline' }  // Add this line to underline 'Details'
+    }
+  },
+  {
+    user: {
+      image: '/assets/salon_types/BarberShop.png',
+      name: "Angelina vitale",
+      discount: "",
+      icon: ""
     },
     Date: "12/07/2023",
     Visites: 287,

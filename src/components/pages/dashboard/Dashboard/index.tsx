@@ -3,27 +3,32 @@ import React, { useMemo, useState } from "react";
 import Card from '@mui/material/Card'
 import "chart.js/auto";
 import ChartjsLineChart from '@/views/charts/chartjs/ChartjsLineChart'
-import ApexDonutChart from '@/views/charts/chartjs/ApexDonutChart'
-import RechartsRadarChart from '@/views/charts/chartjs/RechartsRadarChart'
-import RechartsLineChart from '@/views/charts/chartjs/RechartsLineChart'
-import ApexLineChart from '@/views/charts/chartjs/ApexLineChart'
-import RechartsPieChart from '@/views/charts/chartjs/RechartsPieChart'
 import DynamicClientTable from '@/views/datatable/DynamicClientTable'
 import ReactApexChart from 'react-apexcharts';
 import DialogShareProject from '@/views/pages/dialog-examples/DialogShareProject'
 import Grid from '@mui/material/Grid'
 import Footer from "@/components/UI/Footer";
-import BaseDropdown from "@/components/UI/BaseDropdown";
 import RateModal from "@/components/pages/dashboard/Dashboard/ModalComponent/RateModal";
+import StaffModal from "@/components/pages/dashboard/Dashboard/ModalComponent/StaffModal";
+import GoalsModal from "@/components/pages/dashboard/Dashboard/ModalComponent/GoalsModal";
+import TransactionList from "@/components/pages/dashboard/Dashboard/MainDashboardComponents/TransactionList";
 import ProgressBar from "@/components/UI/ProgressBar";
-import { overviewData, messagesData, activityData, clientTableData } from "@/data/dashboardData";
+import {
+    overviewData,
+    messagesData,
+    activityData,
+    activityClientData,
+    clientTableData,
+    TopClientData, topClientTableData
+} from "@/data/dashboardData";
 import DropdownMenu from "@/components/UI/DropDownMenu";
-import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import {ColorsThemeA} from "@/components/utilis/Themes";
 import FullTable from "@/views/datatable/FullTable";
-import ChartjsBarChart from '@/views/charts/chartjs/ChartjsBarChart'
-import RechartsBarChart from '@/views/charts/chartjs/RechartsBarChart'
-import RechartGroupBarChart from '@/views/charts/chartjs/RechartGroupBarChart'
+import BaseDropdown from "@/components/UI/BaseDropdown";
+import Image from "next/image";
+import TopClientList from "@/components/pages/dashboard/Dashboard/MainDashboardComponents/TopClientList";
+import RechartSingleBarChart from "@/views/charts/chartjs/RechartSingleBarChart";
+import RechartsLineChart from "@/views/charts/chartjs/RechartsLineChart";
 
 const Dashboard = () => {
     const overview = [
@@ -56,12 +61,15 @@ const Dashboard = () => {
             icon: <DashboardHeartIcon/>,
         },
     ];
-    type ModalName = 'fullTable' | 'rate' | 'clientActivity'; // Add more modal keys as needed
+    type ModalName = 'fullTable' | 'rate' | 'clientActivity' | 'staff' | 'topClient' | 'goals'; // Add more modal keys as needed
 
     const [modals, setModals] = useState<{ [key in ModalName]?: boolean }>({
         fullTable: false,
         rate: false,
         clientActivity: false,
+        staff: false,
+        topClient: false,
+        goals: false,
         // ... initialize other modals as needed
     });
 
@@ -73,14 +81,17 @@ const Dashboard = () => {
   const activity = useMemo(() => activityData, []);
   const data = useMemo(() => clientTableData, []);
     const Month = [
-        "January",
-        "February",]
+        "ce mois",
+        ]
     const handleNewMonth = (item: string) => {
         // TODO: add backend to save the new preference
     }
 
   const headers = ["Utilisateur", "Date dernière commande", "Visites", "Commandes",
     "Dernière commande", "Details dernière commande", "Status dernière commande", "Total payé"];
+
+    const topClientheaders = ["Utilisateur", "Date dernière commande", "Visites", "Commandes",
+        "Dernière commande", "Details dernière commande", "Status dernière commande", "Total payé"];
 
     const headersValue:any = [
         "Date",
@@ -177,9 +188,16 @@ const Dashboard = () => {
         // ... Add more rows as needed
     ];
 
+    const staffData = [
+        { name: 'Staff 1', value: 800 },
+        { name: 'Staff 2', value: 750 },
+        { name: 'Staff 3', value: 600 },
+        { name: 'Staff 4', value: 400 },
+        { name: 'Staff 5', value: 700 },
+    ];
 
-    const [showDialog, setShowDialog] = useState(false);
-
+    const fillColor = '#3C8A41'; // Example fill color
+    const barSize = 80; // Example barSize
 
   return (
     <div className="px-4 lg:px-6">
@@ -188,9 +206,7 @@ const Dashboard = () => {
         <p className="text-primary text-2xl font-semibold mb-3">
           Analytical Overview
         </p>
-        {/*<div className="p-4 bg-gray-200">*/}
-        {/*  <DynamicClientTable headers={headers} data={data} />*/}
-        {/*</div>*/}
+
         <Grid container spacing={6} className='match-height'>
         <Grid item md={4} sm={6} xs={12}>
             <DialogShareProject show={modals.fullTable} setShow={() => toggleModal('fullTable')}>
@@ -200,10 +216,24 @@ const Dashboard = () => {
                 <RateModal/>
             </DialogShareProject>
             <DialogShareProject show={modals.clientActivity} setShow={() => toggleModal('clientActivity')}>
-                <p className="text-2xl text-[#727272] font-semibold text-left">
+                <p className="text-2xl text-[#727272] font-semibold text-left cursor-pointer">
                     Activités des clients
                 </p>
                 <DynamicClientTable headers={headers} data={data} />
+            </DialogShareProject>
+
+            <DialogShareProject show={modals.topClient} setShow={() => toggleModal('topClient')}>
+                <p className="text-2xl text-[#727272] font-semibold text-left cursor-pointer">
+                    Top clients
+                </p>
+                <DynamicClientTable headers={topClientheaders} data={topClientTableData} />
+            </DialogShareProject>
+
+            <DialogShareProject show={modals.staff} setShow={() => toggleModal('staff')}>
+                <StaffModal/>
+            </DialogShareProject>
+            <DialogShareProject show={modals.goals} setShow={() => toggleModal('goals')}>
+                <GoalsModal/>
             </DialogShareProject>
         </Grid>
         </Grid>
@@ -231,13 +261,15 @@ const Dashboard = () => {
           })}
         </div>
       </div>
-        <div className="mt-12">
+
+        <TransactionList/>
+        <div className="mt-12 mb-12">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
                 {/* Revenue Card */}
                 <Card className="h-full">
                     <div className="flex items-center justify-between gap-3 mb-4">
-                        <p onClick={() => toggleModal('rate')} className="text-xl sm:text-2xl text-[#727272] font-semibold pl-10 mt-6">
-                            Revenue
+                        <p onClick={() => toggleModal('rate')} className="text-xl cursor-pointer sm:text-2xl text-[#727272] font-semibold pl-10 mt-6">
+                            Revenu journalier
                         </p>
                       <span className="mr-4 mt-4">
                      <DropdownMenu dropdownItems={Month} backgroundClr={ColorsThemeA.standardBorderGray}
@@ -245,14 +277,7 @@ const Dashboard = () => {
                 </span>
                     </div>
                     <div>
-                        <ChartjsLineChart
-                            white="#ffffff"
-                            primary="#3498db"
-                            secondary="#2ecc71"
-                            labelColor="#9b9b9b"
-                            borderColor="#eaeaea"
-                            legendColor="#606060"
-                        />
+                        <RechartsLineChart direction="ltr" />
                     </div>
                 </Card>
 
@@ -260,12 +285,12 @@ const Dashboard = () => {
               <Card className="h-full flex flex-col">
                 {/* Top content for 'Visits' and dropdown */}
                 <div className="flex items-center justify-between gap-3 mb-4">
-                  <p className="text-xl sm:text-2xl text-[#727272] font-semibold pl-10 mt-6">
-                    Visits
+                  <p onClick={() => toggleModal('goals')}  className="text-xl sm:text-2xl text-[#727272] font-semibold pl-10 mt-6">
+                      Objectifs
                   </p>
                   <span className="mr-4 mt-4">
-                   <DropdownMenu dropdownItems={Month} backgroundClr={ColorsThemeA.standardBorderGray}
-                                 fctToCallOnClick={handleNewMonth} />
+                <DropdownMenu dropdownItems={Month} backgroundClr={ColorsThemeA.standardBorderGray}
+                              fctToCallOnClick={handleNewMonth} showDefaultMessage={false} />
         </span>
                 </div>
                 <p className="text-xl sm:text-2xl text-[#727272] font-semibold text-center">
@@ -275,104 +300,178 @@ const Dashboard = () => {
                 {/* Wrapper for ProgressBar components with flex-grow */}
                 <div className="flex flex-wrap items-center justify-center gap-10 flex-grow">
                   <ProgressBar
-                      value={65}
-                      name="Client"
-                      number={100}
+                      value={61}
+                      name="Nouveaux Clients"
+                      number={27}
                       rotation={0.25}
-                      color="rgb(254, 57, 95)"
+                      color="#FE2569, #FD4C55, #FF8636"
                   />
                   <ProgressBar
-                      value={50}
-                      name="Commandes"
-                      number={31}
+                      value={73}
+                      name="Ajouter un objectif"
+                      number={47}
                       rotation={0.25}
-                      color="#15BAF2"
+                      color="#0FBFF1, #4487F1"
                   />
+                    <ProgressBar
+                        value={50}
+                        name="Revenu Mensuel"
+                        number={31}
+                        rotation={0.25}
+                        color="#7ABF50, #418419"
+                    />
+                    <ProgressBar
+                        value={0}
+                        name="Revenu Mensuel"
+                        number={0}
+                        rotation={0.25}
+                        color="#15BAF2"
+                    />
                 </div>
               </Card>
-
-
             </div>
         </div>
+        <div className="flex flex-wrap -mx-3">
+            {/* Client Activity */}
+            <div className="px-3 md:w-4/12 h-[400px] overflow-auto w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-[20px] shadow-[0px_26px_31px_0px_rgba(176, 176, 176, 0.10)]">
+                <p onClick={() => toggleModal('clientActivity')} className="text-primary text-center text-2xl font-semibold cursor-pointer">Activité clients</p>
+                <div className="relative overflow-auto">
+                    <table className="w-full text-sm text-left">
+                        <thead className="text-grey text-sm font-semibold mb-9">
+                        <tr>
+                            <th scope="col" className="pr-4 py-3">
+                                User
+                            </th>
+                            <th scope="col" className="pr-4 pl-20 py-3 text-center">
+                                Date
+                            </th>
+                            <th scope="col" className="px-4 py-3 text-center">
+                                Status
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {activityClientData.map((item, index) => {
+                            let statusClass ='';
+                            switch (item.Status) {
+                                case 'En cours':
+                                    statusClass = 'text-blue-600'; // Blue color for "In progress"
+                                    break;
+                                case 'Effectuée':
+                                    statusClass = 'text-green-600'; // Green color for "Completed"
+                                    break;
+                                case 'Demande de remboursement':
+                                    statusClass = 'text-yellow-600'; // Yellow color for "Refund requested"
+                                    break;
+                                case 'Remboursé(e)':
+                                    statusClass = 'text-purple-600'; // Purple color for "Refunded"
+                                    break;
+                                default:
+                                    statusClass = 'text-gray-600'; // Default color for any other status
+                                    break;
+                            }
 
+                            return <tr key={index} className="text-black border-b-2 border-[#F4F4F6] pb-2">
+                                <th scope="row" className="pr-6 py-4 flex items-center gap-4">
+                                    <img
+                                        src="/assets/user_img.png"
+                                        alt=""
+                                        width={60}
+                                        height={60}
+                                        className="rounded-full"
+                                    />
+                                    {item.user}
+                                </th>
+                                <th className="px-4 py-4 text-center">{item.Date} </th>
+                                <th className={`px-4 py-4 text-center ${statusClass}`}>{item.Status}</th>
 
-      <div className="mt-12 flex md:flex-row flex-col items-start gap-12">
-        <div className="md:w-6/12 h-[294px] overflow-auto w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-[20px] shadow-[0px_26px_31px_0px_rgba(176, 176, 176, 0.10)]">
-          <p onClick={() => toggleModal('clientActivity')}  className="text-primary text-2xl font-semibold">Client Activity</p>
-
-          <div className="relative overflow-auto">
-            <table className="w-full text-sm text-left">
-              <thead className="text-grey text-sm font-semibold mb-9">
-                <tr>
-                  <th scope="col" className="pr-4 py-3">
-                    User
-                  </th>
-                  <th scope="col" className="pr-4 pl-20 py-3 text-center">
-                    Visites
-                  </th>
-                  <th scope="col" className="px-4 py-3 text-center">
-                    Purchases
-                  </th>
-                  <th scope="col" className="px-4 py-3 text-center">
-                    Calls
-                  </th>
-                  <th scope="col" className="px-4 py-3 text-center">
-                    Total&nbsp;Profit
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {activity.map((item, index) => {
-                  return <tr key={index} className="text-black font-semibold border-b-2 border-[#F4F4F6] pb-2">
-                    <th scope="row" className="pr-6 py-4 flex items-center gap-4">
-                      <img
-                        src="/assets/user_img.png"
-                        alt=""
-                        width={60}
-                        height={60}
-                        className="rounded-full"
-                      />
-                      {item.user}
-                    </th>
-                    <th className="pr-4 pl-20 py-4 text-center">{item.visities} </th>
-                    <th className="px-4 py-4 text-center">{item.purchases} </th>
-                    <th className="px-4 py-4 text-center">{item.calls}</th>
-                    <th className="px-4 py-4 text-center text-[#3EAF34]">
-                      {item.profit}
-                    </th>
-                  </tr>
-                })}
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div className="md:w-6/12 h-[294px] overflow-auto w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-[20px] shadow-[0px_26px_31px_0px_rgba(176, 176, 176, 0.10)]">
-          <div className="flex items-center justify-between">
-            <p className="text-primary text-2xl font-semibold">Messages</p>
-            <div className="bg-secondary w-6 h-6 text-white rounded-full flex items-center justify-center">
-              2
-            </div>
-          </div>
-          {messages.map((item, index) => {
-            return <div key={index} className="flex items-center gap-7 border-t-2 border-[#F4F4F6] pt-2 pb-3 mt-4">
-              <img
-                src="/assets/user_img.png"
-                alt=""
-                width={60}
-                height={60}
-                className="rounded-full"
-              />
-              <div className="-mb-5">
-                <div className="flex items-center gap-1.5">
-                  <p className="text-black font-semibold">{item.name} </p>
-                  <p className="text-grey text-xs">{item.time} </p>
+                            </tr>
+                        })}
+                        </tbody>
+                    </table>
                 </div>
-                <p className="text-black font-semibold">{item.text}</p>
-              </div>
             </div>
-          })}
+
+            <div className="px-3 md:w-4/12 h-[400px] overflow-auto w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-[20px] shadow-[0px_26px_31px_0px_rgba(176, 176, 176, 0.10)]">
+                <p onClick={() => toggleModal('rate')} className="text-primary cursor-pointer text-center text-2xl font-semibold">Fidélité clients</p>
+                <p className="text-xl sm:text-2xl text-[#727272] font-semibold text-center mt-6">
+                    Conversion: <span className='text-red-500'>31%</span>
+                </p>
+                {/* Wrapper for ProgressBar components */}
+                <div className="flex flex-wrap items-center justify-center gap-10">
+                    <ProgressBar
+                        value={65}
+                        name="Client"
+                        number={100}
+                        rotation={0.25}
+                        color="rgb(254, 57, 95)"
+                    />
+                    <ProgressBar
+                        value={50}
+                        name="Commandes"
+                        number={31}
+                        rotation={0.25}
+                        color="#15BAF2"
+                    />
+                </div>
+            </div>
+
+            {/* Top Client List */}
+            <div className="px-3 md:w-4/12 h-[400px] overflow-auto w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-[20px] shadow-[0px_26px_31px_0px_rgba(176, 176, 176, 0.10)]">
+                <p onClick={() => toggleModal('topClient')} className="text-primary cursor-pointer text-center text-2xl font-semibold">Top Client List</p>
+                {/* You can either copy the entire table structure from the Client Activity section or create a new one if the data differs. */}
+                <div className="relative overflow-auto">
+                    <table className="w-full text-sm text-left">
+                        <thead className="text-grey text-sm font-semibold mb-9">
+                        <tr>
+                            <th scope="col" className="pr-4 py-3 text-center">
+                                User
+                            </th>
+                            <th scope="col" className="pr-4  py-3 text-center">
+                                coiffure préférée
+                            </th>
+                            <th scope="col" className="px-4 py-3 text-center">
+                                Commandes
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {TopClientData.map((item, index) => {
+
+                            return <tr key={index} className="text-black border-b-2 border-[#F4F4F6] pb-2">
+                                <th scope="row" className="pr-6 py-4 flex items-center gap-4">
+                                    <img
+                                        src="/assets/user_img.png"
+                                        alt=""
+                                        width={60}
+                                        height={60}
+                                        className="rounded-full"
+                                    />
+                                    {item.Utilisateur}
+                                </th>
+                                <th className="px-4 py-4 text-center">{item.Date} </th>
+                                <th className="px-4 py-4 text-center">{item.Status}</th>
+
+                            </tr>
+                        })}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
-      </div>
+        <div className="flex items-center justify-between gap-3 mb-4">
+            <p onClick={() => toggleModal('staff')}  className="text-xl sm:text-2xl text-[#727272] font-semibold pl-10 mt-6 cursor-pointer">
+                Occupation du personnel
+            </p>
+            <span className="mr-4 mt-4">
+                   <DropdownMenu dropdownItems={Month} backgroundClr={ColorsThemeA.standardBorderGray}
+                                 fctToCallOnClick={handleNewMonth} showDefaultMessage={false} />
+        </span>
+        </div>
+
+        <RechartSingleBarChart direction="ltr" staffData={staffData} fill={fillColor} barSize={barSize} />
+
     </div>
 
       );

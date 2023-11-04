@@ -4,7 +4,7 @@ import React from "react";
 import RechartsLineChart from '@/views/charts/chartjs/RechartsLineChart'
 import RechartsBarChart from '@/views/charts/chartjs/RechartsBarChart'
 import RechartSingleBarChart from '@/views/charts/chartjs/RechartSingleBarChart'
-import RechartGroupBarChart from '@/views/charts/chartjs/RechartGroupBarChart'
+import RechartsPieChart from '@/views/charts/chartjs/RechartsPieChart'
 import ChartjsBarChart from "@/views/charts/chartjs/ChartjsBarChart";
 import DropdownMenu from "@/components/UI/DropDownMenu";
 import {ColorsThemeA} from "@/components/utilis/Themes";
@@ -64,6 +64,15 @@ const yourChartData = {
         // TODO: add backend to save the new preference
     }
 
+    const data = [
+        { name: 'Jason', value: 17, color: '#4184f3' }, // Blue
+        { name: 'Melinda', value: 20, color: '#ff6262' }, // Red
+        { name: 'Karim', value: 18, color: '#50be87' }, // Green
+        { name: 'Dyone', value: 23, color: '#ffce5a' }, // Yellow
+        { name: 'Deborah', value: 13, color: '#6070db' }, // Dark Blue
+        { name: 'Daniel', value: 9, color: '#db7c00' }, // Orange
+    ];
+
 const yourChartOptions = {
     responsive: true,
     maintainAspectRatio: false,
@@ -93,6 +102,54 @@ const yourChartOptions = {
     }
 }
 
+// Data for the chart, can be dynamic and coming from props or state
+    const chartData = [
+        {
+            name: 'Staff 1',
+            Service: 25,  // Approximated from image
+            Prestation: 50,  // Approximated from image
+            Total: 75,  // Approximated from image
+        },
+        {
+            name: 'Staff 2',
+            Service: 50,  // Approximated from image
+            Prestation: 75,  // Approximated from image
+            Total: 100,  // Approximated from image
+        },
+        {
+            name: 'Staff 3',
+            Service: 35,  // Approximated from image
+            Prestation: 60,  // Approximated from image
+            Total: 90,  // Approximated from image
+        },
+        {
+            name: 'Staff 4',
+            Service: 20,  // Approximated from image
+            Prestation: 80,  // Approximated from image
+            Total: 95,  // Approximated from image
+        },
+        {
+            name: 'Staff 5',
+            Service: 30,  // Approximated from image
+            Prestation: 45,  // Approximated from image
+            Total: 70,  // Approximated from image
+        },
+    ];
+
+// Fill colors for each type of bar in the chart
+    const barColors = {
+        Service: '#FFC107',
+        Prestation: '#2A5782',
+        Total: '#7ABF50',
+    };
+
+// Legend information
+    const chartLegends = [
+        { key: 'Service', color: '#FFC107', text: 'Service' },
+        { key: 'Prestation', color: '#2A5782', text: 'Prestation' },
+        { key: 'Total', color: '#7ABF50', text: 'Total' },
+    ];
+
 const yourDropdownClickHandler = (item: string) => {
     console.log(`You selected: ${item}`);
     // Here, you can add additional logic to handle the dropdown selection.
@@ -107,7 +164,7 @@ return (
                             <div className="flex-1 pl-5">
                                 {/* Left-aligned Dropdown */}
                                 <DropdownMenu dropdownItems={Month} backgroundClr={ColorsThemeA.standardBorderGray}
-                                              fctToCallOnClick={handleNewMonth} />
+                                              fctToCallOnClick={handleNewMonth} showDefaultMessage={false} />
                             </div>
                             <div className="flex-1">
                                 {/* Center-aligned Paragraph */}
