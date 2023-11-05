@@ -466,10 +466,9 @@ const Hairdressers = () => {
             <CustomInput
               id="password"
               label="Mot de passe"
-              value={hairDresser.email}
+              value={hairDresser.password}
               onChange={(e) => onChangePassword(e.target.value)}
               error={error.password}
-              isEmail={true}
               type="password"
             />
           </div>
