@@ -344,8 +344,9 @@ const Account = () => {
         setError((prev) => {
             return { ...prev, text: "" };
         });
-        showSnackbar("success", "Address Updated Successfully.");
+    showSnackbar("success", "Adresse mise à jour avec succès.");
         setIsModalAdd(false);
+        fetchUserInfo();
         // setShowItem(informations);
 
     }

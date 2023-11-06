@@ -294,7 +294,7 @@ const SalonInfos = () => {
         })
             .then((resp) => {
                 console.log(resp);
-                showSnackbar("succès", "Adresse mise à jour avec succès");
+                showSnackbar("success", "Adresse mise à jour avec succès.");
                 setIsModal(false);
             })
             .catch(err => {
