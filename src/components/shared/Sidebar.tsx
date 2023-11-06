@@ -18,6 +18,7 @@ import {
   StatsIcon,
   ReservationIcon,
   AddPlusIcon,
+  CabineIcon,
 } from "../utilis/Icons";
 import { SalonDetails } from "@/types";
 import { getLocalStorage, setLocalStorage } from "@/api/storage";
@@ -174,6 +175,10 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
           <ReservationIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="30" height="28" />
         );
         break;
+      case "CabineIcon":
+        Icon = (
+          <CabineIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="28" height="28" />
+        );
     }
     return Icon;
   };
