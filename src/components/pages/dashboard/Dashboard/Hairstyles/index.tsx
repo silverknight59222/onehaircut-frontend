@@ -961,7 +961,7 @@ const Hairstyles = () => {
                   >
                     <div className={`${Theme_A.hairstyleCards.cardgradientTop}`}>
                       <div className={`${Theme_A.hairstyleCards.cardSize.med}`}>
-                        <Image src={item.image.includes('https://api.onehaircut.com') ? item.image : `https://api.onehaircut.com/${item.image}`} fill={true} alt="" />
+                        <Image src={item.image.includes('http') ? item.image : `https://api.onehaircut.com/${item.image}`} fill={true} alt="" />
                       </div>
                       <div className={`${Theme_A.hairstyleCards.checkbubbleOFF}`}>
                         {selectedHaircutsMapping.filter(
@@ -990,7 +990,7 @@ const Hairstyles = () => {
                 >
                   <div className={`${Theme_A.hairstyleCards.selectedCardGradientTop}`}>
                     <div className={`${Theme_A.hairstyleCards.cardSize.med}`}>
-                      <Image src={item.image.includes('https://api.onehaircut.com') ? item.image : `https://api.onehaircut.com/${item.image}`} fill={true} alt="" />
+                      <Image src={item.image.includes('http') ? item.image : `https://api.onehaircut.com/${item.image}`} fill={true} alt="" />
                     </div>
                     <div className={`${Theme_A.hairstyleCards.checkbubbleOFF}`}>
                       {selectedSalonHaircut?.id === item.id && <SelectedIcon />}

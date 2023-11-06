@@ -417,14 +417,14 @@ const SalonChoice = () => {
                                         {/* Évaluation et nombre d'avis */}
                                         <div className='flex items-center text-xs text-[#7B7B7B] px-3 pt-1'>
                                             <StarRatings
-                                                rating={salon.rating}
+                                                rating={salon.haircut ? salon.haircut.rating : salon.rating}
                                                 starRatedColor="#FEDF10"
                                                 starSpacing="4px"
                                                 starDimension="12px"
                                                 numberOfStars={5}
                                                 name="rating"
                                             />
-                                            <p>{salon.ratings_count} d'avis</p>
+                                            <p>{salon.haircut ? salon.haircut.ratings_count : salon.ratings_count} d'avis</p>
                                         </div>
                                     </div>
                                 </div>
