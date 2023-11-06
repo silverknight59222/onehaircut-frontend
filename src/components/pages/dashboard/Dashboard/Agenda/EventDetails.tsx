@@ -3,11 +3,13 @@ import { CrossIcon } from "@/components/utilis/Icons";
 import { ColorsThemeA } from "@/components/utilis/Themes";
 import { ChatSendIcon } from "@/components/utilis/Icons";
 import './index.css';
+import { Theme_A } from "@/components/utilis/Themes";
 import Image from "next/image";
 import { Booking, Coiffeur } from "./types";
 import { getLocalStorage } from "@/api/storage";
 import { dashboard } from "@/api/dashboard";
 import { Chat } from "@/types";
+import BaseModal from '@/components/UI/BaseModal';
 
 // Ajout de toutes les propriétes qu'on veut reprendre dans le modal
 interface EventDetailsModalProps {
@@ -29,6 +31,8 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
   const user = getLocalStorage("user");
   const userData = user ? JSON.parse(user) : null
   const [chats, setChats] = useState<Chat[]>([])
+  const [isModal, setIsModal] = useState(false)
+  const [hairDresser, setHairDresser] = useState(null);
   // Reprise du nom du client et du coiffeur
   const [nomClient, nomCoiffeur] = props.event.title.split(" - ");
 
@@ -71,11 +75,50 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
     }
   }
 
+  const selectHairDresser = (hairDresser) => {
+  };
+
   useEffect(() => {
     getChat()
   }, [])
   return (
     <div className="relative bg-white rounded-xl px-5 pb-5 shadow-lg mt-10 bg- modal">
+
+      {isModal &&
+        <BaseModal close={() => setIsModal(false)}>
+          <div className="h-[940px] w-full xl:w-2/5 overflow-auto flex flex-col items-center justify-start gap-8 bg-lightGrey rounded-3xl p-4 md:p-12">
+            <div className={`${Theme_A.textFont.headerH2} underline`}>
+              Coiffeur(s)/-euse(s) disponible(s)
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full md:w-96">
+              {hairDressers.map((item, index) => {
+                return (
+                  <div key={index} className="w-full flex justify-center">
+                    <div
+                      onClick={() => selectHairDresser(item)}
+                      className={`px-4 pt-4 shadow-lg flex flex-col justify-between cursor-pointer border-2 transition rounded-xl hover:border-secondary ${item.id === hairDresser.id && "border-secondary"
+                        }`}
+                    >
+                      <div className="relative w-32 h-32">
+                        <Image
+                          fill={true}
+                          src={
+                            item.profile_image ? (item.profile_image.includes('https://api-server.onehaircut.com/public') ? item.profile_image : `https://api-server.onehaircut.com/public${item.profile_image}`) : `https://api-server.onehaircut.com/public${item.avatar.image}`
+                          }
+                          alt="image"
+                        />
+                      </div>
+                      <div>
+                        <p className="font-medium text-center">{item.name}</p>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </BaseModal>
+      }
       {/* Icône de fermeture */}
       <div
         className={`absolute -right-3 -top-7 cursor-pointer my-3 rounded-lg ${ColorsThemeA.ohcVerticalGradient_A} shadow-md flex items-center justify-center hover:scale-90 transition duration-300`}
@@ -109,7 +152,7 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
             alt="profile"
           />}
           {props.event.booking.haircut &&
-            <img  src={`https://api-server.onehaircut.com/public${props.event.booking.haircut.image}`} alt='' fill={true}  />
+            <img src={`https://api-server.onehaircut.com/public${props.event.booking.haircut.image}`} alt='' fill={true} />
           }
         </div>
 
