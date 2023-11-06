@@ -355,7 +355,7 @@ const Account = () => {
     const modifAddress: React.JSX.Element =
         <div>
             <BaseModal close={() => setIsModalAdd(false)} width="w-[600px]">
-
+                <div>
                 <p className="text-xl font-semibold text-black text-center mb-4">Modification de l'adresse</p>
 
                 <div className="flex flex-col items-start justify-start gap-4">
@@ -366,18 +366,16 @@ const Account = () => {
                             apiKey='AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E'
                             onPlaceSelected={(place) => {
                                 setAddressData(place)
-                            }}
-                            value={street}
+                            }}                            
                             options={{
                                 types: ["geocode"],
                                 fields: [
                                     'address_components',
                                     'geometry.location'
                                 ]
-                            }}
-                            onChange={handleChange}
+                            }}                            
                             placeholder="Address"
-                            defaultValue=""
+                            defaultValue={street}
                         />
                         <div className="flex">
                             <div className="flex-grow w-1/4 pr-2">
@@ -431,6 +429,7 @@ const Account = () => {
                             Actualiser
                         </button>
                     </div>
+                </div>
                 </div>
             </BaseModal>
 
