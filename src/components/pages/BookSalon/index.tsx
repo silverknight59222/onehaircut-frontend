@@ -11,6 +11,9 @@ import React, { useState, useEffect } from "react";
 import userLoader from "@/hooks/useLoader";
 import { Hairdresser, Slot } from "@/types";
 import { getLocalStorage, setLocalStorage } from "@/api/storage";
+import { BackArrow } from "@/components/utilis/Icons";
+import { Theme_A } from "@/components/utilis/Themes";
+
 
 const BookSalon = () => {
   const [selectedImage, setSelectedImage] = useState("");
@@ -143,133 +146,141 @@ const BookSalon = () => {
     <div>
       {isLoading && loadingView()}
       <Navbar hideSearchBar={true} />
-      <div className="flex flex-col items-center justify-center mt-16 mb-5 px-6 md:px-10 2xl:px-14">
-        <div className="flex flex-col md:flex-row items-center justify-center gap-16">
-          <div className="w-[320px] lg:w-[500px] 2xl:w-[600px] h-64 lg:h-[500px] relative rounded-4xl p-2 mb-3">
 
-            {/* Image principale */}
-            {salon && <div className="w-full h-full relative rounded-4xl">
+      {/* RETOUR AU PROFIL */}
+      <div className='flex items-start cursor-pointer mt-8 mb-8 sm:mx-10 2xl:mx-14' onClick={() => route.push('/salon/profile')}>
+        <BackArrow />
+        <p className={`${Theme_A.textFont.navigationGreyFont}`}>Retour au profil de {salon.name}</p>
+      </div>
+
+      {/* CADRE SUPERIEUR */}
+      <div className="flex flex-row items-start justify-start gap-8">
+        {/* IMAGE PRINCIPALE */}
+        <div className="w-[320px] lg:w-[500px] 2xl:w-[600px] h-64 lg:h-[500px] relative rounded-4xl p-2 mb-3">
+          {salon && (
+            <div className="w-full h-full relative rounded-4xl">
               <Image
-                src={selectedImage.includes('http') ? selectedImage : `https://api.onehaircut.com${selectedImage}`}
+                src={
+                  selectedImage.includes('http')
+                    ? selectedImage
+                    : `https://api.onehaircut.com${selectedImage}`
+                }
                 alt="Image principale du salon"
                 layout="fill"
                 objectFit="fill"
                 className="rounded-lg"
               />
-            </div>}
-          </div>
-          <div>
-            {salon && <p className="w-80 lg:w-[400px] xl:w-[500px] text-3xl font-bold text-black border-b-2 border-[#696969] pb-3">
-              {salon.name}
-            </p>}
-            {salon && <div className="flex flex-col gap-3 text-xl font-medium text-black mt-6">
-              <div className="flex flex-col gap-3 text-xl font-medium text-black mt-6">
-                {haircutData && <div
-                  className="flex items-center gap-2 text-black text-xl"
-                >
-                  <p className="font-semibold">Type de coiffure: </p>
-                  <p>{haircutData.name}</p>
-                </div>}
-                <div
-                  className="flex items-center gap-2 text-black text-xl"
-                >
-                </div>
-                <div
-                  className="flex items-center gap-2 text-black text-xl"
-                >
-                  <p className="font-semibold">Durée: </p>
-                  <p>{salon.total_duration} mins</p>
-                </div>
-                <div
-                  className="flex items-center gap-2 text-black text-xl"
-                >
-                  <p className="font-semibold">Lieu: </p>
-                  <p>à domicile</p>
-                </div>
-              </div>
-            </div>}
-            <button className="w-80 h-16 text-xl text-white font-semibold mt-4 bg-background-gradient rounded-2xl">
-              Revenir au choix de coiffure
-            </button>
-          </div>
+            </div>
+          )}
         </div>
-        <div className="flex flex-col items-center justify-center mt-20">
-          <p className="text-4xl text-black font-semibold text-center">
-            Choisissez de votre coiffeur
-          </p>
-          <p className="text-4xl text-black font-semibold text-center">
-            (optionnel)
-          </p>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-4 2xl:gap-12 mt-10">
-            {hairDressers.map((hairdresser, index) => {
-              return (
-                <div
-                  key={index}
-                  onClick={() => setSelectedHairdresser({ name: hairdresser.name, id: hairdresser.id })}
-                  className={`flex items-center justify-center w-[311px] h-[376px] border rounded-2xl cursor-pointer hover:border-secondary ${selectedHairdresser.id === hairdresser.id
-                      ? "border-secondary"
-                      : "border-white"
-                    }`}
-                >
-                  <div className="relative">
-                    <div className="relative w-[263px] h-[334px] rounded-2xl">
 
-                      <Image
-                        src={hairdresser.profile_image ? (hairdresser.profile_image.includes('http') ? hairdresser.profile_image : 'https://api.onehaircut.com/' + hairdresser.profile_image) : `https://api.onehaircut.com/avatars/man/man_01.jpg`}
-                        alt=""
-                        layout="fill"
-                      />
-                    </div>
+        {/* INFORMATIONS DU SALON */}
+        <div>
+          {salon && (
+            <p className="w-80 lg:w-[400px] xl:w-[500px] text-3xl font-bold text-black border-b-2 border-[#696969] pb-3">
+              {salon.name}
+            </p>
+          )}
+          {salon && (
+            <div className="flex flex-col gap-3 text-xl font-medium text-black mt-6">
+              {haircutData && (
+                <div className="flex items-center gap-2 text-black text-xl">
+                  <p className="font-semibold">Choix de la coiffure: </p>
+                  <p>{haircutData.name}</p>
+                </div>
+              )}
+              <div className="flex items-center gap-2 text-black text-xl">
+                <p className="font-semibold">Durée: </p>
+                <p>{salon.total_duration} minutes</p>
+              </div>
+              <div className="flex items-center gap-2 text-black text-xl">
+                <p className="font-semibold">Lieu: </p>
+                <p>{salon.Adresse}</p>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+
+
+
+
+      {/* PARTIE STAFF DU SALON */}
+      <div className="flex flex-col items-center justify-center mt-20">
+        <p className="text-4xl text-black font-semibold text-center">
+          Choisissez de votre coiffeur
+        </p>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 sm:gap-4 2xl:gap-12 mt-10">
+          {hairDressers.map((hairdresser, index) => {
+            return (
+              <div
+                key={index}
+                onClick={() => setSelectedHairdresser({ name: hairdresser.name, id: hairdresser.id })}
+                className={`flex items-center justify-center w-[311px] h-[376px] border rounded-2xl cursor-pointer hover:border-secondary ${selectedHairdresser.id === hairdresser.id
+                  ? "border-secondary"
+                  : "border-white"
+                  }`}
+              >
+                <div className="relative">
+                  <div className="relative w-[263px] h-[334px] rounded-2xl">
+
+                    <Image
+                      src={hairdresser.profile_image ? (hairdresser.profile_image.includes('http') ? hairdresser.profile_image : 'https://api.onehaircut.com/' + hairdresser.profile_image) : `https://api.onehaircut.com/avatars/man/man_01.jpg`}
+                      alt=""
+                      layout="fill"
+                    />
                   </div>
                 </div>
-              );
-            })}
-          </div>
+              </div>
+            );
+          })}
         </div>
-        <div className="w-full md:w-[750px] lg:w-[940px] border-2 border-[#D0D0D0] py-10 rounded-[22px] mt-20">
-          <div className="flex flex-col sm:flex-row items-center justify-between px-4 sm:px-10">
-            <div className="relative">
-              <div className="cursor-pointer" onClick={() => setShowCalender(!showCalender)}>
-                <CalenderIcon />
-              </div>
-              {showCalender &&
-                <DatePicker startDate={new Date()} close={() => setShowCalender(false)} onSelectedDate={onSelectedDate} />
-              }
-            </div>
-            <p className='text-[#A0A0A0] text-lg font-medium bg-[#F7F7F7] rounded-lg px-6 py-3'>{selectedDate && DateFormat(selectedDate)}</p>
-          </div>
-          <div className="flex items-center justify-center mt-12 mb-4">
-            {slots.length ?
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-10 gap-y-7">
-                {slots.map((slot: any, index) => {
-                  return (
-                    <div
-                      key={index}
-                      onClick={() => { slot.is_booked ? "" : onSelectSlot(slot) }}
-                      className={`w-32 h-14 flex items-center justify-center text-xl font-semibold border rounded-2xl  ${slot.is_booked ? "curson-not-allowed" : "cursor-pointer"}  text-black ${selectedSlot.some((item: any) => item.id === slot.id)
-                          ? "bg-[#fbd3c6] text-[#473c38]"
-                          : "border-[#b8b8b8]"
-                        } ${slot.is_booked && "bg-[#4d4a4a]"}`}
-                    >
-                      {slot.start}
-                    </div>
-                  );
-                })}
+      </div>
 
-              </div>
-              :
-              <p className="text-[#A0A0A0] text-xl font-medium">No slots for today</p>
+      {/*PARTIE RESERVATION DE SLOT*/}
+      <div className="w-full md:w-[750px] lg:w-[940px] border-2 border-[#D0D0D0] py-10 rounded-[22px] mt-20">
+        <div className="flex flex-col sm:flex-row items-center justify-between px-4 sm:px-10">
+          <div className="relative">
+            <div className="cursor-pointer" onClick={() => setShowCalender(!showCalender)}>
+              <CalenderIcon />
+            </div>
+            {showCalender &&
+              <DatePicker startDate={new Date()} close={() => setShowCalender(false)} onSelectedDate={onSelectedDate} />
             }
           </div>
+          <p className='text-[#A0A0A0] text-lg font-medium bg-[#F7F7F7] rounded-lg px-6 py-3'>{selectedDate && DateFormat(selectedDate)}</p>
         </div>
-        {/* <div className="w-full lg:w-[940px] h-64 flex flex-col items-center justify-center border border-[#DFDFDF] bg-[#F8F8F8] text-xl sm:text-2xl rounded-[22px] mt-10 lg:mt-14 text-black text-center px-2 shadow-[0px_1px_46px_0px_rgba(121,121,121,0.06) inset]">
-          <p className="font-bold mb-2">Récapitulatif de la prestation</p>
-            <p className="font-medium">Vous avez choisi: <span className="font-normal">Lundi 15 à 17h, à domicile</span></p>
-            <p className="font-medium my-2">par: <span className="font-normal">Nom du coiffeur</span></p>
-            <p className="font-medium">Temps d’éxécution : <span className="font-normal">2 heures</span></p>
-        </div> */}
-        <button disabled={selectedSlot.length > 0 ? false : true} onClick={onContinue} className={`w-72 h-14 rounded-xl text-xl font-semibold text-white mt-10 ${selectedSlot.length > 0 ? 'bg-background-gradient' : 'bg-[#D9D9D9]'}`}>Réservez ce créneau</button>
+
+        <div className="flex items-center justify-center mt-12 mb-4">
+          {slots.length ?
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-x-10 gap-y-7">
+              {slots.map((slot: any, index) => {
+                return (
+                  <div
+                    key={index}
+                    onClick={() => { slot.is_booked ? "" : onSelectSlot(slot) }}
+                    className={`w-32 h-14 flex items-center justify-center text-xl font-semibold border rounded-2xl  ${slot.is_booked ? "curson-not-allowed" : "cursor-pointer"}  text-black ${selectedSlot.some((item: any) => item.id === slot.id)
+                      ? "bg-[#fbd3c6] text-[#473c38]"
+                      : "border-[#b8b8b8]"
+                      } ${slot.is_booked && "bg-[#4d4a4a]"}`}
+                  >
+                    {slot.start}
+                  </div>
+                );
+              })}
+
+            </div>
+            :
+            <p className="text-[#A0A0A0] text-xl font-medium">No slots for today</p>
+          }
+        </div>
       </div>
+      <button disabled={selectedSlot.length > 0 ? false : true} onClick={onContinue} className={`w-72 h-14 rounded-xl text-xl font-semibold text-white mt-10 ${selectedSlot.length > 0 ? 'bg-background-gradient' : 'bg-[#D9D9D9]'}`}>Réservez ce créneau</button>
+
+
+
     </div>
   );
 };
