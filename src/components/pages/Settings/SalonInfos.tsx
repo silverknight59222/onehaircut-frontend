@@ -302,6 +302,7 @@ const SalonInfos = () => {
             })
             .finally(() => {
                 setIsLoading(false);
+                fetchAdress();
             })
     };
 
@@ -494,8 +495,8 @@ const SalonInfos = () => {
                                 <button
                                     type="button"
                                     onClick={
-
                                         SaveAddress
+                                        
                                     } // TODO SAVE ADDRESS
                                     className={`${Theme_A.button.medBlackColoredButton} ease-in-out transition duration-300`}
                                 >
