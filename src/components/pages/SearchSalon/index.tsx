@@ -60,15 +60,15 @@ const SearchSalon = () => {
 
   //TODO Import salon availability times
   const [hours, setHours] = useState([] as any[])
-  const hoursList = [
-    { title: "Lundi", hours: "Fermé" },
-    { title: "Mardi", hours: "10:00 - 19:00" },
-    { title: "Mercredi", hours: "10:00 - 19:00" },
-    { title: "Jeudi", hours: "10:00 - 19:00" },
-    { title: "Vendredi", hours: "10:00 - 19:00" },
-    { title: "Samedi", hours: "10:00 - 19:00" },
-    { title: "Dimanche", hours: "10:00 - 19:00" },
-  ];
+  const hoursList = {
+    MONDAY : { title: "Lundi"},
+    TUESDAY: { title: "Mardi"},
+    WEDNESDAY: { title: "Mercredi"},
+    THURSDAY: { title: "Jeudi"},
+    FRIDAY: { title: "Vendredi"},
+    SATURDAY: { title: "Samedi"},
+    SUNDAY: { title: "Dimanche"},
+  };
 
   useEffect(() => {
     let salon = getLocalStorage('selectedSalon')
@@ -86,9 +86,11 @@ const SearchSalon = () => {
 
     const tempHours = [] as any[]
     salonProfile?.openTimes.forEach((time, index) => {
-      const t = hoursList[index]
-      t.hours = time.start + " - " + time.end
-      tempHours.push(t)
+      if (time.available) {
+        const t = hoursList[time.day]
+        t.hours = time.start + " - " + time.end
+        tempHours.push(t)
+      }
     })
     setHours(tempHours)
   }, [salonProfile])
@@ -205,7 +207,7 @@ const SearchSalon = () => {
                 {/* Image principale */}
                 {salonProfile &&  <div className="w-full h-full relative rounded-4xl">
                   <Image
-                    src={selectedImage.includes('https://api.onehaircut.com') ? selectedImage : `https://api.onehaircut.com${selectedImage}`}
+                    src={selectedImage.includes('http') ? selectedImage : `https://api.onehaircut.com${selectedImage}`}
                     alt="Image principale du salon"
                     layout="fill"
                     objectFit="fill"
@@ -226,7 +228,7 @@ const SearchSalon = () => {
                   >
                     {/* TODO charger les images vitrines ici */}
                     { salonProfile && <Image
-                      src={salonProfile.salon_images[0]?.image.includes('https://api.onehaircut.com') ? salonProfile.salon_images[0]?.image : `https://api.onehaircut.com${salonProfile.salon_images[0]?.image}`}
+                      src={salonProfile.salon_images[0]?.image.includes('http') ? salonProfile.salon_images[0]?.image : `https://api.onehaircut.com${salonProfile.salon_images[0]?.image}`}
                       alt="Image miniature gauche"
                       layout="fill"
                       objectFit="cover"
@@ -242,20 +244,20 @@ const SearchSalon = () => {
                 <div className="flex flex-col items-center">
                   {/* Miniature droite */}
                   <div
-                    onClick={openPerfSampleModal}
+                    onClick={openSalonPicModal}
                     className="relative w-24 lg:w-32 2xl:w-36 h-24 lg:h-32 2xl:h-36 cursor-pointer overflow-hidden rounded-lg transform transition-all duration-300 group hover:scale-105"
                   >
-                    {/* TODO charger les images coiffures ici */}
-                    {salonProfile && <Image
-                      src={salonProfile.salon_images[1]?.image.includes('https://api.onehaircut.com') ? salonProfile.salon_images[1]?.image : `https://api.onehaircut.com${salonProfile.salon_images[1]?.image}`}
-                      alt="Image miniature droite"
+                    {/* TODO charger les images vitrines ici */}
+                    { salonProfile && <Image
+                      src={salonProfile.salon_images[1]?.image.includes('http') ? salonProfile.salon_images[1]?.image : `https://api.onehaircut.com${salonProfile.salon_images[1]?.image}`}
+                      alt="Image miniature gauche"
                       layout="fill"
                       objectFit="cover"
                     />}
                     <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-50 transition-opacity duration-300" />
                   </div>
                   {/* Titre pour la miniature droite */}
-                  <p className="text-sm whitespace-nowrap mt-1"><strong>Exemples de réalisation</strong></p>
+                  <p className="text-sm whitespace-nowrap mt-1"><strong>Images du salon</strong></p>
                 </div>
               </div>
             </div>
@@ -277,7 +279,7 @@ const SearchSalon = () => {
                   name="rating"
                 />
                 {/* TODO use salon's rating of the selected haircut {salonProfile.rating}*/}
-                <p className="-mb-2"> {salonProfile.rating}</p> <br /> <small><small>  ({salonProfile.ratings_count} avis</small></small> <p className="font-normal"><small><small><small>* sur cette coiffure</small></small></small> <br /></p> <small><small> ) </small></small>
+                <p className="-mb-2"> {Math.round(salonProfile.rating)}</p> <br /> <small><small>  ({salonProfile.ratings_count || 0} avis</small></small> <p className="font-normal"><small><small><small>* sur cette coiffure</small></small></small> <br /></p> <small><small> ) </small></small>
               </div>}
               {/* Description du salon */}
               <div className="mt-5 p-4 bg-gray-100 w-full lg:w-[400px] 2xl:w-[720px] rounded-xl ">
@@ -419,7 +421,7 @@ const SearchSalon = () => {
                     {/* Image du coiffeur */}
                     <div className="relative w-40 lg:w-52 h-40 lg:h-52 rounded-[20px] ">
                       <Image
-                        src={hairdresser.profile_image ? (hairdresser.profile_image.includes('https://api.onehaircut.com') ? hairdresser.profile_image : 'https://api.onehaircut.com/'+hairdresser.profile_image) : `https://api.onehaircut.com/avatars/man/man_01.jpg`}
+                        src={hairdresser.profile_image ? (hairdresser.profile_image.includes('http') ? hairdresser.profile_image : 'https://api.onehaircut.com/'+hairdresser.profile_image) : `https://api.onehaircut.com/avatars/man/man_01.jpg`}
                         alt=""
                         layout="fill"
                         className="rounded-[20px]"

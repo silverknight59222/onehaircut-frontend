@@ -51,7 +51,7 @@ const SalonPicModal: FC<SalonPicModalProps> = ({
                             Elle est centrée et redimensionnée pour s'adapter au conteneur tout en conservant son aspect.
                             */}
                             <img
-                                src={images[mainImageIndex]?.image.includes('https://api.onehaircut.com')
+                                src={images[mainImageIndex]?.image.includes('http')
                                     ? images[mainImageIndex]?.image
                                     : `https://api.onehaircut.com${images[mainImageIndex]?.image}`}
                                 alt="Image principale du salon"
@@ -93,7 +93,7 @@ const SalonPicModal: FC<SalonPicModalProps> = ({
                                 {images.map((img, idx) => (
                                     <img
                                         key={idx}
-                                        src={img.image.includes('https://api.onehaircut.com')
+                                        src={img.image.includes('http')
                                             ? img.image
                                             : `https://api.onehaircut.com${img.image}`}
                                         alt={`Thumbnail ${idx}`}

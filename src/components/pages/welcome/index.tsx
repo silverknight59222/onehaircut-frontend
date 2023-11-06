@@ -333,7 +333,7 @@ const Welcome = () => {
             return <div key={index} onClick={() => onClickHaircut(item.id, item.name, item.image)} className={`shadow-md rounded-xl my-2 cursor-pointer border hover:outline outline-1 outline-stone-400 ${item.id === haircut?.id}`}>
               <div className="relative w-max px-4 pt-4 bg-gradient-to-r from-white via-stone-50 to-zinc-200 rounded-t-xl ">
                 <div className={`${Theme_A.hairstyleCards.cardSize.med}`}>
-                  <Image src={item.image.includes('https://api.onehaircut.com') ? item.image : `https://api.onehaircut.com${item.image}`} fill={true} alt="" className="rounded-t-xl" />
+                  <Image src={item.image.includes('http') ? item.image : `https://api.onehaircut.com${item.image}`} fill={true} alt="" className="rounded-t-xl" />
                   {!isLoggedIn &&
                     <div onClick={(e) => onWishlist(e, item.id)} className="absolute right-2 top-2 cursor-pointer">
                       <StarIcon
@@ -384,7 +384,7 @@ const Welcome = () => {
                   </div>
                 ) : (
                   <Image
-                    src={selectedHaircut.image.includes('https://api.onehaircut.com') ? selectedHaircut.image : `https://api.onehaircut.com${selectedHaircut.image}`}
+                    src={selectedHaircut.image.includes('http') ? selectedHaircut.image : `https://api.onehaircut.com${selectedHaircut.image}`}
                     fill={true}
                     alt=""
                     className="rounded-xl w-full h-full object-cover"

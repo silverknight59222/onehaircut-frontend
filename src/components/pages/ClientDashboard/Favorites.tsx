@@ -137,7 +137,7 @@ const Favorites = () => {
                                                     className={`${Theme_A.hairstyleCards.cardgradientTop} rounded-xl`}>
                                                     <div className="relative w-max  bg-[#F5F5F5] ">
                                                         <div className="relative w-32 h-32">
-                                                            <Image src={item.haircut.image.includes('https://api.onehaircut.com') ? item.haircut.image : `https://api.onehaircut.com${item.haircut.image}`} fill={true} alt="" className="rounded-t-xl" />
+                                                            <Image src={item.haircut.image.includes('http') ? item.haircut.image : `https://api.onehaircut.com${item.haircut.image}`} fill={true} alt="" className="rounded-t-xl" />
                                                         </div>
                                                     </div>
                                                     <div className="rounded-xl ">
@@ -178,7 +178,7 @@ const Favorites = () => {
                                                     className={`relative w-52 px-4 pt-4 rounded-xl ${ColorsThemeA.pageBgColorLight}`}>
                                                     <div className="relative w-max px-4 pt-4  rounded-xl">
                                                         <div className="relative w-36 h-36">
-                                                            <Image src={item.hairsalon.logo.includes('https://api.onehaircut.com') ? item.hairsalon.logo : `https://api.onehaircut.com${item.hairsalon.logo}`} fill={true} alt="" className="rounded-t-xl" />
+                                                            <Image src={item.hairsalon.logo.includes('http') ? item.hairsalon.logo : `https://api.onehaircut.com${item.hairsalon.logo}`} fill={true} alt="" className="rounded-t-xl" />
                                                         </div>
                                                     </div>
                                                     <div className="rounded-b-xl">
