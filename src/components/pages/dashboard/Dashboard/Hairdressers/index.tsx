@@ -337,7 +337,7 @@ const Hairdressers = () => {
     if (id === avatarIndex) {
       return (
         <div className="relative shadow-[0px_6px_11px_0px_rgba(176,176,176,0.25)] rounded-xl bg-white w-32 h-32">
-          <Image src={image.includes('api-server') ? image : `https://api-server.onehaircut.com/public${image}`} alt="avatar" fill={true} className="rounded-xl" />
+          <Image src={image.includes('api-server') ? image : `https://api.onehaircut.com${image}`} alt="avatar" fill={true} className="rounded-xl" />
         </div>
       );
     }
@@ -466,10 +466,9 @@ const Hairdressers = () => {
             <CustomInput
               id="password"
               label="Mot de passe"
-              value={hairDresser.email}
+              value={hairDresser.password}
               onChange={(e) => onChangePassword(e.target.value)}
               error={error.password}
-              isEmail={true}
               type="password"
             />
           </div>
@@ -620,7 +619,7 @@ const Hairdressers = () => {
                       <Image
                         fill={true}
                         src={
-                          item.profile_image ? (item.profile_image.includes('https://api-server.onehaircut.com/public') ? item.profile_image : `https://api-server.onehaircut.com/public${item.profile_image}`) : `https://api-server.onehaircut.com/public${item.avatar.image}`
+                          item.profile_image ? (item.profile_image.includes('https://api.onehaircut.com') ? item.profile_image : `https://api.onehaircut.com${item.profile_image}`) : `https://api.onehaircut.com${item.avatar.image}`
                         }
                         alt="image"
                       />

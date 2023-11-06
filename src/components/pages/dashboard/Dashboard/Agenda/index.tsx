@@ -16,6 +16,7 @@ export const Agenda = () => {
   const { loadingView } = userLoader();
   const [isLoading, setIsLoading] = useState(false);
   const [events, setEvents] = useState<Booking[]>([]);
+  const [hairDressers, setHairDressers] = useState([]);
   const [selectedEventDetails, setSelectedEventDetails] = useState<Booking>();
   const calendarRef = useRef<FullCalendar | null>(null);
 
@@ -33,16 +34,7 @@ export const Agenda = () => {
     { couleur: "#DCE7E5", textColor: "#5B8A8F" }  // Vert-gris doux
   ];
 
-
-
-  // TODO importer la liste de coiffeur  avec leur image et attribuer une couleur dynamiquement
-  const coiffeurs = [
-    { nom: "Jean Dupont", image: "https://i.pravatar.cc/150?img=1", ...couleurs[0] },
-    { nom: "Marie Durand", image: "https://i.pravatar.cc/150?img=2", ...couleurs[1] },
-    { nom: "Pierre Martin", image: "https://i.pravatar.cc/150?img=3", ...couleurs[2] },
-    { nom: "Sophie Lemoine", image: "https://i.pravatar.cc/150?img=4", ...couleurs[3] },
-    { nom: "Lucas Bernard", image: "https://i.pravatar.cc/150?img=5", ...couleurs[4] },
-  ];
+  const hairDresserColor = {}
 
   interface LegendProps {
     listeCoiffeurs: Coiffeur[];
@@ -51,18 +43,18 @@ export const Agenda = () => {
   const Legend: React.FC<LegendProps> = ({ listeCoiffeurs }) => {
     return (
       <div className="legend-container">
-        {listeCoiffeurs.map((item, index) => (
+        {listeCoiffeurs.map((hairDresser, index) => (
           <div key={index} className="item-legend"> {/* Utilisation de l'index comme clé */}
             <span
               className="color-box"
               style={{
-                backgroundColor: item.couleur,
-                color: item.textColor
+                backgroundColor: hairDresser.coiffeurAleatoire.couleur,
+                color: hairDresser.coiffeurAleatoire.textColor
               }}
             >
               ■
             </span>
-            {item.nom}
+            {hairDresser.name}
           </div>
         ))}
       </div>
@@ -78,37 +70,22 @@ export const Agenda = () => {
       .getBookingsByHairsalon(id)
       .then((res) => {
         res.data.data.forEach((event: any) => {
-          const coiffeurAleatoire = coiffeurs[Math.floor(Math.random() * coiffeurs.length)];
-
-          const targetDayOfWeek = event.booking_slots[0].day; 
-
-            const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-            const number= daysOfWeek.indexOf(targetDayOfWeek);
-            const today = new Date();
-            const currentDayOfWeek = today.getDay();
-            let difference = number - currentDayOfWeek;
-            if (difference < 0) {
-              difference += 7;
-            }
-            const targetDate = new Date(today);
-            targetDate.setDate(today.getDate() + difference);
-
-            const formattedDate = targetDate.toISOString().split('T')[0];
-       
           setEvents((pre) => [
             ...pre,
             {
               id: event.id,
-              title: event.user.name + " - " + coiffeurAleatoire.nom + " " +  "Duration " + event.total_duration + " Min",
+              title: event.user.name + " - " + event.hair_dresser.name + " " +  "Duration " + event.total_duration + " Min",
+              hair_dresser_name: event.hair_dresser.name,
               total_duration: event.total_duration,
+              booking: event,
               clientId: event.user.id,
-              start: `${formattedDate}T${event.booking_slots[0].start}:00`,
-              end:`${formattedDate}T${event.booking_slots[event.booking_slots.length-1].end}:00`,
+              start: `${event.month_date}T${event.booking_slots[0].start}:00`,
+              end:`${event.month_date}T${event.booking_slots[event.booking_slots.length-1].end}:00`,
               // start: `2023-10-16T10:00.000000Z`,
               // end:`2023-10-16T11:30.000000Z`,
-              coiffeur: coiffeurAleatoire,
-              backgroundColor: coiffeurAleatoire.couleur,
-              textColor: coiffeurAleatoire.textColor,
+              coiffeur: hairDresserColor[event.hair_dresser_id],
+              backgroundColor: hairDresserColor[event.hair_dresser_id].couleur,
+              textColor: hairDresserColor[event.hair_dresser_id].textColor,
             },
           ]);
         });
@@ -118,8 +95,24 @@ export const Agenda = () => {
       });
   };
 
-  console.log(events,"shfakdjhf")
-
+  const getHairDresser = () => {
+    const id = Number(getLocalStorage("salon_id"));
+    setIsLoading(true);
+    dashboard
+      .getAllHairDressers(id)
+      .then((res) => {
+        res.data.data.forEach((hairDresser: any) => {
+          const coiffeurAleatoire = couleurs[Math.floor(Math.random() * couleurs.length)];
+          hairDresser.coiffeurAleatoire = coiffeurAleatoire
+          hairDresserColor[hairDresser.id] = coiffeurAleatoire
+        });
+        setHairDressers(res.data.data)
+        getAllBookings();
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
+  };
 
   // Fonction pour définir les détails de l'événement sélectionné
   const setEventDetails = (id: string) => {
@@ -130,7 +123,7 @@ export const Agenda = () => {
 
   // Utilisation du hook useEffect pour charger toutes les réservations au montage du composant
   useEffect(() => {
-    getAllBookings();
+    getHairDresser();
   }, []);
 
 
@@ -159,7 +152,7 @@ export const Agenda = () => {
         editable
         selectable
       />
-      <Legend listeCoiffeurs={coiffeurs} />
+      <Legend listeCoiffeurs={hairDressers} />
       {selectedEventDetails && (
         <div className="fixed top-0 left-0 overflow-hidden bg-black bg-opacity-10 flex items-center justify-center w-full h-full z-50">
           <EventDetailsModal
@@ -167,7 +160,6 @@ export const Agenda = () => {
             setModal={setSelectedEventDetails}
             coiffeurNom={selectedEventDetails.coiffeur.nom}
             coiffeurCouleur={selectedEventDetails.coiffeur.couleur}
-            coiffeurs={coiffeurs}
           />
         </div>
 

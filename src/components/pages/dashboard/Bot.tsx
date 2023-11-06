@@ -7,10 +7,14 @@ import Footer from "@/components/UI/Footer";
 import { useRouter } from "next/navigation";
 import Switch from "@material-ui/core/Switch";
 import BaseModal from '@/components/UI/BaseModal';
+import { TailSpin } from 'react-loader-spinner'
 
 const Bot = () => {
 
   const [isModal, setIsModal] = useState(false)
+
+  // loading animation while bot is running
+  const [isRunning, setIsRunning] = useState(false)
 
   // structure for the each advise card
   interface adviseInterface {
@@ -248,6 +252,9 @@ const Bot = () => {
 
     // Close the window
     setIsModal(false);
+
+    // show laoding animation
+    setIsRunning(true)
   };
 
 
@@ -307,7 +314,7 @@ const Bot = () => {
                 className={`w-32 h-12 flex items-center justify-center rounded-xl text-black ${Theme_A.button.medWhiteColoredButton}`}>Annuler</button>
               <button
                 onClick={() => onValidate()}
-                className={`w-32 h-12 flex items-center justify-center rounded-xl text-white ${Theme_A.button.mediumGradientButton}`}>Valider</button>
+                className={`w-32 h-12 flex items-center justify-center rounded-xl text-white bg-gradient-to-br from-green-700 via-green-600 to-green-500 cursor-pointer transform hover:scale-105 transition-transform duration-300`}>Lancer</button>
             </div>
           </div>
         </BaseModal>
@@ -319,14 +326,35 @@ const Bot = () => {
       <DashboardLayout>
         <div className="flex flex-col md:flex-row items-start justify-center gap-6 xl:gap-14 2xl:gap-28">
           <div>
-
-            <div
-              onClick={() => onStartAnalyze()}
-              className={`w-56 2xl:w-auto h-12 mb-6 flex items-center justify-center text-white font-small rounded-xl shadow-md hover:shadow-xl border-green-400 border-1 bg-gradient-to-br from-green-700 via-green-600 to-green-500 cursor-pointer transform hover:scale-105 transition-transform duration-300 `}
-            >
-              Lancer une analyse
+            <div className="">
+              {!isRunning &&
+                <div
+                  onClick={() => onStartAnalyze()}
+                  className={`w-56 2xl:w-auto h-12 mb-6 flex items-center justify-center text-white font-small rounded-xl shadow-md hover:shadow-xl border-green-400 border-1 bg-gradient-to-br from-green-700 via-green-600 to-green-500 cursor-pointer transform hover:scale-105 transition-transform duration-300 `}
+                >
+                  Lancer une analyse
+                </div>
+              }
+              {/* Bot is running */}
+              {isRunning &&
+                <div className="w-56 2xl:w-auto h-12 mb-6 px-6 flex items-center justify-between text-white font-small rounded-xl shadow-md hover:shadow-xl border-green-400 border-1 bg-gradient-to-br from-stone-700 via-stone-600 to-stone-500 cursor-wait ">
+                  <div
+                    className={`text-white`}
+                  >
+                    Analyse en cours
+                  </div>
+                  <TailSpin
+                    height="30"
+                    width="30"
+                    color="#4fa94d"
+                    ariaLabel="tail-spin-loading"
+                    radius="1"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                    visible={true}
+                  />
+                </div>}
             </div>
-            {/* </div> */}
             <p className="text-xl text-[#434343] font-bold text-center mb-2">
               OPTIMISATION
             </p>

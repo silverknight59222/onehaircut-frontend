@@ -3,6 +3,7 @@ import { CrossIcon } from "@/components/utilis/Icons";
 import { ColorsThemeA } from "@/components/utilis/Themes";
 import { ChatSendIcon } from "@/components/utilis/Icons";
 import './index.css';
+import Image from "next/image";
 import { Booking, Coiffeur } from "./types";
 import { getLocalStorage } from "@/api/storage";
 import { dashboard } from "@/api/dashboard";
@@ -14,7 +15,6 @@ interface EventDetailsModalProps {
   setModal: React.Dispatch<React.SetStateAction<Booking | undefined>>;
   coiffeurNom: string;
   coiffeurCouleur: string;
-  coiffeurs: { nom: string; image: string }[]; // Ajoutez cette ligne
 }
 
 
@@ -103,7 +103,14 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
 
         {/* Vignette */}
         <div className="self-center border border-gray-300 rounded-md p-2 w-52 h-52 shadow-inner">
-          {/* Insérez ici la vignette */}
+          {!props.event.booking.haircut && <img
+            style={{ height: 'inherit', "max-height": "100%" }}
+            src={props.event.booking.user.front_profile || "/assets/user_img.png"}
+            alt="profile"
+          />}
+          {props.event.booking.haircut &&
+            <img  src={`https://api.onehaircut.com${props.event.booking.haircut.image}`} alt='' fill={true}  />
+          }
         </div>
 
         {/* Date */}
@@ -111,19 +118,27 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
           <strong>Date du rdv :</strong> {props.event.start.split('T')[0]}
         </div>
         <div className="text-center mb-[-4px]">
-          <strong>Coiffeur : </strong>{nomCoiffeur}
+          <strong>Coiffeur : </strong>{props.event.hair_dresser_name}
+        </div>
+        {props.event.booking.haircut && <div className="text-center mb-[-4px]">
+          <strong>coiffures:</strong> {props.event.booking.haircut.name}
+        </div>}
+        {props.event.booking.salon_haircut && <div className="text-center mb-[-4px]">
+          <strong>coiffures Dur&eacute;e &eacute;stim&eacute;e :</strong> {props.event.booking.salon_haircut.base_duration}&nbsp;Mins
+        </div>}
+        <div className="text-center mb-[-4px]">
+          <strong>Pr&eacute;station :</strong>
+          {props.event.booking.items.filter((item) => item.type == 'service').length != 0 &&
+            <ul>
+              {props.event.booking.items.filter((item) => item.type == 'service').map((item, index) => (
+                <li key={index}>{item.name}</li>
+              ))}
+            </ul>
+          }
+          {props.event.booking.items.filter((item) => item.type == 'service').length == 0 && <span> none</span>}
         </div>
         <div className="text-center mb-[-4px]">
-          <strong>Dur&eacute;e &eacute;stim&eacute;e :</strong> {props.event.total_duration} {/* Ici, vous pouvez insérer la durée de la coiffure */}
-        </div>
-        <div className="text-center mb-[-4px]">
-          <strong>Pr&eacute;station :</strong> {/* Ici, vous pouvez insérer le nom des prestations */}
-        </div>
-        <div className="text-center mb-[-4px]">
-          <strong>Dur&eacute;e de la Pr&eacute;station &eacute;stim&eacute;e :</strong> {/* Ici, vous pouvez insérer la durée totale des prestaion */}
-        </div>
-        <div className="text-center mb-[-4px]">
-          <strong>Dur&eacute;e totale &eacute;stim&eacute;e :</strong> {/* Ici, vous pouvez insérer la durée totale*/}
+          <strong>Dur&eacute;e totale &eacute;stim&eacute;e :</strong> {props.event.total_duration} Mins
         </div>
 
 

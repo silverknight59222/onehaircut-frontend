@@ -87,7 +87,7 @@ const Portrait = () => {
         }
         const fileUploaded = event.target.files[0];
         setProfileImage(URL.createObjectURL(fileUploaded));
-        imagesToUpload.push({'type': 'front_profile',  'file': event.target.files[0]})
+        imagesToUpload.push({ 'type': 'front_profile', 'file': event.target.files[0] })
         //setImagesToUpload([{'type': 'profile_image',  'file': event.target.files[0]}])
     };
     // handle the click to modify the pic
@@ -110,7 +110,7 @@ const Portrait = () => {
         }
         const fileUploaded = event.target.files[0];
         setProfileLeftImage(URL.createObjectURL(fileUploaded));
-        imagesToUpload.push({'type': 'left_profile',  'file': event.target.files[0]})
+        imagesToUpload.push({ 'type': 'left_profile', 'file': event.target.files[0] })
         //setImagesToUpload([{'type': 'left_profile',  'file': event.target.files[0]}])
     };
     // handle the click to modify the pic
@@ -133,7 +133,7 @@ const Portrait = () => {
         }
         const fileUploaded = event.target.files[0];
         setprofileSlightlyLeftImage(URL.createObjectURL(fileUploaded));
-        imagesToUpload.push({'type': 'slightly_left_profile',  'file': event.target.files[0]})
+        imagesToUpload.push({ 'type': 'slightly_left_profile', 'file': event.target.files[0] })
         //setImagesToUpload([{'type': 'slightly_left_profile',  'file': event.target.files[0]}])
     };
     // handle the click to modify the pic
@@ -156,7 +156,7 @@ const Portrait = () => {
         }
         const fileUploaded = event.target.files[0];
         setProfileRightImage(URL.createObjectURL(fileUploaded));
-        imagesToUpload.push({'type': 'right_profile',  'file': event.target.files[0]})
+        imagesToUpload.push({ 'type': 'right_profile', 'file': event.target.files[0] })
         //setImagesToUpload([{'type': 'right_profile',  'file': event.target.files[0]}])
     };
     // handle the click to modify the pic
@@ -179,7 +179,7 @@ const Portrait = () => {
         }
         const fileUploaded = event.target.files[0];
         setProfileSlightlyRightImage(URL.createObjectURL(fileUploaded));
-        imagesToUpload.push({'type': 'slightly_right_profile',  'file': event.target.files[0]})
+        imagesToUpload.push({ 'type': 'slightly_right_profile', 'file': event.target.files[0] })
         //setImagesToUpload([{'type': 'slightly_right_profile',  'file': event.target.files[0]}])
     };
     // handle the click to modify the pic
@@ -253,11 +253,11 @@ const Portrait = () => {
         formData.append("left_profile", profileLeftImage);
         formData.append("front_profile", profileImage);
         formData.append("slightly_right_profile", profileSlightlyRightImage);
-        formData.append("right_profile", profileRightImage);        
+        formData.append("right_profile", profileRightImage);
         imagesToUpload.forEach(image => {
-            if(image)
+            if (image)
                 formData.append(image.type, image.file);
-        });        
+        });
         await client.storeUserPotrait(formData)
             .then(resp => {
                 console.log(resp.data);
@@ -272,7 +272,7 @@ const Portrait = () => {
     };
 
     const fetchPotraits = async () => {
-        const resp = await client.getUserPotrait();        
+        const resp = await client.getUserPotrait();
 
         setprofileSlightlyLeftImage(resp.data.slightly_left_profile)
         setProfileLeftImage(resp.data.left_profile);
