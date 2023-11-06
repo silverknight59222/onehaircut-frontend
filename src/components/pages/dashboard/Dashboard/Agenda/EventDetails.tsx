@@ -152,7 +152,7 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
             alt="profile"
           />}
           {props.event.booking.haircut &&
-            <img src={`https://api-server.onehaircut.com/public${props.event.booking.haircut.image}`} alt='' fill={true} />
+            <img  src={`https://api.onehaircut.com${props.event.booking.haircut.image}`} alt='' fill={true}  />
           }
         </div>
 

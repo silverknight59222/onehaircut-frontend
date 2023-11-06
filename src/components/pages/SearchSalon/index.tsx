@@ -205,7 +205,7 @@ const SearchSalon = () => {
                 {/* Image principale */}
                 {salonProfile &&  <div className="w-full h-full relative rounded-4xl">
                   <Image
-                    src={selectedImage.includes('https://api-server.onehaircut.com/public') ? selectedImage : `https://api-server.onehaircut.com/public${selectedImage}`}
+                    src={selectedImage.includes('https://api.onehaircut.com') ? selectedImage : `https://api.onehaircut.com${selectedImage}`}
                     alt="Image principale du salon"
                     layout="fill"
                     objectFit="fill"
@@ -226,7 +226,7 @@ const SearchSalon = () => {
                   >
                     {/* TODO charger les images vitrines ici */}
                     { salonProfile && <Image
-                      src={salonProfile.salon_images[0]?.image.includes('https://api-server.onehaircut.com/public') ? salonProfile.salon_images[0]?.image : `https://api-server.onehaircut.com/public${salonProfile.salon_images[0]?.image}`}
+                      src={salonProfile.salon_images[0]?.image.includes('https://api.onehaircut.com') ? salonProfile.salon_images[0]?.image : `https://api.onehaircut.com${salonProfile.salon_images[0]?.image}`}
                       alt="Image miniature gauche"
                       layout="fill"
                       objectFit="cover"
@@ -247,7 +247,7 @@ const SearchSalon = () => {
                   >
                     {/* TODO charger les images coiffures ici */}
                     {salonProfile && <Image
-                      src={salonProfile.salon_images[1]?.image.includes('https://api-server.onehaircut.com/public') ? salonProfile.salon_images[1]?.image : `https://api-server.onehaircut.com/public${salonProfile.salon_images[1]?.image}`}
+                      src={salonProfile.salon_images[1]?.image.includes('https://api.onehaircut.com') ? salonProfile.salon_images[1]?.image : `https://api.onehaircut.com${salonProfile.salon_images[1]?.image}`}
                       alt="Image miniature droite"
                       layout="fill"
                       objectFit="cover"
@@ -419,7 +419,7 @@ const SearchSalon = () => {
                     {/* Image du coiffeur */}
                     <div className="relative w-40 lg:w-52 h-40 lg:h-52 rounded-[20px] ">
                       <Image
-                        src={hairdresser.profile_image && hairdresser.profile_image.includes('https://api-server.onehaircut.com/public') ? hairdresser.profile_image : `https://api-server.onehaircut.com/public${hairdresser.profile_image}`}
+                        src={hairdresser.profile_image && hairdresser.profile_image.includes('https://api.onehaircut.com') ? hairdresser.profile_image : `https://api.onehaircut.com${hairdresser.profile_image}`}
                         alt=""
                         layout="fill"
                         className="rounded-[20px]"

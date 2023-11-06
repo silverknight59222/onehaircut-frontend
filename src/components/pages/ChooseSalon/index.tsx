@@ -399,7 +399,7 @@ const SalonChoice = () => {
                                                         stroke={wishlist.includes(String(salon.id)) ? "#FFFFFF" : ""} />
                                                 </div>}
                                             <Image
-                                                src={salon.salon_cover_image ? `https://api-server.onehaircut.com/public${salon.salon_cover_image.image}` :  `https://api-server.onehaircut.com/public${salon.logo}`}
+                                                src={salon.salon_cover_image ? `https://api.onehaircut.com${salon.salon_cover_image.image}` :  `https://api.onehaircut.com${salon.logo}`}
                                                 fill={true}
                                                 alt="image"
                                                 style={{ objectFit: 'cover', height: '100%', width: '100%', display: 'block' }}

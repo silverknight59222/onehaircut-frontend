@@ -13,7 +13,7 @@ import ScrollToTopButton from "@/components/utilis/Helper";
 import Footer from "@/components/UI/Footer";
 import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 import BaseModal from "@/components/UI/BaseModal";
-import StarRatings from "react-star-ratings";
+//import StarRatings from "react-star-ratings";
 
 
 const Welcome = () => {
@@ -333,7 +333,7 @@ const Welcome = () => {
             return <div key={index} onClick={() => onClickHaircut(item.id, item.name, item.image)} className={`shadow-md rounded-xl my-2 cursor-pointer border hover:outline outline-1 outline-stone-400 ${item.id === haircut?.id}`}>
               <div className="relative w-max px-4 pt-4 bg-gradient-to-r from-white via-stone-50 to-zinc-200 rounded-t-xl ">
                 <div className={`${Theme_A.hairstyleCards.cardSize.med}`}>
-                  <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public${item.image}`} fill={true} alt="" className="rounded-t-xl" />
+                  <Image src={item.image.includes('https://api.onehaircut.com') ? item.image : `https://api.onehaircut.com${item.image}`} fill={true} alt="" className="rounded-t-xl" />
                   {!isLoggedIn &&
                     <div onClick={(e) => onWishlist(e, item.id)} className="absolute right-2 top-2 cursor-pointer">
                       <StarIcon
@@ -350,16 +350,7 @@ const Welcome = () => {
                 <p className="rounded-b-xl flex items-center justify-center py-2 text-black font-medium">
                   {item.name}
                 </p>
-              </div>
-              <div className='flex justify-center items-center mt-1 mb-2  w-50 ml-10 mr-10 rounded-2xl p-1'>
-                            <StarRatings
-                              rating={item.rating||0}
-                              starRatedColor="#FEDF10"
-                              starSpacing="2px"
-                              starDimension="20px"
-                              numberOfStars={5}
-                            />
-                          </div>
+              </div>              
             </div>
           })}
         </div>
@@ -393,7 +384,7 @@ const Welcome = () => {
                   </div>
                 ) : (
                   <Image
-                    src={selectedHaircut.image.includes('https://api-server.onehaircut.com/public') ? selectedHaircut.image : `https://api-server.onehaircut.com/public${selectedHaircut.image}`}
+                    src={selectedHaircut.image.includes('https://api.onehaircut.com') ? selectedHaircut.image : `https://api.onehaircut.com${selectedHaircut.image}`}
                     fill={true}
                     alt=""
                     className="rounded-xl w-full h-full object-cover"

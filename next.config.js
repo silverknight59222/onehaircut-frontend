@@ -17,7 +17,7 @@ const nextConfig = {
         remotePatterns: [
           {
             protocol: 'https',
-            hostname: 'api-server.onehaircut.com',
+            hostname: 'api.onehaircut.com',
             // port: '',
             // pathname: '/public/api/web/**',
           },
