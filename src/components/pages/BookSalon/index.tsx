@@ -86,16 +86,14 @@ const BookSalon = () => {
   const onSelectedDate=(date: Date)=>{
     setSelectedDate(date)
     setSelectedSlot([])
-  }
-  console.log(selectedDate?.getDate(),"sjfdjshf")
+  }  
 
 
   const onContinue=()=>{
     setLocalStorage('slotData', JSON.stringify({hairDresser: selectedHairdresser, slot: selectedSlot}))
     const year = String(selectedDate?.getFullYear());
     const month = String(selectedDate?.getMonth() + 1).padStart(2, '0');  // Month is zero-indexed
-    const day = String(selectedDate?.getDate()).padStart(2, '0');
-    console.log(year,month,day)
+    const day = String(selectedDate?.getDate()).padStart(2, '0');    
     setLocalStorage('selectDate',`${year}-${month}-${day}`)
 
     route.push('/payment')
@@ -197,11 +195,12 @@ const BookSalon = () => {
                 >
                   <div className="relative">
                     <div className="relative w-[263px] h-[334px] rounded-2xl">
-                      { hairdresser.profile_image ?
-                      <Image src={'https://api.onehaircut.com' + hairdresser.profile_image } alt="" fill={true} />
-                      :
-                      <Image src={'https://api.onehaircut.com' + hairdresser.avatar.image } alt="" fill={true} />
-                      }
+
+                      <Image
+                        src={hairdresser.profile_image ? (hairdresser.profile_image.includes('https://api.onehaircut.com') ? hairdresser.profile_image : 'https://api.onehaircut.com/'+hairdresser.profile_image) : `https://api.onehaircut.com/avatars/man/man_01.jpg`}
+                        alt=""
+                        layout="fill"                        
+                      />                      
                     </div>
                   </div>
                 </div>
@@ -229,7 +228,7 @@ const BookSalon = () => {
                   <div
                     key={index}
                     onClick={()=>{slot.is_booked ? "":onSelectSlot(slot)}}
-                    className={`w-32 h-14 flex items-center justify-center text-xl font-semibold border rounded-2xl  ${slot.is_booked ? "":"cursor-pointer"}  text-black ${
+                    className={`w-32 h-14 flex items-center justify-center text-xl font-semibold border rounded-2xl  ${slot.is_booked ? "curson-not-allowed":"cursor-pointer"}  text-black ${
                       selectedSlot.some((item:any)=>item.id===slot.id)
                         ? "bg-[#fbd3c6] text-[#473c38]"
                         : "border-[#b8b8b8]"
