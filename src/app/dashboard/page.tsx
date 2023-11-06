@@ -19,7 +19,7 @@ const [isSidebar, setIsSidebar] = useState(true);
         { icon: "DashboardIcon", title: "Dashboard", route:"/dashboard" },
         { icon: "ClientActivityIcon", title: "Client Activité", route:"/dashboard/client-activity" },
         { icon: "StatsIcon", title: "Visites / Stats", route:"/dashboard/visites" },
-        { icon: "RevenueIcon", title: "Revenue", route:"/dashboard/revenue" },
+        // { icon: "RevenueIcon", title: "Revenue", route:"/dashboard/revenue" },
         { icon: "MessageIcon", title: "Message", route:"/dashboard/messages" },
         { icon: "SettingsIcon", title: "Réglages", route:"/dashboard/settings" },
         { icon: "PersonalizationIcon", title: "Abonnement", route:"/dashboard/subscription" },
@@ -32,7 +32,8 @@ const [isSidebar, setIsSidebar] = useState(true);
 	const tabHandler = (name: string) => {
 		setTab(name);
 	};
-	return (
+
+return (
 		<>
 		{tab === "Dashboard" && (
 				<Sidebar sidebarItems={sidebarItems} isSidebar={isSidebar} SidebarHandler={SidebarHandler} />

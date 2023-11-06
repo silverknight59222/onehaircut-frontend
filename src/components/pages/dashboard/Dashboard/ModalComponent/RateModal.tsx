@@ -4,6 +4,7 @@ import React from "react";
 import RechartsLineChart from '@/views/charts/chartjs/RechartsLineChart'
 import RechartsBarChart from '@/views/charts/chartjs/RechartsBarChart'
 import RechartSingleBarChart from '@/views/charts/chartjs/RechartSingleBarChart'
+import ApexAreaChart from '@/views/charts/chartjs/ApexAreaChart'
 import RechartsPieChart from '@/views/charts/chartjs/RechartsPieChart'
 import ChartjsBarChart from "@/views/charts/chartjs/ChartjsBarChart";
 import DropdownMenu from "@/components/UI/DropDownMenu";
@@ -20,6 +21,7 @@ const tableHeaders = [
 
 // Define the table data
 const tableData = [
+    { annulation: "Bob avec frange", remboursement: "125", enCours: "Extensions capillaires", transactions: "125" },
     { annulation: "Bob avec frange", remboursement: "125", enCours: "Extensions capillaires", transactions: "125" },
     { annulation: "Bob avec frange", remboursement: "125", enCours: "Extensions capillaires", transactions: "125" },
     { annulation: "Bob avec frange", remboursement: "125", enCours: "Extensions capillaires", transactions: "125" },
@@ -178,7 +180,8 @@ return (
                         </div>
                     </div>
 
-                    <RechartsLineChart direction="ltr" />
+                    {/*<RechartsLineChart direction="ltr" />*/}
+                  <ApexAreaChart/>
 
                     <div className='mt-10 mb-10'>
                         <p className="text-neutral-500 font-semibold text-2xl text-center">

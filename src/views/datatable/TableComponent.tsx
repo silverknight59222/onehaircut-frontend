@@ -10,7 +10,7 @@ const TableComponent: React.FC<TableProps> = ({ headers, data }) => {
                 <thead>
                 <tr className="bg-gray-200">
                     {headers.map(header => (
-                        <th key={header} className="py-2 px-4 border border-gray-300 text-center text-sm font-medium text-gray-700">
+                        <th key={header} className="py-2 px-4 text-center text-sm font-medium text-gray-700">
                             {header}
                         </th>
                     ))}
@@ -18,9 +18,9 @@ const TableComponent: React.FC<TableProps> = ({ headers, data }) => {
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-300">
                 {data.map((row, rowIndex) => (
-                    <tr key={rowIndex}>
+                    <tr className="hover:bg-gray-100" key={rowIndex}>
                         {headers.map(header => (
-                            <td key={header} className="py-2 px-4 border border-gray-300 text-center text-xs text-gray-600">
+                            <td key={header} className="py-2 px-4 text-center text-xs text-gray-600">
                                 {row[header]}
                             </td>
                         ))}

@@ -23,14 +23,37 @@ const ProgressBar = ({ value, name, number, color, rotation }: ProgressBar) => {
 return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
     }
 
-    const TooltipOverlay = ({ value, name, number }: { value?: number, name: string, number?: number }) => (
-        <div className="absolute inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-            <div className="text-center p-4 rounded shadow-lg text-white">
-                <Typography variant="h6" component="div">{name}</Typography>
-                <Typography variant="body1" component="div">{value ? `${value}%` : 'N/A'}</Typography>
+    const TooltipOverlay = ({ value, name, number }: { value?: number, name: string, number?: number }) => {
+        return (
+            <div
+                className="tooltip-style"
+                style={{
+                    position: 'absolute',
+                    top: '50%', // Centers vertically
+                    left: '100%', // Moves the tooltip to the right of the bar
+                    transform: 'translateY(-50%)', // Centers vertically with respect to the bar
+                    marginLeft: '8px', // Adjust this value to move the tooltip right from the progress bar
+                    padding: '6px 8px',
+                    backgroundColor: 'white',
+                    borderRadius: '4px',
+                    border: '1px solid #dddddd',
+                    boxShadow: '0px 0px 5px #aaaaaa',
+                    whiteSpace: 'nowrap',
+                    zIndex: 1000, // Make sure it's on top of other elements
+                }}
+            >
+                <Typography variant="caption" display="block" gutterBottom>
+                    {name}
+                </Typography>
+                <Typography variant="body2" display="block">
+                    {value ? `${value}%` : 'N/A'}
+                </Typography>
+                {number && <Typography variant="body2" display="block">{number}</Typography>}
             </div>
-        </div>
-    );
+        );
+    };
+
+
 
 
     return (
@@ -54,7 +77,7 @@ return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b
                 <p className="font-semibold text-[#656565] text-center w-32 mt-2 hover:text-black">{name}</p>
                 <p className="text-3xl font-semibold text-black hover:text-gray-600">{number ? number : '-'}</p>
             </CircularProgressbarWithChildren>
-            {isHovered && <TooltipOverlay value={value} name={name} number={number} />}
+            {/*{isHovered && <TooltipOverlay value={value} name={name} number={number} />}*/}
         </div>
     );
 };

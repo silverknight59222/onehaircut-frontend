@@ -1,6 +1,6 @@
 // ** Types
 import { Dispatch } from 'redux'
-import { ThemeColor } from 'src/@core/layouts/types'
+import { ThemeColor } from '@/@core/layouts/types'
 
 export type StatusType = 'busy' | 'away' | 'online' | 'offline'
 

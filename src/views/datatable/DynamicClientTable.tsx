@@ -2,6 +2,7 @@ import React from 'react';
 
 // Define the types for your table data and props
 interface UserData {
+    discount: React.JSX.Element;
     image: string;
     name: string;
 }
@@ -59,6 +60,7 @@ const DynamicTable: React.FC<DynamicTableProps> = ({ headers, data }) => {
                             const style = row.styles?.[key];
                             if (key === 'user') {
                                 const userValue = value as UserData;
+
                                 return (
                                     <td key={cellIndex} className="px-6 py-4 whitespace-nowrap text-center" style={style}>
                                         <div className="flex items-center">

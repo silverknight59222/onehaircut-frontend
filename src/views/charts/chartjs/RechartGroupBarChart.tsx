@@ -142,7 +142,7 @@ const RechartsGroupBarChart = ({ direction, data, barFills, legends }: RechartsG
             <CardContent>
                 <Box sx={{ height: 350 }}>
                     <ResponsiveContainer>
-                        <BarChart height={350} data={data} barSize={40} style={{ direction }} margin={{ left: 0 }}>
+                        <BarChart height={350} data={data} barSize={30} style={{ direction }} margin={{ left: 0 }}>
                             <CartesianGrid strokeDasharray='3 3' />
                             <XAxis dataKey='name' reversed={direction === 'rtl'} />
                             <YAxis orientation={direction === 'rtl' ? 'right' : 'left'} />

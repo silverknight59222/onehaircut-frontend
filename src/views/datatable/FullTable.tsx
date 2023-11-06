@@ -18,8 +18,7 @@ const FullTable: React.FC = () => {
     ];
 
     const Month = [
-        "January",
-        "February",]
+        "Ce mois",]
     const handleNewMonth = (item: string) => {
         // TODO: add backend to save the new preference
     }
@@ -111,18 +110,15 @@ const FullTable: React.FC = () => {
     ];
 
     return (
-        <div className="p-4">
+        <div>
+            <DropdownMenu
+                dropdownItems={Month}
+                backgroundClr={ColorsThemeA.standardBorderGray}
+                fctToCallOnClick={handleNewMonth}
+                showDefaultMessage={false}
+            />
             <div className="flex justify-center items-center">
                 {/* Absolute Positioning relative to the viewport for the Dropdown */}
-                <div className="absolute left-4 transform -translate-y-1/2" style={{left: "2%"}}>
-                    <DropdownMenu
-                        dropdownItems={Month}
-                        backgroundClr={ColorsThemeA.standardBorderGray}
-                        fctToCallOnClick={handleNewMonth}
-                        showDefaultMessage={false}
-                    />
-                </div>
-
                 {/* Centered content container */}
                 <div className="p-4">
                     <div className="flex items-center justify-center">

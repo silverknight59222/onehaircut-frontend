@@ -2,9 +2,9 @@ import { CompletedHairStyleIcon, DashboardHeartIcon, DashboardUsersIcon, Project
 import React, { useMemo, useState } from "react";
 import Card from '@mui/material/Card'
 import "chart.js/auto";
-import ChartjsLineChart from '@/views/charts/chartjs/ChartjsLineChart'
+import ApexLineChart from '@/views/charts/chartjs/ApexLineChart'
+import ApexAreaChart from '@/views/charts/chartjs/ApexAreaChart'
 import DynamicClientTable from '@/views/datatable/DynamicClientTable'
-import ReactApexChart from 'react-apexcharts';
 import DialogShareProject from '@/views/pages/dialog-examples/DialogShareProject'
 import Grid from '@mui/material/Grid'
 import Footer from "@/components/UI/Footer";
@@ -24,9 +24,6 @@ import {
 import DropdownMenu from "@/components/UI/DropDownMenu";
 import {ColorsThemeA} from "@/components/utilis/Themes";
 import FullTable from "@/views/datatable/FullTable";
-import BaseDropdown from "@/components/UI/BaseDropdown";
-import Image from "next/image";
-import TopClientList from "@/components/pages/dashboard/Dashboard/MainDashboardComponents/TopClientList";
 import RechartSingleBarChart from "@/views/charts/chartjs/RechartSingleBarChart";
 import RechartsLineChart from "@/views/charts/chartjs/RechartsLineChart";
 
@@ -83,6 +80,10 @@ const Dashboard = () => {
     const Month = [
         "ce mois",
         ]
+
+    const revenueMonth = [
+        "Juliet",
+    ]
     const handleNewMonth = (item: string) => {
         // TODO: add backend to save the new preference
     }
@@ -197,7 +198,7 @@ const Dashboard = () => {
     ];
 
     const fillColor = '#3C8A41'; // Example fill color
-    const barSize = 80; // Example barSize
+    const barSize = 40; // Example barSize
 
   return (
     <div className="px-4 lg:px-6">
@@ -242,7 +243,7 @@ const Dashboard = () => {
           {overview.map((item, index) => {
             return (
               <div key={index} className="flex flex-col">
-                <div onClick={() => toggleModal('fullTable')} className="cursor-pointer flex p-8 bg-[rgba(255,255,255,0.69)] rounded-[20px] shadow-[0px_26px_31px_0px_rgba(176, 176, 176, 0.10)]">
+                <div className="cursor-pointer flex p-8 bg-[rgba(255,255,255,0.69)] rounded-[20px] shadow-[0px_26px_31px_0px_rgba(176, 176, 176, 0.10)]">
                   <div className={`flex items-center justify-center w-14 h-14 rounded-full ${item.gradient}`}>
                     {item.icon}
                   </div>
@@ -261,83 +262,122 @@ const Dashboard = () => {
           })}
         </div>
       </div>
-
-        <TransactionList/>
-        <div className="mt-12 mb-12">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
-                {/* Revenue Card */}
-                <Card className="h-full">
-                    <div className="flex items-center justify-between gap-3 mb-4">
-                        <p onClick={() => toggleModal('rate')} className="text-xl cursor-pointer sm:text-2xl text-[#727272] font-semibold pl-10 mt-6">
-                            Revenu journalier
-                        </p>
-                      <span className="mr-4 mt-4">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch mt-10">
+        <div className="flex items-center justify-between gap-3">
+            <p onClick={() => toggleModal('rate')} className="text-xl cursor-pointer sm:text-2xl text-[#727272] font-semibold mt-6">
+                Revenu journalier
+            </p>
+            <span className="mr-4 mt-4">
                      <DropdownMenu dropdownItems={Month} backgroundClr={ColorsThemeA.standardBorderGray}
                                    fctToCallOnClick={handleNewMonth} showDefaultMessage={false} />
                 </span>
-                    </div>
+        </div>
+        <div className="flex items-center justify-between gap-3 mb-4">
+            <p onClick={() => toggleModal('goals')}  className="text-xl sm:text-2xl text-[#727272] font-semibold mt-6 cursor-pointer">
+                Objectifs
+            </p>
+            <span className="mr-4 mt-4">
+                <DropdownMenu dropdownItems={Month} backgroundClr={ColorsThemeA.standardBorderGray}
+                              fctToCallOnClick={handleNewMonth} showDefaultMessage={false} />
+        </span>
+        </div>
+        </div>
+
+        <div className="mt-2 mb-12">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
+                {/* Revenue Card */}
+                <Card className="h-full">
                     <div>
-                        <RechartsLineChart direction="ltr" />
+                        <ApexAreaChart/>
                     </div>
                 </Card>
 
                 {/* Visits Card */}
-              <Card className="h-full flex flex-col">
-                {/* Top content for 'Visits' and dropdown */}
-                <div className="flex items-center justify-between gap-3 mb-4">
-                  <p onClick={() => toggleModal('goals')}  className="text-xl sm:text-2xl text-[#727272] font-semibold pl-10 mt-6">
-                      Objectifs
-                  </p>
-                  <span className="mr-4 mt-4">
-                <DropdownMenu dropdownItems={Month} backgroundClr={ColorsThemeA.standardBorderGray}
-                              fctToCallOnClick={handleNewMonth} showDefaultMessage={false} />
-        </span>
-                </div>
-                <p className="text-xl sm:text-2xl text-[#727272] font-semibold text-center">
-                  Conversion: <span className='text-red-500'>31%</span>
-                </p>
+                <Card className="h-full flex flex-col">
+                    {/* Top content for 'Visits' and dropdown */}
+                    <p className="text-xl sm:text-2xl text-[#727272] font-semibold text-center pt-6">
+                        Conversion: <span className='text-red-500'>31%</span>
+                    </p>
+                    <Grid container spacing={2}>
+                        <Grid item xs={3}>
+                        </Grid>
+                        <Grid item xs={3}>
+                            <ProgressBar
+                                value={61}
+                                name="Nouveaux Clients"
+                                number={27}
+                                rotation={0.25}
+                                color="#FE2569"
+                            />
+                        </Grid>
+                        <Grid item xs={1}></Grid>
+                        <Grid item xs={3}>
+                            <ProgressBar
+                                value={73}
+                                name="Ajouter un objectif"
+                                number={47}
+                                rotation={0.25}
+                                color="#0FBFF1"
+                            />
+                        </Grid>
+                        <Grid item xs={2}></Grid>
 
-                {/* Wrapper for ProgressBar components with flex-grow */}
-                <div className="flex flex-wrap items-center justify-center gap-10 flex-grow">
-                  <ProgressBar
-                      value={61}
-                      name="Nouveaux Clients"
-                      number={27}
-                      rotation={0.25}
-                      color="#FE2569, #FD4C55, #FF8636"
-                  />
-                  <ProgressBar
-                      value={73}
-                      name="Ajouter un objectif"
-                      number={47}
-                      rotation={0.25}
-                      color="#0FBFF1, #4487F1"
-                  />
-                    <ProgressBar
-                        value={50}
-                        name="Revenu Mensuel"
-                        number={31}
-                        rotation={0.25}
-                        color="#7ABF50, #418419"
-                    />
-                    <ProgressBar
-                        value={0}
-                        name="Revenu Mensuel"
-                        number={0}
-                        rotation={0.25}
-                        color="#15BAF2"
-                    />
-                </div>
-              </Card>
+                        <Grid item xs={1}></Grid>
+
+                        <Grid item xs={3}>
+                            <ProgressBar
+                                value={50}
+                                name="Revenu Mensuel"
+                                number={31}
+                                rotation={0.25}
+                                color="#7ABF50"
+                            />
+                        </Grid>
+                        <Grid item xs={1}></Grid>
+                        <Grid item xs={3}>
+                            <ProgressBar
+                                value={0}
+                                name="Revenu Mensuel"
+                                number={0}
+                                rotation={0.25}
+                                color="#15BAF2"
+                            />
+                        </Grid>
+                    </Grid>
+                </Card>
             </div>
         </div>
-        <div className="flex flex-wrap -mx-3">
+
+        <div className="flex items-center justify-between mb-4 mt-10">
+            <p onClick={() => toggleModal('fullTable')}  className="text-2xl text-[#727272] font-semibold cursor-pointer">
+                Transactions
+            </p>
+            <DropdownMenu dropdownItems={revenueMonth} backgroundClr={ColorsThemeA.standardBorderGray}
+                          fctToCallOnClick={handleNewMonth} showDefaultMessage={false} />
+        </div>
+
+        <TransactionList/>
+
+        <Grid container spacing={2} style={{marginTop:"20px"}}>
+            <Grid item xs={4}>
+                <p onClick={() => toggleModal('clientActivity')} className="text-primary text-left text-2xl font-semibold cursor-pointer">Activité clients</p>
+            </Grid>
+
+            <Grid item xs={4}>
+                <p onClick={() => toggleModal('rate')} className="text-primary cursor-pointer text-left text-2xl font-semibold">Fidélité clients</p>
+            </Grid>
+
+            <Grid item xs={4}>
+                <p onClick={() => toggleModal('topClient')} className="text-primary text-left text-2xl font-semibold cursor-pointer">Top Clients</p>
+            </Grid>
+        </Grid>
+
+        <div className="flex flex-wrap -mx-3 mt-5 gap-4">
             {/* Client Activity */}
-            <div className="px-3 md:w-4/12 h-[400px] overflow-auto w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-[20px] shadow-[0px_26px_31px_0px_rgba(176, 176, 176, 0.10)]">
-                <p onClick={() => toggleModal('clientActivity')} className="text-primary text-center text-2xl font-semibold cursor-pointer">Activité clients</p>
-                <div className="relative overflow-auto">
+            <div style={{width:'460px'}} className="px-3 md:w-4/12 w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-[20px] shadow-[0px_26px_31px_0px_rgba(176, 176, 176, 0.10)]">
+                <div className="relative">
                     <table className="w-full text-sm text-left">
-                        <thead className="text-grey text-sm font-semibold mb-9">
+                        <thead className="text-grey text-sm font-semibold">
                         <tr>
                             <th scope="col" className="pr-4 py-3">
                                 User
@@ -350,50 +390,53 @@ const Dashboard = () => {
                             </th>
                         </tr>
                         </thead>
-                        <tbody>
-                        {activityClientData.map((item, index) => {
-                            let statusClass ='';
-                            switch (item.Status) {
-                                case 'En cours':
-                                    statusClass = 'text-blue-600'; // Blue color for "In progress"
-                                    break;
-                                case 'Effectuée':
-                                    statusClass = 'text-green-600'; // Green color for "Completed"
-                                    break;
-                                case 'Demande de remboursement':
-                                    statusClass = 'text-yellow-600'; // Yellow color for "Refund requested"
-                                    break;
-                                case 'Remboursé(e)':
-                                    statusClass = 'text-purple-600'; // Purple color for "Refunded"
-                                    break;
-                                default:
-                                    statusClass = 'text-gray-600'; // Default color for any other status
-                                    break;
-                            }
-
-                            return <tr key={index} className="text-black border-b-2 border-[#F4F4F6] pb-2">
-                                <th scope="row" className="pr-6 py-4 flex items-center gap-4">
-                                    <img
-                                        src="/assets/user_img.png"
-                                        alt=""
-                                        width={60}
-                                        height={60}
-                                        className="rounded-full"
-                                    />
-                                    {item.user}
-                                </th>
-                                <th className="px-4 py-4 text-center">{item.Date} </th>
-                                <th className={`px-4 py-4 text-center ${statusClass}`}>{item.Status}</th>
-
-                            </tr>
-                        })}
-                        </tbody>
                     </table>
+                    <div className="h-[340px] overflow-auto">
+                        <table className="w-full text-sm text-left">
+                            <tbody>
+                            {activityClientData.map((item, index) => {
+                                let statusClass ='';
+                                switch (item.Status) {
+                                    case 'En cours':
+                                        statusClass = 'text-blue-600'; // Blue color for "In progress"
+                                        break;
+                                    case 'Effectuée':
+                                        statusClass = 'text-green-600'; // Green color for "Completed"
+                                        break;
+                                    case 'Demande de remboursement':
+                                        statusClass = 'text-yellow-600'; // Yellow color for "Refund requested"
+                                        break;
+                                    case 'Remboursé(e)':
+                                        statusClass = 'text-purple-600'; // Purple color for "Refunded"
+                                        break;
+                                    default:
+                                        statusClass = 'text-gray-600'; // Default color for any other status
+                                        break;
+                                }
+
+                                return <tr key={index} className="text-black border-b-2 border-[#F4F4F6] pb-2">
+                                    <th scope="row" className="pr-6 py-4 flex items-center gap-4">
+                                        <img
+                                            src="/assets/user_img.png"
+                                            alt=""
+                                            width={60}
+                                            height={60}
+                                            className="rounded-full"
+                                        />
+                                        {item.user}
+                                    </th>
+                                    <th className="px-4 py-4 text-center">{item.Date} </th>
+                                    <th className={`px-4 py-4 text-center ${statusClass}`}>{item.Status}</th>
+                                </tr>
+                            })}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
-            <div className="px-3 md:w-4/12 h-[400px] overflow-auto w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-[20px] shadow-[0px_26px_31px_0px_rgba(176, 176, 176, 0.10)]">
-                <p onClick={() => toggleModal('rate')} className="text-primary cursor-pointer text-center text-2xl font-semibold">Fidélité clients</p>
+
+            <div style={{width:'460px'}}  className="px-3 md:w-4/12 h-[460px] overflow-auto w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-[20px] shadow-[0px_26px_31px_0px_rgba(176, 176, 176, 0.10)]">
                 <p className="text-xl sm:text-2xl text-[#727272] font-semibold text-center mt-6">
                     Conversion: <span className='text-red-500'>31%</span>
                 </p>
@@ -417,17 +460,15 @@ const Dashboard = () => {
             </div>
 
             {/* Top Client List */}
-            <div className="px-3 md:w-4/12 h-[400px] overflow-auto w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-[20px] shadow-[0px_26px_31px_0px_rgba(176, 176, 176, 0.10)]">
-                <p onClick={() => toggleModal('topClient')} className="text-primary cursor-pointer text-center text-2xl font-semibold">Top Client List</p>
-                {/* You can either copy the entire table structure from the Client Activity section or create a new one if the data differs. */}
-                <div className="relative overflow-auto">
+            <div style={{width:'460px'}}  className="px-3 md:w-4/12 w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-[20px] shadow-[0px_26px_31px_0px_rgba(176, 176, 176, 0.10)]">
+                <div className="relative">
                     <table className="w-full text-sm text-left">
-                        <thead className="text-grey text-sm font-semibold mb-9">
+                        <thead className="text-grey text-sm font-semibold">
                         <tr>
-                            <th scope="col" className="pr-4 py-3 text-center">
-                                User
+                            <th scope="col" className="pr-4 py-3">
+                                Utilisateur
                             </th>
-                            <th scope="col" className="pr-4  py-3 text-center">
+                            <th scope="col" className="pr-4 pl-20 py-3 text-center">
                                 coiffure préférée
                             </th>
                             <th scope="col" className="px-4 py-3 text-center">
@@ -435,29 +476,51 @@ const Dashboard = () => {
                             </th>
                         </tr>
                         </thead>
-                        <tbody>
-                        {TopClientData.map((item, index) => {
-
-                            return <tr key={index} className="text-black border-b-2 border-[#F4F4F6] pb-2">
-                                <th scope="row" className="pr-6 py-4 flex items-center gap-4">
-                                    <img
-                                        src="/assets/user_img.png"
-                                        alt=""
-                                        width={60}
-                                        height={60}
-                                        className="rounded-full"
-                                    />
-                                    {item.Utilisateur}
-                                </th>
-                                <th className="px-4 py-4 text-center">{item.Date} </th>
-                                <th className="px-4 py-4 text-center">{item.Status}</th>
-
-                            </tr>
-                        })}
-                        </tbody>
                     </table>
+                    <div className="h-[340px] overflow-auto">
+                        <table className="w-full text-sm text-left">
+                            <tbody>
+                            {TopClientData.map((item, index) => {
+                                let statusClass ='';
+                                switch (item.Status) {
+                                    case 'En cours':
+                                        statusClass = 'text-blue-600'; // Blue color for "In progress"
+                                        break;
+                                    case 'Effectuée':
+                                        statusClass = 'text-green-600'; // Green color for "Completed"
+                                        break;
+                                    case 'Demande de remboursement':
+                                        statusClass = 'text-yellow-600'; // Yellow color for "Refund requested"
+                                        break;
+                                    case 'Remboursé(e)':
+                                        statusClass = 'text-purple-600'; // Purple color for "Refunded"
+                                        break;
+                                    default:
+                                        statusClass = 'text-gray-600'; // Default color for any other status
+                                        break;
+                                }
+
+                                return <tr key={index} className="text-black border-b-2 border-[#F4F4F6] pb-2">
+                                    <th scope="row" className="pr-6 py-4 flex items-center gap-4">
+                                        <img
+                                            src="/assets/user_img.png"
+                                            alt=""
+                                            width={60}
+                                            height={60}
+                                            className="rounded-full"
+                                        />
+                                        {item.Utilisateur}
+                                    </th>
+                                    <th className="px-4 py-4 text-left">{item.Date} </th>
+                                    <th className={`px-4 py-4 text-center ${statusClass}`}>{item.Status}</th>
+                                </tr>
+                            })}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
+
 
         </div>
         <div className="flex items-center justify-between gap-3 mb-4">

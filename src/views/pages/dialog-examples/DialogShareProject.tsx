@@ -236,23 +236,6 @@ const DialogShareProject = ({ show, setShow, children }) => {
             <Icon icon='tabler:x' fontSize='1.25rem' />
           </CustomCloseButton>
           {children}
-          {/*<List*/}
-          {/*  dense*/}
-          {/*  sx={{*/}
-          {/*    mb: 3,*/}
-          {/*    '& .MuiListItemText-primary': {*/}
-          {/*      ...theme.typography.body1,*/}
-          {/*      fontWeight: 500,*/}
-          {/*      color: 'text.secondary'*/}
-          {/*    },*/}
-          {/*    '& .MuiListItemText-secondary': {*/}
-          {/*      ...theme.typography.body1,*/}
-          {/*      fontWeight: 500,*/}
-          {/*      color: 'text.disabled'*/}
-          {/*    }*/}
-          {/*  }}*/}
-          {/*>*/}
-          {/*</List>*/}
         </DialogContent>
       </Dialog>
     </Card>

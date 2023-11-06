@@ -5,8 +5,7 @@ import React from "react";
 
 const TransactionList = () => {
     const Month = [
-        "January",
-        "February",]
+        "Juliet",]
     const handleNewMonth = (item: string) => {
         // TODO: add backend to save the new preference
     }
@@ -48,13 +47,13 @@ const TransactionList = () => {
 
 return (
         <div>
-            <div className="flex items-center justify-between mb-4 mt-10">
-                <p className="text-2xl text-[#727272] font-semibold">
-                    Transactions
-                </p>
-                <DropdownMenu dropdownItems={Month} backgroundClr={ColorsThemeA.standardBorderGray}
-                              fctToCallOnClick={handleNewMonth} showDefaultMessage={false} />
-            </div>
+            {/*<div className="flex items-center justify-between mb-4 mt-10">*/}
+            {/*    <p className="text-2xl text-[#727272] font-semibold">*/}
+            {/*        Transactions*/}
+            {/*    </p>*/}
+            {/*    <DropdownMenu dropdownItems={Month} backgroundClr={ColorsThemeA.standardBorderGray}*/}
+            {/*                  fctToCallOnClick={handleNewMonth} showDefaultMessage={false} />*/}
+            {/*</div>*/}
             <div className="pt-7 pb-4 px-6 bg-white rounded-lg shadow-[0px_4px_33px_0px_rgba(176,176,176,0.25)]">
                 <div className="relative overflow-x-auto">
                     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -91,10 +90,20 @@ return (
                         </thead>
                         <tbody>
                         {transactions.map((transaction, index) => {
-                            return (
+                          let statusClass ='';
+                          switch (transaction.status) {
+                            case 'En vérification':
+                              statusClass = 'text-yellow-400';
+                              break;
+                            default:
+                              statusClass = 'text-gray-600'; // Default color for any other status
+                              break;
+                          }
+
+return (
                                 <tr
                                     key={index}
-                                    className="text-[#636363] bg-white border-b text-center"
+                                    className="text-[#636363] bg-white border-b text-center hover:bg-gray-100"
                                 >
                                     <td scope="row" className="px-6 py-4">
                                         {transaction.date}
@@ -109,7 +118,7 @@ return (
                                     <td className="px-6 py-4 border-x border-[#E4E7EB]">
                                         {transaction.payment_method}
                                     </td>
-                                    <td className="px-6 py-4">{transaction.status}</td>
+                                    <td className={`px-6 py-4 ${statusClass}`}>{transaction.status}</td>
                                 </tr>
                             );
                         })}

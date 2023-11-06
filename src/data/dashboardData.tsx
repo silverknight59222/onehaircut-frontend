@@ -101,8 +101,8 @@ export const activityClientData = [
 
 export const TopClientData = [
   {
-    Utilisateur: "Angelina vitale",
-    Date: "Carré plongeant",
+    Utilisateur: "Angelina",
+    Date: "plongeant",
     Status: "89",
   },
   {
@@ -116,7 +116,7 @@ export const TopClientData = [
     Status: "62",
   },
   {
-    Utilisateur: "Amanda Remboursé",
+    Utilisateur: "Amanda",
     Date: "plongeant",
     Status: "51",
   },

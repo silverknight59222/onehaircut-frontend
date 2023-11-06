@@ -32,29 +32,35 @@ const data = [
 ];1
 
 const CustomTooltip = (data: TooltipProps<any, any>) => {
-  const { active, payload } = data
+    const { active, payload } = data;
 
-  if (active && payload) {
-    return (
-      <div className='recharts-custom-tooltip'>
-        <Typography>{data.label}</Typography>
-        <Divider />
-        {data &&
-          data.payload &&
-          data.payload.map((i: any) => {
-            return (
-              <Box sx={{ display: 'flex', alignItems: 'center', '& svg': { color: i.fill, mr: 2.5 } }} key={i.dataKey}>
-                <Icon icon='mdi:circle' fontSize='0.6rem' />
-                <Typography variant='body2'>{`${i.dataKey} : ${i.payload[i.dataKey]}`}</Typography>
-              </Box>
-            )
-          })}
-      </div>
-    )
-  }
+    if (active && payload) {
+        return (
+            <div
+                className='recharts-custom-tooltip'
+                style={{
+                    backgroundColor: 'white',
+                    padding: '10px',
+                    border: '1px solid #dddddd',
+                    borderRadius: '4px',
+                    boxShadow: '0px 0px 5px #aaaaaa'
+                }}
+            >
+                <Typography variant="subtitle2" color="textPrimary">{data.label}</Typography>
+                <Divider style={{ margin: '5px 0' }} />
+                {payload.map((entry, index) => (
+                    <Box key={`item-${index}`} sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Icon icon='mdi:circle' fontSize='small' style={{ color: entry.color }} />
+                        <Typography variant='body2' style={{ marginLeft: '5px' }}>{`${entry.name}: ${entry.value}`}</Typography>
+                    </Box>
+                ))}
+            </div>
+        );
+    }
 
-  return null
-}
+    return null;
+};
+
 
 const RechartsRadarChart = () => {
   return (
