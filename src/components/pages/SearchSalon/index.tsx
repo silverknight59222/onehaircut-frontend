@@ -61,13 +61,13 @@ const SearchSalon = () => {
   //TODO Import salon availability times
   const [hours, setHours] = useState([] as any[])
   const hoursList = {
-    MONDAY : { title: "Lundi"},
-    TUESDAY: { title: "Mardi"},
-    WEDNESDAY: { title: "Mercredi"},
-    THURSDAY: { title: "Jeudi"},
-    FRIDAY: { title: "Vendredi"},
-    SATURDAY: { title: "Samedi"},
-    SUNDAY: { title: "Dimanche"},
+    MONDAY: { title: "Lundi" },
+    TUESDAY: { title: "Mardi" },
+    WEDNESDAY: { title: "Mercredi" },
+    THURSDAY: { title: "Jeudi" },
+    FRIDAY: { title: "Vendredi" },
+    SATURDAY: { title: "Samedi" },
+    SUNDAY: { title: "Dimanche" },
   };
 
   useEffect(() => {
@@ -205,7 +205,7 @@ const SearchSalon = () => {
               <div className="w-[320px] lg:w-[500px] 2xl:w-[600px] h-64 lg:h-[500px] relative rounded-4xl p-2 mb-3">
 
                 {/* Image principale */}
-                {salonProfile &&  <div className="w-full h-full relative rounded-4xl">
+                {salonProfile && <div className="w-full h-full relative rounded-4xl">
                   <Image
                     src={selectedImage.includes('http') ? selectedImage : `https://api.onehaircut.com${selectedImage}`}
                     alt="Image principale du salon"
@@ -227,7 +227,7 @@ const SearchSalon = () => {
                     className="relative w-24 lg:w-32 2xl:w-36 h-24 lg:h-32 2xl:h-36 cursor-pointer overflow-hidden rounded-lg transform transition-all duration-300 group hover:scale-105"
                   >
                     {/* TODO charger les images vitrines ici */}
-                    { salonProfile && <Image
+                    {salonProfile && <Image
                       src={salonProfile.salon_images[0]?.image.includes('http') ? salonProfile.salon_images[0]?.image : `https://api.onehaircut.com${salonProfile.salon_images[0]?.image}`}
                       alt="Image miniature gauche"
                       layout="fill"
@@ -248,7 +248,7 @@ const SearchSalon = () => {
                     className="relative w-24 lg:w-32 2xl:w-36 h-24 lg:h-32 2xl:h-36 cursor-pointer overflow-hidden rounded-lg transform transition-all duration-300 group hover:scale-105"
                   >
                     {/* TODO charger les images vitrines ici */}
-                    { salonProfile && <Image
+                    {salonProfile && <Image
                       src={salonProfile.salon_images[1]?.image.includes('http') ? salonProfile.salon_images[1]?.image : `https://api.onehaircut.com${salonProfile.salon_images[1]?.image}`}
                       alt="Image miniature gauche"
                       layout="fill"
@@ -290,39 +290,38 @@ const SearchSalon = () => {
               </div>
             </div>
 
-          </div>
+            {/* Horaires et bouton de réservation */}
+            <div className="w-full md:w-auto flex flex-col items-center justify-center">
+              <div className="flex flex-col gap-6 bg-white  opacity-90 w-full sm:w-[300px] md:w-[350px] xl:w-[420px] 2xl:w-[470px] border border-[#E1E1E1] rounded-3xl py-6 px-8 2xl:px-10 shadow-lg ">
+                {/* Titre ajouté ici */}
+                <h2 className="text-xl 2xl:text-2xl font-semibold text-[#272727] mb-4 text-center">
+                  Horaire d'ouverture
+                </h2>
+                {hours.map((item, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between text-md 2xl:text-2xl font-small text-[#9e9e9e]"
+                    >
+                      <p>{item.title}</p>
+                      <p>{item.hours}</p>
+                    </div>
+                  );
+                })}
+              </div>
 
-          {/* Horaires et bouton de réservation */}
-          <div className="w-full md:w-auto flex flex-col items-center justify-center">
-            <div className="flex flex-col gap-6 bg-white  opacity-90 w-full sm:w-[300px] md:w-[350px] xl:w-[420px] 2xl:w-[470px] border border-[#E1E1E1] rounded-3xl py-6 px-8 2xl:px-10 shadow-lg ">
-              {/* Titre ajouté ici */}
-              <h2 className="text-xl 2xl:text-2xl font-semibold text-[#272727] mb-4 text-center">
-                Horaire d'ouverture
-              </h2>
-              {hours.map((item, index) => {
-                return (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between text-md 2xl:text-2xl font-small text-[#9e9e9e]"
-                  >
-                    <p>{item.title}</p>
-                    <p>{item.hours}</p>
-                  </div>
-                );
-              })}
+              {/* Bouton de réservation */}
+              <button onClick={() => router.push('/book-salon')} className={`w-full md:w-64 2xl:w-72 h-14 flex items-center justify-center mt-7 text-white font-semibold text-xl rounded-xl ${Theme_A.button.mediumGradientButton} shadow-md`}>
+                R&eacute;server un créneau
+              </button>
+              {/* Ajoutez le bouton pour ouvrir le modal ici */}
+              <button
+                onClick={openChatModal}
+                className={`mt-4 ${Theme_A.button.medBlackColoredButton}`}
+              >
+                Contacter le salon
+              </button>
             </div>
-
-            {/* Bouton de réservation */}
-            <button onClick={() => router.push('/book-salon')} className={`w-full md:w-64 2xl:w-72 h-14 flex items-center justify-center mt-7 text-white font-semibold text-xl rounded-xl ${Theme_A.button.mediumGradientButton} shadow-md`}>
-              R&eacute;server un créneau
-            </button>
-            {/* Ajoutez le bouton pour ouvrir le modal ici */}
-            <button
-              onClick={openChatModal}
-              className={`mt-4 ${Theme_A.button.medBlackColoredButton}`}
-            >
-              Contacter le salon
-            </button>
           </div>
         </div>
 
@@ -411,7 +410,7 @@ const SearchSalon = () => {
           </p>
           <div className="flex items-center justify-center mt-8">
             {salonProfile != null && <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 lg:gap-20 ">
-              {salonProfile.salon_hairdressers!=null && salonProfile.salon_hairdressers.map((hairdresser, index) => {
+              {salonProfile.salon_hairdressers != null && salonProfile.salon_hairdressers.map((hairdresser, index) => {
                 return (
                   <div key={index} className="p-2 rounded-lg shadow-sm relative bg-gray-100 border border-stone-300">
 
@@ -421,7 +420,7 @@ const SearchSalon = () => {
                     {/* Image du coiffeur */}
                     <div className="relative w-40 lg:w-52 h-40 lg:h-52 rounded-[20px] ">
                       <Image
-                        src={hairdresser.profile_image ? (hairdresser.profile_image.includes('http') ? hairdresser.profile_image : 'https://api.onehaircut.com/'+hairdresser.profile_image) : `https://api.onehaircut.com/avatars/man/man_01.jpg`}
+                        src={hairdresser.profile_image ? (hairdresser.profile_image.includes('http') ? hairdresser.profile_image : 'https://api.onehaircut.com/' + hairdresser.profile_image) : `https://api.onehaircut.com/avatars/man/man_01.jpg`}
                         alt=""
                         layout="fill"
                         className="rounded-[20px]"
@@ -463,20 +462,20 @@ const SearchSalon = () => {
         </div>
         {/* Import Google map here */}
         {isLoaded && <div className="mt-20 shadow-xl rounded-3xl">
-            <GoogleMap
-              mapContainerStyle={mapStyles}
-              zoom={13}
-              center={mapCenter}
-            >
-              {/* Ajout d'un marqueur */}
-              {/* TODO Position du salon ici */}
-              <Marker
-                position={mapCenter}
-                icon={mapIconUrl}
-              />
+          <GoogleMap
+            mapContainerStyle={mapStyles}
+            zoom={13}
+            center={mapCenter}
+          >
+            {/* Ajout d'un marqueur */}
+            {/* TODO Position du salon ici */}
+            <Marker
+              position={mapCenter}
+              icon={mapIconUrl}
+            />
 
-              {/* Vous pouvez ajouter des marqueurs ou d'autres éléments ici si nécessaire */}
-            </GoogleMap>
+            {/* Vous pouvez ajouter des marqueurs ou d'autres éléments ici si nécessaire */}
+          </GoogleMap>
         </div>}
       </div>
 

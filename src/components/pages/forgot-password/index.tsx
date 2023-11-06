@@ -101,10 +101,10 @@ const Forgot = () => {
 						</div>
 
 						<button
-							className="text-white font-medium text-xl rounded-xl w-full h-14 my-6 bg-gradient-to-r from-primaryGradientFrom via-primaryGradientVia to-primaryGradientTo shadow-[0px_7px_12px_0px_rgba(255,125,60,0.25)] transform hover:scale-105"
+							className={`text-white font-medium text-xl rounded-xl w-full h-14 my-6 ${Theme_A.button.medLargeGradientButton} `}
 							onClick={onForgot}
 						>
-							<p>Connexion</p>
+							<p>Demande de récupération</p>
 						</button>
 					</div>
 

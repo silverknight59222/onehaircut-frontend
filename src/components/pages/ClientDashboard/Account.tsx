@@ -98,27 +98,27 @@ const Account = () => {
         confirmPassword: "",
     });
 
-      const [oldPasswordVisiblity, setOldPasswordVisiblity] = useState(false);
-      const [newPasswordVisiblity, setNewPasswordVisiblity] = useState(false);
-      const [confirmPasswordVisiblity, setConfirmPasswordVisiblity] = useState(false);
-      const togglePasswordVisibility = (field: string) => {
+    const [oldPasswordVisiblity, setOldPasswordVisiblity] = useState(false);
+    const [newPasswordVisiblity, setNewPasswordVisiblity] = useState(false);
+    const [confirmPasswordVisiblity, setConfirmPasswordVisiblity] = useState(false);
+    const togglePasswordVisibility = (field: string) => {
         switch (field) {
-          case 'oldPassword':
-            setOldPasswordVisiblity((prev) => !prev);
-            break;
-          case 'newPassword':
-            setNewPasswordVisiblity((prev) => !prev);
-            break;
-          case 'confirmPassword':
-            setConfirmPasswordVisiblity((prev) => !prev);
-            break;
-          default:
-            setNewPasswordVisiblity((prev) => !prev);
-            setOldPasswordVisiblity((prev) => !prev);
-            setConfirmPasswordVisiblity((prev) => !prev);
-            break;
+            case 'oldPassword':
+                setOldPasswordVisiblity((prev) => !prev);
+                break;
+            case 'newPassword':
+                setNewPasswordVisiblity((prev) => !prev);
+                break;
+            case 'confirmPassword':
+                setConfirmPasswordVisiblity((prev) => !prev);
+                break;
+            default:
+                setNewPasswordVisiblity((prev) => !prev);
+                setOldPasswordVisiblity((prev) => !prev);
+                setConfirmPasswordVisiblity((prev) => !prev);
+                break;
         }
-      };
+    };
     const setOldPassword = (value: string) => {
         renewPassword((prev) => {
             return { ...prev, oldPassword: value };
@@ -141,13 +141,13 @@ const Account = () => {
                 old_password: passwordField.oldPassword,
                 new_password: passwordField.newPassword,
                 repeat_password: passwordField.confirmPassword,
-            })            
+            })
             setIsModalPswrd(false);
             showSnackbar("success", resp.data.message);
             passwordField.oldPassword = "";
             passwordField.newPassword = "";
             passwordField.confirmPassword = "";
-        } catch (error) {            
+        } catch (error) {
             setError((prev) => {
                 return { ...prev, text: error.response.data.message };
             });
@@ -175,96 +175,96 @@ const Account = () => {
     let [errorPop, setErrorPop] = useState("")
 
     const modifPassWord: React.JSX.Element =
-    <div>
-      <div className="flex flex-col items-center justify-center gap-4">
-        <p className="text-xl font-semibold text-black text-center">Modification du mot de passe</p>
+        <div>
+            <div className="flex flex-col items-center justify-center gap-4">
+                <p className="text-xl font-semibold text-black text-center">Modification du mot de passe</p>
 
-        {error && (
-          <p className={`${Theme_A.checkers.errorText}`}>
-            {error.text}
-          </p>
-        )}
-        <TextField className={`${inputFieldsDesign}`}
-          id="oldPswrd"
-          label="Ancien mot de passe"
-          type={oldPasswordVisiblity ? 'text' : 'password'}
-          variant="outlined"
-          value={passwordField.oldPassword}
-          onChange={(e) => {
-            setOldPassword(e.target.value)
-          }}
-          InputProps={{
-            style: {
-              borderRadius: '12px',
-            },
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton onClick={() => togglePasswordVisibility('oldPassword')}>
-                  {oldPasswordVisiblity ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-        <TextField className={`${inputFieldsDesign}`}
-          id="NewPswrd1"
-          label="Nouveau mot de passe"
-          variant="outlined"
-          type={newPasswordVisiblity ? 'text' : 'password'}
-          value={passwordField.newPassword}
-          onChange={(e) => setNewPassword(e.target.value)}
-          InputProps={{
-            style: {
-              borderRadius: '12px',
-            },
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton onClick={() => togglePasswordVisibility('newPassword')}>
-                {newPasswordVisiblity ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            ),
-          }}
-        />
-        <TextField className={`${inputFieldsDesign}`}
-          id="NewPswrd2"
-          label="Répéter nouveau mot de passe"
-          variant="outlined"
-          type={confirmPasswordVisiblity ? 'text' : 'password'}
-          value={passwordField.confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-          InputProps={{
-            style: {
-              borderRadius: '12px',
-            },
+                {error && (
+                    <p className={`${Theme_A.checkers.errorText}`}>
+                        {error.text}
+                    </p>
+                )}
+                <TextField className={`${inputFieldsDesign}`}
+                    id="oldPswrd"
+                    label="Ancien mot de passe"
+                    type={oldPasswordVisiblity ? 'text' : 'password'}
+                    variant="outlined"
+                    value={passwordField.oldPassword}
+                    onChange={(e) => {
+                        setOldPassword(e.target.value)
+                    }}
+                    InputProps={{
+                        style: {
+                            borderRadius: '12px',
+                        },
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton onClick={() => togglePasswordVisibility('oldPassword')}>
+                                    {oldPasswordVisiblity ? <Visibility /> : <VisibilityOff />}
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+                    }}
+                />
+                <TextField className={`${inputFieldsDesign}`}
+                    id="NewPswrd1"
+                    label="Nouveau mot de passe"
+                    variant="outlined"
+                    type={newPasswordVisiblity ? 'text' : 'password'}
+                    value={passwordField.newPassword}
+                    onChange={(e) => setNewPassword(e.target.value)}
+                    InputProps={{
+                        style: {
+                            borderRadius: '12px',
+                        },
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton onClick={() => togglePasswordVisibility('newPassword')}>
+                                    {newPasswordVisiblity ? <Visibility /> : <VisibilityOff />}
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+                    }}
+                />
+                <TextField className={`${inputFieldsDesign}`}
+                    id="NewPswrd2"
+                    label="Répéter nouveau mot de passe"
+                    variant="outlined"
+                    type={confirmPasswordVisiblity ? 'text' : 'password'}
+                    value={passwordField.confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
+                    InputProps={{
+                        style: {
+                            borderRadius: '12px',
+                        },
 
-            endAdornment: (
-              <InputAdornment position="end">
-                <IconButton onClick={() => togglePasswordVisibility('confirmPassword')}>
-                  {confirmPasswordVisiblity ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
-              </InputAdornment>
-            ),
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton onClick={() => togglePasswordVisibility('confirmPassword')}>
+                                    {confirmPasswordVisiblity ? <Visibility /> : <VisibilityOff />}
+                                </IconButton>
+                            </InputAdornment>
+                        ),
 
-          }
-          }
-        />
-      </div>
-      <div className="mt-4 flex gap-4 items-center justify-center w-full">
-        <button
-          className={`${Theme_A.button.medWhiteColoredButton}`}
-          onClick={() => setIsModalPswrd(!isModalPswrd)}
-        >
-          Annuler
-        </button>
-        <button
-          className={`${Theme_A.button.mediumGradientButton}`}
-          onClick={() => onSubmitPassword()}
-        >
-          Actualiser
-        </button>
-      </div>
-    </div>
+                    }
+                    }
+                />
+            </div>
+            <div className="mt-4 flex gap-4 items-center justify-center w-full">
+                <button
+                    className={`${Theme_A.button.medWhiteColoredButton}`}
+                    onClick={() => setIsModalPswrd(!isModalPswrd)}
+                >
+                    Annuler
+                </button>
+                <button
+                    className={`${Theme_A.button.mediumGradientButton}`}
+                    onClick={() => onSubmitPassword()}
+                >
+                    Actualiser
+                </button>
+            </div>
+        </div>
     ////////////////////////////////////////////////////
     ///////////////////// ADDRESS 
     ////////////////////////////////////////////////////
