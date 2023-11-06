@@ -282,7 +282,7 @@ const SearchSalon = () => {
                 <p className="-mb-2"> {Math.round(salonProfile.rating)}</p> <br /> <small><small>  ({salonProfile.ratings_count || 0} avis</small></small> <p className="font-normal"><small><small><small>* sur cette coiffure</small></small></small> <br /></p> <small><small> ) </small></small>
               </div>}
               {/* Description du salon */}
-              <div className="mt-5 p-4 bg-gray-100 w-full lg:w-[400px] 2xl:w-[720px] rounded-xl ">
+              <div className="mt-5 p-4 bg-gray-200 w-full lg:w-[400px] 2xl:w-[720px] rounded-xl ">
                 {salonProfile && <p className="text-black text-lg">
                   {/* TODO lien vers la description du salon {salonProfile.description} */}
                   {salonProfile.description}
@@ -335,54 +335,54 @@ const SearchSalon = () => {
             </p>
 
             {/* Conteneur pour les informations */}
-            <div className="flex flex-col items-center gap-6 bg-white opacity-90 w-full max-w-[90vw] sm:max-w-[300px] md:max-w-[350px] xl:max-w-[420px] 2xl:max-w-[470px] border border-[#E1E1E1] rounded-3xl py-6 px-8 2xl:px-10 shadow-md mt-6 ">
+            <div className="flex flex-col items-center gap-6 bg-white opacity-90 w-full max-w-[90vw] sm:max-w-[300px] md:max-w-[350px] xl:max-w-[420px] 2xl:max-w-[500px] border border-[#E1E1E1] rounded-3xl py-6 px-8 2xl:px-10 shadow-md mt-6 ">
 
               {/* Ligne d'information avec titre et valeur */}
               {/* Ligne avec Prix et Durée totale */}
-              <div className="flex justify-between w-full">
+              <div className="flex justify-between w-full text-stone-600">
                 {/* Partie gauche : Prix total */}
-                <div className="flex justify-between w-1/2">
-                  <p className="text-md xl:text-lg font-semibold text-black">
+                <div className="flex justify-evenly w-1/2">
+                  <p className="text-md xl:text-lg font-semibold ">
                     Prix total :
                   </p>
-                  {salonProfile && <p className="text-md xl:text-lg font-normal text-black">
-                    {salonProfile.final_price}
+                  {salonProfile && <p className="text-md xl:text-lg font-normal text-black italic">
+                    {salonProfile.final_price}€
                   </p>}
                 </div>
 
                 {/* Partie droite : Durée totale */}
-                <div className="flex justify-between w-1/2">
-                  <p className="text-md xl:text-lg font-semibold text-black">
-                    Dur&eacute;e totale :
+                <div className="flex justify-evenly w-1/2">
+                  <p className="text-md xl:text-lg font-semibold text-black mb-4">
+                    Dur&eacute;e  :
                   </p>
-                  {salonProfile && <p className="text-md xl:text-lg font-normal text-black">
-                    {salonProfile.total_duration}
+                  {salonProfile && <p className="text-md xl:text-lg font-normal text-black italic">
+                    {salonProfile.total_duration} min
                   </p>}
                 </div>
               </div>
               {haircutData && <div className="flex justify-between w-full">
-                <p className="text-md xl:text-lg font-semibold text-black">
-                  Nom de la coiffure :
+                <p className="text-md xl:text-lg font-semibold text-stone-400">
+                  <small>Nom de la coiffure :</small>
                 </p>
-                <p className="text-md xl:text-lg font-normal text-black">
+                <p className="text-md xl:text-lg font-normal text-stone-400 italic">
                   {haircutData.name}
                 </p>
               </div>}
-              {salonProfile && salonProfile.haircut && <div className="flex justify-between w-full">
+              {salonProfile && salonProfile.haircut && <div className="flex justify-between text-stone-400 w-full">
                 {/* Durée de la coiffure*/}
-                <p className="text-md xl:text-lg font-semibold text-black">
-                  Dur&eacute;e de la coiffure :
+                <p className="text-md xl:text-lg font-semibold  ">
+                  <small>Dur&eacute;e de la coiffure :</small>
                 </p>
-                <p className="text-md xl:text-lg font-normal text-black">
-                  {salonProfile.haircut.base_duration}
+                <p className="text-md xl:text-lg font-normal text-stone-400 italic">
+                  {salonProfile.haircut.base_duration} min
                 </p>
               </div>}
               <div className="flex justify-between w-full">
                 {/* Durée de la coiffure*/}
-                <p className="text-md xl:text-lg font-semibold text-black">
-                  Nom des prestations:
+                <p className="text-md xl:text-lg font-semibold text-stone-400">
+                  <small> Nom des prestations:</small>
                 </p>
-                <p className="text-md xl:text-lg font-normal text-black">
+                <p className="text-md xl:text-lg font-normal text-stone-400 italic">
                   {servicesData ? <p>
                     {servicesData.map((item: { name: string, id: number }, index: number) => {
                       return <p key={index} className="text-base">{++index}. {item.name}</p>
@@ -392,11 +392,11 @@ const SearchSalon = () => {
               </div>
               <div className="flex justify-between w-full">
                 {/* Durée de la coiffure*/}
-                <p className="text-md xl:text-lg font-semibold text-black">
-                  Dur&eacute;e des prestations :
+                <p className="text-md xl:text-lg font-semibold text-stone-400">
+                  <small>Dur&eacute;e des prestations :</small>
                 </p>
-                {salonProfile && <p className="text-md xl:text-lg font-normal text-black">
-                  {salonProfile.total_service_duration}
+                {salonProfile && <p className="text-md xl:text-lg font-normal text-stone-400 italic">
+                  {salonProfile.total_service_duration} min
                 </p>}
               </div>
             </div>
