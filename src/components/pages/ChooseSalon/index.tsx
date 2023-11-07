@@ -281,12 +281,38 @@ const SalonChoice = () => {
             {/* <Navbar isSalonPage={true} /> */}
             <Navbar
                 isSalonPage={true}
-                onCitySearch={(value: string) => setCitySearch(value)}
-                onNameSearch={(value: string) => setNameSearch(value)}
-                onMobileFilters={(mobile) => setFilteredMobile([mobile])}
+                onCitySearch={(value: string) =>  {
+                    setCitySearch((pre) => {
+                        if (value != pre) {
+                            return value
+                        }
+                        return pre
+                    })
+                }}
+                onNameSearch={(value: string) => {
+                    setNameSearch((pre) => {
+                        if (value != pre) {
+                            return value
+                        }
+                        return pre
+                    })
+                }}
+                onMobileFilters={(mobile) => {
+                    setFilteredMobile((pre) => {
+                        if (JSON.stringify([mobile]) != JSON.stringify(pre)) {
+                            return [mobile]
+                        }
+                        return pre
+                    })
+                }}
                 onRangeFilters={(range: string[]) => {
                     const numberArray = range.map(item => parseInt(item, 10));
-                    setRangeFilter(numberArray);
+                    setRangeFilter((pre) => {
+                        if (JSON.stringify(numberArray) != JSON.stringify(pre)) {
+                            return numberArray
+                        }
+                        return pre
+                    });
                 }}
             />
 
@@ -381,7 +407,7 @@ const SalonChoice = () => {
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-10">
 
                             {/* VIGNETTES (ITERATIONS) */}
-                            {salons.map((salon, index) => (
+                            {filteredSalons.map((salon, index) => (
                                 <div
                                     key={index}
                                     onClick={() => setSelectedSalon(salon)}
