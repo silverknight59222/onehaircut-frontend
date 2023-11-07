@@ -46,32 +46,59 @@ const StaffModal = () => {
         { title: 'Objectif one haircut', objective: '7.00 €' },
     ];
 
+  const [cards, setCards] = useState([
+    // Initial cards data with 'clicked' state to track if it's disabled
+    { title: 'Revenu Mensuel', objective: '42.000 €', clicked: false },
+    { title: 'Commandesd’ habitué', objective: '35.000 €', clicked: false },
+    { title: 'Nouveaux clients', objective: '35.000 €', clicked: false },
+    { title: 'Nombre de visites en ligne', objective: '35.000 €', clicked: false },
+    { title: 'Nombre max', objective: '35.000 €', clicked: false },
+    { title: 'Note moyenne', objective: '35.000 €', clicked: false },
+    { title: 'Occupation du personnel', objective: '35.000 €', clicked: false },
+    { title: 'Objectif one haircut', objective: '35.000 €', clicked: false },
+  ]);
+
+
     const [progressBars, setProgressBars] = useState([
-        { value: 61, name: "Revenu Mensuel", number: 27, color: "#FE2569" },
-        { value: 73, name: "Commandesd’ habitué", number: 47, color: "#0FBFF1" },
-        { value: 50, name: "Nouveaux clients", number: 31, color: "#7ABF50" },
-        { value: 0, name: "Nombre de visites en ligne", number: 0, color: "#15BAF2" },
+        // Assuming 'number' is also a required field, set it initially to a default value like 0 or any start point
+        { name: 'Revenu Mensuel', value: 0, number: 0, color: '#FE2569', filled: false },
+        { name: 'Commandesd’ habitué', value: 0, number: 0, color: '#0FBFF1', filled: false },
+        { name: 'Nouveaux clients', value: 0, number: 0, color: '#7ABF50', filled: false },
+        { name: 'Nombre de visites en ligne', value: 0, number: 0, color: '#15BAF2', filled: false },
+        // ... more bars
     ]);
 
     // State to track which card is selected
     const [selectedCardIndex, setSelectedCardIndex] = useState<number | null>(null);
 
-    const handleCardClick = (card: { title: string; objective: string }, index: number) => {
-        setSelectedCardIndex(index);
-        // Now we have access to `card.title` and `card.objective` here
-        const updatedProgressBars = progressBars.map((bar) => {
-            if (bar.name === card.title) {
-                // Update the values for the clicked card's corresponding progress bar
-                const objectiveNumber = parseFloat(card.objective.replace(/[^\d.-]/g, ''));
+  // Handles the click on a discount card
+    const handleCardClick = (cardIndex:number) => {
+        // First, we mark the clicked card to be disabled
+        setCards(
+            cards.map((card, index) => {
+                if (index === cardIndex) {
+                    return { ...card, clicked: true }; // Mark the card as clicked
+                }
 
-return { ...bar, number: objectiveNumber };
-            }
+            return card;
+            })
+        );
 
-return bar;
-        });
+        // Next, we extract the number from the clicked card's objective
+        const card = cards[cardIndex];
+        const value = parseFloat(card.objective.replace(/[^\d.-]/g, '')); // Extract number from objective
 
-        // Update the state with the new progress bars array
-        setProgressBars(updatedProgressBars);
+        // Now, update the corresponding progress bar's value and 'number' to show the progress
+        setProgressBars(
+            progressBars.map((progressBar) => {
+                if (progressBar.name === card.title) {
+                    // It is assuming the progressBar.name matches exactly with card.title
+                    return { ...progressBar, value, number: value, filled: true }; // Update both value and number
+                }
+
+                return progressBar;
+            })
+        );
     };
 
     return (
@@ -95,17 +122,19 @@ return bar;
                 ))}
             </div>
             <div className="flex flex-wrap items-center justify-center gap-10 flex-grow mb-7">
-                {revenueCards.map((card, index) => (
+                {cards.map((card, index) => (
                     <div
                         style={{
                             width: '230px',
                             height: '173px',
                             borderRadius: '37px',
-                            background: selectedCardIndex === index ? '#E5E5E5' : '#FFFFFF',
+                            background: card.clicked ? '#E5E5E5' : '#FFFFFF',
+                            pointerEvents: card.clicked ? 'none' : 'auto', // Disable pointer events if card is clicked
+                            opacity: card.clicked ? 0.5 : 1, // Reduce opacity if card is clicked
                         }}
                         key={index}
                         className="max-w-xs w-full rounded-xl shadow-md p-6 cursor-pointer"
-                        onClick={() => handleCardClick(card, index)}
+                        onClick={() => handleCardClick(index)}
                     >
                         <h3 className="text-gray-900 text-xl font-medium mb-2">{card.title}</h3>
                         <p className="text-gray-500 text-sm mb-3">Objectif</p>
