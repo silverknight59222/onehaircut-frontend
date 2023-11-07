@@ -77,6 +77,7 @@ const RechartsPieChart: React.FC<RechartsPieChartProps> = ({ data }) => {
                                         fill={entry.color}
                                         strokeWidth={activeIndex === index ? 4 : 1}
                                         scale={activeIndex === index ? 1.1 : 1}
+                                        style={{outline: 'none'}}
                                     />
                                 ))}
                             </Pie>
