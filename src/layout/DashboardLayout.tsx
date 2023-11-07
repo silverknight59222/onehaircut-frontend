@@ -17,7 +17,7 @@ const DashboardLayout = ({ children }: DashboardLayout) => {
     { icon: "MessageIcon", title: "Message", route: "/dashboard/messages" },
     { icon: "SettingsIcon", title: "Réglages", route: "/dashboard/settings" },
     { icon: "PersonalizationIcon", title: "Abonnement", route: "/dashboard/subscription" },
-    { icon: "BoostIcon", title: "Boost", route: "" },
+    // { icon: "BoostIcon", title: "Boost", route: "" },
     { icon: "BotIcon", title: "OnehairBot", route: "/dashboard/bot" },
   ];
   const SidebarHandler = () => {
@@ -28,7 +28,7 @@ const DashboardLayout = ({ children }: DashboardLayout) => {
   };
   return (
     <div>
-        <Sidebar
+      <Sidebar
         sidebarItems={sidebarItems}
         isSidebar={isSidebar}
         SidebarHandler={SidebarHandler}
@@ -41,8 +41,8 @@ const DashboardLayout = ({ children }: DashboardLayout) => {
           SidebarHandler={SidebarHandler}
           tabHandler={tabHandler}
         />
-				  <div className="mt-12 px-4 lg:px-6">
-            {children}
+        <div className="mt-12 px-4 lg:px-6">
+          {children}
         </div>
       </div>
     </div>

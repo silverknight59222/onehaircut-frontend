@@ -128,14 +128,14 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
           />
         );
         break;
-      case "BoostIcon":
-        Icon = (
-          <BoostIcon
-            color={activeIcon === SidebarIcon ? colorIcon : "#989898"}
-            width="24"
-            height="24"
-          />
-        );
+        // case "BoostIcon":
+        //   Icon = (
+        //     <BoostIcon
+        //       color={activeIcon === SidebarIcon ? colorIcon : "#989898"}
+        //       width="24"
+        //       height="24"
+        //     />
+        //   );
         break;
       case "Reservation":
         Icon = (
