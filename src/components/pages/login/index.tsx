@@ -81,6 +81,7 @@ const Login = () => {
 				return { ...prev, password: '' }
 			}))
 		}
+
 		return isValidated;
 	}
 	const onLogin = async () => {
@@ -112,6 +113,7 @@ const Login = () => {
 				setIsLoading(false);
 			})
 	};
+
 	return (
 		<>
 			{isLoading && loadingView()}

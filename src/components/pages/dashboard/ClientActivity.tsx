@@ -57,7 +57,8 @@ const ClientActivity = () => {
       discount: null,
     },
   ];
-  return (
+
+return (
     <div>
       <DashboardLayout>
         <div>

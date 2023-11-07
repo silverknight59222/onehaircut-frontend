@@ -1,5 +1,5 @@
 // ** React Imports
-import React, { Ref, useState, forwardRef, ReactElement, MouseEvent, Fragment } from 'react'
+import React, { Ref, useState, ReactNode, forwardRef, ReactElement, MouseEvent, Fragment } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -52,47 +52,28 @@ const Transition = forwardRef(function Transition(
   return <Fade ref={ref} {...props} />
 })
 
-const options: OptionsType[] = [
-  {
-    avatar: '1.png',
-    name: 'Chandler Bing'
-  },
-  {
-    avatar: '2.png',
-    name: 'Rachel Green'
-  },
-  {
-    avatar: '3.png',
-    name: 'Joey Tribbiani'
-  },
-  {
-    avatar: '4.png',
-    name: 'Pheobe Buffay'
-  },
-  {
-    avatar: '5.png',
-    name: 'Ross Geller'
-  },
-  {
-    avatar: '8.png',
-    name: 'Monica Geller'
-  }
-]
 
+interface DialogShareProjectProps {
+  show: any;
+  setShow: any;
+  children: any;
+}
 const CustomCloseButton = styled(IconButton)<IconButtonProps>(({ theme }) => ({
   top: 0,
   right: 0,
-  color: 'grey.500',
+  color: theme.palette.common.white, // Set icon color to white
   position: 'absolute',
   boxShadow: theme.shadows[2],
   transform: 'translate(10px, -10px)',
   borderRadius: theme.shape.borderRadius,
-  backgroundColor: `${theme.palette.background.paper} !important`,
+  backgroundColor: `${theme.palette.error.main} !important`, // Set background to red
   transition: 'transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out',
   '&:hover': {
-    transform: 'translate(7px, -5px)'
+    backgroundColor: theme.palette.error.dark, // Optionally change the hover color to a darker red
+    color: theme.palette.common.white
   }
-}))
+}));
+
 
 const headers:any = [
   "Date",
@@ -189,8 +170,7 @@ const data = [
   // ... Add more rows as needed
 ];
 
-const DialogShareProject = ({ show, setShow, children }) => {
-  // ** States
+const DialogShareProject: React.FC<DialogShareProjectProps> = ({ show, setShow, children }) => {  // ** States
   // const [show, setShow] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 
@@ -215,6 +195,9 @@ const DialogShareProject = ({ show, setShow, children }) => {
         fullWidth
         open={show}
         maxWidth='md'
+        PaperProps={{
+          style: { maxWidth: 'none', width: '80%' }, // Set a specific width here
+        }}
         scroll='body'
         onClose={() => setShow(false)}
         TransitionComponent={Transition}
@@ -231,23 +214,6 @@ const DialogShareProject = ({ show, setShow, children }) => {
             <Icon icon='tabler:x' fontSize='1.25rem' />
           </CustomCloseButton>
           {children}
-          {/*<List*/}
-          {/*  dense*/}
-          {/*  sx={{*/}
-          {/*    mb: 3,*/}
-          {/*    '& .MuiListItemText-primary': {*/}
-          {/*      ...theme.typography.body1,*/}
-          {/*      fontWeight: 500,*/}
-          {/*      color: 'text.secondary'*/}
-          {/*    },*/}
-          {/*    '& .MuiListItemText-secondary': {*/}
-          {/*      ...theme.typography.body1,*/}
-          {/*      fontWeight: 500,*/}
-          {/*      color: 'text.disabled'*/}
-          {/*    }*/}
-          {/*  }}*/}
-          {/*>*/}
-          {/*</List>*/}
         </DialogContent>
       </Dialog>
     </Card>
