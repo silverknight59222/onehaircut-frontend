@@ -320,7 +320,7 @@ const Welcome = () => {
         </p>
         <div className="flex flex-col md:flex-row gap-4 mb-10 sm:mb-10 ">
           <div
-            className={`${Theme_A.button.bigWhiteGreyButton} shadow-sm hover:shadow-md cursor-pointer `}
+            className={`${Theme_A.button.bigWhiteGreyButton} shadow-sm shadow-stone-600 hover:shadow-md hover:shadow-stone-600 cursor-pointer `}
             onClick={() => {
               router.push('/services');
             }}
