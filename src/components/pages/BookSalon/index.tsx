@@ -254,9 +254,13 @@ const BookSalon = () => {
 
         {/* TITRE */}
         <div className="flex justify-center">
-          <p className="text-xl text-black font-semibold lg:text-center mb-6">Sélectionnez une date</p>
+          <p className="text-xl text-black font-semibold lg:text-center mb-2 ">Sélectionnez une date</p>
         </div>
 
+        {/* INFO ABOUT HAIRDRESSER SELECTION */}
+        <p className="text-sm text-stone-400 italic mb-8 text-center">
+          Les disponibilités dépendent du coiffeur sélectionné
+        </p>
 
         <div className="flex flex-col sm:flex-row items-center justify-evenly px-1 sm:px-10">
 
@@ -287,7 +291,7 @@ const BookSalon = () => {
         </div>
 
         {/* SLOTS */}
-        <div className="flex items-center justify-center mt-12 mb-4">
+        <div className="flex items-center justify-center mt-6 mb-4">
           {slots.length ?
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-x-6 gap-y-7">
               {slots.map((slot: any, index) => {

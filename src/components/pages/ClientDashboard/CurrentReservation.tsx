@@ -95,7 +95,7 @@ const Currentreservation = () => {
                     {!items.length && <p className="text-lg italic">Aucune Réservation Disponible</p>}
                     {items.map((item, index) => {
                         return (
-                            <div key={index} className={`relative z-10 w-full xl:w-[800px]  rounded-3xl bg-white border-2 border-zinc-100 py-6 px-12 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)] mb-3`}>
+                            <div key={index} className={`relative z-10 w-full xl:w-[800px]  rounded-3xl bg-white border-2 border-zinc-100 py-6 px-12 shadow-sm shadow-stone-600 mb-12`}>
                                 <div className='flex flex-col-reverse sm:flex-row items-center sm:items-start justify-between'>
                                     <div className='flex flex-col items-center sm:items-start justify-center sm:justify-start gap-5 mt-5 sm:mt-0'>
                                         <div>

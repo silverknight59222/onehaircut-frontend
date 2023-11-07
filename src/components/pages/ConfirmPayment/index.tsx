@@ -55,7 +55,7 @@ const Index = () => {
                         className="flex flex-col sm:flex-row sm:items-center gap-2 text-black text-2xl"
                       >
                         <p className="font-semibold">{item.name}: </p>
-                        <p className="text-[#767676]">{item.desc}</p>
+                        <p className="text-gray-400 text-xl font-medium">{item.desc}</p>
                       </div>
                     );
                   })}
@@ -69,11 +69,11 @@ const Index = () => {
               <div className="border-t-2 border-[#CBCBCB] pt-9 mt-4">
                 <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-black text-2xl">
                   <p className="font-semibold">Email: </p>
-                  <p className="text-[#767676]">{userInfo ? userInfo.email : '-'}</p>
+                  <p className="text-gray-400 text-xl font-medium">{userInfo ? userInfo.email : '-'}</p>
                 </div>
                 <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-black text-2xl mt-3 sm:mt-0">
                   <p className="font-semibold">Numéro de téléphone: </p>
-                  <p className="text-[#767676]">{userInfo ? userInfo.phone : '-'}</p>
+                  <p className="text-gray-400 text-xl font-medium">{userInfo ? userInfo.phone : '-'}</p>
                 </div>
               </div>
             </div>

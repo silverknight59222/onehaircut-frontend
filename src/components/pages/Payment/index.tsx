@@ -77,6 +77,26 @@ const Index = () => {
         })
     }
   }
+  function getClassNameForDay(day: any) {
+    switch (day) {
+      case 'Monday':
+        return 'Lundi';
+      case 'Tuesday':
+        return 'Mardi';
+      case 'Wednesday':
+        return 'Mercredi';
+      case 'Thursday':
+        return 'Jeudi';
+      case 'Friday':
+        return 'Vendredi';
+      case 'Saturday':
+        return 'Samedi';
+      case 'Sunday':
+        return 'Dimanche';
+      default:
+        return 'JourInconnu';
+    }
+  }
 
   const getServicesPrize = async () => {
     if (serviceIds?.length) {
@@ -124,7 +144,6 @@ const Index = () => {
       targetDate.setDate(today.getDate() + difference);
 
       const formattedDate = targetDate.toISOString().split('T')[0];
-
 
       const data = {
         user_id: user ? Number(JSON.parse(user).id) : null,
@@ -219,29 +238,21 @@ const Index = () => {
           </p>
           <div className="w-full md:w-[750px] lg:w-[940px] pt-10 pb-10 px-6 sm:px-14 bg-[#F8F8F8] rounded-[22px] border border-[#ECECEC] shadow-sm shadow-stone-600">
             <div className="flex flex-col gap-3 text-xl font-medium text-black">
-              {/* {items.map((item, index) => {
-                return (
-                  <div
-                    key={index}
-                    className="flex items-center gap-2 text-black"
-                  >
-                    <p className="font-semibold">{item.name}: </p>
-                    <p>{item.desc}</p>
-                  </div>
-                );
-              })} */}
+
+
               {haircutData ? <p className="text-base"><span className="font-semibold text-lg">Haircut: </span>{haircutData.name}</p> : ''}
               {servicesData ? <p><span className="font-semibold text-lg">Services: </span>
                 {servicesData.map((item: { name: string, id: number }, index: number) => {
                   return <p key={index} className="text-base">{++index}. {item.name}</p>
                 })}
               </p> : ''}
-              {salonData && <p className="text-base"><span className="font-semibold text-lg">Hair Salon: </span>{salonData.name}</p>}
-              {slotData && <p className="text-base"><span className="font-semibold text-lg">Hair Dresser: </span>{slotData.hairDresser.name}</p>}
-              {slotData && <p className="text-base"><span className="font-semibold text-lg">Slot: </span>{slotData.slot[0].day}</p>}
-              {slotData && <p className="text-base"><span className="font-semibold text-lg">Start: </span>{slotData.slot[0].start}</p>}
-              {slotData && <p className="text-base"><span className="font-semibold text-lg">End: </span>{slotData.slot[slotData.slot.length - 1].end}</p>}
-              {slotData && <p className="text-base"><span className="font-semibold text-lg">Duration: </span>{salonData.total_duration} Minutes</p>}
+              {salonData && <p className="text-base"><span className="font-semibold text-lg">Etablissement: </span>{salonData.name}</p>}
+              {slotData && <p className="text-base"><span className="font-semibold text-lg">Coiffeur: </span>{slotData.hairDresser.name}</p>}
+              {slotData && (<p className="text-base"><span className={`font-semibold text-lg`}>Créneau horaire:</span>{getClassNameForDay(slotData.slot[0].day)}</p>)}
+
+              {slotData && <p className="text-base"><span className="font-semibold text-lg">Heure de début: </span>{slotData.slot[0].start}</p>}
+              {slotData && <p className="text-base"><span className="font-semibold text-lg">Heure de fin: </span>{slotData.slot[slotData.slot.length - 1].end}</p>}
+              {slotData && <p className="text-base"><span className="font-semibold text-lg">Durée totale: </span>{salonData.total_duration} Minutes</p>}
             </div>
             <div className="flex items-center justify-between border-t-2 border-[#CBCBCB] pt-9 mt-9">
               <button onClick={() => router.push('/book-salon')} className={`${Theme_A.button.bigWhiteColoredButton}`}>
@@ -252,20 +263,7 @@ const Index = () => {
               </p>
             </div>
           </div>
-          {/* <div className="flex flex-col items-center justify-center">
-          <p className="text-2xl text-black md:text-start text-center mb-4 mt-10">
-            Choisissez comment vous souhaitez payer
-          </p>
-          <button
-            className='relative w-52 lg:w-64 h-16 flex items-center justify-center gap-4 border rounded-xl text-2xl font-medium hover:border-secondary border-secondary'
-          >
-            <CardIcon />
-            <p>Carte</p>
-            <div className="absolute -top-1 -right-2">
-              <RegistrationCheckedIcon width="18px" />
-            </div>
-          </button>
-          </div> */}
+
           <div className="w-full flex items-center justify-center">
             {mounted && (
               <div className="mt-7 w-full md:w-5/12 lg:w-4/12">

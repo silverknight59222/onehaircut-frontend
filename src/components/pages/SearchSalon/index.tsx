@@ -339,13 +339,13 @@ const SearchSalon = () => {
 
               {/* Ligne d'information avec titre et valeur */}
               {/* Ligne avec Prix et Durée totale */}
-              <div className="flex justify-between w-full text-stone-600">
+              <div className="flex justify-between w-full text-black ">
                 {/* Partie gauche : Prix total */}
                 <div className="flex justify-evenly w-1/2">
                   <p className="text-md xl:text-lg font-semibold ">
                     Prix total :
                   </p>
-                  {salonProfile && <p className="text-md xl:text-lg font-normal text-black italic">
+                  {salonProfile && <p className="text-xl font-normal text-stone-700">
                     {salonProfile.final_price}€
                   </p>}
                 </div>
@@ -355,7 +355,7 @@ const SearchSalon = () => {
                   <p className="text-md xl:text-lg font-semibold text-black mb-4">
                     Dur&eacute;e  :
                   </p>
-                  {salonProfile && <p className="text-md xl:text-lg font-normal text-black italic">
+                  {salonProfile && <p className="text-xl font-normal text-stone-700">
                     {salonProfile.total_duration} min
                   </p>}
                 </div>
