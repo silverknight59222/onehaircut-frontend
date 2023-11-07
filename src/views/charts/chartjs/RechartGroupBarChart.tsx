@@ -1,6 +1,6 @@
 // ** React Imports
 import React, { forwardRef, useState } from 'react'
-
+import RechartsWrapper from '@/@core/styles/libs/recharts'
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
@@ -139,6 +139,7 @@ const RechartsGroupBarChart = ({ direction, data, barFills, legends }: RechartsG
     }
 
     return (
+        <RechartsWrapper>
             <CardContent>
                 <Box sx={{ height: 350 }}>
                     <ResponsiveContainer>
@@ -163,6 +164,7 @@ const RechartsGroupBarChart = ({ direction, data, barFills, legends }: RechartsG
                     ))}
                 </Box>
             </CardContent>
+        </RechartsWrapper>
     )
 }
 

@@ -1,5 +1,6 @@
 // ** React Imports
 import React, { forwardRef, useState } from 'react'
+import RechartsWrapper from '@/@core/styles/libs/recharts'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -104,6 +105,7 @@ const RechartSingleBarChart: React.FC<RechartsBarChartProps> = ({ direction, sta
 
     // @ts-ignore
     return (
+        <RechartsWrapper>
         <Card>
             <CardContent>
                 {/* Legend, date picker and other elements you may want to include */}
@@ -120,6 +122,7 @@ const RechartSingleBarChart: React.FC<RechartsBarChartProps> = ({ direction, sta
                 </Box>
             </CardContent>
         </Card>
+        </RechartsWrapper>
     )
 }
 

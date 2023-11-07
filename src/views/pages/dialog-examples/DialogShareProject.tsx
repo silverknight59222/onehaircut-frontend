@@ -1,5 +1,5 @@
 // ** React Imports
-import React, { Ref, useState, forwardRef, ReactElement, MouseEvent, Fragment } from 'react'
+import React, { Ref, useState, ReactNode, forwardRef, ReactElement, MouseEvent, Fragment } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -52,33 +52,12 @@ const Transition = forwardRef(function Transition(
   return <Fade ref={ref} {...props} />
 })
 
-const options: OptionsType[] = [
-  {
-    avatar: '1.png',
-    name: 'Chandler Bing'
-  },
-  {
-    avatar: '2.png',
-    name: 'Rachel Green'
-  },
-  {
-    avatar: '3.png',
-    name: 'Joey Tribbiani'
-  },
-  {
-    avatar: '4.png',
-    name: 'Pheobe Buffay'
-  },
-  {
-    avatar: '5.png',
-    name: 'Ross Geller'
-  },
-  {
-    avatar: '8.png',
-    name: 'Monica Geller'
-  }
-]
 
+interface DialogShareProjectProps {
+  show: any;
+  setShow: any;
+  children: any;
+}
 const CustomCloseButton = styled(IconButton)<IconButtonProps>(({ theme }) => ({
   top: 0,
   right: 0,
@@ -191,8 +170,7 @@ const data = [
   // ... Add more rows as needed
 ];
 
-const DialogShareProject = ({ show, setShow, children }) => {
-  // ** States
+const DialogShareProject: React.FC<DialogShareProjectProps> = ({ show, setShow, children }) => {  // ** States
   // const [show, setShow] = useState<boolean>(false)
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
 

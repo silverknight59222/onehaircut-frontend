@@ -1,6 +1,7 @@
-import React from 'react';
+import React,{useState} from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
+import RechartsWrapper from '@/@core/styles/libs/recharts'
 import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
 import { Tooltip, PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
@@ -45,14 +46,38 @@ const renderCustomizedLabel = ({
 
 // Update the component to accept props
 const RechartsPieChart: React.FC<RechartsPieChartProps> = ({ data }) => {
+    const [activeIndex, setActiveIndex] = useState<number | null>(null);
+
+    const onPieEnter = (_: any, index: number): void => {
+        setActiveIndex(index);
+    };
+
+    const onPieLeave = (): void => {
+        setActiveIndex(null);
+    };
+
     return (
+        <RechartsWrapper>
             <CardContent>
                 <Box sx={{ height: 350 }}>
                     <ResponsiveContainer>
                         <PieChart height={350}>
-                            <Pie data={data} innerRadius={0} dataKey='value' label={renderCustomizedLabel} labelLine={false}>
+                            <Pie
+                                data={data}
+                                innerRadius={0}
+                                dataKey='value'
+                                label={renderCustomizedLabel}
+                                labelLine={false}
+                                onMouseEnter={onPieEnter}
+                                onMouseLeave={onPieLeave}
+                            >
                                 {data.map((entry, index) => (
-                                    <Cell key={`cell-${index}`} fill={entry.color} />
+                                    <Cell
+                                        key={`cell-${index}`}
+                                        fill={entry.color}
+                                        strokeWidth={activeIndex === index ? 4 : 1}
+                                        scale={activeIndex === index ? 1.1 : 1}
+                                    />
                                 ))}
                             </Pie>
                             <Tooltip />
@@ -76,6 +101,7 @@ const RechartsPieChart: React.FC<RechartsPieChartProps> = ({ data }) => {
                     ))}
                 </Box>
             </CardContent>
+        </RechartsWrapper>
     );
 };
 
