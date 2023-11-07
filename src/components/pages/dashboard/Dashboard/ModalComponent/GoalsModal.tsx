@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import ProgressBar from "@/components/UI/ProgressBar";
 import {styled} from "@mui/material/styles";
 import IconButton, {IconButtonProps} from "@mui/material/IconButton";
+import Icon from "@/@core/components/icon";
 
 const CustomCloseButton = styled(IconButton)<IconButtonProps>(({ theme }) => ({
     top: 0,
@@ -20,6 +21,9 @@ const CustomCloseButton = styled(IconButton)<IconButtonProps>(({ theme }) => ({
         color: theme.palette.common.white
     }
 }));
+
+
+
 
 
 
@@ -68,6 +72,19 @@ const StaffModal = () => {
         // ... more bars
     ]);
 
+    const handleCloseClick = (index: number) => {
+        // Update the progressBars state to reset the value and color of the specific progress bar
+        const newProgressBars = progressBars.map((bar: any, i: number) => {
+            if (i === index) {
+                // Reset value and color for the progress bar that has the close button clicked
+                return { ...bar, value: 0, number: 0, color: '#ccc', filled: false }; // Set a default color or keep it empty
+            }
+
+            return bar;
+        });
+        setProgressBars(newProgressBars);
+    };
+
     // State to track which card is selected
     const [selectedCardIndex, setSelectedCardIndex] = useState<number | null>(null);
 
@@ -101,6 +118,23 @@ const StaffModal = () => {
         );
     };
 
+    const handleObjectiveChange = (event: React.ChangeEvent<HTMLInputElement>, cardIndex: number) => {
+        const updatedCards = cards.map((card, index) => {
+            if (index === cardIndex && !card.clicked) {
+                return { ...card, objective: event.target.value };
+            }
+
+return card;
+        });
+        setCards(updatedCards);
+    };
+
+    // Prevents the click event from propagating to the card when clicking on the input
+    const handleInputClick = (event: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
+        event.stopPropagation();
+    };
+
+
     return (
         <div>
             <div className='mb-6'>
@@ -109,36 +143,74 @@ const StaffModal = () => {
                 </p>
             </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-10 flex-grow mb-7">
+            <div className="flex flex-wrap items-center justify-center gap-10 flex-grow mb-7"
+
+            >
                 {progressBars.map((bar, index) => (
-                    <ProgressBar
+                    <div
                         key={index}
-                        value={bar.value}
-                        name={bar.name}
-                        number={bar.number}
-                        rotation={0.25}
-                        color={bar.color}
-                    />
+                        className="relative" // This allows for absolute positioning of children
+                        style={{
+                            width: '230px', // Set your desired width
+                            // ... other styles, ensure position is not overridden
+                        }}
+                    >
+                        <ProgressBar
+                            value={bar.value}
+                            name={bar.name}
+                            number={bar.number}
+                            rotation={0.25}
+                            color={bar.color}
+                        />
+                        {/* Position Icon with absolute positioning */}
+                        <div style={{
+                            position: 'absolute',
+                            top: 0, // Align to top
+                            right: 0, // Align to right
+                            transform: 'translate(-50%, 50%)', // Adjust the position accordingly
+                            // Add any additional styles if necessary
+                        }}>
+                            <Icon icon='tabler:x' fontSize='1.25rem'
+                                  style={{ background: '#FF2968',
+                                      cursor: 'pointer',
+                                      width:'31px',
+                                      height: '33px',
+                                      borderRadius: '11px',
+                            }}
+                                  onClick={() => handleCloseClick(index)}/>
+                        </div>
+                    </div>
                 ))}
+
             </div>
             <div className="flex flex-wrap items-center justify-center gap-10 flex-grow mb-7">
                 {cards.map((card, index) => (
                     <div
+                        key={index}
                         style={{
                             width: '230px',
                             height: '173px',
                             borderRadius: '37px',
                             background: card.clicked ? '#E5E5E5' : '#FFFFFF',
-                            pointerEvents: card.clicked ? 'none' : 'auto', // Disable pointer events if card is clicked
-                            opacity: card.clicked ? 0.5 : 1, // Reduce opacity if card is clicked
+                            pointerEvents: card.clicked ? 'none' : 'auto',
+                            opacity: card.clicked ? 0.5 : 1,
                         }}
-                        key={index}
-                        className="max-w-xs w-full rounded-xl shadow-md p-6 cursor-pointer"
+                        className="max-w-xs w-full rounded-xl shadow-md p-6 cursor-pointer relative"
                         onClick={() => handleCardClick(index)}
                     >
                         <h3 className="text-gray-900 text-xl font-medium mb-2">{card.title}</h3>
                         <p className="text-gray-500 text-sm mb-3">Objectif</p>
-                        <p className="text-lg font-semibold text-gray-900">{card.objective}</p>
+                        {!card.clicked ? (
+                            <input
+                                type="text"
+                                value={card.objective}
+                                onChange={(e) => handleObjectiveChange(e, index)}
+                                onClick={handleInputClick}
+                                className="text-lg font-semibold text-gray-900 bg-transparent border-none focus:outline-none"
+                            />
+                        ) : (
+                            <p className="text-lg font-semibold text-gray-900">{card.objective}</p>
+                        )}
                     </div>
                 ))}
             </div>
