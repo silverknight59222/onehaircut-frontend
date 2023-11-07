@@ -9,6 +9,7 @@ import React from "react";
 import { Theme_A } from "@/components/utilis/Themes";
 import { ColorsThemeA } from "@/components/utilis/Themes";
 import DropdownMenu from "@/components/UI/DropDownMenu";
+import { OpenTimes } from "./OpenningHours";
 
 // Define the types/interfaces for the data
 interface HairdresserSlot {
@@ -43,8 +44,10 @@ export const HairdresserSlots = () => {
   >([]);
   const [hairdresserNames, setHairdresserNames] = useState<string[]>();
   const [day, setDay] = useState('');
+  const [Weekday, setWeekday] = useState([]);
   const [selectedWeekday, setSelectedWeekday] = useState<string>('');
   const [selectedHairdresser, setSelectedHairdresser] = useState<string>('');
+  const [salonSlots, setSalonSlots] = useState<OpenTimes[]>([]);
 
   // An example of state with a default hairdresser to initialize the state
   const defaultHairDresser = {
@@ -87,15 +90,15 @@ export const HairdresserSlots = () => {
     }
   };
 
-  const Weekday = [
-    "Dimanche",
-    "Lundi",
-    "Mardi",
-    "Mercredi",
-    "Jeudi",
-    "Vendredi",
-    "Samedi",
-  ];
+  const hoursList = {
+    MONDAY: { title: "Lundi" },
+    TUESDAY: { title: "Mardi" },
+    WEDNESDAY: { title: "Mercredi" },
+    THURSDAY: { title: "Jeudi" },
+    FRIDAY: { title: "Vendredi" },
+    SATURDAY: { title: "Samedi" },
+    SUNDAY: { title: "Dimanche" },
+  };
 
   const handleSelectWeekday = (item: string) => {
     switch (item) {
@@ -137,12 +140,42 @@ export const HairdresserSlots = () => {
     checkboxClickHandler(selectedItems);
   }, [selectedItems]);
 
+  const setHairSalonSlotList = (data: SalonwithSlots[]) => {
+    let hairSalon;
+    if (data.length > 1) {
+        data.forEach((salon) => {
+            if (salon.is_primary) {
+                hairSalon = salon;
+            }
+        });
+    } else {
+        hairSalon = data[0];
+    }
+
+    if (hairSalon) {
+        let days = [];
+        hairSalon.openTimes.forEach(time => {
+          if (time.available) {
+            days.push(hoursList[time.day].title)
+          }
+        });
+        setWeekday(days)
+        setSalonSlots(hairSalon.openTimes);
+    }
+};
+
   const getAllHairDresser = async () => {
     const user = getLocalStorage("user");
     const userId = user ? Number(JSON.parse(user).id) : null;
     const salonId = Number(getLocalStorage('salon_id'));
     if (userId) {
       setIsLoading(true);
+      await dashboard.getAllHairSalons(userId).then((resp) => {
+        if (resp.data.data.length) {
+            setHairSalonSlotList(resp.data.data);
+        }
+        setIsLoading(false);
+      });
       await dashboard.getAllHairDressers(salonId).then((resp) => {
         if (selectedSalonHairDresser.name) {
           const Hairdresser = selectedSalonHairDresser.name;
@@ -295,7 +328,7 @@ export const HairdresserSlots = () => {
               <div className="flex items-center justify-center gap-4 flex-wrap mt-4 w-full">
                 {selectedSalonHairDresser.slots.map((slot, index) => {
                   return (
-                    slot.day == day && slot.status === 1 && (
+                    slot.day == day && (
                       <div
                         key={index}
                         className={`flex items-center justify-center py-2 px-2 text-base font-medium border-2 rounded-lg w-72 border-gray-200 cursor-pointer
