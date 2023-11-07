@@ -10,17 +10,16 @@ const Index = () => {
   const router = useRouter();
   const userInfo = JSON.parse(getLocalStorage("user") as string);
   const salonName = getLocalStorage("salon_name") as string;
-  const salonAddress = JSON.parse(getLocalStorage("salon_address") as string);
+  const salon = JSON.parse(getLocalStorage("selectedSalon") as string);
   const salonType = getLocalStorage("salon_type") as string;
   const planType = JSON.parse(getLocalStorage("plan_type") as string);
   const priceData=getLocalStorage('servicePrice')
   const servicePrice = priceData ? JSON.parse(priceData) : null
   const items = [
     { name: "Nom", desc: userInfo ? userInfo.name : '-' },
-    { name: "Nom du salon", desc: salonName ? salonName : '-' },
-    { name: "Adresse du salon", desc: salonAddress ? `${salonAddress.city}, ${salonAddress.state}, ${salonAddress.country}` : '-' },
-    { name: "Type de salon", desc: salonType ? salonType : '-' },
-    { name: "Type de régime", desc: planType ? planType.name : '-' }
+    { name: "Nom du salon", desc: salon?.name},
+    { name: "Adresse du salon", desc: `${salon?.address?.city}, ${salon?.address?.state}, ${salon?.address?.country}` },
+    { name: "Type de salon", desc: salon?.type.replace("_", " ") }
   ];
   return (
     <div>
@@ -60,7 +59,7 @@ const Index = () => {
               </div>
               <div className="flex items-center justify-end mt-4">
                 <p className="text-black text-3xl font-medium ">
-                  Total: <span className="text-4xl font-semibold">${ planType ? planType+servicePrice : '-'}</span>
+                  Total: <span className="text-4xl font-semibold">${salon?.final_price}</span>
                 </p>
               </div>
               <div className="border-t-2 border-[#CBCBCB] pt-9 mt-4">
@@ -75,19 +74,6 @@ const Index = () => {
               </div>
             </div>
           </div>
-          {/* <div>
-            <div className="text-2xl text-black">
-              <p className="font-bold">Important:</p>
-              <p className="w-full sm:w-96">
-                Lorsque vous arrivez chez votre coiffeur, veuillez scanner le
-                QRC fourni par celui-ci.
-              </p>
-            </div>
-            <div className="w-64 h-80 flex flex-col items-center justify-center border border-black mt-5 rounded-3xl shadow-[0px_5px_20px_0px_rgba(58,58,58,0.25)]">
-              <QRCode />
-              <p className="text-2xl text-black mt-1">Activer le scan </p>
-            </div>
-          </div> */}
         </div>
       </div>
     </div>

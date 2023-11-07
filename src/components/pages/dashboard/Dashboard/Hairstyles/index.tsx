@@ -491,9 +491,9 @@ const Hairstyles = () => {
       activeMenu === "new" &&
       selectedHaircutsMapping[selectedHaircutsMapping.length - 1]
     ) {
-      url = `https://api-server.onehaircut.com/public${selectedHaircutsMapping[selectedHaircutsMapping.length - 1].image}`;
+      url = `https://api.onehaircut.com${selectedHaircutsMapping[selectedHaircutsMapping.length - 1].image}`;
     } else if (selectedSalonHaircut.image) {
-      url = `https://api-server.onehaircut.com/public${selectedSalonHaircut.image}`;
+      url = `https://api.onehaircut.com${selectedSalonHaircut.image}`;
     }
     return url;
   };
@@ -961,7 +961,7 @@ const Hairstyles = () => {
                   >
                     <div className={`${Theme_A.hairstyleCards.cardgradientTop}`}>
                       <div className={`${Theme_A.hairstyleCards.cardSize.med}`}>
-                        <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public/${item.image}`} fill={true} alt="" />
+                        <Image src={item.image.includes('http') ? item.image : `https://api.onehaircut.com/${item.image}`} fill={true} alt="" />
                       </div>
                       <div className={`${Theme_A.hairstyleCards.checkbubbleOFF}`}>
                         {selectedHaircutsMapping.filter(
@@ -990,7 +990,7 @@ const Hairstyles = () => {
                 >
                   <div className={`${Theme_A.hairstyleCards.selectedCardGradientTop}`}>
                     <div className={`${Theme_A.hairstyleCards.cardSize.med}`}>
-                      <Image src={item.image.includes('https://api-server.onehaircut.com/public') ? item.image : `https://api-server.onehaircut.com/public/${item.image}`} fill={true} alt="" />
+                      <Image src={item.image.includes('http') ? item.image : `https://api.onehaircut.com/${item.image}`} fill={true} alt="" />
                     </div>
                     <div className={`${Theme_A.hairstyleCards.checkbubbleOFF}`}>
                       {selectedSalonHaircut?.id === item.id && <SelectedIcon />}

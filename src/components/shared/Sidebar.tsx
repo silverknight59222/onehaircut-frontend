@@ -18,6 +18,7 @@ import {
   StatsIcon,
   ReservationIcon,
   AddPlusIcon,
+  CabineIcon,
 } from "../utilis/Icons";
 import { SalonDetails } from "@/types";
 import { getLocalStorage, setLocalStorage } from "@/api/storage";
@@ -174,6 +175,10 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
           <ReservationIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="30" height="28" />
         );
         break;
+      case "CabineIcon":
+        Icon = (
+          <CabineIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="28" height="28" />
+        );
     }
     return Icon;
   };
@@ -209,7 +214,6 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
   useEffect(() => {
     const temp = getLocalStorage("user");
     const user = temp ? JSON.parse(temp) : null;
-    console.log(user);
     if (!user.subscription) {
       const filteredRoutes = sidebarItems.filter(route => {
         return !proRoutes.includes(route.route)
@@ -226,11 +230,18 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
         setSalon(res.data.data);
       });
       user_api.getSaloonInformation().then((res) => {
-        console.log(res.data.data);
-        setImageUrl(res.data.data.hair_salon.logo);
-        setTextLength(res.data.data.hair_salon.description);
-        setTextDescription(res.data.data.hair_salon.description);
+        if (res.data.role == 'client') {
+          if (res.data.front_profile) {
+            setImageUrl(res.data?.front_profile);
+          }
+        } else {
+          setImageUrl(res.data?.hair_salon.logo);
+          setTextLength(res.data?.hair_salon.description);
+          setTextDescription(res.data?.hair_salon.description);
+        }
+
       });
+
     }
 
   }, []);
@@ -427,9 +438,9 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
             {/* Button to go directly to the order page */}
             {isClientDashboard && <div
               onClick={() => router.push('/')}
-              className={`flex items-center justify-center w-auto h-14 px-4 py-6 mx-3 my-6 ${Theme_A.button.mediumGradientButton} rounded-2xl shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] cursor-pointer `}
+              className={`flex items-center justify-center w-auto h-14 px-1 py-6 mx-6 my-6 ${Theme_A.button.smallGradientButton} cursor-pointer `}
             >
-              Réserver une coiffure
+              Rechercher une coiffure
             </div>}
             {/* Sidebar items display - mb-8 added to be able to see the last element due to the bottom-bar */}
             <div className="mt-8 mb-8">

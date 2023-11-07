@@ -54,7 +54,7 @@ const SalonChoice = () => {
     const filteredCityHandler = () => {
         const filteredSalons = salons.filter((salon) => {
             const cityNameMatches = citySearch
-                ? salon.city_name.toLowerCase().includes(citySearch.toLowerCase())
+                ? salon.address.city.toLowerCase().includes(citySearch.toLowerCase())
                 : true; // If citySearch is empty, consider it as a match
 
             const salonNameMatches = nameSearch
@@ -86,25 +86,25 @@ const SalonChoice = () => {
             serviceIds.push(service.id)
         })
         // Code pour obtenir des informations sur les salons depuis l'API
-        setIsLoading(true);
-        if (haircut) {
-            const data = {
-                haircut_id: haircut.id,
-                servicesIDs: serviceIds
-            }
-            await dashboard.getSalonsByHaircut(data)
-                .then((res) => {
-                    setIsLoading(false);
-                    if (res.data.data.length > 0) {
-                        setSalons(res.data.data);
-                        setFilteredSalons(res.data.data);
-                    }
-                })
-                .catch(error => {
-                    setIsLoading(false);
-                    console.log(error)
-                })
+        // setIsLoading(true);
+
+        let data = {
+            servicesIds: serviceIds,
+            haircut_id: null
         }
+        if (haircut) {
+            data['haircut_id'] = haircut.id
+        }
+        await dashboard.getSalonsByHaircut(data)
+            .then((res) => {
+                setIsLoading(false);
+                setSalons(res.data.data);
+                setFilteredSalons(res.data.data);
+            })
+            .catch(error => {
+                setIsLoading(false);
+                console.log(error)
+            })
     }
     // Fonction pour obtenir la liste de souhaits des salons
     const getSalonsWishlist = () => {
@@ -164,8 +164,8 @@ const SalonChoice = () => {
 
     // Fonction pour continuer avec le salon sélectionné
     const onContinue = () => {
-        router.push(`salon/profile`)
         setLocalStorage('selectedSalon', JSON.stringify(selectedSalon))
+        router.push(`salon/profile`)
     }
 
     // Utilisation de useEffect pour récupérer les données lors du montage du composant
@@ -180,11 +180,11 @@ const SalonChoice = () => {
     }, [])
 
     // Autre appel useEffect basé sur l'état des salons
-    useEffect(() => {
-        if (!isLoggedIn) {
-            getSalonsWishlist()
-        }
-    }, [salons])
+    // useEffect(() => {
+    //     if (!isLoggedIn) {
+    //         getSalonsWishlist()
+    //     }
+    // }, [salons])
 
     useEffect(() => {
         filteredCityHandler()
@@ -274,13 +274,6 @@ const SalonChoice = () => {
         id: number;
     };
 
-    const handleSelectSalon = (salonId: number) => {
-        const foundSalon = salons.find(s => s.id === salonId);
-        setSelectedSalon(foundSalon ? foundSalon : { name: '', id: null });
-    };
-
-
-
     // Rendu du composant
     return (
         <div className='w-full'>
@@ -303,7 +296,7 @@ const SalonChoice = () => {
 
                 {/* Texte indiquant le nombre de salons */}
                 <p className='text-4xl font-medium text-black text-center mt-6'>
-                    {filteredSalons.length} <span className='font-bold text-gradient'>{filteredSalons.length === 1 ? 'Salon' : 'Salons'}</span> {filteredSalons.length === 1 ? 'correspond' : 'correspondent'} à vos critères
+                    {salons.length} <span className='font-bold text-gradient'>{salons.length === 1 ? 'Salon' : 'Salons'}</span> {salons.length === 1 ? 'correspond' : 'correspondent'} à vos critères
                 </p>
 
                 {/* Bouton retour et continuer */}
@@ -328,7 +321,7 @@ const SalonChoice = () => {
 
                     {/* Carte Google affichée uniquement si des salons sont disponibles */}
                     {
-                        filteredSalons.length > 0 && (
+                        salons.length > 0 && (
                             <div className={`lg:absolute lg:top-0 lg:left-0 w-full h-[400px] lg:w-[400px] lg:h-[880px] 2xl:w-[920px] 4xl:w-[920px] rounded-lg overflow-hidden lg:z-10`}>
 
                                 {/*TODO USE salon.position when data are available  */}
@@ -346,7 +339,7 @@ const SalonChoice = () => {
                                             <Marker
                                                 key={index}
                                                 position={positions[index]} // Utiliser la position du salon
-                                                onClick={() => setSelectedSalon({ name: salon.name, id: salon.id })}
+                                                onClick={() => setSelectedSalon(salon)}
                                                 icon={{
                                                     url: salon.id === selectedSalon.id ? MapIconRedUrl : mapIconUrl,
                                                     scaledSize: salon.id === selectedSalon.id ? new window.google.maps.Size(70, 90) : new window.google.maps.Size(60, 80),
@@ -388,10 +381,10 @@ const SalonChoice = () => {
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-10">
 
                             {/* VIGNETTES (ITERATIONS) */}
-                            {filteredSalons.map((salon, index) => (
+                            {salons.map((salon, index) => (
                                 <div
                                     key={index}
-                                    onClick={() => setSelectedSalon({ name: salon.name, id: salon.id })}
+                                    onClick={() => setSelectedSalon(salon)}
                                     className={`relative bg-stone-100 rounded-2xl border hover:border-stone-400 cursor-pointer ${selectedSalon.id === salon.id && 'border-2 border-red-300 shadow-xl'}`}
                                     style={{ width: '100%', aspectRatio: '1/1', display: 'flex', flexDirection: 'column', minWidth: '200px', maxWidth: '450px', minHeight: '200px', maxHeight: '420px' }}
                                 >
@@ -406,7 +399,7 @@ const SalonChoice = () => {
                                                         stroke={wishlist.includes(String(salon.id)) ? "#FFFFFF" : ""} />
                                                 </div>}
                                             <Image
-                                                src={salon.salon_images.length && salon.salon_images[index].is_cover ? salon.salon_images[index].image.includes('api-server') ? salon.salon_images[index].image : `https://api-server.onehaircut.com/public${salon.salon_images[index].image}` : salon.logo.includes('api-server') ? salon.logo : `https://api-server.onehaircut.com/public${salon.logo}`}
+                                                src={salon.salon_cover_image ? `https://api.onehaircut.com${salon.salon_cover_image.image}` :  `https://api.onehaircut.com${salon.logo}`}
                                                 fill={true}
                                                 alt="image"
                                                 style={{ objectFit: 'cover', height: '100%', width: '100%', display: 'block' }}
@@ -422,17 +415,16 @@ const SalonChoice = () => {
                                         </div>
 
                                         {/* Évaluation et nombre d'avis */}
-                                        <div className='flex items-center gap-1 text-xs text-[#7B7B7B] px-3 pt-1'>
+                                        <div className='flex items-center text-xs text-[#7B7B7B] px-3 pt-1'>
                                             <StarRatings
-                                                rating={salon.rating}
+                                                rating={salon.haircut ? salon.haircut.rating : salon.rating}
                                                 starRatedColor="#FEDF10"
                                                 starSpacing="4px"
                                                 starDimension="12px"
                                                 numberOfStars={5}
                                                 name="rating"
                                             />
-                                            <p className='border-r border-[#A7A7A7] pr-1'>{salon.rating}</p>
-                                            <p>348 avis</p>
+                                            <p>{salon.haircut ? salon.haircut.ratings_count : salon.ratings_count} d'avis</p>
                                         </div>
                                     </div>
                                 </div>

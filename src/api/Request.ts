@@ -3,9 +3,9 @@ import { getLocalStorage } from "./storage";
 import { toast } from "react-toastify";
 
 const request = axios.create({
-  //baseURL: "https://api-server.onehaircut.com/public/api/web/",
+  baseURL: "https://api.onehaircut.com/api/web/",
   // baseURL: process.env.REACT_APP_API_URL + '/api/web/',
-  baseURL: "http://localhost:8000/api/web/",
+  //baseURL: "http://127.0.0.1:8000/api/web/",
   withCredentials: false,
 });
 
@@ -34,6 +34,9 @@ request.interceptors.response.use(
     // }
     if (response.status >= 400 || response.status === 401) {
       toast.error(error.message);
+    }
+    if (response.status == 422) {
+      throw error;
     }
     throw error.response.data.status;
   }

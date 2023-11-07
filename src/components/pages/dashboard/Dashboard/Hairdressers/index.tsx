@@ -14,11 +14,8 @@ import {
 import { Theme_A } from "@/components/utilis/Themes";
 import { EditIcon, LogoCircleFixLeft } from "@/components/utilis/Icons";
 import Footer from "@/components/UI/Footer";
-import DropdownMenu from "@/components/UI/DropDownMenu";
-import { TextField, ThemeProvider } from "@material-ui/core";
-import ComponentTheme from "@/components/UI/ComponentTheme";
-import BaseModal from "@/components/UI/BaseModal";
 import { ColorsThemeA } from "@/components/utilis/Themes";
+import CustomInput from "@/components/UI/CustomInput";
 
 
 interface AllAvatars {
@@ -340,7 +337,7 @@ const Hairdressers = () => {
     if (id === avatarIndex) {
       return (
         <div className="relative shadow-[0px_6px_11px_0px_rgba(176,176,176,0.25)] rounded-xl bg-white w-32 h-32">
-          <Image src={image.includes('api-server') ? image : `https://api-server.onehaircut.com/public${image}`} alt="avatar" fill={true} className="rounded-xl" />
+          <Image src={image.includes('http') ? image : `https://api.onehaircut.com${image}`} alt="avatar" fill={true} className="rounded-xl" />
         </div>
       );
     }
@@ -439,50 +436,41 @@ const Hairdressers = () => {
           <div className={`${Theme_A.textFont.headerH2} underline`}>
             Ajouter un nouveau coiffeur
           </div>
+
+          {/* NOM */}
           <div className="w-full max-w-[450px]">
-
-
-            <label className={`${Theme_A.textFont.headerH4}`} htmlFor="emailInput">Pr&eacute;nom </label>
-            <input
-              placeholder="Prénom"
-              className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 
-              focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+            <CustomInput
+              id="Name"
+              label="Prénom"
               value={hairDresser.name}
               onChange={(e) => onChangeName(e.target.value)}
+              error={error.name}
             />
-            {error.name && (
-              <p className="text-xs text-red-700 ml-3 mt-1">{error.name}*</p>
-            )}
           </div>
 
-
+          {/* ADRESSE EMAIL */}
           <div className="w-full max-w-[450px]">
-            <label className={`${Theme_A.textFont.headerH4}`} htmlFor="emailInput">Adresse mail</label>
-            <input
-              placeholder="Adresse mail"
-              className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 
-              focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+            <CustomInput
+              id="email"
+              label="Adresse mail"
               value={hairDresser.email}
               onChange={(e) => onChangeEmail(e.target.value)}
+              error={error.email}
+              isEmail={true}
             />
-            {error.email && (
-              <p className="text-xs text-red-700 ml-3 mt-1">{error.email}*</p>
-            )}
           </div>
 
 
           <div className="w-full max-w-[450px]">
-            <label className={`${Theme_A.textFont.headerH4}`} htmlFor="emailInput">Mot de passe</label>
-            <input
-              type="password"
-              placeholder="Mot de passe"
-              className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 
-              focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+
+            <CustomInput
+              id="password"
+              label="Mot de passe"
+              value={hairDresser.password}
               onChange={(e) => onChangePassword(e.target.value)}
+              error={error.password}
+              type="password"
             />
-            {error.password && (
-              <p className="text-xs text-red-700 ml-3 mt-1">{error.password}*</p>
-            )}
           </div>
 
 
@@ -523,7 +511,7 @@ const Hairdressers = () => {
           >
             <div className={`${Theme_A.thumbnails.profilPictureThumbnail}`}>
               {profileImage ? (
-                <Image src={profileImage} fill={true} alt="Profile Image" />
+                <Image src={profileImage.includes('http') ? profileImage : `https://api.onehaircut.com${profileImage}`} fill={true} alt="Profile Image" />
               ) : (
                 <div>
                   <p className={`${Theme_A.textFont.infoTextSmall}`}>
@@ -631,7 +619,7 @@ const Hairdressers = () => {
                       <Image
                         fill={true}
                         src={
-                          item.profile_image ? (item.profile_image.includes('https://api-server.onehaircut.com/public') ? item.profile_image : `https://api-server.onehaircut.com/public${item.profile_image}`) : `https://api-server.onehaircut.com/public${item.avatar.image}`
+                          item.profile_image ? (item.profile_image.includes('http') ? item.profile_image : `https://api.onehaircut.com${item.profile_image}`) : `https://api.onehaircut.com${item.avatar.image}`
                         }
                         alt="image"
                       />

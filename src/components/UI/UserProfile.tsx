@@ -10,6 +10,7 @@ import {
   ReservationIcon,
   HistoryIcon,
   LogoutIcon,
+  CabineIcon,
 }
   from "../utilis/Icons";
 import { useRouter } from "next/navigation";
@@ -50,6 +51,11 @@ const UserProfile = ({ isDashboard }: UserProfileProfile) => {
       name: "Portrait",
       icon: <PortraitIcon width="18" height="18" color="#000000" />,
       route: "/client/portrait",
+    },
+    {
+      name: "Cabine d'essayage",
+      icon: <CabineIcon width="36" height="36" color="#000000" />,
+      route: "/client/processed",
     },
     {
       name: "Filtre",

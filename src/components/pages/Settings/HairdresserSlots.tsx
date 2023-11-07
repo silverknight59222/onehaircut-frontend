@@ -295,7 +295,7 @@ export const HairdresserSlots = () => {
               <div className="flex items-center justify-center gap-4 flex-wrap mt-4 w-full">
                 {selectedSalonHairDresser.slots.map((slot, index) => {
                   return (
-                    slot.day == day && slot.status === 1 && (
+                    slot.day == day && (
                       <div
                         key={index}
                         className={`flex items-center justify-center py-2 px-2 text-base font-medium border-2 rounded-lg w-72 border-gray-200 cursor-pointer

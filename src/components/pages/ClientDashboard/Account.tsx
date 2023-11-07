@@ -12,6 +12,10 @@ import { Value } from 'react-phone-number-input'
 import 'react-phone-number-input/style.css'
 import PaymentForm from "@/components/shared/Payement";
 import { TextField } from "@material-ui/core";
+import IconButton from '@mui/material/IconButton';
+import Visibility from '@mui/icons-material/Visibility';
+import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import InputAdornment from '@mui/material/InputAdornment';
 import CustomInput from "@/components/UI/CustomInput";
 
 
@@ -89,44 +93,80 @@ const Account = () => {
     ///////////////////// PASSWORD 
     ////////////////////////////////////////////////////
     const [passwordField, renewPassword] = useState({
-        old: "",
-        new: "",
-        new2: "",
+        oldPassword: "",
+        newPassword: "",
+        confirmPassword: "",
     });
+
+    const [oldPasswordVisiblity, setOldPasswordVisiblity] = useState(false);
+    const [newPasswordVisiblity, setNewPasswordVisiblity] = useState(false);
+    const [confirmPasswordVisiblity, setConfirmPasswordVisiblity] = useState(false);
+    const togglePasswordVisibility = (field: string) => {
+        switch (field) {
+            case 'oldPassword':
+                setOldPasswordVisiblity((prev) => !prev);
+                break;
+            case 'newPassword':
+                setNewPasswordVisiblity((prev) => !prev);
+                break;
+            case 'confirmPassword':
+                setConfirmPasswordVisiblity((prev) => !prev);
+                break;
+            default:
+                setNewPasswordVisiblity((prev) => !prev);
+                setOldPasswordVisiblity((prev) => !prev);
+                setConfirmPasswordVisiblity((prev) => !prev);
+                break;
+        }
+    };
     const setOldPassword = (value: string) => {
         renewPassword((prev) => {
-            return { ...prev, old: value };
+            return { ...prev, oldPassword: value };
         });
     };
     const setNewPassword = (value: string) => {
         renewPassword((prev) => {
-            return { ...prev, new: value };
+            return { ...prev, newPassword: value };
         });
     };
-    const setNew2Password = (value: string) => {
+    const setConfirmPassword = (value: string) => {
         renewPassword((prev) => {
-            return { ...prev, new2: value };
+            return { ...prev, confirmPassword: value };
         });
     };
 
     const onSubmitPassword = async () => {
-        if (passwordField.new != passwordField.new2) { // TODO modify
+        try {
+            let resp = await client.resetPassword({
+                old_password: passwordField.oldPassword,
+                new_password: passwordField.newPassword,
+                repeat_password: passwordField.confirmPassword,
+            })
+            setIsModalPswrd(false);
+            showSnackbar("success", resp.data.message);
+            passwordField.oldPassword = "";
+            passwordField.newPassword = "";
+            passwordField.confirmPassword = "";
+        } catch (error) {
             setError((prev) => {
-                return { ...prev, text: "Nouveaux mots de passe différents" };
+                return { ...prev, text: error.response.data.message };
             });
-            return;
+            if (error.response.data.errors.old_password) {
+                showSnackbar("error", error.response.data.errors.old_password[0]);
+            }
+            if (error.response.data.errors.new_password) {
+                showSnackbar("error", error.response.data.errors.new_password[0]);
+            }
+            if (error.response.data.errors.repeat_password) {
+                showSnackbar("error", error.response.data.errors.repeat_password[0]);
+            }
+            return
+        } finally {
+            setIsLoading(false);
         }
-        else if (passwordField.new.length < 8) {
-            setError((prev) => {
-                return { ...prev, text: "Nouveaux mots de passe trop petits" };
-            });
-            return;
-        }
-        else {
-            setError((prev) => {
-                return { ...prev, text: "" };
-            });
-        }
+        setError((prev) => {
+            return { ...prev, text: "" };
+        });
     }
 
     const [error, setError] = useState({
@@ -139,7 +179,6 @@ const Account = () => {
             <div className="flex flex-col items-center justify-center gap-4">
                 <p className="text-xl font-semibold text-black text-center">Modification du mot de passe</p>
 
-
                 {error && (
                     <p className={`${Theme_A.checkers.errorText}`}>
                         {error.text}
@@ -148,38 +187,67 @@ const Account = () => {
                 <TextField className={`${inputFieldsDesign}`}
                     id="oldPswrd"
                     label="Ancien mot de passe"
+                    type={oldPasswordVisiblity ? 'text' : 'password'}
                     variant="outlined"
-                    value={passwordField.old}
-                    onChange={(e) => setOldPassword(e.target.value)}
+                    value={passwordField.oldPassword}
+                    onChange={(e) => {
+                        setOldPassword(e.target.value)
+                    }}
                     InputProps={{
                         style: {
                             borderRadius: '12px',
                         },
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton onClick={() => togglePasswordVisibility('oldPassword')}>
+                                    {oldPasswordVisiblity ? <Visibility /> : <VisibilityOff />}
+                                </IconButton>
+                            </InputAdornment>
+                        ),
                     }}
                 />
                 <TextField className={`${inputFieldsDesign}`}
                     id="NewPswrd1"
                     label="Nouveau mot de passe"
                     variant="outlined"
-                    value={passwordField.new}
+                    type={newPasswordVisiblity ? 'text' : 'password'}
+                    value={passwordField.newPassword}
                     onChange={(e) => setNewPassword(e.target.value)}
                     InputProps={{
                         style: {
                             borderRadius: '12px',
                         },
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton onClick={() => togglePasswordVisibility('newPassword')}>
+                                    {newPasswordVisiblity ? <Visibility /> : <VisibilityOff />}
+                                </IconButton>
+                            </InputAdornment>
+                        ),
                     }}
                 />
                 <TextField className={`${inputFieldsDesign}`}
                     id="NewPswrd2"
                     label="Répéter nouveau mot de passe"
                     variant="outlined"
-                    value={passwordField.new2}
-                    onChange={(e) => setNew2Password(e.target.value)}
+                    type={confirmPasswordVisiblity ? 'text' : 'password'}
+                    value={passwordField.confirmPassword}
+                    onChange={(e) => setConfirmPassword(e.target.value)}
                     InputProps={{
                         style: {
                             borderRadius: '12px',
                         },
-                    }}
+
+                        endAdornment: (
+                            <InputAdornment position="end">
+                                <IconButton onClick={() => togglePasswordVisibility('confirmPassword')}>
+                                    {confirmPasswordVisiblity ? <Visibility /> : <VisibilityOff />}
+                                </IconButton>
+                            </InputAdornment>
+                        ),
+
+                    }
+                    }
                 />
             </div>
             <div className="mt-4 flex gap-4 items-center justify-center w-full">
@@ -197,8 +265,6 @@ const Account = () => {
                 </button>
             </div>
         </div>
-
-
     ////////////////////////////////////////////////////
     ///////////////////// ADDRESS 
     ////////////////////////////////////////////////////
@@ -211,14 +277,31 @@ const Account = () => {
     };
 
     const onSubmitAdd = async () => {
+        setIsLoading(true)
+        await client.updateUserProfile({
+            type: 'address',
+            street_number: streetNbField,
+            street: streetField,
+            zipcode: postCodeField,
+            city: cityField,
+        })
+            .then(resp => {
+                console.log(resp.data)
+                setUserInfo(resp.data);
+            })
+            .catch(err => {
+                console.log(err)
+            })
+            .finally(() => {
+                setIsLoading(false)
+            })
 
         setError((prev) => {
             return { ...prev, text: "" };
         });
-        // TODO: save the address for the future
-        showSnackbar("success", "Salon Service added successfully.");
+        showSnackbar("success", "Address Updated Successfully.");
         setIsModalAdd(false);
-        setShowItem(informations);
+        // setShowItem(informations);
 
     }
 
@@ -308,13 +391,27 @@ const Account = () => {
             return;
         }
         else {
+            setIsLoading(true)
+            await client.updateUserProfile({
+                type: 'phone',
+                phone_number: phoneField,
+            })
+                .then(resp => {
+                    console.log(resp.data)
+                    setUserInfo(resp.data)
+                })
+                .catch(err => {
+                    console.log(err)
+                })
+                .finally(() => {
+                    setIsLoading(false)
+                })
             setError((prev) => {
                 return { ...prev, text: "" };
             });
-            // TODO: save phone for the future
             showSnackbar("success", "Téléphone actualisé");
             setIsModalPhone(false)
-            setShowItem(informations);
+            // setShowItem(informations);
         }
     }
 
@@ -423,7 +520,7 @@ const Account = () => {
     const onSubmitReminderNotif = async () => {
         // saved reminders notifications prefrences
         setIsLoading(true)
-        await client.savePrefrences({
+        await client.saveNotificationsPreferences({
             type: "reminders",
             email: NotifReminderEmail,
             whatsapp: NotifReminderWhatsapp
@@ -455,7 +552,7 @@ const Account = () => {
         <div>
             <div className="flex flex-col items-center justify-center gap-4">
                 <p className="text-xl font-semibold text-black text-center">
-                    Notifications concernants votre compte sont émises par</p>
+                    Préférences de notifications de rappels</p>
                 <div className="flex flex-row items-start gap-3">
                     <div
                         onClick={() => setPNotifReminderEmail(!NotifReminderEmail)}
@@ -512,7 +609,7 @@ const Account = () => {
     const onSubmitMsgNotif = async () => {
         // saved messages notifications prefrences
         setIsLoading(true)
-        await client.savePrefrences({
+        await client.saveNotificationsPreferences({
             type: "messages",
             email: NotifMsgEmail,
             whatsapp: NotifMsgWhatsapp
@@ -545,7 +642,7 @@ const Account = () => {
         <div>
             <div className="flex flex-col items-center justify-center gap-4">
                 <p className="text-xl font-semibold text-black text-center">
-                    Notifications concernants votre messagerie</p>
+                    Notifications concernants votre compte sont émises par</p>
                 <div className="flex flex-row items-start gap-3">
                     <div
                         onClick={() => setPNotifMsgEmail(!NotifMsgEmail)}
@@ -569,7 +666,7 @@ const Account = () => {
                             ? ColorsThemeA.ohcVerticalGradient_A
                             : "border-[#767676]"
                             }`}
-                        >infoInterface
+                        >
                             {NotifMsgWhatsapp && (
                                 <CheckedIcon width="15" height="10" />)}
                         </div>
@@ -595,29 +692,13 @@ const Account = () => {
 
     // TODO: add information about the client coming from backend in "desc".
     let informations: infoInterface[] = [
-        { name: "Nom légal", desc: "Dimitri Bala", modif: false, popup: emptyPopup },
-        { name: "Adresse", desc: `${streetNbField} ${streetField} ${postCodeField} ${cityField}`, modif: true, popup: modifAddress },
-        { name: "Numéro de téléphone", desc: `${phoneField}`, modif: true, popup: modifPhone },
-        { name: "Adresse e-mail", desc: "b***9@gmail.com", modif: false, popup: emptyPopup },
+        { name: "Nom légal", desc: "", modif: false, popup: emptyPopup },
+        { name: "Adresse", desc: "", modif: true, popup: modifAddress },
+        { name: "Numéro de téléphone", desc: "", modif: true, popup: modifPhone },
+        { name: "Adresse e-mail", desc: "", modif: false, popup: emptyPopup },
         // { name: "Pièce d'identité officielle", desc: "Information non fournie", modif: false, popup: emptyPopup },
         // { name: "Statut", desc: "Etudiant - vérifié", modif: false, popup: emptyPopup },
     ];
-
-    // Use useEffect to update informations when state variables change
-    useEffect(() => {
-        // Update the informations variable whenever any state variable changes
-        informations = [
-            { name: "Nom légal", desc: "Dimitri Bala", modif: false, popup: emptyPopup },
-            {
-                name: "Adresse",
-                desc: `${streetNbField} ${streetField} ${postCodeField} ${cityField}`,
-                modif: true,
-                popup: modifAddress,
-            },
-            { name: "Numéro de téléphone", desc: `${phoneField}`, modif: true, popup: modifPhone },
-            { name: "Adresse e-mail", desc: "b***9@gmail.com", modif: false, popup: emptyPopup },
-        ];
-    }, [streetNbField, streetField, postCodeField, cityField, phoneField]);
 
     const password: infoInterface[] = [
         { name: "Mot de passe", desc: "", modif: true, popup: modifPassWord },
@@ -647,7 +728,7 @@ const Account = () => {
     const onSelectTab = (item: string, index: number) => {
         setSelectedTab(index);
         if (item === "Notifications") {
-            fetchPrefrences() //fetching notifications prefrences on index tab
+            fetchPrefrences() //fetching notifications prefrences on tab access
         }
         else if (item === "Moyens de paiements") {
             setShowItem(payments);
@@ -665,12 +746,12 @@ const Account = () => {
             window.open(urlToOpen);
         }
         else {
-            setShowItem(informations);
+            fetchUserInfo(); //fetching user info on tab access
         }
     };
 
     const fetchPrefrences = async () => {
-        const resp = await client.getSavePrefrences()
+        const resp = await client.getNotificationsPreferences()
 
         if (resp.data.reminders) {
             setPNotifReminderEmail(resp.data.reminders.emails)
@@ -684,6 +765,65 @@ const Account = () => {
         }
         setShowItem(notifications);
     }
+
+    const fetchUserInfo = async () => {
+        const resp = await client.getUserProfile()
+        console.log(resp.data);
+
+        // to update informations description which is displayed
+        informations[0].desc = resp.data.name;
+        let street_number = resp.data.street_number ?? "";
+        let street = resp.data.street ?? "";
+        let zipcode = resp.data.zipcode ?? "";
+        let city = resp.data.city ?? "";
+        if (street_number || street || zipcode || city) {
+            informations[1].desc = [street_number, street, city, zipcode].filter((item) => item != null).join(" ");
+        } else {
+            informations[1].desc = "Aucun";
+        }
+        informations[2].desc = resp.data.phone;
+        informations[3].desc = resp.data.email;
+
+        // to set value of fields in model
+        newStreetNbField(street_number);
+        newStreetField(street);
+        newPostCodeField(zipcode);
+        newCityField(city);
+        setPhoneField(resp.data.phone);
+
+        setShowItem(informations);
+    }
+
+    const setUserInfo = async (data) => {
+
+        // to update informations description which is displayed
+        informations[0].desc = data.name;
+        let street_number = data.street_number ?? "";
+        let street = data.street ?? "";
+        let zipcode = data.zipcode ?? "";
+        let city = data.city ?? "";
+        if (street_number || street || zipcode || city) {
+            informations[1].desc = [street_number, street, city, zipcode].filter((item) => item != null).join(" ");
+        } else {
+            informations[1].desc = "Aucun";
+        }
+        informations[2].desc = data.phone;
+        informations[3].desc = data.email;
+
+        // to set value of fields in model
+        newStreetNbField(street_number);
+        newStreetField(street);
+        newPostCodeField(zipcode);
+        newCityField(city);
+        setPhoneField(data.phone);
+
+        setShowItem(informations);
+    }
+
+    // Use useEffect to update informations when state variables change
+    useEffect(() => {
+        fetchUserInfo();
+    }, [])
 
     return (
         <div>
