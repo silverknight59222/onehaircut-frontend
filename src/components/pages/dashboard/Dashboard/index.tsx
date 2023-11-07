@@ -374,7 +374,7 @@ const Dashboard = () => {
 
         <div className="flex flex-wrap -mx-3 mt-5 gap-4">
             {/* Client Activity */}
-            <div style={{width:'460px'}} className="px-3 md:w-4/12 w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-[20px] shadow-[0px_26px_31px_0px_rgba(176, 176, 176, 0.10)]">
+            <div style={{width:'32%'}} className="px-3 md:w-4/12 w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-[20px] shadow-[0px_26px_31px_0px_rgba(176, 176, 176, 0.10)]">
                 <div className="relative">
                     <table className="w-full text-sm text-left">
                         <thead className="text-grey text-sm font-semibold">
@@ -436,7 +436,7 @@ const Dashboard = () => {
             </div>
 
 
-            <div style={{width:'460px'}}  className="px-3 md:w-4/12 h-[460px] overflow-auto w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-[20px] shadow-[0px_26px_31px_0px_rgba(176, 176, 176, 0.10)]">
+            <div style={{width:'32%'}}  className="px-3 md:w-4/12 h-[460px] overflow-auto w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-[20px] shadow-[0px_26px_31px_0px_rgba(176, 176, 176, 0.10)]">
                 <p className="text-xl sm:text-2xl text-[#727272] font-semibold text-center mt-6">
                     Conversion: <span className='text-red-500'>31%</span>
                 </p>
@@ -460,7 +460,7 @@ const Dashboard = () => {
             </div>
 
             {/* Top Client List */}
-            <div style={{width:'460px'}}  className="px-3 md:w-4/12 w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-[20px] shadow-[0px_26px_31px_0px_rgba(176, 176, 176, 0.10)]">
+            <div style={{width:'32%'}}  className="px-3 md:w-4/12 w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-[20px] shadow-[0px_26px_31px_0px_rgba(176, 176, 176, 0.10)]">
                 <div className="relative">
                     <table className="w-full text-sm text-left">
                         <thead className="text-grey text-sm font-semibold">

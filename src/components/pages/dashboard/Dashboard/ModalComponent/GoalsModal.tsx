@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import ProgressBar from "@/components/UI/ProgressBar";
 import {styled} from "@mui/material/styles";
 import IconButton, {IconButtonProps} from "@mui/material/IconButton";
+import Grid from '@mui/material/Grid'
 import Icon from "@/@core/components/icon";
 
 const CustomCloseButton = styled(IconButton)<IconButtonProps>(({ theme }) => ({
@@ -65,58 +66,81 @@ const StaffModal = () => {
 
     const [progressBars, setProgressBars] = useState([
         // Assuming 'number' is also a required field, set it initially to a default value like 0 or any start point
-        { name: 'Revenu Mensuel', value: 0, number: 0, color: '#FE2569', filled: false },
-        { name: 'Commandesd’ habitué', value: 0, number: 0, color: '#0FBFF1', filled: false },
-        { name: 'Nouveaux clients', value: 0, number: 0, color: '#7ABF50', filled: false },
-        { name: 'Nombre de visites en ligne', value: 0, number: 0, color: '#15BAF2', filled: false },
+        { title: 'Revenu Mensuel', value: 0, number: 0, color: '#FE2569', filled: false },
+        { title: 'Commandesd’ habitué', value: 0, number: 0, color: '#0FBFF1', filled: false },
+        { title: 'Nouveaux clients', value: 0, number: 0, color: '#7ABF50', filled: false },
+        { title: 'Nombre de visites en ligne', value: 0, number: 0, color: '#15BAF2', filled: false },
         // ... more bars
     ]);
 
     const handleCloseClick = (index: number) => {
         // Update the progressBars state to reset the value and color of the specific progress bar
-        const newProgressBars = progressBars.map((bar: any, i: number) => {
+        const newProgressBars = progressBars.map((bar, i) => {
             if (i === index) {
                 // Reset value and color for the progress bar that has the close button clicked
                 return { ...bar, value: 0, number: 0, color: '#ccc', filled: false }; // Set a default color or keep it empty
             }
 
-            return bar;
+return bar;
         });
         setProgressBars(newProgressBars);
+
+        // Also update the 'clicked' state of the corresponding card to re-enable it
+        const newCards = cards.map((card, i) => {
+            if (progressBars[index].title === card.title) {
+                return { ...card, clicked: false }; // Re-enable the card by resetting 'clicked' to false
+            }
+
+return card;
+        });
+        setCards(newCards);
     };
+
 
     // State to track which card is selected
     const [selectedCardIndex, setSelectedCardIndex] = useState<number | null>(null);
 
   // Handles the click on a discount card
-    const handleCardClick = (cardIndex:number) => {
-        // First, we mark the clicked card to be disabled
-        setCards(
-            cards.map((card, index) => {
-                if (index === cardIndex) {
-                    return { ...card, clicked: true }; // Mark the card as clicked
-                }
+// Handles the click on a discount card
+// Handles the click on a discount card
+    const handleCardClick = (cardIndex: number) => {
+        // Find the first unfilled progress bar
+        const unfilledIndex = progressBars.findIndex(bar => !bar.filled);
+        // If there's no unfilled progress bar, do nothing
+        if (unfilledIndex === -1) {
+            return;
+        }
 
-            return card;
-            })
-        );
-
-        // Next, we extract the number from the clicked card's objective
+        // Extract the number from the clicked card's objective
         const card = cards[cardIndex];
         const value = parseFloat(card.objective.replace(/[^\d.-]/g, '')); // Extract number from objective
 
-        // Now, update the corresponding progress bar's value and 'number' to show the progress
+        // Update the corresponding progress bar with the card's details
         setProgressBars(
-            progressBars.map((progressBar) => {
-                if (progressBar.name === card.title) {
-                    // It is assuming the progressBar.name matches exactly with card.title
-                    return { ...progressBar, value, number: value, filled: true }; // Update both value and number
+            progressBars.map((bar, index) => {
+                if (index === unfilledIndex) {
+                    // Use the card's color if available, otherwise generate a random color
+                    const color = bar.color || `#${Math.floor(Math.random()*16777215).toString(16)}`;
+
+return { ...bar, title: card.title, value, number: value, color, filled: true };
                 }
 
-                return progressBar;
+return bar;
+            })
+        );
+
+        // Mark the card as clicked
+        setCards(
+            cards.map((c, index) => {
+                if (index === cardIndex) {
+                    return { ...c, clicked: true };
+                }
+
+return c;
             })
         );
     };
+
 
     const handleObjectiveChange = (event: React.ChangeEvent<HTMLInputElement>, cardIndex: number) => {
         const updatedCards = cards.map((card, index) => {
@@ -146,7 +170,10 @@ return card;
             <div className="flex flex-wrap items-center justify-center gap-10 flex-grow mb-7"
 
             >
+              <Grid container spacing={0}>
                 {progressBars.map((bar, index) => (
+                  // eslint-disable-next-line react/jsx-key
+                    <Grid item xs={3}>
                     <div
                         key={index}
                         className="relative" // This allows for absolute positioning of children
@@ -157,7 +184,7 @@ return card;
                     >
                         <ProgressBar
                             value={bar.value}
-                            name={bar.name}
+                            name={bar.title}
                             number={bar.number}
                             rotation={0.25}
                             color={bar.color}
@@ -180,11 +207,16 @@ return card;
                                   onClick={() => handleCloseClick(index)}/>
                         </div>
                     </div>
+                    </Grid>
                 ))}
+              </Grid>
 
             </div>
             <div className="flex flex-wrap items-center justify-center gap-10 flex-grow mb-7">
+                <Grid container spacing={0}>
                 {cards.map((card, index) => (
+                    // eslint-disable-next-line react/jsx-key
+                    <Grid item xs={3} style={{marginTop: '8px'}}>
                     <div
                         key={index}
                         style={{
@@ -206,13 +238,14 @@ return card;
                                 value={card.objective}
                                 onChange={(e) => handleObjectiveChange(e, index)}
                                 onClick={handleInputClick}
-                                className="text-lg font-semibold text-gray-900 bg-transparent border-none focus:outline-none"
-                            />
+                                className="text-lg font-semibold text-gray-900 bg-transparent border-none focus:outline-none"                            />
                         ) : (
                             <p className="text-lg font-semibold text-gray-900">{card.objective}</p>
                         )}
                     </div>
+                    </Grid>
                 ))}
+                </Grid>
             </div>
 
         </div>
