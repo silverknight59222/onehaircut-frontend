@@ -94,7 +94,7 @@ const Dashboard = () => {
     const topClientheaders = ["Utilisateur", "Date dernière commande", "Visites", "Commandes",
         "Dernière commande", "Details dernière commande", "Status dernière commande", "Total payé"];
 
-    const headersValue:any = [
+    const headersValue: any = [
         "Date",
         "Client",
         "Produits",

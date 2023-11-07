@@ -15,16 +15,16 @@ interface StyleObject {
 
 // This interface separates known properties from the rest of the keys
 interface TableDataRow {
-    user: UserData;
-    styles?: StyleObject; // Optional styles object
+    user: any;
+    styles?: any; // Optional styles object
     // Separate out the specific known keys that your data will always have.
-    Date?: string;
-    Visites?: number;
-    Commandes?: number;
-    Dernière?: string;
-    Details?: string;
-    Status?: string;
-    Total?: string;
+    Date?: any;
+    Visites?: any;
+    Commandes?: any;
+    Dernière?: any;
+    Details?: any;
+    Status?: any;
+    Total?: any;
     // Add other known properties here...
     // The rest of the keys are of type TableDataRowValue
     [key: string]: TableDataRowValue | StyleObject | undefined;

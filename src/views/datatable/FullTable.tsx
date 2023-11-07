@@ -7,7 +7,7 @@ import {ColorsThemeA} from "@/components/utilis/Themes";
 
 const FullTable: React.FC = () => {
     // sample headers and data for TableComponent
-    const headers = [
+    const headers:any = [
         "Date",
         "Client",
         "Produits",
@@ -24,7 +24,7 @@ const FullTable: React.FC = () => {
     }
 
 
-    const data = [
+    const data:any = [
         {
             Date: "12/07/2023",
             Client: "Amanda louis",
