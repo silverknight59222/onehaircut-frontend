@@ -202,16 +202,16 @@ const SearchSalon = () => {
           <div className="w-full flex flex-col md:flex-row gap-8 2xl:gap-12 bg-gray-50 p-2 rounded-2xl">
             <div className="flex flex-col items-start">
               {/* Conteneur principal de l'image */}
-              <div className="w-[320px] lg:w-[500px] 2xl:w-[600px] h-64 lg:h-[500px] relative rounded-4xl p-2 mb-3">
+              <div className="w-[320px] lg:w-[500px] 2xl:w-[600px] h-64 lg:h-[500px] relative rounded-4xl p-2 mb-3 ">
 
                 {/* Image principale */}
-                {salonProfile && <div className="w-full h-full relative rounded-4xl">
+                {salonProfile && <div className="w-full h-full relative rounded-4xl ">
                   <Image
                     src={selectedImage.includes('http') ? selectedImage : `https://api.onehaircut.com${selectedImage}`}
                     alt="Image principale du salon"
                     layout="fill"
                     objectFit="fill"
-                    className="rounded-lg"
+                    className="rounded-lg shadow-sm shadow-stone-600"
                   />
                 </div>}
               </div>
@@ -220,11 +220,11 @@ const SearchSalon = () => {
               <div className="flex justify-between mt-3 w-[320px] lg:w-[500px] 2xl:w-[600px] relative">
 
                 {/* Conteneur gauche (image + titre) */}
-                <div className="flex flex-col items-center">
+                <div className="flex flex-col items-center ">
                   {/* Miniature gauche */}
                   <div
                     onClick={openSalonPicModal}
-                    className="relative w-24 lg:w-32 2xl:w-36 h-24 lg:h-32 2xl:h-36 cursor-pointer overflow-hidden rounded-lg transform transition-all duration-300 group hover:scale-105"
+                    className="relative w-24 lg:w-32 2xl:w-36 h-24 lg:h-32 2xl:h-36 cursor-pointer overflow-hidden rounded-lg transform transition-all duration-300 group hover:scale-105 shadow-sm shadow-stone-600"
                   >
                     {/* TODO charger les images vitrines ici */}
                     {salonProfile && <Image
@@ -245,7 +245,7 @@ const SearchSalon = () => {
                   {/* Miniature droite */}
                   <div
                     onClick={openSalonPicModal}
-                    className="relative w-24 lg:w-32 2xl:w-36 h-24 lg:h-32 2xl:h-36 cursor-pointer overflow-hidden rounded-lg transform transition-all duration-300 group hover:scale-105"
+                    className="relative w-24 lg:w-32 2xl:w-36 h-24 lg:h-32 2xl:h-36 cursor-pointer overflow-hidden rounded-lg transform transition-all duration-300 group hover:scale-105 shadow-sm shadow-stone-600"
                   >
                     {/* TODO charger les images vitrines ici */}
                     {salonProfile && <Image
@@ -257,7 +257,7 @@ const SearchSalon = () => {
                     <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-50 transition-opacity duration-300" />
                   </div>
                   {/* Titre pour la miniature droite */}
-                  <p className="text-sm whitespace-nowrap mt-1"><strong>Images du salon</strong></p>
+                  <p className="text-sm whitespace-nowrap mt-1"><strong>Prestations du salon</strong></p>
                 </div>
               </div>
             </div>
@@ -292,7 +292,7 @@ const SearchSalon = () => {
 
             {/* Horaires et bouton de réservation */}
             <div className="w-full md:w-auto flex flex-col items-center justify-center">
-              <div className="flex flex-col gap-6 bg-white  opacity-90 w-full sm:w-[300px] md:w-[350px] xl:w-[420px] 2xl:w-[470px] border border-[#E1E1E1] rounded-3xl py-6 px-8 2xl:px-10 shadow-lg ">
+              <div className="flex flex-col gap-6 bg-white  opacity-90 w-full sm:w-[300px] md:w-[350px] xl:w-[420px] 2xl:w-[470px] border border-[#E1E1E1] rounded-3xl py-6 px-8 2xl:px-10 shadow-sm shadow-stone-600">
                 {/* Titre ajouté ici */}
                 <h2 className="text-xl 2xl:text-2xl font-semibold text-[#272727] mb-4 text-center">
                   Horaire d'ouverture
@@ -335,7 +335,7 @@ const SearchSalon = () => {
             </p>
 
             {/* Conteneur pour les informations */}
-            <div className="flex flex-col items-center gap-6 bg-white opacity-90 w-full max-w-[90vw] sm:max-w-[300px] md:max-w-[350px] xl:max-w-[420px] 2xl:max-w-[500px] border border-[#E1E1E1] rounded-3xl py-6 px-8 2xl:px-10 shadow-md mt-6 ">
+            <div className="flex flex-col items-center gap-6 bg-white opacity-90 w-full max-w-[90vw] sm:max-w-[300px] md:max-w-[350px] xl:max-w-[420px] 2xl:max-w-[500px] border border-[#E1E1E1] rounded-3xl py-6 px-8 2xl:px-10 shadow-sm shadow-stone-600 mt-6 ">
 
               {/* Ligne d'information avec titre et valeur */}
               {/* Ligne avec Prix et Durée totale */}
@@ -412,7 +412,7 @@ const SearchSalon = () => {
             {salonProfile != null && <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 lg:gap-20 ">
               {salonProfile.salon_hairdressers != null && salonProfile.salon_hairdressers.map((hairdresser, index) => {
                 return (
-                  <div key={index} className="p-2 rounded-lg shadow-sm relative bg-gray-100 border border-stone-300">
+                  <div key={index} className="p-2 rounded-lg shadow-sm shadow-stone-600 relative bg-gray-100 border border-stone-300">
 
                     {/* Background de la vignette avec opacité */}
                     <div className="absolute inset-0 opacity-100 rounded-xl"></div>

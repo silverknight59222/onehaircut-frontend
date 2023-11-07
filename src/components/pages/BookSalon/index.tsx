@@ -157,7 +157,7 @@ const BookSalon = () => {
       {/* CADRE SUPERIEUR */}
       <div className="flex flex-row items-start justify-center ml-12 gap-8">
         {/* IMAGE PRINCIPALE */}
-        <div className="w-[320px] lg:w-[500px] 2xl:w-[600px] h-64 lg:h-[500px] relative rounded-4xl p-2 mb-3">
+        <div className="w-[320px] lg:w-[500px] 2xl:w-[600px] h-64 lg:h-[500px] relative rounded-4xl p-2 mb-3 ">
           {salon && (
             <div className="w-full h-full relative rounded-full">
               <Image
@@ -169,7 +169,7 @@ const BookSalon = () => {
                 alt="Image principale du salon"
                 layout="fill"
                 objectFit="fill"
-                className="rounded-3xl"
+                className="rounded-3xl shadow-sm shadow-stone-600"
               />
             </div>
           )}
@@ -216,13 +216,13 @@ const BookSalon = () => {
             </p>
           )}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-1 2xl:gap-6 mt-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-1 2xl:gap-6 mt-4 ">
             {hairDressers.map((hairdresser, index) => {
               return (
                 <div
                   key={index}
                   onClick={() => setSelectedHairdresser({ name: hairdresser.name, id: hairdresser.id })}
-                  className={`flex flex-col items-center justify-center p-4 border rounded-2xl cursor-pointer hover:border-stone-400 bg-stone-100 shadow-sm shadow-stone-400 ${selectedHairdresser.id === hairdresser.id
+                  className={`flex flex-col items-center justify-center p-4 border rounded-2xl cursor-pointer hover:border-stone-400 bg-stone-50 shadow-sm shadow-stone-500 ${selectedHairdresser.id === hairdresser.id
                     ? "border-stone-500"
                     : "border-white"
                     }`}
@@ -250,7 +250,7 @@ const BookSalon = () => {
 
 
       {/* PARTIE RESERVATION DE SLOT */}
-      <div className="mx-auto max-w-[600px] bg-white border-2 border-[#c3c3c3] py-2 rounded-[22px] mb-16 shadow-sm shadow-stone-400 mt-8">
+      <div className="mx-auto max-w-[600px] bg-white border-2 border-[#c3c3c3] py-2 rounded-[22px] mb-16 shadow-sm shadow-stone-600 mt-8">
 
         {/* TITRE */}
         <div className="flex justify-center">

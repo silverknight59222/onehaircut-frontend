@@ -240,19 +240,19 @@ const Index = () => {
             <div className="flex flex-col gap-3 text-xl font-medium text-black">
 
 
-              {haircutData ? <p className="text-base"><span className="font-semibold text-lg">Haircut: </span>{haircutData.name}</p> : ''}
-              {servicesData ? <p><span className="font-semibold text-lg">Services: </span>
+              {haircutData ? <p className="text-base"><span className="font-bold text-lg   ">Coiffure: </span>{haircutData.name}</p> : ''}
+              {servicesData ? <p><span className="font-bold text-lg ">Services: </span>
                 {servicesData.map((item: { name: string, id: number }, index: number) => {
                   return <p key={index} className="text-base">{++index}. {item.name}</p>
                 })}
               </p> : ''}
-              {salonData && <p className="text-base"><span className="font-semibold text-lg">Etablissement: </span>{salonData.name}</p>}
-              {slotData && <p className="text-base"><span className="font-semibold text-lg">Coiffeur: </span>{slotData.hairDresser.name}</p>}
-              {slotData && (<p className="text-base"><span className={`font-semibold text-lg`}>Créneau horaire:</span>{getClassNameForDay(slotData.slot[0].day)}</p>)}
+              {salonData && <p className="text-base"><span className="font-bold text-lg ">Etablissement: </span>{salonData.name}</p>}
+              {slotData && <p className="text-base"><span className="font-bold text-lg ">Coiffeur: </span>{slotData.hairDresser.name}</p>}
+              {slotData && (<p className="text-base"><span className={`font-bold text-lg `}>Créneau horaire:</span>{getClassNameForDay(slotData.slot[0].day)}</p>)}
 
-              {slotData && <p className="text-base"><span className="font-semibold text-lg">Heure de début: </span>{slotData.slot[0].start}</p>}
-              {slotData && <p className="text-base"><span className="font-semibold text-lg">Heure de fin: </span>{slotData.slot[slotData.slot.length - 1].end}</p>}
-              {slotData && <p className="text-base"><span className="font-semibold text-lg">Durée totale: </span>{salonData.total_duration} Minutes</p>}
+              {slotData && <p className="text-base"><span className="font-bold text-lg ">Heure de début: </span>{slotData.slot[0].start}</p>}
+              {slotData && <p className="text-base"><span className="font-bold text-lg ">Heure de fin: </span>{slotData.slot[slotData.slot.length - 1].end}</p>}
+              {slotData && <p className="text-base"><span className="font-bold text-lg ">Durée totale: </span>{salonData.total_duration} Minutes</p>}
             </div>
             <div className="flex items-center justify-between border-t-2 border-[#CBCBCB] pt-9 mt-9">
               <button onClick={() => router.push('/book-salon')} className={`${Theme_A.button.bigWhiteColoredButton}`}>
