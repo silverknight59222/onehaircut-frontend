@@ -24,10 +24,7 @@ const CustomCloseButton = styled(IconButton)<IconButtonProps>(({ theme }) => ({
 }));
 
 
-
-
-
-
+const progressBarColors = ['#FE2569', '#0FBFF1', '#7ABF50', '#db7c00']; // Add more colors if needed
 
 const StaffModal = () => {
 
@@ -69,16 +66,19 @@ const StaffModal = () => {
         { title: 'Revenu Mensuel', value: 0, number: 0, color: '#FE2569', filled: false },
         { title: 'Commandesd’ habitué', value: 0, number: 0, color: '#0FBFF1', filled: false },
         { title: 'Nouveaux clients', value: 0, number: 0, color: '#7ABF50', filled: false },
-        { title: 'Nombre de visites en ligne', value: 0, number: 0, color: '#15BAF2', filled: false },
+        { title: 'Nombre de visites en ligne', value: 0, number: 0, color: '#db7c00', filled: false },
         // ... more bars
     ]);
 
     const handleCloseClick = (index: number) => {
+        // Define the original colors for each progress bar index
+        const originalColors = ['#FE2569', '#0FBFF1', '#7ABF50', '#15BAF2']; // Add more if you have more bars
+
         // Update the progressBars state to reset the value and color of the specific progress bar
         const newProgressBars = progressBars.map((bar, i) => {
             if (i === index) {
                 // Reset value and color for the progress bar that has the close button clicked
-                return { ...bar, value: 0, number: 0, color: '#ccc', filled: false }; // Set a default color or keep it empty
+                return { ...bar, value: 0, number: 0, color: originalColors[i], filled: false }; // Reset to original color
             }
 
 return bar;
@@ -95,6 +95,7 @@ return card;
         });
         setCards(newCards);
     };
+
 
 
     // State to track which card is selected
@@ -119,10 +120,8 @@ return card;
         setProgressBars(
             progressBars.map((bar, index) => {
                 if (index === unfilledIndex) {
-                    // Use the card's color if available, otherwise generate a random color
-                    const color = bar.color || `#${Math.floor(Math.random()*16777215).toString(16)}`;
-
-return { ...bar, title: card.title, value, number: value, color, filled: true };
+                    // Keep the color as initialized for the progress bar
+                    return { ...bar, title: card.title, value, number: value, filled: true };
                 }
 
 return bar;
@@ -140,6 +139,8 @@ return c;
             })
         );
     };
+
+
 
 
     const handleObjectiveChange = (event: React.ChangeEvent<HTMLInputElement>, cardIndex: number) => {
