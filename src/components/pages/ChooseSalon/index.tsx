@@ -299,6 +299,9 @@ const SalonChoice = () => {
                 }}
                 onMobileFilters={(mobile) => {
                     setFilteredMobile((pre) => {
+                        if (mobile == "") {
+                            return []
+                        }
                         if (JSON.stringify([mobile]) != JSON.stringify(pre)) {
                             return [mobile]
                         }
@@ -322,7 +325,7 @@ const SalonChoice = () => {
 
                 {/* Texte indiquant le nombre de salons */}
                 <p className='text-4xl font-medium text-black text-center mt-6'>
-                    {salons.length} <span className='font-bold text-gradient'>{salons.length === 1 ? 'Salon' : 'Salons'}</span> {salons.length === 1 ? 'correspond' : 'correspondent'} à vos critères
+                    {filteredSalons.length} <span className='font-bold text-gradient'>{salons.length === 1 ? 'Salon' : 'Salons'}</span> {salons.length === 1 ? 'correspond' : 'correspondent'} à vos critères
                 </p>
 
                 {/* Bouton retour et continuer */}
@@ -360,7 +363,7 @@ const SalonChoice = () => {
                                         maxZoom: 18   // et ici, votre zoom maximum
                                     }}
                                 >
-                                    {salons.slice(0, MAX_MARKERS).map((salon, index) => (
+                                    {filteredSalons.slice(0, MAX_MARKERS).map((salon, index) => (
                                         <React.Fragment key={salon.id}>
                                             <Marker
                                                 key={index}
