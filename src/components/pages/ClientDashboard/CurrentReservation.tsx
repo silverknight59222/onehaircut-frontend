@@ -106,9 +106,9 @@ const Currentreservation = () => {
                                             <p className='text-[#444343] font-bold text-center sm:text-start'>Heure</p>
                                             <p className='text-[#666] text-sm text-center sm:text-start'>{item.total_duration} mins</p>
                                         </div>
-                                        {item.salon_haircut && <div>
+                                        {item.haircut && <div>
                                             <p className='text-[#444343] font-bold text-center sm:text-start'>Coiffure</p>
-                                            <p className='text-[#666] text-sm text-center sm:text-start'>{item.salon_haircut.haircut.name}</p>
+                                            <p className='text-[#666] text-sm text-center sm:text-start'>{item.haircut.name}</p>
                                         </div>}
                                         {item.salon_haircut && <div>
                                             <p className='text-[#444343] font-bold text-center sm:text-start'>Prix coiffure</p>
@@ -140,8 +140,8 @@ const Currentreservation = () => {
                                         </div>
                                     </div>
                                     <div>
-                                        {item.salon_haircut && <div className="relative xl:w-[200px] xl:h-[200px] lg:w-[150px] lg:h-[150px] sm:w-[100px] sm:h-[100px] mb-5">
-                                            <Image src={`https://api.onehaircut.com${item.salon_haircut.haircut.image}`} alt='' fill={true} className='rounded-3xl ' />
+                                        {item.haircut && <div className="relative xl:w-[200px] xl:h-[200px] lg:w-[150px] lg:h-[150px] sm:w-[100px] sm:h-[100px] mb-5">
+                                            <Image src={`https://api.onehaircut.com${item.haircut.image}`} alt='' fill={true} className='rounded-3xl ' />
                                         </div>}
                                         <div className='flex flex-col items-center sm:items-start justify-center sm:justify-start gap-4 mt-5 sm:mt-0'>
                                             <div>
@@ -165,6 +165,9 @@ const Currentreservation = () => {
                                     </div>
 
                                 </div>
+                                {!item.salon_haircut && <div className='flex mt-10 items-center justify-center '>
+                                    <p className='text-[#AA4A44] font-bold text-center sm:text-start'>Salon o longer provides selected haircut</p>
+                                </div>}
                                 <div
                                     className='flex mt-10 items-center justify-center cursor-pointer '>
                                     <p className="text-xs text-[#666] underline transform hover:scale-105 transition-transform hover:text-red-500 hover:font-medium"> Annuler cette réservation </p>
