@@ -45,7 +45,7 @@ const CustomTooltip = (data: TooltipProps<any, any>) => {
 
     if (active && payload) {
         return (
-            <div className='recharts-custom-tooltip'>
+            <div className='recharts-custom-tooltip '>
                 <Typography>{data.label}</Typography>
                 <Divider />
                 {data &&
@@ -105,23 +105,23 @@ const RechartSingleBarChart: React.FC<RechartsBarChartProps> = ({ direction, sta
 
     // @ts-ignore
     return (
-        <RechartsWrapper>
-        <Card>
-            <CardContent>
-                {/* Legend, date picker and other elements you may want to include */}
-                <Box sx={{ height: 350 }}>
-                    <ResponsiveContainer>
-                        <BarChart data={staffData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                            <CartesianGrid strokeDasharray="3 3" />
-                            <XAxis dataKey="name" />
-                            <YAxis />
-                            <Tooltip content={<CustomTooltip />} />
-                            <Bar dataKey="value" fill={fill} barSize={barSize} />
-                        </BarChart>
-                    </ResponsiveContainer>
-                </Box>
-            </CardContent>
-        </Card>
+        <RechartsWrapper >
+            <Card >
+                <CardContent>
+                    {/* Legend, date picker and other elements you may want to include */}
+                    <Box sx={{ height: 350 }}>
+                        <ResponsiveContainer>
+                            <BarChart data={staffData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                                <CartesianGrid strokeDasharray="3 3" />
+                                <XAxis dataKey="name" />
+                                <YAxis />
+                                <Tooltip content={<CustomTooltip />} />
+                                <Bar dataKey="value" fill={fill} barSize={barSize} />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </Box>
+                </CardContent>
+            </Card>
         </RechartsWrapper>
     )
 }

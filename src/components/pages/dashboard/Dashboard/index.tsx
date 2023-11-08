@@ -192,11 +192,11 @@ const Dashboard = () => {
     ];
 
     const staffData = [
-        { name: 'Staff 1', value: 800 },
-        { name: 'Staff 2', value: 750 },
-        { name: 'Staff 3', value: 600 },
-        { name: 'Staff 4', value: 400 },
-        { name: 'Staff 5', value: 700 },
+        { name: 'Staff 1', value: 80 },
+        { name: 'Staff 2', value: 75 },
+        { name: 'Staff 3', value: 60 },
+        { name: 'Staff 4', value: 40 },
+        { name: 'Staff 5', value: 70 },
     ];
 
     const fillColor = '#3C8A41'; // Example fill color
@@ -402,15 +402,15 @@ const Dashboard = () => {
 
             <div className="flex flex-wrap -mx-3 mt-5 gap-4">
                 {/* Client Activity */}
-                <div style={{ width: '32%' }} className="px-3 md:w-4/12 w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-[20px] shadow-[0px_26px_31px_0px_rgba(176, 176, 176, 0.10)]">
-                    <div className="relative">
+                <div style={{ width: '32%' }} className="px-3 md:w-4/12 w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-xl shadow-sm shadow-stone-600">
+                    <div className="relative ml-4">
                         <table className="w-full text-sm text-left">
                             <thead className="text-grey text-sm font-semibold">
                                 <tr>
                                     <th scope="col" className="pr-4 py-3">
                                         User
                                     </th>
-                                    <th scope="col" className="pr-4 pl-20 py-3 text-center">
+                                    <th scope="col" className="pr-4 pl-20 py-4 text-center">
                                         Date
                                     </th>
                                     <th scope="col" className="px-4 py-3 text-center">
@@ -435,20 +435,20 @@ const Dashboard = () => {
                                                 statusClass = 'text-yellow-600'; // Yellow color for "Refund requested"
                                                 break;
                                             case 'Remboursé(e)':
-                                                statusClass = 'text-purple-600'; // Purple color for "Refunded"
+                                                statusClass = 'text-red-600'; // Red color for "Refunded"
                                                 break;
                                             default:
                                                 statusClass = 'text-gray-600'; // Default color for any other status
                                                 break;
                                         }
 
-                                        return <tr key={index} className="text-black border-b-2 border-[#F4F4F6] pb-2">
+                                        return <tr key={index} className="text-black border-b-2 border-[#F4F4F6] pb-2 ">
                                             <th scope="row" className="pr-6 py-4 flex items-center gap-4">
                                                 <img
                                                     src="/assets/user_img.png"
                                                     alt=""
-                                                    width={60}
-                                                    height={60}
+                                                    width={40}
+                                                    height={40}
                                                     className="rounded-full"
                                                 />
                                                 {item.user}
@@ -463,13 +463,13 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-
-                <div style={{ width: '32%' }} className="px-3 md:w-4/12 h-[460px] overflow-auto w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-[20px] shadow-[0px_26px_31px_0px_rgba(176, 176, 176, 0.10)]">
+                {/* Fidelite client CHART */}
+                <div style={{ width: '32%' }} className="px-3 md:w-4/12 h-[460px] overflow-auto w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-xl shadow-sm shadow-stone-600">
                     <p className="text-xl sm:text-2xl text-[#727272] font-semibold text-center mt-6">
-                        Conversion: <span className='text-red-500'>31%</span>
+                        Conversion: <span className='text-red-500 mb-10'>31%</span>
                     </p>
                     {/* Wrapper for ProgressBar components */}
-                    <div className="flex flex-wrap items-center justify-center gap-10">
+                    <div className="flex flex-wrap items-center justify-center gap-10 mt-10">
                         <ProgressBar
                             value={65}
                             name="Client"
@@ -478,7 +478,7 @@ const Dashboard = () => {
                             color="rgb(254, 57, 95)"
                         />
                         <ProgressBar
-                            value={50}
+                            value={31}
                             name="Commandes"
                             number={31}
                             rotation={0.25}
@@ -488,8 +488,8 @@ const Dashboard = () => {
                 </div>
 
                 {/* Top Client List */}
-                <div style={{ width: '32%' }} className="px-3 md:w-4/12 w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-[20px] shadow-[0px_26px_31px_0px_rgba(176, 176, 176, 0.10)]">
-                    <div className="relative">
+                <div style={{ width: '32%' }} className="px-3 md:w-4/12 w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-xl shadow-sm shadow-stone-600">
+                    <div className="relative ml-4">
                         <table className="w-full text-sm text-left">
                             <thead className="text-grey text-sm font-semibold">
                                 <tr>
@@ -533,8 +533,8 @@ const Dashboard = () => {
                                                 <img
                                                     src="/assets/user_img.png"
                                                     alt=""
-                                                    width={60}
-                                                    height={60}
+                                                    width={40}
+                                                    height={40}
                                                     className="rounded-full"
                                                 />
                                                 {item.Utilisateur}
@@ -554,7 +554,7 @@ const Dashboard = () => {
 
 
 
-            <div className="flex items-center justify-between gap-3 mb-4 mt-10">
+            <div className="flex items-center justify-between gap-3 mb-4 mt-10 ">
                 {/* TITRE OCCUPATION DU PERSONNEL */}
                 <button onClick={() => toggleModal('staff')} className={`${Theme_A.button.medBlackColoredButton}`}>
                     Occupation du personnel
@@ -566,7 +566,11 @@ const Dashboard = () => {
                 </span>
             </div>
 
-            <RechartSingleBarChart direction="ltr" staffData={staffData} fill={fillColor} barSize={barSize} />
+
+            <div className="rounded-xl shadow-sm shadow-stone-600 mb-20">
+                <RechartSingleBarChart direction="ltr" staffData={staffData} fill={fillColor} barSize={barSize} />
+            </div>
+
 
         </div>
 
