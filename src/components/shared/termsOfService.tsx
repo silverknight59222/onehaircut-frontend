@@ -39,17 +39,24 @@ const termsPage = () => {
         <h1 className={`my-3 ${Theme_A.textFont.headerH4}`}>
           2. Utilisation du site</h1>
         <p className='pb-6'>
-          L'utilisateur s'engage à utiliser le site web OneHaircut de manière conforme à la loi. Toute utilisation à des fins illégales ou inappropriées est strictement interdite.</p>
+          L'utilisateur s'engage à utiliser le site web OneHaircut de manière conforme à la loi. Toute utilisation à des fins illégales ou inappropriées est strictement interdite.
+          OneHairCut ne constitue pas une recommandation d'un salon de coiffure ou coiffeur, ni des services proposés.
+          Sauf indication contraire, vous devez avoir au moins 18 ans pour utiliser la Plateforme.
+          Vous devez vous abstenir d’utiliser OneHairCut pour causer des désagréments ou faire de fausses réservations. Cette plateforme doit être utilisée aux fins prévues.  Ainsi vous devez vous comporter de manière appropriée envers le personnel du Prestataire de service. </p>
 
         <h1 className={`my-3 ${Theme_A.textFont.headerH4}`}>
           3. Compte utilisateur</h1>
         <p className='pb-6'>
-          Pour accéder à certaines fonctionnalités du site, l'utilisateur est amené à créer un compte personnel. Les informations fournies pour la création du compte doivent être exactes et à jour. </p>
+          Pour accéder à certaines fonctionnalités du site, l'utilisateur est amené à créer un compte personnel. Les informations fournies pour la création du compte doivent être exactes et à jour. Vous êtes responsable de toutes les actions réalisées sur votre compte. Ne divulguer donc pas votre nom d’utilisateur et votre mot de passe secrets.</p>
 
         <h1 className={`my-3 ${Theme_A.textFont.headerH4}`}>
           4. Responsabilités</h1>
         <p className='pb-6'>
-          OneHaircut s'efforce de fournir des services de qualité, mais ne peut garantir l'exactitude, la fiabilité ou l'exhaustivité des informations affichées sur le site. Onehaircut ne peut pas être tenu responsable pour les informations erronées fournies par les coiffeurs.</p>
+          OneHaircut s'efforce de fournir des services de qualité, mais ne peut garantir l'exactitude, la fiabilité ou l'exhaustivité des informations affichées sur le site. Onehaircut ne peut pas être tenu responsable pour les informations erronées fournies par les coiffeurs.
+
+          De plus, lorsque vous réservez une prestation, OneHairCut met à votre disposition la plateforme dont elle est responsable, mais n’est pas responsable de l’expérience de coiffure. Le salon, barber ou coiffeur indépendant est réponsable de cette dite expérience.
+
+          Vous êtes responsable des désagréments ou des dommages que vous génèreriez.</p>
 
         <h1 className={`my-3 ${Theme_A.textFont.headerH4}`}>
           5. Propriété intellectuelle</h1>
@@ -79,7 +86,9 @@ const termsPage = () => {
         <h1 className={`my-3 ${Theme_A.textFont.headerH4}`}>
           10. Droit applicable et juridiction</h1>
         <p className='pb-6'>
-          Les présentes conditions sont régies par la législation en vigueur. En cas de litige, les tribunaux compétents seront ceux du ressort judiciaire concerné.  </p>
+          Les présentes conditions sont régies par la législation en vigueur. En cas de litige, les tribunaux compétents seront ceux du ressort judiciaire concerné.
+          Vous devez coopérer à tous les contrôles anti-fraude/anti-blanchiment que nous sommes obligés d'effectuer.
+        </p>
 
       </div>
 
