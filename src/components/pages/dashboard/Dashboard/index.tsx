@@ -556,7 +556,7 @@ const Dashboard = () => {
 
             <div className="flex items-center justify-between gap-3 mb-4 mt-10">
                 {/* TITRE OCCUPATION DU PERSONNEL */}
-                <button onClick={() => toggleModal('topClient')} className={`${Theme_A.button.medBlackColoredButton}`}>
+                <button onClick={() => toggleModal('staff')} className={`${Theme_A.button.medBlackColoredButton}`}>
                     Occupation du personnel
                 </button>
 
