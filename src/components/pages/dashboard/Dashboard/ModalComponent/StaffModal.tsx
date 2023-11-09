@@ -1,13 +1,16 @@
 "use client";
-import React from "react";
 import RechartsPieChart from '@/views/charts/chartjs/RechartsPieChart'
 import RechartsGroupBarChart from "@/views/charts/chartjs/RechartGroupBarChart";
 import RechartsRadarChart from "@/views/charts/chartjs/RechartsRadarChart";
+import DropdownMenu from "@/components/UI/DropDownMenu";
+import React, { useState } from "react";
 
 
-
-
-
+const DisplayedMonths = [
+    "Ce mois",
+    "3 derniers mois",
+    "Cette année"
+]
 const StaffModal = () => {
 
     const data = [
@@ -74,9 +77,20 @@ const StaffModal = () => {
     }
 
 
+    const [selectedMonthPayload, setSelectedMonthPayload] = useState(DisplayedMonths[0]);
+    const handleNewMonthRevenu = (item: string) => {
+        // Mettez à jour l'état avec la nouvelle valeur sélectionnée
+        setSelectedMonthPayload(item);
+        // TODO: Ajoutez la logique pour sauvegarder la nouvelle préférence
+    }
+
     return (
         <div>
             <div className='mt-4 mb-4'>
+                <span className="mr-4 mt-4">
+                    <DropdownMenu dropdownItems={DisplayedMonths} backgroundColor="bg-white" selectId={selectedMonthPayload} menuName="Période d'observation"
+                        fctToCallOnClick={handleNewMonthRevenu} />
+                </span>
                 <p className="text-neutral-500 font-semibold text-2xl text-center">
                     Activité du personnel
                 </p>

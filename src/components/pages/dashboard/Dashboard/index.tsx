@@ -27,6 +27,7 @@ import FullTable from "@/views/datatable/FullTable";
 import RechartSingleBarChart from "@/views/charts/chartjs/RechartSingleBarChart";
 import RechartsLineChart from "@/views/charts/chartjs/RechartsLineChart";
 import { Theme_A } from "@/components/utilis/Themes";
+import ConversionChart from "@/views/charts/chartjs/ConversionChart";
 
 
 const Dashboard = () => {
@@ -112,6 +113,8 @@ const Dashboard = () => {
     const topClientheaders = ["Utilisateur", "Date dernière commande", "Visites", "Commandes",
         "Dernière commande", "Details dernière commande", "Status dernière commande", "Total payé"];
 
+
+    //  CLIENT ACTIVITY DATA
     const dataValue = [
         {
             Date: "12/07/2023",
@@ -197,6 +200,8 @@ const Dashboard = () => {
         // ... Add more rows as needed
     ];
 
+
+    // STAFF DATA
     const staffData = [
         { name: 'Staff 1', value: 80 },
         { name: 'Staff 2', value: 75 },
@@ -207,6 +212,37 @@ const Dashboard = () => {
 
     const fillColor = '#629E3E'; // Example fill color
     const barSize = 50; // Example barSize
+
+    // CONVERSION DATA 
+    //TODO IMPORT TRUE DATA
+    const conversionData = [
+        { name: 'Commandes', value: 78, color: 'rgba(122, 191, 80, 1)' },
+        { name: 'Visites', value: 489, color: 'rgba(75, 150, 255, 1)' },
+
+    ];
+    // Calcul du pourcentage des commandes par rapport aux visites
+    const tauxDeConversion = Math.round((conversionData[0].value / conversionData[1].value) * 100);
+    let indiceTauxConversion;
+    let couleurTaux;
+
+    if (tauxDeConversion >= 0 && tauxDeConversion <= 5) {
+        indiceTauxConversion = "faible";
+    } else if (tauxDeConversion > 5 && tauxDeConversion <= 10) {
+        indiceTauxConversion = "intéressant";
+    } else if (tauxDeConversion > 10) {
+        indiceTauxConversion = "performant";
+    }
+
+    if (tauxDeConversion >= 0 && tauxDeConversion <= 5) {
+        indiceTauxConversion = "faible";
+        couleurTaux = 'rgba(255, 70, 70, 1)';
+    } else if (tauxDeConversion > 5 && tauxDeConversion <= 10) {
+        indiceTauxConversion = "intéressant";
+        couleurTaux = 'rgba(255, 165, 0, 1)';
+    } else if (tauxDeConversion > 10) {
+        indiceTauxConversion = "performant";
+        couleurTaux = 'rgba(50, 151, 80, 1)';
+    }
 
     return (
         <div className="px-4 lg:px-6">
@@ -469,31 +505,19 @@ const Dashboard = () => {
                     </div>
                 </div>
 
-                {/* Fidelite client CHART */}
+                {/* CLIENT CONVERSION CHART */}
                 <div style={{ width: '32%' }} className="px-3 md:w-4/12 h-[460px] overflow-auto w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-xl shadow-sm shadow-stone-600">
                     <p className="text-xl sm:text-2xl text-[#727272] font-semibold text-center mt-6 ">
-                        Taux de Conversion: <span className='text-red-500 '>31%</span>
+                        Taux de Conversion: <span style={{ color: couleurTaux }}>{indiceTauxConversion}</span>
                     </p>
                     {/* Wrapper for ProgressBar components */}
-                    <div className="flex flex-wrap items-center justify-center gap-10 mt-10">
-                        <ProgressBar
-                            value={65}
-                            name="Client"
-                            number={100}
-                            rotation={0.25}
-                            color="rgba(255, 70, 70, 0.8)"
-                        />
-                        <ProgressBar
-                            value={31}
-                            name="Commandes"
-                            number={31}
-                            rotation={0.25}
-                            color="rgba(16, 161, 216, 0.8)"
+                    <div className="flex flex-wrap items-center justify-center gap-4 ">
+                        <ConversionChart data={conversionData}
                         />
                     </div>
                 </div>
 
-                {/* Top Client List */}
+                {/* TOP CLIENTS TABS*/}
                 <div style={{ width: '32%' }} className="px-3 md:w-4/12 w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-xl shadow-sm shadow-stone-600">
                     <div className="relative ml-4">
                         <table className="w-full text-sm text-left">
