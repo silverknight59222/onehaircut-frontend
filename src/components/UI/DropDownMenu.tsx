@@ -62,6 +62,7 @@ const useStyles = makeStyles((theme) => ({
     selected: {},
 }));
 
+
 const DropdownMenu = ({
     dropdownItems = [""],
     menuName = '',
@@ -69,6 +70,7 @@ const DropdownMenu = ({
     labelId = '',
     selectId = '',
     defaultSelected = '',
+    backgroundColor = ''
 }) => {
     const classes = useStyles();
     const [selectedItem, setSelectedItem] = useState('');
@@ -84,7 +86,7 @@ const DropdownMenu = ({
 
     return (
         <div>
-            <FormControl className={classes.formControl}>
+            <FormControl className={`${backgroundColor} ${classes.formControl}`}>
                 <InputLabel
                     id={labelId}
                     className={classes.inputLabel}

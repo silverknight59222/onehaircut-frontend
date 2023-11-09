@@ -79,16 +79,32 @@ const Dashboard = () => {
     const messages = useMemo(() => messagesData, []);
     const activity = useMemo(() => activityData, []);
     const data = useMemo(() => clientTableData, []);
-    const Month = [
-        "ce mois",
+    const DisplayedMonths = [
+        "Ce mois",
+        "3 derniers mois",
+        "Cette année"
     ]
+    const [selectedMonthRevenu, setSelectedMonthRevenu] = useState(DisplayedMonths[0]);
+    const [selectedMonthTransactions, setSelectedMonthTransactions] = useState(DisplayedMonths[0]);
+    const [selectedMonthPayload, setSelectedMonthPayload] = useState(DisplayedMonths[0]);
 
-    const revenueMonth = [
-        "Juliet",
-    ]
-    const handleNewMonth = (item: string) => {
-        // TODO: add backend to save the new preference
+    const handleNewMonthRevenu = (item: string) => {
+        // Mettez à jour l'état avec la nouvelle valeur sélectionnée
+        setSelectedMonthRevenu(item);
+        // TODO: Ajoutez la logique pour sauvegarder la nouvelle préférence
     }
+    const handleNewMonthGoals = (item: string) => {
+        // Mettez à jour l'état avec la nouvelle valeur sélectionnée
+        setSelectedMonthTransactions(item);
+        // TODO: Ajoutez la logique pour sauvegarder la nouvelle préférence
+    }
+    const handleNewMonthPayload = (item: string) => {
+        // Mettez à jour l'état avec la nouvelle valeur sélectionnée
+        setSelectedMonthPayload(item);
+        // TODO: Ajoutez la logique pour sauvegarder la nouvelle préférence
+    }
+
+
 
     const headers = ["Utilisateur", "Date dernière commande", "Visites", "Commandes",
         "Dernière commande", "Details dernière commande", "Status dernière commande", "Total payé"];
@@ -273,8 +289,10 @@ const Dashboard = () => {
                     })}
                 </div>
             </div>
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch mt-10">
 
+
+
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch mt-10">
                 {/*REVENU JOURNALIER */}
                 <div className="flex items-center justify-between gap-3">
                     <button onClick={() => toggleModal('rate')} className={`${Theme_A.button.medBlackColoredButton}`}>
@@ -282,26 +300,21 @@ const Dashboard = () => {
                     </button>
                     {/* DROPDOWN AFFICHAGE REVENU JOURNALIER */}
                     <span className="mr-4 mt-4">
-                        <DropdownMenu dropdownItems={Month} backgroundClr={ColorsThemeA.standardBorderGray}
-                            fctToCallOnClick={handleNewMonth} showDefaultMessage={false} />
+                        <DropdownMenu dropdownItems={DisplayedMonths} backgroundColor="bg-white" selectId={selectedMonthRevenu}
+                            fctToCallOnClick={handleNewMonthRevenu} />
                     </span>
                 </div>
 
 
                 {/*Objectifs */}
-                <div className="flex items-center justify-between gap-3 mb-4">
+                <div className="flex items-center justify-between gap-3 ">
                     <button onClick={() => toggleModal('goals')} className={`${Theme_A.button.medBlackColoredButton}`}>
-                        Objectifs
+                        Objectifs du mois
                     </button>
-
-                    <span className="mr-4 mt-4">
-                        <DropdownMenu dropdownItems={Month} backgroundClr={ColorsThemeA.standardBorderGray}
-                            fctToCallOnClick={handleNewMonth} showDefaultMessage={false} />
-                    </span>
                 </div>
             </div>
 
-            <div className="mt-2 mb-12">
+            <div className=" mb-12">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch ">
                     {/* REVENU CHART */}
                     <Card className="h-full ">
@@ -369,13 +382,13 @@ const Dashboard = () => {
 
 
             {/* TRANSACTIONS */}
-            <div className="flex items-center justify-between mb-4 mt-10">
+            <div className="flex items-center justify-between mt-10">
                 <button onClick={() => toggleModal('TransactionfullTable')} className={`${Theme_A.button.medBlackColoredButton}`}>
                     Transactions
                 </button>
 
-                <DropdownMenu dropdownItems={revenueMonth} backgroundClr={ColorsThemeA.standardBorderGray}
-                    fctToCallOnClick={handleNewMonth} showDefaultMessage={false} />
+                <DropdownMenu dropdownItems={DisplayedMonths} backgroundColor="bg-white" selectId={selectedMonthPayload}
+                    fctToCallOnClick={handleNewMonthPayload} />
             </div>
             <TransactionList />
 
@@ -557,15 +570,15 @@ const Dashboard = () => {
 
 
 
-            <div className="flex items-center justify-between gap-3 mb-4 mt-10 ">
+            <div className="flex items-center justify-between gap-3 mt-10 ">
                 {/* TITRE OCCUPATION DU PERSONNEL */}
                 <button onClick={() => toggleModal('staff')} className={`${Theme_A.button.medBlackColoredButton}`}>
                     Répartition de la charge du personnel
                 </button>
 
                 <span className="mr-4 mt-4">
-                    <DropdownMenu dropdownItems={Month} backgroundClr={ColorsThemeA.standardBorderGray}
-                        fctToCallOnClick={handleNewMonth} showDefaultMessage={false} />
+                    <DropdownMenu dropdownItems={DisplayedMonths} backgroundColor="bg-white" selectId={selectedMonthPayload}
+                        fctToCallOnClick={handleNewMonthPayload} />
                 </span>
             </div>
 

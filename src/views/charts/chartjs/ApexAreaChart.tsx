@@ -81,22 +81,100 @@ const ApexAreaChart = () => {
             return value;
         });
 
-        // Définir la nouvelle série avec les données générées
+
+
+
+
         setSeries([
             {
                 name: 'Ventes totales',
                 data: ventesTotalesData,
-                zIndex: 0 // La série des sommes avec le plus petit zIndex pour qu'elle soit en arrière-plan
+                zIndex: 0, // La série des sommes avec le plus petit zIndex pour qu'elle soit en arrière-plan
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        shade: 'light',
+                        type: "vertical",
+                        shadeIntensity: 0.7,
+                        gradientToColors: undefined, // optional, if not defined - uses the shades of same color in series
+                        inverseColors: false,
+                        opacityFrom: 0.5,
+                        opacityTo: 1,
+                        stops: [0, 90, 100],
+                        colorStops: [
+                            {
+                                offset: 0,
+                                color: "color1",
+                                opacity: 1
+                            },
+                            {
+                                offset: 100,
+                                color: "color2",
+                                opacity: 0.5
+                            }
+                        ]
+                    }
+                }
             },
             {
                 name: 'Services',
                 data: servicesData,
-                zIndex: 2
+                zIndex: 2,
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        shade: 'light',
+                        type: "vertical",
+                        shadeIntensity: 0.7,
+                        gradientToColors: undefined, // optional, if not defined - uses the shades of same color in series
+                        inverseColors: false,
+                        opacityFrom: 0.5,
+                        opacityTo: 1,
+                        stops: [0, 70, 100],
+                        colorStops: [
+                            {
+                                offset: 0,
+                                color: "color1",
+                                opacity: 1
+                            },
+                            {
+                                offset: 100,
+                                color: "color2",
+                                opacity: 0.5
+                            }
+                        ]
+                    }
+                }
             },
             {
                 name: 'Coiffures',
                 data: coiffuresData,
-                zIndex: 1
+                zIndex: 1,
+                fill: {
+                    type: 'gradient',
+                    gradient: {
+                        shade: 'light',
+                        type: "vertical",
+                        shadeIntensity: 0.7,
+                        gradientToColors: undefined, // optional, if not defined - uses the shades of same color in series
+                        inverseColors: false,
+                        opacityFrom: 0.5,
+                        opacityTo: 1,
+                        stops: [0, 80, 100],
+                        colorStops: [
+                            {
+                                offset: 0,
+                                color: "color1",
+                                opacity: 1
+                            },
+                            {
+                                offset: 100,
+                                color: "color2",
+                                opacity: 0.5
+                            }
+                        ]
+                    }
+                }
             }
         ]);
     }, []);
@@ -128,22 +206,7 @@ const ApexAreaChart = () => {
             }
 
         },
-        colors: ['rgba(255, 70, 70, 0.8)', 'rgba(255, 200, 102, 0.7)', 'rgba(16, 161, 216, 0.8)'], // replaced variables with actual color hex values
-        fill: {
-            opacity: 1,
-            type: 'gradient',
-            gradient: {
-                shade: 'light',
-                type: "vertical",
-                shadeIntensity: 0.7,
-                gradientToColors: undefined, // optional, if not defined - uses the shades of same color in series
-                inverseColors: true,
-                opacityFrom: 0.2,
-                opacityTo: 0.92,
-                stops: [0, 50, 100],
-                colorStops: []
-            }
-        },
+        colors: ['rgba(255, 70, 70, 0.9)', 'rgba(255, 200, 102, 0.95)', 'rgba(16, 161, 216, 0.90)'], // replaced variables with actual color hex values
         grid: {
             show: true,
             borderColor: '#e0e0e0', // hardcoding a light gray border color
