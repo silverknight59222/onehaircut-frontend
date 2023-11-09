@@ -2,7 +2,7 @@
 import { ReactNode, useContext } from 'react'
 
 // ** Component Imports
-import { AbilityContext } from 'src/layouts/components/acl/Can'
+import { AbilityContext } from '@/layouts/components/acl/Can'
 
 // ** Types
 import { NavLink } from '@/@core/layouts/types'

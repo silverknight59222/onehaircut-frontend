@@ -19,11 +19,11 @@ const Page = () => {
 		{ icon: "DashboardIcon", title: "Dashboard", route: "/dashboard" },
 		{ icon: "ClientActivityIcon", title: "Client Activité", route: "/dashboard/client-activity" },
 		{ icon: "StatsIcon", title: "Visites / Stats", route: "/dashboard/visites" },
-		{ icon: "RevenueIcon", title: "Revenue", route: "/dashboard/revenue" },
+		// { icon: "RevenueIcon", title: "Revenue", route:"/dashboard/revenue" },
 		{ icon: "MessageIcon", title: "Message", route: "/dashboard/messages" },
 		{ icon: "SettingsIcon", title: "Réglages", route: "/dashboard/settings" },
 		{ icon: "PersonalizationIcon", title: "Abonnement", route: "/dashboard/subscription" },
-		// { icon: "BoostIcon", title: "Boost", route:"" }, // TODO for the future
+		{ icon: "BoostIcon", title: "Boost", route: "" },
 		{ icon: "BotIcon", title: "OnehairBot", route: "/dashboard/bot" },
 	];
 	const SidebarHandler = () => {
@@ -32,6 +32,7 @@ const Page = () => {
 	const tabHandler = (name: string) => {
 		setTab(name);
 	};
+
 	return (
 		<>
 			{tab === "Dashboard" && (

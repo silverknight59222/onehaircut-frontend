@@ -10,8 +10,8 @@ import useMediaQuery from '@mui/material/useMediaQuery'
 import Layout from '@/@core/layouts/Layout'
 
 // ** Navigation Imports
-import VerticalNavItems from 'src/navigation/vertical'
-import HorizontalNavItems from 'src/navigation/horizontal'
+import VerticalNavItems from '@/navigation/vertical'
+import HorizontalNavItems from '@/navigation/horizontal'
 
 // ** Component Import
 // Uncomment the below line (according to the layout type) when using server-side menu
