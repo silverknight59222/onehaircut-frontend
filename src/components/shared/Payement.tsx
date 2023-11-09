@@ -34,6 +34,8 @@ const PaymentForm: React.FC = () => {
                         <div className="mb-3">
                             <label className="font-bold text-sm mb-2 ml-1">Nom sur la carte</label>
                             <div>
+
+                                {/* NOM SUR LA CARTE */}
                                 <input
                                     className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 
               focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-stone-400 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
@@ -44,11 +46,26 @@ const PaymentForm: React.FC = () => {
                         <div className="mb-3">
                             <label className="font-bold text-sm mb-2 ml-1">Numéro de carte</label>
                             <div>
+
+                                {/* NUMERO DE CARTE */}
                                 <input
                                     className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 
-                                 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-stone-400 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+focus:border-gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-stone-400 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
                                     placeholder="0000 0000 0000 0000"
-                                    type="text" />
+                                    type="text"
+                                    inputMode="numeric"
+                                    pattern="\d{4}|\d{4} \d{4}|\d{4} \d{4} \d{4}|\d{4} \d{4} \d{4} \d{4}"
+                                    maxLength={19} // 16 chiffres + 3 espaces
+                                    onChange={(e) => {
+                                        // Remplacer tout ce qui n'est pas un chiffre par une chaîne vide
+                                        let value = e.target.value.replace(/\D/g, ''); // \D matche tout caractère non-numérique
+                                        let cardNumber = value.match(/.{1,4}/g)?.join(' ') ?? '';
+                                        e.target.value = cardNumber; // Mettre à jour l'affichage dans l'input
+                                    }}
+                                />
+
+
+
                             </div>
                         </div>
                         <div className="mb-3 -mx-2 flex items-end">

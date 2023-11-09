@@ -337,7 +337,7 @@ const Hairdressers = () => {
     if (id === avatarIndex) {
       return (
         <div className="relative shadow-[0px_6px_11px_0px_rgba(176,176,176,0.25)] rounded-xl bg-white w-32 h-32">
-          <Image src={image.includes('api-server') ? image : `https://api.onehaircut.com${image}`} alt="avatar" fill={true} className="rounded-xl" />
+          <Image src={image.includes('http') ? image : `https://api.onehaircut.com${image}`} alt="avatar" fill={true} className="rounded-xl" />
         </div>
       );
     }
@@ -511,7 +511,7 @@ const Hairdressers = () => {
           >
             <div className={`${Theme_A.thumbnails.profilPictureThumbnail}`}>
               {profileImage ? (
-                <Image src={profileImage} fill={true} alt="Profile Image" />
+                <Image src={profileImage.includes('http') ? profileImage : `https://api.onehaircut.com${profileImage}`} fill={true} alt="Profile Image" />
               ) : (
                 <div>
                   <p className={`${Theme_A.textFont.infoTextSmall}`}>
@@ -619,7 +619,7 @@ const Hairdressers = () => {
                       <Image
                         fill={true}
                         src={
-                          item.profile_image ? (item.profile_image.includes('https://api.onehaircut.com') ? item.profile_image : `https://api.onehaircut.com${item.profile_image}`) : `https://api.onehaircut.com${item.avatar.image}`
+                          item.profile_image ? (item.profile_image.includes('http') ? item.profile_image : `https://api.onehaircut.com${item.profile_image}`) : `https://api.onehaircut.com${item.avatar.image}`
                         }
                         alt="image"
                       />

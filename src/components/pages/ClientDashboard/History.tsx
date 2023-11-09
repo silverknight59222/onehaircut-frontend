@@ -187,7 +187,7 @@ const History = () => {
             </p>
             <div className='flex flex-col gap-4' >
               {/* Loop over the booking history and display them */}
-              {!histories.length && <p className="text-3xl">Aucun Historique Disponible</p>}
+              {!histories.length && <p className="text-lg italic">Aucun Historique Disponible</p>}
               {
                 histories.map((item, index) => {
                   return <div key={index}>

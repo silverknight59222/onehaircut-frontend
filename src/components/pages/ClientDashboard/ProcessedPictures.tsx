@@ -10,12 +10,7 @@ import Image from "next/image";
 
 // IMAGE PAR DEFAUT SI PAS DE COIFFURE SELECTIONNEE
 const DefaultProfilFace = '/assets/DefaultPictures/Profil.png'; // L'URL de l'image
-
-const titresImagesParDefaut: string[] = [];
-const maxEmplacements = 5;
-for (let i = 1; i <= maxEmplacements; i++) {
-    titresImagesParDefaut.push(`Emplacement ${i}`);
-}
+const DefaultName = "Cabine vide";
 
 
 const ProcessedPictures = () => {
@@ -27,10 +22,10 @@ const ProcessedPictures = () => {
             <ClientDashboardLayout>
                 <div className="mt-14 mb-5 px-6">
                     {/* Première ligne de cartes */}
-                    <div className="flex flex-row">
+                    <div className="flex flex-row justify-evenly">
                         <div className="flex-1">
                             <CustomCard
-                                title={titresImagesParDefaut[0]}
+                                title={DefaultName}
                                 imageUrl={DefaultProfilFace} // Utilisez l'URL de l'image ici
                                 initialProgress={50}
                             />
@@ -39,14 +34,14 @@ const ProcessedPictures = () => {
                         </div>
                         <div className="flex-1 mr-4">
                             <CustomCard
-                                title={titresImagesParDefaut[1]}
+                                title={DefaultName}
                                 imageUrl={DefaultProfilFace}
                                 initialProgress={50}
                             />
                         </div>
                         <div className="flex-1">
                             <CustomCard
-                                title={titresImagesParDefaut[2]}
+                                title={DefaultName}
                                 imageUrl={DefaultProfilFace}
                                 initialProgress={50}
                             />
@@ -54,17 +49,17 @@ const ProcessedPictures = () => {
                     </div>
 
                     {/* Deuxième ligne de cartes */}
-                    <div className="flex flex-row mt-4">
+                    <div className="flex flex-row mt-4 justify-evenly">
                         <div className="flex-1">
                             <CustomCard
-                                title={titresImagesParDefaut[3]}
+                                title={DefaultName}
                                 imageUrl={DefaultProfilFace}
                                 initialProgress={50}
                             />
                         </div>
                         <div className="flex-1">
                             <CustomCard
-                                title={titresImagesParDefaut[4]}
+                                title={DefaultName}
                                 imageUrl={DefaultProfilFace}
                                 initialProgress={50}
                             />

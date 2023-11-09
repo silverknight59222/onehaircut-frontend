@@ -58,9 +58,9 @@ const CustomCard: React.FC<CustomCardProps> = ({
 
   return (
     <div className="flex justify-center items-center">
-      <div className="shadow-md p-2 border-2 border-stone-300 rounded-xl bg-white">
+      <div className="shadow-sm shadow-stone-600 p-2 border-2 border-stone-300 rounded-xl bg-white">
         {/* TITRE */}
-        <p className="text-lg sm:text-lg font-semibold mb-2">
+        <p className="text-lg sm:text-lg font-semibold mb-2 ml-2">
           <small>{title}</small>
         </p>
 

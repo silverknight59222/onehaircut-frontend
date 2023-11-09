@@ -320,7 +320,7 @@ const Welcome = () => {
         </p>
         <div className="flex flex-col md:flex-row gap-4 mb-10 sm:mb-10 ">
           <div
-            className={`${Theme_A.button.bigWhiteGreyButton} shadow-sm hover:shadow-md cursor-pointer `}
+            className={`${Theme_A.button.bigWhiteGreyButton} shadow-sm shadow-stone-600 hover:shadow-md hover:shadow-stone-600 cursor-pointer `}
             onClick={() => {
               router.push('/services');
             }}
@@ -333,7 +333,7 @@ const Welcome = () => {
             return <div key={index} onClick={() => onClickHaircut(item.id, item.name, item.image)} className={`shadow-md rounded-xl my-2 cursor-pointer border hover:outline outline-1 outline-stone-400 ${item.id === haircut?.id}`}>
               <div className="relative w-max px-4 pt-4 bg-gradient-to-r from-white via-stone-50 to-zinc-200 rounded-t-xl ">
                 <div className={`${Theme_A.hairstyleCards.cardSize.med}`}>
-                  <Image src={item.image.includes('https://api.onehaircut.com') ? item.image : `https://api.onehaircut.com${item.image}`} fill={true} alt="" className="rounded-t-xl" />
+                  <Image src={item.image.includes('http') ? item.image : `https://api.onehaircut.com${item.image}`} fill={true} alt="" className="rounded-t-xl" />
                   {!isLoggedIn &&
                     <div onClick={(e) => onWishlist(e, item.id)} className="absolute right-2 top-2 cursor-pointer">
                       <StarIcon
@@ -342,15 +342,15 @@ const Welcome = () => {
                       />
                     </div>
                   }
-                  
+
                 </div>
-                
+
               </div>
               <div className="rounded-b-xl bg-gradient-to-r from-white via-stone-50 to-zinc-200">
                 <p className="rounded-b-xl flex items-center justify-center py-2 text-black font-medium">
                   {item.name}
                 </p>
-              </div>              
+              </div>
             </div>
           })}
         </div>
@@ -384,7 +384,7 @@ const Welcome = () => {
                   </div>
                 ) : (
                   <Image
-                    src={selectedHaircut.image.includes('https://api.onehaircut.com') ? selectedHaircut.image : `https://api.onehaircut.com${selectedHaircut.image}`}
+                    src={selectedHaircut.image.includes('http') ? selectedHaircut.image : `https://api.onehaircut.com${selectedHaircut.image}`}
                     fill={true}
                     alt=""
                     className="rounded-xl w-full h-full object-cover"
@@ -392,7 +392,7 @@ const Welcome = () => {
                 )}
               </div>
               <div className="flex flex-col items-center">
-                <button onClick={onContinue} className={`flex items-center justify-center font-medium w-full md:w-52 h-14 mb-4 ${Theme_A.button.medLargeGradientButton}`}>Choisir cette coiffure</button>
+                <button onClick={onContinue} className={`flex items-center justify-center font-medium w-full md:w-52 h-14 mb-4 ${Theme_A.button.smallGradientButton}`}>Choisir cette coiffure</button>
                 <button
                   onClick={() => setIsPreview(!isPreview)}
                   className={`flex items-center justify-center font-medium w-full md:w-52 h-14 ${isPreview ? Theme_A.button.medGreydButton : Theme_A.button.medWhiteColoredButton}`}
