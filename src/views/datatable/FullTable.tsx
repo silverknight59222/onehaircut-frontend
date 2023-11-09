@@ -3,11 +3,11 @@ import TableComponent from "@/views/datatable/TableComponent";
 import BaseDropdown from "@/components/UI/BaseDropdown";
 import DropdownMenu from "@/components/UI/DropDownMenu";
 import React from "react";
-import {ColorsThemeA} from "@/components/utilis/Themes";
+import { ColorsThemeA } from "@/components/utilis/Themes";
 
 const FullTable: React.FC = () => {
     // sample headers and data for TableComponent
-    const headers:any = [
+    const headers: any = [
         "Date",
         "Client",
         "Produits",
@@ -24,7 +24,7 @@ const FullTable: React.FC = () => {
     }
 
 
-    const data:any = [
+    const data: any = [
         {
             Date: "12/07/2023",
             Client: "Amanda louis",
@@ -87,7 +87,7 @@ const FullTable: React.FC = () => {
             Facture: "non Disponible",
             "Moyen de paiement": "Visa",
             Status: "En vérification"
-        },    {
+        }, {
             Date: "12/07/2023",
             Client: "Amanda louis",
             Produits: "Carré plongeant",
@@ -124,10 +124,10 @@ const FullTable: React.FC = () => {
                     <div className="flex items-center justify-center">
                         {/* Centered Card */}
                         <div className="bg-white shadow-md rounded-lg overflow-hidden flex justify-center w-full max-w-xl mx-auto">
-                            <div className="p-4 border-r border-gray-300 bg-neutral-500" style={{background: "#2F2F2F4D"}}>
+                            <div className="p-4 border-r border-gray-300 bg-neutral-500" style={{ background: "#2F2F2F4D" }}>
                                 <p className="text-gray-600 text-lg font-bold text-black-500 ">Compte enregistrée</p>
                             </div>
-                            <div className="p-4 bg-neutral-500" style={{background: "#2F2F2F4D"}} >
+                            <div className="p-4 bg-neutral-500" style={{ background: "#2F2F2F4D" }} >
                                 <p className="text-gray-600 text-lg font-bold text-black-500 ">FR **** **** **** 1985</p>
                             </div>
                         </div>

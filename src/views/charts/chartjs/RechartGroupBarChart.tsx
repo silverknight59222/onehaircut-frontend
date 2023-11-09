@@ -38,6 +38,7 @@ interface RechartsGroupBarChartProps {
     data: Array<any>, // This will be your data array prop
     barFills: { [key: string]: string }, // Object containing fill colors for each dataKey
     legends: Array<{ key: string, color: string, text: string }>, // Array of legend items
+    yAxisName?: string, // Optional prop to set Y Axis name
 }
 
 const dataForRechart = [
@@ -99,7 +100,17 @@ const CustomTooltip = (data: TooltipProps<any, any>) => {
     return null
 }
 
-const RechartsGroupBarChart = ({ direction, data, barFills, legends }: RechartsGroupBarChartProps) => {
+
+
+
+const RechartsGroupBarChart = ({
+    direction,
+    data,
+    barFills,
+    legends,
+    yAxisName // Ajoutez cette ligne ici pour accepter yAxisName en tant que prop
+}: RechartsGroupBarChartProps) => {
+
 
     // ** States
     const [endDate, setEndDate] = useState<DateType>(null)
@@ -146,7 +157,15 @@ const RechartsGroupBarChart = ({ direction, data, barFills, legends }: RechartsG
                         <BarChart height={350} data={data} barSize={30} style={{ direction }} margin={{ left: 0 }}>
                             <CartesianGrid strokeDasharray='3 3' />
                             <XAxis dataKey='name' reversed={direction === 'rtl'} />
-                            <YAxis orientation={direction === 'rtl' ? 'right' : 'left'} />
+                            <YAxis
+                                orientation={direction === 'rtl' ? 'right' : 'left'}
+                                label={{
+                                    value: yAxisName, // Assurez-vous que cette valeur correspond bien à la prop passée
+                                    angle: -90,
+                                    position: 'insideLeft',
+                                    style: { textAnchor: 'middle' }
+                                }}
+                            />
                             <Tooltip content={CustomTooltip} />
                             {Object.entries(barFills).map(([key, fill]) => (
                                 <Bar key={key} dataKey={key} fill={fill} background={{ fill: '#eee' }} />
@@ -155,7 +174,7 @@ const RechartsGroupBarChart = ({ direction, data, barFills, legends }: RechartsG
                     </ResponsiveContainer>
                 </Box>
 
-                <Box sx={{ mt: 3, ml:6, display: 'flex', flexWrap: 'wrap' }}>
+                <Box sx={{ mt: 3, ml: 6, display: 'flex', flexWrap: 'wrap' }}>
                     {legends.map((legend, index) => (
                         <Box key={index} sx={{ mr: 6, display: 'flex', alignItems: 'center', '& svg': { mr: 1.5, color: legend.color } }}>
                             <Icon icon='mdi:circle' fontSize='0.75rem' />

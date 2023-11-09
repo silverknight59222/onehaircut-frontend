@@ -57,7 +57,7 @@ const TransactionList = () => {
             <div className="pt-7 pb-4 px-6 bg-white rounded-lg shadow-sm shadow-stone-600">
                 <div className="relative overflow-x-auto">
                     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
-                        <thead className="text-xs text-[#727272] whitespace-nowrap text-center uppercase bg-[rgba(255, 190, 148, 0.49)]" style={{ background: "rgba(255, 190, 148, 0.49)" }}>
+                        <thead className="text-xs text-[#727272] whitespace-nowrap text-center uppercase bg-[rgba(255, 190, 148, 0.49)]" style={{ background: "rgba(255, 190, 148, 0.9)" }}>
                             <tr>
                                 <th scope="col" className="px-6 py-3">
                                     Date
@@ -72,7 +72,7 @@ const TransactionList = () => {
                                     scope="col"
                                     className="px-6 py-3 border-r border-[#E4E7EB]"
                                 >
-                                    Produits
+                                    Commande
                                 </th>
                                 <th scope="col" className="px-10 py-3">
                                     Prix
@@ -93,7 +93,10 @@ const TransactionList = () => {
                                 let statusClass = '';
                                 switch (transaction.status) {
                                     case 'En vérification':
-                                        statusClass = 'text-yellow-400';
+                                        statusClass = 'text-yellow-500 font-semibold';
+                                        break;
+                                    case 'Encaissé':
+                                        statusClass = 'text-green-600 font-semibold';
                                         break;
                                     default:
                                         statusClass = 'text-gray-600'; // Default color for any other status

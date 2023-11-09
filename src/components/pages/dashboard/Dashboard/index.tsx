@@ -55,8 +55,8 @@ const Dashboard = () => {
         {
             numbers: "4,7/5",
             text: "",
-            gradient: "bg-gradient-to-b from-[#FF266A] to-[#DE235E]",
-            borderClr: "bg-[#FF266A]",
+            gradient: "bg-gradient-to-b from-[#FFB566] to-[#FA8E1B]",
+            borderClr: "bg-[#FFB566]",
             icon: <DashboardHeartIcon />,
         },
     ];
@@ -199,8 +199,8 @@ const Dashboard = () => {
         { name: 'Staff 5', value: 70 },
     ];
 
-    const fillColor = '#3C8A41'; // Example fill color
-    const barSize = 40; // Example barSize
+    const fillColor = '#629E3E'; // Example fill color
+    const barSize = 50; // Example barSize
 
     return (
         <div className="px-4 lg:px-6">
@@ -302,60 +302,63 @@ const Dashboard = () => {
             </div>
 
             <div className="mt-2 mb-12">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch ">
                     {/* REVENU CHART */}
-                    <Card className="h-full">
+                    <Card className="h-full ">
                         <div>
                             <ApexAreaChart />
                         </div>
                     </Card>
 
                     {/* OBJECTIFS CHART */}
-                    <Card className="h-full flex flex-col">
+                    <Card className="h-full flex flex-col justify-start">
                         {/* Top content for 'Visits' and dropdown */}
-                        <Grid container spacing={2}>
+                        <Grid container spacing={2} justifyContent="start" alignItems="center">
+
                             <Grid item xs={3}>
                             </Grid>
-                            <Grid item xs={3}>
+                            <Grid item xs={3} style={{ marginTop: '2rem' }}> {/* Ajoute une marge en haut */}
                                 <ProgressBar
                                     value={61}
                                     name="Nouveaux Clients"
                                     number={27}
                                     rotation={0.25}
-                                    color="#FE2569"
+                                    color='rgba(255, 70, 70, 1)'
                                 />
                             </Grid>
-                            <Grid item xs={1}></Grid>
-                            <Grid item xs={3}>
+
+                            <Grid item xs={2}></Grid>
+                            <Grid item xs={3} style={{ marginTop: '2rem' }}> {/* Ajoute une marge en haut */}
                                 <ProgressBar
                                     value={73}
-                                    name="Ajouter un objectif"
+                                    name="Nombre de visite"
                                     number={47}
                                     rotation={0.25}
-                                    color="#0FBFF1"
+                                    color="rgba(16, 161, 216, 1)"
                                 />
                             </Grid>
+
                             <Grid item xs={2}></Grid>
 
-                            <Grid item xs={1}></Grid>
-
+                            <Grid item xs={2}></Grid>
                             <Grid item xs={3}>
                                 <ProgressBar
                                     value={50}
-                                    name="Revenu Mensuel"
-                                    number={31}
+                                    name="Revenu mensuel"
+                                    number={50}
                                     rotation={0.25}
-                                    color="#7ABF50"
+                                    color="rgba(122, 191, 80, 1)"
                                 />
                             </Grid>
-                            <Grid item xs={1}></Grid>
+
+                            <Grid item xs={2}></Grid>
                             <Grid item xs={3}>
                                 <ProgressBar
-                                    value={0}
-                                    name="Revenu Mensuel"
-                                    number={0}
+                                    value={15}
+                                    name="Commandes d'habitués"
+                                    number={15}
                                     rotation={0.25}
-                                    color="#15BAF2"
+                                    color="rgba(255, 200, 102, 1)"
                                 />
                             </Grid>
                         </Grid>
@@ -389,7 +392,7 @@ const Dashboard = () => {
 
                 {/* TITRE FIDELITE CLIENTS */}
                 <Grid item xs={4}>
-                    <p className="text-primary cursor-pointer text-left text-2xl font-semibold">Fidélité clients</p>
+                    <p className="text-primary cursor-pointer text-left text-2xl font-semibold">Conversion des visites</p>
                 </Grid>
 
                 {/* TITRE TOP CLIENT */}
@@ -465,8 +468,8 @@ const Dashboard = () => {
 
                 {/* Fidelite client CHART */}
                 <div style={{ width: '32%' }} className="px-3 md:w-4/12 h-[460px] overflow-auto w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-xl shadow-sm shadow-stone-600">
-                    <p className="text-xl sm:text-2xl text-[#727272] font-semibold text-center mt-6">
-                        Conversion: <span className='text-red-500 mb-10'>31%</span>
+                    <p className="text-xl sm:text-2xl text-[#727272] font-semibold text-center mt-6 ">
+                        Taux de Conversion: <span className='text-red-500 '>31%</span>
                     </p>
                     {/* Wrapper for ProgressBar components */}
                     <div className="flex flex-wrap items-center justify-center gap-10 mt-10">
@@ -475,14 +478,14 @@ const Dashboard = () => {
                             name="Client"
                             number={100}
                             rotation={0.25}
-                            color="rgb(254, 57, 95)"
+                            color="rgba(255, 70, 70, 0.8)"
                         />
                         <ProgressBar
                             value={31}
                             name="Commandes"
                             number={31}
                             rotation={0.25}
-                            color="#15BAF2"
+                            color="rgba(16, 161, 216, 0.8)"
                         />
                     </div>
                 </div>
@@ -557,7 +560,7 @@ const Dashboard = () => {
             <div className="flex items-center justify-between gap-3 mb-4 mt-10 ">
                 {/* TITRE OCCUPATION DU PERSONNEL */}
                 <button onClick={() => toggleModal('staff')} className={`${Theme_A.button.medBlackColoredButton}`}>
-                    Occupation du personnel
+                    Répartition de la charge du personnel
                 </button>
 
                 <span className="mr-4 mt-4">

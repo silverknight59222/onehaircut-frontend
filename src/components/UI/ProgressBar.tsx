@@ -20,7 +20,7 @@ const ProgressBar = ({ value, name, number, color, rotation }: ProgressBar) => {
         const g = Math.round(Math.min(255, parseInt(color.slice(3, 5), 16) * (1 - factor)));
         const b = Math.round(Math.min(255, parseInt(color.slice(5, 7), 16) * (1 - factor)));
 
-return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+        return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
     }
 
     const TooltipOverlay = ({ value, name, number }: { value?: number, name: string, number?: number }) => {
@@ -75,7 +75,7 @@ return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b
                 })}
             >
                 <p className="font-semibold text-[#656565] text-center w-32 mt-2 hover:text-black">{name}</p>
-                <p className="text-3xl font-semibold text-black hover:text-gray-600">{number ? number : '-'}</p>
+                <p className="text-xl font-semibold text-black hover:text-gray-600">{number ? `${number} %` : '-'}</p>
             </CircularProgressbarWithChildren>
             {/*{isHovered && <TooltipOverlay value={value} name={name} number={number} />}*/}
         </div>

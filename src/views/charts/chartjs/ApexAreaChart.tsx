@@ -1,18 +1,17 @@
 // ** React Imports
-import { forwardRef, useState } from 'react'
-
 // ** MUI Imports
 import Card from '@mui/material/Card'
 import { useTheme } from '@mui/material/styles'
 import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
 import InputAdornment from '@mui/material/InputAdornment'
+import { forwardRef, useState, useEffect } from 'react' // Ajouté useEffect
 
 // ** Custom Component Import
 import CustomTextField from '@/@core/components/mui/text-field'
 
 // ** Third Party Imports
-import format from 'date-fns/format'
+import { format, getDaysInMonth, startOfMonth } from 'date-fns' // importing required functions from date-fns
 import { ApexOptions } from 'apexcharts'
 
 // ** Icon Imports
@@ -33,21 +32,76 @@ interface PickerProps {
     end: Date | number
 }
 
-const series = [
-    {
-        name: 'Income',
-        data: [100, 120, 90, 170, 130, 160, 140, 240, 220, 180, 270, 280, 375]
-    },
-    {
-        name: 'New clients',
-        data: [60, 80, 70, 110, 80, 100, 90, 180, 160, 140, 200, 220, 275]
-    },
-]
 
 const ApexAreaChart = () => {
     // ** States
     // ** Hook
     const theme = useTheme()
+    // État local pour les catégories de l'axe des x
+    const [categories, setCategories] = useState<string[]>([]);
+
+
+
+    //RANDOM DATA TODO : REMOVE WHEN LINKED WITH TRUE DATA
+
+    // Générer des valeurs aléatoires pour les jours jusqu'à aujourd'hui dans le mois actuel
+    const generateRandomData = (totalDays: number): number[] => {
+        const data: number[] = [Math.floor(Math.random() * (2000 - 300 + 1)) + 300]; // Premier valeur aléatoire
+        for (let i = 1; i < totalDays; i++) {
+            // Calcul de la valeur précédente
+            const previousValue = data[i - 1];
+            // Déterminer le minimum et le maximum pour la variation de 500
+            const min = Math.max(previousValue - 500, 300);
+            const max = Math.min(previousValue + 500, 2000);
+            // Ajouter une nouvelle valeur aléatoire basée sur la précédente
+            const newValue = Math.floor(Math.random() * (max - min + 1)) + min;
+            data.push(newValue);
+        }
+        return data;
+    };
+
+
+
+    // Utiliser un useEffect pour créer les séries avec des valeurs aléatoires
+    const [series, setSeries] = useState<any[]>([]); // 'any[]' ou vous pouvez définir un type plus spécifique pour les séries
+    useEffect(() => {
+        const today = new Date();
+        const dayOfMonth = today.getDate();
+
+        // Générer les données pour les deux premières séries
+        const servicesData = generateRandomData(dayOfMonth);
+        const coiffuresData = generateRandomData(dayOfMonth);
+
+        // Calculer les données pour la troisième série comme étant la somme des deux premières
+        const ventesTotalesData = servicesData.map((value, index) => {
+            // S'assurer que l'index existe aussi dans coiffuresData avant d'ajouter
+            if (index < coiffuresData.length) {
+                return value + coiffuresData[index];
+            }
+            return value;
+        });
+
+        // Définir la nouvelle série avec les données générées
+        setSeries([
+            {
+                name: 'Ventes totales',
+                data: ventesTotalesData,
+                zIndex: 0 // La série des sommes avec le plus petit zIndex pour qu'elle soit en arrière-plan
+            },
+            {
+                name: 'Services',
+                data: servicesData,
+                zIndex: 2
+            },
+            {
+                name: 'Coiffures',
+                data: coiffuresData,
+                zIndex: 1
+            }
+        ]);
+    }, []);
+
+
 
     const options: any = {
         chart: {
@@ -57,8 +111,8 @@ const ApexAreaChart = () => {
         tooltip: { shared: false },
         dataLabels: { enabled: false },
         stroke: {
-            show: false,
-            curve: 'straight'
+            show: true,  // Définir `true` pour afficher la ligne
+            curve: 'smooth'  // Modifier ici pour lisser la ligne
         },
         legend: {
             position: 'top',
@@ -72,11 +126,23 @@ const ApexAreaChart = () => {
                 vertical: 3,
                 horizontal: 10
             }
+
         },
-        colors: ['#FFC0CB', '#FFA07A', '#20B2AA'], // replaced variables with actual color hex values
+        colors: ['rgba(255, 70, 70, 0.8)', 'rgba(255, 200, 102, 0.7)', 'rgba(16, 161, 216, 0.8)'], // replaced variables with actual color hex values
         fill: {
             opacity: 1,
-            type: 'solid'
+            type: 'gradient',
+            gradient: {
+                shade: 'light',
+                type: "vertical",
+                shadeIntensity: 0.7,
+                gradientToColors: undefined, // optional, if not defined - uses the shades of same color in series
+                inverseColors: true,
+                opacityFrom: 0.2,
+                opacityTo: 0.92,
+                stops: [0, 50, 100],
+                colorStops: []
+            }
         },
         grid: {
             show: true,
@@ -99,22 +165,9 @@ const ApexAreaChart = () => {
             labels: {
                 style: { colors: '#a9a9a9' } // assuming a dark gray for disabled text
             },
-            categories: [
-                '1',
-                '2',
-                '3',
-                '4',
-                '5',
-                '6',
-                '7',
-                '8',
-                '9',
-                '10',
-                '11',
-                '12',
-                '13'
-            ]
-        }
+            categories: categories,
+        },
+
     }
 
     const CustomInput = forwardRef((props: PickerProps, ref) => {
@@ -146,9 +199,9 @@ const ApexAreaChart = () => {
     })
 
     return (
-            <CardContent>
-                <ReactApexcharts type='area' height={400} options={options} series={series} />
-            </CardContent>
+        <CardContent>
+            <ReactApexcharts type='area' height={400} options={options} series={series} />
+        </CardContent>
     )
 }
 

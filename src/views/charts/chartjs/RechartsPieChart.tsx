@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React, { useState } from 'react';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import RechartsWrapper from '@/@core/styles/libs/recharts'
@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import CardContent from '@mui/material/CardContent';
 import { Tooltip, PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 import Icon from '@/@core/components/icon';
+import { ClassNames } from '@emotion/react';
 
 // Define the props for the component including the data array
 interface RechartsPieChartProps {
@@ -19,13 +20,13 @@ interface RechartsPieChartProps {
 const RADIAN = Math.PI / 180;
 
 const renderCustomizedLabel = ({
-                                   cx,
-                                   cy,
-                                   midAngle,
-                                   innerRadius,
-                                   outerRadius,
-                                   percent,
-                               }: {
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    percent,
+}: {
     cx: number;
     cy: number;
     midAngle: number;
@@ -64,7 +65,7 @@ const RechartsPieChart: React.FC<RechartsPieChartProps> = ({ data }) => {
                         <PieChart height={350}>
                             <Pie
                                 data={data}
-                                innerRadius={0}
+                                innerRadius={20}
                                 dataKey='value'
                                 label={renderCustomizedLabel}
                                 labelLine={false}
@@ -75,9 +76,13 @@ const RechartsPieChart: React.FC<RechartsPieChartProps> = ({ data }) => {
                                     <Cell
                                         key={`cell-${index}`}
                                         fill={entry.color}
-                                        strokeWidth={activeIndex === index ? 4 : 1}
-                                        scale={activeIndex === index ? 1.1 : 1}
-                                        style={{outline: 'none'}}
+                                        strokeWidth={activeIndex === index ? 0.5 : 8}
+                                        scale={activeIndex === index ? 1 : 4}
+                                        style={{
+                                            outline: 'none',
+                                            transition: 'transform 300ms ease-out, stroke-width duration 300ms ease-out',
+                                            cursor: 'pointer',
+                                        }}
                                     />
                                 ))}
                             </Pie>

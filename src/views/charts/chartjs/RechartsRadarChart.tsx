@@ -8,14 +8,14 @@ import CardContent from '@mui/material/CardContent'
 
 // ** Third Party Imports
 import {
-  Radar,
-  Tooltip,
-  PolarGrid,
-  RadarChart,
-  TooltipProps,
-  PolarAngleAxis,
-  PolarRadiusAxis,
-  ResponsiveContainer
+    Radar,
+    Tooltip,
+    PolarGrid,
+    RadarChart,
+    TooltipProps,
+    PolarAngleAxis,
+    PolarRadiusAxis,
+    ResponsiveContainer
 } from 'recharts'
 
 // ** Icon Imports
@@ -29,7 +29,7 @@ const data = [
     { day: 'Vendredi', visits: 523 },
     { day: 'Samedi', visits: 345 },
     { day: 'Dimanche', visits: 255 },
-];1
+]; 1
 
 const CustomTooltip = (data: TooltipProps<any, any>) => {
     const { active, payload } = data;
@@ -63,21 +63,21 @@ const CustomTooltip = (data: TooltipProps<any, any>) => {
 
 
 const RechartsRadarChart = () => {
-  return (
-          <CardContent>
-              <Box sx={{ height: 350 }}>
-                  <ResponsiveContainer>
-                      <RadarChart cx='50%' cy='50%' outerRadius='70%' data={data}>
-                          <PolarGrid />
-                          <PolarAngleAxis dataKey='day' />
-                          <PolarRadiusAxis angle={30} domain={[0, 'dataMax + 50']} />
-                          <Radar name='Visites' dataKey='visits' stroke='#8884d8' fill='#8884d8' fillOpacity={0.6} />
-                          <Tooltip content={<CustomTooltip />} />
-                      </RadarChart>
-                  </ResponsiveContainer>
-              </Box>
-          </CardContent>
-  )
+    return (
+        <CardContent>
+            <Box sx={{ height: 350 }}>
+                <ResponsiveContainer>
+                    <RadarChart cx='50%' cy='50%' outerRadius='70%' data={data}>
+                        <PolarGrid />
+                        <PolarAngleAxis dataKey='day' />
+                        <PolarRadiusAxis angle={30} domain={[0, 'dataMax + 50']} />
+                        <Radar name='Visites' dataKey='visits' stroke='rgba(50, 150, 50, 1)' fill='rgba(122, 191, 80, 1)' fillOpacity={0.6} />
+                        <Tooltip content={<CustomTooltip />} />
+                    </RadarChart>
+                </ResponsiveContainer>
+            </Box>
+        </CardContent>
+    )
 }
 
 export default RechartsRadarChart

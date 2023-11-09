@@ -7,19 +7,20 @@ import RechartsRadarChart from "@/views/charts/chartjs/RechartsRadarChart";
 
 
 
+
 const StaffModal = () => {
 
     const data = [
-        { name: 'Jason', value: 17, color: '#4184f3' }, // Blue
-        { name: 'Melinda', value: 20, color: '#ff6262' }, // Red
-        { name: 'Karim', value: 18, color: '#50be87' }, // Green
-        { name: 'Dyone', value: 23, color: '#ffce5a' }, // Yellow
-        { name: 'Deborah', value: 13, color: '#6070db' }, // Dark Blue
-        { name: 'Daniel', value: 9, color: '#db7c00' }, // Orange
+        { name: 'Jason', value: 17, color: 'rgba(50, 120, 220, 1)' }, // Blue
+        { name: 'Melinda', value: 20, color: 'rgba(255, 70, 70, 0.8)' }, // Red
+        { name: 'Karim', value: 18, color: 'rgba(122, 191, 80, 1)' }, // Green
+        { name: 'Dyone', value: 23, color: 'rgba(255, 200, 102, 1)' }, // Yellow
+        { name: 'Deborah', value: 13, color: 'rgba(75, 150, 255, 1)' }, // Dark Blue
+        { name: 'Daniel', value: 9, color: '#FA8E1B' }, // Orange
     ];
 
 
-// Data for the chart, can be dynamic and coming from props or state
+    // Data for the chart, can be dynamic and coming from props or state
     const chartData = [
         {
             name: 'Staff 1',
@@ -53,18 +54,18 @@ const StaffModal = () => {
         },
     ];
 
-// Fill colors for each type of bar in the chart
+    // Fill colors for each type of bar in the chart
     const barColors = {
-        Service: '#FFC107',
-        Prestation: '#2A5782',
-        Total: '#7ABF50',
+        Service: '#FA8E1B',
+        Prestation: 'rgba(75, 150, 255, 1)',
+        Total: 'rgba(122, 191, 80, 1)',
     };
 
-// Legend information
+    // Legend information
     const chartLegends = [
-        { key: 'Service', color: '#FFC107', text: 'Service' },
-        { key: 'Prestation', color: '#2A5782', text: 'Prestation' },
-        { key: 'Total', color: '#7ABF50', text: 'Total' },
+        { key: 'Service', color: '#FA8E1B', text: 'Service' },
+        { key: 'Prestation', color: 'rgba(75, 150, 255, 1)', text: 'Prestation' },
+        { key: 'Total', color: 'rgba(122, 191, 80, 1)', text: 'Total' },
     ];
 
     const yourDropdownClickHandler = (item: string) => {
@@ -75,9 +76,9 @@ const StaffModal = () => {
 
     return (
         <div>
-            <div className='mt-10 mb-10'>
+            <div className='mt-4 mb-4'>
                 <p className="text-neutral-500 font-semibold text-2xl text-center">
-                    Occupation du personnel
+                    Activité du personnel
                 </p>
             </div>
 
@@ -88,7 +89,9 @@ const StaffModal = () => {
                     data={chartData}
                     barFills={barColors}
                     legends={chartLegends}
+                    yAxisName="Commmandes" // Vous ajoutez la valeur pour yAxisName ici
                 />
+
             </div>
 
             <div>
@@ -97,7 +100,7 @@ const StaffModal = () => {
                     {/* Pie Chart Container */}
                     <div className="w-full lg:w-1/2 px-3">
                         <p className="text-neutral-500 font-semibold text-2xl text-center">
-                            Repartition de la charge
+                            Repartition de la charge totale
                         </p>
                         <RechartsPieChart data={data} />
                     </div>
