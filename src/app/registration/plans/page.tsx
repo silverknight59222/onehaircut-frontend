@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import {
+  LogoCircleFixRight,
   LogoIcon,
   RegistrationCheckedIcon,
   RegistrationUnCheckedIcon,
@@ -14,6 +15,7 @@ import Link from "next/link";
 import { registration } from "@/api/registration";
 import { setLocalStorage } from "@/api/storage";
 import UserProfile from "@/components/UI/UserProfile";
+import { Theme_A } from "@/components/utilis/Themes";
 
 interface Package {
   package: string;
@@ -34,7 +36,7 @@ const Page = ({ params }: Params) => {
   const { loadingView } = userLoader();
   const [selectedPlan, setSelectedPlan] = useState(searchParams.get('plan'));
   const [isLoading, setIsLoading] = useState(false);
-  const defaultPlan:PlanDetails[] = [{
+  const defaultPlan: PlanDetails[] = [{
     plan_id: "",
     name: "",
     price: "",
@@ -81,81 +83,79 @@ const Page = ({ params }: Params) => {
   ];
 
   const onSubmit = () => {
-    if(selectedPlan === 'standard') {
+    if (selectedPlan === 'standard') {
       setLocalStorage('plan_type', JSON.stringify(plans[0]));
     } else {
       setLocalStorage('plan_type', JSON.stringify(plans[1]));
     }
     router.push("/registration/steps");
   }
-  useEffect( () => {
+  useEffect(() => {
     setIsLoading(true);
-    registration.getAllPlans().then(res=>{
+    registration.getAllPlans().then(res => {
       setPlans(res.data.data);
-    }).finally(()=>setIsLoading(false))
+    }).finally(() => setIsLoading(false))
   }, [])
-  
+
   return (
     <div>
       {isLoading && loadingView()}
       <div>
-        <div className="fixed -z-40 -left-32 md:-left-28 -bottom-32 md:-bottom-28 overflow-hidden hidden md:block">
-          {/* <LogoCircle /> */}
+        <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
+          <LogoCircleFixRight />
         </div>
         <div className="flex flex-row items-center justify-center border-b border-[#EBF0F2]">
-          <div onClick={()=>router.push('/')} className="w-full flex items-center justify-start gap-5 px-4 md:px-14 py-5 cursor-pointer">
+          <div onClick={() => router.push('/')} className="w-full flex items-center justify-start gap-5 px-4 md:px-14 py-5 cursor-pointer">
             <LogoIcon />
           </div>
           <div className="w-full flex items-center justify-center sm:justify-end gap-4 sm:px-14">
-           <UserProfile/>
+            <UserProfile />
           </div>
         </div>
-        {plans.length > 1 && ( <div className="flex flex-col items-center justify-center mt-12 px-6 w-full overflow-hidden">
-            <div className="flex sm:flex-row flex-col gap-2 sm:gap-0 w-full items-center justify-center mb-6 max-w-[1300px] 2xl:max-w-[1340px]">
-              <div className="flex sm:flex-row flex-col items-center justify-between w-full">
+        {plans.length > 1 && (<div className="flex flex-col items-center justify-center mt-12 px-6 w-full overflow-hidden">
+          <div className="flex sm:flex-row flex-col gap-2 sm:gap-0 w-full items-center justify-center mb-6 max-w-[1300px] 2xl:max-w-[1340px]">
+            <div className="flex sm:flex-row flex-col items-center justify-between w-full">
               <div className="text-black font-medium text-3xl ml-5">
                 Abonnement
               </div>
               <button
                 onClick={() => onSubmit()}
-                className="w-full sm:w-auto text-white py-4 px-11 mt-5 mb-3 md:m-0 font-semibold bg-background-gradient rounded-xl shadow-[0px_17px_36px_0px_rgba(255,125,60,0.25)]"
+                className={`w-full sm:w-auto py-4 px-11 mt-5 mb-3 ${Theme_A.button.medLargeGradientButton}`}
               >
                 Choisir cette offre
               </button>
             </div>
-            </div>
+          </div>
           <div className="flex flex-col xl:flex-row items-center md:items-start gap-6 2xl:gap-11 w-full md:w-auto">
             <div className="w-full lg:w-auto sm:mx-4">
               <Link
-                className={`w-full cursor-pointer sm:w-[600px] h-44 sm:h-[130px] px-8 flex flex-col sm:flex-row items-start sm:items-center justify-center sm:justify-between mb-7 rounded-xl ${
-                  selectedPlan === "standard"
-                    ? "bg-background-gradient text-white shadow-[0px_13px_38px_0px_rgba(180,180,180,0.42)]"
-                    : "bg-white text-black border border-[#D7D5D5]"
-                }`}
+                className={`w-full cursor-pointer sm:w-[600px] h-44 sm:h-[130px] px-8 flex flex-col sm:flex-row items-start sm:items-center justify-center sm:justify-between mb-7 rounded-xl ${selectedPlan === "standard"
+                  ? "bg-background-gradient text-white shadow-[0px_13px_38px_0px_rgba(180,180,180,0.42)]"
+                  : "bg-white text-black border border-[#D7D5D5]"
+                  }`}
                 href={'/registration/plans?plan=standard'}
-                onClick={() =>setSelectedPlan("standard")}
+                onClick={() => setSelectedPlan("standard")}
               >
                 <div>
                   <p className="font-semibold text-2xl">{plans.length > 1 && plans[0].name}</p>
                   <p className="sm:w-80">
-                  {plans.length > 1 && plans[0].description}
+                    {plans.length > 1 && plans[0].description}
                   </p>
                 </div>
                 <p className="font-semibold text-3xl mt-5">$ {plans.length > 1 && plans[0].price}</p>
               </Link>
               <Link
-                className={`w-full cursor-pointer sm:w-[600px] h-44 sm:h-[130px] px-8 flex flex-col sm:flex-row items-start sm:items-center justify-center sm:justify-between rounded-xl ${
-                  selectedPlan === "pro"
-                    ? "bg-background-gradient text-white shadow-[0px_13px_38px_0px_rgba(180,180,180,0.42)]"
-                    : "bg-white text-black border border-[#D7D5D5]"
-                }`}
+                className={`w-full cursor-pointer sm:w-[600px] h-44 sm:h-[130px] px-8 flex flex-col sm:flex-row items-start sm:items-center justify-center sm:justify-between rounded-xl ${selectedPlan === "pro"
+                  ? "bg-background-gradient text-white shadow-[0px_13px_38px_0px_rgba(180,180,180,0.42)]"
+                  : "bg-white text-black border border-[#D7D5D5]"
+                  }`}
                 href={'/registration/plans?plan=pro'}
                 onClick={() => setSelectedPlan("pro")}
               >
                 <div>
                   <p className="font-semibold text-2xl">{plans.length > 1 && plans[1].name}</p>
                   <p className="sm:w-96">
-                  {plans.length > 1 && plans[1].description}
+                    {plans.length > 1 && plans[1].description}
                   </p>
                 </div>
                 <div className="mt-3">
@@ -193,15 +193,23 @@ const Page = ({ params }: Params) => {
               })}
             </div>
           </div>
-          <div className="relative video my-9 xl:ml-[520px] rounded-xl w-full md:max-w-[502px]">
+          {/* <div className="relative video my-9 xl:ml-[520px] rounded-xl w-full md:max-w-[502px]">
             <ReactPlayer
               url="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
               poster="assets/poster.jpg"
               width="auto"
               height="auto"
               
-            />
-          </div>
+            /> 
+          </div> */}
+          <div className='mt-12 p-6 rounded-2xl bg-stone-900 shadow-lg shadow-slate-700'>
+            <iframe
+              width="560"     // Set the width of the video player
+              height="315"    // Set the height of the video player
+              src={`https://www.youtube.com/embed/TW-LgJUiMX0`}  // Embed the video using the video ID
+              title="Comment faire une réservation sur OneHairCut"  // Provide a title for accessibility
+              allowFullScreen  // Allow full-screen mode
+            /></div>
         </div>)}
       </div>
     </div>
