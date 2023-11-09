@@ -2,8 +2,15 @@ import SummaryComponent from "@/views/datatable/TableSummaryHeader";
 import TableComponent from "@/views/datatable/TableComponent";
 import BaseDropdown from "@/components/UI/BaseDropdown";
 import DropdownMenu from "@/components/UI/DropDownMenu";
-import React from "react";
 import { ColorsThemeA } from "@/components/utilis/Themes";
+import React, { useMemo, useState } from "react";
+
+
+
+interface FullTableProps {
+    headers: any[]; // Utiliser un type plus spécifique serait mieux
+    data: any[]; // Utiliser un type plus spécifique serait mieux
+}
 
 const FullTable: React.FC = () => {
     // sample headers and data for TableComponent
@@ -17,12 +24,18 @@ const FullTable: React.FC = () => {
         "Status"
     ];
 
-    const Month = [
-        "Ce mois",]
-    const handleNewMonth = (item: string) => {
-        // TODO: add backend to save the new preference
+    const DisplayedMonths = [
+        "Ce mois",
+        "3 derniers mois",
+        "Cette année"
+    ]
+    const handleNewMonthTransactions = (item: string) => {
+        // Mettez à jour l'état avec la nouvelle valeur sélectionnée
+        setSelectedMonthTransactions(item);
+        // TODO: Ajoutez la logique pour sauvegarder la nouvelle préférence
     }
 
+    const [selectedMonthTransactions, setSelectedMonthTransactions] = useState(DisplayedMonths[0]);
 
     const data: any = [
         {
@@ -112,10 +125,8 @@ const FullTable: React.FC = () => {
     return (
         <div>
             <DropdownMenu
-                dropdownItems={Month}
-                backgroundClr={ColorsThemeA.standardBorderGray}
-                fctToCallOnClick={handleNewMonth}
-                showDefaultMessage={false}
+                dropdownItems={DisplayedMonths}
+                fctToCallOnClick={handleNewMonthTransactions} selectId={selectedMonthTransactions} menuName="Période d'observation"
             />
             <div className="flex justify-center items-center">
                 {/* Absolute Positioning relative to the viewport for the Dropdown */}

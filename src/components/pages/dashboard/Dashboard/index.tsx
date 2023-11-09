@@ -8,7 +8,7 @@ import DynamicClientTable from '@/views/datatable/DynamicClientTable'
 import DialogShareProject from '@/views/pages/dialog-examples/DialogShareProject'
 import Grid from '@mui/material/Grid'
 import Footer from "@/components/UI/Footer";
-import RateModal from "@/components/pages/dashboard/Dashboard/ModalComponent/RateModal";
+import IncomesModal from "@/components/pages/dashboard/Dashboard/ModalComponent/IncomesModal";
 import StaffModal from "@/components/pages/dashboard/Dashboard/ModalComponent/StaffModal";
 import GoalsModal from "@/components/pages/dashboard/Dashboard/ModalComponent/GoalsModal";
 import TransactionList from "@/components/pages/dashboard/Dashboard/MainDashboardComponents/TransactionList";
@@ -60,11 +60,11 @@ const Dashboard = () => {
             icon: <DashboardHeartIcon />,
         },
     ];
-    type ModalName = 'TransactionfullTable' | 'rate' | 'clientActivity' | 'staff' | 'topClient' | 'goals'; // Add more modal keys as needed
+    type ModalName = 'TransactionfullTable' | 'Incomes' | 'clientActivity' | 'staff' | 'topClient' | 'goals'; // Add more modal keys as needed
 
     const [modals, setModals] = useState<{ [key in ModalName]?: boolean }>({
         TransactionfullTable: false,
-        rate: false,
+        Incomes: false,
         clientActivity: false,
         staff: false,
         topClient: false,
@@ -93,7 +93,7 @@ const Dashboard = () => {
         setSelectedMonthRevenu(item);
         // TODO: Ajoutez la logique pour sauvegarder la nouvelle préférence
     }
-    const handleNewMonthGoals = (item: string) => {
+    const handleNewMonthTransactions = (item: string) => {
         // Mettez à jour l'état avec la nouvelle valeur sélectionnée
         setSelectedMonthTransactions(item);
         // TODO: Ajoutez la logique pour sauvegarder la nouvelle préférence
@@ -111,16 +111,6 @@ const Dashboard = () => {
 
     const topClientheaders = ["Utilisateur", "Date dernière commande", "Visites", "Commandes",
         "Dernière commande", "Details dernière commande", "Status dernière commande", "Total payé"];
-
-    const headersValue: any = [
-        "Date",
-        "Client",
-        "Produits",
-        "Prix",
-        "Facture",
-        "Moyen de paiement",
-        "Status"
-    ];
 
     const dataValue = [
         {
@@ -227,10 +217,10 @@ const Dashboard = () => {
                 <Grid container spacing={6} className='match-height  '>
                     <Grid item md={4} sm={6} xs={12}>
                         <DialogShareProject show={modals.TransactionfullTable} setShow={() => toggleModal('TransactionfullTable')}>
-                            <FullTable headers={headersValue} data={dataValue} />
+                            <FullTable />
                         </DialogShareProject>
-                        <DialogShareProject show={modals.rate} setShow={() => toggleModal('rate')}>
-                            <RateModal />
+                        <DialogShareProject show={modals.Incomes} setShow={() => toggleModal('Incomes')}>
+                            <IncomesModal />
                         </DialogShareProject>
                         <DialogShareProject show={modals.clientActivity} setShow={() => toggleModal('clientActivity')}>
                             <p className="text-2xl text-[#727272] font-semibold text-left cursor-pointer">
@@ -295,12 +285,12 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch mt-10">
                 {/*REVENU JOURNALIER */}
                 <div className="flex items-center justify-between gap-3">
-                    <button onClick={() => toggleModal('rate')} className={`${Theme_A.button.medBlackColoredButton}`}>
+                    <button onClick={() => toggleModal('Incomes')} className={`${Theme_A.button.medBlackColoredButton}`}>
                         Revenu journalier
                     </button>
                     {/* DROPDOWN AFFICHAGE REVENU JOURNALIER */}
                     <span className="mr-4 mt-4">
-                        <DropdownMenu dropdownItems={DisplayedMonths} backgroundColor="bg-white" selectId={selectedMonthRevenu}
+                        <DropdownMenu dropdownItems={DisplayedMonths} backgroundColor="bg-white" selectId={selectedMonthRevenu} menuName="Période d'observation"
                             fctToCallOnClick={handleNewMonthRevenu} />
                     </span>
                 </div>
@@ -387,8 +377,8 @@ const Dashboard = () => {
                     Transactions
                 </button>
 
-                <DropdownMenu dropdownItems={DisplayedMonths} backgroundColor="bg-white" selectId={selectedMonthPayload}
-                    fctToCallOnClick={handleNewMonthPayload} />
+                <DropdownMenu dropdownItems={DisplayedMonths} backgroundColor="bg-white" selectId={selectedMonthTransactions} menuName="Période d'observation"
+                    fctToCallOnClick={setSelectedMonthTransactions} />
             </div>
             <TransactionList />
 
@@ -577,7 +567,7 @@ const Dashboard = () => {
                 </button>
 
                 <span className="mr-4 mt-4">
-                    <DropdownMenu dropdownItems={DisplayedMonths} backgroundColor="bg-white" selectId={selectedMonthPayload}
+                    <DropdownMenu dropdownItems={DisplayedMonths} backgroundColor="bg-white" selectId={selectedMonthPayload} menuName="Période d'observation"
                         fctToCallOnClick={handleNewMonthPayload} />
                 </span>
             </div>

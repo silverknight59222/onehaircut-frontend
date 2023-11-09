@@ -1,6 +1,5 @@
 "use client";
 import BaseDropdown from "@/components/UI/BaseDropdown";
-import React from "react";
 import RechartsLineChart from '@/views/charts/chartjs/RechartsLineChart'
 import RechartsBarChart from '@/views/charts/chartjs/RechartsBarChart'
 import RechartSingleBarChart from '@/views/charts/chartjs/RechartSingleBarChart'
@@ -11,6 +10,7 @@ import DropdownMenu from "@/components/UI/DropDownMenu";
 import { ColorsThemeA } from "@/components/utilis/Themes";
 import RechartsGroupBarChart from "@/views/charts/chartjs/RechartGroupBarChart";
 import { CrossIcon } from "@/components/utilis/Icons";
+import React, { useState } from "react";
 
 // Define the table headers
 const tableHeaders = [
@@ -47,13 +47,19 @@ const staffData = [
 const fillColor = '#49A204'; // Example fill color
 const barSize = 80; // Example barSize
 
-const RateModal = () => {
+const IncomesModal = () => {
 
-    const Month = [
-        "Ce mois"]
-    const handleNewMonth = (item: string) => {
-        // TODO: add backend to save the new preference
+    const DisplayedMonths = [
+        "Ce mois",
+        "3 derniers mois",
+        "Cette année"
+    ]
+    const handleNewMonthRevenu = (item: string) => {
+        // Mettez à jour l'état avec la nouvelle valeur sélectionnée
+        setSelectedMonthRevenu(item);
+        // TODO: Ajoutez la logique pour sauvegarder la nouvelle préférence
     }
+    const [selectedMonthRevenu, setSelectedMonthRevenu] = useState(DisplayedMonths[0]);
 
     const yourChartOptions = {
         responsive: true,
@@ -131,13 +137,13 @@ const RateModal = () => {
                     <div className="flex items-center justify-between mb-4">
                         <div className="flex-1 pl-5">
                             {/* Left-aligned Dropdown */}
-                            <DropdownMenu dropdownItems={Month} backgroundClr={ColorsThemeA.standardBorderGray}
-                                fctToCallOnClick={handleNewMonth} showDefaultMessage={false} />
+                            <DropdownMenu dropdownItems={DisplayedMonths} selectId={selectedMonthRevenu} menuName="Période"
+                                fctToCallOnClick={handleNewMonthRevenu} />
                         </div>
                         <div className="flex-1">
                             {/* Center-aligned Paragraph */}
                             <p className="text-2xl text-[#727272] font-semibold text-center">
-                                Taux de conversion
+                                Revenus
                             </p>
                         </div>
                         <div className="flex-1">
@@ -242,4 +248,4 @@ const RateModal = () => {
     );
 };
 
-export default RateModal;
+export default IncomesModal;
