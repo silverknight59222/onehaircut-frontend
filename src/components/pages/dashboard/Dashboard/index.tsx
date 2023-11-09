@@ -55,7 +55,7 @@ const Dashboard = () => {
         },
         {
             numbers: "4,7/5",
-            text: "",
+            text: "Score générale",
             gradient: "bg-gradient-to-b from-[#FFB566] to-[#FA8E1B]",
             borderClr: "bg-[#FFB566]",
             icon: <DashboardHeartIcon />,
@@ -203,21 +203,18 @@ const Dashboard = () => {
 
     // STAFF DATA
     const staffData = [
-        { name: 'Staff 1', value: 80 },
-        { name: 'Staff 2', value: 75 },
+        { name: 'Staff 1', value: 15 },
+        { name: 'Staff 2', value: 85 },
         { name: 'Staff 3', value: 60 },
         { name: 'Staff 4', value: 40 },
         { name: 'Staff 5', value: 70 },
     ];
 
-    const fillColor = '#629E3E'; // Example fill color
-    const barSize = 50; // Example barSize
-
     // CONVERSION DATA 
     //TODO IMPORT TRUE DATA
     const conversionData = [
         { name: 'Commandes', value: 78, color: 'rgba(122, 191, 80, 1)' },
-        { name: 'Visites', value: 489, color: 'rgba(75, 150, 255, 1)' },
+        { name: 'Visites', value: 489, color: 'rgba(16, 161, 216, 1)' },
 
     ];
     // Calcul du pourcentage des commandes par rapport aux visites
@@ -226,21 +223,13 @@ const Dashboard = () => {
     let couleurTaux;
 
     if (tauxDeConversion >= 0 && tauxDeConversion <= 5) {
-        indiceTauxConversion = "faible";
-    } else if (tauxDeConversion > 5 && tauxDeConversion <= 10) {
-        indiceTauxConversion = "intéressant";
-    } else if (tauxDeConversion > 10) {
-        indiceTauxConversion = "performant";
-    }
-
-    if (tauxDeConversion >= 0 && tauxDeConversion <= 5) {
-        indiceTauxConversion = "faible";
+        indiceTauxConversion = "Faible";
         couleurTaux = 'rgba(255, 70, 70, 1)';
     } else if (tauxDeConversion > 5 && tauxDeConversion <= 10) {
-        indiceTauxConversion = "intéressant";
+        indiceTauxConversion = "Intéressant";
         couleurTaux = 'rgba(255, 165, 0, 1)';
     } else if (tauxDeConversion > 10) {
-        indiceTauxConversion = "performant";
+        indiceTauxConversion = "Performant";
         couleurTaux = 'rgba(50, 151, 80, 1)';
     }
 
@@ -596,9 +585,16 @@ const Dashboard = () => {
                 </span>
             </div>
 
-
+            {/* BAR CHART STAFF PAYLOAD */}
             <div className="rounded-xl shadow-sm shadow-stone-600 mb-20">
-                <RechartSingleBarChart direction="ltr" staffData={staffData} fill={fillColor} barSize={barSize} />
+                <RechartSingleBarChart
+                    direction="ltr"
+                    staffData={staffData}
+                    fill={''}
+                    barSize={200}
+                    chartTitle="Charge générale liées aux commandes"
+                    chartTitleColor="rgba(150,150,150,1)"
+                />
             </div>
 
 

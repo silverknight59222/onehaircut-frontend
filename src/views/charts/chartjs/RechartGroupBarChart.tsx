@@ -41,6 +41,7 @@ interface RechartsGroupBarChartProps {
     yAxisName?: string, // Optional prop to set Y Axis name
 }
 
+//TODO ADD REAL DATA HERE OR IN STAFFMORAL
 const dataForRechart = [
     {
         name: 'Staff 1',
@@ -154,21 +155,19 @@ const RechartsGroupBarChart = ({
             <CardContent>
                 <Box sx={{ height: 350 }}>
                     <ResponsiveContainer>
-                        <BarChart height={350} data={data} barSize={30} style={{ direction }} margin={{ left: 0 }}>
+                        <BarChart height={350} data={data} style={{ direction }} margin={{ left: 0 }}>
                             <CartesianGrid strokeDasharray='3 3' />
                             <XAxis dataKey='name' reversed={direction === 'rtl'} />
-                            <YAxis
-                                orientation={direction === 'rtl' ? 'right' : 'left'}
-                                label={{
-                                    value: yAxisName, // Assurez-vous que cette valeur correspond bien à la prop passée
-                                    angle: -90,
-                                    position: 'insideLeft',
-                                    style: { textAnchor: 'middle' }
-                                }}
-                            />
-                            <Tooltip content={CustomTooltip} />
-                            {Object.entries(barFills).map(([key, fill]) => (
-                                <Bar key={key} dataKey={key} fill={fill} background={{ fill: '#eee' }} />
+                            <YAxis orientation={direction === 'rtl' ? 'right' : 'left'} />
+                            <Tooltip content={<CustomTooltip />} />
+                            {Object.keys(barFills).map((key, index) => (
+                                <Bar
+                                    key={key}
+                                    dataKey={key}
+                                    fill={barFills[key]}
+                                    barSize={60} // Vous pouvez ajuster cette valeur pour l'élargissement
+                                    radius={[10, 10, 0, 0]} // Arrondit les coins supérieurs des barres
+                                />
                             ))}
                         </BarChart>
                     </ResponsiveContainer>

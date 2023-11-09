@@ -17,7 +17,7 @@ import CustomTextField from '@/@core/components/mui/text-field'
 // ** Third Party Imports
 import format from 'date-fns/format'
 // import DatePicker from 'react-datepicker'
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, TooltipProps } from 'recharts'
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, TooltipProps, Cell } from 'recharts'
 
 // ** Icon Imports
 import Icon from '@/@core/components/icon'
@@ -36,10 +36,31 @@ interface PickerProps {
 
 interface RechartsBarChartProps {
     direction: 'ltr' | 'rtl';
-    staffData: { name: string; value: number }[]; // Adjust the type if necessary
+    staffData: { name: string; value: number }[];
     fill: string;
     barSize: number;
+    chartTitle: string;
+    chartTitleColor?: string;
 }
+
+const getColor = (value: number) => {
+    if (value <= 20) {
+        return 'rgba(32, 102, 53, 1)';
+    } else if (value <= 40) {
+        return 'rgba(50, 151, 80, 1)';
+    } else if (value <= 60) {
+        return 'rgba(254, 191, 76, 1)'
+    } else if (value <= 80) {
+        return 'rgba(255, 165, 0, 1)';
+    } else if (value <= 90) {
+        return 'rgba(201, 70, 70, 1)';
+    } else {
+        return 'rgba(166, 19, 19, 1)';
+    }
+
+};
+
+
 const CustomTooltip = (data: TooltipProps<any, any>) => {
     const { active, payload } = data
 
@@ -65,8 +86,7 @@ const CustomTooltip = (data: TooltipProps<any, any>) => {
     return null
 }
 
-const RechartSingleBarChart: React.FC<RechartsBarChartProps> = ({ direction, staffData, fill, barSize }) => {
-    // ** States
+const RechartSingleBarChart: React.FC<RechartsBarChartProps> = ({ direction, staffData, fill, barSize = 150, chartTitle, chartTitleColor = 'inherit' }) => {
     const [endDate, setEndDate] = useState<DateType>(null)
     const [startDate, setStartDate] = useState<DateType>(null)
 
@@ -107,6 +127,17 @@ const RechartSingleBarChart: React.FC<RechartsBarChartProps> = ({ direction, sta
     return (
         <RechartsWrapper >
             <Card >
+                <CardHeader
+                    title={chartTitle}
+                    titleTypographyProps={{
+                        align: 'center',
+                        variant: 'h6', // Utilisez une variante qui correspond à la taille souhaitée
+                        style: {
+                            color: chartTitleColor, // Applique la couleur passée en prop
+                            marginBottom: '-20px' // Ajuste l'espace en dessous du titre pour le "descendre"
+                        }
+                    }}
+                />
                 <CardContent>
                     {/* Legend, date picker and other elements you may want to include */}
                     <Box sx={{ height: 350 }}>
@@ -114,9 +145,19 @@ const RechartSingleBarChart: React.FC<RechartsBarChartProps> = ({ direction, sta
                             <BarChart data={staffData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
                                 <CartesianGrid strokeDasharray="3 3" />
                                 <XAxis dataKey="name" />
-                                <YAxis />
+                                <YAxis domain={[0, 100]} tickFormatter={(value) => `${value}%`} />
                                 <Tooltip content={<CustomTooltip />} />
-                                <Bar dataKey="value" fill={fill} barSize={barSize} />
+                                <Bar
+                                    dataKey="value"
+                                    barSize={barSize}
+                                    radius={[15, 15, 0, 0]}
+                                >a
+                                    {
+                                        staffData.map((entry, index) => (
+                                            <Cell key={`cell-${index}`} fill={getColor(entry.value)} />
+                                        ))
+                                    }
+                                </Bar>
                             </BarChart>
                         </ResponsiveContainer>
                     </Box>
