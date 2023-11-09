@@ -238,23 +238,18 @@ const SalonInfos = () => {
                 address['city'] = value
                 break;
             case 'administrative_area_level_1':
-                setState(value);
                 address['administrative_area_level_1'] = value
                 break;
             case 'country':
-                setCountry(value);
                 address['country'] = value
                 break;
             case 'postal_code':
-                setPostalCode(value);
                 address['postal_code'] = value
                 break;
             case 'route':
-                setStreet(value);
                 address['route'] = value
                 break;
             case 'street_number':
-                setStreetNumber(value);
                 address['street_number'] = value
                 break;
         }
@@ -268,11 +263,9 @@ const SalonInfos = () => {
         setPostalCode("")
 
         let address = {} as any
-        console.log(place.address_components)
         place.address_components.map((item, index) => {
             setAddressFields(address, item.types[0], item.long_name);
         });
-        console.log(address)
 
         setCity(address.city || "")
         setState(address.administrative_area_level_1 || "")
@@ -281,8 +274,7 @@ const SalonInfos = () => {
 
 
         setStreet(address.route || "")
-        if (address.street_number != address.route) {
-            console.log(address.street_number)
+        if (address.street_number && address.street_number != address.route) {
             setStreet((pre) => address.street_number + " " + pre)
         }
         setLocationLatitude(place.geometry.location.lat());

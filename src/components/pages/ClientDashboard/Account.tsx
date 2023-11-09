@@ -82,31 +82,55 @@ const Account = () => {
     };
     // Utilisez useEffect pour déclencher la recherche de la ville lorsque le code postal change
     const setAddressData = async (place: any,) => {
+        setStreet("")
+        setCity("")
+        setState("")
+        setCountry("")
+        setPostalCode("")
+
+        let address = {} as any
         place.address_components.map((item, index) => {
-            setAddressFields(item.types[0], item.long_name);
+            setAddressFields(address, item.types[0], item.long_name);
         });
+
+        setCity(address.city || "")
+        setState(address.administrative_area_level_1 || "")
+        setCountry(address.country || "")
+        setPostalCode(address.postal_code || "")
+
+
+        setStreet(address.route || "")
+        if (address.street_number && address.street_number != address.route) {
+            setStreet((pre) => address.street_number + " " + pre)
+        }
+
         setLocationLatitude(place.geometry.location.lat());
         setLocationLongitude(place.geometry.location.lng());
     }
 
-    const setAddressFields = (arg: string, value: string) => {
+    const setAddressFields = (address: any, arg: string, value: string) => {
         switch (arg) {
             case 'sublocality_level_1':
-                setCity(value);
+            case 'locality':
+                address['city'] = value
                 break;
             case 'administrative_area_level_1':
-                setState(value);
+                address['administrative_area_level_1'] = value
                 break;
             case 'country':
-                setCountry(value);
+                address['country'] = value
                 break;
             case 'postal_code':
-                setPostalCode(value);
+                address['postal_code'] = value
                 break;
             case 'route':
-                setStreet(value);
+                address['route'] = value
+                break;
+            case 'street_number':
+                address['street_number'] = value
                 break;
         }
+        return address
     }
     // function to hadnle the click on the modify 
     const handleModifierClick = (item: infoInterface) => {
@@ -846,7 +870,7 @@ const Account = () => {
         let state = resp.data.state ?? "";
         let country = resp.data.country;
         if (street_number || street || zipcode || city) {
-            informations[1].desc = [street_number, street, city, zipcode].filter((item) => item != null).join(" ");
+            informations[1].desc = [street, city, zipcode].filter((item) => item != null).join(" ");
         } else {
             informations[1].desc = "Aucun";
         }
