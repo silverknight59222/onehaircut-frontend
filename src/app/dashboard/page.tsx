@@ -23,7 +23,7 @@ const Page = () => {
 		{ icon: "MessageIcon", title: "Message", route: "/dashboard/messages" },
 		{ icon: "SettingsIcon", title: "Réglages", route: "/dashboard/settings" },
 		{ icon: "PersonalizationIcon", title: "Abonnement", route: "/dashboard/subscription" },
-		{ icon: "BoostIcon", title: "Boost", route: "" },
+		// { icon: "BoostIcon", title: "Boost", route: "" },
 		{ icon: "BotIcon", title: "OnehairBot", route: "/dashboard/bot" },
 	];
 	const SidebarHandler = () => {
