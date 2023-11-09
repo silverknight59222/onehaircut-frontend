@@ -16,8 +16,7 @@ import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import InputAdornment from '@mui/material/InputAdornment';
-import CustomInput from "@/components/UI/CustomInput";
-
+import Autocomplete from "react-google-autocomplete";
 
 interface infoInterface {
     name: string;
@@ -62,6 +61,77 @@ const Account = () => {
     const [isModalNotifMsg, setIsModalNotifMsg] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
 
+
+    //Variables for address
+    const [isModal, setIsModal] = useState(false);
+    const [name, setName] = useState("");
+    const [street, setStreet] = useState("");
+    const [streetNumber, setStreetNumber] = useState("");
+    const [postalCode, setPostalCode] = useState("");
+    const [city, setCity] = useState("");
+    const [state, setState] = useState("");
+    const [country, setCountry] = useState("");
+    const [addressResponse, setAddressResponse] = useState("");
+    const [locationLatitude, setLocationLatitude] = useState(0.0);
+    const [locationLongitude, setLocationLongitude] = useState(0.0);
+    const openModal = () => {
+        setIsModal(true);
+    };
+    const closeModal = () => {
+        setIsModal(false);
+    };
+    // Utilisez useEffect pour déclencher la recherche de la ville lorsque le code postal change
+    const setAddressData = async (place: any,) => {
+        setStreet("")
+        setCity("")
+        setState("")
+        setCountry("")
+        setPostalCode("")
+
+        let address = {} as any
+        place.address_components.map((item, index) => {
+            setAddressFields(address, item.types[0], item.long_name);
+        });
+
+        setCity(address.city || "")
+        setState(address.administrative_area_level_1 || "")
+        setCountry(address.country || "")
+        setPostalCode(address.postal_code || "")
+
+
+        setStreet(address.route || "")
+        if (address.street_number && address.street_number != address.route) {
+            setStreet((pre) => address.street_number + " " + pre)
+        }
+
+        setLocationLatitude(place.geometry.location.lat());
+        setLocationLongitude(place.geometry.location.lng());
+    }
+
+    const setAddressFields = (address: any, arg: string, value: string) => {
+        switch (arg) {
+            case 'sublocality_level_1':
+            case 'locality':
+                address['city'] = value
+                break;
+            case 'administrative_area_level_1':
+                address['administrative_area_level_1'] = value
+                break;
+            case 'country':
+                address['country'] = value
+                break;
+            case 'postal_code':
+                address['postal_code'] = value
+                break;
+            case 'route':
+                address['route'] = value
+                break;
+            case 'street_number':
+                address['street_number'] = value
+                break;
+        }
+        return address
+    }
     // function to hadnle the click on the modify 
     const handleModifierClick = (item: infoInterface) => {
         if (item.name == "Adresse") {
@@ -168,6 +238,9 @@ const Account = () => {
             return { ...prev, text: "" };
         });
     }
+    const handleChange = (e: any) => {
+        setStreet(e.target.value);
+    };
 
     const [error, setError] = useState({
         text: "",
@@ -268,22 +341,18 @@ const Account = () => {
     ////////////////////////////////////////////////////
     ///////////////////// ADDRESS 
     ////////////////////////////////////////////////////
-    const [streetNbField, newStreetNbField] = useState("");
-    const [streetField, newStreetField] = useState("");
-    const [postCodeField, newPostCodeField] = useState("");
-    const [cityField, newCityField] = useState("");
-    const setNewAddress = (value: string) => {
-        newStreetField(value);
-    };
-
-    const onSubmitAdd = async () => {
+    const onSubmitAddress = async () => {
         setIsLoading(true)
         await client.updateUserProfile({
             type: 'address',
-            street_number: streetNbField,
-            street: streetField,
-            zipcode: postCodeField,
-            city: cityField,
+            street_number: streetNumber,
+            street: street,
+            zipcode: postalCode,
+            city: city,
+            state: state,
+            country: country,
+            lat: locationLatitude,
+            long: locationLongitude
         })
             .then(resp => {
                 console.log(resp.data)
@@ -299,8 +368,9 @@ const Account = () => {
         setError((prev) => {
             return { ...prev, text: "" };
         });
-        showSnackbar("success", "Address Updated Successfully.");
+    showSnackbar("success", "Adresse mise à jour avec succès.");
         setIsModalAdd(false);
+        fetchUserInfo();
         // setShowItem(informations);
 
     }
@@ -308,67 +378,88 @@ const Account = () => {
 
     const modifAddress: React.JSX.Element =
         <div>
-            <p className="text-xl font-semibold text-black text-center mb-4">Modification de l'adresse</p>
-            <div className="flex flex-col items-start justify-start gap-4">
+            <BaseModal close={() => setIsModalAdd(false)} width="w-[600px]">
+                <div>
+                <p className="text-xl font-semibold text-black text-center mb-4">Modification de l'adresse</p>
 
-                {error && (
-                    <p className={`${Theme_A.checkers.errorText}`}>
-                        {error.text}
-                    </p>
-                )}
-                <div className="flex flex-row gap-x-2 justify-center">
-                    <div className="w-20 mr-2">
-                        <CustomInput
-                            id="StreetNb"
-                            label="Numero"
-                            value={streetNbField}
-                            onChange={(e) => newStreetNbField(e.target.value)}
-                            isStreetNumber={true}
-                            type="number"
+                <div className="flex flex-col items-start justify-start gap-4">
+
+                    <div>
+                        <Autocomplete
+                            className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+                            apiKey='AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E'
+                            onPlaceSelected={(place) => {
+                                setAddressData(place)
+                            }}                            
+                            options={{
+                                types: ["geocode"],
+                                fields: [
+                                    'address_components',
+                                    'geometry.location'
+                                ]
+                            }}                            
+                            placeholder="Address"
+                            defaultValue={street}
                         />
+                        <div className="flex">
+                            <div className="flex-grow w-1/4 pr-2">
+                                <input
+                                    placeholder="Code Postal"
+                                    type="text"
+                                    value={postalCode}
+                                    onChange={(e) => setPostalCode(e.target.value)}
+                                    maxLength={50}
+                                    className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+                                />
+                                <input
+                                    placeholder="État"
+                                    type="text"
+                                    value={state}
+                                    onChange={(e) => setState(e.target.value)}
+                                    maxLength={50}
+                                    className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+                                />
+                            </div>
+                            <div className="flex-grow">
+                                <input
+                                    placeholder="Ville"
+                                    type="text"
+                                    className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+                                    value={city}
+                                    onChange={(e) => setCity(e.target.value)}
+                                />
+                                <input
+                                    placeholder="Pays"
+                                    type="text"
+                                    value={country}
+                                    onChange={(e) => setCountry(e.target.value)}
+                                    maxLength={50}
+                                    className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+                                />
+                            </div>
+                        </div>
                     </div>
-                    <CustomInput
-                        id="StreetName"
-                        label="Rue"
-                        value={streetField}
-                        onChange={(e) => setNewAddress(e.target.value)}
-                    />
-                </div>
-                <div className="flex flex-row gap-x-2 mt-4 mr-4">
-                    <div className="w-40">
-                        <CustomInput
-                            id="PostCode"
-                            label="Code postal"
-                            value={postCodeField}
-                            onChange={(e) => newPostCodeField(e.target.value)}
-                            type="number"
-                            isZipCode={true}
-                        />
+                    <div className="flex gap-4 items-center justify-center w-full">
+                        <button
+                            className={`${Theme_A.button.medWhiteColoredButton}`}
+                            onClick={() => setIsModalAdd(false)}
+                        >
+                            Annuler
+                        </button>
+                        <button
+                            className={`${Theme_A.button.mediumGradientButton}`}
+                            onClick={() => onSubmitAddress()}
+                        >
+                            Actualiser
+                        </button>
                     </div>
-                    <CustomInput
-                        id="City"
-                        label="Ville"
-                        value={cityField}
-                        onChange={(e) => newCityField(e.target.value)}
-                    />
                 </div>
-            </div>
+                </div>
+            </BaseModal>
 
 
-            <div className="mt-10 flex gap-4 items-center justify-center w-full">
-                <button
-                    className={`${Theme_A.button.medWhiteColoredButton}`}
-                    onClick={() => setIsModalAdd(false)}
-                >
-                    Annuler
-                </button>
-                <button
-                    className={`${Theme_A.button.mediumGradientButton}`}
-                    onClick={() => onSubmitAdd()}
-                >
-                    Actualiser
-                </button>
-            </div>
+
+
         </div>
         ;
 
@@ -769,28 +860,31 @@ const Account = () => {
     const fetchUserInfo = async () => {
         const resp = await client.getUserProfile()
         console.log(resp.data);
-
         // to update informations description which is displayed
         informations[0].desc = resp.data.name;
+        let name = resp.data.name;
         let street_number = resp.data.street_number ?? "";
         let street = resp.data.street ?? "";
         let zipcode = resp.data.zipcode ?? "";
         let city = resp.data.city ?? "";
+        let state = resp.data.state ?? "";
+        let country = resp.data.country;
         if (street_number || street || zipcode || city) {
-            informations[1].desc = [street_number, street, city, zipcode].filter((item) => item != null).join(" ");
+            informations[1].desc = [street, city, zipcode].filter((item) => item != null).join(" ");
         } else {
             informations[1].desc = "Aucun";
         }
         informations[2].desc = resp.data.phone;
         informations[3].desc = resp.data.email;
-
         // to set value of fields in model
-        newStreetNbField(street_number);
-        newStreetField(street);
-        newPostCodeField(zipcode);
-        newCityField(city);
         setPhoneField(resp.data.phone);
-
+        setName(name);
+        setStreetNumber(street_number);
+        setStreet(street);
+        setCity(city);
+        setPostalCode(zipcode);
+        setCountry(country);
+        setState(state);
         setShowItem(informations);
     }
 

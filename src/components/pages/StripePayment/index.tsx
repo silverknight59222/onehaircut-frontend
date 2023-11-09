@@ -41,7 +41,7 @@ function StripePayment() {
     let data: SalonRegisterParams = {
       user_id: "",
       salon_name: "",
-      salon_description: "",
+      // salon_description: "",
       country: '',
       city: '',
       state: '',

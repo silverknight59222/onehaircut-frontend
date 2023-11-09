@@ -248,7 +248,7 @@ const Index = () => {
               </p> : ''}
               {salonData && <p className="text-base"><span className="font-bold text-lg ">Etablissement: </span>{salonData.name}</p>}
               {slotData && <p className="text-base"><span className="font-bold text-lg ">Coiffeur: </span>{slotData.hairDresser.name}</p>}
-              {slotData && (<p className="text-base"><span className={`font-bold text-lg `}>Créneau horaire:</span>{getClassNameForDay(slotData.slot[0].day)}</p>)}
+              {slotData && (<p className="text-base"><span className={`font-bold text-lg `}>Créneau horaire: </span>{getClassNameForDay(slotData.slot[0].day)}</p>)}
 
               {slotData && <p className="text-base"><span className="font-bold text-lg ">Heure de début: </span>{slotData.slot[0].start}</p>}
               {slotData && <p className="text-base"><span className="font-bold text-lg ">Heure de fin: </span>{slotData.slot[slotData.slot.length - 1].end}</p>}
