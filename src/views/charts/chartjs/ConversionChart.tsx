@@ -16,6 +16,7 @@ interface RechartsPieChartProps {
     }[];
 }
 
+
 const RADIAN = Math.PI / 180;
 
 const renderCustomizedLabel = ({
@@ -33,19 +34,22 @@ const renderCustomizedLabel = ({
     outerRadius: number;
     percent: number;
 }): JSX.Element => {
-    const radius = outerRadius + 20;
+    const radius = outerRadius + 30;
     const x = cx + radius * Math.cos(-midAngle * RADIAN);
     const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
+    // Ajuster l'alignement du texte en fonction de la position
+    const textAnchor = x > cx ? 'start' : 'end';
+
     return (
-        <text x={x} y={y} fill="black" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
+        <text x={x} y={y} fill="black" textAnchor={textAnchor} dominantBaseline="central">
             {`${(percent * 100).toFixed(0)}%`}
         </text>
     );
 };
 
 // Update the component to accept props
-const RechartsPieChart: React.FC<RechartsPieChartProps> = ({ data }) => {
+const ConversionChart: React.FC<RechartsPieChartProps> = ({ data }) => {
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
     const onPieEnter = (_: any, index: number): void => {
@@ -59,12 +63,12 @@ const RechartsPieChart: React.FC<RechartsPieChartProps> = ({ data }) => {
     return (
         <RechartsWrapper>
             <CardContent>
-                <Box sx={{ height: 350 }}>
-                    <ResponsiveContainer>
-                        <PieChart height={350}>
+                <Box sx={{ height: 280, width: 500 }}>
+                    <ResponsiveContainer width="100%" height="100%">
+                        <PieChart width={400} height={400} margin={{ top: 5, right: 50, left: 50, bottom: 5 }}>
                             <Pie
                                 data={data}
-                                innerRadius={20}
+                                innerRadius={40}
                                 dataKey='value'
                                 label={renderCustomizedLabel}
                                 labelLine={false}
@@ -75,7 +79,7 @@ const RechartsPieChart: React.FC<RechartsPieChartProps> = ({ data }) => {
                                     <Cell
                                         key={`cell-${index}`}
                                         fill={entry.color}
-                                        strokeWidth={activeIndex === index ? 0.5 : 8}
+                                        strokeWidth={activeIndex === index ? 0.5 : 4}
                                         scale={activeIndex === index ? 1 : 4}
                                         style={{
                                             outline: 'none',
@@ -89,7 +93,7 @@ const RechartsPieChart: React.FC<RechartsPieChartProps> = ({ data }) => {
                         </PieChart>
                     </ResponsiveContainer>
                 </Box>
-                <Box sx={{ display: 'flex', flexWrap: 'wrap', mb: 4, justifyContent: 'center' }}>
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', mb: 0, justifyContent: 'center' }}>
                     {data.map((item, index) => (
                         <Box
                             key={index}
@@ -110,4 +114,4 @@ const RechartsPieChart: React.FC<RechartsPieChartProps> = ({ data }) => {
     );
 };
 
-export default RechartsPieChart;
+export default ConversionChart;

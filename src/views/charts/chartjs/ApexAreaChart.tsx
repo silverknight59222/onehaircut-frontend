@@ -1,8 +1,6 @@
 // ** React Imports
 // ** MUI Imports
-import Card from '@mui/material/Card'
 import { useTheme } from '@mui/material/styles'
-import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
 import InputAdornment from '@mui/material/InputAdornment'
 import { forwardRef, useState, useEffect } from 'react' // Ajouté useEffect
@@ -20,12 +18,6 @@ import Icon from '@/@core/components/icon'
 
 // ** Component Import
 import ReactApexcharts from 'react-apexcharts'; // Assuming the path is 'react-apexcharts'
-
-const areaColors = {
-    series1: '#ab7efd',
-    series2: '#b992fe',
-    series3: '#e0cffe'
-}
 
 interface PickerProps {
     start: Date | number
@@ -67,6 +59,18 @@ const ApexAreaChart = () => {
     useEffect(() => {
         const today = new Date();
         const dayOfMonth = today.getDate();
+        const currentMonth = today.getMonth();
+        const currentYear = today.getFullYear();
+
+        // Créer un tableau de dates pour chaque jour à partir du premier du mois jusqu'à aujourd'hui
+        const dateCategories = Array.from({ length: dayOfMonth }, (_, i) => {
+            // Notez que getDay() renvoie le jour de la semaine, donc utilisez getDate() ici
+            const date = new Date(currentYear, currentMonth, i + 1);
+            return format(date, 'dd/MM'); // ou 'dd/MM' selon le format de date souhaité
+        });
+
+        // Mettre à jour les catégories avec les dates générées
+        setCategories(dateCategories);
 
         // Générer les données pour les deux premières séries
         const servicesData = generateRandomData(dayOfMonth);
@@ -82,9 +86,7 @@ const ApexAreaChart = () => {
         });
 
 
-
-
-
+        //DATA CHART DESIGN
         setSeries([
             {
                 name: 'Ventes totales',
@@ -180,7 +182,7 @@ const ApexAreaChart = () => {
     }, []);
 
 
-
+    //MORE DESIGN AND COLORS SETTINGS
     const options: any = {
         chart: {
             parentHeightOffset: 0,
@@ -216,19 +218,20 @@ const ApexAreaChart = () => {
         },
         yaxis: {
             labels: {
-                style: { colors: '#a9a9a9' } // assuming a dark gray for disabled text
+                formatter: (value: number) => `${value} €`, // Formatter pour ajouter le symbole euro
+                style: { colors: '#a9a9a9' } // Couleurs de texte pour l'axe des y
             }
         },
         xaxis: {
             axisBorder: { show: false },
-            axisTicks: { color: '#e0e0e0' }, // hardcoding a light gray for axis ticks
+            axisTicks: { color: '#e0e0e0' },
             crosshairs: {
-                stroke: { color: '#e0e0e0' } // hardcoding a light gray for crosshairs
+                stroke: { color: '#e0e0e0' }
             },
             labels: {
-                style: { colors: '#a9a9a9' } // assuming a dark gray for disabled text
+                style: { colors: '#a9a9a9' }
             },
-            categories: categories,
+            categories: categories, // Utiliser les catégories générées pour les dates
         },
 
     }
