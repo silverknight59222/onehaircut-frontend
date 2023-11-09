@@ -65,11 +65,10 @@ const PricingTable = () => {
                 )
               );
             })}
-            <div className="mt-2 h-[100px]">
+            <div className="mt-5 h-[100px]">
               <p className={activePlan === "pro" ? "text-white font-medium text-4xl text-center" : "text-black font-medium text-4xl text-center"}>
                 79€<span className="text-2xl">/ mois</span>
               </p>
-              <div className="text-stone-500 font-medium my-2"> 5% de taxe de service</div>
               <div className="flex items-center gap-10 mt-1">
               </div>
             </div>
@@ -98,9 +97,8 @@ const PricingTable = () => {
                 );
               })}
             </div>
-            <div className="w-full h-[100px] flex flex-col items-center justify-center border-r-2 border-[#E4E8E9] py-4">
+            <div className="w-full h-[80px] flex flex-col items-center justify-center border-r-2 border-[#E4E8E9] py-4">
               <p className={activePlan === "standard" ? "text-white font-medium text-4xl" : "text-black font-medium text-4xl"}>Gratuit</p>
-              <div className="text-stone-500 font-medium my-2"> 5% de taxe de service</div>
             </div>
             {activePlan === "standard" && <div onClick={() => router.push('registration/plans?plan=standard')} className="flex items-center justify-center text-white rounded-xl absolute -bottom-8 w-44 h-12 bg-[#070E06] transform hover:scale-105 transition-transform">
               Aperçu de l’Abo
@@ -121,11 +119,10 @@ const PricingTable = () => {
                 </div>
               );
             })}
-            <div className="mt-2 h-[100px]">
-              <p className={activePlan === "concorrent" ? "text-white font-medium text-4xl text-center" : "text-black font-medium text-4xl text-center"}>
+            <div className="mt-5 h-[100px]">
+              <p className={activePlan === "concurrent" ? "text-white font-medium text-4xl text-center" : "text-black font-medium text-4xl text-center"}>
                 79€<span className="text-2xl">/ mois</span>
               </p>
-              <div className="text-stone-500 font-medium my-2"> + taxes de service</div>
             </div>
           </div>
         </div>

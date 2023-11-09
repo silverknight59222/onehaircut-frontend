@@ -57,10 +57,9 @@ function MobilePricingTable() {
                 background: "linear-gradient(162deg, #FE2569 0%, #FD4C55 42.71%, #FF8637 86.46%, #FFE30F 100%)"
               }}>
                 <div className='text-white font-medium text-4xl text-center'>79€<span className="text-2xl">/ mois</span></div>
-                <div className="text-white font-medium my-2"> *5 % de taxe de service</div>
-                <div onClick={() => router.push('registration/plans?plan=pro')} className="absolute z-20 -bottom-5 flex items-center justify-center text-white rounded-xl w-32 h-9 bg-[#070E06]">
+                {/* <div onClick={() => router.push('registration/plans?plan=pro')} className="absolute z-20 -bottom-8 flex items-center justify-center text-white rounded-xl w-32 h-9 bg-[#070E06]">
                   Aperçu de l’Abo
-                </div>
+                </div> */}
               </div>
             </div>
           </Slide>
@@ -94,10 +93,9 @@ function MobilePricingTable() {
                 background: "linear-gradient(162deg, #FE2569 0%, #FD4C55 42.71%, #FF8637 86.46%, #FFE30F 100%)"
               }}>
                 <div className='text-white font-medium text-4xl text-center'>0€<span className="text-2xl">/ mois</span></div>
-                <div className="text-white font-medium my-2"> *5 % de taxe de service</div>
-                <div onClick={() => router.push('registration/plans?plan=standard')} className="absolute z-20 -bottom-5 flex items-center justify-center text-white rounded-xl w-32 h-9 bg-[#070E06]">
+                {/* <div onClick={() => router.push('registration/plans?plan=standard')} className="absolute z-20 -bottom-5 flex items-center justify-center text-white rounded-xl w-32 h-9 bg-[#070E06]">
                   Aperçu de l’Abo
-                </div>
+                </div> */}
               </div>
             </div>
           </Slide>
@@ -131,7 +129,6 @@ function MobilePricingTable() {
                 background: "linear-gradient(162deg, #FE2569 0%, #FD4C55 42.71%, #FF8637 86.46%, #FFE30F 100%)"
               }}>
                 <div className='text-white font-medium text-4xl text-center'>min. 79€<span className="text-2xl">/ mois</span></div>
-                <div className="text-white font-medium my-2"> *5 % de taxe de service</div>
               </div>
             </div>
           </Slide>
