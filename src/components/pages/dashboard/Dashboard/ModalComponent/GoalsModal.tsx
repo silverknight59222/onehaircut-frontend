@@ -27,10 +27,10 @@ const StaffModal = () => {
 
     const [progressBars, setProgressBars] = useState([
         // Assuming 'number' is also a required field, set it initially to a default value like 0 or any start point
-        { title: 'Revenu Mensuel', value: 0, number: 0, color: '#FE2569', filled: false },
-        { title: 'Commandes d’habitué', value: 0, number: 0, color: '#0FBFF1', filled: false },
-        { title: 'Nouveaux clients', value: 0, number: 0, color: '#7ABF50', filled: false },
-        { title: 'Nombre de visites en ligne', value: 0, number: 0, color: '#ffc866', filled: false },
+        { title: 'Aucun objectif', value: 0, number: 0, color: '#FE2569', filled: false },
+        { title: 'Aucun objectif', value: 0, number: 0, color: '#0FBFF1', filled: false },
+        { title: 'Aucun objectif', value: 0, number: 0, color: '#7ABF50', filled: false },
+        { title: 'Aucun objectif', value: 0, number: 0, color: '#ffc866', filled: false },
         // ... more bars
     ]);
 
@@ -42,7 +42,7 @@ const StaffModal = () => {
         const newProgressBars = progressBars.map((bar, i) => {
             if (i === index) {
                 // Reset value and color for the progress bar that has the close button clicked
-                return { ...bar, value: 0, number: 0, color: originalColors[i], filled: false }; // Reset to original color
+                return { ...bar, title: 'Aucun objectif', value: 0, number: 0, color: originalColors[i], filled: false }; // Reset to original color
             }
 
             return bar;
@@ -119,12 +119,6 @@ const StaffModal = () => {
         });
         setCards(updatedCards);
     };
-
-    // Prevents the click event from propagating to the card when clicking on the input
-    const handleInputClick = (event: React.MouseEvent<HTMLInputElement, MouseEvent>) => {
-        event.stopPropagation();
-    };
-
 
     return (
         <div className="justify-center items-center" style={{ width: '100%' }}> {/* Ajustez la largeur ici */}
@@ -206,7 +200,7 @@ const StaffModal = () => {
                                             onChange={(e) => handleObjectiveChange(e, index)}
                                         />
                                     ) : (
-                                        <p className="text-lg font-semibold text-stone-800 text-center ">{card.objective}</p>
+                                        <p className="text-lg font-semibold text-stone-800 text-center ">{"Aucun objectif"}</p>
                                     )}
 
                                     {/* Afficher le bouton uniquement si l'input contient une valeur */}
