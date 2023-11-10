@@ -1,15 +1,15 @@
 "use client";
 import Footer from "@/components/UI/Footer";
-import { CircleRight, LogoCircleFixRight } from "@/components/utilis/Icons";
+import { LogoCircleFixRight } from "@/components/utilis/Icons";
 import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 import ClientDashboardLayout from "@/layout/ClientDashboardLayout";
 import Image from "next/image";
 import ChatModal from "../SearchSalon/ChatModal";
 import React, { useEffect, useState, useRef } from "react";
 import { client } from "@/api/clientSide";
+import BaseModal from "@/components/UI/BaseModal";
 
 const Currentreservation = () => {
-
 
     // FOR CHAT MODAL 
     // Créez un état pour suivre si le Chat modal est ouvert ou fermé
@@ -73,6 +73,109 @@ const Currentreservation = () => {
         };
     }, [])
 
+    // ------------- FOR CANCELLING ---------------------
+    // state variables
+    // Modal for canceling the reservation
+    const [isModalCancel, setIsModalCancel] = useState(false);
+    const [itemToCancel, setItemToCancel] = useState({});
+    const [currentTime, setCurrentTime] = useState<Date | null>(null);
+
+    const [cancelAccepted, setCancelAccepted] = useState(false);
+
+    // function to update the time every seconds
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            const now = new Date();
+            setCurrentTime(now);
+        }, 1000); // Update every second
+        return () => clearInterval(intervalId);
+    }, []);
+
+    // function when pressing on the cancel button
+    const startCancel = (reservation: any) => {
+        console.log(reservation.date)
+        setItemToCancel(reservation); // save up the reservation to cancel
+        setIsModalCancel(true); // start modal
+        console.log(itemToCancel.date)
+        // calculate the time difference
+        compareDates();
+    };
+
+    // function to calculate if cancelation is acceptable
+    const compareDates = () => {
+        //calculate the time remaining until reservation
+        const currentDateTimeString = currentTime?.toDateString(); // Change this if you want a different format
+        const currentDateTime = new Date(currentDateTimeString!);
+
+        const reservationDateTime = new Date(itemToCancel.date);
+
+        const timeDifference = reservationDateTime.getTime() - currentDateTime.getTime();
+        const hoursDifference = timeDifference / (1000 * 3600);
+
+        console.log(currentDateTime)
+        console.log(reservationDateTime)
+        console.log(hoursDifference)
+
+        if (hoursDifference >= 24) {
+            // Current time is 24 hours or more before the reservation time.
+            // cancellation is accepted
+            setCancelAccepted(true)
+        } else {
+            // Current time is less than 24 hours before the reservation time.
+            // cancellation is rejected
+            setCancelAccepted(false)
+        }
+    };
+
+    useEffect(() => {
+        compareDates();
+    }, [itemToCancel, cancelAccepted])
+
+    // function to display the modal when the reservation wants to be canceled
+    const modifReservation: React.JSX.Element =
+        <div>
+            <div className="flex flex-col items-center justify-center gap-4">
+                <p className="text-xl font-semibold text-black text-center">Annulation de la réservation</p>
+                {/* check if cancellation was accepted */}
+                {cancelAccepted &&
+                    // Cancellation possible
+                    <div>
+                        <p className="text-md font-medium text-red-700 text-center">
+                            Êtes-vous sûr de vouloir annuler la reservation du {itemToCancel.redable_date}?</p>
+                        <p className="text-md font-normal text-black text-center py-3">
+                            Vous serez alors redirigé vers la page de réservation.</p>
+                    </div>}
+                {!cancelAccepted &&
+                    // Cancellation denied
+                    <div className="text-stone-800 font-normal italic text-sm text-center my-2">
+                        <p >
+                            Une reservation ne peut être annuler si elle ne se situe pas dans les 24 heures suivant l'annulation. Veuillez vous référez à nos
+                        </p>
+                        {/* redirect user to the terms */}
+                        <p className="cursor-pointer underline"
+                            onClick={() => window.open('/terms')}> conditions générales</p>
+                    </div>}
+
+
+
+
+            </div>
+            <div className="mt-4 flex gap-4 items-center justify-center w-full">
+                <button
+                    className={`${Theme_A.button.medWhiteColoredButton}`}
+                    onClick={() => setIsModalCancel(false)}
+                >
+                    Retour
+                </button>
+                {cancelAccepted && <button
+                    className={`${Theme_A.button.medBlackColoredButton}`}
+                // onClick={() => onSubmitCancellation()}
+                >
+                    Confirmer l'annulation
+                </button>}
+            </div>
+        </div >
+
     return (
         <div>
             <div className="hidden lg:block fixed -right-2 md:-right-2 -bottom-2 md:-bottom-2 z-10">
@@ -88,6 +191,14 @@ const Currentreservation = () => {
             )}
             <ClientDashboardLayout>
                 <div className="flex flex-col items-center justify-center mt-10 mb-5 px-6 sm:px-10 md:px-20">
+                    {/* MODAL FOR CANCELLATION */}
+                    {isModalCancel && (
+                        <BaseModal close={() => setIsModalCancel(false)}>
+                            <div>
+                                {modifReservation}
+                            </div>
+                        </BaseModal>)}
+                    {/* REST OF THE PAGE */}
                     <p className="text-black font-medium text-3xl text-center mb-8">
                         Réservations à venir
                     </p>
@@ -169,8 +280,10 @@ const Currentreservation = () => {
                                     <p className='text-[#AA4A44] font-bold text-center sm:text-start'>Salon o longer provides selected haircut</p>
                                 </div>}
                                 <div
-                                    className='flex mt-10 items-center justify-center cursor-pointer '>
-                                    <p className="text-xs text-[#666] underline transform hover:scale-105 transition-transform hover:text-red-500 hover:font-medium"> Annuler cette réservation </p>
+                                    className='flex mt-10 items-center justify-center cursor-pointer '
+                                    onClick={() => startCancel(item)}>
+                                    <p className="text-xs text-[#666] underline transform hover:scale-105 transition-transform hover:text-red-500 hover:font-medium">
+                                        Annuler cette réservation </p>
                                 </div>
                             </div>
                         )
