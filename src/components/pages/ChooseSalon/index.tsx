@@ -281,12 +281,41 @@ const SalonChoice = () => {
             {/* <Navbar isSalonPage={true} /> */}
             <Navbar
                 isSalonPage={true}
-                onCitySearch={(value: string) => setCitySearch(value)}
-                onNameSearch={(value: string) => setNameSearch(value)}
-                onMobileFilters={(mobile) => setFilteredMobile([mobile])}
+                onCitySearch={(value: string) =>  {
+                    setCitySearch((pre) => {
+                        if (value != pre) {
+                            return value
+                        }
+                        return pre
+                    })
+                }}
+                onNameSearch={(value: string) => {
+                    setNameSearch((pre) => {
+                        if (value != pre) {
+                            return value
+                        }
+                        return pre
+                    })
+                }}
+                onMobileFilters={(mobile) => {
+                    setFilteredMobile((pre) => {
+                        if (mobile == "") {
+                            return []
+                        }
+                        if (JSON.stringify([mobile]) != JSON.stringify(pre)) {
+                            return [mobile]
+                        }
+                        return pre
+                    })
+                }}
                 onRangeFilters={(range: string[]) => {
                     const numberArray = range.map(item => parseInt(item, 10));
-                    setRangeFilter(numberArray);
+                    setRangeFilter((pre) => {
+                        if (JSON.stringify(numberArray) != JSON.stringify(pre)) {
+                            return numberArray
+                        }
+                        return pre
+                    });
                 }}
             />
 
@@ -296,7 +325,7 @@ const SalonChoice = () => {
 
                 {/* Texte indiquant le nombre de salons */}
                 <p className='text-4xl font-medium text-black text-center mt-6'>
-                    {salons.length} <span className='font-bold text-gradient'>{salons.length === 1 ? 'Salon' : 'Salons'}</span> {salons.length === 1 ? 'correspond' : 'correspondent'} à vos critères
+                    {filteredSalons.length} <span className='font-bold text-gradient'>{salons.length === 1 ? 'Salon' : 'Salons'}</span> {salons.length === 1 ? 'correspond' : 'correspondent'} à vos critères
                 </p>
 
                 {/* Bouton retour et continuer */}
@@ -334,7 +363,7 @@ const SalonChoice = () => {
                                         maxZoom: 18   // et ici, votre zoom maximum
                                     }}
                                 >
-                                    {salons.slice(0, MAX_MARKERS).map((salon, index) => (
+                                    {filteredSalons.slice(0, MAX_MARKERS).map((salon, index) => (
                                         <React.Fragment key={salon.id}>
                                             <Marker
                                                 key={index}
@@ -381,7 +410,7 @@ const SalonChoice = () => {
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-10">
 
                             {/* VIGNETTES (ITERATIONS) */}
-                            {salons.map((salon, index) => (
+                            {filteredSalons.map((salon, index) => (
                                 <div
                                     key={index}
                                     onClick={() => setSelectedSalon(salon)}

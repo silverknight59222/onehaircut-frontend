@@ -14,6 +14,7 @@ const SalonInfos = () => {
     const [isModal, setIsModal] = useState(false);
     const [name, setName] = useState("");
     const [street, setStreet] = useState("");
+    const [streetNumber, setStreetNumber] = useState("");
     const [postalCode, setPostalCode] = useState("");
     const [city, setCity] = useState("");
     const [state, setState] = useState("");
@@ -230,32 +231,52 @@ const SalonInfos = () => {
     const handleZoneSliderChange = (event: any, newValue: any) => {
         setZoneSliderRange(newValue);
     };
-    const setAddressFields = (arg: string, value: string) => {
+    const setAddressFields = (address: any, arg: string, value: string) => {
         switch (arg) {
             case 'sublocality_level_1':
-                setCity(value);
+            case 'locality':
+                address['city'] = value
                 break;
             case 'administrative_area_level_1':
-                setState(value);
+                address['administrative_area_level_1'] = value
                 break;
             case 'country':
-                setCountry(value);
+                address['country'] = value
                 break;
             case 'postal_code':
-                setPostalCode(value);
+                address['postal_code'] = value
                 break;
             case 'route':
-                setStreet(value);
+                address['route'] = value
                 break;
             case 'street_number':
-                setStreet(value);
+                address['street_number'] = value
                 break;
         }
+        return address
     }
     const setAddressData = async (place: any,) => {
+        setStreet("")
+        setCity("")
+        setState("")
+        setCountry("")
+        setPostalCode("")
+
+        let address = {} as any
         place.address_components.map((item, index) => {
-            setAddressFields(item.types[0], item.long_name);
+            setAddressFields(address, item.types[0], item.long_name);
         });
+
+        setCity(address.city || "")
+        setState(address.administrative_area_level_1 || "")
+        setCountry(address.country || "")
+        setPostalCode(address.postal_code || "")
+
+
+        setStreet(address.route || "")
+        if (address.street_number && address.street_number != address.route) {
+            setStreet((pre) => address.street_number + " " + pre)
+        }
         setLocationLatitude(place.geometry.location.lat());
         setLocationLongitude(place.geometry.location.lng());
     }

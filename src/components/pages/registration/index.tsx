@@ -26,7 +26,7 @@ const Registration = () => {
       borderClr: "border-[#FF9D5C]",
     },
     {
-      text: "Une visibilité internationnale",
+      text: "Une visibilité internationale",
       icon: <RegistrationIcon3 />,
       borderClr: "border-[#8AD7F0]",
     },
@@ -124,19 +124,19 @@ const Registration = () => {
             <img
               src="/assets/hero_img.png"
               alt=""
-              width={1600}
-              height={1090}
-              className="w-full sm:w-10/12 xl:w-full -mt-6 sm:-mt-16 lg:-mt-24 xl:-mt-32 md:-mb-10 xl:-mb-16"
+              width={1200}
+              height={800}
+              className="w-full sm:w-10/12 xl:w-3/4 -mt-6 sm:-mt-16 lg:-mt-24 xl:-mt-20 md:-mb-10 xl:-mb-16"
             />
             <p className="font-semibold text-2xl sm:text-3xl lg:text-5xl text-black text-center">
               Créé pour vous et pour eux !
             </p>
             <img
-              width={858}
-              height={431}
+              width={840}
+              height={420}
               src="/assets/registration_people.png"
               alt=""
-              className="mt-7 lg:w-auto rounded-[60px] shadow-xl"
+              className="mt-7 w-3/4 lg:w-3/4 xl:w-3/4 rounded-2xl shadow-sm"
             />
           </div>
           <div className="mt-28 mb-10">
@@ -145,17 +145,16 @@ const Registration = () => {
                 return (
                   <div
                     key={index}
-                    className={`w-full flex items-center justify-betweeen gap-2 bg-white rounded-tr-[14px] rounded-br-[14px] py-12 pl-6 sm:pl-12 pr-4 sm:pr-8 shadow-[0px_8px_24px_rgba(149,157,165,0.2)] border-l-8 ${item.borderClr}`}
+                    className={`w-full flex items-center justify-between gap-2 bg-white rounded-tr-[14px] rounded-br-[14px] py-12 pl-6 sm:pl-12 pr-4 sm:pr-8 shadow-[0px_8px_24px_rgba(149,157,165,0.2)] border-l-8 ${item.borderClr}`}
                   >
                     <p className="w-full text-black font-semibold text-xl sm:text-2xl">
                       {item.text}
                     </p>
                     <div className="flex items-center justify-end">
                       <div
-                        className={`${
-                          index === 3 &&
+                        className={`${index === 3 &&
                           "flex items-center justify-center icon-bg w-20 h-20 rounded-xl"
-                        }`}
+                          }`}
                       >
                         {item.icon}
                       </div>
@@ -165,13 +164,13 @@ const Registration = () => {
               })}
             </div>
           </div>
-          <div className="hidden lg:flex items-center justify-center w-full overflow-auto">
+          <div className="mt-20  hidden xl:flex items-center justify-center w-full overflow-auto">
             <PricingTable />
           </div>
-          <div className="flex items-center justify-center w-full lg:hidden">
+          <div className=" flex items-center justify-center w-full xl:hidden">
             <MobilePricingTable />
           </div>
-          <div className="mt-5">
+          <div className="mt-20">
             <p className="font-semibold text-3xl sm:text-4xl lg:text-5xl text-center text-black mb-12">
               Questions fréquentes
             </p>
@@ -181,9 +180,8 @@ const Registration = () => {
                   <div
                     key={index}
                     onClick={() => questionToggle(index)}
-                    className={`w-full lg:w-[900px] cursor-pointer  ${
-                      openQuestion === index ? "max-h-full" : "max-h-full"
-                    } py-5 pl-6 md:pl-12 pr-6 md:pr-7 mb-9 rounded-xl bg-[#ECECEC] shadow-[0px_8px_9px_0px_rgba(179,184,185,0.15)]`}
+                    className={`w-full lg:w-[900px] cursor-pointer  ${openQuestion === index ? "max-h-full" : "max-h-full"
+                      } py-5 pl-6 md:pl-12 pr-6 md:pr-7 mb-9 rounded-xl bg-[#ECECEC] shadow-[0px_8px_9px_0px_rgba(179,184,185,0.15)]`}
                   >
                     <div className="flex items-center justify-between cursor-pointer">
                       <p className="font-medium text-base sm:text-lg xl:text-xl text-black">
@@ -196,7 +194,7 @@ const Registration = () => {
                       )}
                     </div>
                     {openQuestion === index && (
-                      <p className="font-medium text-[#C6C6C6] mt-6 transition ease-in-out duration-100">
+                      <p className="font-normal text-stone-600 mt-6 transition ease-in-out duration-100">
                         {question.answer}
                       </p>
                     )}

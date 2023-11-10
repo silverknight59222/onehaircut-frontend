@@ -61,13 +61,13 @@ const SearchSalon = () => {
   //TODO Import salon availability times
   const [hours, setHours] = useState([] as any[])
   const hoursList = {
-    MONDAY : { title: "Lundi"},
-    TUESDAY: { title: "Mardi"},
-    WEDNESDAY: { title: "Mercredi"},
-    THURSDAY: { title: "Jeudi"},
-    FRIDAY: { title: "Vendredi"},
-    SATURDAY: { title: "Samedi"},
-    SUNDAY: { title: "Dimanche"},
+    MONDAY: { title: "Lundi" },
+    TUESDAY: { title: "Mardi" },
+    WEDNESDAY: { title: "Mercredi" },
+    THURSDAY: { title: "Jeudi" },
+    FRIDAY: { title: "Vendredi" },
+    SATURDAY: { title: "Samedi" },
+    SUNDAY: { title: "Dimanche" },
   };
 
   useEffect(() => {
@@ -202,16 +202,16 @@ const SearchSalon = () => {
           <div className="w-full flex flex-col md:flex-row gap-8 2xl:gap-12 bg-gray-50 p-2 rounded-2xl">
             <div className="flex flex-col items-start">
               {/* Conteneur principal de l'image */}
-              <div className="w-[320px] lg:w-[500px] 2xl:w-[600px] h-64 lg:h-[500px] relative rounded-4xl p-2 mb-3">
+              <div className="w-[320px] lg:w-[500px] 2xl:w-[600px] h-64 lg:h-[500px] relative rounded-4xl p-2 mb-3 ">
 
                 {/* Image principale */}
-                {salonProfile &&  <div className="w-full h-full relative rounded-4xl">
+                {salonProfile && <div className="w-full h-full relative rounded-4xl ">
                   <Image
                     src={selectedImage.includes('http') ? selectedImage : `https://api.onehaircut.com${selectedImage}`}
                     alt="Image principale du salon"
                     layout="fill"
                     objectFit="fill"
-                    className="rounded-lg"
+                    className="rounded-lg shadow-sm shadow-stone-600"
                   />
                 </div>}
               </div>
@@ -220,14 +220,14 @@ const SearchSalon = () => {
               <div className="flex justify-between mt-3 w-[320px] lg:w-[500px] 2xl:w-[600px] relative">
 
                 {/* Conteneur gauche (image + titre) */}
-                <div className="flex flex-col items-center">
+                <div className="flex flex-col items-center ">
                   {/* Miniature gauche */}
                   <div
                     onClick={openSalonPicModal}
-                    className="relative w-24 lg:w-32 2xl:w-36 h-24 lg:h-32 2xl:h-36 cursor-pointer overflow-hidden rounded-lg transform transition-all duration-300 group hover:scale-105"
+                    className="relative w-24 lg:w-32 2xl:w-36 h-24 lg:h-32 2xl:h-36 cursor-pointer overflow-hidden rounded-lg transform transition-all duration-300 group hover:scale-105 shadow-sm shadow-stone-600"
                   >
                     {/* TODO charger les images vitrines ici */}
-                    { salonProfile && <Image
+                    {salonProfile && <Image
                       src={salonProfile.salon_images[0]?.image.includes('http') ? salonProfile.salon_images[0]?.image : `https://api.onehaircut.com${salonProfile.salon_images[0]?.image}`}
                       alt="Image miniature gauche"
                       layout="fill"
@@ -245,10 +245,10 @@ const SearchSalon = () => {
                   {/* Miniature droite */}
                   <div
                     onClick={openSalonPicModal}
-                    className="relative w-24 lg:w-32 2xl:w-36 h-24 lg:h-32 2xl:h-36 cursor-pointer overflow-hidden rounded-lg transform transition-all duration-300 group hover:scale-105"
+                    className="relative w-24 lg:w-32 2xl:w-36 h-24 lg:h-32 2xl:h-36 cursor-pointer overflow-hidden rounded-lg transform transition-all duration-300 group hover:scale-105 shadow-sm shadow-stone-600"
                   >
                     {/* TODO charger les images vitrines ici */}
-                    { salonProfile && <Image
+                    {salonProfile && <Image
                       src={salonProfile.salon_images[1]?.image.includes('http') ? salonProfile.salon_images[1]?.image : `https://api.onehaircut.com${salonProfile.salon_images[1]?.image}`}
                       alt="Image miniature gauche"
                       layout="fill"
@@ -257,7 +257,7 @@ const SearchSalon = () => {
                     <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-50 transition-opacity duration-300" />
                   </div>
                   {/* Titre pour la miniature droite */}
-                  <p className="text-sm whitespace-nowrap mt-1"><strong>Images du salon</strong></p>
+                  <p className="text-sm whitespace-nowrap mt-1"><strong>Prestations du salon</strong></p>
                 </div>
               </div>
             </div>
@@ -282,7 +282,7 @@ const SearchSalon = () => {
                 <p className="-mb-2"> {Math.round(salonProfile.rating)}</p> <br /> <small><small>  ({salonProfile.ratings_count || 0} avis</small></small> <p className="font-normal"><small><small><small>* sur cette coiffure</small></small></small> <br /></p> <small><small> ) </small></small>
               </div>}
               {/* Description du salon */}
-              <div className="mt-5 p-4 bg-gray-100 w-full lg:w-[400px] 2xl:w-[720px] rounded-xl ">
+              <div className="mt-5 p-4 bg-gray-200 w-full lg:w-[400px] 2xl:w-[720px] rounded-xl ">
                 {salonProfile && <p className="text-black text-lg">
                   {/* TODO lien vers la description du salon {salonProfile.description} */}
                   {salonProfile.description}
@@ -290,39 +290,38 @@ const SearchSalon = () => {
               </div>
             </div>
 
-          </div>
+            {/* Horaires et bouton de réservation */}
+            <div className="w-full md:w-auto flex flex-col items-center justify-center">
+              <div className="flex flex-col gap-6 bg-white  opacity-90 w-full sm:w-[300px] md:w-[350px] xl:w-[420px] 2xl:w-[470px] border border-[#E1E1E1] rounded-3xl py-6 px-8 2xl:px-10 shadow-sm shadow-stone-600">
+                {/* Titre ajouté ici */}
+                <h2 className="text-xl 2xl:text-2xl font-semibold text-[#272727] mb-4 text-center">
+                  Horaire d'ouverture
+                </h2>
+                {hours.map((item, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className="flex items-center justify-between text-md 2xl:text-2xl font-small text-[#9e9e9e]"
+                    >
+                      <p>{item.title}</p>
+                      <p>{item.hours}</p>
+                    </div>
+                  );
+                })}
+              </div>
 
-          {/* Horaires et bouton de réservation */}
-          <div className="w-full md:w-auto flex flex-col items-center justify-center">
-            <div className="flex flex-col gap-6 bg-white  opacity-90 w-full sm:w-[300px] md:w-[350px] xl:w-[420px] 2xl:w-[470px] border border-[#E1E1E1] rounded-3xl py-6 px-8 2xl:px-10 shadow-lg ">
-              {/* Titre ajouté ici */}
-              <h2 className="text-xl 2xl:text-2xl font-semibold text-[#272727] mb-4 text-center">
-                Horaire d'ouverture
-              </h2>
-              {hours.map((item, index) => {
-                return (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between text-md 2xl:text-2xl font-small text-[#9e9e9e]"
-                  >
-                    <p>{item.title}</p>
-                    <p>{item.hours}</p>
-                  </div>
-                );
-              })}
+              {/* Bouton de réservation */}
+              <button onClick={() => router.push('/book-salon')} className={`w-full md:w-64 2xl:w-72 h-14 flex items-center justify-center mt-7 text-white font-semibold text-xl rounded-xl ${Theme_A.button.mediumGradientButton} shadow-md`}>
+                R&eacute;server un créneau
+              </button>
+              {/* Ajoutez le bouton pour ouvrir le modal ici */}
+              <button
+                onClick={openChatModal}
+                className={`mt-4 ${Theme_A.button.medBlackColoredButton}`}
+              >
+                Contacter le salon
+              </button>
             </div>
-
-            {/* Bouton de réservation */}
-            <button onClick={() => router.push('/book-salon')} className={`w-full md:w-64 2xl:w-72 h-14 flex items-center justify-center mt-7 text-white font-semibold text-xl rounded-xl ${Theme_A.button.mediumGradientButton} shadow-md`}>
-              R&eacute;server un créneau
-            </button>
-            {/* Ajoutez le bouton pour ouvrir le modal ici */}
-            <button
-              onClick={openChatModal}
-              className={`mt-4 ${Theme_A.button.medBlackColoredButton}`}
-            >
-              Contacter le salon
-            </button>
           </div>
         </div>
 
@@ -336,54 +335,54 @@ const SearchSalon = () => {
             </p>
 
             {/* Conteneur pour les informations */}
-            <div className="flex flex-col items-center gap-6 bg-white opacity-90 w-full max-w-[90vw] sm:max-w-[300px] md:max-w-[350px] xl:max-w-[420px] 2xl:max-w-[470px] border border-[#E1E1E1] rounded-3xl py-6 px-8 2xl:px-10 shadow-md mt-6 ">
+            <div className="flex flex-col items-center gap-6 bg-white opacity-90 w-full max-w-[90vw] sm:max-w-[300px] md:max-w-[350px] xl:max-w-[420px] 2xl:max-w-[500px] border border-[#E1E1E1] rounded-3xl py-6 px-8 2xl:px-10 shadow-sm shadow-stone-600 mt-6 ">
 
               {/* Ligne d'information avec titre et valeur */}
               {/* Ligne avec Prix et Durée totale */}
-              <div className="flex justify-between w-full">
+              <div className="flex justify-between w-full text-black ">
                 {/* Partie gauche : Prix total */}
-                <div className="flex justify-between w-1/2">
-                  <p className="text-md xl:text-lg font-semibold text-black">
+                <div className="flex justify-evenly w-1/2">
+                  <p className="text-md xl:text-lg font-semibold ">
                     Prix total :
                   </p>
-                  {salonProfile && <p className="text-md xl:text-lg font-normal text-black">
-                    {salonProfile.final_price}
+                  {salonProfile && <p className="text-xl font-normal text-stone-700">
+                    {salonProfile.final_price}€
                   </p>}
                 </div>
 
                 {/* Partie droite : Durée totale */}
-                <div className="flex justify-between w-1/2">
-                  <p className="text-md xl:text-lg font-semibold text-black">
-                    Dur&eacute;e totale :
+                <div className="flex justify-evenly w-1/2">
+                  <p className="text-md xl:text-lg font-semibold text-black mb-4">
+                    Dur&eacute;e  :
                   </p>
-                  {salonProfile && <p className="text-md xl:text-lg font-normal text-black">
-                    {salonProfile.total_duration}
+                  {salonProfile && <p className="text-xl font-normal text-stone-700">
+                    {salonProfile.total_duration} min
                   </p>}
                 </div>
               </div>
               {haircutData && <div className="flex justify-between w-full">
-                <p className="text-md xl:text-lg font-semibold text-black">
-                  Nom de la coiffure :
+                <p className="text-md xl:text-lg font-semibold text-stone-400">
+                  <small>Nom de la coiffure :</small>
                 </p>
-                <p className="text-md xl:text-lg font-normal text-black">
+                <p className="text-md xl:text-lg font-normal text-stone-400 italic">
                   {haircutData.name}
                 </p>
               </div>}
-              {salonProfile && salonProfile.haircut && <div className="flex justify-between w-full">
+              {salonProfile && salonProfile.haircut && <div className="flex justify-between text-stone-400 w-full">
                 {/* Durée de la coiffure*/}
-                <p className="text-md xl:text-lg font-semibold text-black">
-                  Dur&eacute;e de la coiffure :
+                <p className="text-md xl:text-lg font-semibold  ">
+                  <small>Dur&eacute;e de la coiffure :</small>
                 </p>
-                <p className="text-md xl:text-lg font-normal text-black">
-                  {salonProfile.haircut.base_duration}
+                <p className="text-md xl:text-lg font-normal text-stone-400 italic">
+                  {salonProfile.haircut.base_duration} min
                 </p>
               </div>}
               <div className="flex justify-between w-full">
                 {/* Durée de la coiffure*/}
-                <p className="text-md xl:text-lg font-semibold text-black">
-                  Nom des prestations:
+                <p className="text-md xl:text-lg font-semibold text-stone-400">
+                  <small> Nom des prestations:</small>
                 </p>
-                <p className="text-md xl:text-lg font-normal text-black">
+                <p className="text-md xl:text-lg font-normal text-stone-400 italic">
                   {servicesData ? <p>
                     {servicesData.map((item: { name: string, id: number }, index: number) => {
                       return <p key={index} className="text-base">{++index}. {item.name}</p>
@@ -393,11 +392,11 @@ const SearchSalon = () => {
               </div>
               <div className="flex justify-between w-full">
                 {/* Durée de la coiffure*/}
-                <p className="text-md xl:text-lg font-semibold text-black">
-                  Dur&eacute;e des prestations :
+                <p className="text-md xl:text-lg font-semibold text-stone-400">
+                  <small>Dur&eacute;e des prestations :</small>
                 </p>
-                {salonProfile && <p className="text-md xl:text-lg font-normal text-black">
-                  {salonProfile.total_service_duration}
+                {salonProfile && <p className="text-md xl:text-lg font-normal text-stone-400 italic">
+                  {salonProfile.total_service_duration} min
                 </p>}
               </div>
             </div>
@@ -411,9 +410,9 @@ const SearchSalon = () => {
           </p>
           <div className="flex items-center justify-center mt-8">
             {salonProfile != null && <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 lg:gap-20 ">
-              {salonProfile.salon_hairdressers!=null && salonProfile.salon_hairdressers.map((hairdresser, index) => {
+              {salonProfile.salon_hairdressers != null && salonProfile.salon_hairdressers.map((hairdresser, index) => {
                 return (
-                  <div key={index} className="p-2 rounded-lg shadow-sm relative bg-gray-100 border border-stone-300">
+                  <div key={index} className="p-2 rounded-lg shadow-sm shadow-stone-600 relative bg-gray-100 border border-stone-300">
 
                     {/* Background de la vignette avec opacité */}
                     <div className="absolute inset-0 opacity-100 rounded-xl"></div>
@@ -421,7 +420,7 @@ const SearchSalon = () => {
                     {/* Image du coiffeur */}
                     <div className="relative w-40 lg:w-52 h-40 lg:h-52 rounded-[20px] ">
                       <Image
-                        src={hairdresser.profile_image ? (hairdresser.profile_image.includes('http') ? hairdresser.profile_image : 'https://api.onehaircut.com/'+hairdresser.profile_image) : `https://api.onehaircut.com/avatars/man/man_01.jpg`}
+                        src={hairdresser.profile_image ? (hairdresser.profile_image.includes('http') ? hairdresser.profile_image : 'https://api.onehaircut.com/' + hairdresser.profile_image) : `https://api.onehaircut.com/avatars/man/man_01.jpg`}
                         alt=""
                         layout="fill"
                         className="rounded-[20px]"
@@ -463,20 +462,20 @@ const SearchSalon = () => {
         </div>
         {/* Import Google map here */}
         {isLoaded && <div className="mt-20 shadow-xl rounded-3xl">
-            <GoogleMap
-              mapContainerStyle={mapStyles}
-              zoom={13}
-              center={mapCenter}
-            >
-              {/* Ajout d'un marqueur */}
-              {/* TODO Position du salon ici */}
-              <Marker
-                position={mapCenter}
-                icon={mapIconUrl}
-              />
+          <GoogleMap
+            mapContainerStyle={mapStyles}
+            zoom={13}
+            center={mapCenter}
+          >
+            {/* Ajout d'un marqueur */}
+            {/* TODO Position du salon ici */}
+            <Marker
+              position={mapCenter}
+              icon={mapIconUrl}
+            />
 
-              {/* Vous pouvez ajouter des marqueurs ou d'autres éléments ici si nécessaire */}
-            </GoogleMap>
+            {/* Vous pouvez ajouter des marqueurs ou d'autres éléments ici si nécessaire */}
+          </GoogleMap>
         </div>}
       </div>
 

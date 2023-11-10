@@ -76,6 +76,52 @@ export const activityData = [
   },
 ];
 
+export const activityClientData = [
+  {
+    user: "Angelina vitale",
+    Date: "12/07/2023",
+    Status: "En cours",
+  },
+  {
+    user: "Amanda louis",
+    Date: "12/07/2023",
+    Status: "Effectuée",
+  },
+  {
+    user: "Amanda louis",
+    Date: "12/07/2023",
+    Status: "Demande de remboursement",
+  },
+  {
+    user: "Amanda louis",
+    Date: "12/07/2023",
+    Status: "Remboursé(e)",
+  },
+];
+
+export const TopClientData = [
+  {
+    Utilisateur: "Angelina",
+    Date: "plongeant",
+    Status: "89",
+  },
+  {
+    Utilisateur: "Doppler",
+    Date: "plongeant",
+    Status: "77",
+  },
+  {
+    Utilisateur: "louis",
+    Date: "Carré",
+    Status: "62",
+  },
+  {
+    Utilisateur: "Amanda",
+    Date: "plongeant",
+    Status: "51",
+  },
+];
+
 export const clientTableData = [
   {
     user: {
@@ -96,8 +142,228 @@ export const clientTableData = [
       Details: { textDecoration: 'underline' }  // Add this line to underline 'Details'
     }
   },
+  {
+    user: {
+      image: '/assets/salon_types/BarberShop.png',
+      name: "Angelina vitale",
+      discount: "-10%",
+      icon: "/path_to_icon_image.png"
+    },
+    Date: "12/07/2023",
+    Visites: 287,
+    Commandes: 30,
+    Dernière: "54 CHF",
+    Details: "Detail",
+    Status: "En cours",
+    Total: "5946 CHF",
+    styles: {
+      Status: { color: 'red' },  // Set the font color of 'Status' to red
+      Details: { textDecoration: 'underline' }  // Add this line to underline 'Details'
+    }
+  },
+  {
+    user: {
+      image: '/assets/salon_types/BarberShop.png',
+      name: "Angelina vitale",
+      discount: "-10%",
+      icon: "/path_to_icon_image.png"
+    },
+    Date: "12/07/2023",
+    Visites: 287,
+    Commandes: 30,
+    Dernière: "54 CHF",
+    Details: "Detail",
+    Status: "En cours",
+    Total: "5946 CHF",
+    styles: {
+      Status: { color: 'red' },  // Set the font color of 'Status' to red
+      Details: { textDecoration: 'underline' }  // Add this line to underline 'Details'
+    }
+  },
+  {
+    user: {
+      image: '/assets/salon_types/BarberShop.png',
+      name: "Angelina vitale",
+      discount: "-10%",
+      icon: "/path_to_icon_image.png"
+    },
+    Date: "12/07/2023",
+    Visites: 287,
+    Commandes: 30,
+    Dernière: "54 CHF",
+    Details: "Detail",
+    Status: "En cours",
+    Total: "5946 CHF",
+    styles: {
+      Status: { color: 'red' },  // Set the font color of 'Status' to red
+      Details: { textDecoration: 'underline' }  // Add this line to underline 'Details'
+    }
+  },
+  {
+    user: {
+      image: '/assets/salon_types/BarberShop.png',
+      name: "Angelina vitale",
+      discount: "-10%",
+      icon: "/path_to_icon_image.png"
+    },
+    Date: "12/07/2023",
+    Visites: 287,
+    Commandes: 30,
+    Dernière: "54 CHF",
+    Details: "Detail",
+    Status: "En cours",
+    Total: "5946 CHF",
+    styles: {
+      Status: { color: 'red' },  // Set the font color of 'Status' to red
+      Details: { textDecoration: 'underline' }  // Add this line to underline 'Details'
+    }
+  },
+
   // ... Add other rows with corresponding images and names here
 ];
+
+export const topClientTableData = [
+  {
+    user: {
+      image: '/assets/salon_types/BarberShop.png',
+      name: "Angelina vitale",
+      discount: "",
+      icon: ""
+    },
+    Date: "12/07/2023",
+    Visites: 287,
+    Commandes: 30,
+    Dernière: "54 CHF",
+    Details: "Detail",
+    Status: "En cours",
+    Total: "5946 CHF",
+    styles: {
+      Status: { color: 'red' },  // Set the font color of 'Status' to red
+      Details: { textDecoration: 'underline' }  // Add this line to underline 'Details'
+    }
+  },
+  {
+    user: {
+      image: '/assets/salon_types/BarberShop.png',
+      name: "Angelina vitale",
+      discount: "",
+      icon: ""
+    },
+    Date: "12/07/2023",
+    Visites: 287,
+    Commandes: 30,
+    Dernière: "54 CHF",
+    Details: "Detail",
+    Status: "En cours",
+    Total: "5946 CHF",
+    styles: {
+      Status: { color: 'red' },  // Set the font color of 'Status' to red
+      Details: { textDecoration: 'underline' }  // Add this line to underline 'Details'
+    }
+  },
+  {
+    user: {
+      image: '/assets/salon_types/BarberShop.png',
+      name: "Angelina vitale",
+      discount: "",
+      icon: ""
+    },
+    Date: "12/07/2023",
+    Visites: 287,
+    Commandes: 30,
+    Dernière: "54 CHF",
+    Details: "Detail",
+    Status: "En cours",
+    Total: "5946 CHF",
+    styles: {
+      Status: { color: 'red' },  // Set the font color of 'Status' to red
+      Details: { textDecoration: 'underline' }  // Add this line to underline 'Details'
+    }
+  },
+  {
+    user: {
+      image: '/assets/salon_types/BarberShop.png',
+      name: "Angelina vitale",
+      discount: "",
+      icon: ""
+    },
+    Date: "12/07/2023",
+    Visites: 287,
+    Commandes: 30,
+    Dernière: "54 CHF",
+    Details: "Detail",
+    Status: "En cours",
+    Total: "5946 CHF",
+    styles: {
+      Status: { color: 'red' },  // Set the font color of 'Status' to red
+      Details: { textDecoration: 'underline' }  // Add this line to underline 'Details'
+    }
+  },
+  {
+    user: {
+      image: '/assets/salon_types/BarberShop.png',
+      name: "Angelina vitale",
+      discount: "",
+      icon: ""
+    },
+    Date: "12/07/2023",
+    Visites: 287,
+    Commandes: 30,
+    Dernière: "54 CHF",
+    Details: "Detail",
+    Status: "En cours",
+    Total: "5946 CHF",
+    styles: {
+      Status: { color: 'red' },  // Set the font color of 'Status' to red
+      Details: { textDecoration: 'underline' }  // Add this line to underline 'Details'
+    }
+  },
+
+  // ... Add other rows with corresponding images and names here
+];
+
+export const yourChartData = {
+  labels: ['Staff 1', 'Staff 2', 'Staff 3', 'Staff 4', 'Staff 5'],
+  datasets: [
+    {
+      maxBarThickness: 150,
+      backgroundColor: "#f6c23e", // Using yellow prop directly here for simplicity
+      borderColor: 'transparent',
+      borderRadius: { topRight: 15, topLeft: 15 },
+      data: [80, 35, 50, 65, 90]
+    }
+  ]
+}
+
+export const yourChartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  animation: { duration: 500 },
+  scales: {
+    x: {
+      display: true,
+      grid: {
+        color: "#f1f1f1" // Using borderColor prop directly here for simplicity
+      },
+      ticks: { color: "#000" } // Using labelColor prop directly here for simplicity
+    },
+    y: {
+      min: 0,
+      max: 100,
+      grid: {
+        color: "#f1f1f1" // Using borderColor prop directly here for simplicity
+      },
+      ticks: {
+        color: "#000", // Using labelColor prop directly here for simplicity
+        padding: 10
+      }
+    }
+  },
+  plugins: {
+    legend: { display: false }
+  }
+}
+
 
 // Simulate async data fetching with a promise
 const fetchData = (data: unknown) => {

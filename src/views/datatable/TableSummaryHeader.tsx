@@ -1,3 +1,5 @@
+import React from "react";
+
 interface SummaryProps {
   totalAmount: number;
   vat: number;
@@ -20,47 +22,86 @@ const SummaryComponent: React.FC<SummaryProps> = ({
               totalTransactions,
           }) => {
     return (
-        <div className="p-4 bg-white shadow-md">
-            <div className="grid grid-cols-4 gap-4 mb-2">
-                <div>
-                    <span className="block text-sm font-medium text-gray-700">Compte enregistrée</span>
-                    <span className="text-lg font-bold">FR **** **** **** 1985</span>
-                </div>
-                <div>
-                    <span className="block text-sm font-medium text-gray-700">Sommes totale encaissée</span>
-                    <span className="text-lg font-bold">{totalAmount} $</span>
-                </div>
-                <div>
-                    <span className="block text-sm font-medium text-gray-700">TVA à déclarer</span>
-                    <span className="text-lg font-bold">{vat} $</span>
-                </div>
-                <div>
-                    <span className="block text-sm font-medium text-gray-700">Encaissement en court</span>
-                    <span className="text-lg font-bold">{ongoingPayment} $</span>
-                </div>
+        <div className="overflow-x-auto">
+            <div className="px-28 pb-12">
+            <div className="shadow-md sm:rounded-lg">
+                <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-zinc-300">
+                    <tr>
+                        {/* These width classes need to be consistent across both tables */}
+                        <th scope="col" className="w-1/4 px-6 py-3 text-left text-xs font-bold text-black-500 uppercase tracking-wider border-r border-gray-300">
+                            Sommes totale encaissée
+                        </th>
+                        <th scope="col" className="w-1/4 px-6 py-3 text-left text-xs font-bold text-black-500 uppercase tracking-wider border-r border-gray-300">
+                            TVA à déclarer
+                        </th>
+                        <th scope="col" className="w-1/4 px-6 py-3 text-left text-xs font-bold text-black-500 uppercase tracking-wider border-r border-gray-300">
+                            Encaissement en court
+                        </th>
+                        <th scope="col" className="ww-1/4 px-6 py-3 text-left text-xs font-bold text-black-500 uppercase tracking-wider border-r border-gray-300">
+                            Remboursement effectués
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody className="bg-white">
+                    <tr>
+                        {/* Apply the same width classes to the td elements */}
+                        <td className="w-1/4 px-6 py-4 whitespace-nowrap text-sm font-bold text-zinc-600 border-r border-gray-300">
+                            13257 $
+                        </td>
+                        <td className="w-1/4 px-6 py-4 whitespace-nowrap text-sm font-bold text-zinc-600 border-r border-gray-300">
+                            2598,50 $
+                        </td>
+                        <td className="w-1/4 px-6 py-4 whitespace-nowrap text-sm font-bold text-zinc-600 border-r border-gray-300">
+                            275 $
+                        </td>
+                        <td className="w-1/4 px-6 py-4 whitespace-nowrap text-sm font-bold text-red-600">
+                            365 $
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
-            <div className="grid grid-cols-4 gap-4 mt-2">
-                <div>
-                    <span className="block text-sm font-medium text-gray-700">Remboursement effectués</span>
-                    <span className="text-lg font-bold">{refund} $</span>
-                </div>
-                <div>
-                    <span className="block text-sm font-medium text-gray-700">Taux d'annulation</span>
-                    <span className="text-lg font-bold">{cancellationRate}%</span>
-                </div>
-                <div>
-                    <span className="block text-sm font-medium text-gray-700">Taux de remboursement</span>
-                    <span className="text-lg font-bold">{refundRate}%</span>
-                </div>
-                <div>
-                    <span className="block text-sm font-medium text-gray-700">Transaction en cours</span>
-                    <span className="text-lg font-bold">{ongoingTransaction}</span>
-                </div>
-                <div>
-                    <span className="block text-sm font-medium text-gray-700">Nombre de transaction</span>
-                    <span className="text-lg font-bold">{totalTransactions}</span>
-                </div>
+
+            <div className="shadow-md sm:rounded-lg">
+                <table className="min-w-full divide-y divide-gray-200">
+                    <thead className="bg-gray-100">
+                    <tr>
+                        {/* Use the same width classes here for alignment */}
+                        <th scope="col" className="w-1/4 px-6 py-3 text-left text-xs font-bold text-black-500 uppercase tracking-wider border-r border-gray-300">
+                            Taux d’annulation
+                        </th>
+                        <th scope="col" className="w-1/4 px-6 py-3 text-left text-xs font-bold text-black-500 uppercase tracking-wider border-r border-gray-300">
+                            Taux de remboursement
+                        </th>
+                        <th scope="col" className="w-1/4 px-6 py-3 text-left text-xs font-bold text-black-500 uppercase tracking-wider border-r border-gray-300">
+                            Transaction en cours
+                        </th>
+                        <th scope="col" className="w-1/4 px-6 py-3 text-left text-xs font-bold text-black-500 uppercase tracking-wider border-r border-gray-300">
+                            Nombre de transaction
+                        </th>
+                    </tr>
+                    </thead>
+                    <tbody className="bg-white">
+                    <tr>
+                        {/* And also here */}
+                        <td className="w-1/4 px-6 py-4 whitespace-nowrap text-sm font-bold text-zinc-600 border-r border-gray-300">
+                            12%
+                        </td>
+                        <td className="w-1/4 px-6 py-4 whitespace-nowrap text-sm font-bold text-zinc-600 border-r border-gray-300">
+                            5%
+                        </td>
+                        <td className="w-1/4 px-6 py-4 whitespace-nowrap text-sm font-bold text-zinc-600 border-r border-gray-300">
+                            2
+                        </td>
+                        <td className="w-1/4 px-6 py-4 whitespace-nowrap text-sm font-bold text-red-600">
+                            480
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
+        </div>
         </div>
     );
 };

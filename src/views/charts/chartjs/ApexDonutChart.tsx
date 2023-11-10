@@ -1,39 +1,35 @@
-// ** MUI Imports
-import Card from '@mui/material/Card'
-import { useTheme } from '@mui/material/styles'
-import CardHeader from '@mui/material/CardHeader'
-import CardContent from '@mui/material/CardContent'
-
-// ** Third Party Imports
-import { ApexOptions } from 'apexcharts'
-
-// ** Component Import
-import ReactApexcharts from '@/@core/components/react-apexcharts'
-
-const donutColors = {
-  series1: '#fdd835',
-  series2: '#00d4bd',
-  series3: '#826bf8',
-  series4: '#1FD5EB',
-  series5: '#ffa1a1'
-}
+import React from 'react';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardContent from '@mui/material/CardContent';
+import ReactApexcharts from 'react-apexcharts'; // Assuming the path is 'react-apexcharts'
 
 const ApexDonutChart = () => {
-  // ** Hook
-  const theme = useTheme()
 
-  const options: ApexOptions = {
-    stroke: { width: 0 },
+  // Hardcoded options for ApexCharts
+  const options:any = {
+    chart: {
+      type: 'donut',
+    },
+    stroke: {
+      width: 0
+    },
     labels: ['Operational', 'Networking', 'Hiring', 'R&D'],
-    colors: [donutColors.series1, donutColors.series5, donutColors.series3, donutColors.series2],
+    colors: ['#fdd835', '#ffa1a1', '#826bf8', '#00d4bd'],
     dataLabels: {
       enabled: true,
-      formatter: (val: string) => `${parseInt(val, 10)}%`
+      formatter: function(val: string) {
+        return parseInt(val, 10) + "%";
+      }
     },
     legend: {
       position: 'bottom',
-      markers: { offsetX: -3 },
-      labels: { colors: theme.palette.text.secondary },
+      markers: {
+        offsetX: -3
+      },
+      labels: {
+        colors: 'gray' // Using hardcoded color for legend labels
+      },
       itemMargin: {
         vertical: 3,
         horizontal: 10
@@ -49,15 +45,19 @@ const ApexDonutChart = () => {
             },
             value: {
               fontSize: '1.2rem',
-              color: theme.palette.text.secondary,
-              formatter: (val: string) => `${parseInt(val, 10)}`
+              color: 'gray', // Using hardcoded color for value labels
+              formatter: function(val: string) {
+                return parseInt(val, 10);
+              }
             },
             total: {
               show: true,
               fontSize: '1.2rem',
               label: 'Operational',
-              formatter: () => '31%',
-              color: theme.palette.text.primary
+              formatter: function() {
+                return '31%';
+              },
+              color: 'black' // Using hardcoded color for total label
             }
           }
         }
@@ -87,13 +87,13 @@ const ApexDonutChart = () => {
                 labels: {
                   show: true,
                   name: {
-                    fontSize: theme.typography.body1.fontSize
+                    fontSize: '1rem' // Hardcoded fontSize for small screens
                   },
                   value: {
-                    fontSize: theme.typography.body1.fontSize
+                    fontSize: '1rem' // Hardcoded fontSize for small screens
                   },
                   total: {
-                    fontSize: theme.typography.body1.fontSize
+                    fontSize: '1rem' // Hardcoded fontSize for small screens
                   }
                 }
               }
@@ -102,20 +102,22 @@ const ApexDonutChart = () => {
         }
       }
     ]
-  }
+  };
+
+  // Hardcoded series data for the chart
+  const series = [85, 16, 50, 50];
 
   return (
     <Card>
       <CardHeader
         title='Expense Ratio'
         subheader='Spending on various categories'
-        subheaderTypographyProps={{ sx: { color: theme => `${theme.palette.text.disabled} !important` } }}
       />
       <CardContent>
-        <ReactApexcharts type='donut' height={400} options={options} series={[85, 16, 50, 50]} />
+        <ReactApexcharts type='donut' height={400} options={options} series={series} />
       </CardContent>
     </Card>
-  )
+  );
 }
 
-export default ApexDonutChart
+export default ApexDonutChart;
