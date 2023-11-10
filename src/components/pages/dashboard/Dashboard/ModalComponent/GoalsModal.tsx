@@ -6,6 +6,8 @@ import { styled } from "@mui/material/styles";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import Grid from '@mui/material/Grid'
 import Icon from "@/@core/components/icon";
+import CustomInput from "@/components/UI/CustomInput";
+import { Theme_A } from "@/components/utilis/Themes";
 
 const CustomCloseButton = styled(IconButton)<IconButtonProps>(({ theme }) => ({
     top: 0,
@@ -28,43 +30,23 @@ const progressBarColors = ['#FE2569', '#0FBFF1', '#7ABF50', '#db7c00']; // Add m
 
 const StaffModal = () => {
 
-    const data = [
-        { name: 'Jason', value: 17, color: '#4184f3' }, // Blue
-        { name: 'Melinda', value: 20, color: '#ff6262' }, // Red
-        { name: 'Karim', value: 18, color: '#50be87' }, // Green
-        { name: 'Dyone', value: 23, color: '#ffce5a' }, // Yellow
-        { name: 'Deborah', value: 13, color: '#6070db' }, // Dark Blue
-        { name: 'Daniel', value: 9, color: '#db7c00' }, // Orange
-    ];
-
-    const revenueCards = [
-        { title: 'Revenu Mensuel', objective: '42.000 €' },
-        { title: 'Commandes d’habitué', objective: '35.000 €' },
-        { title: 'Nouveaux clients', objective: '50.000 €' },
-        { title: 'Nombre de visites en ligne', objective: '10.000 €' },
-        { title: 'Nombre max ', objective: '18.00 €' },
-        { title: 'Note moyenne', objective: '19.00 €' },
-        { title: 'Occupation du personnel', objective: '12.00 €' },
-        { title: 'Objectif one haircut', objective: '7.00 €' },
-    ];
-
     const [cards, setCards] = useState([
         // Initial cards data with 'clicked' state to track if it's disabled
         { title: 'Revenu Mensuel', objective: '42.000 €', clicked: false },
-        { title: 'Commandesd’ habitué', objective: '35.000 €', clicked: false },
+        { title: 'Commandes d’habitués', objective: '35.000 €', clicked: false },
         { title: 'Nouveaux clients', objective: '35.000 €', clicked: false },
         { title: 'Nombre de visites en ligne', objective: '35.000 €', clicked: false },
         { title: 'Nombre max', objective: '35.000 €', clicked: false },
         { title: 'Note moyenne', objective: '35.000 €', clicked: false },
         { title: 'Occupation du personnel', objective: '35.000 €', clicked: false },
-        { title: 'Objectif one haircut', objective: '35.000 €', clicked: false },
+        { title: 'Objectif Onehaircut', objective: '35.000 €', clicked: false },
     ]);
 
 
     const [progressBars, setProgressBars] = useState([
         // Assuming 'number' is also a required field, set it initially to a default value like 0 or any start point
         { title: 'Revenu Mensuel', value: 0, number: 0, color: '#FE2569', filled: false },
-        { title: 'Commandesd’ habitué', value: 0, number: 0, color: '#0FBFF1', filled: false },
+        { title: 'Commandes d’habitué', value: 0, number: 0, color: '#0FBFF1', filled: false },
         { title: 'Nouveaux clients', value: 0, number: 0, color: '#7ABF50', filled: false },
         { title: 'Nombre de visites en ligne', value: 0, number: 0, color: '#db7c00', filled: false },
         // ... more bars
@@ -212,36 +194,48 @@ const StaffModal = () => {
                 </Grid>
 
             </div>
-            <div className="flex flex-wrap items-center justify-center gap-10 flex-grow mb-7">
+            <div className="flex flex-wrap items-center justify-center gap-10 flex-grow mb-2">
                 <Grid container spacing={0}>
                     {cards.map((card, index) => (
                         // eslint-disable-next-line react/jsx-key
                         <Grid item xs={3} style={{ marginTop: '8px' }}>
+
+                            {/* CARDS  */}
                             <div
                                 key={index}
                                 style={{
                                     width: '230px',
                                     height: '173px',
-                                    borderRadius: '37px',
+                                    borderRadius: '10px',
                                     background: card.clicked ? '#E5E5E5' : '#FFFFFF',
                                     pointerEvents: card.clicked ? 'none' : 'auto',
                                     opacity: card.clicked ? 0.5 : 1,
                                 }}
-                                className="max-w-xs w-full rounded-xl shadow-md p-6 cursor-pointer relative"
-                                onClick={() => handleCardClick(index)}
+                                className="max-w-xs w-full rounded-sm shadow-sm shadow-stone-600 p-2 cursor-pointer relative mb-4"
+                            //onClick={() => handleCardClick(index)}
                             >
-                                <h3 className="text-gray-900 text-xl font-medium mb-2">{card.title}</h3>
-                                <p className="text-gray-500 text-sm mb-3">Objectif</p>
+
+                                {/* TITLE ON CARDS */}
+                                <h3 className="text-gray-900 text-xl font-medium text-center mb-4">{card.title}</h3>
+                                {/* INPUT FIELD */}
                                 {!card.clicked ? (
-                                    <input
-                                        type="text"
+                                    <CustomInput
+                                        id="GoalsInput"
+                                        type="number"
+                                        label="Objectif"
                                         value={card.objective}
                                         onChange={(e) => handleObjectiveChange(e, index)}
-                                        onClick={handleInputClick}
-                                        className="text-lg font-semibold text-gray-900 bg-transparent border-none focus:outline-none" />
+                                    />
                                 ) : (
-                                    <p className="text-lg font-semibold text-gray-900">{card.objective}</p>
+                                    <p className="text-lg font-semibold text-stone-800 text-center ">{card.objective}</p>
                                 )}
+                                <button
+                                    className={`${Theme_A.button.medBlackColoredButton} justify-center mt-4`}
+                                    onClick={() => handleCardClick(index)}
+                                >
+                                    valider
+                                </button>
+
                             </div>
                         </Grid>
                     ))}

@@ -372,7 +372,7 @@ const Dashboard = () => {
                                     {/* Contenu pour Revenu mensuel */}
                                     <ProgressBar
                                         value={50}
-                                        name="Revenu mensuel"
+                                        name="Revenus mensuel"
                                         number={50}
                                         rotation={0.25}
                                         color="rgba(122, 191, 80, 1)"
