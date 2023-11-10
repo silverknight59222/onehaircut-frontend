@@ -5,41 +5,23 @@ import ProgressBar from "@/components/UI/ProgressBar";
 import { styled } from "@mui/material/styles";
 import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import Grid from '@mui/material/Grid'
-import Icon from "@/@core/components/icon";
 import CustomInput from "@/components/UI/CustomInput";
-import { Theme_A } from "@/components/utilis/Themes";
+import { Theme_A, ColorsThemeA } from "@/components/utilis/Themes"
+import { CrossIcon } from "@/components/utilis/Icons";
 
-const CustomCloseButton = styled(IconButton)<IconButtonProps>(({ theme }) => ({
-    top: 0,
-    right: 0,
-    color: theme.palette.common.white, // Set icon color to white
-    position: 'absolute',
-    boxShadow: theme.shadows[2],
-    transform: 'translate(10px, -10px)',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: `${theme.palette.error.main} !important`, // Set background to red
-    transition: 'transform 0.25s ease-in-out, box-shadow 0.25s ease-in-out',
-    '&:hover': {
-        backgroundColor: theme.palette.error.dark, // Optionally change the hover color to a darker red
-        color: theme.palette.common.white
-    }
-}));
-
-
-const progressBarColors = ['#FE2569', '#0FBFF1', '#7ABF50', '#db7c00']; // Add more colors if needed
 
 const StaffModal = () => {
 
     const [cards, setCards] = useState([
         // Initial cards data with 'clicked' state to track if it's disabled
-        { title: 'Revenu Mensuel', objective: '42.000 €', clicked: false },
-        { title: 'Commandes d’habitués', objective: '35.000 €', clicked: false },
-        { title: 'Nouveaux clients', objective: '35.000 €', clicked: false },
-        { title: 'Nombre de visites en ligne', objective: '35.000 €', clicked: false },
-        { title: 'Nombre max', objective: '35.000 €', clicked: false },
-        { title: 'Note moyenne', objective: '35.000 €', clicked: false },
-        { title: 'Occupation du personnel', objective: '35.000 €', clicked: false },
-        { title: 'Objectif Onehaircut', objective: '35.000 €', clicked: false },
+        { title: 'Revenu Mensuel', objective: '', clicked: false },
+        { title: 'Commandes d’habitués', objective: '', clicked: false },
+        { title: 'Nouveaux clients', objective: '', clicked: false },
+        { title: 'Nombre de visites en ligne', objective: '', clicked: false },
+        { title: 'Nombre max', objective: '', clicked: false },
+        { title: 'Note moyenne', objective: '', clicked: false },
+        { title: 'Occupation du personnel', objective: '', clicked: false },
+        { title: 'Objectif Onehaircut', objective: '', clicked: false },
     ]);
 
 
@@ -48,13 +30,13 @@ const StaffModal = () => {
         { title: 'Revenu Mensuel', value: 0, number: 0, color: '#FE2569', filled: false },
         { title: 'Commandes d’habitué', value: 0, number: 0, color: '#0FBFF1', filled: false },
         { title: 'Nouveaux clients', value: 0, number: 0, color: '#7ABF50', filled: false },
-        { title: 'Nombre de visites en ligne', value: 0, number: 0, color: '#db7c00', filled: false },
+        { title: 'Nombre de visites en ligne', value: 0, number: 0, color: '#ffc866', filled: false },
         // ... more bars
     ]);
 
     const handleCloseClick = (index: number) => {
         // Define the original colors for each progress bar index
-        const originalColors = ['#FE2569', '#0FBFF1', '#7ABF50', '#15BAF2']; // Add more if you have more bars
+        const originalColors = ['#FE2569', '#0FBFF1', '#7ABF50', '#ffc866']; // Add more if you have more bars
 
         // Update the progressBars state to reset the value and color of the specific progress bar
         const newProgressBars = progressBars.map((bar, i) => {
@@ -85,6 +67,13 @@ const StaffModal = () => {
 
     // Handles the click on a discount card
     const handleCardClick = (cardIndex: number) => {
+
+        // Extract the number from the clicked card's objective
+        const card = cards[cardIndex];
+        if (!card.objective || isNaN(Number(card.objective))) {
+            // Ne rien faire si l'objectif est vide ou non numérique
+            return;
+        }
         // Find the first unfilled progress bar
         const unfilledIndex = progressBars.findIndex(bar => !bar.filled);
         // If there's no unfilled progress bar, do nothing
@@ -92,8 +81,6 @@ const StaffModal = () => {
             return;
         }
 
-        // Extract the number from the clicked card's objective
-        const card = cards[cardIndex];
         const value = parseFloat(card.objective.replace(/[^\d.-]/g, '')); // Extract number from objective
 
         // Update the corresponding progress bar with the card's details
@@ -122,7 +109,6 @@ const StaffModal = () => {
 
 
 
-
     const handleObjectiveChange = (event: React.ChangeEvent<HTMLInputElement>, cardIndex: number) => {
         const updatedCards = cards.map((card, index) => {
             if (index === cardIndex && !card.clicked) {
@@ -141,14 +127,14 @@ const StaffModal = () => {
 
 
     return (
-        <div>
-            <div className='mb-6'>
+        <div className="justify-center items-center" style={{ width: '100%' }}> {/* Ajustez la largeur ici */}
+            <div className=''>
                 <p className="text-neutral-500 font-semibold text-2xl text-center">
-                    Vos objectifs
+                    Définissez vos objectifs
                 </p>
             </div>
 
-            <div className="flex flex-wrap items-center justify-center gap-10 flex-grow mb-7"
+            <div className="flex flex-wrap items-center justify-center gap-2 flex-grow mb-7 mt-12"
 
             >
                 <Grid container spacing={0}>
@@ -176,17 +162,13 @@ const StaffModal = () => {
                                     top: 0, // Align to top
                                     right: 0, // Align to right
                                     transform: 'translate(-50%, 50%)', // Adjust the position accordingly
-                                    // Add any additional styles if necessary
                                 }}>
-                                    <Icon icon='tabler:x' fontSize='1.25rem'
-                                        style={{
-                                            background: '#FF2968',
-                                            cursor: 'pointer',
-                                            width: '31px',
-                                            height: '33px',
-                                            borderRadius: '11px',
-                                        }}
-                                        onClick={() => handleCloseClick(index)} />
+                                    <div
+                                        className={`absolute -top-5 right-0 sm:-right-2 z-50 flex items-center justify-center w-12 h-12 scale-75 text-darkBlue font-semibold cursor-pointer rounded-xl shadow-md 
+                                    ${ColorsThemeA.ohcVerticalGradient_A} transform transition-transform duration-300 hover:scale-50`}
+                                        onClick={() => handleCloseClick(index)} >
+                                        <CrossIcon />
+                                    </div>
                                 </div>
                             </div>
                         </Grid>
@@ -194,13 +176,11 @@ const StaffModal = () => {
                 </Grid>
 
             </div>
+
             <div className="flex flex-wrap items-center justify-center gap-10 flex-grow mb-2">
                 <Grid container spacing={0}>
                     {cards.map((card, index) => (
-                        // eslint-disable-next-line react/jsx-key
                         <Grid item xs={3} style={{ marginTop: '8px' }}>
-
-                            {/* CARDS  */}
                             <div
                                 key={index}
                                 style={{
@@ -212,35 +192,47 @@ const StaffModal = () => {
                                     opacity: card.clicked ? 0.5 : 1,
                                 }}
                                 className="max-w-xs w-full rounded-sm shadow-sm shadow-stone-600 p-2 cursor-pointer relative mb-4"
-                            //onClick={() => handleCardClick(index)}
                             >
-
-                                {/* TITLE ON CARDS */}
                                 <h3 className="text-gray-900 text-xl font-medium text-center mb-4">{card.title}</h3>
-                                {/* INPUT FIELD */}
-                                {!card.clicked ? (
-                                    <CustomInput
-                                        id="GoalsInput"
-                                        type="number"
-                                        label="Objectif"
-                                        value={card.objective}
-                                        onChange={(e) => handleObjectiveChange(e, index)}
-                                    />
-                                ) : (
-                                    <p className="text-lg font-semibold text-stone-800 text-center ">{card.objective}</p>
-                                )}
-                                <button
-                                    className={`${Theme_A.button.medBlackColoredButton} justify-center mt-4`}
-                                    onClick={() => handleCardClick(index)}
-                                >
-                                    valider
-                                </button>
 
+                                {/* Conteneur pour l'input et le bouton avec positionnement absolu */}
+                                <div className="absolute bottom-2 left-0 right-0 px-2 mr-4 ml-4">
+                                    {!card.clicked ? (
+                                        <CustomInput
+                                            id="GoalsInput"
+                                            type="number"
+                                            label="Objectif"
+                                            value={card.objective}
+                                            onChange={(e) => handleObjectiveChange(e, index)}
+                                        />
+                                    ) : (
+                                        <p className="text-lg font-semibold text-stone-800 text-center ">{card.objective}</p>
+                                    )}
+
+                                    {/* Afficher le bouton uniquement si l'input contient une valeur */}
+                                    {card.objective ? (
+                                        <div className="flex justify-center mt-2">
+                                            <button
+                                                className={`${Theme_A.button.smallBlackColoredButton}`}
+                                                onClick={() => handleCardClick(index)}
+                                            >
+                                                valider
+                                            </button>
+                                        </div>
+                                    ) : (
+                                        // Élément fictif pour garder l'espace
+                                        <div className="mt-2" style={{ height: '20px' }}></div>
+                                    )}
+                                </div>
                             </div>
                         </Grid>
                     ))}
                 </Grid>
             </div>
+
+
+
+
 
         </div>
 
