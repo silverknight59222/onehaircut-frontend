@@ -329,70 +329,74 @@ const Dashboard = () => {
                 </div>
             </div>
 
-            <div className=" mb-12">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch ">
+
+            <div className="mb-12">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                     {/* REVENU CHART */}
-                    <Card className="h-full ">
+                    <Card className="h-full">
                         <div>
                             <ApexAreaChart />
                         </div>
                     </Card>
-
                     {/* OBJECTIFS CHART */}
                     <Card className="h-full flex flex-col justify-start">
-                        {/* Top content for 'Visits' and dropdown */}
-                        <Grid container spacing={2} justifyContent="start" alignItems="center">
-
-                            <Grid item xs={3}>
-                            </Grid>
-                            <Grid item xs={3} style={{ marginTop: '2rem' }}> {/* Ajoute une marge en haut */}
-                                <ProgressBar
-                                    value={61}
-                                    name="Nouveaux Clients"
-                                    number={27}
-                                    rotation={0.25}
-                                    color='rgba(255, 70, 70, 1)'
-                                />
-                            </Grid>
-
-                            <Grid item xs={2}></Grid>
-                            <Grid item xs={3} style={{ marginTop: '2rem' }}> {/* Ajoute une marge en haut */}
-                                <ProgressBar
-                                    value={73}
-                                    name="Nombre de visite"
-                                    number={47}
-                                    rotation={0.25}
-                                    color="rgba(16, 161, 216, 1)"
-                                />
-                            </Grid>
-
-                            <Grid item xs={2}></Grid>
-
-                            <Grid item xs={2}></Grid>
-                            <Grid item xs={3}>
-                                <ProgressBar
-                                    value={50}
-                                    name="Revenu mensuel"
-                                    number={50}
-                                    rotation={0.25}
-                                    color="rgba(122, 191, 80, 1)"
-                                />
+                        <div>
+                            {/* Ligne du haut */}
+                            <Grid container justifyContent="center" alignItems="start" spacing={2}>
+                                <Grid item xs={false} sm={1} lg={4} /> {/* Espace vide pour le décalage IMPORTANT*/}
+                                <Grid item xs={12} sm={5} lg={4} style={{ marginTop: '2rem' }}>
+                                    {/* Contenu pour Nouveaux Clients */}
+                                    <ProgressBar
+                                        value={61}
+                                        name="Nouveaux Clients"
+                                        number={27}
+                                        rotation={0.25}
+                                        color='rgba(255, 70, 70, 1)'
+                                    />
+                                </Grid>
+                                <Grid item xs={12} sm={5} lg={4} style={{ marginTop: '2rem' }}>
+                                    {/* Contenu pour Nombre de visite */}
+                                    <ProgressBar
+                                        value={73}
+                                        name="Nombre de visite"
+                                        number={47}
+                                        rotation={0.25}
+                                        color="rgba(16, 161, 216, 1)"
+                                    />
+                                </Grid>
                             </Grid>
 
-                            <Grid item xs={2}></Grid>
-                            <Grid item xs={3}>
-                                <ProgressBar
-                                    value={15}
-                                    name="Commandes d'habitués"
-                                    number={15}
-                                    rotation={0.25}
-                                    color="rgba(255, 200, 102, 1)"
-                                />
+                            {/* Ligne du bas */}
+                            <Grid container justifyContent="center" alignItems="end" spacing={2}>
+                                <Grid item xs={12} sm={5} lg={4}>
+                                    {/* Contenu pour Revenu mensuel */}
+                                    <ProgressBar
+                                        value={50}
+                                        name="Revenu mensuel"
+                                        number={50}
+                                        rotation={0.25}
+                                        color="rgba(122, 191, 80, 1)"
+                                    />
+                                </Grid>
+                                {/* Supprimez cet espace vide si vous voulez rapprocher le dernier ProgressBar vers la gauche */}
+                                {/* <Grid item xs={false} sm={1} lg={2} /> */}
+                                <Grid item xs={12} sm={5} lg={4}>
+                                    {/* Contenu pour Commandes d'habitués */}
+                                    <ProgressBar
+                                        value={15}
+                                        name="Commandes d'habitués"
+                                        number={15}
+                                        rotation={0.25}
+                                        color="rgba(255, 200, 102, 1)"
+                                    />
+                                </Grid>
                             </Grid>
-                        </Grid>
+
+                        </div>
                     </Card>
                 </div>
             </div>
+
 
 
 

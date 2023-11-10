@@ -2,8 +2,8 @@
 import React, { useState } from "react";
 
 import ProgressBar from "@/components/UI/ProgressBar";
-import {styled} from "@mui/material/styles";
-import IconButton, {IconButtonProps} from "@mui/material/IconButton";
+import { styled } from "@mui/material/styles";
+import IconButton, { IconButtonProps } from "@mui/material/IconButton";
 import Grid from '@mui/material/Grid'
 import Icon from "@/@core/components/icon";
 
@@ -39,7 +39,7 @@ const StaffModal = () => {
 
     const revenueCards = [
         { title: 'Revenu Mensuel', objective: '42.000 €' },
-        { title: 'Commandesd’ habitué', objective: '35.000 €' },
+        { title: 'Commandes d’habitué', objective: '35.000 €' },
         { title: 'Nouveaux clients', objective: '50.000 €' },
         { title: 'Nombre de visites en ligne', objective: '10.000 €' },
         { title: 'Nombre max ', objective: '18.00 €' },
@@ -48,17 +48,17 @@ const StaffModal = () => {
         { title: 'Objectif one haircut', objective: '7.00 €' },
     ];
 
-  const [cards, setCards] = useState([
-    // Initial cards data with 'clicked' state to track if it's disabled
-    { title: 'Revenu Mensuel', objective: '42.000 €', clicked: false },
-    { title: 'Commandesd’ habitué', objective: '35.000 €', clicked: false },
-    { title: 'Nouveaux clients', objective: '35.000 €', clicked: false },
-    { title: 'Nombre de visites en ligne', objective: '35.000 €', clicked: false },
-    { title: 'Nombre max', objective: '35.000 €', clicked: false },
-    { title: 'Note moyenne', objective: '35.000 €', clicked: false },
-    { title: 'Occupation du personnel', objective: '35.000 €', clicked: false },
-    { title: 'Objectif one haircut', objective: '35.000 €', clicked: false },
-  ]);
+    const [cards, setCards] = useState([
+        // Initial cards data with 'clicked' state to track if it's disabled
+        { title: 'Revenu Mensuel', objective: '42.000 €', clicked: false },
+        { title: 'Commandesd’ habitué', objective: '35.000 €', clicked: false },
+        { title: 'Nouveaux clients', objective: '35.000 €', clicked: false },
+        { title: 'Nombre de visites en ligne', objective: '35.000 €', clicked: false },
+        { title: 'Nombre max', objective: '35.000 €', clicked: false },
+        { title: 'Note moyenne', objective: '35.000 €', clicked: false },
+        { title: 'Occupation du personnel', objective: '35.000 €', clicked: false },
+        { title: 'Objectif one haircut', objective: '35.000 €', clicked: false },
+    ]);
 
 
     const [progressBars, setProgressBars] = useState([
@@ -81,7 +81,7 @@ const StaffModal = () => {
                 return { ...bar, value: 0, number: 0, color: originalColors[i], filled: false }; // Reset to original color
             }
 
-return bar;
+            return bar;
         });
         setProgressBars(newProgressBars);
 
@@ -91,7 +91,7 @@ return bar;
                 return { ...card, clicked: false }; // Re-enable the card by resetting 'clicked' to false
             }
 
-return card;
+            return card;
         });
         setCards(newCards);
     };
@@ -101,9 +101,7 @@ return card;
     // State to track which card is selected
     const [selectedCardIndex, setSelectedCardIndex] = useState<number | null>(null);
 
-  // Handles the click on a discount card
-// Handles the click on a discount card
-// Handles the click on a discount card
+    // Handles the click on a discount card
     const handleCardClick = (cardIndex: number) => {
         // Find the first unfilled progress bar
         const unfilledIndex = progressBars.findIndex(bar => !bar.filled);
@@ -124,7 +122,7 @@ return card;
                     return { ...bar, title: card.title, value, number: value, filled: true };
                 }
 
-return bar;
+                return bar;
             })
         );
 
@@ -135,7 +133,7 @@ return bar;
                     return { ...c, clicked: true };
                 }
 
-return c;
+                return c;
             })
         );
     };
@@ -149,7 +147,7 @@ return c;
                 return { ...card, objective: event.target.value };
             }
 
-return card;
+            return card;
         });
         setCards(updatedCards);
     };
@@ -171,81 +169,82 @@ return card;
             <div className="flex flex-wrap items-center justify-center gap-10 flex-grow mb-7"
 
             >
-              <Grid container spacing={0}>
-                {progressBars.map((bar, index) => (
-                  // eslint-disable-next-line react/jsx-key
-                    <Grid item xs={3}>
-                    <div
-                        key={index}
-                        className="relative" // This allows for absolute positioning of children
-                        style={{
-                            width: '230px', // Set your desired width
-                            // ... other styles, ensure position is not overridden
-                        }}
-                    >
-                        <ProgressBar
-                            value={bar.value}
-                            name={bar.title}
-                            number={bar.number}
-                            rotation={0.25}
-                            color={bar.color}
-                        />
-                        {/* Position Icon with absolute positioning */}
-                        <div style={{
-                            position: 'absolute',
-                            top: 0, // Align to top
-                            right: 0, // Align to right
-                            transform: 'translate(-50%, 50%)', // Adjust the position accordingly
-                            // Add any additional styles if necessary
-                        }}>
-                            <Icon icon='tabler:x' fontSize='1.25rem'
-                                  style={{ background: '#FF2968',
-                                      cursor: 'pointer',
-                                      width:'31px',
-                                      height: '33px',
-                                      borderRadius: '11px',
-                            }}
-                                  onClick={() => handleCloseClick(index)}/>
-                        </div>
-                    </div>
-                    </Grid>
-                ))}
-              </Grid>
+                <Grid container spacing={0}>
+                    {progressBars.map((bar, index) => (
+                        // eslint-disable-next-line react/jsx-key
+                        <Grid item xs={3}>
+                            <div
+                                key={index}
+                                className="relative" // This allows for absolute positioning of children
+                                style={{
+                                    width: '230px', // Set your desired width
+                                    // ... other styles, ensure position is not overridden
+                                }}
+                            >
+                                <ProgressBar
+                                    value={bar.value}
+                                    name={bar.title}
+                                    number={bar.number}
+                                    rotation={0.25}
+                                    color={bar.color}
+                                />
+                                {/* Position Icon with absolute positioning */}
+                                <div style={{
+                                    position: 'absolute',
+                                    top: 0, // Align to top
+                                    right: 0, // Align to right
+                                    transform: 'translate(-50%, 50%)', // Adjust the position accordingly
+                                    // Add any additional styles if necessary
+                                }}>
+                                    <Icon icon='tabler:x' fontSize='1.25rem'
+                                        style={{
+                                            background: '#FF2968',
+                                            cursor: 'pointer',
+                                            width: '31px',
+                                            height: '33px',
+                                            borderRadius: '11px',
+                                        }}
+                                        onClick={() => handleCloseClick(index)} />
+                                </div>
+                            </div>
+                        </Grid>
+                    ))}
+                </Grid>
 
             </div>
             <div className="flex flex-wrap items-center justify-center gap-10 flex-grow mb-7">
                 <Grid container spacing={0}>
-                {cards.map((card, index) => (
-                    // eslint-disable-next-line react/jsx-key
-                    <Grid item xs={3} style={{marginTop: '8px'}}>
-                    <div
-                        key={index}
-                        style={{
-                            width: '230px',
-                            height: '173px',
-                            borderRadius: '37px',
-                            background: card.clicked ? '#E5E5E5' : '#FFFFFF',
-                            pointerEvents: card.clicked ? 'none' : 'auto',
-                            opacity: card.clicked ? 0.5 : 1,
-                        }}
-                        className="max-w-xs w-full rounded-xl shadow-md p-6 cursor-pointer relative"
-                        onClick={() => handleCardClick(index)}
-                    >
-                        <h3 className="text-gray-900 text-xl font-medium mb-2">{card.title}</h3>
-                        <p className="text-gray-500 text-sm mb-3">Objectif</p>
-                        {!card.clicked ? (
-                            <input
-                                type="text"
-                                value={card.objective}
-                                onChange={(e) => handleObjectiveChange(e, index)}
-                                onClick={handleInputClick}
-                                className="text-lg font-semibold text-gray-900 bg-transparent border-none focus:outline-none"                            />
-                        ) : (
-                            <p className="text-lg font-semibold text-gray-900">{card.objective}</p>
-                        )}
-                    </div>
-                    </Grid>
-                ))}
+                    {cards.map((card, index) => (
+                        // eslint-disable-next-line react/jsx-key
+                        <Grid item xs={3} style={{ marginTop: '8px' }}>
+                            <div
+                                key={index}
+                                style={{
+                                    width: '230px',
+                                    height: '173px',
+                                    borderRadius: '37px',
+                                    background: card.clicked ? '#E5E5E5' : '#FFFFFF',
+                                    pointerEvents: card.clicked ? 'none' : 'auto',
+                                    opacity: card.clicked ? 0.5 : 1,
+                                }}
+                                className="max-w-xs w-full rounded-xl shadow-md p-6 cursor-pointer relative"
+                                onClick={() => handleCardClick(index)}
+                            >
+                                <h3 className="text-gray-900 text-xl font-medium mb-2">{card.title}</h3>
+                                <p className="text-gray-500 text-sm mb-3">Objectif</p>
+                                {!card.clicked ? (
+                                    <input
+                                        type="text"
+                                        value={card.objective}
+                                        onChange={(e) => handleObjectiveChange(e, index)}
+                                        onClick={handleInputClick}
+                                        className="text-lg font-semibold text-gray-900 bg-transparent border-none focus:outline-none" />
+                                ) : (
+                                    <p className="text-lg font-semibold text-gray-900">{card.objective}</p>
+                                )}
+                            </div>
+                        </Grid>
+                    ))}
                 </Grid>
             </div>
 
