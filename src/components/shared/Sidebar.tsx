@@ -221,10 +221,12 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
   useEffect(() => {
     const temp = getLocalStorage("user");
     const user = temp ? JSON.parse(temp) : null;
-    if (!user.subscription) {
+
+    // Utilisation de l'opérateur chaînage optionnel pour éviter l'erreur
+    if (!user?.subscription) {
       const filteredRoutes = sidebarItems.filter(route => {
-        return !proRoutes.includes(route.route)
-      })
+        return !proRoutes.includes(route.route);
+      });
       setSidebarItem(filteredRoutes)
       applyPermissions(filteredRoutes);
 

@@ -211,9 +211,13 @@ const Dashboard = () => {
     ];
 
     // CONVERSION DATA 
-    //TODO IMPORT TRUE DATA
 
-    const FakeConversionValue = 50; // TODO IMPORTE REAL ORDER COUNT
+    //TODO IMPORT TRUE DATA AND REMOVE FAKE VALUES
+    function genererValeurAleatoire() {
+        return Math.floor(Math.random() * 76);
+    }
+    // Exemple d'utilisation
+    const FakeConversionValue = genererValeurAleatoire();
     const FakeVisiteCount = 480; // TODO IMPORTE REAL ORDER COUNT
 
 
