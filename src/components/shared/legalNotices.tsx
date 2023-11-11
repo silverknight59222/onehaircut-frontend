@@ -66,8 +66,8 @@ const legalNoticesPage = () => {
           7. Conditions générales de ventes :</h1>
         <p className='pb-6'>
           Clients particuliers: <br />
-          L'accès au site est gratuite pour le client. Les frais de reservation s'élèvent à 5% du prix de la réservation pour la plateforme OneHairCut et 1% pour le moyen de paiement Stripe.
-          Le client n'est pas lié dans le temps à un contrat et peut demander la fermeture de son compte, si toutefois aucune réservation n'est présente à une date postérieur à la demande fermeture. La fermeture du compte se fait directement sur le site de la plateforme.<br />
+          L'accès au site est gratuit pour le client. Les frais de réservation s'élèvent à 5% du prix de la réservation pour la plateforme OneHairCut et 1% pour le moyen de paiement Stripe.
+          Le client n'est pas lié dans le temps à un contrat et peut demander la fermeture de son compte, si toutefois aucune réservation n'est présente à une date postérieure à la demande fermeture. La fermeture du compte se fait directement sur le site de la plateforme.<br />
           Le paiement se fait par le biais de la plateforme Stripe.<br />
           Concernant les garanties et responsabilités, voir le chapitre Responsabilités des conditions générales d'utilisation.<br />
           La plateforme OneHairCut ne dispose pas d'un contrat pour les clients. De ce fait, il n'y a pas de rétractation ni de durée de celle-ci.<br />
@@ -79,13 +79,14 @@ const legalNoticesPage = () => {
           - une offre à 79€, offrant l'accès à des données liées à l’exercice des prestations, ainsi qu'à une intelligence artificielle pour l'optimisation des services du professionnel.<br />
           - une offre à 0€, sans les avantages de la version payante ci-dessus.<br />
           Les rabais et réductions peuvent être appliqués sur les offres payantes pendant une période définie. Voir les détails lors de l'activation de celles-ci.<br />
-          Concernant le règlement des litiges, veuillez-vous référer au chapitre correspondant dans les conditions générales d'utilisation.
+          Concernant le règlement des litiges, veuillez vous référer au chapitre correspondant dans les conditions générales d'utilisation.
         </p>
 
         <h1 className={`my-3 ${Theme_A.textFont.headerH4}`}>
           Contact</h1>
         <p className='pb-6'>
           Afin de nous contacter, veuillez envoyer un email à contact@onehaircut.com ou par téléphone au xxxxxxxxxx   </p>
+
 
       </div>
 
