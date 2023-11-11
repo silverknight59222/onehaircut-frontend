@@ -212,13 +212,13 @@ const Dashboard = () => {
 
     // CONVERSION DATA 
     //TODO IMPORT TRUE DATA
-    const conversionData = [
-        { name: 'Commandes', value: 78, color: 'rgba(122, 191, 80, 1)' },
-        { name: 'Visites', value: 489, color: 'rgba(16, 161, 216, 1)' },
 
-    ];
+    const FakeConversionValue = 50; // TODO IMPORTE REAL ORDER COUNT
+    const FakeVisiteCount = 480; // TODO IMPORTE REAL ORDER COUNT
+
+
     // Calcul du pourcentage des commandes par rapport aux visites
-    const tauxDeConversion = Math.round((conversionData[0].value / conversionData[1].value) * 100);
+    const tauxDeConversion = Math.round(FakeConversionValue / FakeVisiteCount * 100);
     let indiceTauxConversion;
     let couleurTaux;
 
@@ -232,6 +232,31 @@ const Dashboard = () => {
         indiceTauxConversion = "Performant";
         couleurTaux = 'rgba(50, 151, 80, 1)';
     }
+
+    const getColorForValue = (value: any) => {
+        const seuilBas = 5;
+        const seuilMoyen = 10;
+
+        if (value < seuilBas) {
+            return 'rgba(255, 70, 70, 1)'; // Rouge
+        } else if (value >= seuilBas && value <= seuilMoyen) {
+            return 'rgba(255, 165, 0, 1)'; // Jaune
+        } else {
+            return 'rgba(50, 120, 80, 1)'; // Vert
+        }
+    };
+
+
+    const conversionData = [
+        { name: 'Commandes', value: FakeConversionValue, color: getColorForValue(tauxDeConversion) },
+        { name: 'Visites', value: FakeVisiteCount, color: "rgba(16, 161, 216, 1)" },
+    ];
+
+
+
+
+
+
 
     return (
         <div className="px-4 lg:px-6">

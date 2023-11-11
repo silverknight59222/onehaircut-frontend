@@ -25,9 +25,9 @@ export const Agenda = () => {
     { couleur: "#FAD4D9", textColor: "#EA4A5E" }, // rouge clair
     { couleur: "#CEE7FC", textColor: "#329BF2" }, // bleu ciel
     { couleur: "#FDE7D0", textColor: "#F4993A" }, // orange clair
-    { couleur: "#FFF9D7", textColor: "#E49544" }, // Jaune pâle
     { couleur: "#EA4361", textColor: "#FFFFFF" }, // rouge/rose intense
     { couleur: "#D8EAD2", textColor: "#4C9654" }, // Vert doux
+    { couleur: "#FFF9D7", textColor: "#E49544" }, // Jaune pâle
     { couleur: "#E3D7E6", textColor: "#8A5B8F" }, // Mauve doux
     { couleur: "#D9E2E9", textColor: "#53708E" }, // Bleu-gris doux
     { couleur: "#EBD5C0", textColor: "#B47D56" }, // Terre de sienne
@@ -70,24 +70,24 @@ export const Agenda = () => {
       .getBookingsByHairsalon(id)
       .then((res) => {
         res.data.data.forEach((event: any) => {
-          setEvents((pre) => [
-            ...pre,
-            {
-              id: event.id,
-              title: event.user.name + " - " + event.hair_dresser.name + " " +  "Duration " + event.total_duration + " Min",
-              hair_dresser_name: event.hair_dresser.name,
-              total_duration: event.total_duration,
-              booking: event,
-              clientId: event.user.id,
-              start: `${event.month_date}T${event.booking_slots[0].start}:00`,
-              end:`${event.month_date}T${event.booking_slots[event.booking_slots.length-1].end}:00`,
-              // start: `2023-10-16T10:00.000000Z`,
-              // end:`2023-10-16T11:30.000000Z`,
-              coiffeur: hairDresserColor[event.hair_dresser_id],
-              backgroundColor: hairDresserColor[event.hair_dresser_id].couleur,
-              textColor: hairDresserColor[event.hair_dresser_id].textColor,
-            },
-          ]);
+          if (event.booking_slots && event.booking_slots.length > 0) {
+            setEvents((pre) => [
+              ...pre,
+              {
+                id: event.id,
+                title: event.user.name + " par " + event.hair_dresser.name + " - " + "Durée : " + event.total_duration + " Min",
+                hair_dresser_name: event.hair_dresser.name,
+                total_duration: event.total_duration,
+                booking: event,
+                clientId: event.user.id,
+                start: `${event.month_date}T${event.booking_slots[0].start}:00`,
+                end: `${event.month_date}T${event.booking_slots[event.booking_slots.length - 1].end}:00`,
+                coiffeur: hairDresserColor[event.hair_dresser_id],
+                backgroundColor: hairDresserColor[event.hair_dresser_id].couleur,
+                textColor: hairDresserColor[event.hair_dresser_id].textColor,
+              },
+            ]);
+          }
         });
       })
       .finally(() => {
@@ -101,18 +101,26 @@ export const Agenda = () => {
     dashboard
       .getAllHairDressers(id)
       .then((res) => {
+        let couleurIndex = 0; // Index pour parcourir le tableau de couleurs
+
         res.data.data.forEach((hairDresser: any) => {
-          const coiffeurAleatoire = couleurs[Math.floor(Math.random() * couleurs.length)];
-          hairDresser.coiffeurAleatoire = coiffeurAleatoire
-          hairDresserColor[hairDresser.id] = coiffeurAleatoire
+          // Attribuer la couleur et le textColor du tableau couleurs
+          const couleurAttribuee = couleurs[couleurIndex];
+          hairDresser.coiffeurAleatoire = couleurAttribuee;
+          hairDresserColor[hairDresser.id] = couleurAttribuee;
+
+          // Incrémenter l'index et recommencer si nécessaire
+          couleurIndex = (couleurIndex + 1) % couleurs.length;
         });
-        setHairDressers(res.data.data)
+
+        setHairDressers(res.data.data);
         getAllBookings();
       })
       .finally(() => {
         setIsLoading(false);
       });
   };
+
 
   // Fonction pour définir les détails de l'événement sélectionné
   const setEventDetails = (id: string) => {
@@ -131,18 +139,17 @@ export const Agenda = () => {
   return (
     <>
       {isLoading && loadingView()} {/* Affichage du loader si le chargement est en cours */}
-      <FullCalendar // Affichage du calendrier
+      <FullCalendar
         ref={calendarRef}
-        events={events} // Liste des événements à afficher
-        plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]} // Plugins utilisés
-
+        events={events}
+        plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
         headerToolbar={{
           start: "prev,next today",
           center: "title",
-          end: "dayGridMonth,timeGridWeek,timeGridDay", // Boutons de navigation
+          end: "dayGridMonth,timeGridWeek,timeGridDay",
         }}
-        height={1200} // Hauteur du calendrier
-        eventClick={(info) => { // Gestionnaire de clic sur un événement
+        height={1200}
+        eventClick={(info) => {
           setEventDetails(info.event.id);
         }}
         dayHeaderFormat={{
@@ -151,7 +158,15 @@ export const Agenda = () => {
         }}
         editable
         selectable
+        slotLabelFormat={{
+          hour: '2-digit',
+          minute: '2-digit',
+          hour12: false // Cela indique d'utiliser le format 24 heures
+        }}
+        slotLabelInterval={{ hours: 2 }} // Ajouter ceci pour changer l'intervalle des étiquettes de temps
+
       />
+
       <Legend listeCoiffeurs={hairDressers} />
       {selectedEventDetails && (
         <div className="fixed top-0 left-0 overflow-hidden bg-black bg-opacity-10 flex items-center justify-center w-full h-full z-50">
