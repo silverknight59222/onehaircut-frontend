@@ -80,11 +80,11 @@ function StripePayment() {
       .then((res) => {
         showSnackbar("success", "Salon successfully created");
         router.push('/confirm-payment');
-        removeFromLocalStorage('user_Info')
-        removeFromLocalStorage('salon_name')
-        removeFromLocalStorage('salon_address')
-        removeFromLocalStorage('salon_type')
-        removeFromLocalStorage('plan_type')
+        // removeFromLocalStorage('user_Info')
+        // removeFromLocalStorage('salon_name')
+        // removeFromLocalStorage('salon_address')
+        // removeFromLocalStorage('salon_type')
+        // removeFromLocalStorage('plan_type')
         removeFromLocalStorage('secret_key')
       })
       .catch((err) => {
@@ -102,13 +102,13 @@ function StripePayment() {
     setIsLoading(true);
     const clientSecret = getLocalStorage("secret_key")?.toString();
     const cardElement = elements.getElement(CardElement);
-    if (clientSecret && cardElement) {
-      await stripe
+    if (clientSecret && cardElement) {      
+            await stripe
         .createPaymentMethod({
           type: "card",
           card: cardElement,
           billing_details: {
-            name: "Mohid khan",
+            name: userInfo.name,
           },
         })
         .then(function (result) {

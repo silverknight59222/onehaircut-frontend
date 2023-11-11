@@ -45,7 +45,7 @@ const Index = () => {
   const [duration, setDuration] = useState("")
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [mounted, setMounted] = useState(false);
-  const [stripePromise, setStripePromise] = useState<string>("pk_test_51IkzH1ExivflHCSmgQfNoQAWOnOcfKopp26Ct493No4QtWa8Cv6HEf9933YbMXcrs6wVR7YjWslQV58IikPujC5U006Imw8zpO");
+  const [stripePromise, setStripePromise] = useState<string>("pk_test_oJ8bpioO4rUJcgluj94WwEGl");
   const [serviceIds, setServiceIds] = useState<number[]>([])
   const items = [
     { name: "Salon", desc: "Le Bon Coiffeur" },
@@ -164,7 +164,7 @@ const Index = () => {
           // removeFromLocalStorage('selectedSalon')
           setLocalStorage("plan_type", haircutPrize)
           showSnackbar("success", 'Booking Created Successfully');
-          window.open("https://api.whatsapp.com/send?phone=" + userInfo.phone + "&text=Booking Success!", '_blank');
+          //window.open("https://api.whatsapp.com/send?phone=" + userInfo.phone + "&text=Booking Success!", '_blank');
           router.push('/confirm-payment')
         })
         .catch(err => console.log(err))
@@ -259,7 +259,7 @@ const Index = () => {
                 Modifier
               </button>
               <p className="text-5xl md:text-5xl text-black font-semibold">
-                €{salonData.final_price}
+                €{salonData?.final_price}
               </p>
             </div>
           </div>
