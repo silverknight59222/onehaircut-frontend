@@ -287,7 +287,7 @@ const AddServiceModal = (props: AddServiceModalType) => {
         <div className="relative flex items-center justify-center pb-5">
           <input
             type="text"
-            className="max-w-[300px] text-sm py-2 px-4 mt-4 outline-none rounded-full bg-white border border-[#EDEDED] shadow-inner"
+            className="max-w-[300px] text-sm py-2 px-4 mt-4 outline-none rounded-full bg-white border border-[#EDEDED] shadow-inner focus:outline-2 focus:outline-stone-500"
             placeholder="Nom du service"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -302,8 +302,8 @@ const AddServiceModal = (props: AddServiceModalType) => {
           <div
             className={
               typeFilters.length > 0
-                ? "flex gap-4 rounded-full bg-stone-800 border border-[#EDEDED] p-1 text-sm text-white"
-                : "flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 text-sm text-[#737373]"
+                ? "flex gap-4 rounded-full bg-stone-800 border border-[#EDEDED] p-1 text-sm text-white "
+                : "flex gap-4 rounded-full bg-white border border-[#EDEDED] p-1 hover:bg-stone-200 text-sm text-[#737373]"
             }
           >
             <div className="px-4 cursor-pointer">Type</div>
