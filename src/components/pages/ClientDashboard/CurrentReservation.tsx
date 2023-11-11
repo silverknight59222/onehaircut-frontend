@@ -9,7 +9,12 @@ import React, { useEffect, useState, useRef } from "react";
 import { client } from "@/api/clientSide";
 import BaseModal from "@/components/UI/BaseModal";
 
+interface selectedSalonInterface {
+    name: string, id: number
+}
+
 const Currentreservation = () => {
+
 
     // FOR CHAT MODAL 
     // Créez un état pour suivre si le Chat modal est ouvert ou fermé
@@ -131,6 +136,12 @@ const Currentreservation = () => {
         compareDates();
     }, [itemToCancel, cancelAccepted])
 
+    // function to cancel the booking
+    const onConfirm = () => {
+        // TODO add Backend
+        setIsModalCancel(false); // start modal
+    }
+
     // function to display the modal when the reservation wants to be canceled
     const modifReservation: React.JSX.Element =
         <div>
@@ -141,9 +152,8 @@ const Currentreservation = () => {
                     // Cancellation possible
                     <div>
                         <p className="text-md font-medium text-red-700 text-center">
-                            Êtes-vous sûr de vouloir annuler la reservation du {itemToCancel.redable_date}?</p>
-                        <p className="text-md font-normal text-black text-center py-3">
-                            Vous serez alors redirigé vers la page de réservation.</p>
+                            Êtes-vous sûr de vouloir annuler la reservation du </p>
+                        <p className="text-md font-medium text-black text-center">{itemToCancel.redable_date} ?</p>
                     </div>}
                 {!cancelAccepted &&
                     // Cancellation denied
@@ -160,7 +170,7 @@ const Currentreservation = () => {
 
 
             </div>
-            <div className="mt-4 flex gap-4 items-center justify-center w-full">
+            <div className="mt-6 flex gap-4 items-center justify-center w-full">
                 <button
                     className={`${Theme_A.button.medWhiteColoredButton}`}
                     onClick={() => setIsModalCancel(false)}
@@ -169,7 +179,7 @@ const Currentreservation = () => {
                 </button>
                 {cancelAccepted && <button
                     className={`${Theme_A.button.medBlackColoredButton}`}
-                // onClick={() => onSubmitCancellation()}
+                    onClick={onConfirm}
                 >
                     Confirmer l'annulation
                 </button>}
@@ -277,7 +287,7 @@ const Currentreservation = () => {
 
                                 </div>
                                 {!item.salon_haircut && <div className='flex mt-10 items-center justify-center '>
-                                    <p className='text-[#AA4A44] font-bold text-center sm:text-start'>Salon o longer provides selected haircut</p>
+                                    <p className='text-[#AA4A44] font-bold text-center sm:text-start'>Le salon ne propose plus cette coupe</p>
                                 </div>}
                                 <div
                                     className='flex mt-10 items-center justify-center cursor-pointer '
