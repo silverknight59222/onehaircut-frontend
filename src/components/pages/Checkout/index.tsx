@@ -14,7 +14,7 @@ import UserProfile from "@/components/UI/UserProfile";
 
 const Step5 = () => {
   const router = useRouter();
-  const [stripePromise, setStripePromise] = useState<string>("pk_test_51IkzH1ExivflHCSmgQfNoQAWOnOcfKopp26Ct493No4QtWa8Cv6HEf9933YbMXcrs6wVR7YjWslQV58IikPujC5U006Imw8zpO");  
+  const [stripePromise, setStripePromise] = useState<string>("pk_test_51OBGjoAHQOXKizcuQiaNTSGNA6lftEd3lekpQDN7DGGpx4lQGttBHwI62qzZiq85lelN91uyppVeLUsnC5WfmSZQ00LuhmW4QA");  
   const [mounted, setMounted] = useState(false);
   const salonAddress = JSON.parse(getLocalStorage("salon_address") as string)
   const planType = JSON.parse(getLocalStorage("plan_type") as string);
