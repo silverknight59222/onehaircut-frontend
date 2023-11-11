@@ -134,7 +134,7 @@ const Registration = () => {
             <img
               width={840}
               height={420}
-              src="/assets/registration_people.png"
+              src="/assets/registration_people2.png"
               alt=""
               className="mt-7 w-3/4 lg:w-3/4 xl:w-3/4 rounded-2xl shadow-sm"
             />
@@ -208,10 +208,9 @@ const Registration = () => {
           </div>
         </div>
       </div>
-      <img
-        src="/assets/registration_bg_bottom.png"
-        className="absolute -bottom-24 -z-20"
-      />
+      <div className="absolute -bottom-24 -z-20 w-full h-60 bg-gradient-to-b from-white via-rose-50 to-rose-200">
+
+      </div>
     </div>
   );
 };
