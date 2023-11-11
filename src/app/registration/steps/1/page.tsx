@@ -72,7 +72,6 @@ const Step1 = () => {
               onChange={(e) => setSalonName(e.target.value)}
               value={salonName}
               maxLength={50}
-              // className="border border-secondary rounded-xl w-80 sm:w-[500px] mt-7 py-4 px-6 md:px-10 outline-none"
               className="text-black placeholder-gray-600 w-80 sm:w-[500px] mt-7 px-6 md:px-10 py-4 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
             />
           </div>

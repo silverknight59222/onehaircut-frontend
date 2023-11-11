@@ -10,17 +10,18 @@ import {
   GoogleMap,
   Marker,
 } from '@react-google-maps/api'
+import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 
-interface Address{
-    country?: string,
-    state?: string,
-    city?: string,
-    lat: number,
-    long: number,
-    zone: number
+interface Address {
+  country?: string,
+  state?: string,
+  city?: string,
+  lat: number,
+  long: number,
+  zone: number
 }
 const Step2 = () => {
-  const [location, setLocation] = useState({lat: 48.8584, lng: 2.2945});
+  const [location, setLocation] = useState({ lat: 48.8584, lng: 2.2945 });
   const [address, setAddress] = useState<Address>({
     country: "",
     state: "",
@@ -29,7 +30,7 @@ const Step2 = () => {
     long: 0,
     zone: 0
   });
-  const [zone,setZone]=useState(25)
+  const [zone, setZone] = useState(10)
 
   const { loadingView } = userLoader();
   const route = useRouter();
@@ -38,47 +39,60 @@ const Step2 = () => {
     libraries: ['places'],
   })
 
-if (!isLoaded) {
-   loadingView()
-   return
-}
+  if (!isLoaded) {
+    loadingView()
+    return
+  }
 
-const onClickNext = () => {
-  setLocalStorage('salon_address', JSON.stringify(address));
-  route.push("/registration/steps/3");
-}
-const onPlaceSelected=(place: any)=>{
-  let data={
-    lat: place.geometry?.location?.lat(),
-    long: place.geometry?.location?.lng(),
-    zone: zone
+  const onClickNext = () => {
+    setLocalStorage('salon_address', JSON.stringify(address));
+    route.push("/registration/steps/3");
   }
-  for(let i=0; i<place?.address_components.length; i++){
-    if(place?.address_components[i].types[0]==='locality'){
-      Object.assign(data, {city: place?.address_components[i].long_name})
+
+  const onPlaceSelected = (place: any) => {
+    // Check if the variable is defined before using it
+    if (place !== undefined && place.address_components !== undefined) {
+      let data = {
+        lat: place?.geometry?.location?.lat(),
+        long: place?.geometry?.location?.lng(),
+        zone: zone
+      }
+
+      for (let i = 0; i < place?.address_components.length; i++) {
+        if (place?.address_components[i].types[0] === 'locality') {
+          Object.assign(data, { city: place?.address_components[i].long_name })
+        }
+        if (place?.address_components[i].types[0] === 'country') {
+          Object.assign(data, { country: place?.address_components[i].long_name })
+        }
+        if (place?.address_components[i].types[0] === 'administrative_area_level_1') {
+          Object.assign(data, { state: place?.address_components[i].long_name })
+        }
+      }
+      setAddress(data)
+      setLocation({ lat: place.geometry?.location?.lat() ? place.geometry?.location?.lat() : 0, lng: place.geometry?.location?.lng() ? place.geometry?.location?.lng() : 0 })
     }
-    if(place?.address_components[i].types[0]==='country'){
-      Object.assign(data, {country: place?.address_components[i].long_name})
-    }
-    if(place?.address_components[i].types[0]==='administrative_area_level_1'){
-      Object.assign(data, {state: place?.address_components[i].long_name})
+    // if place is undefined, reset location
+    else {
+      console.log("Place not defined")
+      setAddress({ country: "", state: "", city: "", lat: 0, long: 0, zone: 0 });
+      setLocation({ lat: 48.8584, lng: 2.2945 });
     }
   }
-  setAddress(data)
-  setLocation({lat: place.geometry?.location?.lat() ? place.geometry?.location?.lat() : 0, lng: place.geometry?.location?.lng() ? place.geometry?.location?.lng() : 0})
-}
-const zoneHandler=(operation: string)=>{
-  let temp
-  if(operation==='add'){
-    temp=zone+1
-  }else{
-    temp=zone-1
+
+  const zoneHandler = (operation: string) => {
+    let temp
+    if (operation === 'add') {
+      temp = zone + 1
+    } else {
+      temp = zone - 1
+    }
+    setZone(temp)
+    setAddress({
+      ...address,
+      zone: temp
+    })
   }
-  setZone(temp)
-  setAddress({...address,
-    zone: temp
-  })
-}
   return (
     <div>
       <div className="flex items-center justify-center border-b border-[#EBF0F2] mt-5 pb-3">
@@ -94,20 +108,20 @@ const zoneHandler=(operation: string)=>{
             <Autocomplete
               className="border"
               apiKey={"AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E"}
-              style={{ width: "384px", borderRadius: '12px', marginTop:'28px', padding:'16px 24px', outline: 'none',  }}
-              onPlaceSelected={(place)=>onPlaceSelected(place)}
-            /> 
+              style={{ width: "384px", borderRadius: '12px', marginTop: '28px', padding: '16px 24px', outline: 'none', }}
+              onPlaceSelected={(place) => onPlaceSelected(place)}
+            />
             <div className="mt-5 md:mt-0">
               <p className="text-black mb-1">Zone de mobilité</p>
               <div className="flex items-center justify-center gap-7">
-                <div className="w-[85px] h-9 flex items-center justify-center text-black border border-black shadow-[0px_4px_4px_0px_rgba(172,172,172,0.25)]">
+                <div className="w-[85px] h-9 flex items-center justify-center text-black border border-black rounded-lg shadow-lg">
                   {zone} KM
                 </div>
-                <div className="flex items-center justify-center py-1 rounded-md bg-gradient-to-r from-pink-500 to-orange-500 shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]">
-                  <div onClick={()=>zoneHandler('minus')} className="border-r border-white px-4 py-3 cursor-pointer">
+                <div className={`flex items-center justify-center py-1 rounded-md ${ColorsThemeA.OhcGradient_A} shadow-lg`}>
+                  <div onClick={() => zoneHandler('minus')} className="border-r border-white px-4 py-3 cursor-pointer transform hover:scale-110 transition-transform">
                     <MinusIcon />
                   </div>
-                  <div onClick={()=>zoneHandler('add')} className="py-1 px-4 cursor-pointer">
+                  <div onClick={() => zoneHandler('add')} className="py-1 px-4 cursor-pointer transform hover:scale-110 transition-transform">
                     <AddIcon />
                   </div>
                 </div>
@@ -116,21 +130,22 @@ const zoneHandler=(operation: string)=>{
           </div>
           <div className="w-full h-96 my-12">
             <GoogleMap center={location} zoom={10} mapContainerStyle={{ width: '100%', height: '100%' }}>
-              <Marker position={location}/>
+              <Marker position={location} />
             </GoogleMap>
           </div>
           <div className="w-full flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-7 mb-5">
             <button
               onClick={() => route.push("/registration/steps/1")}
-              className="border border-secondary w-96 sm:w-64 h-14 rounded-xl text-secondary font-semibold text-xl"
+              // className="border border-secondary w-96 sm:w-64 h-14 rounded-xl text-secondary font-normal text-lg"
+              className={`${Theme_A.button.bigWhiteColoredButton}`}
             >
               Etape précédente
             </button>
             <button
-              onClick={() => {onClickNext()}}
+              onClick={() => { onClickNext() }}
               disabled={!address.country}
-              className={`text-white font-medium text-xl rounded-xl w-96 sm:w-64 h-14 shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)] ${!address.country ? 'bg-[#D9D9D9]' : 'bg-background-gradient '}`}
-            >
+              // className={`text-white font-medium text-xl rounded-xl w-96 sm:w-64 h-14 shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)] ${!address.country ? 'bg-[#D9D9D9]' : 'bg-background-gradient '}`}
+              className={`${address.country ? Theme_A.button.bigGradientButton : Theme_A.button.bigWhiteGreyButton} `}>
               Continuons !
             </button>
           </div>
