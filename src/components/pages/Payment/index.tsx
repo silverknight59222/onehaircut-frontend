@@ -225,6 +225,7 @@ const Index = () => {
 
     return newTimeString;
   }
+  
   return (
     <div>
       {isLoading && loadingView()}
@@ -259,7 +260,7 @@ const Index = () => {
                 Modifier
               </button>
               <p className="text-5xl md:text-5xl text-black font-semibold">
-                €{salonData.final_price}
+                €{salonData?.final_price}
               </p>
             </div>
           </div>

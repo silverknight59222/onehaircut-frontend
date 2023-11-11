@@ -25,6 +25,7 @@ const Step5 = () => {
   const options = {
     clientSecret: getLocalStorage("secret_key")?.toString()
   };
+  
   return (
     <div>
       <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 -z-10">
