@@ -4,6 +4,10 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { RegistrationCheckedIcon } from "@/components/utilis/Icons";
 import { setLocalStorage } from "@/api/storage";
+import { Theme_A } from "@/components/utilis/Themes";
+
+
+
 const Step1 = () => {
   const route = useRouter();
   const [selectedType, setSelectedType] = useState("Barber Shop");
@@ -46,7 +50,7 @@ const Step1 = () => {
       salonType = "independent_woman_mobile_hairdresser";
     } else if (selectedType === "Coiffeur Independant") {
       salonType = "independent_man_mobile_hairdresser";
-    } 
+    }
     setLocalStorage('salon_type', salonType);
     setLocalStorage('salon_name', salonName);
     route.push("/registration/steps/2")
@@ -60,21 +64,24 @@ const Step1 = () => {
         <p className="text-black font-semibold text-3xl md:text-4xl xl:text-5xl text-center">
           Quel type de salon souhaites-tu enregistrer ?{" "}
         </p>
-        <div className="flex items-center lg:items-baseline justify-center gap-1 lg:gap-48 flex-col lg:flex-row">
+        <div className="flex items-center lg:items-baseline justify-center gap-1 lg:gap-24 flex-col lg:flex-row">
           <div>
             <input
               placeholder="Nom du salon"
-              onChange={(e)=>setSalonName(e.target.value)}
+              type="text"
+              onChange={(e) => setSalonName(e.target.value)}
               value={salonName}
-              className="border border-secondary rounded-xl w-80 sm:w-[500px] mt-7 py-4 px-6 md:px-10 outline-none"
+              maxLength={50}
+              // className="border border-secondary rounded-xl w-80 sm:w-[500px] mt-7 py-4 px-6 md:px-10 outline-none"
+              className="text-black placeholder-gray-600 w-80 sm:w-[500px] mt-7 px-6 md:px-10 py-4 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
             />
           </div>
           <div className="flex items-center justify-end mb-5 mt-10 w-full sm:w-auto">
             <button
               onClick={() => onClickNext()}
               disabled={selectedType && salonName ? false : true}
-              className={`w-full sm:w-56 h-14 text-white text-xl font-semibold rounded-xl shadow-[0px_17px_36px_0px_rgba(255,125,60,0.25)] ${selectedType && salonName ? 'bg-background-gradient' : 'bg-[#D9D9D9]'}`}
-            >
+              className={`${selectedType && salonName ? Theme_A.button.bigGradientButton : Theme_A.button.bigWhiteGreyButton} `}>
+
               Continuons !
             </button>
           </div>
@@ -86,11 +93,10 @@ const Step1 = () => {
                 <div
                   key={index}
                   className={`relative flex flex-col items-center justify-center cursor-pointer
-                  ${
-                    item.name === selectedType
+                  ${item.name === selectedType
                       ? "border-4 border-secondary rounded-2xl"
-                      : "border-4 border-white rounded-xl"
-                  }`}
+                      : "border-2 border-stone-100 rounded-xl"
+                    }`}
                   onClick={() => setSelectedType(item.name)}
                 >
                   <img

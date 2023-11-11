@@ -8,9 +8,10 @@ import {
 } from "@/components/utilis/Icons";
 import { useRouter } from "next/navigation";
 import React from "react";
+import { Theme_A } from '@/components/utilis/Themes';
 
 const Steps = () => {
-  const route=useRouter()
+  const route = useRouter()
   const steps = [
     { name: "Choisi ton type de salon", icon: <RoomTypeIcon /> },
     { name: "Informe ta zone de travail", icon: <LocationIcon /> },
@@ -60,7 +61,7 @@ const Steps = () => {
         </div>
       </div>
       <div className="flex items-center justify-center mb-5">
-        <button onClick={()=>route.push('/registration/steps/1')} className="w-52 h-14 text-white text-xl font-semibold rounded-xl bg-background-gradient shadow-[0px_17px_36px_0px_rgba(255,125,60,0.25)]">
+        <button onClick={() => route.push('/registration/steps/1')} className={`${Theme_A.button.bigGradientButton}`}>
           Allons-y!
         </button>
       </div>
