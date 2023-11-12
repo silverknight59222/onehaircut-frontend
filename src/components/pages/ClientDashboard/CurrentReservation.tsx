@@ -84,7 +84,6 @@ const Currentreservation = () => {
     const [isModalCancel, setIsModalCancel] = useState(false);
     const [itemToCancel, setItemToCancel] = useState({});
     const [currentTime, setCurrentTime] = useState<Date | null>(null);
-
     const [cancelAccepted, setCancelAccepted] = useState(false);
 
     // function to update the time every seconds
@@ -98,11 +97,8 @@ const Currentreservation = () => {
 
     // function when pressing on the cancel button
     const startCancel = (reservation: any) => {
-        console.log(reservation.date)
         setItemToCancel(reservation); // save up the reservation to cancel
         setIsModalCancel(true); // start modal
-        console.log(itemToCancel.date)
-        // calculate the time difference
         compareDates();
     };
 
@@ -142,19 +138,47 @@ const Currentreservation = () => {
         setIsModalCancel(false); // start modal
     }
 
+
+    function formaterDate(dateString: string) {
+        const options: Intl.DateTimeFormatOptions = {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: 'numeric',
+            minute: 'numeric',
+            hour12: false
+        };
+
+        const date = new Date(dateString);
+        const formattedDate = new Intl.DateTimeFormat('fr-FR', options).format(date);
+
+        // Insérer " à " avant l'heure
+        const parts = formattedDate.split(', ');
+        if (parts.length > 1) {
+            return `${parts[0]} à ${parts[1].replace(':', 'h')}`;
+        } else {
+            return formattedDate;
+        }
+    }
+
+
+
     // function to display the modal when the reservation wants to be canceled
     const modifReservation: React.JSX.Element =
         <div>
             <div className="flex flex-col items-center justify-center gap-4">
-                <p className="text-xl font-semibold text-black text-center">Annulation de la réservation</p>
+                <p className="text-2xl font-semibold text-black text-center mb-6">Annulation de la réservation</p>
                 {/* check if cancellation was accepted */}
                 {cancelAccepted &&
-                    // Cancellation possible
                     <div>
-                        <p className="text-md font-medium text-red-700 text-center">
+                        <p className="text-md font-medium text-red-600 text-center">
                             Êtes-vous sûr de vouloir annuler la reservation du </p>
-                        <p className="text-md font-medium text-black text-center">{itemToCancel.redable_date} ?</p>
-                    </div>}
+                        <p className="text-md font-medium text-black text-center">
+                            {formaterDate(itemToCancel.redable_date)} ?
+                        </p>
+                    </div>
+                }
                 {!cancelAccepted &&
                     // Cancellation denied
                     <div className="text-stone-800 font-normal italic text-sm text-center my-2">
@@ -170,7 +194,7 @@ const Currentreservation = () => {
 
 
             </div>
-            <div className="mt-6 flex gap-4 items-center justify-center w-full">
+            <div className="mt-12 flex gap-4 items-center justify-center w-full ">
                 <button
                     className={`${Theme_A.button.medWhiteColoredButton}`}
                     onClick={() => setIsModalCancel(false)}
@@ -287,7 +311,7 @@ const Currentreservation = () => {
 
                                 </div>
                                 {!item.salon_haircut && <div className='flex mt-10 items-center justify-center '>
-                                    <p className='text-[#AA4A44] font-bold text-center sm:text-start'>Le salon ne propose plus cette coupe</p>
+                                    <p className='text-[#e05a51] font-bold text-center sm:text-start'>Le salon ne propose plus cette coupe</p>
                                 </div>}
                                 <div
                                     className='flex mt-10 items-center justify-center cursor-pointer '
