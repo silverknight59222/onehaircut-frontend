@@ -15,6 +15,7 @@ import { BackArrow } from "@/components/utilis/Icons";
 import { Theme_A, ColorsThemeA } from "@/components/utilis/Themes";
 import Footer from "@/components/UI/Footer";
 import { LogoCircleFixRight } from "@/components/utilis/Icons";
+import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 
 const BookSalon = () => {
   const [selectedImage, setSelectedImage] = useState("");
@@ -216,32 +217,37 @@ const BookSalon = () => {
             </p>
           )}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-1 2xl:gap-6 mt-4 ">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-1 2xl:gap-6 mt-4">
             {hairDressers.map((hairdresser, index) => {
               return (
                 <div
                   key={index}
                   onClick={() => setSelectedHairdresser({ name: hairdresser.name, id: hairdresser.id })}
-                  className={`flex flex-col items-center justify-center p-4 border rounded-2xl cursor-pointer hover:border-stone-400 bg-stone-50 shadow-sm shadow-stone-500 ${selectedHairdresser.id === hairdresser.id
-                    ? "border-stone-500"
-                    : "border-white"
-                    }`}
+                  className={`relative flex flex-col items-center justify-center p-4 border rounded-2xl cursor-pointer hover:border-stone-400 bg-stone-50 shadow-sm shadow-stone-500 ${selectedHairdresser.id === hairdresser.id ? "border-2 border-x-red-500 border-y-orange-500" : "border-white"}`}
                 >
-                  {/* Ajoutez une taille minimale ici pour le conteneur de l'image */}
                   <div className="relative w-32 h-32 mb-2" style={{ minWidth: '128px', minHeight: '128px' }}>
                     <Image
                       src={hairdresser.profile_image ? (hairdresser.profile_image.includes('http') ? hairdresser.profile_image : 'https://api.onehaircut.com/' + hairdresser.profile_image) : `https://api.onehaircut.com/avatars/man/man_01.jpg`}
                       alt={`Coiffeur ${hairdresser.name}`}
                       layout="fill"
-                      // Assurez-vous que l'image couvre l'espace disponible sans la déformer.
                       className="rounded-xl shadow-inner object-cover"
                     />
                   </div>
                   <p className="mt-2 text-center text-sm font-semibold text-black">{hairdresser.name}</p>
+                  {/* Élément de cercle conditionnel */}
+                  {selectedHairdresser.id === hairdresser.id && (
+                    <div className="absolute bottom-0 translate-y-1/2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
+                      <span className="text-white font-bold justify-center items-center">
+                        <CheckOutlinedIcon style={{ width: '15px', height: '15px' }} />
+                      </span>
+                    </div>
+                  )}
+
                 </div>
               );
             })}
           </div>
+
 
         </div>
 
