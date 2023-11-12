@@ -368,7 +368,7 @@ const Account = () => {
         setError((prev) => {
             return { ...prev, text: "" };
         });
-    showSnackbar("success", "Adresse mise à jour avec succès.");
+        showSnackbar("success", "Adresse mise à jour avec succès.");
         setIsModalAdd(false);
         fetchUserInfo();
         // setShowItem(informations);
@@ -380,80 +380,80 @@ const Account = () => {
         <div>
             <BaseModal close={() => setIsModalAdd(false)} width="w-[600px]">
                 <div>
-                <p className="text-xl font-semibold text-black text-center mb-4">Modification de l'adresse</p>
+                    <p className="text-xl font-semibold text-black text-center mb-4">Modification de l'adresse</p>
 
-                <div className="flex flex-col items-start justify-start gap-4">
+                    <div className="flex flex-col items-start justify-start gap-4">
 
-                    <div>
-                        <Autocomplete
-                            className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
-                            apiKey='AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E'
-                            onPlaceSelected={(place) => {
-                                setAddressData(place)
-                            }}                            
-                            options={{
-                                types: ["geocode"],
-                                fields: [
-                                    'address_components',
-                                    'geometry.location'
-                                ]
-                            }}                            
-                            placeholder="Address"
-                            defaultValue={street}
-                        />
-                        <div className="flex">
-                            <div className="flex-grow w-1/4 pr-2">
-                                <input
-                                    placeholder="Code Postal"
-                                    type="text"
-                                    value={postalCode}
-                                    onChange={(e) => setPostalCode(e.target.value)}
-                                    maxLength={50}
-                                    className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
-                                />
-                                <input
-                                    placeholder="État"
-                                    type="text"
-                                    value={state}
-                                    onChange={(e) => setState(e.target.value)}
-                                    maxLength={50}
-                                    className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
-                                />
-                            </div>
-                            <div className="flex-grow">
-                                <input
-                                    placeholder="Ville"
-                                    type="text"
-                                    className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
-                                    value={city}
-                                    onChange={(e) => setCity(e.target.value)}
-                                />
-                                <input
-                                    placeholder="Pays"
-                                    type="text"
-                                    value={country}
-                                    onChange={(e) => setCountry(e.target.value)}
-                                    maxLength={50}
-                                    className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
-                                />
+                        <div>
+                            <Autocomplete
+                                className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+                                apiKey='AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E'
+                                onPlaceSelected={(place) => {
+                                    setAddressData(place)
+                                }}
+                                options={{
+                                    types: ["geocode"],
+                                    fields: [
+                                        'address_components',
+                                        'geometry.location'
+                                    ]
+                                }}
+                                placeholder="Address"
+                                defaultValue={street}
+                            />
+                            <div className="flex">
+                                <div className="flex-grow w-1/4 pr-2">
+                                    <input
+                                        placeholder="Code Postal"
+                                        type="text"
+                                        value={postalCode}
+                                        onChange={(e) => setPostalCode(e.target.value)}
+                                        maxLength={50}
+                                        className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+                                    />
+                                    <input
+                                        placeholder="État"
+                                        type="text"
+                                        value={state}
+                                        onChange={(e) => setState(e.target.value)}
+                                        maxLength={50}
+                                        className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+                                    />
+                                </div>
+                                <div className="flex-grow">
+                                    <input
+                                        placeholder="Ville"
+                                        type="text"
+                                        className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+                                        value={city}
+                                        onChange={(e) => setCity(e.target.value)}
+                                    />
+                                    <input
+                                        placeholder="Pays"
+                                        type="text"
+                                        value={country}
+                                        onChange={(e) => setCountry(e.target.value)}
+                                        maxLength={50}
+                                        className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+                                    />
+                                </div>
                             </div>
                         </div>
+                        <div className="flex gap-4 items-center justify-center w-full">
+                            <button
+                                className={`${Theme_A.button.medWhiteColoredButton}`}
+                                onClick={() => setIsModalAdd(false)}
+                            >
+                                Annuler
+                            </button>
+                            <button
+                                className={`${Theme_A.button.mediumGradientButton}`}
+                                onClick={() => onSubmitAddress()}
+                            >
+                                Actualiser
+                            </button>
+                        </div>
                     </div>
-                    <div className="flex gap-4 items-center justify-center w-full">
-                        <button
-                            className={`${Theme_A.button.medWhiteColoredButton}`}
-                            onClick={() => setIsModalAdd(false)}
-                        >
-                            Annuler
-                        </button>
-                        <button
-                            className={`${Theme_A.button.mediumGradientButton}`}
-                            onClick={() => onSubmitAddress()}
-                        >
-                            Actualiser
-                        </button>
-                    </div>
-                </div>
                 </div>
             </BaseModal>
 
@@ -888,7 +888,7 @@ const Account = () => {
         setShowItem(informations);
     }
 
-    const setUserInfo = async (data) => {
+    const setUserInfo = async (data: any) => {
 
         // to update informations description which is displayed
         informations[0].desc = data.name;
