@@ -9,7 +9,7 @@ import { Theme_A } from "@/components/utilis/Themes";
 
 const Index = () => {
   const router = useRouter();
-  const userInfo = JSON.parse(getLocalStorage("user_Info") as string);
+  const userInfo = getLocalStorage("user_Info") ? JSON.parse(getLocalStorage('user_info') as string) : "";
   const salonName = getLocalStorage("salon_name") as string;
 
   const salon = getLocalStorage("selectedSalon") ? JSON.parse(getLocalStorage("selectedSalon") as string) : ""  
@@ -26,6 +26,7 @@ const Index = () => {
     { name: "Adresse du salon", desc: `${salon?.address?.city}, ${salon?.address?.state}, ${salon?.address?.country}` },
     { name: "Type de salon", desc: salon?.type?.replace("_", " ") }
   ];
+  
   return (
     <div>
       <div
