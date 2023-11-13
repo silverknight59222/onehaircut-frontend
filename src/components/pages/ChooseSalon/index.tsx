@@ -18,6 +18,7 @@ import Footer from '@/components/UI/Footer';
 import MapIcon from "@/components/utilis/Icons";
 import { MapIconRed } from '@/components/utilis/Icons';
 import ReactDOMServer from 'react-dom/server';
+import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 
 // TODO IMPORT TO USE ADRESSES 
 //import axios from 'axios'; 
@@ -281,7 +282,7 @@ const SalonChoice = () => {
             {/* <Navbar isSalonPage={true} /> */}
             <Navbar
                 isSalonPage={true}
-                onCitySearch={(value: string) =>  {
+                onCitySearch={(value: string) => {
                     setCitySearch((pre) => {
                         if (value != pre) {
                             return value
@@ -417,6 +418,15 @@ const SalonChoice = () => {
                                     className={`relative bg-stone-100 rounded-2xl border hover:border-stone-400 cursor-pointer ${selectedSalon.id === salon.id && 'border-2 border-red-300 shadow-xl'}`}
                                     style={{ width: '100%', aspectRatio: '1/1', display: 'flex', flexDirection: 'column', minWidth: '200px', maxWidth: '450px', minHeight: '200px', maxHeight: '420px' }}
                                 >
+                                    {selectedSalon.id === salon.id && (
+                                        <div className="absolute bottom-0 translate-y-1/2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
+                                            <span className="text-white font-bold justify-center items-center">
+                                                <CheckOutlinedIcon style={{ width: '15px', height: '15px' }} />
+                                            </span>
+                                        </div>
+                                    )}
+
+
                                     {/* Contenu de la vignette */}
                                     <div className="flex flex-col p-4 shadow-md rounded-2xl " style={{ flexGrow: 1 }}>
 
@@ -428,7 +438,7 @@ const SalonChoice = () => {
                                                         stroke={wishlist.includes(String(salon.id)) ? "#FFFFFF" : ""} />
                                                 </div>}
                                             <Image
-                                                src={salon.salon_cover_image ? `https://api.onehaircut.com${salon.salon_cover_image.image}` :  `https://api.onehaircut.com${salon.logo}`}
+                                                src={salon.salon_cover_image ? `https://api.onehaircut.com${salon.salon_cover_image.image}` : `https://api.onehaircut.com${salon.logo}`}
                                                 fill={true}
                                                 alt="image"
                                                 style={{ objectFit: 'cover', height: '100%', width: '100%', display: 'block' }}
