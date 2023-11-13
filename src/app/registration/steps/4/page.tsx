@@ -8,8 +8,9 @@ import {
 } from "@/components/utilis/Icons";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import { setLocalStorage } from "@/api/storage";
+import { getLocalStorage, setLocalStorage } from "@/api/storage";
 import UserProfile from "@/components/UI/UserProfile";
+import { Theme_A } from "@/components/utilis/Themes";
 interface PlanDetails {
   plan_id: string;
   name: string;
@@ -32,13 +33,14 @@ const Step4 = () => {
   const [plans, setPlans] = useState<PlanDetails[]>(defaultPlan);
 
   const onClickNext = () => {
-    if(selectedBox === 0) {
+    if (selectedBox === 0) {
       setLocalStorage('plan_type', JSON.stringify(plans[1]));
     } else {
       setLocalStorage('plan_type', JSON.stringify(plans[2]));
     }
     route.push("/registration/steps/5");
   }
+
   useEffect(() => {
     setIsLoading(true);
     registration
@@ -48,15 +50,17 @@ const Step4 = () => {
       })
       .finally(() => setIsLoading(false));
   }, []);
+
+
   return (
     <div>
       {isLoading && loadingView()}
       <div className="flex flex-col md:flex-row items-center justify-center border-b border-[#EBF0F2] pb-4">
         <div className="absolute top-1 left-0 md:left-auto flex items-center justify-start sm:justify-center gap-5 px-4 sm:px-14 py-5">
-          <div onClick={()=>route.push('/')} className='relative z-30 cursor-pointer'><LogoIcon /></div>
+          <div onClick={() => route.push('/')} className='relative z-30 cursor-pointer'><LogoIcon /></div>
         </div>
         <div className="relative z-20 md:z-40 w-full flex items-center justify-end gap-4 px-4 sm:px-14 mt-6">
-          <UserProfile/>
+          <UserProfile />
         </div>
       </div>
       <div className="flex flex-col items-center justify-center px-5">
@@ -69,9 +73,9 @@ const Step4 = () => {
               Votre abonnement :{" "}
               <span className="font-semibold">OneHaircut Pro</span>{" "}
             </p>
-            <button className="flex items-center justify-center font-semibold text-2xl w-52 h-16 border border-white rounded-xl">
+            {/* <button className="flex items-center justify-center font-semibold text-lg w-32 h-10 border border-white rounded-xl">
               Modifier
-            </button>
+            </button> */}
           </div>
           <div className="flex flex-col items-center justify-center px-5 sm:px-0 lg:px-10">
             <p className="text-black text-center mt-6 mb-4">
@@ -80,18 +84,12 @@ const Step4 = () => {
             <div className="flex flex-col lg:flex-row mt-5 lg:mt-0 items-center justify-center gap-8 mb-14">
               <div
                 onClick={() => setSelectedBox(0)}
-                className={`relative pb-6 flex flex-col items-start justify-center bg-white px-7 border-2 rounded-2xl cursor-pointer ${
-                  selectedBox === 0 ? "border-secondary" : "border-[DBDBDB]"
-                }`}
+                className={`relative pb-6 flex flex-col items-start justify-center bg-white px-7 border-2 rounded-2xl cursor-pointer ${selectedBox === 0 ? "border-secondary" : "border-[DBDBDB]"
+                  }`}
               >
                 {selectedBox === 0 && (
                   <div className="absolute top-0 right-0">
                     <SelectedPaymentIcon />
-                  </div>
-                )}
-                {selectedBox === 0 && (
-                  <div className="absolute top-2 right-2">
-                    <StarIcon />
                   </div>
                 )}
                 <div className="flex flex-col sm:flex-row items-start justify-center gap-3 sm:gap-10 text-black mt-10 mb-2">
@@ -99,30 +97,23 @@ const Step4 = () => {
                     <p className="font-semibold text-xl">{plans.length > 1 && plans[1].name}</p>
                     <p>{plans.length > 1 && plans[1].description}</p>
                   </div>
-                  <p className="text-2xl font-semibold">{plans.length > 1 && plans[1].price}$/mois</p>
+                  <p className="text-2xl font-semibold">{plans.length > 1 && plans[1].price}€/mois</p>
                 </div>
                 <div
-                  className={`w-6 h-6 rounded-full  ${
-                    selectedBox === 0
-                      ? "border-[5px] border-[#537EED]"
-                      : "border-[3px] border-[#C5C5C5]"
-                  }`}
+                  className={`w-6 h-6 rounded-full ${selectedBox === 0
+                    ? "border-[5px] border-[#537EED]"
+                    : "border-[3px] border-[#C5C5C5]"
+                    }`}
                 />
               </div>
               <div
                 onClick={() => setSelectedBox(1)}
-                className={`relative flex flex-col items-start justify-center bg-white px-7 border-2 rounded-2xl cursor-pointer pb-6 ${
-                  selectedBox === 1 ? "border-secondary" : "border-[DBDBDB]"
-                }`}
+                className={`relative flex flex-col items-start justify-center bg-white px-7 border-2 rounded-2xl cursor-pointer pb-6 ${selectedBox === 1 ? "border-secondary" : "border-[DBDBDB]"
+                  }`}
               >
                 {selectedBox === 1 && (
                   <div className="absolute top-0 right-0">
                     <SelectedPaymentIcon />
-                  </div>
-                )}
-                {selectedBox === 1 && (
-                  <div className="absolute top-2 right-2">
-                    <StarIcon />
                   </div>
                 )}
                 <div className="flex flex-col sm:flex-row items-start justify-center gap-3 sm:gap-10 text-black mt-10 mb-2">
@@ -130,23 +121,28 @@ const Step4 = () => {
                     <p className="font-semibold text-xl">{plans.length > 1 && plans[2].name}</p>
                     <p>{plans.length > 1 && plans[2].description}</p>
                   </div>
-                  <p className="text-2xl font-semibold">{plans.length > 1 && plans[2].price}$/mois</p>
+                  <p className="text-2xl font-semibold">{plans.length > 1 && plans[2].price}€/an</p>
                 </div>
                 <div
-                  className={`w-6 h-6 rounded-full  ${
-                    selectedBox === 1
-                      ? "border-[5px] border-[#537EED]"
-                      : "border-[3px] border-[#C5C5C5]"
-                  }`}
+                  className={`w-6 h-6 rounded-full  ${selectedBox === 1
+                    ? "border-[5px] border-[#537EED]"
+                    : "border-[3px] border-[#C5C5C5]"
+                    }`}
                 />
               </div>
             </div>
           </div>
         </div>
-        <div className="w-full flex items-center justify-center mb-5">
+        <div className="w-full flex items-center justify-center mb-5 gap-4">
+          <button
+            onClick={() => route.push("/registration/steps/3")}
+            className={`${Theme_A.button.bigWhiteColoredButton}`}
+          >
+            Etape précédente
+          </button>
           <button
             onClick={() => onClickNext()}
-            className="w-56 h-14 text-white text-xl font-semibold rounded-xl bg-background-gradient shadow-[0px_17px_36px_0px_rgba(255,125,60,0.25)]"
+            className={`${Theme_A.button.bigGradientButton}`}
           >
             Vers le paiement
           </button>
