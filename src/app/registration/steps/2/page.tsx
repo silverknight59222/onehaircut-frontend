@@ -144,8 +144,9 @@ const Step2 = () => {
             <button
               onClick={() => { onClickNext() }}
               disabled={!address.country}
+              aria-label="123"
               // className={`text-white font-medium text-xl rounded-xl w-96 sm:w-64 h-14 shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)] ${!address.country ? 'bg-[#D9D9D9]' : 'bg-background-gradient '}`}
-              className={`${address.country ? Theme_A.button.bigGradientButton : Theme_A.button.bigWhiteGreyButton} `}>
+              className={`${address.country ? Theme_A.button.bigGradientButton : Theme_A.button.bigWhiteGreyButton} cursor-auto} `}>
               Continuons !
             </button>
           </div>
