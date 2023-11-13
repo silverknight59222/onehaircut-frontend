@@ -172,9 +172,9 @@ const Currentreservation = () => {
                 {/* check if cancellation was accepted */}
                 {cancelAccepted &&
                     <div>
-                        <p className="text-md font-medium text-red-600 text-center">
+                        <p className="text-sm font-medium text-red-600 text-center">
                             Êtes-vous sûr de vouloir annuler la reservation du </p>
-                        <p className="text-md font-medium text-red-600 text-center">
+                        <p className="text-sm font-medium text-red-600 text-center">
                             {formaterDate(itemToCancel.redable_date)} ?
                         </p>
                     </div>
