@@ -27,7 +27,7 @@ const DatePicker = ({ close, onSelectedDate, startDate }: DatePickerProps) => {
 
   const handleDateSelect = (date: Date | undefined) => {
     if (date) {
-      setSelectedDate(date); // Met à jour la date sélectionnée
+      setSelectedDate(date); // Met à jour la date sélectionnée 
       onSelectedDate(date);  // Notifie le composant parent de la nouvelle date sélectionnée
       close();               // Ferme le DatePicker
     }
