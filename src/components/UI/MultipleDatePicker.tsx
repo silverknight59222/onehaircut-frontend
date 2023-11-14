@@ -3,6 +3,8 @@ import "react-day-picker/dist/style.css";
 import { addDays, format } from 'date-fns';
 import { DateRange, DayPicker } from 'react-day-picker';
 import { useState } from "react";
+import { fr } from 'date-fns/locale';
+
 
 interface DatePickerProps {
     close: () => void;
@@ -30,38 +32,72 @@ const MultipleDatePicker = ({ close, onSelect, selectedDates }: DatePickerProps)
         from: pastMonth,
         to: addDays(pastMonth, 4)
     };
-    const [range, setRange] = useState<DateRange | undefined>(defaultSelected);
+    const [range, setRange] = useState<DateRange | undefined>({ from: undefined, to: undefined });
 
+    const handleSelect = (range: DateRange | undefined) => {
+        setRange(range);
+        if (range?.from && range?.to) {
+            // Créez un tableau de toutes les dates entre 'range.from' et 'range.to'
+            const dates = [];
+            for (let d = range.from; d <= range.to; d = addDays(d, 1)) {
+                dates.push(d);
+            }
+            onSelect(dates);
+        }
+    };
 
+    const today = new Date();
+    const disabledDays = { before: today };
 
-    let footer = <p>Please pick the first day.</p>;
+    let footer;
     if (range?.from) {
+        const formattedFrom = format(range.from, 'PPP', { locale: fr });
         if (!range.to) {
-            footer = <p>{format(range.from, 'PPP')}</p>;
-        } else if (range.to) {
+            // Si seule la date de début est sélectionnée
             footer = (
-                <p>
-                    {format(range.from, 'PPP')}–{format(range.to, 'PPP')}
+                <p style={{ marginTop: '10px', fontStyle: 'italic', textAlign: 'center' }}>
+                    <strong>du</strong> {formattedFrom}<br /><strong>jusqu'au</strong> ?
+                </p>
+            );
+        } else {
+            // Si la date de fin est également sélectionnée
+            const formattedTo = format(range.to, 'PPP', { locale: fr });
+            footer = (
+                <p style={{ marginTop: '10px', fontStyle: 'italic', textAlign: 'center' }}>
+                    <strong>du :</strong> {formattedFrom}<br /><strong>jusqu'au :</strong> {formattedTo}
                 </p>
             );
         }
+    } else {
+        // Si aucune date n'est sélectionnée
+        footer = <p style={{ marginTop: '10px', fontStyle: 'italic', textAlign: 'center' }}>Selectionner une date.</p>;
     }
 
+
+
+
+
+
     return (
-        <div ref={calendarRef} className="absolute bg-white rounded-xl mt-1 shadow-md shadow-stone-500 z-50 p-5">
+        <div
+            ref={calendarRef}
+            className="absolute bg-white rounded-xl shadow-md shadow-stone-500 p-5 mt-4"
+            style={{ top: '100%', left: 0, zIndex: 1000 }} // Utilisez une valeur de z-index élevée
+        >
             <DayPicker
                 id="test"
                 mode="range"
                 defaultMonth={pastMonth}
                 selected={range}
                 footer={footer}
-                onSelect={setRange}
+                onSelect={handleSelect}
+                disabled={disabledDays}
                 modifiersStyles={{
-                    focus: { backgroundColor: 'orange' },
-                    selected: { backgroundColor: 'orange', color: 'white' },
+                    selected: { backgroundColor: '#F96E1F', color: 'white' },
                     today: { color: 'Black' },
                 }}
             />
+
         </div>
     );
 };
