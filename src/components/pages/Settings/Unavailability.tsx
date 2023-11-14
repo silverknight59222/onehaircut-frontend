@@ -63,10 +63,10 @@ const Unavailability = () => {
         }
     };
 
-    // ACTION SLORS DU CHOIX ENTRE ETABLISSEMENT ET PERSONNEL
+    // ACTION SLORS DU CHOIX ENTRE ETABLISSEMENT ET Coiffeurs
     const handleEntityClick = (role: string) => {
         setSelectedEntity(role);
-        if (role === "Personnel") {
+        if (role === "Coiffeurs") {
             setShowHairdresserDropdown(true);
             // Mettez à jour la classe CSS en fonction de la sélection
             setMainContainerClass("h-[900px]");
@@ -82,7 +82,7 @@ const Unavailability = () => {
     const HairdresserColumns = ['Date de début', 'Date de fin', 'Heure de début', 'Heure de fin', 'Raison', 'Actions'];
     const [unavailabilities, setUnavailabilities] = useState<UnavailabilityData[]>([]); // Déclaration de la variable unavailabilities
 
-    const columnsToDisplay = selectedEntity === "Personnel" ? HairdresserColumns : SalonColumns;
+    const columnsToDisplay = selectedEntity === "Coiffeurs" ? HairdresserColumns : SalonColumns;
 
     // Dans le rendu JSX, utilisez columnsToDisplay comme colonnes à afficher dans le composant CustomizedTable
     <CustomizedTable columns={columnsToDisplay} data={unavailabilities} />
@@ -142,7 +142,7 @@ const Unavailability = () => {
             }
 
 
-            {/* Etablissement / Personnel  */}
+            {/* Etablissement / Coiffeurs  */}
             <div className="flex justify-center items-center">
                 <button
                     className={`text-xl font-semibold focus:outline-none mr-32 p-2 rounded-md ${selectedEntity === "Etablissement"
@@ -154,13 +154,13 @@ const Unavailability = () => {
                     Etablissement
                 </button>
                 <button
-                    className={`text-xl font-semibold focus:outline-none p-2 rounded-md ${selectedEntity === "Personnel"
+                    className={`text-xl font-semibold focus:outline-none p-2 rounded-md ${selectedEntity === "Coiffeurs"
                         ? "bg-stone-700 text-white "
                         : "bg-white text-stone-800 hover:bg-stone-200"
                         }`}
-                    onClick={() => handleEntityClick("Personnel")} // Passer "Personnel" en tant que chaîne de caractères
+                    onClick={() => handleEntityClick("Coiffeurs")} // Passer "Coiffeurs" en tant que chaîne de caractères
                 >
-                    Personnel
+                    Coiffeurs
                 </button>
             </div>
 
@@ -168,7 +168,7 @@ const Unavailability = () => {
             {/* Séparation */}
             <hr className=" mx-16 border-gray-300 h-4 mt-4 mb-4" />
 
-            {/* SELECTION DU COIFFEUR SI "PERSONNEL" EST SELECTIONNE */}
+            {/* SELECTION DU COIFFEUR SI "Coiffeurs" EST SELECTIONNE */}
             {showHairdresserDropdown && (
                 // Contenu de la dropdown à afficher
                 <>
