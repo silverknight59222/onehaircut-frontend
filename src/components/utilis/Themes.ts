@@ -60,6 +60,7 @@ export const Theme_A = {
     medBlackColoredButton: `text-white font-medium text-md rounded-md px-4 py-2 bg-black border border-x-red-500 border-y-orange-500 transform hover:scale-105 transition-transform hover:shadow-md cursor-pointer`,
     smallBlackColoredButton: `text-white font-medium text-sm rounded-md px-1 bg-black border border-x-red-500 border-y-orange-500 transform hover:scale-105 transition-transform hover:shadow-md cursor-pointer`,
     medWhiteColoredButton: `text-black font-medium text-md rounded-md px-4 py-2 bg-white border border-x-red-500 border-y-orange-500 transform hover:scale-105 transition-transform hover:shadow-md cursor-pointer`,
+    medGreyColoredButton: `text-sm text-stone-600 font-medium text-md rounded-md px-4 py-2 bg-stone-200 border border-slate-300 transform cursor-not-allowed`,
     medStripeButton: `text-white font-medium text-md rounded-md px-4 py-2 bg-indigo-500 border border-indigo-300 transform hover:scale-105 transition duration-300 hover:shadow-md cursor-pointer`,
     medGreydButton: `flex items-center justify-center bg-white text-stone-400 font-medium text-sm border border-stone-200  rounded-md transform hover:scale-90 transition-transform hover:shadow-inner`,
     mediumGradientButton: `text-white font-medium text-md rounded-md px-4 py-2 ${ColorsThemeA.OhcGradient_A} transform hover:scale-105 transition-transform hover:shadow-[0px_7px_12px_0px_rgba(255,125,60,0.25)] cursor-pointer`,
