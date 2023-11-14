@@ -12,25 +12,29 @@ import {
 } from '@react-google-maps/api'
 import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 
-interface Address {
-  country?: string,
+interface Address_int {
+  country: string,
   state?: string,
-  city?: string,
+  city: string,
+  street: string,
+  number: string,
   lat: number,
   long: number,
   zone: number
 }
 const Step2 = () => {
+
+  const [street, setStreet] = useState("");
+  const [streetNumber, setStreetNumber] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [city, setCity] = useState("");
+  const [state, setState] = useState("");
+  const [country, setCountry] = useState("");
+
   const [location, setLocation] = useState({ lat: 48.8584, lng: 2.2945 });
-  const [address, setAddress] = useState<Address>({
-    country: "",
-    state: "",
-    city: "",
-    lat: 0,
-    long: 0,
-    zone: 0
-  });
+
   const [zone, setZone] = useState(10)
+  const [zoomMap, setZoomMap] = useState(10)
 
   const { loadingView } = userLoader();
   const route = useRouter();
@@ -45,40 +49,68 @@ const Step2 = () => {
   }
 
   const onClickNext = () => {
-    setLocalStorage('salon_address', JSON.stringify(address));
+    let toSave: Address_int = {
+      country: country,
+      street: street,
+      city: city,
+      number: streetNumber,
+      lat: location.lat,
+      long: location.lng,
+      zone: zone,
+    };
+
+    setLocalStorage('salon_address', JSON.stringify(toSave));
     route.push("/registration/steps/3");
   }
 
-  const onPlaceSelected = (place: any) => {
+
+  const setAddressData = (place: any,) => {
+    setStreet("")
+    setCity("")
+    setState("")
+    setCountry("")
+    setPostalCode("")
+
+    console.log(place);
+
     // Check if the variable is defined before using it
     if (place !== undefined && place.address_components !== undefined) {
-      let data = {
-        lat: place?.geometry?.location?.lat(),
-        long: place?.geometry?.location?.lng(),
-        zone: zone
+
+      console.log("place is defined");
+
+      for (let i = 0; i < place.address_components.length; i++) {
+        if (place.address_components[i].types[0] === 'street_number') {
+          setStreetNumber(place?.address_components[i].long_name);
+        }
+        else if (place?.address_components[i].types[0] === 'route') {
+          setStreet(place?.address_components[i].long_name);
+        }
+        else if (place?.address_components[i].types[0] === 'locality') {
+          setCity(place?.address_components[i].long_name);
+        }
+        else if (place?.address_components[i].types[0] === 'country') {
+          setCountry(place?.address_components[i].long_name);
+        }
+        else if (place?.address_components[i].types[0] === 'postal_code') {
+          setPostalCode(place?.address_components[i].long_name);
+        }
       }
 
-      for (let i = 0; i < place?.address_components.length; i++) {
-        if (place?.address_components[i].types[0] === 'locality') {
-          Object.assign(data, { city: place?.address_components[i].long_name })
-        }
-        if (place?.address_components[i].types[0] === 'country') {
-          Object.assign(data, { country: place?.address_components[i].long_name })
-        }
-        if (place?.address_components[i].types[0] === 'administrative_area_level_1') {
-          Object.assign(data, { state: place?.address_components[i].long_name })
-        }
-      }
-      setAddress(data)
-      setLocation({ lat: place.geometry?.location?.lat() ? place.geometry?.location?.lat() : 0, lng: place.geometry?.location?.lng() ? place.geometry?.location?.lng() : 0 })
+      setLocation({ lat: place.geometry.location.lat(), lng: place.geometry?.location?.lng() });
+      setZoomMap(15);
     }
     // if place is undefined, reset location
     else {
       console.log("Place not defined")
-      setAddress({ country: "", state: "", city: "", lat: 0, long: 0, zone: 0 });
       setLocation({ lat: 48.8584, lng: 2.2945 });
+      setZoomMap(10) // default zoom
     }
   }
+
+
+  // useEffect(() => {
+  //   console.log(location)
+  // }, [location])
 
   const zoneHandler = (operation: string) => {
     let temp
@@ -88,11 +120,10 @@ const Step2 = () => {
       temp = zone - 1
     }
     setZone(temp)
-    setAddress({
-      ...address,
-      zone: temp
-    })
   }
+
+
+
   return (
     <div>
       <div className="flex items-center justify-center border-b border-[#EBF0F2] mt-5 pb-3">
@@ -106,11 +137,20 @@ const Step2 = () => {
         <div className="w-[600px] md:w-[800px] xl:w-[1050px] flex flex-col items-center justify-center mt-5 sm:mt-7">
           <div className="w-full flex flex-col md:flex-row items-center justify-between">
             <Autocomplete
-              className="border"
+              className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
               apiKey={"AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E"}
-              style={{ width: "384px", borderRadius: '12px', marginTop: '28px', padding: '16px 24px', outline: 'none', }}
-              onPlaceSelected={(place) => onPlaceSelected(place)}
+              style={{ width: "450px", borderRadius: '12px', marginTop: '28px', padding: '16px 24px', outline: 'none', }}
+              onPlaceSelected={(place) => setAddressData(place)}
+              placeholder="Adresse"
+              options={{
+                types: ["geocode"],
+                fields: [
+                  'address_components',
+                  'geometry.location'
+                ]
+              }}
             />
+
             <div className="mt-5 md:mt-0">
               <p className="text-black mb-1">Zone de mobilité</p>
               <div className="flex items-center justify-center gap-7">
@@ -129,24 +169,25 @@ const Step2 = () => {
             </div>
           </div>
           <div className="w-full h-96 my-12">
-            <GoogleMap center={location} zoom={10} mapContainerStyle={{ width: '100%', height: '100%' }}>
-              <Marker position={location} />
+            <GoogleMap
+              center={location}
+              zoom={zoomMap}
+              mapContainerStyle={{ width: '100%', height: '100%' }} >
+              <Marker position={location} visible={true} />
             </GoogleMap>
           </div>
           <div className="w-full flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-7 mb-5">
             <button
               onClick={() => route.push("/registration/steps/1")}
-              // className="border border-secondary w-96 sm:w-64 h-14 rounded-xl text-secondary font-normal text-lg"
               className={`${Theme_A.button.bigWhiteColoredButton}`}
             >
               Etape précédente
             </button>
             <button
               onClick={() => { onClickNext() }}
-              disabled={!address.country}
+              disabled={!city && !street && !streetNumber}
               aria-label="123"
-              // className={`text-white font-medium text-xl rounded-xl w-96 sm:w-64 h-14 shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)] ${!address.country ? 'bg-[#D9D9D9]' : 'bg-background-gradient '}`}
-              className={`${address.country ? Theme_A.button.bigGradientButton : Theme_A.button.bigWhiteGreyButton} cursor-auto} `}>
+              className={`${streetNumber ? Theme_A.button.bigGradientButton : Theme_A.button.bigWhiteGreyButton} cursor-auto} `}>
               Continuons !
             </button>
           </div>
