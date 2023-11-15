@@ -11,6 +11,7 @@ import {
   HistoryIcon,
   LogoutIcon,
   CabineIcon,
+  ContactIcon,
 }
   from "../utilis/Icons";
 import { useRouter } from "next/navigation";
@@ -76,6 +77,11 @@ const UserProfile = ({ isDashboard }: UserProfileProfile) => {
       name: "Aide",
       icon: <HelpIcon width="20" height="20" color="#000000" />,
       route: "/client/help"
+    },
+    {
+      name: "Contactez-nous",
+      icon: <ContactIcon width="32" height="32" color="#000000" />,
+      route: "/client/contactUs"
     },
   ];
 

@@ -20,6 +20,7 @@ import {
   AddPlusIcon,
   CabineIcon,
   FilterIcon,
+  ContactIcon,
 } from "../utilis/Icons";
 import { SalonDetails } from "@/types";
 import { getLocalStorage, setLocalStorage } from "@/api/storage";
@@ -184,6 +185,11 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
       case "FilterIcon":
         Icon = (
           <FilterIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="28" height="28" />
+        );
+        break;
+      case "ContactIcon":
+        Icon = (
+          <ContactIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="30" height="30" />
         );
         break;
     }
