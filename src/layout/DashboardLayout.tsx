@@ -19,6 +19,7 @@ const DashboardLayout = ({ children }: DashboardLayout) => {
     { icon: "PersonalizationIcon", title: "Abonnement", route: "/dashboard/subscription" },
     // { icon: "BoostIcon", title: "Boost", route: "" },
     { icon: "BotIcon", title: "OnehairBot", route: "/dashboard/bot" },
+    { icon: "ContactIcon", title: "Contactez-nous", route: "/dashboard/contactUs" },
   ];
   const SidebarHandler = () => {
     setIsSidebar(!isSidebar);
