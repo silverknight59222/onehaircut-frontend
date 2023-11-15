@@ -149,7 +149,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
         break;
       case "BotIcon":
         Icon = (
-          <BotIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="24" height="24" />
+          <BotIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="28" height="28" />
         );
         break;
       case "StarGreyIcon":
@@ -189,7 +189,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
         break;
       case "ContactIcon":
         Icon = (
-          <ContactIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="30" height="30" />
+          <ContactIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="32" height="32" />
         );
         break;
     }
