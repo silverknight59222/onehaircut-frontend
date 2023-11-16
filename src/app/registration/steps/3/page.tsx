@@ -296,7 +296,7 @@ const Step3 = () => {
             onClick={() => onSubmit()}
             // disabled={!address.country}
             aria-label="Continue"
-            className={`${userDetails.email != '' && userDetails.name != '' && userDetails.password != '' && userDetails.phone != '' ? Theme_A.button.bigGradientButton : Theme_A.button.bigWhiteGreyButton} `}
+            className={`${userDetails.email != '' && userDetails.name != '' && userDetails.password != '' && userDetails.phone != '' ? Theme_A.button.bigGradientButton : Theme_A.button.bigGreyButton} `}
           >
             Continuons !
           </button>
