@@ -18,7 +18,12 @@ const SalonPicModal: FC<SalonPicModalProps> = ({
 }) => {
     const [thumbnailIndex, setThumbnailIndex] = useState(0);
     const [mainImageIndex, setMainImageIndex] = useState(0);
-
+    let fileteredShowCaseImages = [];
+    // Filtering image for hairstyle model
+    images.filter((image) => image.type == 'showcase').map((filteredElement, idx) => (
+        fileteredShowCaseImages.push(filteredElement)
+    ));
+    
     // Passer à la vignette suivante
     const nextThumbnail = () => {
         setThumbnailIndex((prev) => (prev + 4 < images.length ? prev + 1 : prev));
@@ -51,9 +56,9 @@ const SalonPicModal: FC<SalonPicModalProps> = ({
                             Elle est centrée et redimensionnée pour s'adapter au conteneur tout en conservant son aspect.
                             */}
                             <img
-                                src={images[mainImageIndex]?.image.includes('http')
-                                    ? images[mainImageIndex]?.image
-                                    : `https://api.onehaircut.com${images[mainImageIndex]?.image}`}
+                                src={(fileteredShowCaseImages[mainImageIndex]?.image.includes('http')
+                                    ? fileteredShowCaseImages[mainImageIndex]?.image
+                                    : `https://api.onehaircut.com${fileteredShowCaseImages[mainImageIndex]?.image}`)}
                                 alt="Image principale du salon"
                                 className="absolute top-0 bottom-0 left-0 right-0 m-auto object-contain max-h-full max-w-full"
                             />
@@ -90,12 +95,12 @@ const SalonPicModal: FC<SalonPicModalProps> = ({
                                     Mappe sur toutes les images disponibles et crée une vignette pour chacune.
                                     La vignette cliquée mettra à jour l'index de l'image principale.
                                 */}
-                                {images.map((img, idx) => (
+                                {fileteredShowCaseImages.map((img, idx) => (
                                     <img
                                         key={idx}
-                                        src={img.image.includes('http')
+                                        src={(img.image.includes('http')
                                             ? img.image
-                                            : `https://api.onehaircut.com${img.image}`}
+                                            : `https://api.onehaircut.com${img.image}`)}
                                         alt={`Thumbnail ${idx}`}
                                         className={`w-24 h-24 object-cover rounded-md cursor-pointer ${mainImageIndex === idx ? 'border-2 border-red-500' : ''}`}
                                         onClick={() => setMainImageIndex(idx)}
