@@ -299,18 +299,20 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
     }
   };
   const [image, setImage] = useState<string | null>(null);
+  const [localImageFile, setLocalImageFile] = useState(null);
   // Gestionnaire d'événements pour traiter le changement de fichier.
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     // Vérification pour s'assurer qu'un fichier a été sélectionné.
     if (event.target.files && event.target.files[0]) {
       const file = event.target.files[0];
-      // Utiliser FileReader pour convertir l'image en chaîne base64.
+      // Use FileReader to convert image to base64 string.
       const reader = new FileReader();
       reader.onloadend = () => {
         setImage(reader.result as string);
       };
-      // Commencer la lecture du fichier.
+      //Start playing the file.
       reader.readAsDataURL(file);
+      setLocalImageFile(file);
     }
   };
   const SetCurrentLogo = () => {
@@ -323,8 +325,12 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
     closeModal();
     SetCurrentLogo();
     SetCurrentDescription();
-    console.log(image, textDescription);
-    const response = await user_api.updateSaloonInformation({ 'description': textDescription, 'logo_base64': image });
+    const formData = new FormData();
+    formData.set("description",textDescription);
+    if (localImageFile) {
+      formData.set("logo", localImageFile);  
+    }
+    const response = await user_api.updateSaloonInformation(formData);
     setImageUrl(response.data.data.hair_salon.logo);
   };
 
@@ -394,9 +400,9 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
                           style={{ display: 'none' }}
                           accept="image/*"
                         />
-                        {image ? (
+                        {image || imageUrl ? (
                           <img
-                            src={image}
+                            src={image || imageUrl}
                             alt="Logo"
                             className="w-48 h-48 rounded-full shadow-md transform transition-transform duration-300 hover:scale-105 hover:shadow-lg cursor-pointer"
                             onClick={handleLogoClick}
