@@ -240,7 +240,7 @@ const Filters = () => {
                             })}
                         </div>
                         {selectedTab === 0 ?
-                            <div className="relative z-10 w-full lg:w-[630px] mt-5 md:mt-0 rounded-3xl bg-white py-6 px- sm:px-10 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)]">
+                            <div className="relative z-10 w-full lg:w-[630px] mt-5 md:mt-0 rounded-3xl bg-white py-6 px- sm:px-10 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)] h-screen">
 
                                 {/* Title of the Section "Coiffure" */}
                                 <p className="text-black text-lg mb-4 font-semibold">Coiffure</p>
@@ -251,13 +251,13 @@ const Filters = () => {
                                     {/* First Column */}
                                     <div className="flex flex-col items-center">
                                         {/* Dropdown for "cheveux actuelle" */}
-                                        <div className="flex items-center justify-center mb-2 mr-10"> {/* Increased horizontal spacing */}
+                                        <div className="flex items-center justify-center mb-2 mr-10 w-full"> {/* Increased horizontal spacing */}
                                             <p className="text-black text-sm mb-2 mr-10"></p>
                                             <DropdownMenu dropdownItems={WishLength.map((item) => item)} fctToCallOnClick={handleCurrentLength} selectId={currentLength} menuName="cheveux actuelle" />
                                         </div>
 
                                         {/* Dropdown for "Longueur recherchée" */}
-                                        <div className="flex items-center justify-center mb-2"> {/* Increased horizontal spacing */}
+                                        <div className="flex items-center justify-center mb-2 w-full"> {/* Increased horizontal spacing */}
                                             <DropdownMenu dropdownItems={WishLength.map((item) => item)} fctToCallOnClick={handleLengthSought} selectId={desiredLength} menuName="Longueur recherchée" />
                                         </div>
                                     </div>
@@ -265,7 +265,7 @@ const Filters = () => {
                                     {/* Second Column */}
                                     <div className="flex flex-col items-center">
                                         {/* Dropdown for "Tendance de la coiffure" */}
-                                        <div className="flex items-center justify-center mb-2"> {/* Increased horizontal spacing */}
+                                        <div className="flex items-center justify-center mb-2 w-full"> {/* Increased horizontal spacing */}
                                             <DropdownMenu dropdownItems={WishGender.map((item) => item)} fctToCallOnClick={handleWishGender} selectId={hairstyleTrend} menuName="Tendance de la coiffure" />
                                         </div>
 
