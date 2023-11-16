@@ -43,11 +43,7 @@ const ContactUs = () => {
 
     return (
         <div>
-            <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 -z-10 ">
-                <LogoCircleFixRight />
-            </div>
             <DashboardLayout>
-
                 {/* Main card (la vignette) */}
                 <div className="mt-14 mb-5 px-6 bg-white w-full lg:w-auto lg:max-w-4xl mx-auto p-6 rounded-xl shadow-lg relative" style={{ zIndex: 1 }}>
                     <div className="flex flex-col items-center justify-center mt-10 mb-5 px-6 sm:px-10 md:px-20">
@@ -124,7 +120,7 @@ const ContactUs = () => {
 
                                 {/* LogoCircleFixRight */}
                                 <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 -z-10 ">
-                                    <LogoCircleFixRight />
+
                                 </div>
                             </div>
 
@@ -132,9 +128,9 @@ const ContactUs = () => {
 
                     </div>
                 </div>
-
             </DashboardLayout>
             <Footer />
+            <LogoCircleFixRight />
 
         </div>
     )
