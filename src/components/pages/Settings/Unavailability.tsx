@@ -243,7 +243,7 @@ const Unavailability = () => {
             {/* BOUTON POUR AFFICHER LES PÉRIODES D'INDISPONIBILITÉ */}
             <div className="flex justify-center items-center mt-10 mb-4">
                 <button
-                    className={`${selectedDates.length > 0 ? Theme_A.button.medBlackColoredButton : Theme_A.button.medGreyColoredButton} ${selectedDates.length === 0 ? 'cursor-not-allowed' : ''}`}
+                    className={`${selectedDates.length > 0 ? Theme_A.button.medBlackColoredButton : `bg-gray-200 text-zinc-400 rounded-md cursor-not-allowed py-2 px-3  text-sm `} ${selectedDates.length === 0 ? 'cursor-not-allowed' : ''}`}
                     onClick={selectedDates.length > 0 ? handleSubmitClick : undefined}
                     disabled={selectedDates.length === 0}
                 >
