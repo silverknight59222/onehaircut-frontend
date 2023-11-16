@@ -79,7 +79,7 @@ function StripePayment() {
       .registerSalon(data)
       .then((res) => {
         showSnackbar("success", "Salon successfully created");
-        router.push('/confirm-payment');
+        router.push('/confirm-plan');
         // removeFromLocalStorage('user_Info')
         // removeFromLocalStorage('salon_name')
         // removeFromLocalStorage('salon_address')

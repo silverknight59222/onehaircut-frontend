@@ -7,9 +7,11 @@ import userLoader from "@/hooks/useLoader";
 import useSnackbar from "@/hooks/useSnackbar";
 import { getLocalStorage, setLocalStorage } from "@/api/storage";
 import UserProfile from "@/components/UI/UserProfile";
-import PhoneInput, { Value } from 'react-phone-number-input'
+import PhoneInput, { Value, isValidPhoneNumber } from 'react-phone-number-input'
 import { Theme_A } from "@/components/utilis/Themes";
 import CustomInput from "@/components/UI/CustomInput";
+import 'react-phone-number-input/style.css'
+
 
 const inputFieldsDesignNoW = `border-2 border-red-500 p-3 placeholder:text-[#959595] placeholder:text-base ${Theme_A.behaviour.fieldFocused_B}${Theme_A.fields.inputField}`
 
@@ -62,8 +64,29 @@ const Step3 = () => {
     }));
 
   }
+  
+  const setPhone = (value: string) => {
 
+    if (value && isValidPhoneNumber(value) === true) {
+      setError((prev) => {
+        return { ...prev, phone: "" };
+      });
+      setUserDetails((prevState) => ({
+        ...prevState,
+        phone: value,
+      }));
 
+    } else {
+      setError((prev) => {
+        return { ...prev, phone: "Entrer un numéro valide" };
+      });
+    }    
+    
+  }
+
+  const setFocus = () => {    
+    document.querySelector<HTMLInputElement>(`div[id=phone-custom]`)?.focus()
+  }
   const [showPassword, setShowPassword] = useState(false);
 
   const onChangePassword = (value: string) => {
@@ -86,7 +109,9 @@ const Step3 = () => {
     const phone = userDetails.phone
     let valid = false; // 
     // check first numbers
-    if (phone[0] != "0") { // doesn't start with 0
+    console.log(phone[0])
+    console.log(phone[1])
+    if (phone[0] != "+") { // doesn't start with 0
       setError((prev) => {
         return { ...prev, phone: "Entrer un numéro valide" };
       });
@@ -109,13 +134,14 @@ const Step3 = () => {
         valid = true;
       }
     } else {
+      console.log('yes international')
       // international number
       if (phone.length < 6) {
         // too short
         setError((prev) => {
           return { ...prev, phone: "Numéro trop court" };
         });
-      } else if (phone.length > 16) {
+      } else if (phone.length > 16) {        
         setError((prev) => {
           return { ...prev, phone: "Numéro trop long" };
         });
@@ -155,9 +181,9 @@ const Step3 = () => {
     }
 
     //check phone
-    if (!onPhoneCheck()) {
-      isValidated = false;
-    }
+    // if (!onPhoneCheck()) {
+    //   isValidated = false;
+    // }
 
     if (!userDetails.password) {
       setError((prev) => {
@@ -237,15 +263,24 @@ const Step3 = () => {
             )}
           </div>
           <div className="w-full">
-            <CustomInput
+
+          <PhoneInput
+            placeholder="Téléphone"
+            value={userDetails.phone}
+            tabindex="-1"
+            id="phone-custom"
+            className={`w-full h-[50px] mr-2 phone-custom ${Theme_A.fields.configurationField2} text-sm peer`}
+            onChange={setPhone}
+            onFocus={setFocus}
+            />
+            {/* <CustomInput
               type="text"
               value={userDetails.phone}
               onChange={(e) => {
                 const inputElement = e.target as HTMLInputElement;
                 const value = inputElement.value;
-                const sanitizedValue = value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
-                // inputElement.value = sanitizedValue;
-                console.log(sanitizedValue)
+                const sanitizedValue = value.replace(/[^+0-9]/g, ''); // Remove non-numeric characters
+                // inputElement.value = sanitizedValue;                
                 setUserDetails((prevState) => ({
                   ...prevState,
                   phone: sanitizedValue,
@@ -256,7 +291,7 @@ const Step3 = () => {
               }
               }
               id={"Phone"}
-              label={"Téléphone"} />
+              label={"Téléphone"} /> */}
 
             {error.phone && (
               <p className="text-xs text-red-700 ml-3 mt-1">{error.phone}*</p>

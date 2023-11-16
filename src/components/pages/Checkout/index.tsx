@@ -16,9 +16,9 @@ const Step5 = () => {
   const router = useRouter();
   const [stripePromise, setStripePromise] = useState<string>("pk_test_51OBGjoAHQOXKizcuQiaNTSGNA6lftEd3lekpQDN7DGGpx4lQGttBHwI62qzZiq85lelN91uyppVeLUsnC5WfmSZQ00LuhmW4QA");
   const [mounted, setMounted] = useState(false);
-  const salonAddress = JSON.parse(getLocalStorage("salon_address") as string)
-  const planType = JSON.parse(getLocalStorage("plan_type") as string);
-  const salonInfo = JSON.parse(getLocalStorage("salon_name") as string);
+  const salonAddress = getLocalStorage("salon_address") ? JSON.parse(getLocalStorage("salon_address") as string) : ""
+  const planType = getLocalStorage("plan_type") ? JSON.parse(getLocalStorage("plan_type") as string) : "";
+  const salonInfo = getLocalStorage("salon_name");
   useEffect(() => {
     setMounted(true)
   }, [])
