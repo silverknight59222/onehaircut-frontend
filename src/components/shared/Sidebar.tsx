@@ -278,7 +278,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
   const initialText = ""; // Ajoutez votre texte initial ici si nécessaire
   const [textDescription, setTextDescription] = useState<string>('');
   const [textLength, setTextLength] = useState<number>(0);
-  const [imageUrl, setImageUrl] = useState<string>("/assets/user_img.png");
+  const [imageUrl, setImageUrl] = useState<string>("");
 
   const handleTextChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
     setTextDescription(e.target.value);
@@ -325,9 +325,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
     SetCurrentDescription();
     console.log(image, textDescription);
     const response = await user_api.updateSaloonInformation({ 'description': textDescription, 'logo_base64': image });
-    console.log(response.data.data.hair_salon.logo);
     setImageUrl(response.data.data.hair_salon.logo);
-    // Ajoutez d'autres fonctions ici si nécessaire...
   };
 
   return (
