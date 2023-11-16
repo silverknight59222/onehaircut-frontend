@@ -315,7 +315,7 @@ const Hairdressers = () => {
       hair_salon_id: hairDresser.hair_salon_id,
       name: hairDresser.name,
       email: hairDresser.email,
-      role: hairDresser.role,
+      role: hairDresser.user ? hairDresser.user.role : "admin",
       password: hairDresser.password,
     }));
     setProfileImage(hairDresser.profile_image);
@@ -485,8 +485,8 @@ const Hairdressers = () => {
               defaultSelected={'admin'} // Pass the default value as a prop
             /> */}
             {/* <DropdownMenu dropdownItems={WishLength} fctToCallOnClick={onChangeRole} menuName="Role" /> */}
-
             <select
+              value={hairDresser.role}
               className={`w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md border border:stone-400 shadow-md  ${Theme_A.behaviour.fieldFocused_B}`}
               name="role" onChange={(e) => onChangeRole(e.target.value)}>
               <option value="admin">Admin</option>
