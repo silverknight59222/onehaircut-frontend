@@ -143,26 +143,26 @@ export const HairdresserSlots = () => {
   const setHairSalonSlotList = (data: SalonwithSlots[]) => {
     let hairSalon;
     if (data.length > 1) {
-        data.forEach((salon) => {
-            if (salon.is_primary) {
-                hairSalon = salon;
-            }
-        });
+      data.forEach((salon) => {
+        if (salon.is_primary) {
+          hairSalon = salon;
+        }
+      });
     } else {
-        hairSalon = data[0];
+      hairSalon = data[0];
     }
 
     if (hairSalon) {
-        let days = [];
-        hairSalon.openTimes.forEach(time => {
-          if (time.available) {
-            days.push(hoursList[time.day].title)
-          }
-        });
-        setWeekday(days)
-        setSalonSlots(hairSalon.openTimes);
+      let days = [];
+      hairSalon.openTimes.forEach(time => {
+        if (time.available) {
+          days.push(hoursList[time.day].title)
+        }
+      });
+      setWeekday(days)
+      setSalonSlots(hairSalon.openTimes);
     }
-};
+  };
 
   const getAllHairDresser = async () => {
     const user = getLocalStorage("user");
@@ -172,7 +172,7 @@ export const HairdresserSlots = () => {
       setIsLoading(true);
       await dashboard.getAllHairSalons(userId).then((resp) => {
         if (resp.data.data.length) {
-            setHairSalonSlotList(resp.data.data);
+          setHairSalonSlotList(resp.data.data);
         }
         setIsLoading(false);
       });
@@ -257,7 +257,7 @@ export const HairdresserSlots = () => {
         <div className="gap-7 w-full h-[700px] overflow-auto">
 
           {/* Bloc englobant pour les créneaux horaires des coiffeurs */}
-          <div className="block rounded-2xl border-2 border-gray-200 w-full h-full overflow-auto px-6 py-4">
+          <div className="block rounded-2xl border-2 border-gray-200 w-full h-full overflow-auto px-6 py-4 mb-4">
 
             {/* Première ligne : Section de sélection et boutons d'actions */}
             <div className="flex flex-col md:flex-row items-center justify-between my-2 w-full gap-3 mb-3">

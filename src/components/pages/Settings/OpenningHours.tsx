@@ -140,7 +140,7 @@ const OpenningHours = () => {
     return (
         <div>
             {isLoading && loadingView()}
-            <div className="flex items-center flex-col justify-center w-max">
+            <div className="flex items-center flex-col justify-center w-max mb-4">
                 {!isLoading && (
                     <div className="w-[580px] flex   text-center  md:px-1 lg:justify-center xl:justify-center py-6 mb-3 gap-8 rounded-2xl bg-white text-lg font-light shadow-lg">
                         <p

@@ -46,7 +46,7 @@ const PayementSettings = () => {
 
 
     return (
-        <div className={`w-[400px] h-max bg-white rounded-2xl py-4 shadow-lg`}>
+        <div className={`w-[400px] h-max bg-white rounded-2xl py-4 shadow-lg mb-4`}>
             {showPaymentModal &&
                 <BaseModal close={() => setShowPaymentModal(false)}>
                     {modifBankCard}

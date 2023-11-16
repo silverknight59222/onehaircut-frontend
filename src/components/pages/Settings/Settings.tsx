@@ -48,10 +48,10 @@ const Settings = () => {
         <LogoCircleFixRight />
       </div>
       <DashboardLayout>
-        <div className="flex gap-4">
+        <div className="flex gap-4 ">
           {/* DISPLAY SETTINGS MENU */}
           {!isLoading && (
-            <div className="max-w-[300px] h-max flex flex-col items-left justify-center text-center px-2 py-6 gap-8 rounded-2xl bg-white text- font-medium text-[#909090] shadow-md">
+            <div className="max-w-[300px]  h-max flex flex-col items-left justify-center text-center px-2 py-6 gap-8 rounded-2xl bg-white text- font-medium text-[#909090] shadow-md">
               {settingsMenu.map((item) => {
                 return (
                   <p

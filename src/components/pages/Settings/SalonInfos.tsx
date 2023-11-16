@@ -230,7 +230,7 @@ const SalonInfos = () => {
 
     return (
         // ...
-        <div className={`w-[500px] h-max bg-white rounded-2xl py-4 shadow-lg`}>
+        <div className={`w-[500px] h-max bg-white rounded-2xl py-4 shadow-lg mb-4`}>
             {isModal && (
                 <BaseModal close={() => setIsModal(false)} width="w-[600px]">
                     <div className="relative z-100">
