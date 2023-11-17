@@ -110,6 +110,7 @@ const UserProfile = ({ isDashboard }: UserProfileProfile) => {
       document.removeEventListener("click", closeSelectBox);
     };
   }, []);
+  
   return (
     <div ref={dropdownRef} className="relative">
       {isLoading && loadingView()}

@@ -193,6 +193,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
         );
         break;
     }
+    
     return Icon;
   };
 

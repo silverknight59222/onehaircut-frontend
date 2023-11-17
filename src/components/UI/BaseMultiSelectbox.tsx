@@ -31,6 +31,7 @@ const BaseMultiSelectbox = (props: BaseDropdown) => {
 
     useEffect(() => {
         document.addEventListener('click', closeSelectBox);
+        
         return () => {
             document.removeEventListener('click', closeSelectBox);
         };
@@ -38,7 +39,7 @@ const BaseMultiSelectbox = (props: BaseDropdown) => {
     useEffect(() => {
         if (props.getActiveFilters)
             props.getActiveFilters(selectedItems);
-    }, [selectedItems])
+    }, [props, selectedItems])
 
     return (
         <div ref={dropdownRef} className="relative w-52">

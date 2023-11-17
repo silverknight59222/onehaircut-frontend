@@ -1,4 +1,5 @@
 import { request } from "./Request";
+
 export interface ResponseType {
   message: string;
   status: number;

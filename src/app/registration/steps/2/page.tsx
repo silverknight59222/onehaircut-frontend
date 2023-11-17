@@ -45,6 +45,7 @@ const Step2 = () => {
 
   if (!isLoaded) {
     loadingView()
+    
     return
   }
 

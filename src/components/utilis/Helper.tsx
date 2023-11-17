@@ -4,6 +4,7 @@ import {
 } from "@/components/utilis/Icons";
 import { Theme_A } from './Themes';
 import ReactDOM from 'react-dom';
+
 // get the permission and apply permissions
 const applyPermissions = (menus: any) => {
     const temp = localStorage.getItem("user");
@@ -60,6 +61,7 @@ function ScrollToTopButton() {
 
     useEffect(() => {
         window.addEventListener('scroll', checkScrollTop);
+        
         return () => window.removeEventListener('scroll', checkScrollTop);
     }, []);
 

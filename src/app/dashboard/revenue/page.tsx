@@ -1,10 +1,11 @@
-import Revenue from '@/components/pages/dashboard/Revenue'
+// import Revenue from '@/components/pages/dashboard/Revenue'
 import React from 'react'
 
 const page = () => {
   return (
     <div>
-        <Revenue/>
+      Revenue Page
+        {/* <Revenue/> */}
     </div>
   )
 }

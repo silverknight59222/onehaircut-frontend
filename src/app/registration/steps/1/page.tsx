@@ -55,6 +55,7 @@ const Step1 = () => {
     setLocalStorage('salon_name', salonName);
     route.push("/registration/steps/2")
   }
+  
   return (
     <div className="px-7 mb-8">
       <div className="flex items-center justify-center border-b border-[#EBF0F2] mt-5 pb-3">
