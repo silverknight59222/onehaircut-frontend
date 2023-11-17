@@ -20,6 +20,7 @@ import PerfSampleModal from "./PerfSampleModal";
 import MapIcon from "@/components/utilis/Icons";
 import ReactDOMServer from 'react-dom/server';
 import { dashboard } from '@/api/dashboard';
+import { elements } from "chart.js";
 
 
 const temp = getLocalStorage("haircut")
@@ -155,9 +156,13 @@ const SearchSalon = () => {
   const mapIconUrl = `data:image/svg+xml;base64,${btoa(mapIconSvg)}`;
 
 
+  
+
+
   return (
     <div className="relative">
       {/* Affiche une vue de chargement pendant que les données sont récupérées */}
+   
       {isLoading && loadingView()}
 
       {/* Barre de navigation */}
@@ -184,6 +189,7 @@ const SearchSalon = () => {
             <PerfSampleModal
               isModalOpen={isPerfSampleModalOpen}
               closeModal={closePerfSampleModal}
+              images={salonProfile.salon_images}  // Passer les images au modal
             />
           )}
           {/* Affichez le Chat modal si `isChatModalOpen` est vrai */}
@@ -227,8 +233,8 @@ const SearchSalon = () => {
                     className="relative w-24 lg:w-32 2xl:w-36 h-24 lg:h-32 2xl:h-36 cursor-pointer overflow-hidden rounded-lg transform transition-all duration-300 group hover:scale-105 shadow-sm shadow-stone-600"
                   >
                     {/* TODO charger les images vitrines ici */}
-                    {salonProfile && <Image
-                      src={salonProfile.salon_images[0]?.image.includes('http') ? salonProfile.salon_images[0]?.image : `https://api.onehaircut.com${salonProfile.salon_images[0]?.image}`}
+                    {salonProfile && salonProfile.salon_images && <Image
+                      src={salonProfile.salon_images.filter((image)=>image.type == "showcase")[0]?.image.includes('http') ? salonProfile.salon_images.filter((image)=>image.type == "showcase")[0]?.image : `https://api.onehaircut.com${salonProfile.salon_images.filter((image)=>image.type == "showcase")[0]?.image}`}
                       alt="Image miniature gauche"
                       layout="fill"
                       objectFit="cover"
@@ -244,12 +250,12 @@ const SearchSalon = () => {
                 <div className="flex flex-col items-center">
                   {/* Miniature droite */}
                   <div
-                    onClick={openSalonPicModal}
+                    onClick={openPerfSampleModal}
                     className="relative w-24 lg:w-32 2xl:w-36 h-24 lg:h-32 2xl:h-36 cursor-pointer overflow-hidden rounded-lg transform transition-all duration-300 group hover:scale-105 shadow-sm shadow-stone-600"
                   >
                     {/* TODO charger les images vitrines ici */}
-                    {salonProfile && <Image
-                      src={salonProfile.salon_images[1]?.image.includes('http') ? salonProfile.salon_images[1]?.image : `https://api.onehaircut.com${salonProfile.salon_images[1]?.image}`}
+                    {salonProfile && salonProfile.salon_images && <Image
+                      src={salonProfile.salon_images.filter((image)=>image.type == "hairstyle")[0]?.image.includes('http') ? salonProfile.salon_images.filter((image)=>image.type == "hairstyle")[0]?.image : `https://api.onehaircut.com${salonProfile.salon_images.filter((image)=>image.type == "hairstyle")[0]?.image}`}
                       alt="Image miniature gauche"
                       layout="fill"
                       objectFit="cover"

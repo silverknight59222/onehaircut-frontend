@@ -1,6 +1,7 @@
 import { getLocalStorage } from "@/api/storage";
 import { useRouter } from "next/navigation";
 import { usePathname } from 'next/navigation'
+
 const isBrowser = () => typeof window !== "undefined";
 
 export const RouteGuard = ({ children }: any) => {

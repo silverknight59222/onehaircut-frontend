@@ -20,6 +20,7 @@ const useSnackbar = () => {
                 break;
         }
     };
+    
     return showSnackbar;
 };
 

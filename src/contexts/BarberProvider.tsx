@@ -17,6 +17,7 @@ const BarberProvider = ({ children }: any) => {
       role: '',
   }
   const [user, setUser] = useState<UserType>(defaultUser);
+  
   return (
     <BarberContext.Provider value={{ user, setUser }}>
       {children}

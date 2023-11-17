@@ -45,6 +45,7 @@ const Step2 = () => {
 
   if (!isLoaded) {
     loadingView()
+    
     return
   }
 
@@ -187,7 +188,7 @@ const Step2 = () => {
               onClick={() => { onClickNext() }}
               disabled={!city && !street && !streetNumber}
               aria-label="123"
-              className={`${streetNumber ? Theme_A.button.bigGradientButton : Theme_A.button.bigWhiteGreyButton} cursor-auto} `}>
+              className={`${streetNumber ? Theme_A.button.bigGradientButton : Theme_A.button.bigGreyButton} cursor-auto} `}>
               Continuons !
             </button>
           </div>

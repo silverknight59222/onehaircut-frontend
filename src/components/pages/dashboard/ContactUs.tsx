@@ -50,7 +50,7 @@ const ContactUs = () => {
 
                         {/* Title */}
                         <p className="text-black font-medium text-3xl text-center mb-8">
-                            Contact
+                            Formulaire de contact
                         </p>
 
                         <p className="text-stone-400 italic font-normal text-md text-center my-12">

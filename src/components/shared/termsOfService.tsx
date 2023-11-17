@@ -1,7 +1,7 @@
 "use client"
 import React from 'react';
 import { LogoIcon, UserIcon } from '../utilis/Icons';
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/router'
 import Footer from "@/components/UI/Footer";
 import { LogoCircleFixRight } from "@/components/utilis/Icons";
 import { Theme_A } from '../utilis/Themes';

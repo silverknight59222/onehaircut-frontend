@@ -41,6 +41,7 @@ const Settings = () => {
   useEffect(() => {
 
   }, []);
+  
   return (
     <div>
       {isLoading && loadingView()}

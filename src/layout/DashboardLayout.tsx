@@ -27,6 +27,7 @@ const DashboardLayout = ({ children }: DashboardLayout) => {
   const tabHandler = (name: string) => {
     setTab(name);
   };
+  
   return (
     <div>
       <Sidebar

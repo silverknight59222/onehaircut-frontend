@@ -55,6 +55,7 @@ const Step1 = () => {
     setLocalStorage('salon_name', salonName);
     route.push("/registration/steps/2")
   }
+  
   return (
     <div className="px-7 mb-8">
       <div className="flex items-center justify-center border-b border-[#EBF0F2] mt-5 pb-3">
@@ -79,7 +80,7 @@ const Step1 = () => {
             <button
               onClick={() => onClickNext()}
               disabled={selectedType && salonName ? false : true}
-              className={`${selectedType && salonName ? Theme_A.button.bigGradientButton : Theme_A.button.bigWhiteGreyButton} `}>
+              className={`${selectedType && salonName ? Theme_A.button.bigGradientButton : Theme_A.button.bigGreyButton} `}>
 
               Continuons !
             </button>
