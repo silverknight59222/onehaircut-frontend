@@ -91,8 +91,7 @@ const Login = () => {
 		setIsLoading(true);
 		await Auth.login(userInfo)
 			.then((resp) => {
-				const res = resp.data;
-				console.log(res.user)
+				const res = resp.data;				
 				setLocalStorage("user", JSON.stringify(res.user));
 				setLocalStorage("auth-token", res.token);
 				// if(searchParams.get('redirect') === 'payment'){
