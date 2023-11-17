@@ -105,9 +105,9 @@ const BookSalon = () => {
 
   const onContinue = () => {
     setLocalStorage('slotData', JSON.stringify({ hairDresser: selectedHairdresser, slot: selectedSlot }))
-    const year = String(selectedDate?.getFullYear());
-    const month = String(selectedDate?.getMonth() + 1).padStart(2, '0');  // Month is zero-indexed
-    const day = String(selectedDate?.getDate()).padStart(2, '0');
+    const year = selectedDate ? String(selectedDate?.getFullYear()) : '';
+    const month = selectedDate ? String(selectedDate?.getMonth() + 1).padStart(2, '0') : '';  // Month is zero-indexed
+    const day = selectedDate ? String(selectedDate?.getDate()).padStart(2, '0') : '';
     setLocalStorage('selectDate', `${year}-${month}-${day}`)
 
     route.push('/payment')
@@ -116,7 +116,7 @@ const BookSalon = () => {
   const onSelectSlot = (slot: any) => {
     const currentIndex = slots.findIndex((item) => item.id === slot.id);
     if (currentIndex !== -1) {
-      const selectedObjects = [];
+      const selectedObjects:any = [];
       const ddd = Number(getLocalStorage('slotTime'))
       const time = durationTime
 

@@ -9,7 +9,8 @@ const Repeater = (props: RepeaterProps) => {
   const Tag = tag || 'div'
 
   // ** Default Items
-  const items = []
+  const items : any[] = []  
+
 
   // ** Loop passed count times and push it in items Array
   for (let i = 0; i < count; i++) {

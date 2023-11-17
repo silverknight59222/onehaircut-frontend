@@ -41,15 +41,15 @@ const Hairdressers = () => {
     email: "",
     profile_image: defaultImage,
     avatar: defaultImage,
-    role: "admin",
-  };
+        role: "admin",
+      };
   const defaultAvatars = {
     man: [],
     woman: [],
   };
   const hiddenFileInput = React.useRef<any>(null);
   const [hairDressers, setHairDressers] = useState<Hairdresser[]>([]);
-  const [hairDresser, setHairDresser] = useState(defaultHairDresser);
+  const [hairDresser, setHairDresser] = useState<Hairdresser>();
   const [avatarIndex, setAvatarIndex] = useState(1);
   const [showAvatar, setShowAvatars] = useState("men");
   const [avatars, setAvatars] = useState<AllAvatars>(defaultAvatars);
@@ -92,7 +92,7 @@ const Hairdressers = () => {
     setProfileImage(URL.createObjectURL(fileUploaded));
     setHairDresser((prevState) => ({
       ...prevState,
-      profile_image: fileUploaded as unknown as FileDetails,
+      profile_image: fileUploaded as unknown as FileDetails as string,
     }));
   };
   const onChangeName = (name: string) => {
@@ -237,7 +237,7 @@ const Hairdressers = () => {
         .updateHairDresser(hairDresser.id, data)
         .then((res) => {
           getAllHairDresser();
-          setHairDresser(() => defaultHairDresser);
+          setHairDresser({});
           setProfileImage(() => "");
           setIsEdit(false);
           setAvatarIndex(1);
@@ -301,7 +301,7 @@ const Hairdressers = () => {
     await dashboard.deleteHairDresser(hairDresser.id).then((res) => {
       getAllHairDresser();
       showSnackbar("success", res.data.message);
-      setHairDresser(() => defaultHairDresser);
+      setHairDresser(() => {});
       setProfileImage(() => "");
       setAvatarIndex(1);
       setIsEdit(false);
@@ -309,21 +309,13 @@ const Hairdressers = () => {
   };
   const selectHairDresser = (hairDresser: Hairdresser) => {
     setIsEdit(true);
-    setHairDresser((prevState) => ({
-      ...prevState,
-      id: hairDresser.id,
-      hair_salon_id: hairDresser.hair_salon_id,
-      name: hairDresser.name,
-      email: hairDresser.email,
-      role: hairDresser.user ? hairDresser.user.role : "admin",
-      password: hairDresser.password,
-    }));
+    setHairDresser((prevState) => (hairDresser));
     setProfileImage(hairDresser.profile_image);
     setAvatarIndex(hairDresser.avatar_id);
   };
 
   const onClear = () => {
-    setHairDresser(defaultHairDresser);
+    setHairDresser({});
     setProfileImage(() => "");
     setAvatarIndex(1);
     setIsEdit(false);

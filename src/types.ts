@@ -13,6 +13,10 @@ export type Address = {
 }
 
 export type SalonDetails = {
+	haircut: {
+		ratings_count: number,
+		rating: number
+	};
 	address: Address;
 	city_name: string;
 	id: number;
@@ -120,6 +124,7 @@ export type Services={
 }
 
 export type Slot={
+  is_booked: any;
 	id: number,
 	start: string
 }

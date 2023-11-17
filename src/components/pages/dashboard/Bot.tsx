@@ -290,7 +290,7 @@ const Bot = () => {
               {optimizationCopy.map((item, index) => {
                 return (
                   // renderCheckboxWithLabel(item.title, item.checked, () => toggleSwitch(index))
-                  <div className="mt-4 flex items-center justify-between">
+                  <div key={item.title + '_' +index} className="mt-4 flex items-center justify-between">
                     <div className="flex items-center">
                       <Switch key="BotList"
                         color="primary"

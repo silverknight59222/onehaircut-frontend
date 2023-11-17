@@ -14,6 +14,15 @@ import { client } from '@/api/clientSide';
 const History = () => {
   const [isLoading, setIsLoading] = useState(false);
   interface BookingInfoStruct {
+    total_amount: any;
+    hair_salon: any;
+    hair_dresser: any;
+    rating: any;
+    salon_haircut: {
+      haircut: any
+    };
+    total_duration: number;
+    redable_date: string;
     Coiffure: string;
     Prestation: string;
     Salon: string;
@@ -23,9 +32,10 @@ const History = () => {
     Heure: string;
     image: string;
     note: number;
+    items: any;
   }
 
-  const [histories, setHistories] = useState<[BookingInfoStruct]>([] as [BookingInfoStruct]);
+  const [histories, setHistories] = useState<[BookingInfoStruct]>([] as unknown as [BookingInfoStruct]);
 
   let page = 1;
   let isPageLoading = false
@@ -37,8 +47,8 @@ const History = () => {
   // ++++++++++ RATING ++++++++
   const [isRatePopUp, setRatePopUp] = useState(false);
   const [rating, setRating] = useState(0);
-  const [itemToRate, setItemToRate] = useState({
-    booking: null,
+  const [itemToRate, setItemToRate] = useState<{booking:any, ratingReview:string, rating:number}>({
+    booking: {},
     ratingReview: "",
     rating: 0
   });
@@ -72,7 +82,7 @@ const History = () => {
     // use itemToRate and rating
 
     client.saveBookingRating({
-      booking_id: itemToRate?.booking?.id,
+      booking_id: itemToRate && itemToRate.booking ? itemToRate.booking.id : '',
       rating: itemToRate?.rating,
       rating_review: itemToRate?.ratingReview,
     })
@@ -110,7 +120,7 @@ const History = () => {
         if (currentPage == 1) {
           setHistories(resp.data.bookings);
         } else {
-          setHistories(prevData => [...prevData, ...resp.data.bookings]);
+          setHistories(prevData => [{...prevData, ...resp.data.bookings}]);
         }
 
         setItemCount(resp.data.count);
@@ -218,7 +228,7 @@ const History = () => {
                         </div>
                         <div className='w-[150px] mr-3'>
                           {item.salon_haircut && <Image src={`https://api.onehaircut.com${item.salon_haircut.haircut.image}`} alt='' width={150} height={150} className='rounded-3xl' />}
-                          {!item.salon_haircut && <Image src={item.hair_salon ? `https://api.onehaircut.com${item.hair_salon.logo}` : `https://api.onehaircut.com${item.hair_salon.logo}`} width={150} height={150} className='rounded-3xl' />}
+                          {!item.salon_haircut && <Image src={item.hair_salon ? `https://api.onehaircut.com${item.hair_salon.logo}` : `https://api.onehaircut.com${item.hair_salon.logo}`} width={150} height={150} className='rounded-3xl' alt='' />}
                           <div className='justify-center items-center mt-3 bg-zinc-100 rounded-2xl p-1'>
                             <StarRatings
                               rating={item.rating ? item.rating.rating : 0}

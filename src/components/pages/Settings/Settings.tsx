@@ -53,9 +53,10 @@ const Settings = () => {
           {/* DISPLAY SETTINGS MENU */}
           {!isLoading && (
             <div className="max-w-[300px]  h-max flex flex-col items-left justify-center text-center px-2 py-6 gap-8 rounded-2xl bg-white text- font-medium text-[#909090] shadow-md">
-              {settingsMenu.map((item) => {
+              {settingsMenu.map((item, index) => {
                 return (
                   <p
+                    key={item.name+'_'+index}
                     className={` cursor-pointer ml-2 mr-2 ${activeMenu === item.name &&
                       " text-black "
                       }`}

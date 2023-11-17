@@ -52,7 +52,7 @@ const Portrait = () => {
         "Moyen",
         "Long",]
 
-    const [imagesToUpload, setImagesToUpload] = useState([]);
+    const [imagesToUpload, setImagesToUpload] = useState<any>([]);
     const [gender, setGender] = useState('');
     const [ethnicGroup, setethnicGroup] = useState('');
     const [hairLength, sethairLength] = useState('');
@@ -86,7 +86,9 @@ const Portrait = () => {
             return;
         }
         const fileUploaded = event.target.files[0];
-        setProfileImage(URL.createObjectURL(fileUploaded));
+        getBase64(fileUploaded, (result) => {
+            setProfileImage(result);
+       });        
         imagesToUpload.push({ 'type': 'front_profile', 'file': event.target.files[0] })
         //setImagesToUpload([{'type': 'profile_image',  'file': event.target.files[0]}])
     };
@@ -109,7 +111,9 @@ const Portrait = () => {
             return;
         }
         const fileUploaded = event.target.files[0];
-        setProfileLeftImage(URL.createObjectURL(fileUploaded));
+        getBase64(fileUploaded, (result) => {
+            setProfileLeftImage(result);
+       });        
         imagesToUpload.push({ 'type': 'left_profile', 'file': event.target.files[0] })
         //setImagesToUpload([{'type': 'left_profile',  'file': event.target.files[0]}])
     };
@@ -132,10 +136,25 @@ const Portrait = () => {
             return;
         }
         const fileUploaded = event.target.files[0];
-        setprofileSlightlyLeftImage(URL.createObjectURL(fileUploaded));
+
+        getBase64(fileUploaded, (result) => {
+            setprofileSlightlyLeftImage(result);
+       });
+        //setprofileSlightlyLeftImage(URL.createObjectURL(fileUploaded));
         imagesToUpload.push({ 'type': 'slightly_left_profile', 'file': event.target.files[0] })
         //setImagesToUpload([{'type': 'slightly_left_profile',  'file': event.target.files[0]}])
     };
+
+    const getBase64 = (file, cb) => {
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+            cb(reader.result)
+        };
+        reader.onerror = function (error) {
+            console.log('Error: ', error);
+        };
+    }
     // handle the click to modify the pic
     const handleClickLeft2 = () => {
         if (hiddenFile3Input.current) {
@@ -155,7 +174,10 @@ const Portrait = () => {
             return;
         }
         const fileUploaded = event.target.files[0];
-        setProfileRightImage(URL.createObjectURL(fileUploaded));
+        getBase64(fileUploaded, (result) => {
+            setProfileRightImage(result);
+       });
+        //setProfileRightImage(URL.createObjectURL(fileUploaded));
         imagesToUpload.push({ 'type': 'right_profile', 'file': event.target.files[0] })
         //setImagesToUpload([{'type': 'right_profile',  'file': event.target.files[0]}])
     };
@@ -178,7 +200,9 @@ const Portrait = () => {
             return;
         }
         const fileUploaded = event.target.files[0];
-        setProfileSlightlyRightImage(URL.createObjectURL(fileUploaded));
+        getBase64(fileUploaded, (result) => {
+            setProfileSlightlyRightImage(result);
+       });        
         imagesToUpload.push({ 'type': 'slightly_right_profile', 'file': event.target.files[0] })
         //setImagesToUpload([{'type': 'slightly_right_profile',  'file': event.target.files[0]}])
     };
@@ -249,11 +273,16 @@ const Portrait = () => {
         formData.append("ethnic_group", ethnicGroup);
         formData.append("hair_length", hairLength);
         formData.append("gender", gender);
-        formData.append("slightly_left_profile", profileSlightlyLeftImage);
-        formData.append("left_profile", profileLeftImage);
-        formData.append("front_profile", profileImage);
-        formData.append("slightly_right_profile", profileSlightlyRightImage);
-        formData.append("right_profile", profileRightImage);
+        if (profileSlightlyLeftImage)
+            formData.append("slightly_left_profile", profileSlightlyLeftImage);
+        if (profileLeftImage)
+            formData.append("left_profile", profileLeftImage);
+        if (profileImage)
+            formData.append("front_profile", profileImage);
+        if (profileSlightlyRightImage)
+            formData.append("slightly_right_profile", profileSlightlyRightImage);
+        if (profileRightImage)
+            formData.append("right_profile", profileRightImage);
         imagesToUpload.forEach(image => {
             if (image)
                 formData.append(image.type, image.file);
