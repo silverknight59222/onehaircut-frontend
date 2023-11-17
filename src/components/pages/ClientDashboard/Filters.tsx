@@ -243,7 +243,7 @@ const Filters = () => {
                             <div className="relative z-10 w-full lg:w-[630px] mt-5 md:mt-0 rounded-3xl bg-white py-6 px- sm:px-10 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)] h-screen">
 
                                 {/* Title of the Section "Coiffure" */}
-                                <p className="text-black text-lg mb-4 font-semibold">Coiffure</p>
+                                <p className="text-black text-lg mb-4 font-semibold pl-2 pr-2">Coiffure</p>
 
                                 {/* Column organization */}
                                 <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-6 md:gap-10 lg:gap-6 xl:gap-10">
@@ -253,24 +253,27 @@ const Filters = () => {
                                         {/* Dropdown for "cheveux actuelle" */}
                                         <div className="flex items-center justify-center mb-2 mr-10 w-full"> {/* Increased horizontal spacing */}
                                             <p className="text-black text-sm mb-2 mr-10"></p>
-                                            <DropdownMenu dropdownItems={WishLength.map((item) => item)} fctToCallOnClick={handleCurrentLength} selectId={currentLength} menuName="cheveux actuelle" />
+                                            <DropdownMenu dropdownItems={WishLength.map((item) => item)} fctToCallOnClick={handleCurrentLength} selectId={currentLength} menuName="cheveux actuelle"
+                                            parentClass="w-full" backgroundColor="w-full" />
                                         </div>
 
                                         {/* Dropdown for "Longueur recherchée" */}
-                                        <div className="flex items-center justify-center mb-2 w-full"> {/* Increased horizontal spacing */}
-                                            <DropdownMenu dropdownItems={WishLength.map((item) => item)} fctToCallOnClick={handleLengthSought} selectId={desiredLength} menuName="Longueur recherchée" />
+                                        <div className="flex items-center justify-center mb-2 mr-10 w-full"> {/* Increased horizontal spacing */}
+                                            <p className="text-black text-sm mb-2 mr-10"></p>
+                                            <DropdownMenu parentClass="w-full" backgroundColor="w-full" dropdownItems={WishLength.map((item) => item)} fctToCallOnClick={handleLengthSought} selectId={desiredLength} menuName="Longueur recherchée" />
                                         </div>
                                     </div>
 
                                     {/* Second Column */}
                                     <div className="flex flex-col items-center">
                                         {/* Dropdown for "Tendance de la coiffure" */}
-                                        <div className="flex items-center justify-center mb-2 w-full"> {/* Increased horizontal spacing */}
-                                            <DropdownMenu dropdownItems={WishGender.map((item) => item)} fctToCallOnClick={handleWishGender} selectId={hairstyleTrend} menuName="Tendance de la coiffure" />
+                                        <div className="flex items-center justify-center mb-2 mr-10 w-full"> {/* Increased horizontal spacing */}
+                                            <p className="text-black text-sm mb-2 mr-10"></p>
+                                            <DropdownMenu parentClass="w-full" backgroundColor="w-full" dropdownItems={WishGender.map((item) => item)} fctToCallOnClick={handleWishGender} selectId={hairstyleTrend} menuName="Tendance de la coiffure" />
                                         </div>
 
                                         {/* Slider for budget */}
-                                        <div className="relative z-20 w-full">
+                                        <div className="relative z-20 w-full pl-4 pr-3">
                                             <CustomSlider
                                                 theme={ComponentTheme}
                                                 value={budgetSliderRange}
@@ -339,26 +342,28 @@ const Filters = () => {
                             <div className="relative z-10 w-full lg:w-[630px] mt-5 md:mt-0 rounded-3xl bg-white py-6 px- sm:px-10 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)]">
 
                                 {/* Title of the Section "Localisation" */}
-                                <p className="text-black text-lg mb-8 font-semibold">Localisation</p>
+                                <p className="text-black text-lg mb-8 font-semibold pl-2 pr-2">Localisation</p>
 
                                 {/* Column organization */}
                                 <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-6 md:gap-10 lg:gap-6 xl:gap-10">
 
 
                                     {/* Dropdown for "Country */}
-                                    <div className="flex items-center justify-center mb-2 mr-12 ">
+                                    <div className="flex items-center justify-center md:mb-2 md:mr-12 pl-2 pr-2 ">
                                         <p className="text-black text-sm"></p>
                                         <DropdownMenu
+                                            parentClass="w-full text-center"
+                                            backgroundColor="w-full"
                                             dropdownItems={EUCountriesList()}
                                             menuName="Pays"
                                             fctToCallOnClick={handleNewSetCountry}
-                                            labelId='Pays'
+                                            labelId='Pays top-2'
                                             selectId={CountryDefault}
                                             defaultSelected={CountryDefault} // Pass the default value as a prop
                                         />
                                     </div>
                                     <div>
-                                        <p className="text-black text-sm mb-2">Coiffure à domicile </p>
+                                        <p className="text-black text-sm mb-2 pl-2 pr-2">Coiffure à domicile </p>
                                         <div
                                             onClick={() => setHairdressingAtHome(!HairdressingAtHome)}
                                             className="flex items-center justify-center gap-3 mt-4 cursor-pointer"
@@ -377,7 +382,7 @@ const Filters = () => {
 
 
                                 <div className='flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-24 lg:flex-col xl:flex-row lg:items-start xl:items-center lg:gap-5 xl:gap-24 mt-6 sm:mt-3'>
-                                    <div className="w-46">
+                                    <div className="w-46 pl-2 pr-2">
                                         <CustomInput
                                             id="PostCode"
                                             label="Code postal"
@@ -394,7 +399,7 @@ const Filters = () => {
                                     </div>
 
                                     {/* Slider for Arround Address Searching circle */}
-                                    <div className="relative z-20 w-full">
+                                    <div className="relative z-20 w-full pl-4 pr-2">
                                         <CustomSlider
                                             theme={ComponentTheme}
                                             value={zoneSliderRange}
@@ -425,12 +430,12 @@ const Filters = () => {
 
 
                                     {/* Title of the Section "Classement" */}
-                                    <div>
-                                        <p className="text-black text-lg mt-4 mb-8 font-semibold">Note du salon</p>
+                                    <div className="h-96">
+                                        <p className="text-black text-lg mt-4 mb-8 font-semibold pr-2 pl-2">Note du salon</p>
                                         <div className='flex flex-col sm:flex-row lg:flex-col xl:flex-row items-start sm:items-center lg:items-start xl:items-center justify-between'>
                                             <div>
-                                                <p className='text-black text-sm'>Minimum</p>
-                                                <div className='flex items-center gap-4'>
+                                                <p className='text-black text-sm pl-2 pr-2'>Minimum</p>
+                                                <div className='flex items-center gap-4 pl-2 pr-2'>
                                                     <StarRatings
                                                         rating={MinRating}
                                                         starRatedColor="#FEDF10"
@@ -447,8 +452,8 @@ const Filters = () => {
 
                                             </div>
                                             <div className='mt-5 sm:mt-0 lg:mt-5 xl:mt-0'>
-                                                <p className='text-black text-sm'>Maximum</p>
-                                                <div className='flex items-center gap-4'>
+                                                <p className='text-black text-sm pl-2 pr-2'>Maximum</p>
+                                                <div className='flex items-center gap-4 pl-2 pr-2'>
                                                     <StarRatings
                                                         rating={MaxRating}
                                                         starRatedColor="#FEDF10"
@@ -467,11 +472,11 @@ const Filters = () => {
                                 </div>
 
                                 {/* Title of the Section "Disponibilite" */}
-                                <div>
-                                    <p className="text-black text-lg mb-8 mt-6 font-semibold">Disponibilit&eacute;</p>
+                                <div className="h-96">
+                                    <p className="text-black text-lg mb-8 mt-6 font-semibold pl-2 pr-2">Disponibilit&eacute;</p>
 
                                     {/* Check box pour choisir les jours de préférences */}
-                                    <div className="flex justify-between">
+                                    <div className="flex justify-between pl-2 pr-2">
                                         {daysOfWeek.map((day) => (
                                             <div key={day} className="flex flex-col items-center justify-center">
                                                 <p className="text-black text-sm mb-2">{day}</p>
@@ -513,13 +518,15 @@ const Filters = () => {
                                 </div>
                                 */}
                                 </div>
-                                <div className="flex justify-center mt-12">
-                                    <button onClick={resetAllValues_2} className={`${Theme_A.button.medBlackColoredButton}`}>Réinitialiser</button>
-                                    <button
-                                        onClick={updateSearchSalon}
-                                        className={`${Theme_A.button.mediumGradientButton} ml-3`}>
-                                        Mise à jour
-                                    </button>
+                                <div className="h-96">
+                                    <div className="flex justify-center mt-12">
+                                        <button onClick={resetAllValues_2} className={`${Theme_A.button.medBlackColoredButton}`}>Réinitialiser</button>
+                                        <button
+                                            onClick={updateSearchSalon}
+                                            className={`${Theme_A.button.mediumGradientButton} ml-3`}>
+                                            Mise à jour
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         }

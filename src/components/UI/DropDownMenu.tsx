@@ -70,7 +70,8 @@ const DropdownMenu = ({
     labelId = '',
     selectId = '',
     defaultSelected = '',
-    backgroundColor = ''
+    backgroundColor = '',
+    parentClass = ""
 }) => {
     const classes = useStyles();
     const [selectedItem, setSelectedItem] = useState('');
@@ -85,7 +86,7 @@ const DropdownMenu = ({
     });
 
     return (
-        <div>
+        <div className={parentClass}>
             <FormControl className={`${backgroundColor} ${classes.formControl}`}>
                 <InputLabel
                     id={labelId}
