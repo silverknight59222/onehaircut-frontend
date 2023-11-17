@@ -185,7 +185,7 @@ const RolesSettings = () => {
             <div className="mt-4 flex items-center justify-between" key={id}>
                 <div className="flex items-center">
                     <Switch
-                        color="primary"
+                        color="secondary"
                         checked={checked}
                         onChange={handleChange}
                         disabled={label === "Agenda"} // Désactiver le switch pour le label "Agenda"
@@ -257,6 +257,10 @@ const RolesSettings = () => {
             // TO GET CUSTOMS COLORS ACCORDING TO COMPONENT THEM
             <ThemeProvider theme={ComponentTheme}>
                 <div className="relative flex flex-col items-start rounded-[20px] w-max-content max-w-[95%] mx-auto bg-white bg-clip-border shadow-3xl shadow-shadow-500 p-5 pb-8 transition duration-200 linear">
+
+                    <p className="text-stone-400 italic font-normal text-md text-center my-1 px-14">
+                        Le bouton sur la droite donne l'accès.
+                    </p>
                     <div className="relative mb-3 flex items-center justify-between pt-1 w-full">
                         <h4 className="text-xl font-bold text-navy-700 mt-4">
                             Accès au contenu

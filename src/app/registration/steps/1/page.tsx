@@ -79,7 +79,7 @@ const Step1 = () => {
             <button
               onClick={() => onClickNext()}
               disabled={selectedType && salonName ? false : true}
-              className={`${selectedType && salonName ? Theme_A.button.bigGradientButton : Theme_A.button.bigWhiteGreyButton} `}>
+              className={`${selectedType && salonName ? Theme_A.button.bigGradientButton : Theme_A.button.bigGreyButton} `}>
 
               Continuons !
             </button>

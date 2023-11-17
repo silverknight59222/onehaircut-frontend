@@ -34,7 +34,7 @@ const Subscription = () => {
     "OnehairBot Assistant",
     "Personnalisation de l'Interface",
   ];
-  const [isModal,setIsModal]=useState(false);
+  const [isModal, setIsModal] = useState(false);
 
   const handleClickPay = () => {
     console.log("PAY");
@@ -49,15 +49,15 @@ const Subscription = () => {
     const accountSid = 'AC99a58b7c8d4cdeab1c149da8f1d02afe';
     const authToken = '383a31d3080accbe3a0c3f992eeb6854';
     const data = {
-      accountSid : accountSid,
-      authToken : authToken
+      accountSid: accountSid,
+      authToken: authToken
     }
     // const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
     await dashboard.sendWhatsapp(data).then((resp) => {
       console.log(resp.data.data);
-    }); 
+    });
 
-    
+
     // const client = twilio(accountSid, authToken);
     // const client = require('twilio')(accountSid, authToken);
 
@@ -134,11 +134,13 @@ const Subscription = () => {
                         </div>
                       );
                     })}
-                    <div className="mt-3 h-6">
-                      <p className="text-black font-semibold text-xl text-center">
-                        79 €<span className="text-2xl">/ mois</span>
-                        </p>
-                                          </div>
+                    <div className="mt-1 h-10">
+                      <button className="text-white font-semibold text-center" onClick={handleClickPro}>
+                        <span className="text-2xl">79€ /mois</span>
+                        <br />
+                        <p className="text-xs">+5 % de tax de service</p>
+                      </button>
+                    </div>
                   </div>
                   <div className="w-48 absolute left-[230px] top-[650px]  flex items-center justify-center text-white font-semibold rounded-3xl -mb-12 h-12 bg-black">
                     {/* <div className={`${Theme_A.button.medBlackColoredButton} w-52 absolute left-[224px] top-[650px]  flex items-center justify-center`}> */}
@@ -166,8 +168,11 @@ const Subscription = () => {
                       })}
                     </div>
                     <div className="w-full h-1 flex flex-col items-center justify-center py-4">
-                      <p className="text-black font-medium text-2xl pt-6">Gratuit</p>
-                                          </div>
+                      <button className="text-black font-medium text-2xl pt-6">Gratuit
+                        <br />
+                        <p className="text-xs">+5 % de tax de service</p>
+                      </button>
+                    </div>
                   </div>
                   {/* <div className={`w-52 absolute left-[450px] top-[650px]  flex items-center justify-center ${Theme_A.button.medWhiteColoredButton}`}> */}
                   <div className="z-10 w-48 absolute left-[450px] top-[650px]  flex items-center justify-center text-black font-semibold border border-[#000000] rounded-3xl -mb-12 h-12 bg-white hover:scale-105 transition-transform hover:shadow-md">
@@ -210,9 +215,9 @@ const Subscription = () => {
       <Footer />
       {isModal && (
         <BaseModal close={() => setIsModal(false)}>
-            <div>
-                <PaymentModal/>
-            </div>
+          <div>
+            <PaymentModal />
+          </div>
         </BaseModal>)
       }
     </div>
