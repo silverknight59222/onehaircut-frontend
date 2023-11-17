@@ -217,7 +217,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
     const user = temp ? JSON.parse(temp) : null;
     if (user.role != 'salon_professional' && user.permissions.length > 0) {
       menus.forEach((m: any, k: number) => {
-        if (user.permissions.indexOf(m.title) == -1) {
+        if (user.permissions.indexOf(m.permission || m.title) == -1) {
           delete menus[k];
         }
       });
@@ -240,7 +240,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
       setSidebarItem(sidebarItems)
     }
     if (user.id) {
-      dashboard.getHairSalon(Number(user.id)).then((res) => {
+      dashboard.getHairSalon(Number(user.user_id || user.id)).then((res) => {
         setSalonDetails(res.data.data);
         setSalon(res.data.data);
       });

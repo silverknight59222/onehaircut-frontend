@@ -32,15 +32,17 @@ const applyPermissions = (menus: any) => {
 const Topbar = ({ isDashboard, tabHandler, SidebarHandler }: TopbarType) => {
 	const [salonDetail, setSalonDetails] = useState<SalonDetails[]>();
 	const [activeSalon, setActiveSalon] = useState<SalonDetails>();
+	const temp = getLocalStorage("user");
+    const user = temp ? JSON.parse(temp) : null;
 	const path=usePathname()
 	const topbarItems = [
-		"Dashboard",
-		"Coiffeurs",
-		"Images Salon",
-		"Coiffures",
-		"Prestation",
-		"Agenda",
-		"Ajouter un salon partenaire",
+		{ title: "Dashboard", permission: "Dashboard"},
+		{ title: "Coiffeurs", permission: "Coiffeurs"},
+		{ title: "Images Salon", permission: "Image du Salon"},
+		{ title: "Coiffures", permission: "Coifures"},
+		{ title: "Prestation", permission: "Prestation"},
+		{ title: "Agenda", permission: "Agenda"},
+		{ title: "Ajouter un salon partenaire", permission: "Ajouter un salon partenaire"},
 	];
 	const [selectedItem, setSelectedItem] = useState(0);
 	const onTabClick = (tab: string, index: number) => {
@@ -59,7 +61,7 @@ const Topbar = ({ isDashboard, tabHandler, SidebarHandler }: TopbarType) => {
 	};
 
 	useEffect(() => {
-		applyPermissions(topbarItems);
+		// applyPermissions(topbarItems);
 		const user = getLocalStorage("user");
 		const userId = user ? Number(JSON.parse(user).id) : null;
 		if (userId) 
@@ -68,6 +70,7 @@ const Topbar = ({ isDashboard, tabHandler, SidebarHandler }: TopbarType) => {
 				setSalon(res.data.data);
 			});
 	}, []);
+
 	return (
 		<div>
 			<div className="flex items-center justify-center">
@@ -98,16 +101,22 @@ const Topbar = ({ isDashboard, tabHandler, SidebarHandler }: TopbarType) => {
 			</div>
 			{path === '/dashboard' &&
 			<div className="flex items-center justify-center gap-4 flex-wrap mt-12 mb-7">
-				{topbarItems.map((item, index) => {
+				{topbarItems.filter((item) => {
+					if (user.permissions.length == 0) {
+						return true
+					}
+					
+					return user.permissions.indexOf(item.permission) != -1
+				}).map((item, index) => {
 					return (
-						<div key={index} onClick={() => onTabClick(item, index)}>
+						<div key={index} onClick={() => onTabClick(item.title, index)}>
 							<p
 								className={`${Theme_A.Bars.proTopBar.standardShape} ${selectedItem === index
 										? `${Theme_A.Bars.proTopBar.activatedColor}`
 										: `${Theme_A.Bars.proTopBar.inactivatedColor}`
 									}`}
 							>
-								{item}
+								{item.title}
 							</p>
 						</div>
 					);
