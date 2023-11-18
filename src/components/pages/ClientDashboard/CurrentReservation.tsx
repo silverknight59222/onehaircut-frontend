@@ -29,7 +29,7 @@ const Currentreservation = () => {
         setIsModalOpen(true);
     };
 
-    const [items, setItems] = useState([]);
+    const [items, setItems] = useState<any>([]);
     const [itemCount, setItemCount] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -82,7 +82,7 @@ const Currentreservation = () => {
     // state variables
     // Modal for canceling the reservation
     const [isModalCancel, setIsModalCancel] = useState(false);
-    const [itemToCancel, setItemToCancel] = useState({});
+    const [itemToCancel, setItemToCancel] = useState<any>({});
     const [currentTime, setCurrentTime] = useState<Date | null>(null);
     const [cancelAccepted, setCancelAccepted] = useState(false);
 

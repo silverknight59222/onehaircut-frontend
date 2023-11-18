@@ -16,16 +16,11 @@ interface EventDetailsModalProps {
   event: Booking;
   setModal: React.Dispatch<React.SetStateAction<Booking | undefined>>;
   coiffeurNom: string;
-  coiffeurCouleur: string;
+  coiffeurCouleur: string;  
 }
 
 
-const EventDetailsModal = (props: EventDetailsModalProps) => {
-  const defaultBooking = {
-    id: "",
-    title: "",
-    start: "",
-  };
+const EventDetailsModal = (props: EventDetailsModalProps) => {  
 
   const [message, setMessage] = useState("");
   const user = getLocalStorage("user");
@@ -91,7 +86,7 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
               Coiffeur(s)/-euse(s) disponible(s)
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full md:w-96">
-              {hairDressers.map((item, index) => {
+              {/* {hairDressers.map((item, index) => {
                 return (
                   <div key={index} className="w-full flex justify-center">
                     <div
@@ -114,7 +109,7 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
                     </div>
                   </div>
                 );
-              })}
+              })} */}
             </div>
           </div>
         </BaseModal>
@@ -146,13 +141,11 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
 
         {/* Vignette */}
         <div className="self-center border border-gray-300 rounded-md p-2 w-52 h-52 shadow-inner">
-          {!props.event.booking.haircut && <img
-            style={{ height: 'inherit', "max-height": "100%" }}
-            src={props.event.booking.user.front_profile || "/assets/user_img.png"}
-            alt="profile"
-          />}
+          {!props.event.booking.haircut && 
+          <Image src={props.event.booking.user.front_profile.includes('http') ? props.event.booking.user.front_profile : `https://api.onehaircut.com/${props.event.booking.user.front_profile}`} fill={true} alt="" sizes="640w"/>            
+          }
           {props.event.booking.haircut &&
-            <img  src={`https://api.onehaircut.com${props.event.booking.haircut.image}`} alt='' fill={true}  />
+            <Image src={props.event.booking.haircut.image.includes('http') ? props.event.booking.haircut.image : `https://api.onehaircut.com/${props.event.booking.haircut.image}`} fill={true} alt="" sizes="640w"/>            
           }
         </div>
 

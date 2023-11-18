@@ -53,9 +53,10 @@ const Settings = () => {
           {/* DISPLAY SETTINGS MENU */}
           {!isLoading && (
             <div className="max-w-[300px]  h-max flex flex-col items-left justify-center text-center px-2 py-6 gap-8 rounded-2xl bg-white text- font-medium text-[#909090] shadow-md">
-              {settingsMenu.map((item) => {
+              {settingsMenu.map((item, index) => {
                 return (
                   <p
+                    key={index}
                     className={` cursor-pointer ml-2 mr-2 ${activeMenu === item.name &&
                       " text-black "
                       }`}
@@ -69,11 +70,11 @@ const Settings = () => {
           )}
 
           {/*  DISPLAY SUB MENU */}
-          {settingsMenu.map((item) => {
+          {settingsMenu.map((item, index) => {
             return (
               <>
                 {activeMenu === item.name && !isLoading && (
-                  <div className="relative flex z-10 md:pl-auto overflow-auto bg-transparent rounded-2xl px-2">
+                  <div key={index} className="relative flex z-10 md:pl-auto overflow-auto bg-transparent rounded-2xl px-2">
                     <item.display />
                   </div>
                 )}

@@ -8,7 +8,9 @@ import CustomSlider from "@/components/UI/OHC_Slider";
 import ComponentTheme from "@/components/UI/ComponentTheme";
 import Autocomplete from "react-google-autocomplete";
 import { client } from "@/api/clientSide";
+import { salonApi } from '@/api/salonSide';
 import useSnackbar from "@/hooks/useSnackbar";
+import { getLocalStorage } from "@/api/storage";
 
 const SalonInfos = () => {
     const [isModal, setIsModal] = useState(false);
@@ -33,6 +35,11 @@ const SalonInfos = () => {
     const [addressResponse, setAddressResponse] = useState("");
     const [locationLatitude, setLocationLatitude] = useState(0.0);
     const [locationLongitude, setLocationLongitude] = useState(0.0);
+
+    const tempSalon = getLocalStorage('hair_salon');
+    
+    const salonInfo = tempSalon ? JSON.parse(tempSalon) : null;    
+    
     const openModal = () => {
         setIsModal(true);
     };
@@ -44,13 +51,27 @@ const SalonInfos = () => {
     // Utilisez useEffect pour déclencher la recherche de la ville lorsque le code postal change
     useEffect(() => {
         fetchAdress();
+        if (salonInfo) {
+            if (salonInfo.type == 'barber_shop'){
+                setSelectedSalonType('Barber-shop')
+            }
+        }
         // searchCityByPostalCode(postalCode);
     }, []);
 
-    // handling the change of Salon type change
-    const SaveSalonType = (item: string) => {
-        // TODO: add backend to save the new preference
+    const saveSalonType = async () => {
+        await salonApi.saveSalonType({type: SalonType})
+        .then((resp) => {                
+            showSnackbar("success", "Salon Type Saved Successfully.");            
+        })
+        .catch(err => {
+            console.log(err);
+        })
+        .finally(() => {
+            setIsLoading(false);            
+        })
     }
+    // handling the change of Salon type change    
 
     //For mobility checkbox
     const [isMobilityAllowed, setIsMobilityAllowed] = useState(false); // État de la checkbox
@@ -104,6 +125,7 @@ const SalonInfos = () => {
         }
         setSelectedSalonType(item);
         setSelectedImageUrl(imageUrl);
+        saveSalonType()
     }
 
     //For the slider :
@@ -177,7 +199,7 @@ const SalonInfos = () => {
     const SaveAddress = async () => {
         setIsLoading(true);
         isBillingAddressSame ? billingAddressIsSame() : ""
-        await client.storeAddresses({
+        await salonApi.storeAddresses({
             name: name,
             street: street,
             zipcode: postalCode,
@@ -194,8 +216,7 @@ const SalonInfos = () => {
             latitude: locationLatitude,
             longitude: locationLongitude
         })
-            .then((resp) => {
-                console.log(resp);
+            .then((resp) => {                
                 showSnackbar("success", "Adresse mise à jour avec succès.");
                 setIsModal(false);
             })
@@ -209,7 +230,7 @@ const SalonInfos = () => {
     };
 
     const fetchAdress = async () => {
-        const resp = await client.getAddresses()
+        const resp = await salonApi.getAddresses()
         setAddressResponse(resp.data);
         setName(resp.data.name);
         setStreet(resp.data.street);

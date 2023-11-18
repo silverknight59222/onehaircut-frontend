@@ -59,10 +59,9 @@ const ServiceChoose = () => {
 
     // Obtention de tous les services.
     const getAllServices = () => {
-        const serviceIds = getLocalStorage('ServiceIds')
-        console.log(serviceIds)
+        const serviceIds = getLocalStorage('ServiceIds')        
         if (serviceIds) {
-            const serviceIdsList = [];
+            const serviceIdsList:string[] = [];
             JSON.parse(serviceIds).forEach(service => {
                 serviceIdsList.push(String(service.id))
             });
@@ -127,7 +126,10 @@ const ServiceChoose = () => {
 
     // Fonction pour continuer à l'étape suivante.
     const onContinue = () => {
-        const arr = []
+        const arr:{
+            name:string,
+            id: number
+        }[] = []
         for (let i = 0; i < services.length; i++) {
             for (let j = 0; j < selectedService.length; j++) {
                 if (services[i].id === Number(selectedService[j])) {

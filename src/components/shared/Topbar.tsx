@@ -63,13 +63,13 @@ const Topbar = ({ isDashboard, tabHandler, SidebarHandler }: TopbarType) => {
 
 	useEffect(() => {
 		// applyPermissions(topbarItems);
-		const user = getLocalStorage("user");
-		const userId = user ? Number(JSON.parse(user).id) : null;
-		if (userId) 
-			dashboard.getHairSalon(userId).then((res) => {
-				setSalonDetails(res.data.data);
-				setSalon(res.data.data);
-			});
+		// const user = getLocalStorage("user");
+		// const userId = user ? Number(JSON.parse(user).id) : null;
+		// if (userId) 
+		// 	dashboard.getHairSalon(userId).then((res) => {
+		// 		setSalonDetails(res.data.data);
+		// 		setSalon(res.data.data);
+		// 	});
 	}, []);
 
 	return (

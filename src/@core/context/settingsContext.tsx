@@ -80,8 +80,7 @@ const staticSettings = {
 }
 
 const restoreSettings = (): Settings | null => {
-  let settings = null
-
+  let settings: any = null  
   try {
     const storedData: string | null = window.localStorage.getItem('settings')
 
