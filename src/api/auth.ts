@@ -45,6 +45,9 @@ const Auth = {
   signup: async (params: SignupParams) => {
     return await request.post<ResponseType>(`/user`, params);
   },
+  emailVerify: async (params: any) => {
+    return await request.get(`/email-verify/${params.id}/${params.hash}`, {params: params.searchParams});
+  },
 };
 
 export { Auth };
