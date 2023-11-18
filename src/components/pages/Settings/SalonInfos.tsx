@@ -12,6 +12,9 @@ import { salonApi } from '@/api/salonSide';
 import useSnackbar from "@/hooks/useSnackbar";
 import { getLocalStorage } from "@/api/storage";
 
+const tempSalon = getLocalStorage('hair_salon');
+const salonInfo = tempSalon ? JSON.parse(tempSalon) : null;  
+  
 const SalonInfos = () => {
     const [isModal, setIsModal] = useState(false);
     const [name, setName] = useState("");
@@ -32,14 +35,22 @@ const SalonInfos = () => {
     const [SalonType, setSalonType] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const showSnackbar = useSnackbar();
-    const [addressResponse, setAddressResponse] = useState("");
+    const [addressResponse, setAddressResponse] = useState({
+        street: "",                
+        city: "",
+        state: "",
+        country: "",
+        name: "",
+        zipcode: "",
+        billing_name: "",
+        billing_city: "",
+        billing_zip_code: "",
+        billing_country: "",
+        billing_state: "",
+        billing_street: ""
+    });
     const [locationLatitude, setLocationLatitude] = useState(0.0);
     const [locationLongitude, setLocationLongitude] = useState(0.0);
-
-    const tempSalon = getLocalStorage('hair_salon');
-    
-    const salonInfo = tempSalon ? JSON.parse(tempSalon) : null;    
-    
     const openModal = () => {
         setIsModal(true);
     };
@@ -54,9 +65,10 @@ const SalonInfos = () => {
         if (salonInfo) {
             if (salonInfo.type == 'barber_shop'){
                 setSelectedSalonType('Barber-shop')
+                
             }
-        }
-        // searchCityByPostalCode(postalCode);
+            setIsMobilityAllowed(salonInfo.is_mobile)
+        }        
     }, []);
 
     const saveSalonType = async () => {
@@ -71,12 +83,39 @@ const SalonInfos = () => {
             setIsLoading(false);            
         })
     }
+
+    const saveSalonMobility = async () => {
+        await salonApi.saveSalonMobility({is_mobile: isMobilityAllowed})
+        .then((resp) => {                
+            showSnackbar("success", "Salon Mobility Saved Successfully.");            
+        })
+        .catch(err => {
+            console.log(err);
+        })
+        .finally(() => {
+            setIsLoading(false);            
+        })
+    }
+
+    const saveZoneRadius = async (radius) => {
+        await salonApi.saveZoneRadius({zone_radius: radius})
+        .then((resp) => {                
+            showSnackbar("success", "Salon Mobility Zone Saved Successfully.");            
+        })
+        .catch(err => {
+            console.log(err);
+        })
+        .finally(() => {
+            setIsLoading(false);            
+        })
+    }
     // handling the change of Salon type change    
 
     //For mobility checkbox
     const [isMobilityAllowed, setIsMobilityAllowed] = useState(false); // État de la checkbox
-    const handleCheckboxChange = (event: any) => {
-        setIsMobilityAllowed(event.target.checked);
+    const handleCheckboxChange = (mobility: boolean) => {
+        setIsMobilityAllowed(mobility);
+        saveSalonMobility()
     };
     const [selectedWeekday, setSelectedWeekday] = useState<string>('');
 
@@ -133,6 +172,8 @@ const SalonInfos = () => {
     const [zoneSliderRange, setZoneSliderRange] = useState([0, 15]);
     const handleZoneSliderChange = (event: any, newValue: any) => {
         setZoneSliderRange(newValue);
+        console.log(newValue)
+        //saveZoneRadius(newValue)
     };
     const setAddressFields = (address: any, arg: string, value: string) => {
         switch (arg) {
@@ -547,7 +588,7 @@ const SalonInfos = () => {
 
                 {/* Checkbox et label "Autoriser la mobilité" */}
                 <div className="flex-1 py-5 pl-5 ml-8 flex items-center"> {/* Utilisez flex items-center ici */}
-                    <div onClick={() => setIsMobilityAllowed(!isMobilityAllowed)} className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded ${isMobilityAllowed
+                    <div onClick={() => handleCheckboxChange(!isMobilityAllowed)} className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded ${isMobilityAllowed
                         ? ColorsThemeA.ohcVerticalGradient_A
                         : "bg-[#D6D6D6]"
                         }`}>

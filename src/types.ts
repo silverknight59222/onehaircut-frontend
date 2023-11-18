@@ -63,9 +63,9 @@ export type Hairdresser = {
 	email: string;
 	profile_image: string | null;
 	avatar_id: number;
-	avatar: Avatar,
+	avatar: Avatar | null,
 	role: string,
-	password: string | null;
+	password: string;
 };
 
 export type ImageSalon = {

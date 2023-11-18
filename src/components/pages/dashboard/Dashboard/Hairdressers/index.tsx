@@ -34,22 +34,25 @@ const Hairdressers = () => {
     type: "",
     webkitRelativePath: "",
   };
+  
   const defaultHairDresser = {
     id: 0,
     hair_salon_id: 0,
     name: "",
     email: "",
-    profile_image: defaultImage,
-    avatar: defaultImage,
-        role: "admin",
-      };
+    profile_image: null,
+    avatar: null,
+    role: "admin",
+    password: "",
+    avatar_id: 0
+  };
   const defaultAvatars = {
     man: [],
     woman: [],
   };
   const hiddenFileInput = React.useRef<any>(null);
   const [hairDressers, setHairDressers] = useState<Hairdresser[]>([]);
-  const [hairDresser, setHairDresser] = useState<Hairdresser>();
+  const [hairDresser, setHairDresser] = useState<Hairdresser>({...defaultHairDresser});
   const [avatarIndex, setAvatarIndex] = useState(1);
   const [showAvatar, setShowAvatars] = useState("men");
   const [avatars, setAvatars] = useState<AllAvatars>(defaultAvatars);
@@ -82,18 +85,30 @@ const Hairdressers = () => {
       hiddenFileInput.current?.click();
     }
   };
+  const getBase64 = (file, cb) => {
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = function () {
+        cb(reader.result)
+    };
+    reader.onerror = function (error) {
+        console.log('Error: ', error);
+    };
+}
   const handleProfileImageUpload = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     if (!event.target.files) {
       return;
     }
-    const fileUploaded = event.target?.files[0];
-    setProfileImage(URL.createObjectURL(fileUploaded));
-    setHairDresser((prevState) => ({
-      ...prevState,
-      profile_image: fileUploaded as unknown as FileDetails as string,
-    }));
+    const fileUploaded = event.target.files[0];
+    getBase64(fileUploaded, (result) => {
+      setProfileImage(result);
+      setHairDresser((prevState) => ({
+        ...prevState,
+        profile_image: result,
+      }));
+    });    
   };
   const onChangeName = (name: string) => {
     if (!name.length) {
@@ -224,12 +239,14 @@ const Hairdressers = () => {
     data.append("name", hairDresser.name);
     data.append("email", hairDresser.email);
     data.append("role", hairDresser.role);
-    data.append("password", hairDresser.password);
+    if (hairDresser.password) {
+      data.append("password", hairDresser.password);
+    }
     data.append("avatar_id", avatarIndex as unknown as Blob);
-    if (hairDresser.profile_image.size > 0) {
+    if (hairDresser.profile_image) {
       data.append(
         "profile_image",
-        hairDresser.profile_image as unknown as Blob
+        hairDresser.profile_image
       );
     }
     if (isUpdate) {
@@ -237,7 +254,7 @@ const Hairdressers = () => {
         .updateHairDresser(hairDresser.id, data)
         .then((res) => {
           getAllHairDresser();
-          setHairDresser({});
+          setHairDresser({...defaultHairDresser});
           setProfileImage(() => "");
           setIsEdit(false);
           setAvatarIndex(1);
@@ -301,7 +318,7 @@ const Hairdressers = () => {
     await dashboard.deleteHairDresser(hairDresser.id).then((res) => {
       getAllHairDresser();
       showSnackbar("success", res.data.message);
-      setHairDresser(() => {});
+      setHairDresser({...defaultHairDresser});
       setProfileImage(() => "");
       setAvatarIndex(1);
       setIsEdit(false);
@@ -315,7 +332,7 @@ const Hairdressers = () => {
   };
 
   const onClear = () => {
-    setHairDresser({});
+    setHairDresser({...defaultHairDresser});
     setProfileImage(() => "");
     setAvatarIndex(1);
     setIsEdit(false);
@@ -329,7 +346,7 @@ const Hairdressers = () => {
     if (id === avatarIndex) {
       return (
         <div className="relative shadow-[0px_6px_11px_0px_rgba(176,176,176,0.25)] rounded-xl bg-white w-32 h-32">
-          <Image src={image.includes('http') ? image : `https://api.onehaircut.com${image}`} alt="avatar" fill={true} className="rounded-xl" />
+          <Image src={image} fill={true} alt="Profile Image" />          
         </div>
       );
     }
@@ -503,7 +520,7 @@ const Hairdressers = () => {
           >
             <div className={`${Theme_A.thumbnails.profilPictureThumbnail}`}>
               {profileImage ? (
-                <Image src={profileImage.includes('http') ? profileImage : `https://api.onehaircut.com${profileImage}`} fill={true} alt="Profile Image" />
+                <Image src={profileImage} fill={true} alt="Profile Image" />
               ) : (
                 <div>
                   <p className={`${Theme_A.textFont.infoTextSmall}`}>
@@ -611,7 +628,7 @@ const Hairdressers = () => {
                       <Image
                         fill={true}
                         src={
-                          item.profile_image ? (item.profile_image.includes('http') ? item.profile_image : `https://api.onehaircut.com${item.profile_image}`) : `https://api.onehaircut.com${item.avatar.image}`
+                          item.profile_image ? item.profile_image  : `https://api.onehaircut.com${item.avatar.image}`
                         }
                         alt="image"
                       />
