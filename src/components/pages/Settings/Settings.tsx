@@ -56,7 +56,7 @@ const Settings = () => {
               {settingsMenu.map((item, index) => {
                 return (
                   <p
-                    key={item.name+'_'+index}
+                    key={index}
                     className={` cursor-pointer ml-2 mr-2 ${activeMenu === item.name &&
                       " text-black "
                       }`}
@@ -70,11 +70,11 @@ const Settings = () => {
           )}
 
           {/*  DISPLAY SUB MENU */}
-          {settingsMenu.map((item) => {
+          {settingsMenu.map((item, index) => {
             return (
               <>
                 {activeMenu === item.name && !isLoading && (
-                  <div className="relative flex z-10 md:pl-auto overflow-auto bg-transparent rounded-2xl px-2">
+                  <div key={index} className="relative flex z-10 md:pl-auto overflow-auto bg-transparent rounded-2xl px-2">
                     <item.display />
                   </div>
                 )}

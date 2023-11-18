@@ -29,7 +29,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { ColorsThemeA, Theme_A } from "../utilis/Themes";
 import BaseModal from "../UI/BaseModal";
 import { user_api } from "@/api/clientSide";
-
+import {salonApi} from '@/api/salonSide'
+ 
 interface SidebarItems {
   icon: string;
   title: string;
@@ -327,8 +328,9 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
     if (localImageFile) {
       formData.set("logo", localImageFile);  
     }
-    const response = await user_api.updateSaloonInformation(formData);
-    setImageUrl(response.data.data.hair_salon.logo);
+    const response = await salonApi.updateLogoAndDescription(formData);    
+    setImageUrl(response.data.data.salon.logo);
+    setLocalStorage('hair_salon', JSON.stringify(response.data.data.salon))
   };
 
   return (
