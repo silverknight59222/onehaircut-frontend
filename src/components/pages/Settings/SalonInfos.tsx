@@ -317,8 +317,7 @@ const SalonInfos = () => {
                                 apiKey='AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E'
                                 onPlaceSelected={(place) => {
                                     setAddressData(place)
-                                }}
-                                value={street}
+                                }}                                
                                 options={{
                                     types: ["geocode"],
                                     fields: [
@@ -328,7 +327,7 @@ const SalonInfos = () => {
                                 }}
                                 onChange={handleChange}
                                 placeholder="Address"
-                                defaultValue=""
+                                defaultValue={street}
                             />
                             <div className="flex">
                                 <div className="flex-grow w-1/4 pr-2">

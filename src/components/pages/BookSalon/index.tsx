@@ -74,12 +74,12 @@ const BookSalon = () => {
   const getSlots = async () => {
     setIsLoading(true);
     if (selectedHairdresser.id && selectedDate) {
-      const yyyy = selectedDate.getFullYear();
-      let mm = selectedDate.getMonth() + 1; // Months start at 0!
-      let dd = selectedDate.getDate();
+      const yyyy = selectedDate.getFullYear().toString();
+      let mm = (selectedDate.getMonth() + 1).toString(); // Months start at 0!
+      let dd = selectedDate.getDate().toString();
 
-      if (dd < 10) dd = '0' + dd;
-      if (mm < 10) mm = '0' + mm;
+      if (dd < '10') dd = '0' + dd;
+      if (mm < '10') mm = '0' + mm;
       const formattedToday = dd + '-' + mm + '-' + yyyy;
       const data = {
         date: formattedToday

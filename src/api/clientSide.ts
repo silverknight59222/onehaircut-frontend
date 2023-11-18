@@ -7,10 +7,10 @@ interface SlotParam {
 interface BookingParams {
     user_id: number | null,
     hair_salon_id: number,
-    slot_id: number,
+    slot_ids: number,
     hair_dresser_id: number,
     amount: number | undefined,
-    salon_haircut_id: number,
+    salon_haircut_id: number | null,
     services: number[],
 }
 const client={

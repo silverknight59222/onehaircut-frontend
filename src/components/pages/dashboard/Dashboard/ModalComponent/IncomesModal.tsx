@@ -241,7 +241,7 @@ const IncomesModal = () => {
                     <p className="text-neutral-500 font-semibold text-2xl text-center">
                         Top revenu coiffure
                     </p>
-                    <RechartSingleBarChart direction="ltr" staffData={staffData} fill={fillColor} barSize={barSize} />
+                    <RechartSingleBarChart direction="ltr" chartTitle="Team Members" staffData={staffData} fill={fillColor} barSize={barSize} />
                 </div>
             </div>
         </div>

@@ -28,7 +28,8 @@ const haircut = temp ? JSON.parse(String(temp)) : null
 
 interface SalonImages {
   image: string,
-  is_cover: boolean
+  is_cover: boolean,
+  type: string
 }
 interface SalonHairdressers {
   profile_image: string,
@@ -36,11 +37,17 @@ interface SalonHairdressers {
 }
 interface SalonProfile {
   name: string,
-  rating: string,
+  rating: number,
+  description: string,
   salon_images: SalonImages[],
   salon_hairdressers: SalonHairdressers[],
   user_id: number,
-  openTimes: any[]
+  openTimes: any[],
+  final_price: number,
+  total_duration: number,
+  ratings_count: number,
+  haircut: any,
+  total_service_duration: number
 }
 
 
@@ -49,7 +56,7 @@ const SearchSalon = () => {
   const [serviceDuration, setServiceDuration] = useState<Number>(0);
   const [servicePrice, setServicePrice] = useState<Number>(0);
   const [isLoading, setIsLoading] = useState(false);
-  const [salonProfile, setSalonProfile] = useState()
+  const [salonProfile, setSalonProfile] = useState<SalonProfile>()
   const router = useRouter();
   const { loadingView } = userLoader();
 
@@ -72,9 +79,8 @@ const SearchSalon = () => {
   };
 
   useEffect(() => {
-    let salon = getLocalStorage('selectedSalon')
-
-    salon = salon ? JSON.parse(salon) : null
+    let tempSalon = getLocalStorage('selectedSalon')
+    const salon = tempSalon ? JSON.parse(tempSalon) : null
     setSalonProfile(salon)
   }, [])
 
@@ -94,7 +100,7 @@ const SearchSalon = () => {
       }
     })
     setHours(tempHours)
-  }, [salonProfile])
+  }, [salonProfile, hoursList])
 
   // FOR CHAT MODAL 
   // Créez un état pour suivre si le Chat modal est ouvert ou fermé
@@ -185,7 +191,7 @@ const SearchSalon = () => {
             />
           )}
           {/* Affichez le Salon Pic modal si `isPerfSampleModalOpen` est vrai */}
-          {isPerfSampleModalOpen && (
+          {isPerfSampleModalOpen && salonProfile && (
             <PerfSampleModal
               isModalOpen={isPerfSampleModalOpen}
               closeModal={closePerfSampleModal}

@@ -24,8 +24,8 @@ const UsersPage = () => {
   const [isModal, setIsModal] = useState(false);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [users, setUsers] = useState<User[]>([])
-  const [userToDelete, setUserToDelete] = useState<{ name: String, id: number | null }>({ name: '', id: null, })
-  const [userToEdit, setUserToEdit] = useState<{ phone: String, role: String, email: String, password: String, name: string, id: number | null }>({ phone: '', role: '', email: '', password: '', name: '', id: null, })
+  const [userToDelete, setUserToDelete] = useState<{ name: string, id: number | null }>({ name: '', id: null, })
+  const [userToEdit, setUserToEdit] = useState<{ phone: string, role: string, email: string, password: string, name: string, id: number | null }>({ phone: '', role: '', email: '', password: '', name: '', id: null, })
 
   const [isLoading, setIsLoading] = useState(false);
   const [password, setPassword] = useState(''); // Initialize password state
@@ -252,7 +252,7 @@ const UsersPage = () => {
                   checked={editedRole.permissions[permission]}
                   onChange={() => togglePermission(permission)}
                 />
-                {permission.name}
+                {permission}
               </label>
             ))}
             <button onClick={saveRoleChanges}>Save Changes</button>

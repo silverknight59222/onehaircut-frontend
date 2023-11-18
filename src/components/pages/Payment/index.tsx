@@ -20,7 +20,8 @@ import { Theme_A } from "@/components/utilis/Themes";
 const Index = () => {
   const router = useRouter();
   const showSnackbar = useSnackbar()
-  const user = getLocalStorage("user");
+  const temp = getLocalStorage("user");
+  const user = temp ? JSON.parse(temp) : null  
   const haircut = getLocalStorage("haircut")
   const hairTime = getLocalStorage("slotTime")
   const haircutTime = hairTime ? JSON.parse(hairTime) : null
@@ -123,8 +124,8 @@ const Index = () => {
     }
   }
   const onBooking = async () => {
-    const userInfo = JSON.parse(getLocalStorage("user") as string);
-    console.log(userInfo);
+    // const userInfo = JSON.parse(getLocalStorage("user") as string);
+    // console.log(userInfo);
     if (isLoggedIn) {
       setIsModal(true)
     } else {
@@ -144,9 +145,9 @@ const Index = () => {
       targetDate.setDate(today.getDate() + difference);
 
       const formattedDate = targetDate.toISOString().split('T')[0];
-
+      
       const data = {
-        user_id: user ? Number(JSON.parse(user).id) : null,
+        user_id: user ? user.id : null,
         hair_salon_id: Number(salonData.id),
         slot_ids: slotData.slot.map((prevSlot: any) => prevSlot.id),
         hair_dresser_id: slotData.hairDresser.id,
@@ -175,8 +176,8 @@ const Index = () => {
   }
 
   useEffect(() => {
-    const user = getLocalStorage("user");
-    const userId = user ? Number(JSON.parse(user).id) : null;
+    //const user = getLocalStorage("user");
+    const userId = user ? user.id : null;
     if (!userId) {
       setIsLoggedIn(true);
     }

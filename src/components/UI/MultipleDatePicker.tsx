@@ -37,7 +37,7 @@ const MultipleDatePicker = ({ close, onSelect, selectedDates }: DatePickerProps)
         setRange(range);
         if (range?.from && range?.to) {
             // Créez un tableau de toutes les dates entre 'range.from' et 'range.to'
-            const dates = [];
+            const dates:any = [];
             for (let d = range.from; d <= range.to; d = addDays(d, 1)) {
                 dates.push(d);
             }
