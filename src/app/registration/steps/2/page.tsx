@@ -1,5 +1,5 @@
 "use client";
-import { AddIcon, LogoIcon, MinusIcon } from "@/components/utilis/Icons";
+import { AddIcon, CheckedIcon, LogoIcon, MinusIcon } from "@/components/utilis/Icons";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import Autocomplete, { usePlacesWidget } from "react-google-autocomplete";
@@ -36,12 +36,20 @@ const Step2 = () => {
   const [zone, setZone] = useState(10)
   const [zoomMap, setZoomMap] = useState(10)
 
+  const [IamMobile, setIamMobile] = useState(false);
+
   const { loadingView } = userLoader();
   const route = useRouter();
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: 'AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E',
     libraries: ['places'],
   })
+
+  const zoneDeactivated = 'w-[85px] h-9 flex items-center justify-center text-black border border-black rounded-lg shadow-lg cursor-not-allowed  bg-[#D6D6D6]'
+  const zoneActivated = 'w-[85px] h-9 flex items-center justify-center text-black border border-black rounded-lg shadow-lg cursor-not-allowed bg-white'
+
+  // Determine the class name based on the condition
+  const ZoneClassName = IamMobile ? zoneActivated : zoneDeactivated;
 
   if (!isLoaded) {
     loadingView()
@@ -113,13 +121,18 @@ const Step2 = () => {
   // }, [location])
 
   const zoneHandler = (operation: string) => {
-    let temp
-    if (operation === 'add') {
-      temp = zone + 1
-    } else {
-      temp = zone - 1
+    if (IamMobile) {
+      let temp
+      if (operation === 'add') {
+        if (zone < 30) {
+          temp = zone + 1
+          setZone(temp)
+        }
+      } else {
+        temp = zone - 1
+        setZone(temp)
+      }
     }
-    setZone(temp)
   }
 
 
@@ -151,13 +164,31 @@ const Step2 = () => {
               }}
             />
 
+            {/* Check box for mobility */}
+            <div className=" mt-5 md:mt-0">
+              <p>Je suis mobile</p>
+              <div
+                onClick={() => setIamMobile(!IamMobile)}
+                className="flex items-center justify-center gap-3 cursor-pointer"
+              >
+                <div className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${IamMobile
+                  ? ColorsThemeA.ohcVerticalGradient_A
+                  : "border-[#767676]"
+                  }`}
+                >
+                  {IamMobile && (
+                    <CheckedIcon width="15" height="10" />)}
+                </div>
+              </div>
+            </div>
+
             <div className="mt-5 md:mt-0">
               <p className="text-black mb-1">Zone de mobilité</p>
-              <div className="flex items-center justify-center gap-7">
-                <div className="w-[85px] h-9 flex items-center justify-center text-black border border-black rounded-lg shadow-lg">
-                  {zone} KM
+              <div className="flex items-center justify-center gap-3">
+                <div className={ZoneClassName}>
+                  {zone} km
                 </div>
-                <div className={`flex items-center justify-center py-1 rounded-md ${ColorsThemeA.OhcGradient_A} shadow-lg`}>
+                <div className={`flex items-center justify-center py-1 rounded-md ${IamMobile ? ColorsThemeA.OhcGradient_A : ColorsThemeA.inactivButtonColor} shadow-lg`}>
                   <div onClick={() => zoneHandler('minus')} className="border-r border-white px-4 py-3 cursor-pointer transform hover:scale-110 transition-transform">
                     <MinusIcon />
                   </div>
