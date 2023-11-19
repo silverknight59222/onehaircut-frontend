@@ -10,6 +10,7 @@ interface User {
   password: string;
   phone: string;
   role: string;
+  permissions: any
 }
 interface Role {
   id: number;
@@ -48,7 +49,8 @@ const UsersPage = () => {
     },
   ];
 
-  const [roles, setRoles] = useState(initialRoles); const [newRoleName, setNewRoleName] = useState("");
+  const [roles, setRoles] = useState(initialRoles); 
+  const [newRoleName, setNewRoleName] = useState("");
 
   // State for the role edit modal
   const [isRoleModal, setIsRoleModal] = useState(false);
@@ -158,7 +160,7 @@ const UsersPage = () => {
         ...editedRole,
         permissions: {
           ...editedRole.permissions,
-          [permission]: !editedRole.permissions[permission],
+          [permission]: editedRole.permissions && editedRole.permissions[permission] ? true : false,
         },
       };
       setEditedRole(updatedRole);

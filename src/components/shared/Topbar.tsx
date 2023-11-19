@@ -103,11 +103,19 @@ const Topbar = ({ isDashboard, tabHandler, SidebarHandler }: TopbarType) => {
 			{path === '/dashboard' &&
 			<div className="flex items-center justify-center gap-4 flex-wrap mt-12 mb-7">
 				{topbarItems.filter((item) => {
-					if (user.permissions.length == 0) {
+					// if (user.permissions.length == 0) {
+					// 	return true
+					// }
+					if (user && user.permissions && user.permissions.indexOf(item.permission) != -1) {
 						return true
+					} else {
+						if (user && user.permissions && user.permissions.length == 0) {
+							return true
+						} else {
+							return false
+						}
 					}
-					
-					return user.permissions.indexOf(item.permission) != -1
+					//return user.permissions.indexOf(item.permission) != -1
 				}).map((item, index) => {
 					return (
 						<div key={index} onClick={() => onTabClick(item.title, index)}>
