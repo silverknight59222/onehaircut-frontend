@@ -21,10 +21,10 @@ const Page = () => {
 		{ icon: "StatsIcon", title: "Visites / Stats", route: "/dashboard/visites" },
 		// { icon: "RevenueIcon", title: "Revenue", route:"/dashboard/revenue" },
 		{ icon: "MessageIcon", title: "Message", route: "/dashboard/messages" },
-		{ icon: "SettingsIcon", title: "Réglages", route: "/dashboard/settings" },
+		{ icon: "SettingsIcon", title: "Réglages", permission: "Reglages",route: "/dashboard/settings" },
 		{ icon: "PersonalizationIcon", title: "Abonnement", route: "/dashboard/subscription" },
 		// { icon: "BoostIcon", title: "Boost", route: "" },
-		{ icon: "BotIcon", title: "OnehairBot", route: "/dashboard/bot" },
+		{ icon: "BotIcon", title: "OnehairBot", permission: "Onehairbot", route: "/dashboard/bot" },
 		{ icon: "ContactIcon", title: "Contactez-nous", route: "/dashboard/contactUs" },
 	];
 	const SidebarHandler = () => {

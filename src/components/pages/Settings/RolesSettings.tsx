@@ -102,7 +102,7 @@ const RolesSettings = () => {
         updatedRoleSwitches[id] = !updatedRoleSwitches[id];
 
         // Prepare an array of permissions to update
-        const permissionsToUpdate = [];
+        const permissionsToUpdate:any = [];
 
         // Loop through updatedRoleSwitches to find permissions with the updated state
         for (const permissionId in updatedRoleSwitches) {
@@ -146,7 +146,7 @@ const RolesSettings = () => {
     const updatePermissions = async () => {
         const updatedRoleSwitches = { ...roleSwitches[selectedRole] };
         const updatedPermissions = modalSwitchesByRole[selectedRole];
-        const permissionsToUpdate = [];
+        const permissionsToUpdate:any = [];
 
         // Combine the original roleSwitches with the updatedPermissions
         const combinedPermissions = { ...updatedRoleSwitches, ...updatedPermissions };

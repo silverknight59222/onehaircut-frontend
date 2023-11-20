@@ -71,12 +71,12 @@ const ImagesContainer = ({
       image: "",
     });
     const formData = new FormData();
-    const user = getLocalStorage("user");
-    const userID = user ? JSON.parse(user).id : null;
-    const limit = userID === 3 ? 5 : 20
+    const hairSalon = getLocalStorage("hair_salon");
+    const hairSalonId = hairSalon ? JSON.parse(hairSalon).id : null;
+    const limit = hairSalonId === 3 ? 5 : 20
     if (images.length < limit) {
-      if (userID) {
-        formData.append("hair_salon_id", userID);
+      if (hairSalonId) {
+        formData.append("hair_salon_id", hairSalonId);
       }
       formData.append("type", type);
       if (

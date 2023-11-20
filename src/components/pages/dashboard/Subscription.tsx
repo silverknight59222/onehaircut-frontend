@@ -17,8 +17,6 @@ import BaseModal from "@/components/UI/BaseModal";
 import { useRouter } from "next/navigation";
 import PaymentModal from "./PaymentModal";
 import { dashboard } from "@/api/dashboard";
-// import Twilio from 'twilio';
-import * as twilio from 'twilio';
 
 const Subscription = () => {
   const router = useRouter();

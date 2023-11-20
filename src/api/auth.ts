@@ -21,6 +21,7 @@ export type UserType = {
   name: string;
   phone: string;
   role: string;
+  hair_salon: any | null;
 };
 
 export type LoginResponse = {
@@ -43,6 +44,9 @@ const Auth = {
   },
   signup: async (params: SignupParams) => {
     return await request.post<ResponseType>(`/user`, params);
+  },
+  emailVerify: async (params: any) => {
+    return await request.get(`/email-verify/${params.id}/${params.hash}`, {params: params.searchParams});
   },
 };
 

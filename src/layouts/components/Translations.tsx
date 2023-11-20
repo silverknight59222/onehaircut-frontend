@@ -7,7 +7,7 @@ interface Props {
 
 const Translations = ({ text }: Props) => {
   // ** Hook
-  const { t } = useTranslation()
+  const { t } = useTranslation<['foo', 'bar']>(['foo', 'bar'])
 
   return <>{`${t(text)}`}</>
 }

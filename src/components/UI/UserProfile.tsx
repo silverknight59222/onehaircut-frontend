@@ -89,8 +89,7 @@ const UserProfile = ({ isDashboard }: UserProfileProfile) => {
     setIsLoading(true);
     Auth.logout()
       .then((response) => {
-        removeFromLocalStorage("auth-token");
-        removeFromLocalStorage("user");
+        localStorage.clear();
         router.push("/login");
       })
       .catch((error) => console.log(error))
@@ -110,6 +109,7 @@ const UserProfile = ({ isDashboard }: UserProfileProfile) => {
       document.removeEventListener("click", closeSelectBox);
     };
   }, []);
+  
   return (
     <div ref={dropdownRef} className="relative">
       {isLoading && loadingView()}

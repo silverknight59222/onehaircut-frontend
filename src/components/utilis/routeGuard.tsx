@@ -1,6 +1,7 @@
 import { getLocalStorage } from "@/api/storage";
 import { useRouter } from "next/navigation";
 import { usePathname } from 'next/navigation'
+
 const isBrowser = () => typeof window !== "undefined";
 
 export const RouteGuard = ({ children }: any) => {
@@ -9,7 +10,7 @@ export const RouteGuard = ({ children }: any) => {
 	const isSalonAuthenticated = getLocalStorage('auth-token');
 	const userItem = getLocalStorage('user');
 	const user = userItem ? JSON.parse(userItem) : null;
-	let publicRoutes = ['/', '/login', '/signup', '/forgot-password', '/[id]', '/services', '/salons', '/registration', '/book-salon', '/salon', '/payment', '/confirm-payment', '/confidentiality', '/terms', '/legalNotices'];
+	let publicRoutes = ['/', '/login', '/signup', '/forgot-password', '/[id]', '/services', '/salons', '/registration', '/book-salon', '/salon', '/payment', '/confirm-payment', '/confidentiality', '/terms', '/legalNotices', '/email-verify'];
 	let professionalRoutes = ['/dashboard', '/dashboard/client-activity', '/dashboard/visites', '/dashboard/revenue', '/dashboard/messages', '/dashboard/settings', '/dashboard/subscription', '/dashboard/bot', '/dashboard/contactUs'];
 	let freeSubscriptionRoutes = ['/dashboard', '/dashboard/client-activity', '/dashboard/revenue', '/dashboard/messages', '/dashboard/settings', '/dashboard/subscription', '/dashboard/bot', '/dashboard/contactUs'];
 	let clientRoutes = ['/client/dashboard', '/client/favorites', '/client/filters', '/client/history', '/client/messages', '/client/portrait', '/client/currentreservation', '/client/help', '/client/processed'];

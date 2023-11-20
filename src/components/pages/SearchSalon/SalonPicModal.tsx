@@ -8,7 +8,11 @@ import { LeftArrowIcon, RightArrowIcon } from "@/components/utilis/Icons";
 interface SalonPicModalProps {
     isModalOpen: boolean;
     closeModal: () => void;
-    images: { image: string }[];
+    images: { 
+        image: string,
+        is_cover: boolean,
+        type: string 
+    }[];
 }
 
 const SalonPicModal: FC<SalonPicModalProps> = ({
@@ -18,7 +22,7 @@ const SalonPicModal: FC<SalonPicModalProps> = ({
 }) => {
     const [thumbnailIndex, setThumbnailIndex] = useState(0);
     const [mainImageIndex, setMainImageIndex] = useState(0);
-    let fileteredShowCaseImages = [];
+    let fileteredShowCaseImages:any = [];
     // Filtering image for hairstyle model
     images.filter((image) => image.type == 'showcase').map((filteredElement, idx) => (
         fileteredShowCaseImages.push(filteredElement)

@@ -8,7 +8,11 @@ import { LeftArrowIcon, RightArrowIcon } from "@/components/utilis/Icons";
 interface PerfSampleModalProps {
     isModalOpen: boolean;
     closeModal: () => void;
-    images: { image: string }[];
+    images: { 
+        image: string,
+        is_cover: boolean,
+        type: string 
+    }[];
 }
 
 const PerfSampleModal: FC<PerfSampleModalProps> = ({
@@ -19,7 +23,7 @@ const PerfSampleModal: FC<PerfSampleModalProps> = ({
     const [thumbnailIndex, setThumbnailIndex] = useState(0);
     const [mainImageIndex, setMainImageIndex] = useState(0);
     
-    let fileteredHairStyleImages = [];
+    let fileteredHairStyleImages:any = [];
    
     // Filtering image for hairstyle model
     images.filter((image) => image.type == 'hairstyle').map((filteredElement, idx) => (

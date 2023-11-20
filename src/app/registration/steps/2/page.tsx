@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import Autocomplete, { usePlacesWidget } from "react-google-autocomplete";
 import { setLocalStorage } from "@/api/storage";
 import userLoader from "@/hooks/useLoader";
+import Checkbox from '@mui/material/Checkbox'
 import {
   useJsApiLoader,
   GoogleMap,
@@ -21,16 +22,17 @@ interface Address_int {
   number: string,
   lat: number,
   long: number,
-  zone: number
+  zone: number,
+  isMobile?: boolean
 }
 const Step2 = () => {
 
   const [street, setStreet] = useState("");
-  const [streetNumber, setStreetNumber] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [country, setCountry] = useState("");
+  const [isMobile, setIsMobile] = useState(false);
 
   const [location, setLocation] = useState({ lat: 48.8584, lng: 2.2945 });
 
@@ -54,6 +56,7 @@ const Step2 = () => {
 
   if (!isLoaded) {
     loadingView()
+
     return
   }
 
@@ -62,47 +65,70 @@ const Step2 = () => {
       country: country,
       street: street,
       city: city,
-      number: streetNumber,
+      number: "",
       lat: location.lat,
       long: location.lng,
       zone: zone,
+      isMobile: isMobile,
     };
 
     setLocalStorage('salon_address', JSON.stringify(toSave));
     route.push("/registration/steps/3");
   }
 
+  const setAddressFields = (address: any, arg: string, value: string) => {
+    switch (arg) {
+      case 'sublocality_level_1':
+      case 'locality':
+        address['city'] = value
+        break;
+      case 'administrative_area_level_1':
+        address['administrative_area_level_1'] = value
+        break;
+      case 'country':
+        address['country'] = value
+        break;
+      case 'postal_code':
+        address['postal_code'] = value
+        break;
+      case 'route':
+        address['route'] = value
+        break;
+      case 'street_number':
+        address['street_number'] = value
+        break;
+    }
+    return address
+  }
+
 
   const setAddressData = (place: any,) => {
+    console.log(place)
     setStreet("")
     setCity("")
     setState("")
     setCountry("")
     setPostalCode("")
 
-    console.log(place);
 
+    console.log(place.address_components)
     // Check if the variable is defined before using it
     if (place !== undefined && place.address_components !== undefined) {
 
-      console.log("place is defined");
+      let address = {} as any
+      place.address_components.map((item, index) => {
+        setAddressFields(address, item.types[0], item.long_name);
+      });
 
-      for (let i = 0; i < place.address_components.length; i++) {
-        if (place.address_components[i].types[0] === 'street_number') {
-          setStreetNumber(place?.address_components[i].long_name);
-        }
-        else if (place?.address_components[i].types[0] === 'route') {
-          setStreet(place?.address_components[i].long_name);
-        }
-        else if (place?.address_components[i].types[0] === 'locality') {
-          setCity(place?.address_components[i].long_name);
-        }
-        else if (place?.address_components[i].types[0] === 'country') {
-          setCountry(place?.address_components[i].long_name);
-        }
-        else if (place?.address_components[i].types[0] === 'postal_code') {
-          setPostalCode(place?.address_components[i].long_name);
-        }
+      setCity(address.city || "")
+      setState(address.administrative_area_level_1 || "")
+      setCountry(address.country || "")
+      setPostalCode(address.postal_code || "")
+
+
+      setStreet(address.route || "")
+      if (address.street_number && address.street_number != address.route) {
+        setStreet((pre) => address.street_number + " " + pre)
       }
 
       setLocation({ lat: place.geometry.location.lat(), lng: place.geometry?.location?.lng() });
@@ -231,9 +257,9 @@ const Step2 = () => {
             </button>
             <button
               onClick={() => { onClickNext() }}
-              disabled={!city && !street && !streetNumber}
+              disabled={!city && !street}
               aria-label="123"
-              className={`${streetNumber ? Theme_A.button.bigGradientButton : Theme_A.button.bigGreyButton} cursor-auto} `}>
+              className={`${street ? Theme_A.button.bigGradientButton : Theme_A.button.bigGreyButton} cursor-auto} `}>
               Continuons !
             </button>
           </div>

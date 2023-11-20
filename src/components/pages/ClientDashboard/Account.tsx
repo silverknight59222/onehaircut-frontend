@@ -217,7 +217,7 @@ const Account = () => {
             passwordField.oldPassword = "";
             passwordField.newPassword = "";
             passwordField.confirmPassword = "";
-        } catch (error) {
+        } catch (error:any) {
             setError((prev) => {
                 return { ...prev, text: error.response.data.message };
             });
@@ -905,10 +905,10 @@ const Account = () => {
         informations[3].desc = data.email;
 
         // to set value of fields in model
-        newStreetNbField(street_number);
-        newStreetField(street);
-        newPostCodeField(zipcode);
-        newCityField(city);
+        // newStreetNbField(street_number);
+        // newStreetField(street);
+        // newPostCodeField(zipcode);
+        // newCityField(city);
         setPhoneField(data.phone);
 
         setShowItem(informations);

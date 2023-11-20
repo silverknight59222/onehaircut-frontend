@@ -91,9 +91,11 @@ const Login = () => {
 		setIsLoading(true);
 		await Auth.login(userInfo)
 			.then((resp) => {
-				const res = resp.data;
-				console.log(res.user)
+				const res = resp.data;				
 				setLocalStorage("user", JSON.stringify(res.user));
+				if (res.user.hair_salon) {
+					setLocalStorage("hair_salon", JSON.stringify(res.user.hair_salon));
+				}
 				setLocalStorage("auth-token", res.token);
 				// if(searchParams.get('redirect') === 'payment'){
 				// 	router.push("/payment");

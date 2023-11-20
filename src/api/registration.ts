@@ -1,4 +1,5 @@
 import { request } from "./Request";
+
 export interface CreateIntentParams {
   name: string;
   email: string;

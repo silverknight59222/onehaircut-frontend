@@ -155,9 +155,9 @@ const Step3 = () => {
     }
 
     //check phone
-    if (!onPhoneCheck()) {
-      isValidated = false;
-    }
+    // if (!onPhoneCheck()) {
+    //   isValidated = false;
+    // }
 
     if (!userDetails.password) {
       setError((prev) => {
@@ -180,7 +180,9 @@ const Step3 = () => {
     await registration.createIntent(userDetails).then(res => {
       let data: any = userDetails;
       data.id = res.data.user.id;
+      data.token = res.data.token;
       setLocalStorage('user_Info', JSON.stringify(data));
+      setLocalStorage("user", JSON.stringify(res.data.user));
       if (res.data.intent.client_secret) {
         setLocalStorage('secret_key', res.data.intent.client_secret);
       }

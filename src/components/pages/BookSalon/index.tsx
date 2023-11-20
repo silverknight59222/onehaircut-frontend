@@ -74,8 +74,15 @@ const BookSalon = () => {
   const getSlots = async () => {
     setIsLoading(true);
     if (selectedHairdresser.id && selectedDate) {
+      const yyyy = selectedDate.getFullYear().toString();
+      let mm = (selectedDate.getMonth() + 1).toString(); // Months start at 0!
+      let dd = selectedDate.getDate().toString();
+
+      if (dd < '10') dd = '0' + dd;
+      if (mm < '10') mm = '0' + mm;
+      const formattedToday = dd + '-' + mm + '-' + yyyy;
       const data = {
-        date: selectedDate.toLocaleDateString().replaceAll("/", "-")
+        date: formattedToday
       }
       await client.getSlots(selectedHairdresser.id, data)
         .then((resp) => {
@@ -105,9 +112,9 @@ const BookSalon = () => {
 
   const onContinue = () => {
     setLocalStorage('slotData', JSON.stringify({ hairDresser: selectedHairdresser, slot: selectedSlot }))
-    const year = String(selectedDate?.getFullYear());
-    const month = String(selectedDate?.getMonth() + 1).padStart(2, '0');  // Month is zero-indexed
-    const day = String(selectedDate?.getDate()).padStart(2, '0');
+    const year = selectedDate ? String(selectedDate?.getFullYear()) : '';
+    const month = selectedDate ? String(selectedDate?.getMonth() + 1).padStart(2, '0') : '';  // Month is zero-indexed
+    const day = selectedDate ? String(selectedDate?.getDate()).padStart(2, '0') : '';
     setLocalStorage('selectDate', `${year}-${month}-${day}`)
 
     route.push('/payment')
@@ -116,7 +123,7 @@ const BookSalon = () => {
   const onSelectSlot = (slot: any) => {
     const currentIndex = slots.findIndex((item) => item.id === slot.id);
     if (currentIndex !== -1) {
-      const selectedObjects = [];
+      const selectedObjects:any = [];
       const ddd = Number(getLocalStorage('slotTime'))
       const time = durationTime
 
@@ -146,13 +153,13 @@ const BookSalon = () => {
 
   return (
     <div>
-      {isLoading && loadingView()}
+      {isLoading && salon && loadingView()}
       <Navbar hideSearchBar={true} />
 
       {/* RETOUR AU PROFIL */}
       <div className='flex items-start cursor-pointer mt-8 mb-8 sm:mx-10 2xl:mx-14' onClick={() => route.push('/salon/profile')}>
         <BackArrow />
-        <p className={`${Theme_A.textFont.navigationGreyFont}`}>Retour au profil de {salon.name}</p>
+        <p className={`${Theme_A.textFont.navigationGreyFont}`}>Retour au profil de {salon?.name}</p>
       </div>
 
       {/* CADRE SUPERIEUR */}
@@ -180,7 +187,7 @@ const BookSalon = () => {
         <div className=" h-64 lg:h-[470px]  bg-stone-50 rounded-xl shadow-sm shadow-stone-400 border-b-2 border-[#aeaeae] p-8 m-4">
           {salon && (
             <p className="w-80 text-3xl text-center font-bold text-stone-800  border-b-2 border-[#d7d7d7] pb-3">
-              {salon.name}
+              {salon?.name}
             </p>
           )}
           {salon && (
@@ -188,16 +195,16 @@ const BookSalon = () => {
               {haircutData && (
                 <div >
                   <p className="font-semibold text-lg ">Choix de la coiffure: </p>
-                  <p className="flex items-center gap-2 text-stone-700 text-base italic">{haircutData.name}</p>
+                  <p className="flex items-center gap-2 text-stone-700 text-base italic">{haircutData?.name}</p>
                 </div>
               )}
               <div>
                 <p className="font-semibold text-lg ">Durée: </p>
-                <p className="flex items-center gap-2 text-stone-700 text-base italic">{salon.total_duration} minutes</p>
+                <p className="flex items-center gap-2 text-stone-700 text-base italic">{salon?.total_duration} minutes</p>
               </div>
               <div >
                 <p className="font-semibold text-lg ">Lieu: </p>
-                <p className="flex items-center gap-2 text-stone-700 text-base italic">{salon.Adresse}</p>
+                <p className="flex items-center gap-2 text-stone-700 text-base italic">{salon?.Adresse}</p>
               </div>
             </div>
           )}
@@ -206,14 +213,14 @@ const BookSalon = () => {
 
         {/* PARTIE STAFF DU SALON */}
         <div className="w-full lg:w-auto lg:mt-0">
-          {hairDressers.length > 1 && (
+          {hairDressers && hairDressers.length > 1 && (
             <p className="text-lg text-black font-semibold text-center lg:text-left">
               Choisissez votre coiffeur
             </p>
           )}
-          {hairDressers.length > 1 && (
+          {hairDressers && hairDressers.length > 1 && (
             <p className="text-sm text-stone-400 italic text-left">
-              {salon.name} fera au mieux pour respecter votre choix <br /> <br />
+              {salon?.name} fera au mieux pour respecter votre choix <br /> <br />
             </p>
           )}
 

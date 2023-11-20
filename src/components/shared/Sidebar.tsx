@@ -29,7 +29,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { ColorsThemeA, Theme_A } from "../utilis/Themes";
 import BaseModal from "../UI/BaseModal";
 import { user_api } from "@/api/clientSide";
-
+import {salonApi} from '@/api/salonSide'
+ 
 interface SidebarItems {
   icon: string;
   title: string;
@@ -193,6 +194,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
         );
         break;
     }
+    
     return Icon;
   };
 
@@ -217,7 +219,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
     const user = temp ? JSON.parse(temp) : null;
     if (user.role != 'salon_professional' && user.permissions.length > 0) {
       menus.forEach((m: any, k: number) => {
-        if (user.permissions.indexOf(m.title) == -1) {
+        if (user.permissions.indexOf(m.permission || m.title) == -1) {
           delete menus[k];
         }
       });
@@ -227,6 +229,10 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
   useEffect(() => {
     const temp = getLocalStorage("user");
     const user = temp ? JSON.parse(temp) : null;
+
+    const tempSalon = getLocalStorage('hair_salon');
+    
+    const salonInfo = tempSalon ? JSON.parse(tempSalon) : null;
 
     // Utilisation de l'opérateur chaînage optionnel pour éviter l'erreur
     if (!user?.subscription) {
@@ -239,25 +245,17 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
     } else {
       setSidebarItem(sidebarItems)
     }
-    if (user.id) {
-      dashboard.getHairSalon(Number(user.id)).then((res) => {
-        setSalonDetails(res.data.data);
-        setSalon(res.data.data);
-      });
-      user_api.getSaloonInformation().then((res) => {
-        if (res.data.role == 'client') {
-          if (res.data.front_profile) {
-            setImageUrl(res.data?.front_profile);
-          }
-        } else {
-          setImageUrl(res.data?.hair_salon.logo);
-          setTextLength(res.data?.hair_salon.description);
-          setTextDescription(res.data?.hair_salon.description);
-        }
-
-      });
-
-    }
+    if (user.role == 'client') {
+      setImageUrl(user.front_profile);
+    } else {
+      if (salonInfo) {
+        setSalon([salonInfo])
+        setSalonDetails(salonInfo)
+        setImageUrl(salonInfo.logo);
+        setTextLength(salonInfo.description);
+        setTextDescription(salonInfo.description);
+      }
+    }      
 
   }, []);
 
@@ -299,7 +297,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
     }
   };
   const [image, setImage] = useState<string | null>(null);
-  const [localImageFile, setLocalImageFile] = useState(null);
+  const [localImageFile, setLocalImageFile] = useState<File | null>(null);
   // Gestionnaire d'événements pour traiter le changement de fichier.
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     // Vérification pour s'assurer qu'un fichier a été sélectionné.
@@ -330,8 +328,9 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
     if (localImageFile) {
       formData.set("logo", localImageFile);  
     }
-    const response = await user_api.updateSaloonInformation(formData);
-    setImageUrl(response.data.data.hair_salon.logo);
+    const response = await salonApi.updateLogoAndDescription(formData);    
+    setImageUrl(response.data.data.salon.logo);
+    setLocalStorage('hair_salon', JSON.stringify(response.data.data.salon))
   };
 
   return (
@@ -469,16 +468,21 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
                     <div
                       onClick={() => onSelectItem(item.route, index)}
                       className={
-                        `flex items-center my-2 pl-8 py-4 gap-4 cursor-pointer transition ease-in-out duration-100 border-l-4 
+                        `flex items-center my-2 pl-8 py-4 gap-2 cursor-pointer transition ease-in-out duration-100 border-l-4 
                         ${path === item.route && "border-rose-600 bg-gradient-to-r from-zinc-800 via-zinc-600 to-zinc-400 font-bold"}`}
                     >
-                      <div className="relative">
+                      <div className="relative flex justify-content-right q">
                         {setIcon(
                           item.icon,
                           path === item.route ? item.icon : ""
                         )}
                         {/* TODO make the message notification number dynamic */}
-                        {item.title === 'Message' && <p className="absolute top-3 -right-2.5 flex items-center justify-center w-4 h-4 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold">2</p>}
+                        {/* {item.title === 'Message' && <p className="absolute top-3 -right-2.5 flex items-center justify-center w-4 h-4 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold">2</p>} */}
+                        {(item.title === 'Message') &&< p className="left-56 top-[2.6px]	absolute flex items-center justify-center w-5 h-5 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold">2</p>}
+                        {(item.title === 'Réservations en cours') &&< p className="left-56 top-[2.6px]	absolute  flex items-center justify-center w-5 h-5 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold">2</p>}
+                        {(item.title === 'Historique') &&< p className="left-56 top-[2.6px]	absolute  flex items-center justify-center w-5 h-5 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold">2</p>}
+                        
+                      
                       </div>
                       <p
                         className={`text-base ${path === item.route && "text-white"

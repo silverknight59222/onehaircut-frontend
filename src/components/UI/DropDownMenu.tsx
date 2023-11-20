@@ -82,7 +82,7 @@ const DropdownMenu = ({
 
     useEffect(() => {
         setSelectedItem(selectId);
-    });
+    }, [selectId]);
 
     return (
         <div>

@@ -5,6 +5,8 @@ export type Coiffeur = {
     image: string;
     couleur: string;
     textColor: string;
+    coiffeurAleatoire: any
+    name: string;
 };
 
 export interface Booking {
@@ -15,5 +17,9 @@ export interface Booking {
     coiffeur: Coiffeur;
     backgroundColor?: string;
     textColor?: string;
-    clientId: number
+    clientId: number;
+    booking: any;
+    hair_dresser_name: string;
+    total_duration: number;
+
 }
