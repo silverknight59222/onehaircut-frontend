@@ -103,7 +103,7 @@ const Messages = () => {
         <LogoCircleFixRight />
       </div>
       <DashboardLayout>
-        <div className="mt-10 mb-5 px-8 sm:px-14 2xl:px-36">
+        <div className="mt-10 mb-5  sm:px-0 2xl:px-5">
 
           {/* Titre du centre de messagerie */}
           <p className="text-black font-medium text-3xl text-center mb-10">
@@ -112,7 +112,7 @@ const Messages = () => {
 
 
           {/* Section de gauche : Liste des Clients */}
-          <div className="flex flex-col md:flex-row items-start justify-center gap-10 2xl:gap-20 h-screen md:h-auto">
+          <div className="flex flex-col md:flex-row items-start justify-center gap-5 2xl:gap-20 h-screen md:h-auto">
             {/* Section de gauche */}
             <div className={`w-full md:max-w-sm xl:max-w-sm min-h-[500px] md:min-h-[300px] overflow-y-auto flex-shrink-0 rounded-3xl bg-white py-4 px-8 shadow-md`}>
 

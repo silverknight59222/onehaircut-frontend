@@ -1,5 +1,5 @@
 "use client";
-import { AddIcon, LogoIcon, MinusIcon } from "@/components/utilis/Icons";
+import { AddIcon, CheckedIcon, LogoIcon, MinusIcon } from "@/components/utilis/Icons";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import Autocomplete, { usePlacesWidget } from "react-google-autocomplete";
@@ -10,6 +10,7 @@ import {
   useJsApiLoader,
   GoogleMap,
   Marker,
+  Circle,
 } from '@react-google-maps/api'
 import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 
@@ -38,6 +39,8 @@ const Step2 = () => {
   const [zone, setZone] = useState(10)
   const [zoomMap, setZoomMap] = useState(10)
 
+  const [IamMobile, setIamMobile] = useState(false);
+
   const { loadingView } = userLoader();
   const route = useRouter();
   const { isLoaded } = useJsApiLoader({
@@ -45,9 +48,15 @@ const Step2 = () => {
     libraries: ['places'],
   })
 
+  const zoneDeactivated = 'w-[85px] h-9 flex items-center justify-center text-black border border-black rounded-lg shadow-lg cursor-not-allowed  bg-[#D6D6D6]'
+  const zoneActivated = 'w-[85px] h-9 flex items-center justify-center text-black border border-black rounded-lg shadow-lg cursor-not-allowed bg-white'
+
+  // Determine the class name based on the condition
+  const ZoneClassName = IamMobile ? zoneActivated : zoneDeactivated;
+
   if (!isLoaded) {
     loadingView()
-    
+
     return
   }
 
@@ -68,28 +77,28 @@ const Step2 = () => {
   }
 
   const setAddressFields = (address: any, arg: string, value: string) => {
-      switch (arg) {
-          case 'sublocality_level_1':
-          case 'locality':
-              address['city'] = value
-              break;
-          case 'administrative_area_level_1':
-              address['administrative_area_level_1'] = value
-              break;
-          case 'country':
-              address['country'] = value
-              break;
-          case 'postal_code':
-              address['postal_code'] = value
-              break;
-          case 'route':
-              address['route'] = value
-              break;
-          case 'street_number':
-              address['street_number'] = value
-              break;
-      }
-      return address
+    switch (arg) {
+      case 'sublocality_level_1':
+      case 'locality':
+        address['city'] = value
+        break;
+      case 'administrative_area_level_1':
+        address['administrative_area_level_1'] = value
+        break;
+      case 'country':
+        address['country'] = value
+        break;
+      case 'postal_code':
+        address['postal_code'] = value
+        break;
+      case 'route':
+        address['route'] = value
+        break;
+      case 'street_number':
+        address['street_number'] = value
+        break;
+    }
+    return address
   }
 
 
@@ -101,14 +110,14 @@ const Step2 = () => {
     setCountry("")
     setPostalCode("")
 
-    
+
     console.log(place.address_components)
     // Check if the variable is defined before using it
     if (place !== undefined && place.address_components !== undefined) {
 
       let address = {} as any
       place.address_components.map((item, index) => {
-          setAddressFields(address, item.types[0], item.long_name);
+        setAddressFields(address, item.types[0], item.long_name);
       });
 
       setCity(address.city || "")
@@ -119,7 +128,7 @@ const Step2 = () => {
 
       setStreet(address.route || "")
       if (address.street_number && address.street_number != address.route) {
-          setStreet((pre) => address.street_number + " " + pre)
+        setStreet((pre) => address.street_number + " " + pre)
       }
 
       setLocation({ lat: place.geometry.location.lat(), lng: place.geometry?.location?.lng() });
@@ -139,13 +148,18 @@ const Step2 = () => {
   // }, [location])
 
   const zoneHandler = (operation: string) => {
-    let temp
-    if (operation === 'add') {
-      temp = zone + 1
-    } else {
-      temp = zone - 1
+    if (IamMobile) {
+      let temp
+      if (operation === 'add') {
+        if (zone < 30) {
+          temp = zone + 1
+          setZone(temp)
+        }
+      } else {
+        temp = zone - 1
+        setZone(temp)
+      }
     }
-    setZone(temp)
   }
 
 
@@ -171,22 +185,37 @@ const Step2 = () => {
               options={{
                 types: ["geocode"],
                 fields: [
-                    'address_components',
-                    'geometry.location'
+                  'address_components',
+                  'geometry.location'
                 ]
               }}
             />
-            <div className="mt-5 md:mt-0">
-              <div className="mt-5 flex">
-                <p className="text-black mb-1 mt-2">Mobile Salon Services</p>
-                <Checkbox className="ml-0" onChange={(value) => {setIsMobile(value.target.checked)}} />
-              </div>
-              {isMobile && <p className="text-black mb-1">Zone de mobilité</p>}
-              {isMobile && <div className="flex items-center justify-center gap-7">
-                <div className="w-[85px] h-9 flex items-center justify-center text-black border border-black rounded-lg shadow-lg">
-                  {zone} KM
+
+            {/* Check box for mobility */}
+            <div className=" mt-5 md:mt-0">
+              <p>Je suis mobile</p>
+              <div
+                onClick={() => setIamMobile(!IamMobile)}
+                className="flex items-center justify-center gap-3 cursor-pointer"
+              >
+                <div className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${IamMobile
+                  ? ColorsThemeA.ohcVerticalGradient_A
+                  : "border-[#767676]"
+                  }`}
+                >
+                  {IamMobile && (
+                    <CheckedIcon width="15" height="10" />)}
                 </div>
-                <div className={`flex items-center justify-center py-1 rounded-md ${ColorsThemeA.OhcGradient_A} shadow-lg`}>
+              </div>
+            </div>
+
+            <div className="mt-5 md:mt-0">
+              <p className="text-black mb-1">Zone de mobilité</p>
+              <div className="flex items-center justify-center gap-3">
+                <div className={ZoneClassName}>
+                  {zone} km
+                </div>
+                <div className={`flex items-center justify-center py-1 rounded-md ${IamMobile ? ColorsThemeA.OhcGradient_A : ColorsThemeA.inactivButtonColor} shadow-lg`}>
                   <div onClick={() => zoneHandler('minus')} className="border-r border-white px-4 py-3 cursor-pointer transform hover:scale-110 transition-transform">
                     <MinusIcon />
                   </div>
@@ -194,7 +223,7 @@ const Step2 = () => {
                     <AddIcon />
                   </div>
                 </div>
-              </div>}
+              </div>
             </div>
           </div>
           <div className="w-full h-96 my-12">
@@ -202,7 +231,21 @@ const Step2 = () => {
               center={location}
               zoom={zoomMap}
               mapContainerStyle={{ width: '100%', height: '100%' }} >
-              <Marker position={location} visible={true} />
+
+              <Marker position={location} />
+              {/* Circle representing the range */}
+              <Circle
+                center={{
+                  lat: (location.lat),
+                  lng: (location.lng)
+                }}
+                radius={zone}
+              // strokeColor="transparent"
+              // strokeOpacity={0}
+              // strokeWeight={5}
+              // fillColor="#FF0000"
+              // fillOpacity={0.2}
+              />
             </GoogleMap>
           </div>
           <div className="w-full flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-7 mb-5">
