@@ -224,7 +224,7 @@ const GoalsModal = () => {
             <div className="flex flex-wrap items-center justify-center gap-10 flex-grow mb-2">
                 <Grid container spacing={0}>
                     {cards.map((card, index) => (
-                        <Grid item xs={3} style={{ marginTop: '8px' }}>
+                        <Grid key={index} item xs={3} style={{ marginTop: '8px' }}>
                             <div
                                 key={index}
                                 style={{

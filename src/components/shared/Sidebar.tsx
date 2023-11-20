@@ -29,7 +29,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { ColorsThemeA, Theme_A } from "../utilis/Themes";
 import BaseModal from "../UI/BaseModal";
 import { user_api } from "@/api/clientSide";
-
+import {salonApi} from '@/api/salonSide'
+ 
 interface SidebarItems {
   icon: string;
   title: string;
@@ -229,6 +230,10 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
     const temp = getLocalStorage("user");
     const user = temp ? JSON.parse(temp) : null;
 
+    const tempSalon = getLocalStorage('hair_salon');
+    
+    const salonInfo = tempSalon ? JSON.parse(tempSalon) : null;
+
     // Utilisation de l'opérateur chaînage optionnel pour éviter l'erreur
     if (!user?.subscription) {
       const filteredRoutes = sidebarItems.filter(route => {
@@ -240,25 +245,17 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
     } else {
       setSidebarItem(sidebarItems)
     }
-    if (user.id) {
-      dashboard.getHairSalon(Number(user.user_id || user.id)).then((res) => {
-        setSalonDetails(res.data.data);
-        setSalon(res.data.data);
-      });
-      user_api.getSaloonInformation().then((res) => {
-        if (res.data.role == 'client') {
-          if (res.data.front_profile) {
-            setImageUrl(res.data?.front_profile);
-          }
-        } else {
-          setImageUrl(res.data?.hair_salon.logo);
-          setTextLength(res.data?.hair_salon.description);
-          setTextDescription(res.data?.hair_salon.description);
-        }
-
-      });
-
-    }
+    if (user.role == 'client') {
+      setImageUrl(user.front_profile);
+    } else {
+      if (salonInfo) {
+        setSalon([salonInfo])
+        setSalonDetails(salonInfo)
+        setImageUrl(salonInfo.logo);
+        setTextLength(salonInfo.description);
+        setTextDescription(salonInfo.description);
+      }
+    }      
 
   }, []);
 
@@ -300,7 +297,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
     }
   };
   const [image, setImage] = useState<string | null>(null);
-  const [localImageFile, setLocalImageFile] = useState(null);
+  const [localImageFile, setLocalImageFile] = useState<File | null>(null);
   // Gestionnaire d'événements pour traiter le changement de fichier.
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     // Vérification pour s'assurer qu'un fichier a été sélectionné.
@@ -331,8 +328,9 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
     if (localImageFile) {
       formData.set("logo", localImageFile);  
     }
-    const response = await user_api.updateSaloonInformation(formData);
-    setImageUrl(response.data.data.hair_salon.logo);
+    const response = await salonApi.updateLogoAndDescription(formData);    
+    setImageUrl(response.data.data.salon.logo);
+    setLocalStorage('hair_salon', JSON.stringify(response.data.data.salon))
   };
 
   return (

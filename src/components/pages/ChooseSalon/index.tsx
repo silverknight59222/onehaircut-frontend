@@ -91,7 +91,7 @@ const SalonChoice = () => {
 
         let data = {
             servicesIds: serviceIds,
-            haircut_id: null
+            haircut_id: 0
         }
         if (haircut) {
             data['haircut_id'] = haircut.id

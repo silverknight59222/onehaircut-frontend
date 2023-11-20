@@ -14,7 +14,7 @@ import { AbilityContext } from '@/layouts/components/acl/Can'
 import { buildAbilityFor } from '@/configs/acl'
 
 // ** Component Import
-import NotAuthorized from '@/pages/401'
+// import NotAuthorized from '@/pages/401'
 import Spinner from '@/@core/components/spinner'
 import BlankLayout from '@/@core/layouts/BlankLayout'
 
@@ -80,7 +80,8 @@ const AclGuard = (props: AclGuardProps) => {
   // Render Not Authorized component if the current user has limited access
   return (
     <BlankLayout>
-      <NotAuthorized />
+      {/* <NotAuthorized /> */}
+      Not Authorized
     </BlankLayout>
   )
 }

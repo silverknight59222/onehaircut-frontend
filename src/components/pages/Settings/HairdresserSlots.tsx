@@ -10,6 +10,7 @@ import { Theme_A } from "@/components/utilis/Themes";
 import { ColorsThemeA } from "@/components/utilis/Themes";
 import DropdownMenu from "@/components/UI/DropDownMenu";
 import { OpenTimes } from "./OpenningHours";
+import { SalonDetails } from "@/types";
 
 // Define the types/interfaces for the data
 interface HairdresserSlot {
@@ -30,6 +31,10 @@ interface HairdressersWithSlots {
     image: string;
   };
   slots: HairdresserSlot[];
+}
+
+interface SalonwithSlots extends SalonDetails {
+  openTimes: OpenTimes[];
 }
 
 // Define the HairdresserSlots component
@@ -153,7 +158,7 @@ export const HairdresserSlots = () => {
     }
 
     if (hairSalon) {
-      let days = [];
+      let days:any = [];
       hairSalon.openTimes.forEach(time => {
         if (time.available) {
           days.push(hoursList[time.day].title)
