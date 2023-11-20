@@ -57,6 +57,7 @@ const Hairdressers = () => {
   const [showAvatar, setShowAvatars] = useState("men");
   const [avatars, setAvatars] = useState<AllAvatars>(defaultAvatars);
   const [profileImage, setProfileImage] = useState<string | null>("");
+  const [profileImageBinary, setProfileImageBinary] = useState<string | File | null>("");
   const [isLoading, setIsLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
@@ -102,13 +103,10 @@ const Hairdressers = () => {
       return;
     }
     const fileUploaded = event.target.files[0];
+    setProfileImageBinary(fileUploaded);
     getBase64(fileUploaded, (result) => {
       setProfileImage(result);
-      setHairDresser((prevState) => ({
-        ...prevState,
-        profile_image: result,
-      }));
-    });    
+    });
   };
   const onChangeName = (name: string) => {
     if (!name.length) {
@@ -243,10 +241,10 @@ const Hairdressers = () => {
       data.append("password", hairDresser.password);
     }
     data.append("avatar_id", avatarIndex as unknown as Blob);
-    if (hairDresser.profile_image) {
+    if (profileImageBinary) {
       data.append(
         "profile_image",
-        hairDresser.profile_image
+        profileImageBinary
       );
     }
     if (isUpdate) {
@@ -256,6 +254,7 @@ const Hairdressers = () => {
           getAllHairDresser();
           setHairDresser({...defaultHairDresser});
           setProfileImage(() => "");
+          setProfileImageBinary(() => "");
           setIsEdit(false);
           setAvatarIndex(1);
           showSnackbar("success", res.data.message);
@@ -273,6 +272,7 @@ const Hairdressers = () => {
           getAllHairDresser();
           setHairDresser(() => defaultHairDresser);
           setProfileImage(() => "");
+          setProfileImageBinary(() => "");
           showSnackbar("success", res.data.message);
         })
         .catch((err) => {
@@ -320,6 +320,7 @@ const Hairdressers = () => {
       showSnackbar("success", res.data.message);
       setHairDresser({...defaultHairDresser});
       setProfileImage(() => "");
+      setProfileImageBinary(() => "");
       setAvatarIndex(1);
       setIsEdit(false);
     });
@@ -334,6 +335,7 @@ const Hairdressers = () => {
   const onClear = () => {
     setHairDresser({...defaultHairDresser});
     setProfileImage(() => "");
+    setProfileImageBinary(() => "");
     setAvatarIndex(1);
     setIsEdit(false);
   };
@@ -547,7 +549,7 @@ const Hairdressers = () => {
             </div>
             {getAvatars().map((avatar, index) => {
               return (
-                <Avatars key={index} image={avatar.image} id={avatar.id} />
+                <Avatars key={index} image={avatar.image.includes("http") ? avatar.image : "https://api.onehaircut.com"+avatar.image} id={avatar.id} />
               );
             })}
             <div className="cursor-pointer" onClick={handleAvatarNext}>
@@ -628,7 +630,7 @@ const Hairdressers = () => {
                       <Image
                         fill={true}
                         src={
-                          item.profile_image ? item.profile_image  : (item.avatar && item.avatar.image) ? `https://api.onehaircut.com${item.avatar.image}` : ''
+                          item.profile_image ? (item.profile_image.includes("http") ? item.profile_image : 'https://api.onehaircut.com'+item.profile_image)  : (item.avatar && item.avatar.image) ? `https://api.onehaircut.com${item.avatar.image}` : ''
                         }
                         alt="image"
                       />

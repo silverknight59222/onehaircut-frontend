@@ -20,7 +20,10 @@ interface Props {
 
 const LanguageDropdown = ({ settings, saveSettings }: Props) => {
   // ** Hook
-  const { i18n } = useTranslation()
+  const { i18n } = useTranslation<['foo','bar']>([
+    'foo',
+    'bar'
+  ])
 
   const handleLangItemClick = (lang: 'en' | 'fr' | 'ar') => {
     i18n.changeLanguage(lang)
