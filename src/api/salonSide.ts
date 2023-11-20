@@ -20,7 +20,7 @@ interface SalonMobilityZone {
 }
 const salonApi = {
     updateLogoAndDescription: async (params: any) => {
-        return await request.post(`/update-logo-and-description/`, params);
+        return await request.post(`/update-logo-and-description`, params);
     },
     getSlots: async (id: number, params: SlotParam) => {
         return await request.post(`/fetch_slots_by_hair_dresser/${id}`, params);
