@@ -10,7 +10,7 @@ import Autocomplete from "react-google-autocomplete";
 import { client } from "@/api/clientSide";
 import { salonApi } from '@/api/salonSide';
 import useSnackbar from "@/hooks/useSnackbar";
-import { getLocalStorage } from "@/api/storage";
+import { getLocalStorage, setLocalStorage } from "@/api/storage";
 
 const tempSalon = getLocalStorage('hair_salon');
 const salonInfo = tempSalon ? JSON.parse(tempSalon) : null;  
@@ -65,15 +65,18 @@ const SalonInfos = () => {
         if (salonInfo) {
             if (salonInfo.type == 'barber_shop'){
                 setSelectedSalonType('Barber-shop')
-                
+            } else {
+                setSelectedSalonType(salonInfo.type)
             }
+            setTypeImage(salonInfo.type)
             setIsMobilityAllowed(salonInfo.is_mobile)
         }        
     }, []);
 
-    const saveSalonType = async () => {
-        await salonApi.saveSalonType({type: SalonType})
-        .then((resp) => {                
+    const saveSalonType = async (item) => {
+        await salonApi.saveSalonType({type: item})
+        .then((resp) => {
+            setLocalStorage("hair_salon", JSON.stringify(resp.data));
             showSnackbar("success", "Salon Type Saved Successfully.");            
         })
         .catch(err => {
@@ -132,6 +135,12 @@ const SalonInfos = () => {
 
     const [selectedImageUrl, setSelectedImageUrl] = useState('/assets/DefaultPictures/Profil.png');
     const HandleSelectedSalonType = (item: string) => {
+        setSelectedSalonType(item);
+        setTypeImage(item)
+        saveSalonType(item)
+    }
+
+    const setTypeImage = (item) => {
         let imageUrl = '/assets/DefaultPictures/Profil.png';
         switch (item) {
             case 'Barber-shop':
@@ -162,9 +171,7 @@ const SalonInfos = () => {
                 imageUrl = "/assets/salon_types/Salon de coiffure mixte.png";
                 break;
         }
-        setSelectedSalonType(item);
         setSelectedImageUrl(imageUrl);
-        saveSalonType()
     }
 
     //For the slider :

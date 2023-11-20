@@ -14,11 +14,11 @@ const Images = () => {
 	const [salonImages, setSalonImages] = useState<ImageSalon[]>([]);
 
 	const getAllSalonImages = async () => {
-		const temp = getLocalStorage("user");
-		const user = temp ? JSON.parse(temp) : null;
-		if (user.id) {
+		let temp = getLocalStorage("hair_salon");
+    	const hairSalon = temp ? JSON.parse(temp) : null;
+		if (hairSalon) {
 		setIsLoading(true);
-		await dashboard.getAllSalonImages(user.id).then((resp) => {
+		await dashboard.getAllSalonImages(hairSalon.id).then((resp) => {
 			if (resp.data.data.length) {
 				setSalonImages(resp.data.data);
 			}

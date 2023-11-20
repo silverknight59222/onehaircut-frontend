@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from "react";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import userLoader from "@/hooks/useLoader";
-import { getLocalStorage, removeFromLocalStorage } from "@/api/storage";
+import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/storage";
 import { SalonRegisterParams, registration } from "@/api/registration";
 import useSnackbar from "@/hooks/useSnackbar";
 import { useRouter } from "next/navigation";
@@ -78,14 +78,20 @@ function StripePayment() {
     await registration
       .registerSalon(data)
       .then((res) => {
+        const userInfo = JSON.parse(getLocalStorage("user_Info") as string);
+
+        setLocalStorage("auth-token", userInfo.token);
+        setLocalStorage('hair_salon', JSON.stringify(res.data.hair_salon));
+
         showSnackbar("success", "Salon successfully created");
-        router.push('/confirm-payment');
+
         // removeFromLocalStorage('user_Info')
         // removeFromLocalStorage('salon_name')
         // removeFromLocalStorage('salon_address')
         // removeFromLocalStorage('salon_type')
         // removeFromLocalStorage('plan_type')
         removeFromLocalStorage('secret_key')
+        router.push("/dashboard");
       })
       .catch((err) => {
         showSnackbar("error", "Error Occured!");
@@ -112,6 +118,7 @@ function StripePayment() {
           },
         })
         .then(function (result) {
+          console.log(result)
           registerSalon(result.paymentMethod?.id);
           // window.open("https://api.whatsapp.com/send?phone=" + userInfo.phone + "&text=Booking Success!", '_blank');
         })
