@@ -139,6 +139,9 @@ export const Agenda = () => {
   return (
     <>
       {isLoading && loadingView()} {/* Affichage du loader si le chargement est en cours */}
+      <div className="flex justify-end">
+        <div className="box-decoration-slice bg-gradient-to-r from-red-600 to-red-500  mb-2 rounded-md font-medium text-center p-1 box-border h-15 w-[200px] text-white px-3">Incoming Bookings 3</div>
+      </div>
       <FullCalendar
         ref={calendarRef}
         events={events}

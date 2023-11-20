@@ -470,16 +470,21 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
                     <div
                       onClick={() => onSelectItem(item.route, index)}
                       className={
-                        `flex items-center my-2 pl-8 py-4 gap-4 cursor-pointer transition ease-in-out duration-100 border-l-4 
+                        `flex items-center my-2 pl-8 py-4 gap-2 cursor-pointer transition ease-in-out duration-100 border-l-4 
                         ${path === item.route && "border-rose-600 bg-gradient-to-r from-zinc-800 via-zinc-600 to-zinc-400 font-bold"}`}
                     >
-                      <div className="relative">
+                      <div className="relative flex justify-content-right q">
                         {setIcon(
                           item.icon,
                           path === item.route ? item.icon : ""
                         )}
                         {/* TODO make the message notification number dynamic */}
-                        {item.title === 'Message' && <p className="absolute top-3 -right-2.5 flex items-center justify-center w-4 h-4 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold">2</p>}
+                        {/* {item.title === 'Message' && <p className="absolute top-3 -right-2.5 flex items-center justify-center w-4 h-4 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold">2</p>} */}
+                        {(item.title === 'Message') &&< p className="left-56 top-[2.6px]	absolute flex items-center justify-center w-5 h-5 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold">2</p>}
+                        {(item.title === 'Réservations en cours') &&< p className="left-56 top-[2.6px]	absolute  flex items-center justify-center w-5 h-5 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold">2</p>}
+                        {(item.title === 'Historique') &&< p className="left-56 top-[2.6px]	absolute  flex items-center justify-center w-5 h-5 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold">2</p>}
+                        
+                      
                       </div>
                       <p
                         className={`text-base ${path === item.route && "text-white"
