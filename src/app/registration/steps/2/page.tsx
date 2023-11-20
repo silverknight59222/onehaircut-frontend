@@ -9,6 +9,7 @@ import {
   useJsApiLoader,
   GoogleMap,
   Marker,
+  Circle,
 } from '@react-google-maps/api'
 import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 
@@ -204,7 +205,21 @@ const Step2 = () => {
               center={location}
               zoom={zoomMap}
               mapContainerStyle={{ width: '100%', height: '100%' }} >
-              <Marker position={location} visible={true} />
+
+              <Marker position={location} />
+              {/* Circle representing the range */}
+              <Circle
+                center={{
+                  lat: (location.lat),
+                  lng: (location.lng)
+                }}
+                radius={zone}
+              // strokeColor="transparent"
+              // strokeOpacity={0}
+              // strokeWeight={5}
+              // fillColor="#FF0000"
+              // fillOpacity={0.2}
+              />
             </GoogleMap>
           </div>
           <div className="w-full flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-7 mb-5">
