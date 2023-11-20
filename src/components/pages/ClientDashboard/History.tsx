@@ -183,7 +183,7 @@ const History = () => {
             </BaseModal>}
           <div className="flex flex-col items-center justify-center mt-10 mb-5 px-6 sm:px-10 md:px-20">
             <p className="text-black font-medium text-3xl text-center mb-8">
-              Historique des coiffures effectuées
+              Historique des coiffures effectuées {histories.length}
             </p>
             <div className='flex flex-col gap-4' >
               {/* Loop over the booking history and display them */}
@@ -217,8 +217,8 @@ const History = () => {
 
                         </div>
                         <div className='w-[150px] mr-3'>
-                          {item.salon_haircut && <Image src={`https://api.onehaircut.com${item.salon_haircut.haircut.image}`} alt='' width={150} height={150} className='rounded-3xl' />}
-                          {!item.salon_haircut && <Image src={item.hair_salon ? `https://api.onehaircut.com${item.hair_salon.logo}` : `https://api.onehaircut.com${item.hair_salon.logo}`} width={150} height={150} className='rounded-3xl' />}
+                          {item.salon_haircut && <Image src={item.salon_haircut.haircut.image.includes('http') ? item.salon_haircut.haircut.image : ` https://api.onehaircut.com${item.salon_haircut.haircut.image}`} alt='' width={150} height={150} className='rounded-3xl' />}
+                          {!item.salon_haircut && <Image src={item.hair_salon ? (item.hair_salon.logo.includes ? item.hair_salon.logo : `https://api.onehaircut.com${item.hair_salon.logo}`) : item.hair_salon.logo.includes('http') ? item.hair_salon.logo : `https://api.onehaircut.com${item.hair_salon.logo}`} alt='' width={150} height={150} className='rounded-3xl' />}
                           <div className='justify-center items-center mt-3 bg-zinc-100 rounded-2xl p-1'>
                             <StarRatings
                               rating={item.rating ? item.rating.rating : 0}
