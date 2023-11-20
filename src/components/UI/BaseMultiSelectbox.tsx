@@ -11,7 +11,7 @@ export type BaseDropdown = {
     getActiveFilters?: (value: string) => void;
 }
 
-const BaseMultiSelectbox = (props: BaseDropdown) => {
+const BaseMultiSelectbox = ({getActiveFilters, dropdownTitle, dropdownItems}: BaseDropdown) => {
     const [isDropdown, setIsDropdown] = useState(false);
     const [selectedItems, setSelectedItems] = useState<string>('')
     const dropdownRef = React.useRef() as React.MutableRefObject<HTMLInputElement>
@@ -19,8 +19,12 @@ const BaseMultiSelectbox = (props: BaseDropdown) => {
     const checkboxClickHandler = (value: string) => {
         if (selectedItems === value) {
             setSelectedItems(() => '');
+            if (getActiveFilters)
+                getActiveFilters(selectedItems);
         } else {
             setSelectedItems(value);
+            if (getActiveFilters)
+                getActiveFilters(selectedItems);
         }
     };
     const closeSelectBox = ({ target }: MouseEvent): void => {
@@ -36,20 +40,16 @@ const BaseMultiSelectbox = (props: BaseDropdown) => {
             document.removeEventListener('click', closeSelectBox);
         };
     }, []);
-    useEffect(() => {
-        if (props.getActiveFilters)
-            props.getActiveFilters(selectedItems);
-    }, [props, selectedItems])
 
     return (
         <div ref={dropdownRef} className="relative w-52">
             <button onClick={() => setIsDropdown(!isDropdown)} className={selectedItems.length ? "flex items-center justify-center gap-8 font-medium rounded-xl h-[52px] pl-3 pr-4 bg-stone-800 text-white shadow-[0px_15px_18px_0px_rgba(0, 0, 0, 0.14)]" : "flex items-center justify-center gap-8 bg-[#F7F7F7] font-medium rounded-xl h-[52px] pl-3 pr-4 shadow-[0px_15px_18px_0px_rgba(0, 0, 0, 0.14)]"}>
-                {props.dropdownTitle}
+                {dropdownTitle}
                 <DownArrow color={selectedItems.length ? 'white' : '#000'} />
             </button>
             {isDropdown && (
                 <div className="mt-2 absolute rounded-xl border border-checkbox bg-white p-6">
-                    {props.dropdownItems.map((item, index) => {
+                    {dropdownItems.map((item, index) => {
                         return (
                             <div key={index} onClick={() => checkboxClickHandler(item.name)} className="flex cursor-pointer mb-[19px]">
                                 <div className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${selectedItems.includes(item.name) ? "bg-gradient-to-b from-pink-500 to-orange-500" : "bg-[#D6D6D6]"}`}>
