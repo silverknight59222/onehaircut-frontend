@@ -14,7 +14,7 @@ export type Address = {
 
 export type SalonDetails = {
 	haircut: {
-		ratings_count: number,
+		rating_counts: number,
 		rating: number
 	};
 	address: Address;
@@ -28,7 +28,7 @@ export type SalonDetails = {
 	logo: string;
 	salon_images: SalonImages[],
 	salon_cover_image: SalonImages,
-	ratings_count: number,
+	rating_counts: number,
 	is_mobile:string,
 	range: number[],
 	base_price: number,

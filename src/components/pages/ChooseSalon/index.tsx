@@ -463,7 +463,7 @@ const SalonChoice = () => {
                                                 numberOfStars={5}
                                                 name="rating"
                                             />
-                                            <p>{salon.haircut ? salon.haircut.ratings_count : salon.ratings_count} d'avis</p>
+                                            <p>{salon.haircut ? salon.haircut.rating_counts : salon.rating_counts} d'avis</p>
                                         </div>
                                     </div>
                                 </div>

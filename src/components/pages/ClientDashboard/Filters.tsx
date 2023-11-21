@@ -211,7 +211,7 @@ const Filters = () => {
         setMinRating(resp.data.ratings);
         if(resp.data.max_ratings)
             setMaxRating(resp.data.max_ratings);
-        SetAtHome(resp.data.availability)
+        SetAtHome(resp.data.availability || [])
     }
 
     return (
@@ -477,7 +477,7 @@ const Filters = () => {
                                                 <p className="text-black text-sm mb-2">{day}</p>
                                                 <div
                                                     onClick={() => checkboxClickHandler(day)}
-                                                    className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded hover:scale-125 transition duration-300 ${selectedItems.includes(day)
+                                                    className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded hover:scale-125 transition duration-300 ${selectedItems && selectedItems.includes(day)
                                                         ? ColorsThemeA.ohcVerticalGradient_A
                                                         : "bg-[#D6D6D6]"
                                                         }`}

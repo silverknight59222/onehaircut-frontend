@@ -45,7 +45,7 @@ interface SalonProfile {
   openTimes: any[],
   final_price: number,
   total_duration: number,
-  ratings_count: number,
+  rating_counts: number,
   haircut: any,
   total_service_duration: number
 }
@@ -100,7 +100,8 @@ const SearchSalon = () => {
       }
     })
     setHours(tempHours)
-  }, [salonProfile, hoursList])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [salonProfile])
 
   // FOR CHAT MODAL 
   // Créez un état pour suivre si le Chat modal est ouvert ou fermé
@@ -291,7 +292,7 @@ const SearchSalon = () => {
                   name="rating"
                 />
                 {/* TODO use salon's rating of the selected haircut {salonProfile.rating}*/}
-                <p className="-mb-2"> {Math.round(salonProfile.rating)}</p> <br /> <small><small>  ({salonProfile.ratings_count || 0} avis</small></small> <p className="font-normal"><small><small><small>* sur cette coiffure</small></small></small> <br /></p> <small><small> ) </small></small>
+                <p className="-mb-2"> {Math.round(salonProfile.rating)}</p> <br /> <small><small>  ({salonProfile.rating_counts || 0} avis</small></small> <p className="font-normal"><small><small><small>* sur cette coiffure</small></small></small> <br /></p> <small><small> ) </small></small>
               </div>}
               {/* Description du salon */}
               <div className="mt-5 p-4 bg-gray-200 w-full lg:w-[400px] 2xl:w-[720px] rounded-xl ">
