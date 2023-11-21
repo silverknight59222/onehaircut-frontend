@@ -7,7 +7,9 @@ import userLoader from "@/hooks/useLoader";
 import useSnackbar from "@/hooks/useSnackbar";
 import { getLocalStorage, setLocalStorage } from "@/api/storage";
 import UserProfile from "@/components/UI/UserProfile";
-import PhoneInput, { Value } from 'react-phone-number-input'
+import PhoneInput from 'react-phone-number-input'
+import { Value } from 'react-phone-number-input'
+import 'react-phone-number-input/style.css'
 import { Theme_A } from "@/components/utilis/Themes";
 import CustomInput from "@/components/UI/CustomInput";
 
@@ -199,6 +201,15 @@ const Step3 = () => {
     })
   }
 
+  const setNewPhone = (value?: Value) => {
+    if (value != undefined) {
+      setUserDetails((prevState) => ({
+        ...prevState,
+        phone: value,
+      }))
+    }
+  };
+
 
   return (
     <div>
@@ -239,27 +250,27 @@ const Step3 = () => {
             )}
           </div>
           <div className="w-full">
-            <CustomInput
-              type="text"
-              value={userDetails.phone}
-              onChange={(e) => {
-                const inputElement = e.target as HTMLInputElement;
-                const value = inputElement.value;
-                const sanitizedValue = value.replace(/[^0-9]/g, ''); // Remove non-numeric characters
-                // inputElement.value = sanitizedValue;
-                console.log(sanitizedValue)
-                setUserDetails((prevState) => ({
-                  ...prevState,
-                  phone: sanitizedValue,
-                }))
-                setError((prev) => {
-                  return { ...prev, phone: "" };
-                })
-              }
-              }
-              id={"Phone"}
-              label={"Téléphone"} />
+            <div className="flex-col items-center justify-center gap-4 ">
 
+              <div className={`w-100 ${inputFieldsDesignNoW}`}>
+                <PhoneInput
+                  style={{ height: 8 }}
+                  // className={`${inputFieldsDesign}`}
+                  // inputComponent={{ phoneInput }}
+                  // containerClass={containerClass}
+                  defaultCountry={'FR'}
+                  value={userDetails.phone}
+                  placeholder={"Nouveau numéro"}
+                  onChange={(value) => {
+                    setNewPhone(value)
+                    setError((prev) => {
+                      return { ...prev, phone: "" };
+                    })
+                  }
+                  }
+                />
+              </div>
+            </div>
             {error.phone && (
               <p className="text-xs text-red-700 ml-3 mt-1">{error.phone}*</p>
             )}
