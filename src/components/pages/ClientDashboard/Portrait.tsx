@@ -363,7 +363,7 @@ const Portrait = () => {
                     </p>
                     <div className="flex flex-col sm:flex-row  sm:items-start justify-center gap-14">
                         {/* Left side of the head placed left */}
-                        <div className="flex sm:flex-col  gap-10 -mt-6 sm:-mt-0">
+                        <div className="flex sm:flex-col gap-6 md:gap-10 -mt-6 sm:-mt-0">
                             {profilPicToDisplay(handleClickLeft2, profileSlightlyLeftImage, SubTextToDisplay[0], 32, DefaultProfilLeft2)}
 
                             {profilPicToDisplay(handleClickLeft, profileLeftImage, SubTextToDisplay[1], 32, DefaultProfilLeft)}
@@ -376,7 +376,7 @@ const Portrait = () => {
                         {/* </div> */}
 
                         {/* Right side of the face on the right */}
-                        <div className="flex sm:flex-col  gap-10 -mt-6 sm:-mt-0">
+                        <div className="flex sm:flex-col gap-6 md:gap-10 -mt-6 sm:-mt-0">
                             {profilPicToDisplay(handleClickRight2, profileSlightlyRightImage, SubTextToDisplay[3], 32, DefaultProfilRight2)}
 
                             {profilPicToDisplay(handleClickRight, profileRightImage, SubTextToDisplay[4], 32, DefaultProfilRight)}
