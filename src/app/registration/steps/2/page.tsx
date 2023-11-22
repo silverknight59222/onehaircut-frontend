@@ -102,8 +102,7 @@ const Step2 = () => {
   }
 
 
-  const setAddressData = (place: any,) => {
-    console.log(place)
+  const setAddressData = (place: any,) => {    
     setStreet("")
     setCity("")
     setState("")
