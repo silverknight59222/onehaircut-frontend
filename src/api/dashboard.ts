@@ -79,8 +79,12 @@ const dashboard = {
   getAllHaircuts: async (page: number) => {
     return await request.get<any>(`/haircuts/${page}`);
   },
-  getAllHaircutBySalon: async (id: number) => {
-    return await request.get<any>(`/filtered_haircuts/${id}`);
+  getAllHaircutBySalon: async (id: number, page: number, type: string, params = {}) => {
+    if (type == "new") {
+      return await request.get<any>(`/haircuts_list/${id}/${page}`, {params: params});
+    } else {
+      return await request.get<any>(`/salon_haircuts_list/${id}/${page}`, {params: params});
+    }
   },
   deleteSalonHaircut: async (id: number) => {
     return await request.delete<ResponseType>(`/salon_haircut/${id}`);
