@@ -46,6 +46,10 @@ const HairStyleListItem = React.memo(({ item, activeMenu, hairStyleSelectEvent, 
         setIsSelected(false)
     }, [filters]) // filter name is not changed, change it to integer "Key"
 
+    useEffect(() => {
+        setIsSelected(false)
+    }, [activeMenu])
+
     // This component will re-render only if the `data` prop changes
     return (
 

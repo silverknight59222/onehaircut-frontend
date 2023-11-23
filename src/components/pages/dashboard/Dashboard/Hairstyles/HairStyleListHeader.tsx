@@ -12,7 +12,7 @@ import { ColorsThemeA } from "@/components/utilis/Themes";
 
 
 
-const HairStyleListHeader = React.memo(({ setActiveMenu, activeMenu, onFilterSelect, params, selectAllEvent }: any) => {
+const HairStyleListHeader = React.memo(({ setActiveMenu, activeMenu, onFilterSelect, params, selectAllEvent, onListCountShow }: any) => {
     // console.log("in HairStyleListHeader")
 
 
@@ -21,6 +21,7 @@ const HairStyleListHeader = React.memo(({ setActiveMenu, activeMenu, onFilterSel
     const [lengthFilters, setLengthFilters] = useState<string[]>([]);
     const [search, setSearch] = useState<string>("");
     const [isAllSelected, setIsAllSelected] = useState<boolean>(false);
+    const [resultCount, setResultCount] = useState(0);
 
     const Ethnicity = [
         {
@@ -215,11 +216,16 @@ const HairStyleListHeader = React.memo(({ setActiveMenu, activeMenu, onFilterSel
         //     setFilteredHaircuts(haircuts);
         // }
     };
-    const onToggleHairstyle = () => {
-        setActiveMenu("new");
-        // setForm(defaultFormDetails);
-        // setSelectedSalonHaircut(defaultHaircut);
-    };
+
+    const toAddTab = () => {
+        setIsAllSelected(false)
+        setActiveMenu("added")
+    }
+
+    const toNewTab = () => {
+        setIsAllSelected(false)
+        setActiveMenu("new")
+    }
 
     const resetSelectALl = () => {
         setIsAllSelected(false)
@@ -230,6 +236,12 @@ const HairStyleListHeader = React.memo(({ setActiveMenu, activeMenu, onFilterSel
         setIsAllSelected(!isAllSelected)
         selectAllEvent.on(!isAllSelected)
     };
+
+    const setListCount = (value) => {
+        setResultCount(value)
+    }
+
+    onListCountShow.on = setListCount
 
     useEffect(() => {
         setGenderFilters("");
@@ -373,19 +385,22 @@ const HairStyleListHeader = React.memo(({ setActiveMenu, activeMenu, onFilterSel
                         <div
                             className={`${Theme_A.behaviour.buttonHoverBehaviour_3} ${activeMenu === "added" && "bg-stone-800 text-white"
                                 }`}
-                            onClick={() => setActiveMenu("added")}
+                            onClick={() => toAddTab()}
                         >
                             Coiffures ajoutées
                         </div>
                         <div
                             className={`${Theme_A.behaviour.buttonHoverBehaviour_3}  ${activeMenu === "new" && "bg-stone-800 text-white"
                                 }`}
-                            onClick={onToggleHairstyle}
+                            onClick={() => toNewTab()}
                         >
                             Coiffure non dispensées
                         </div>
                     </div>
                 </div>
+            </div>
+            <div className="flex flex-col-reverse lg:flex-row items-center gap-4 w-max p-1 mb-4 ml-5 text-[#737373]">
+                <div className={`${Theme_A.indicators.counterIndicator}`}>Résultat: {resultCount}</div>
             </div>
         </div>
     );

@@ -15,7 +15,7 @@ import HairStyleListItem from './HairStyleListItem';
 let hairStyleParams = {}
 
 
-const HairStyleList = React.memo(({ activeMenu, hairStyleSelectEvent, resetStyleForm, onFilterSelect, onReloadListener, selectAllListener }: any) => {
+const HairStyleList = React.memo(({ activeMenu, hairStyleSelectEvent, resetStyleForm, onFilterSelect, onReloadListener, selectAllListener, listCountShowEvent }: any) => {
     // console.log("in HairStyleList", hairStyleSelectEvent)
 
     const [haircutList, setHaircutList] = useState<Haircut[]>([]);
@@ -55,6 +55,7 @@ const HairStyleList = React.memo(({ activeMenu, hairStyleSelectEvent, resetStyle
                             }
                         }
                     }
+                    listCountShowEvent.on(res.data.count)
                     if (res.data.count <= (currentPage * res.data.perPage)) {
                         setPage(-1)
                       } else {
@@ -100,7 +101,8 @@ const HairStyleList = React.memo(({ activeMenu, hairStyleSelectEvent, resetStyle
 
     useEffect(() => {
         reload()
-
+        hairStyleParams = {}
+        setIsAllSelected(false)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activeMenu])
 

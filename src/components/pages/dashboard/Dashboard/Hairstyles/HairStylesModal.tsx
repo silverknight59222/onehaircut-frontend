@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Theme_A } from "@/components/utilis/Themes";
 import Image from "next/image";
 import { getLocalStorage } from "@/api/storage";
@@ -225,14 +225,18 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
         }
         let data: any = form;
         data.hair_salon_id = Number(getLocalStorage("salon_id"));
-        data.haircut_id = selectedSalonHaircut.id;
+        const selectedHaircuts: number[] = [];
+        selectedHaircutsMapping.map((item) => {
+            selectedHaircuts.push(item.id);
+        });
+        data.haircut_ids = selectedHaircuts;
         await dashboard
-            .updateSalonHaircut(form.id, data)
+            .updateSalonHaircut(data)
             .then((res) => {
+                setSelectedHaircutsMapping([]);
                 setForm(defaultFormDetails);
+                reloadListEvent.on()
                 showSnackbar("success", "Haircut updated successfully");
-                // refresh modal list
-                setSelectedSalonHaircut(defaultHaircut);
             })
             .catch((err) => {
                 showSnackbar("error", "Failed to update haircut");
@@ -294,6 +298,12 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
                 showSnackbar("error", "Failed to add new haircuts");
             });
     };
+
+    useEffect(() => {
+        setSelectedHaircutsMapping([]);
+        setForm(defaultFormDetails);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [activeMenu])
 
     // This component will re-render only if the `data` prop changes
     return (
@@ -518,7 +528,7 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
                         </div>
                     </div>
                 </div>
-                {!(activeMenu === "added" && selectedSalonHaircut.id >= 0) ? (
+                {!(activeMenu === "added" && selectedHaircutsMapping.length >= 0) ? (
                     <div className="flex items-center justify-center gap-4 mt-4">
                         <button onClick={addSalonHaircuts} className={`${Theme_A.button.mediumGradientButton}`}>
                             Ajouter
@@ -531,7 +541,7 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
                             className={`${Theme_A.button.medWhiteColoredButton}`}
                             onClick={() => {
                                 setForm(defaultFormDetails);
-                                setSelectedSalonHaircut(defaultHaircut);
+                                setSelectedHaircutsMapping([]);
                             }}>
                             Annuler
                         </button>

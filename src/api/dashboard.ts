@@ -70,8 +70,8 @@ const dashboard = {
   addSalonHaircut: async (params: any) => {
     return await request.post<ResponseType>(`/salon_haircut`, params);
   },
-  updateSalonHaircut: async (id:number, params: any) => {
-    return await request.post<ResponseType>(`/salon_haircut/${id}`, params);
+  updateSalonHaircut: async (params: any) => {
+    return await request.post<ResponseType>(`/update_salon_haircut`, params);
   },
   getAllSalonHaircuts: async (id: number) => {
     return await request.get<any>(`/salon_haircuts_by_hair_salon/${id}`);

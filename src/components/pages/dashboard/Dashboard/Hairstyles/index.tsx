@@ -24,6 +24,10 @@ const selectAll = {
   on: () => {}
 }
 
+const listCountShow = {
+  on: () => {}
+}
+
 const params = {
   ethnicityFilters: [] as string[],
   genderFilters: "",
@@ -36,10 +40,10 @@ const Hairstyles = () => {
 
   return (
     <div>
-      <HairStyleListHeader selectAllEvent={selectAll} params={params} onFilterSelect={onFilterSelect} setActiveMenu={setActiveMenu} activeMenu={activeMenu} ></HairStyleListHeader>
+      <HairStyleListHeader onListCountShow={listCountShow} selectAllEvent={selectAll} params={params} onFilterSelect={onFilterSelect} setActiveMenu={setActiveMenu} activeMenu={activeMenu} ></HairStyleListHeader>
       <div className="flex flex-col md:flex-row gap-8">
         <HairStylesModal params={params} reloadListEvent={reloadList} onResetStyleForm={resetStyleForm} hairStyleSelectEvent={hairStyleSelectEvent} activeMenu={activeMenu}></HairStylesModal>
-        <HairStyleList selectAllListener={selectAll} onReloadListener={reloadList} resetStyleForm={resetStyleForm} onFilterSelect={onFilterSelect} hairStyleSelectEvent={hairStyleSelectEvent} activeMenu={activeMenu}></HairStyleList>
+        <HairStyleList listCountShowEvent={listCountShow}  selectAllListener={selectAll} onReloadListener={reloadList} resetStyleForm={resetStyleForm} onFilterSelect={onFilterSelect} hairStyleSelectEvent={hairStyleSelectEvent} activeMenu={activeMenu}></HairStyleList>
       </div>
       <Footer />
     </div>
