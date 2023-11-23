@@ -230,7 +230,7 @@ const Index = () => {
   
   return (
     <div>
-      {isLoading && loadingView()}
+      {isLoading && haircutData && loadingView()}
       <Navbar hideSearchBar={true} />
       <div className="flex flex-col items-center justify-center mt-16 mb-5 px-6 ">
         <div className="w-full md:w-auto flex md:block flex-col items-center justify-center ">
@@ -256,11 +256,14 @@ const Index = () => {
                 {slotData && <p className="text-base"><span className="font-bold text-lg ">Heure de fin: </span>{slotData.slot[slotData.slot.length - 1].end}</p>}
                 {slotData && <p className="text-base"><span className="font-bold text-lg ">Durée totale: </span>{salonData.total_duration} Minutes</p>}
               </div>
-              <div className="flex flex-col gap-3 text-xl font-medium text-black">
-                <div className={`${Theme_A.hairstyleCards.cardSize.big} ml-12`}>
-                  <Image src={haircutData.image.includes('http') ? haircutData.image : `https://api.onehaircut.com${haircutData.image}`} fill={true} alt="" className="rounded-t-xl" sizes="640w"/>
+              {
+              haircutData && haircutData.image && 
+                <div className="flex flex-col gap-3 text-xl font-medium text-black">
+                  <div className={`${Theme_A.hairstyleCards.cardSize.big} ml-12`}>
+                    <Image src={haircutData.image.includes('http') ? haircutData.image : `https://api.onehaircut.com${haircutData.image}`} fill={true} alt="" className="rounded-t-xl" sizes="640w"/>
+                  </div>
                 </div>
-              </div>
+              }
             </div>
             <div className="flex items-center justify-between border-t-2 border-[#CBCBCB] pt-9 mt-9">
               <button onClick={() => router.push('/book-salon')} className={`${Theme_A.button.bigWhiteColoredButton}`}>

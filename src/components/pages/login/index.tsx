@@ -18,6 +18,7 @@ const Login = () => {
 	const [showPassword, setShowPassword] = useState(false);
 	const searchParams = useSearchParams()
 
+	console.log(searchParams.get('redirect'))
 	const defaultUserInfo = {
 		email: "",
 		password: "",
@@ -96,17 +97,19 @@ const Login = () => {
 				if (res.user.hair_salon) {
 					setLocalStorage("hair_salon", JSON.stringify(res.user.hair_salon));
 				}
-				setLocalStorage("auth-token", res.token);
-				// if(searchParams.get('redirect') === 'payment'){
-				// 	router.push("/payment");
-				// }
-				const salonRoles = ['salon_professional', 'admin', 'staff'];
-				// if (res.user.role === 'salon_professional' || ) {
-				if (salonRoles.indexOf(res.user.role) != -1) {
-					router.push("/dashboard");
+				setLocalStorage("auth-token", res.token);				
+				if(searchParams.get('redirect') === 'payment'){
+					router.push("/payment");						
 				} else {
-					router.push("/client/dashboard");
+					const salonRoles = ['salon_professional', 'admin', 'staff'];
+				// if (res.user.role === 'salon_professional' || ) {
+					if (salonRoles.indexOf(res.user.role) != -1) {
+						router.push("/dashboard");
+					} else {
+						router.push("/client/dashboard");
+					}
 				}
+				
 			})
 			.catch((err) => {
 				showSnackbar('error', 'Le mot de passe et l\'adresse e-mail sont obligatoires.')
