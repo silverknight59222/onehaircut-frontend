@@ -70,8 +70,8 @@ const dashboard = {
   addSalonHaircut: async (params: any) => {
     return await request.post<ResponseType>(`/salon_haircut`, params);
   },
-  updateSalonHaircut: async (id:number, params: any) => {
-    return await request.post<ResponseType>(`/salon_haircut/${id}`, params);
+  updateSalonHaircut: async (params: any) => {
+    return await request.post<ResponseType>(`/update_salon_haircut`, params);
   },
   getAllSalonHaircuts: async (id: number) => {
     return await request.get<any>(`/salon_haircuts_by_hair_salon/${id}`);
@@ -79,8 +79,12 @@ const dashboard = {
   getAllHaircuts: async (page: number) => {
     return await request.get<any>(`/haircuts/${page}`);
   },
-  getAllHaircutBySalon: async (id: number) => {
-    return await request.get<any>(`/filtered_haircuts/${id}`);
+  getAllHaircutBySalon: async (id: number, page: number, type: string, params = {}) => {
+    if (type == "new") {
+      return await request.get<any>(`/haircuts_list/${id}/${page}`, {params: params});
+    } else {
+      return await request.get<any>(`/salon_haircuts_list/${id}/${page}`, {params: params});
+    }
   },
   deleteSalonHaircut: async (id: number) => {
     return await request.delete<ResponseType>(`/salon_haircut/${id}`);
