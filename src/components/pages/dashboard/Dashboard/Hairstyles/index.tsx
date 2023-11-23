@@ -5,19 +5,30 @@ import HairStylesModal from "./HairStylesModal";
 import HairStyleListHeader from "./HairStyleListHeader";
 
 const hairStyleSelectEvent = {
-  on: null
+  on: () => {}
 }
 
 const onFilterSelect = {
-  on: null
+  on: () => {}
 }
 
 const resetStyleForm = {
-  on: null
+  on: () => {}
 }
 
 const reloadList = {
-  on: null
+  on: () => {}
+}
+
+const selectAll = {
+  on: () => {}
+}
+
+const params = {
+  ethnicityFilters: [] as string[],
+  genderFilters: "",
+  lengthFilters: [] as string[],
+  search: "",
 }
 
 const Hairstyles = () => {
@@ -25,10 +36,10 @@ const Hairstyles = () => {
 
   return (
     <div>
-      <HairStyleListHeader onFilterSelect={onFilterSelect} setActiveMenu={setActiveMenu} activeMenu={activeMenu} ></HairStyleListHeader>
+      <HairStyleListHeader selectAllEvent={selectAll} params={params} onFilterSelect={onFilterSelect} setActiveMenu={setActiveMenu} activeMenu={activeMenu} ></HairStyleListHeader>
       <div className="flex flex-col md:flex-row gap-8">
-        <HairStylesModal reloadListEvent={reloadList} onResetStyleForm={resetStyleForm} hairStyleSelectEvent={hairStyleSelectEvent} activeMenu={activeMenu}></HairStylesModal>
-        <HairStyleList onReloadListener={reloadList} resetStyleForm={resetStyleForm} onFilterSelect={onFilterSelect} hairStyleSelectEvent={hairStyleSelectEvent} activeMenu={activeMenu}></HairStyleList>
+        <HairStylesModal params={params} reloadListEvent={reloadList} onResetStyleForm={resetStyleForm} hairStyleSelectEvent={hairStyleSelectEvent} activeMenu={activeMenu}></HairStylesModal>
+        <HairStyleList selectAllListener={selectAll} onReloadListener={reloadList} resetStyleForm={resetStyleForm} onFilterSelect={onFilterSelect} hairStyleSelectEvent={hairStyleSelectEvent} activeMenu={activeMenu}></HairStyleList>
       </div>
       <Footer />
     </div>

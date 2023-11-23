@@ -13,12 +13,15 @@ import userLoader from "@/hooks/useLoader";
 
 
 
-const HairStyleListItem = React.memo(({ item, activeMenu, hairStyleSelectEvent, filters }: any) => {
+const HairStyleListItem = React.memo(({ item, activeMenu, hairStyleSelectEvent, filters, isAllSelected }: any) => {
     // console.log("in HairStyleListItem")
 
     const [isSelected, setIsSelected] = useState(false);
 
     const selectHaircut = (item: Haircut) => {
+        if (isAllSelected) {
+            return
+        }
         if (isSelected) {
             hairStyleSelectEvent.on({
                 type: "remove",
@@ -34,8 +37,14 @@ const HairStyleListItem = React.memo(({ item, activeMenu, hairStyleSelectEvent, 
     };
 
     useEffect(() => {
+        if (isAllSelected == false) {
+            setIsSelected(false)
+        }
+    }, [isAllSelected])
+
+    useEffect(() => {
         setIsSelected(false)
-    }, [filters])
+    }, [filters]) // filter name is not changed, change it to integer "Key"
 
     // This component will re-render only if the `data` prop changes
     return (
@@ -51,7 +60,7 @@ const HairStyleListItem = React.memo(({ item, activeMenu, hairStyleSelectEvent, 
                     <Image src={item.image.includes('http') ? item.image : `https://api.onehaircut.com/${item.image}`} fill={true} alt="" />
                 </div>
                 <div className={`${Theme_A.hairstyleCards.checkbubbleOFF}`}>
-                    {isSelected && <SelectedIcon />}
+                    {(isSelected || isAllSelected) && <SelectedIcon />}
                 </div>
             </div>
             <div className={`${activeMenu === "new" ? Theme_A.hairstyleCards.cardGradientBott : Theme_A.hairstyleCards.selectedCardGradientBott}`}>

@@ -30,7 +30,7 @@ export interface HaircutDetails {
     epais_duration_type: string;
 }
 
-const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetStyleForm, reloadListEvent }: any) => {
+const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetStyleForm, reloadListEvent, params }: any) => {
     // console.log("in HairStylesModal")
 
     const showSnackbar = useSnackbar();
@@ -73,19 +73,23 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
 
     const [selectedHaircutsMapping, setSelectedHaircutsMapping] = useState<Haircut[]>([]);
 
-    const onHairStyleSelect = async ({item, type}) => {
-        console.log(item)
-        if (type == "add") {
+    const onHairStyleSelect = async (payload) => {
+        if (payload.type == "add") {
             setSelectedHaircutsMapping((prevData) => {
-                if (!prevData.filter(pre => pre.id == item.id).length) {
-                    prevData.push(item)
+                if (!prevData.filter(pre => pre.id == payload.item.id).length) {
+                    prevData.push(payload.item)
                     return [...prevData]
                 }
                 return [...prevData]
             });
-        } else {
+        } else if (payload.type  == "select_all") {
+            setSelectedHaircutsMapping(payload.haircuts);
+        } else if (payload.type  == "reset_modal") {
+            setSelectedHaircutsMapping([]);
+        }
+        else {
             setSelectedHaircutsMapping((prevData) => {
-                prevData = prevData.filter(pre => pre.id != item.id)
+                prevData = prevData.filter(pre => pre.id != payload.item.id)
                 return [...prevData]
             });
         }
@@ -276,6 +280,7 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
         });
         data.hair_salon_id = Number(getLocalStorage("salon_id"));
         data.haircut_ids = selectedHaircuts;
+        
         await dashboard
             .addSalonHaircut(data)
             .then((res) => {

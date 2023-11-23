@@ -15,41 +15,16 @@ import HairStyleListItem from './HairStyleListItem';
 let hairStyleParams = {}
 
 
-const HairStyleList = React.memo(({ activeMenu, hairStyleSelectEvent, resetStyleForm, onFilterSelect, onReloadListener }: any) => {
+const HairStyleList = React.memo(({ activeMenu, hairStyleSelectEvent, resetStyleForm, onFilterSelect, onReloadListener, selectAllListener }: any) => {
     // console.log("in HairStyleList", hairStyleSelectEvent)
 
     const [haircutList, setHaircutList] = useState<Haircut[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [filters, setFilters] = useState(false);
+    const [isAllSelected, setIsAllSelected] = useState(false);
     const { loadingView } = userLoader();
     let isPageLoading = false
     const [page, setPage] = useState(1);
-
-    const selectHaircut = (item: Haircut) => {
-        let added = false;
-        // selectedHaircutsMapping.map((haircut) => {
-        //     if (haircut.id === item.id) {
-        //         setSelectedHaircutsMapping(
-        //             selectedHaircutsMapping.filter((item) => item.id !== haircut.id)
-        //         );
-        //         added = true;
-        //     }
-        // });
-        // if (!added) {
-        //     setSelectedHaircutsMapping((prev) => [...prev, item]);
-        // }
-    };
-
-    const selectSalonHaircut = (index: number) => {
-        // if (salonHaircutList.length) {
-        //     salonHaircutList.map((haircut, i) => {
-        //         if (i === index) {
-        //             setSelectedSalonHaircut(haircut);
-        //             setForm(haircut.salon_haircuts[0]);
-        //         }
-        //     });
-        // }
-    };
 
     const getHaircuts = async (currentPage) => {
         setIsLoading(true);
@@ -64,8 +39,20 @@ const HairStyleList = React.memo(({ activeMenu, hairStyleSelectEvent, resetStyle
                     } else {
                         if (currentPage == 1) {
                             setHaircutList(prevData => res.data.data);
+                            if (isAllSelected) {
+                                hairStyleSelectEvent.on({
+                                    type: "select_all",
+                                    haircuts: res.data.data
+                                })
+                            }
                         } else {
                             setHaircutList(prevData => [...prevData, ...res.data.data]);
+                            if (isAllSelected) {
+                                hairStyleSelectEvent.on({
+                                    type: "select_all",
+                                    haircuts: [...haircutList, ...res.data.data]
+                                })
+                            }
                         }
                     }
                     if (res.data.count <= (currentPage * res.data.perPage)) {
@@ -92,6 +79,20 @@ const HairStyleList = React.memo(({ activeMenu, hairStyleSelectEvent, resetStyle
         getHaircuts(1);
     }
 
+    const selectAllList = (value) => {
+        if (value) {
+            setIsAllSelected(true)
+            hairStyleSelectEvent.on({
+                type: "select_all",
+                haircuts: haircutList
+            })
+        } else {
+            hairStyleSelectEvent.on({
+                type: "reset_modal"
+            })
+            setIsAllSelected(false)
+        }
+    }
     useEffect(() => {
         getHaircuts(page);
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -105,6 +106,7 @@ const HairStyleList = React.memo(({ activeMenu, hairStyleSelectEvent, resetStyle
 
     onFilterSelect.on = refreshDataWithPayload
     onReloadListener.on = reload
+    selectAllListener.on = selectAllList
 
     // This component will re-render only if the `data` prop changes
     return (
@@ -114,7 +116,7 @@ const HairStyleList = React.memo(({ activeMenu, hairStyleSelectEvent, resetStyle
                 {haircutList.map((item, index) => {
                     return (
                         <>
-                           <HairStyleListItem filters={filters} hairStyleSelectEvent={hairStyleSelectEvent} item={item} activeMenu={activeMenu}></HairStyleListItem>
+                           <HairStyleListItem isAllSelected={isAllSelected} filters={filters} hairStyleSelectEvent={hairStyleSelectEvent} item={item} activeMenu={activeMenu}></HairStyleListItem>
                         </>
                     );
                 })}

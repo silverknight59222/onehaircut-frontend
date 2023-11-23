@@ -10,14 +10,9 @@ import _debounce from 'lodash/debounce';
 
 import { ColorsThemeA } from "@/components/utilis/Themes";
 
-const params = {
-    ethnicityFilters: [] as string[],
-    genderFilters: "",
-    lengthFilters: [] as string[],
-    search: "",
-}
 
-const HairStyleListHeader = React.memo(({ setActiveMenu, activeMenu, onFilterSelect }: any) => {
+
+const HairStyleListHeader = React.memo(({ setActiveMenu, activeMenu, onFilterSelect, params, selectAllEvent }: any) => {
     // console.log("in HairStyleListHeader")
 
 
@@ -75,6 +70,7 @@ const HairStyleListHeader = React.memo(({ setActiveMenu, activeMenu, onFilterSel
             params.ethnicityFilters = [...ethnicityFilters, ethnicity]
             setEthnicityFilters((prev) => [...prev, ethnicity]);
         }
+        resetSelectALl()
     };
 
     const onClickGenderCheckbox = (gender: string) => {
@@ -85,6 +81,7 @@ const HairStyleListHeader = React.memo(({ setActiveMenu, activeMenu, onFilterSel
             params.genderFilters = gender
             setGenderFilters(gender);
         }
+        resetSelectALl()
     };
 
     const onClickLengthCheckbox = (length: string) => {
@@ -95,11 +92,13 @@ const HairStyleListHeader = React.memo(({ setActiveMenu, activeMenu, onFilterSel
             params.lengthFilters = [...lengthFilters, length]
             setLengthFilters((prev) => [...prev, length]);
         }
+        resetSelectALl()
     };
 
     const setSearchValue = (value) => {
         params.search = value
         setSearch(value)
+        resetSelectALl()
     }
 
     const getFilteredCuts = () => {
@@ -222,24 +221,14 @@ const HairStyleListHeader = React.memo(({ setActiveMenu, activeMenu, onFilterSel
         // setSelectedSalonHaircut(defaultHaircut);
     };
 
+    const resetSelectALl = () => {
+        setIsAllSelected(false)
+        selectAllEvent.on(false)
+    }
+
     const selectAllHaircuts = () => {
-        // if (
-        //     haircutList.length &&
-        //     selectedHaircutsMapping.length === haircutList.length
-        // ) {
-        //     setSelectedHaircutsMapping([]);
-        // } else {
-        //     if (
-        //         ethnicityFilters.length > 0 ||
-        //         genderFilters ||
-        //         lengthFilters.length > 0 ||
-        //         search !== ""
-        //     ) {
-        //         setSelectedHaircutsMapping(filteredHaircuts);
-        //     } else {
-        //         setSelectedHaircutsMapping(haircutList);
-        //     }
-        // }
+        setIsAllSelected(!isAllSelected)
+        selectAllEvent.on(!isAllSelected)
     };
 
     useEffect(() => {
@@ -362,7 +351,7 @@ const HairStyleListHeader = React.memo(({ setActiveMenu, activeMenu, onFilterSel
                                 ? `${Theme_A.browingFilters.proHairstyleFilterON}`
                                 : `${Theme_A.browingFilters.proHairstyleFilterOFF}`
                         }
-                        onClick={() => { setIsAllSelected(!isAllSelected) }}
+                        onClick={() => { selectAllHaircuts() }}
                     >
                         <div className={`${Theme_A.behaviour.buttonHoverBehaviour_2}`}>Select All</div>
                     </div>
