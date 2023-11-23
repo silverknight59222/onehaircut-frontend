@@ -16,6 +16,10 @@ const resetStyleForm = {
   on: null
 }
 
+const reloadList = {
+  on: null
+}
+
 const Hairstyles = () => {
   const [activeMenu, setActiveMenu] = useState<string>("new");
 
@@ -23,8 +27,8 @@ const Hairstyles = () => {
     <div>
       <HairStyleListHeader onFilterSelect={onFilterSelect} setActiveMenu={setActiveMenu} activeMenu={activeMenu} ></HairStyleListHeader>
       <div className="flex flex-col md:flex-row gap-8">
-        <HairStylesModal onResetStyleForm={resetStyleForm} hairStyleSelectEvent={hairStyleSelectEvent} activeMenu={activeMenu}></HairStylesModal>
-        <HairStyleList resetStyleForm={resetStyleForm} onFilterSelect={onFilterSelect} hairStyleSelectEvent={hairStyleSelectEvent} activeMenu={activeMenu}></HairStyleList>
+        <HairStylesModal reloadListEvent={reloadList} onResetStyleForm={resetStyleForm} hairStyleSelectEvent={hairStyleSelectEvent} activeMenu={activeMenu}></HairStylesModal>
+        <HairStyleList onReloadListener={reloadList} resetStyleForm={resetStyleForm} onFilterSelect={onFilterSelect} hairStyleSelectEvent={hairStyleSelectEvent} activeMenu={activeMenu}></HairStyleList>
       </div>
       <Footer />
     </div>

@@ -30,7 +30,7 @@ export interface HaircutDetails {
     epais_duration_type: string;
 }
 
-const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetStyleForm }: any) => {
+const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetStyleForm, reloadListEvent }: any) => {
     // console.log("in HairStylesModal")
 
     const showSnackbar = useSnackbar();
@@ -281,6 +281,7 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
             .then((res) => {
                 setSelectedHaircutsMapping([]);
                 setForm(defaultFormDetails);
+                reloadListEvent.on()
                 showSnackbar("success", "Haircuts added successfully");
                 // TODO refresh list
             })

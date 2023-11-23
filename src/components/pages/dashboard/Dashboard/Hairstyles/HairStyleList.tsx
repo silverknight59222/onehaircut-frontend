@@ -15,7 +15,7 @@ import HairStyleListItem from './HairStyleListItem';
 let hairStyleParams = {}
 
 
-const HairStyleList = React.memo(({ activeMenu, hairStyleSelectEvent, resetStyleForm, onFilterSelect }: any) => {
+const HairStyleList = React.memo(({ activeMenu, hairStyleSelectEvent, resetStyleForm, onFilterSelect, onReloadListener }: any) => {
     // console.log("in HairStyleList", hairStyleSelectEvent)
 
     const [haircutList, setHaircutList] = useState<Haircut[]>([]);
@@ -82,10 +82,14 @@ const HairStyleList = React.memo(({ activeMenu, hairStyleSelectEvent, resetStyle
     };
 
     const refreshDataWithPayload = (params) => {
-        console.log("params", params)
-        getHaircuts(1);
         setFilters({...params})
         hairStyleParams = params
+        reload()
+    }
+
+    const reload = async () => {
+        setHaircutList([])
+        getHaircuts(1);
     }
 
     useEffect(() => {
@@ -94,13 +98,13 @@ const HairStyleList = React.memo(({ activeMenu, hairStyleSelectEvent, resetStyle
     }, [])
 
     useEffect(() => {
-        setHaircutList([])
-        getHaircuts(1);
+        reload()
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activeMenu])
 
     onFilterSelect.on = refreshDataWithPayload
+    onReloadListener.on = reload
 
     // This component will re-render only if the `data` prop changes
     return (
