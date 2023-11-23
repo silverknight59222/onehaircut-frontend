@@ -1,6 +1,7 @@
 "use client";
 import { client } from "@/api/clientSide";
 import { dashboard } from "@/api/dashboard";
+import Image from "next/image";
 import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/storage";
 import Navbar from "@/components/shared/Navbar";
 import {
@@ -239,22 +240,27 @@ const Index = () => {
             Confirmer et payer
           </p>
           <div className="w-full md:w-[750px] lg:w-[940px] pt-10 pb-10 px-6 sm:px-14 bg-[#F8F8F8] rounded-[22px] border border-[#ECECEC] shadow-sm shadow-stone-600">
-            <div className="flex flex-col gap-3 text-xl font-medium text-black">
+            <div className="grid grid-cols-2">
+              <div className="flex flex-col gap-3 text-xl font-medium text-black">
+                {haircutData ? <p className="text-base"><span className="font-bold text-lg   ">Coiffure: </span>{haircutData.name}</p> : ''}
+                {servicesData ? <p><span className="font-bold text-lg ">Services: </span>
+                  {servicesData.map((item: { name: string, id: number }, index: number) => {
+                    return <p key={index} className="text-base">{++index}. {item.name}</p>
+                  })}
+                </p> : ''}
+                {salonData && <p className="text-base"><span className="font-bold text-lg ">Etablissement: </span>{salonData.name}</p>}
+                {slotData && <p className="text-base"><span className="font-bold text-lg ">Coiffeur: </span>{slotData.hairDresser.name}</p>}
+                {slotData && (<p className="text-base"><span className={`font-bold text-lg `}>Créneau horaire: </span>{getClassNameForDay(slotData.slot[0].day)}</p>)}
 
-
-              {haircutData ? <p className="text-base"><span className="font-bold text-lg   ">Coiffure: </span>{haircutData.name}</p> : ''}
-              {servicesData ? <p><span className="font-bold text-lg ">Services: </span>
-                {servicesData.map((item: { name: string, id: number }, index: number) => {
-                  return <p key={index} className="text-base">{++index}. {item.name}</p>
-                })}
-              </p> : ''}
-              {salonData && <p className="text-base"><span className="font-bold text-lg ">Etablissement: </span>{salonData.name}</p>}
-              {slotData && <p className="text-base"><span className="font-bold text-lg ">Coiffeur: </span>{slotData.hairDresser.name}</p>}
-              {slotData && (<p className="text-base"><span className={`font-bold text-lg `}>Créneau horaire: </span>{getClassNameForDay(slotData.slot[0].day)}</p>)}
-
-              {slotData && <p className="text-base"><span className="font-bold text-lg ">Heure de début: </span>{slotData.slot[0].start}</p>}
-              {slotData && <p className="text-base"><span className="font-bold text-lg ">Heure de fin: </span>{slotData.slot[slotData.slot.length - 1].end}</p>}
-              {slotData && <p className="text-base"><span className="font-bold text-lg ">Durée totale: </span>{salonData.total_duration} Minutes</p>}
+                {slotData && <p className="text-base"><span className="font-bold text-lg ">Heure de début: </span>{slotData.slot[0].start}</p>}
+                {slotData && <p className="text-base"><span className="font-bold text-lg ">Heure de fin: </span>{slotData.slot[slotData.slot.length - 1].end}</p>}
+                {slotData && <p className="text-base"><span className="font-bold text-lg ">Durée totale: </span>{salonData.total_duration} Minutes</p>}
+              </div>
+              <div className="flex flex-col gap-3 text-xl font-medium text-black">
+                <div className={`${Theme_A.hairstyleCards.cardSize.big} ml-12`}>
+                  <Image src={haircutData.image.includes('http') ? haircutData.image : `https://api.onehaircut.com${haircutData.image}`} fill={true} alt="" className="rounded-t-xl" sizes="640w"/>
+                </div>
+              </div>
             </div>
             <div className="flex items-center justify-between border-t-2 border-[#CBCBCB] pt-9 mt-9">
               <button onClick={() => router.push('/book-salon')} className={`${Theme_A.button.bigWhiteColoredButton}`}>
@@ -265,6 +271,7 @@ const Index = () => {
               </p>
             </div>
           </div>
+          
 
           <div className="w-full flex items-center justify-center">
             {mounted && (

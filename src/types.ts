@@ -1,4 +1,4 @@
-import { HaircutDetails } from "./components/pages/dashboard/Dashboard/Hairstyles";
+import { HaircutDetails } from "@/components/pages/dashboard/Dashboard/Hairstyles/HairStylesModal";
 
 interface SalonImages{
 	image: string,
@@ -10,6 +10,8 @@ export type Address = {
 	city: string;
 	state: string;
 	country: string;
+	lat: number | null;
+	long: number | null;
 }
 
 export type SalonDetails = {
@@ -27,7 +29,7 @@ export type SalonDetails = {
 	user_id: number;
 	logo: string;
 	salon_images: SalonImages[],
-	salon_cover_image: SalonImages,
+	salon_cover_image: SalonImages | null,
 	rating_counts: number,
 	is_mobile:string,
 	range: number[],

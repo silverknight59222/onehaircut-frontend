@@ -249,7 +249,7 @@ const Welcome = () => {
     }
   };
 
-  const onClickHaircut = (id: number, name: string, image?: string) => {
+  const onClickHaircut = (id: number, name: string, image?: string) => {    
     setIsModal(true)
     setSelectedHaircut({ id: id, name: name, image: image ? image : '' })
     setIsPreview(false); // Initialisez isPreview à false avant d'ouvrir le modal
@@ -257,7 +257,7 @@ const Welcome = () => {
   }
 
   const onContinue = () => {
-    setLocalStorage("haircut", JSON.stringify({ id: selectedHaircut.id, name: selectedHaircut.name }))
+    setLocalStorage("haircut", JSON.stringify({ id: selectedHaircut.id, name: selectedHaircut.name, image:selectedHaircut.image }))
     router.push(`/services`)
   }
 
