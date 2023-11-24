@@ -442,7 +442,7 @@ const Filters = () => {
 
 
                                     {/* Title of the Section "Classement" */}
-                                    <div className="h-96">
+                                    <div>
                                         <p className="text-black text-lg mt-4 mb-8 font-semibold pr-2 pl-2">Note du salon</p>
                                         <div className='flex flex-col sm:flex-row lg:flex-col xl:flex-row items-start sm:items-center lg:items-start xl:items-center justify-between'>
                                             <div>
@@ -484,7 +484,7 @@ const Filters = () => {
                                 </div>
 
                                 {/* Title of the Section "Disponibilite" */}
-                                <div className="h-96">
+                                <div>
                                     <p className="text-black text-lg mb-8 mt-6 font-semibold pl-2 pr-2">Disponibilit&eacute;</p>
 
                                     {/* Check box pour choisir les jours de préférences */}
@@ -530,7 +530,7 @@ const Filters = () => {
                                 </div>
                                 */}
                                 </div>
-                                <div className="h-96">
+                                <div>
                                     <div className="flex justify-center mt-12">
                                         <button onClick={resetAllValues_2} className={`${Theme_A.button.medBlackColoredButton}`}>Réinitialiser</button>
                                         <button
