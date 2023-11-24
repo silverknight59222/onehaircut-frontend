@@ -200,18 +200,30 @@ const Filters = () => {
     const fetchFilterPrefrences = async () => {
         const resp = await client.getUserFilterPrefrences();        
 
-        setCurrentLength(resp.data.current_hair);
-        setDesiredLength(resp.data.length_sought);
-        setHairstyleTrend(resp.data.hairstyle_trend);
-        setBudgetSliderRange([resp.data.budget[0], resp.data.budget[1]]);
-        setCountry(resp.data.country);
-        setHairdressingAtHome(resp.data.hairdressing_at_home);
-        setZipCodeValue(resp.data.postal_code);
-        setZoneSliderRange([resp.data.search_area[0], resp.data.search_area[1]]);
-        setMinRating(resp.data.ratings);
-        if(resp.data.max_ratings)
-            setMaxRating(resp.data.max_ratings);
-        SetAtHome(resp.data.availability || [])
+        if (resp && resp.data) {
+            if(resp.data.current_hair)
+                setCurrentLength(resp.data.current_hair);
+            if(resp.data.length_sought)
+                setDesiredLength(resp.data.length_sought);
+            if(resp.data.hairstyle_trend)
+                setHairstyleTrend(resp.data.hairstyle_trend);
+            if(resp.data.budget)
+                setBudgetSliderRange([resp.data.budget[0], resp.data.budget[1]]);
+            if(resp.data.country)
+                setCountry(resp.data.country);
+            if(resp.data.hairdressing_at_home)
+                setHairdressingAtHome(resp.data.hairdressing_at_home);
+            if(resp.data.postal_code)
+                setZipCodeValue(resp.data.postal_code);
+            if(resp.data.search_area)
+                setZoneSliderRange([resp.data.search_area[0], resp.data.search_area[1]]);
+            if(resp.data.ratings)
+                setMinRating(resp.data.ratings);
+            if(resp.data.max_ratings)
+                setMaxRating(resp.data.max_ratings);
+            if(resp.data.current_hair)
+                SetAtHome(resp.data.availability || [])
+        }
     }
 
     return (
