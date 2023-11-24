@@ -123,7 +123,7 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
                           <Image
                             fill={true}
                             src={
-                              item.profile_image ? (item.profile_image.includes('http') ? item.profile_image : `https://api.onehaircut.com/${item.profile_image}`) : `https://api.onehaircut.com/${item.avatar.image}`
+                              item.profile_image ? (item.profile_image.includes('http') ? item.profile_image : `https://api.onehaircut.com/${item.profile_image}`) : `https://api.onehaircut.com/${item.avatar ? item.avatar.image : ''}`
                             }
                             alt="image"
                           />
