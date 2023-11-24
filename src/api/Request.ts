@@ -3,9 +3,9 @@ import { getLocalStorage } from "./storage";
 import { toast } from "react-toastify";
 
 const request = axios.create({
- //baseURL: "https://api.onehaircut.com/api/web/",
+ baseURL: "https://api.onehaircut.com/api/web/",
   // baseURL: process.env.REACT_APP_API_URL + '/api/web/',
-  baseURL: "http://127.0.0.1:8000/api/web/",
+ // baseURL: "http://127.0.0.1:8000/api/web/",
   withCredentials: false,
 });
 
