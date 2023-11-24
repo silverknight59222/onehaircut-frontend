@@ -11,7 +11,7 @@ import { getLocalStorage, setLocalStorage } from '@/api/storage';
 import { SalonDetails } from '@/types';
 import userLoader from "@/hooks/useLoader";
 import useSnackbar from '@/hooks/useSnackbar';
-import { GoogleMap, MarkerF, OverlayView, LoadScriptProps, useLoadScript } from '@react-google-maps/api';
+import { GoogleMap, MarkerF, OverlayView, LoadScriptProps, useLoadScript, OverlayViewF } from '@react-google-maps/api';
 import { ColorsThemeA, Theme_A } from '@/components/utilis/Themes';
 import { BackArrow } from '@/components/utilis/Icons';
 import Footer from '@/components/UI/Footer';
@@ -415,32 +415,34 @@ const SalonChoice = () => {
                                                     // lng={positions[index].lng}
                                                     position={position} // Utiliser la position du salon
                                                     onClick={() => setSelectedSalon(filteredSalons[index])}
-                                                    icon={{
+                                                    options={{
+                                                    icon:{
                                                         url: filteredSalons[index].id === selectedSalon.id ? MapIconRedUrl : mapIconUrl,
                                                         scaledSize: filteredSalons[index].id === selectedSalon.id ? new window.google.maps.Size(70, 90) : new window.google.maps.Size(60, 80),
                                                         origin: new window.google.maps.Point(0, -10),
                                                         anchor: filteredSalons[index].id === selectedSalon.id ? new window.google.maps.Point(25, 37) : new window.google.maps.Point(20, 35),
 
-                                                    }}
+                                                    }}}
                                                     zIndex={filteredSalons[index].id === selectedSalon.id ? 4 : 3}
 
                                                 />
-                                                <OverlayView
+                                                <OverlayViewF
+                                                    key={selectedSalon.id}
                                                     position={position}
-                                                    mapPaneName={OverlayView.FLOAT_PANE}
-                                                    getPixelPositionOffset={(width, height) => ({ x: -(width / 2), y: -height })}
+                                                    mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
+                                                    getPixelPositionOffset={(width, height) => ({ x: width-25, y: height-15 })}
                                                 >
                                                     <div style={{
                                                         color: filteredSalons[index].id === selectedSalon.id ? "#FFF" : "#000",
                                                         whiteSpace: 'nowrap',
-                                                        fontSize: filteredSalons[index].id === selectedSalon.id ? '12px' : "10px",
+                                                        fontSize: filteredSalons[index].id === selectedSalon.id ? '12px' : "12px",
                                                         fontWeight: 'bold',
                                                         zIndex: filteredSalons[index].id === selectedSalon.id ? 2 : 1, 
                                                     }}>                                                        
-                                                        {`${filteredSalons[index].id}0€`}
+                                                        {`$ ${filteredSalons[index].final_price}`}
 
                                                     </div>
-                                                </OverlayView>
+                                                </OverlayViewF>
                                             </React.Fragment>
                                         ))}
                                     </GoogleMap>
