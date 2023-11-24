@@ -8,26 +8,30 @@ import Image from "next/image";
 import { Booking, Coiffeur } from "./types";
 import { getLocalStorage } from "@/api/storage";
 import { dashboard } from "@/api/dashboard";
-import { Chat } from "@/types";
+import { salonApi } from "@/api/salonSide";
+import { Chat, Hairdresser } from "@/types";
 import BaseModal from '@/components/UI/BaseModal';
+import { CSSProperties } from "@material-ui/core/styles/withStyles";
 
 // Ajout de toutes les propriétes qu'on veut reprendre dans le modal
 interface EventDetailsModalProps {
   event: Booking;
   setModal: React.Dispatch<React.SetStateAction<Booking | undefined>>;
   coiffeurNom: string;
-  coiffeurCouleur: string;  
+  coiffeurCouleur: string;
+  refresh: any;
 }
 
 
-const EventDetailsModal = (props: EventDetailsModalProps) => {  
+const EventDetailsModal = (props: EventDetailsModalProps) => {
 
   const [message, setMessage] = useState("");
   const user = getLocalStorage("user");
   const userData = user ? JSON.parse(user) : null
   const [chats, setChats] = useState<Chat[]>([])
   const [isModal, setIsModal] = useState(false)
-  const [hairDresser, setHairDresser] = useState(null);
+  const [hairDressers, setHairDressers] = useState<Hairdresser[]>([])
+  const [hairDresser, setHairDresser] = useState<Hairdresser>({} as Hairdresser)
   // Reprise du nom du client et du coiffeur
   const [nomClient, nomCoiffeur] = props.event.title.split(" - ");
 
@@ -60,6 +64,28 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
     }
   };
 
+  const getAvailableHairDresser = async () => {
+    await salonApi.getAvailableHairDresser(props.event.booking.id)
+      .then(({ data }) => {
+        setHairDressers(data)
+        setIsModal(true)
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+
+  const changeHairDresser = async () => {
+    await salonApi.updateBookingHairDresser(props.event.booking.id, hairDresser.id)
+      .then(({ data }) => {
+        setIsModal(false)
+        props.refresh()
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }
+
   const getChat = async () => {
     if (userData) {
       await dashboard.getChat(props.event.clientId, userData.id)
@@ -70,47 +96,50 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
     }
   }
 
-  const selectHairDresser = (hairDresser) => {
-  };
-
   useEffect(() => {
     getChat()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
   return (
     <div className="relative bg-white rounded-xl px-5 pb-5 shadow-lg mt-10 bg- modal">
 
       {isModal &&
-        <BaseModal close={() => setIsModal(false)}>
-          <div className="h-[940px] w-full xl:w-2/5 overflow-auto flex flex-col items-center justify-start gap-8 bg-lightGrey rounded-3xl p-4 md:p-12">
-            <div className={`${Theme_A.textFont.headerH2} underline`}>
-              Coiffeur(s)/-euse(s) disponible(s)
-            </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full md:w-96">
-              {/* {hairDressers.map((item, index) => {
-                return (
-                  <div key={index} className="w-full flex justify-center">
-                    <div
-                      onClick={() => selectHairDresser(item)}
-                      className={`px-4 pt-4 shadow-lg flex flex-col justify-between cursor-pointer border-2 transition rounded-xl hover:border-secondary ${item.id === hairDresser.id && "border-secondary"
-                        }`}
-                    >
-                      <div className="relative w-32 h-32">
-                        <Image
-                          fill={true}
-                          src={
-                            item.profile_image ? (item.profile_image.includes('http') ? item.profile_image : `https://api-server.onehaircut.com/${item.profile_image}`) : `https://api-server.onehaircut.com/${item.avatar.image}`
-                          }
-                          alt="image"
-                        />
-                      </div>
-                      <div>
-                        <p className="font-medium text-center">{item.name}</p>
+        <BaseModal close={() => setIsModal(false)} width="w-100">
+          <div className="text-center">
+            <div className="h-[940px] w-full overflow-auto flex flex-col items-center justify-start gap-8 bg-lightGrey rounded-3xl p-4 md:p-12">
+              <div className={`${Theme_A.textFont.headerH2} underline`}>
+                Coiffeur(s)/-euse(s) disponible(s)
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 w-full md:w-96">
+                {hairDressers.map((item, index) => {
+                  return (
+                    <div key={index} className="w-full flex justify-center">
+                      <div
+                        onClick={() => setHairDresser(item)}
+                        className={`px-4 pt-4 shadow-lg flex flex-col justify-between cursor-pointer border-2 transition rounded-xl hover:border-secondary ${hairDresser && item.id === hairDresser.id && "border-secondary"
+                          }`}
+                      >
+                        <div className="relative w-32 h-32">
+                          <Image
+                            fill={true}
+                            src={
+                              item.profile_image ? (item.profile_image.includes('http') ? item.profile_image : `https://api.onehaircut.com/${item.profile_image}`) : `https://api.onehaircut.com/${item.avatar.image}`
+                            }
+                            alt="image"
+                          />
+                        </div>
+                        <div>
+                          <p className="font-medium text-center">{item.name}</p>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                );
-              })} */}
+                  );
+                })}
+              </div>
             </div>
+            {hairDresser.id > 0 && <button onClick={changeHairDresser} className={`${Theme_A.button.mediumGradientButton} mt-5`}>
+              Ajouter
+            </button>}
           </div>
         </BaseModal>
       }
@@ -141,11 +170,15 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
 
         {/* Vignette */}
         <div className="self-center border border-gray-300 rounded-md p-2 w-52 h-52 shadow-inner">
-          {!props.event.booking.haircut && 
-          <Image src={props.event.booking.user.front_profile.includes('http') ? props.event.booking.user.front_profile : `https://api.onehaircut.com/${props.event.booking.user.front_profile}`} fill={true} alt="" sizes="640w"/>            
+          {!props.event.booking.haircut &&
+            <img
+              style={{ height: 'inherit', "max-height": "100%" } as CSSProperties}
+              src={props.event.booking.user.front_profile || "/assets/user_img.png"}
+              alt="profile"
+            />
           }
           {props.event.booking.haircut &&
-            <Image src={props.event.booking.haircut.image.includes('http') ? props.event.booking.haircut.image : `https://api.onehaircut.com/${props.event.booking.haircut.image}`} fill={true} alt="" sizes="640w"/>            
+            <img src={`https://api.onehaircut.com${props.event.booking.haircut.image}`} alt='' />
           }
         </div>
 
@@ -153,8 +186,15 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
         <div className="text-center mb-[-4px]">
           <strong>Date du rdv :</strong> {props.event.start.split('T')[0]}
         </div>
-        <div className="text-center mb-[-4px]">
-          <strong>Coiffeur : </strong>{props.event.hair_dresser_name}
+        <div className="text-center mb-[-4px] flex items-center justify-center">
+          <div>
+            <strong>Coiffeur : </strong>{props.event.hair_dresser_name}
+          </div>
+          <div className="flex items-center justify-between gap-3 ml-3 ">
+            <button onClick={getAvailableHairDresser} className={`${Theme_A.button.medBlackColoredButton}`}>
+              changement
+            </button>
+          </div>
         </div>
         {props.event.booking.haircut && <div className="text-center mb-[-4px]">
           <strong>coiffures:</strong> {props.event.booking.haircut.name}
