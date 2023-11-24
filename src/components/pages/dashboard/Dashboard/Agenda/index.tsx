@@ -69,6 +69,7 @@ export const Agenda = () => {
     dashboard
       .getBookingsByHairsalon(id)
       .then((res) => {
+        setEvents([] as Booking[])
         res.data.data.forEach((event: any) => {
           if (event.booking_slots && event.booking_slots.length > 0) {
             setEvents((pre) => [
@@ -128,6 +129,11 @@ export const Agenda = () => {
     if (event) setSelectedEventDetails(event);
   };
 
+  const refresh = () => {
+    setSelectedEventDetails(undefined)
+    getHairDresser();
+  }
+
 
   // Utilisation du hook useEffect pour charger toutes les réservations au montage du composant
   useEffect(() => {
@@ -176,6 +182,7 @@ export const Agenda = () => {
           <EventDetailsModal
             event={selectedEventDetails}
             setModal={setSelectedEventDetails}
+            refresh={refresh}
             coiffeurNom={selectedEventDetails.coiffeur.nom}
             coiffeurCouleur={selectedEventDetails.coiffeur.couleur}
           />
