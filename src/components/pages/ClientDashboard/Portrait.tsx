@@ -88,7 +88,7 @@ const Portrait = () => {
         const fileUploaded = event.target.files[0];
         getBase64(fileUploaded, (result) => {
             setProfileImage(result);
-       });        
+        });
         imagesToUpload.push({ 'type': 'front_profile', 'file': event.target.files[0] })
         //setImagesToUpload([{'type': 'profile_image',  'file': event.target.files[0]}])
     };
@@ -113,7 +113,7 @@ const Portrait = () => {
         const fileUploaded = event.target.files[0];
         getBase64(fileUploaded, (result) => {
             setProfileLeftImage(result);
-       });        
+        });
         imagesToUpload.push({ 'type': 'left_profile', 'file': event.target.files[0] })
         //setImagesToUpload([{'type': 'left_profile',  'file': event.target.files[0]}])
     };
@@ -139,7 +139,7 @@ const Portrait = () => {
 
         getBase64(fileUploaded, (result) => {
             setprofileSlightlyLeftImage(result);
-       });
+        });
         //setprofileSlightlyLeftImage(URL.createObjectURL(fileUploaded));
         imagesToUpload.push({ 'type': 'slightly_left_profile', 'file': event.target.files[0] })
         //setImagesToUpload([{'type': 'slightly_left_profile',  'file': event.target.files[0]}])
@@ -176,7 +176,7 @@ const Portrait = () => {
         const fileUploaded = event.target.files[0];
         getBase64(fileUploaded, (result) => {
             setProfileRightImage(result);
-       });
+        });
         //setProfileRightImage(URL.createObjectURL(fileUploaded));
         imagesToUpload.push({ 'type': 'right_profile', 'file': event.target.files[0] })
         //setImagesToUpload([{'type': 'right_profile',  'file': event.target.files[0]}])
@@ -202,7 +202,7 @@ const Portrait = () => {
         const fileUploaded = event.target.files[0];
         getBase64(fileUploaded, (result) => {
             setProfileSlightlyRightImage(result);
-       });        
+        });
         imagesToUpload.push({ 'type': 'slightly_right_profile', 'file': event.target.files[0] })
         //setImagesToUpload([{'type': 'slightly_right_profile',  'file': event.target.files[0]}])
     };
@@ -363,7 +363,7 @@ const Portrait = () => {
                     </p>
                     <div className="flex flex-col sm:flex-row  sm:items-start justify-center gap-14">
                         {/* Left side of the head placed left */}
-                        <div className="flex sm:flex-col gap-6 md:gap-10 -mt-6 sm:-mt-0">
+                        <div className="flex sm:flex-col gap-6 md:gap-10 -mt-6 sm:-mt-0 ">
                             {profilPicToDisplay(handleClickLeft2, profileSlightlyLeftImage, SubTextToDisplay[0], 32, DefaultProfilLeft2)}
 
                             {profilPicToDisplay(handleClickLeft, profileLeftImage, SubTextToDisplay[1], 32, DefaultProfilLeft)}
@@ -435,7 +435,7 @@ const Portrait = () => {
                         <button
                             onClick={savePotraits}
                             className={`${Theme_A.button.mediumGradientButton} ml-3`}>
-                            Save
+                            Enregistrer
                         </button>
                     </div>
                 </div>

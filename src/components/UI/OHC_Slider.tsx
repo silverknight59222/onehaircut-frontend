@@ -13,6 +13,7 @@ interface CustomSliderProps {
   max: number;
   label: string;
   valueLabelDisplay: 'auto' | 'on' | 'off';
+  width?: string;
 }
 
 const CustomSlider: React.FC<CustomSliderProps> = ({
@@ -24,6 +25,7 @@ const CustomSlider: React.FC<CustomSliderProps> = ({
   max,
   label,
   valueLabelDisplay,
+  width = '100%',
 }) => {
   return (
     <ThemeProvider theme={ComponentTheme}>
@@ -36,7 +38,7 @@ const CustomSlider: React.FC<CustomSliderProps> = ({
           valueLabelDisplay={valueLabelDisplay}
           min={min}
           max={max}
-          style={{ width: '100%' }}
+          style={{ width: width }}
         />
         <div className="mt-0 text-center">
           &#91;

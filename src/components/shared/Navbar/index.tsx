@@ -18,7 +18,8 @@ import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
-
+import CustomSlider from "@/components/UI/OHC_Slider";
+import ComponentTheme from "@/components/UI/ComponentTheme";
 
 
 interface Navbar {
@@ -478,19 +479,18 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                       <div className="flex flex-col items-center justify-center w-full"> {/* Use flex properties to center children */}
                         <Typography id="range-slider" gutterBottom>
                         </Typography>
-                        <Slider
+                        {/* TODO CHANGE THIS SLIDER WITH AN INPUT */}
+                        <CustomSlider
+                          theme={ComponentTheme}
                           value={rangeFilters}
                           onChange={rangeSelector}
+                          min={0}
+                          max={1000}
+                          unit="€"
+                          label="Budget" // Provide a label prop if your CustomSlider component expects it
                           valueLabelDisplay="auto"
-                          style={{ width: '70%' }}
+                          width="250%"
                         />
-                        <div className="mt-0 mb-1"> {/* Adjust spacing */}
-                          &#91;
-                          <span style={{ fontSize: '0.8em', fontWeight: '500', color: '#757575' }}>
-                            {rangeFilters[0]}€ &#8211; {rangeFilters[1]}€
-                          </span>
-                          &#93;
-                        </div>
                       </div>
                     </div>
                   </ThemeProvider>

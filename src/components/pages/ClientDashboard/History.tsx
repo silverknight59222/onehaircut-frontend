@@ -47,7 +47,7 @@ const History = () => {
   // ++++++++++ RATING ++++++++
   const [isRatePopUp, setRatePopUp] = useState(false);
   const [rating, setRating] = useState(0);
-  const [itemToRate, setItemToRate] = useState<{booking:any, ratingReview:string, rating:number}>({
+  const [itemToRate, setItemToRate] = useState<{ booking: any, ratingReview: string, rating: number }>({
     booking: {},
     ratingReview: "",
     rating: 0
@@ -120,7 +120,7 @@ const History = () => {
         if (currentPage == 1) {
           setHistories(resp.data.bookings);
         } else {
-          setHistories(prevData => [{...prevData, ...resp.data.bookings}]);
+          setHistories(prevData => [{ ...prevData, ...resp.data.bookings }]);
         }
 
         setItemCount(resp.data.count);
@@ -193,7 +193,7 @@ const History = () => {
             </BaseModal>}
           <div className="flex flex-col items-center justify-center mt-10 mb-5 px-6 sm:px-10 md:px-20">
             <p className="text-black font-medium text-3xl text-center mb-8">
-              Historique des coiffures effectuées {histories.length}
+              Historique des coiffures effectuées ({histories.length})
             </p>
             <div className='flex flex-col gap-4' >
               {/* Loop over the booking history and display them */}

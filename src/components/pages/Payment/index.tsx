@@ -22,7 +22,7 @@ const Index = () => {
   const router = useRouter();
   const showSnackbar = useSnackbar()
   const temp = getLocalStorage("user");
-  const user = temp ? JSON.parse(temp) : null  
+  const user = temp ? JSON.parse(temp) : null
   const haircut = getLocalStorage("haircut")
   const hairTime = getLocalStorage("slotTime")
   const haircutTime = hairTime ? JSON.parse(hairTime) : null
@@ -227,7 +227,17 @@ const Index = () => {
 
     return newTimeString;
   }
-  
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    // Utilisez des chaînes littérales pour les options
+    const options = { year: 'numeric' as const, month: 'long' as const, day: 'numeric' as const };
+    return new Intl.DateTimeFormat('fr-FR', options).format(date);
+  };
+  const bookingDate = getLocalStorage('selectDate');
+  const formattedBookingDate = formatDate(bookingDate);
+
+
   return (
     <div>
       {isLoading && haircutData && loadingView()}
@@ -250,17 +260,16 @@ const Index = () => {
                 </p> : ''}
                 {salonData && <p className="text-base"><span className="font-bold text-lg ">Etablissement: </span>{salonData.name}</p>}
                 {slotData && <p className="text-base"><span className="font-bold text-lg ">Coiffeur: </span>{slotData.hairDresser.name}</p>}
-                {slotData && (<p className="text-base"><span className={`font-bold text-lg `}>Créneau horaire: </span>{getClassNameForDay(slotData.slot[0].day)}</p>)}
-
+                {slotData && (<p className="text-base"><span className="font-bold text-lg ">Date du rendez-vous: </span>{formattedBookingDate}</p>)}
                 {slotData && <p className="text-base"><span className="font-bold text-lg ">Heure de début: </span>{slotData.slot[0].start}</p>}
                 {slotData && <p className="text-base"><span className="font-bold text-lg ">Heure de fin: </span>{slotData.slot[slotData.slot.length - 1].end}</p>}
                 {slotData && <p className="text-base"><span className="font-bold text-lg ">Durée totale: </span>{salonData.total_duration} Minutes</p>}
               </div>
               {
-              haircutData && haircutData.image && 
+                haircutData && haircutData.image &&
                 <div className="flex flex-col gap-3 text-xl font-medium text-black">
                   <div className={`${Theme_A.hairstyleCards.cardSize.big} ml-12`}>
-                    <Image src={haircutData.image.includes('http') ? haircutData.image : `https://api.onehaircut.com${haircutData.image}`} fill={true} alt="" className="rounded-t-xl" sizes="640w"/>
+                    <Image src={haircutData.image.includes('http') ? haircutData.image : `https://api.onehaircut.com${haircutData.image}`} fill={true} alt="" className="rounded-t-xl" sizes="640w" />
                   </div>
                 </div>
               }
@@ -274,7 +283,7 @@ const Index = () => {
               </p>
             </div>
           </div>
-          
+
 
           <div className="w-full flex items-center justify-center">
             {mounted && (

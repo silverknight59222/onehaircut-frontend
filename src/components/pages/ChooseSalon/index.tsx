@@ -53,10 +53,10 @@ const SalonChoice = () => {
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: 'AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E',
         libraries,
-      })
+    })
     const getMapCenter = (positions: Positions): Position => {
         let totalLat = 0;
-        let totalLng = 0;                
+        let totalLng = 0;
         positions.forEach(pos => {
             totalLat += pos.lat;
             totalLng += pos.lng;
@@ -73,13 +73,13 @@ const SalonChoice = () => {
                 lng: totalLng,
             };
         }
-        
+
     };
     // const { isLoaded } = useJsApiLoader({
     //     googleMapsApiKey: 'AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E',
     //     libraries: ['places'],
     // })
-    const filteredCityHandler = () => {        
+    const filteredCityHandler = () => {
         //const filteredSalons = salons
         const filteredSalons = salons.filter((salon) => {
             const cityNameMatches = citySearch
@@ -103,21 +103,21 @@ const SalonChoice = () => {
                 salonInRange
             );
         });
-        setFilteredSalons(filteredSalons);        
+        setFilteredSalons(filteredSalons);
     };
 
     const getCoordinates = (salons) => {
         console.log('filtered salons', filteredSalons)
-        const positionArray:Position[] = []
-        salons.forEach(fsalon => {            
-            if (fsalon.address.lat && fsalon.address.long) {                
-                positionArray.push({lat: Number(fsalon.address.lat), lng: Number(fsalon.address.long)})                
-            }            
-        })        
+        const positionArray: Position[] = []
+        salons.forEach(fsalon => {
+            if (fsalon.address.lat && fsalon.address.long) {
+                positionArray.push({ lat: Number(fsalon.address.lat), lng: Number(fsalon.address.long) })
+            }
+        })
         console.log('position array', positionArray)
         setPositions(positionArray)
-        const tempCenter:Position = getMapCenter(positionArray)
-        setCenter(tempCenter);        
+        const tempCenter: Position = getMapCenter(positionArray)
+        setCenter(tempCenter);
     }
     // Fonction pour récupérer tous les salons
     const getAllSalons = async () => {
@@ -138,7 +138,7 @@ const SalonChoice = () => {
             data['haircut_id'] = haircut.id
         }
         await dashboard.getSalonsByHaircut(data)
-            .then((res) => {                            
+            .then((res) => {
                 setSalons(res.data.data);
                 setFilteredSalons(res.data.data);
                 getCoordinates(res.data.data)
@@ -221,7 +221,7 @@ const SalonChoice = () => {
             setIsLoggedIn(true);
         }
     }, [])
-    
+
     // Autre appel useEffect basé sur l'état des salons
     // useEffect(() => {
     //     if (!isLoggedIn) {
@@ -286,12 +286,12 @@ const SalonChoice = () => {
     //     { lat: 47.1410, lng: 7.2776 },
     //     // ... autres positions
     // ];    
-    
+
     // Fonction pour calculer le centre des markers avec types explicites
-    
+
 
     // Utilisation
-   // const center = getMapCenter(positions);
+    // const center = getMapCenter(positions);
 
     // MARQUEUR PERSONNALISE
     const mapIconSvg = ReactDOMServer.renderToStaticMarkup(<MapIcon />);
@@ -307,10 +307,10 @@ const SalonChoice = () => {
     const handleOnLoad = (map) => {
         const bounds = new google.maps.LatLngBounds();
         positions.forEach(pos => {
-            bounds.extend({lat:pos.lat, lng: pos.lng})
-        })        
+            bounds.extend({ lat: pos.lat, lng: pos.lng })
+        })
         map.fitBounds(bounds);
-      };
+    };
     type Salon = {
         name: string;
         id: number;
@@ -387,9 +387,9 @@ const SalonChoice = () => {
 
                 {/***************************************************************************************************************************************************************************************************************** */}
 
-                {/* Conteneur principal pour les salons et la carte */}                
+                {/* Conteneur principal pour les salons et la carte */}
                 {isLoaded && positions.length > 0 &&
-                    <div className='w-full mt-4 mb-2 relative '>                        
+                    <div className='w-full mt-4 mb-2 relative '>
                         {/* Carte Google affichée uniquement si des salons sont disponibles */}
                         {
                             positions.length > 0 && (
@@ -407,8 +407,8 @@ const SalonChoice = () => {
                                         }}
                                     >
                                         {positions.map((position, index) => (
-                                            
-                                            <React.Fragment key={index}>                                                
+
+                                            <React.Fragment key={index}>
                                                 <MarkerF
                                                     key={index}
                                                     // lat={positions[index].lat}
@@ -416,13 +416,14 @@ const SalonChoice = () => {
                                                     position={position} // Utiliser la position du salon
                                                     onClick={() => setSelectedSalon(filteredSalons[index])}
                                                     options={{
-                                                    icon:{
-                                                        url: filteredSalons[index].id === selectedSalon.id ? MapIconRedUrl : mapIconUrl,
-                                                        scaledSize: filteredSalons[index].id === selectedSalon.id ? new window.google.maps.Size(70, 90) : new window.google.maps.Size(60, 80),
-                                                        origin: new window.google.maps.Point(0, -10),
-                                                        anchor: filteredSalons[index].id === selectedSalon.id ? new window.google.maps.Point(25, 37) : new window.google.maps.Point(20, 35),
+                                                        icon: {
+                                                            url: filteredSalons[index].id === selectedSalon.id ? MapIconRedUrl : mapIconUrl,
+                                                            scaledSize: filteredSalons[index].id === selectedSalon.id ? new window.google.maps.Size(70, 90) : new window.google.maps.Size(60, 80),
+                                                            origin: new window.google.maps.Point(0, -10),
+                                                            anchor: filteredSalons[index].id === selectedSalon.id ? new window.google.maps.Point(25, 37) : new window.google.maps.Point(20, 35),
 
-                                                    }}}
+                                                        }
+                                                    }}
                                                     zIndex={filteredSalons[index].id === selectedSalon.id ? 4 : 3}
 
                                                 />
@@ -430,15 +431,15 @@ const SalonChoice = () => {
                                                     key={selectedSalon.id}
                                                     position={position}
                                                     mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
-                                                    getPixelPositionOffset={(width, height) => ({ x: width-25, y: height-15 })}
+                                                    getPixelPositionOffset={(width, height) => ({ x: width - 25, y: height - 15 })}
                                                 >
                                                     <div style={{
                                                         color: filteredSalons[index].id === selectedSalon.id ? "#FFF" : "#000",
                                                         whiteSpace: 'nowrap',
                                                         fontSize: filteredSalons[index].id === selectedSalon.id ? '12px' : "12px",
                                                         fontWeight: 'bold',
-                                                        zIndex: filteredSalons[index].id === selectedSalon.id ? 2 : 1, 
-                                                    }}>                                                        
+                                                        zIndex: filteredSalons[index].id === selectedSalon.id ? 2 : 1,
+                                                    }}>
                                                         {`$ ${filteredSalons[index].final_price}`}
 
                                                     </div>
@@ -482,11 +483,11 @@ const SalonChoice = () => {
                                                         <StarIcon width='35' height='35'
                                                             color={wishlist.includes(String(fsalon.id)) ? "#FF5B5B" : ""}
                                                             stroke={wishlist.includes(String(fsalon.id)) ? "#FFFFFF" : ""} />
-                                                    </div>}           
+                                                    </div>}
 
-                                                {fsalon && fsalon.salon_cover_image &&                                          
+                                                {fsalon && fsalon.salon_cover_image &&
                                                     <Image
-                                                        src={fsalon && fsalon.salon_cover_image  ? fsalon.salon_cover_image?.image?.includes('api') ? fsalon.salon_cover_image.image : `https://api.onehaircut.com${fsalon.salon_cover_image.image}` : fsalon.logo.includes('api') ? fsalon.logo : `https://api.onehaircut.com${fsalon.logo}`}
+                                                        src={fsalon && fsalon.salon_cover_image ? fsalon.salon_cover_image?.image?.includes('api') ? fsalon.salon_cover_image.image : `https://api.onehaircut.com${fsalon.salon_cover_image.image}` : fsalon.logo.includes('api') ? fsalon.logo : `https://api.onehaircut.com${fsalon.logo}`}
                                                         sizes="640w"
                                                         fill={true}
                                                         alt="image"
