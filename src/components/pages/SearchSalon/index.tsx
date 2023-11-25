@@ -284,7 +284,7 @@ const SearchSalon = () => {
               {/*TODO import real rating on the selected haircut {salonProfile.rating} */}
               {salonProfile && <div className="flex items-center gap-1 border-b-2 border-[#DBDBDB] text-xl 2xl:text-2xl font-semibold text-black pb-3 mt-1">
                 <StarRatings
-                  rating={salonProfile.rating}
+                  rating={salonProfile.haircut ? salonProfile.haircut.rating : salonProfile.rating}
                   starRatedColor="#FEDF10"
                   starSpacing="4px"
                   starDimension="25px"
