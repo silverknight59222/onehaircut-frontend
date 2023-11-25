@@ -284,7 +284,7 @@ const SearchSalon = () => {
               {/*TODO import real rating on the selected haircut {salonProfile.rating} */}
               {salonProfile && <div className="flex items-center gap-1 border-b-2 border-[#DBDBDB] text-xl 2xl:text-2xl font-semibold text-black pb-3 mt-1">
                 <StarRatings
-                  rating={salonProfile.rating}
+                  rating={salonProfile.haircut ? salonProfile.haircut.rating : salonProfile.rating}
                   starRatedColor="#FEDF10"
                   starSpacing="4px"
                   starDimension="25px"
@@ -292,7 +292,7 @@ const SearchSalon = () => {
                   name="rating"
                 />
                 {/* TODO use salon's rating of the selected haircut {salonProfile.rating}*/}
-                <p className="-mb-2"> {Math.round(salonProfile.rating)}</p> <br /> <small><small>  ({salonProfile.rating_counts || 0} avis</small></small> <p className="font-normal"><small><small><small>* sur cette coiffure</small></small></small> <br /></p> <small><small> ) </small></small>
+                <p className="-mb-2"> {salonProfile.haircut ? salonProfile.haircut.rating : salonProfile.rating }</p> <br /> <small><small>  ({salonProfile.haircut ? salonProfile.haircut.rating_counts : salonProfile.rating_counts} avis</small></small> <p className="font-normal"><small><small><small>* sur cette coiffure</small></small></small> <br /></p> <small><small> ) </small></small>
               </div>}
               {/* Description du salon */}
               <div className="mt-5 p-4 bg-gray-200 w-full lg:w-[400px] 2xl:w-[720px] rounded-xl ">
