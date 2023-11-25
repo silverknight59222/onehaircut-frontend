@@ -146,7 +146,7 @@ const Index = () => {
       targetDate.setDate(today.getDate() + difference);
 
       const formattedDate = targetDate.toISOString().split('T')[0];
-      
+      const bookingDate = getLocalStorage('selectDate');
       const data = {
         user_id: user ? user.id : null,
         hair_salon_id: Number(salonData.id),
@@ -155,7 +155,7 @@ const Index = () => {
         amount: salonData.final_price,
         salon_haircut_id: salonData.haircut ? salonData.haircut.id : null,
         services: salonData.services || [],
-        date: formattedDate
+        date: bookingDate
       }
 
       await client.createBooking(data)

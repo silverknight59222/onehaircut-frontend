@@ -80,9 +80,9 @@ const BookSalon = () => {
 
       if (dd < '10') dd = '0' + dd;
       if (mm < '10') mm = '0' + mm;
-      const formattedToday = dd + '-' + mm + '-' + yyyy;
+      const formattedDate = dd + '-' + mm + '-' + yyyy;
       const data = {
-        date: formattedToday
+        date: formattedDate
       }
       await client.getSlots(selectedHairdresser.id, data)
         .then((resp) => {
