@@ -4,6 +4,8 @@ import {
   Hamburger,
   LogoIcon,
   SearcIcon,
+  RightArrowIcon,
+  LeftArrowIcon
 } from "@/components/utilis/Icons";
 import React, { useEffect, useState } from "react";
 import { getLocalStorage } from "@/api/storage";
@@ -248,7 +250,6 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
       },
     },
   });
-
 
   return (
     <div className="w-full flex flex-col items-center justify-between border-b border-[#EBF0F2] pb-3 xl:pb-0">

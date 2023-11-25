@@ -3,7 +3,7 @@ import { client } from "@/api/clientSide";
 import DatePicker from "@/components/UI/DatePicker";
 import Navbar from "@/components/shared/Navbar";
 import {
-  CalenderIcon,
+  CalenderIcon, LeftArrowIcon, RightArrowIcon
 } from "@/components/utilis/Icons";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -123,7 +123,7 @@ const BookSalon = () => {
   const onSelectSlot = (slot: any) => {
     const currentIndex = slots.findIndex((item) => item.id === slot.id);
     if (currentIndex !== -1) {
-      const selectedObjects:any = [];
+      const selectedObjects: any = [];
       const ddd = Number(getLocalStorage('slotTime'))
       const time = durationTime
 
@@ -150,6 +150,17 @@ const BookSalon = () => {
     };
   };
 
+  const handleChangeDate = (days) => {
+    if (selectedDate) {
+      // Crée une nouvelle date basée sur la date sélectionnée et ajoute ou soustrait des jours
+      const newDate = new Date(selectedDate);
+      newDate.setDate(newDate.getDate() + days);
+
+      // Met à jour la date sélectionnée avec la nouvelle date
+      // Assurez-vous que 'onSelectedDate' accepte un objet Date
+      onSelectedDate(newDate);
+    }
+  };
 
   return (
     <div>
@@ -275,8 +286,8 @@ const BookSalon = () => {
           Les disponibilités dépendent du coiffeur sélectionné
         </p>
 
-        <div className="flex flex-col sm:flex-row items-center justify-evenly px-1 sm:px-10">
 
+        <div className="flex flex-col sm:flex-row items-center justify-evenly px-1 sm:px-10">
           {/* DATEPICKER */}
           <div className="relative">
             <div className="cursor-pointer hover:scale-110 transition duration-300" onClick={() => setShowCalender(!showCalender)}>
@@ -294,14 +305,35 @@ const BookSalon = () => {
             }
           </div>
 
-          {/* AFFICHAGE DE LA DATE */}
-          <p className={`text-[#ffffff] text-lg font-medium ${ColorsThemeA.OhcGradient_A} shadow-sm shadow-stone-600 rounded-lg px-6 py-3 `} >
-            {selectedDate && new Intl.DateTimeFormat('fr-FR', {
-              weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-            }).format(new Date(selectedDate))}
-          </p>
 
+          {/* NAVIGATION DE LA DATE */}
+          <div className="flex items-center">
+            {/* Flèche Gauche */}
+            {selectedDate && new Date(selectedDate) > new Date() &&
+              <button
+                className="cursor-pointer hover:scale-110 transition duration-300 mr-4"
+                onClick={() => handleChangeDate(-1)}>
+                <LeftArrowIcon />
+              </button>
+            }
+
+            {/* AFFICHAGE DE LA DATE */}
+            <p className={`text-[#ffffff] text-lg font-medium ${ColorsThemeA.OhcGradient_A} shadow-sm shadow-stone-600 rounded-lg px-6 py-3`}>
+              {selectedDate ? new Intl.DateTimeFormat('fr-FR', {
+                weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+              }).format(new Date(selectedDate)) : "Sélectionnez une date"}
+            </p>
+
+            {/* Flèche Droite */}
+            <button
+              className="cursor-pointer hover:scale-110 transition duration-300 ml-4"
+              onClick={() => handleChangeDate(1)}>
+              <RightArrowIcon />
+            </button>
+          </div>
         </div>
+
+
 
         {/* SLOTS */}
         <div className="flex items-center justify-center mt-6 mb-4">
