@@ -55,11 +55,19 @@ const Step1 = () => {
     setLocalStorage('salon_name', salonName);
     route.push("/registration/steps/2")
   }
-  
+
+  const onOHCLogoClick = () => {
+    route.push(`/`)
+  }
+
   return (
     <div className="px-7 mb-8">
       <div className="flex items-center justify-center border-b border-[#EBF0F2] mt-5 pb-3">
-        <LogoIcon />
+        <button className="cursor-pointer"
+          onClick={onOHCLogoClick}
+        >
+          <LogoIcon />
+        </button>
       </div>
       <div className="flex flex-col items-center justify-center mt-7">
         <p className="text-black font-semibold text-3xl md:text-4xl xl:text-5xl text-center">

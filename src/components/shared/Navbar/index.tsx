@@ -18,6 +18,7 @@ import Slider from '@material-ui/core/Slider';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 
 
+
 interface Navbar {
   isWelcomePage?: boolean,
   isServicesPage?: boolean,
@@ -51,7 +52,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
   const [ethnicityFilters, setEthnicityFilters] = useState<string[]>([]);
   const [lengthFilters, setLengthFilters] = useState<string[]>([]);
   const [mobileFilters, setMobileFilters] = useState<string>("");
-  const [rangeFilters, setRangeFilter] = useState<number[]>([2, 100]);
+  const [rangeFilters, setRangeFilter] = useState<number[]>([10, 100]);
 
   const router = useRouter()
   const EthnicityDesktopRef =
@@ -251,11 +252,11 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
 
   return (
     <div className="w-full flex flex-col items-center justify-between border-b border-[#EBF0F2] pb-3 xl:pb-0">
-      <div className={`w-full flex items-center justify-between px-4 md:px-14 ${!isLoggedIn ? 'flex-co sm:flex-row' : 'flex-row'}`}>
+      <div className={`w-full flex items-center justify-between px-4 md:px-14  ${!isLoggedIn ? 'flex-co sm:flex-row' : 'flex-row'}`}>
         <div onClick={() => router.push('/')} className="py-5 cursor-pointer">
           <LogoIcon />
         </div>
-        {!hideSearchBar && <div className="hidden xl:flex items-center pr-2 rounded-2xl bg-[#F7F7F7] h-[52px] shadow-md border border-stone-200">
+        {!hideSearchBar && <div className="hidden xl:flex items-center pr-2 rounded-2xl bg-[#F7F7F7] h-[52px]  shadow-sm shadow-stone-300 border border-stone-200">
           <div
             className="flex items-center justify-center"
           >
@@ -324,7 +325,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                           >
                             <div
                               className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  transform hover:scale-105 ${genderFilters.includes(item.name)
-                                ? "bg-gradient-to-b from-pink-500 to-orange-500"
+                                ? ColorsThemeA.OhcGradient_A
                                 : "bg-[#D6D6D6]"
                                 }`}
                             >
@@ -359,7 +360,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                           >
                             <div
                               className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  transform hover:scale-105 ${lengthFilters.includes(item.name)
-                                ? "bg-gradient-to-b from-pink-500 to-orange-500"
+                                ? ColorsThemeA.OhcGradient_A
                                 : "bg-[#D6D6D6]"
                                 }`}
                             >
@@ -400,7 +401,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                 <input
                   type="text"
                   placeholder="Ville"
-                  className={`text-base px-4 p-2 rounded-xl outline-none ${Theme_A.behaviour.fieldFocused_C}`}
+                  className={`text-base px-4 p-2 rounded-xl outline-none ${Theme_A.behaviour.fieldFocused_B}`}
                   onChange={onSearch && isWelcomePage ?
                     (e) => onSearch(e.target.value) :
                     onCitySearch && isSalonPage ? (e) => onCitySearch(e.target.value) : () => { }}
@@ -411,7 +412,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                 <input
                   type="text"
                   placeholder="Nom Salon"
-                  className={`text-base px-4 p-2 rounded-xl outline-none ${Theme_A.behaviour.fieldFocused_C}`}
+                  className={`text-base px-4 p-2 rounded-xl outline-none ${Theme_A.behaviour.fieldFocused_B}`}
                   onChange={onNameSearch && isWelcomePage ?
                     () => { } :
                     onNameSearch && isSalonPage ? (e) => onNameSearch(e.target.value) : () => { }}
@@ -442,7 +443,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                         >
                           <div
                             className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105 
-                            ${mobileFilters === item.value ? ColorsThemeA.ohcVerticalGradient_A : "bg-[#D6D6D6]"}`}
+                            ${mobileFilters === item.value ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}
                           >
                             <CheckedIcon />
                           </div>
@@ -510,8 +511,8 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
           className="relative flex items-center justify-center md:justify-end gap-4"
         >
           {!isLoggedIn &&
-            <button onClick={() => router.push('/registration')} className="w-52 2xl:w-60 h-11 text-white font-semibold bg-background-gradient rounded-3xl shadow-sm hover:shadow-lg transform hover:scale-105 transition-transform ">
-              Enregistre mon salon
+            <button onClick={() => router.push('/registration')} className={`w-52 2xl:w-60 h-11 text-white font-semibold ${Theme_A.button.mediumGradientButton} rounded-xl shadow-sm shadow-stone-300`}>
+              Enregistrer mon salon
             </button>}
           {/* {isLoggedIn ? (
               <div className="cursor-pointer">
@@ -561,7 +562,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                           >
                             <div
                               className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${ethnicityFilters.includes(item.name)
-                                ? "bg-gradient-to-b from-pink-500 to-orange-500"
+                                ? ColorsThemeA.OhcGradient_A
                                 : "bg-[#D6D6D6]"
                                 }`}
                             >
@@ -596,7 +597,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                           >
                             <div
                               className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${genderFilters.includes(item.name)
-                                ? "bg-gradient-to-b from-pink-500 to-orange-500"
+                                ? ColorsThemeA.OhcGradient_A
                                 : "bg-[#D6D6D6]"
                                 }`}
                             >
@@ -631,7 +632,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                           >
                             <div
                               className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${lengthFilters.includes(item.name)
-                                ? "bg-gradient-to-b from-pink-500 to-orange-500"
+                                ? ColorsThemeA.OhcGradient_A
                                 : "bg-[#D6D6D6]"
                                 }`}
                             >

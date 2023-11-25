@@ -139,7 +139,7 @@ function MobilePricingTable() {
         div className={`flex relative content-center justify-center items-center text-center`}>
         <div
           onClick={() => router.push('registration/plans?plan=standard')}
-          className={`flex items-center justify-center rounded-xl  w-4/5 h-16 ${Theme_A.button.bigGradientButton} `}>
+          className={`flex items-center justify-center rounded-xl  w-4/5 h-16 cursor-pointer ${Theme_A.button.bigGradientButton} `}>
           Vers le choix de l'abonnement
         </div>
       </div>

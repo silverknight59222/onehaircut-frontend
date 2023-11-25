@@ -102,7 +102,7 @@ const Step2 = () => {
   }
 
 
-  const setAddressData = (place: any,) => {    
+  const setAddressData = (place: any,) => {
     setStreet("")
     setCity("")
     setState("")
@@ -161,12 +161,18 @@ const Step2 = () => {
     }
   }
 
-
+  const onOHCLogoClick = () => {
+    route.push(`/`)
+  }
 
   return (
     <div>
       <div className="flex items-center justify-center border-b border-[#EBF0F2] mt-5 pb-3">
-        <LogoIcon />
+        <button className="cursor-pointer"
+          onClick={onOHCLogoClick}
+        >
+          <LogoIcon />
+        </button>
       </div>
       <div className="flex flex-col items-center justify-center mt-16">
         <p className="text-black font-semibold text-xl md:text-2xl lg:text-3xl text-center px-6 w-full md:w-[800px] xl:w-[1100px]">
