@@ -292,7 +292,7 @@ const SearchSalon = () => {
                   name="rating"
                 />
                 {/* TODO use salon's rating of the selected haircut {salonProfile.rating}*/}
-                <p className="-mb-2"> {salonProfile.rating}</p> <br /> <small><small>  ({salonProfile.rating_counts || 0} avis</small></small> <p className="font-normal"><small><small><small>* sur cette coiffure</small></small></small> <br /></p> <small><small> ) </small></small>
+                <p className="-mb-2"> {salonProfile.haircut ? salonProfile.haircut.rating : salonProfile.rating }</p> <br /> <small><small>  ({salonProfile.haircut ? salonProfile.haircut.rating_counts : salonProfile.rating_counts} avis</small></small> <p className="font-normal"><small><small><small>* sur cette coiffure</small></small></small> <br /></p> <small><small> ) </small></small>
               </div>}
               {/* Description du salon */}
               <div className="mt-5 p-4 bg-gray-200 w-full lg:w-[400px] 2xl:w-[720px] rounded-xl ">
