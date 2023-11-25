@@ -29,8 +29,8 @@ import { usePathname, useRouter } from "next/navigation";
 import { ColorsThemeA, Theme_A } from "../utilis/Themes";
 import BaseModal from "../UI/BaseModal";
 import { user_api } from "@/api/clientSide";
-import {salonApi} from '@/api/salonSide'
- 
+import { salonApi } from '@/api/salonSide'
+
 interface SidebarItems {
   icon: string;
   title: string;
@@ -194,7 +194,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
         );
         break;
     }
-    
+
     return Icon;
   };
 
@@ -231,7 +231,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
     const user = temp ? JSON.parse(temp) : null;
 
     const tempSalon = getLocalStorage('hair_salon');
-    
+
     const salonInfo = tempSalon ? JSON.parse(tempSalon) : null;
 
     // Utilisation de l'opérateur chaînage optionnel pour éviter l'erreur
@@ -255,7 +255,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
         setTextLength(salonInfo.description);
         setTextDescription(salonInfo.description);
       }
-    }      
+    }
 
   }, []);
 
@@ -324,11 +324,11 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
     SetCurrentLogo();
     SetCurrentDescription();
     const formData = new FormData();
-    formData.set("description",textDescription);
+    formData.set("description", textDescription);
     if (localImageFile) {
-      formData.set("logo", localImageFile);  
+      formData.set("logo", localImageFile);
     }
-    const response = await salonApi.updateLogoAndDescription(formData);    
+    const response = await salonApi.updateLogoAndDescription(formData);
     setImageUrl(response.data.data.salon.logo);
     setLocalStorage('hair_salon', JSON.stringify(response.data.data.salon))
   };
@@ -375,7 +375,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
                 <img
                   src={imageUrl}
                   alt="profile"
-                  className="rounded-full absolute inset-0 m-auto shadow-md transform transition-transform duration-300 group-hover:scale-90 hover:shadow-inner border-2 border-stone-700 h-24 w-24"
+                  className="rounded-full absolute inset-0 m-auto shadow-md transform transition-transform duration-300 group-hover:scale-90 hover:shadow-inner border-2 border-stone-200 h-24 w-24"
                 />
               </div>
 
@@ -478,11 +478,11 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
                         )}
                         {/* TODO make the message notification number dynamic */}
                         {/* {item.title === 'Message' && <p className="absolute top-3 -right-2.5 flex items-center justify-center w-4 h-4 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold">2</p>} */}
-                        {(item.title === 'Message') &&< p className="left-56 top-[2.6px]	absolute flex items-center justify-center w-5 h-5 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold">2</p>}
-                        {(item.title === 'Réservations en cours') &&< p className="left-56 top-[2.6px]	absolute  flex items-center justify-center w-5 h-5 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold">2</p>}
-                        {(item.title === 'Historique') &&< p className="left-56 top-[2.6px]	absolute  flex items-center justify-center w-5 h-5 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold">2</p>}
-                        
-                      
+                        {(item.title === 'Message') && < p className="left-56 top-[2.6px]	absolute flex items-center justify-center w-5 h-5 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold">2</p>}
+                        {(item.title === 'Réservations en cours') && < p className="left-56 top-[2.6px]	absolute  flex items-center justify-center w-5 h-5 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold">2</p>}
+                        {(item.title === 'Historique') && < p className="left-56 top-[2.6px]	absolute  flex items-center justify-center w-5 h-5 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold">2</p>}
+
+
                       </div>
                       <p
                         className={`text-base ${path === item.route && "text-white"
