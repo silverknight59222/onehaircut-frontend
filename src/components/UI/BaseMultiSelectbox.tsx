@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { CheckedIcon, DownArrow } from '../utilis/Icons';
+import { ColorsThemeA } from '../utilis/Themes';
 
 interface dropdown {
     name: string
@@ -11,7 +12,7 @@ export type BaseDropdown = {
     getActiveFilters?: (value: string) => void;
 }
 
-const BaseMultiSelectbox = ({getActiveFilters, dropdownTitle, dropdownItems}: BaseDropdown) => {
+const BaseMultiSelectbox = ({ getActiveFilters, dropdownTitle, dropdownItems }: BaseDropdown) => {
     const [isDropdown, setIsDropdown] = useState(false);
     const [selectedItems, setSelectedItems] = useState<string>('')
     const dropdownRef = React.useRef() as React.MutableRefObject<HTMLInputElement>
@@ -35,7 +36,7 @@ const BaseMultiSelectbox = ({getActiveFilters, dropdownTitle, dropdownItems}: Ba
 
     useEffect(() => {
         document.addEventListener('click', closeSelectBox);
-        
+
         return () => {
             document.removeEventListener('click', closeSelectBox);
         };
@@ -52,7 +53,7 @@ const BaseMultiSelectbox = ({getActiveFilters, dropdownTitle, dropdownItems}: Ba
                     {dropdownItems.map((item, index) => {
                         return (
                             <div key={index} onClick={() => checkboxClickHandler(item.name)} className="flex cursor-pointer mb-[19px]">
-                                <div className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${selectedItems.includes(item.name) ? "bg-gradient-to-b from-pink-500 to-orange-500" : "bg-[#D6D6D6]"}`}>
+                                <div className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${selectedItems.includes(item.name) ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}>
                                     <CheckedIcon />
                                 </div>
                                 <p className="ml-2">

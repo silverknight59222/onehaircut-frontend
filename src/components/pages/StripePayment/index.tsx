@@ -5,6 +5,7 @@ import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/
 import { SalonRegisterParams, registration } from "@/api/registration";
 import useSnackbar from "@/hooks/useSnackbar";
 import { useRouter } from "next/navigation";
+import { Theme_A } from "@/components/utilis/Themes";
 
 const useOptions = () => {
   const options = useMemo(
@@ -108,8 +109,8 @@ function StripePayment() {
     setIsLoading(true);
     const clientSecret = getLocalStorage("secret_key")?.toString();
     const cardElement = elements.getElement(CardElement);
-    if (clientSecret && cardElement) {      
-            await stripe
+    if (clientSecret && cardElement) {
+      await stripe
         .createPaymentMethod({
           type: "card",
           card: cardElement,
@@ -138,11 +139,11 @@ function StripePayment() {
         </div>
         <CardElement options={options} />
         <button
-          className="w-full h-14 mt-8 text-white text-xl font-semibold rounded-xl bg-background-gradient shadow-[0px_17px_36px_0px_rgba(255,125,60,0.25)]"
+          className={`w-full h-14 mt-8 text-white text-xl font-semibold rounded-xl bg-background-gradient shadow-md shadow-stone-300 hover:scale-95 transition duration-300`}
           type="submit"
           disabled={!stripe || !elements}
         >
-          Pay
+          Confirmer
         </button>
       </form>
     </div>

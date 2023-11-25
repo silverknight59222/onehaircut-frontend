@@ -40,12 +40,12 @@ const Step5 = () => {
           <UserProfile />
         </div>
       </div>
-      <div className="z-50 flex flex-col items-center justify-center">
+      <div className="z-50 flex flex-col items-center justify-center ">
         <p className="text-black font-medium text-5xl mt-10">Panier</p>
         <div className="w-full flex flex-col lg:flex-row items-start justify-center gap-12 mt-9 px-5">
-          <div className="w-full lg:w-[550px] 2xl:w-[670px]">
-            <div className="bg-[#FAFAFA] rounded-3xl py-8 px-6 sm:px-10">
-              <div className="bg-white px-4 py-8 w-full">
+          <div className="w-full lg:w-[550px] 2xl:w-[670px] ">
+            <div className="bg-[#f3f2f2] rounded-3xl py-8 px-6 sm:px-10 shadow-sm shadow-stone-300">
+              <div className="bg-white px-4 py-8 w-full rounded-lg">
                 <p className="text-lg font-semibold text-black">
                   Adresse de facturation
                 </p>
@@ -53,7 +53,7 @@ const Step5 = () => {
                   <p>{salonAddress ? `${salonAddress.street},${salonAddress.city}, ${salonAddress.country}` : '-'}</p>
                 </div>
               </div>
-              <div className="bg-white px-4 py-8 mt-7 w-full">
+              <div className="bg-white px-4 py-8 mt-7 w-full rounded-lg">
                 <p className="text-lg font-semibold text-black">
                   Moyen de paiement
                 </p>
@@ -68,7 +68,7 @@ const Step5 = () => {
               </div>
             </div>
           </div>
-          <div className="w-full lg:w-[480px] 2xl:w-[590px] bg-[#FAFAFA] rounded-3xl py-8 px-6 sm:px-8">
+          <div className="w-full lg:w-[480px] 2xl:w-[590px] bg-[#f3f2f2] rounded-3xl py-8 px-6 sm:px-8 shadow-sm shadow-stone-300">
             <p className="text-lg font-semibold text-black">Commande</p>
             <div className="text-black text-lg mt-5">
               <div className="flex items-center justify-between gap-3">
