@@ -20,7 +20,7 @@ import { dashboard } from "@/api/dashboard";
 
 const SubSelected_text = "text-white"
 const SubSelected_recommended = "bg-[rgba(255,255,255,0.53)] text-white"
-const SubSelected_BG = `${ColorsThemeA.OhcGradient_B}`
+const SubSelected_BG = `${ColorsThemeA.ohcBigVerticalGradient_A}`
 // const SubSelected_BG = `"linear-gradient(162deg, #f54257 0%, #FD4C55 40.71%, #FF8637 70.46%, #FFE30F 100%)"`
 const SubUnselected_text = "text-black"
 const SubUnselected_recommended = `${ColorsThemeA.OhcGradient_D} text-black`
@@ -202,10 +202,13 @@ const Subscription = () => {
             <div className="relative z-10 flex items-center justify-center w-full lg:hidden">
               <MobilePricingTable />
             </div>
-            <div className="relative z-10 w-full sm:w-[415px] flex flex-col  sm:-mt-5 lg:mt-20 xl:mt-20">
+
+
+            <div className="relative z-10 w-full sm:w-[450px] flex flex-col  sm:-mt-5 lg:mt-20 xl:mt-20">
+
               <div className="py-4 px-5 2xl:text-xl text-center text-black whitespace-nowrap bg-[#F4F4F6] font-medium border border-[#9B9B9B] rounded-xl">
-                <p>Renouvellement de l’abonnement le: </p>
-                {!isAutomaticRenewal && <p className="text-center mt-1">12 / 07 / 2024</p>}
+                <p>Votre contrat se termine le: 12 / 07 / 2024</p>
+
                 <div
                   onClick={() => setIsAutomaticRenewal(!isAutomaticRenewal)}
                   className="flex items-center justify-start gap-3 mt-4 cursor-pointer"
@@ -223,10 +226,14 @@ const Subscription = () => {
                   <p>Renouvellement&nbsp;Automatique</p>
                 </div>
               </div>
-              <button className="w-40 h-10 flex items-center justify-center bg-[#ffffff] border border-black rounded-xl mt-40 mb-6 text-black font-normal hover:scale-90 transition-transform hover:bg-red-500 hover:font-bold">
+
+
+              <button className="w-40 h-10 flex items-center justify-center bg-[#ffffff] border border-black rounded-xl mt-20 mb-12 text-black font-normal hover:scale-95 transition-transform duration-300 hover:bg-stone-100 ">
                 Clôturer le compte
               </button>
             </div>
+
+
           </div>
         </div>
       </DashboardLayout >

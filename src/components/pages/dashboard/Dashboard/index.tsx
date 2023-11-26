@@ -336,7 +336,7 @@ const Dashboard = () => {
 
 
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch mt-10">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch mt-10 ">
                 {/*REVENU JOURNALIER */}
                 <div className="flex items-center justify-between gap-3">
                     <button onClick={() => toggleModal('Incomes')} className={`${Theme_A.button.medBlackColoredButton}`}>
@@ -359,16 +359,16 @@ const Dashboard = () => {
             </div>
 
 
-            <div className="mb-12">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div className="mb-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ">
                     {/* REVENU CHART */}
-                    <Card className="h-full">
+                    <Card className="h-full mb-4">
                         <div>
                             <ApexAreaChart />
                         </div>
                     </Card>
                     {/* OBJECTIFS CHART */}
-                    <Card className="h-full flex flex-col justify-start">
+                    <Card className="h-full flex flex-col justify-start mb-4">
                         <div>
                             {/* Ligne du haut */}
                             <Grid container justifyContent="center" alignItems="start" spacing={2}>
