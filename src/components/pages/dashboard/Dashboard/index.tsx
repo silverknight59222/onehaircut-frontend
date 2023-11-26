@@ -306,7 +306,7 @@ const Dashboard = () => {
                 </p>
 
                 {/*<DialogShareProject />*/}
-                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-8 gap-y-4 ">
+                <div className="grid grid-cols-1 sm:grid-cols-2  2xl:grid-cols-4 gap-x-8 gap-y-4 ">
                     {overview.map((item, index) => {
                         return (
                             <div key={index} className="flex flex-col">
@@ -336,14 +336,14 @@ const Dashboard = () => {
 
 
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch mt-10 ">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch mt-10">
                 {/*REVENU JOURNALIER */}
                 <div className="flex items-center justify-between gap-3">
                     <button onClick={() => toggleModal('Incomes')} className={`${Theme_A.button.medBlackColoredButton}`}>
                         Revenu journalier
                     </button>
                     {/* DROPDOWN AFFICHAGE REVENU JOURNALIER */}
-                    <span className="mr-4 mt-4">
+                    <span className="mr-0 mt-4 ">
                         <DropdownMenu dropdownItems={DisplayedMonths} backgroundColor="bg-white" selectId={selectedMonthRevenu} menuName="Période d'observation"
                             fctToCallOnClick={handleNewMonthRevenu} />
                     </span>
@@ -359,21 +359,21 @@ const Dashboard = () => {
             </div>
 
 
-            <div className="mb-6">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ">
+            <div className="mb-12">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                     {/* REVENU CHART */}
-                    <Card className="h-full mb-4">
+                    <Card className="h-full rounded-xl">
                         <div>
                             <ApexAreaChart />
                         </div>
                     </Card>
                     {/* OBJECTIFS CHART */}
-                    <Card className="h-full flex flex-col justify-start mb-4">
+                    <Card className="h-full flex flex-col justify-start rounded-xl">
                         <div>
                             {/* Ligne du haut */}
                             <Grid container justifyContent="center" alignItems="start" spacing={2}>
-                                <Grid item xs={false} sm={1} lg={4} /> {/* Espace vide pour le décalage IMPORTANT*/}
-                                <Grid item xs={12} sm={5} lg={4} style={{ marginTop: '2rem' }}>
+                                <Grid item xs={false} sm={false} md={false} lg={2} /> {/* Espace vide pour le décalage IMPORTANT*/}
+                                <Grid item xs={12} sm={4} md={5} lg={5} style={{ marginTop: '1rem' }}>
                                     {/* Contenu pour Nouveaux Clients */}
                                     <ProgressBar
                                         value={61}
@@ -383,7 +383,7 @@ const Dashboard = () => {
                                         color='rgba(255, 70, 70, 1)'
                                     />
                                 </Grid>
-                                <Grid item xs={12} sm={5} lg={4} style={{ marginTop: '2rem' }}>
+                                <Grid item xs={12} sm={4} md={5} lg={3} style={{ marginTop: '1rem' }}>
                                     {/* Contenu pour Nombre de visite */}
                                     <ProgressBar
                                         value={73}
@@ -397,9 +397,9 @@ const Dashboard = () => {
 
                             {/* Ligne du bas */}
                             <Grid container justifyContent="center" alignItems="end" spacing={2}>
-                                <Grid item xs={12} sm={5} lg={4}>
+                                <Grid item xs={12} sm={4} md={5} lg={5} style={{ marginBottom: '1rem' }} >
                                     {/* Contenu pour Revenu mensuel */}
-                                    <ProgressBar
+                                    < ProgressBar
                                         value={50}
                                         name="Revenus mensuel"
                                         number={50}
@@ -409,7 +409,7 @@ const Dashboard = () => {
                                 </Grid>
                                 {/* Supprimez cet espace vide si vous voulez rapprocher le dernier ProgressBar vers la gauche */}
                                 {/* <Grid item xs={false} sm={1} lg={2} /> */}
-                                <Grid item xs={12} sm={5} lg={4}>
+                                <Grid item xs={12} sm={4} md={5} lg={6} style={{ marginBottom: '1rem' }}>
                                     {/* Contenu pour Commandes d'habitués */}
                                     <ProgressBar
                                         value={15}
@@ -424,20 +424,20 @@ const Dashboard = () => {
                         </div>
                     </Card>
                 </div>
-            </div>
+            </div >
 
 
 
 
             {/* TRANSACTIONS */}
-            <div className="flex items-center justify-between mt-10">
+            < div className="flex items-center justify-between mt-10" >
                 <button onClick={() => toggleModal('TransactionfullTable')} className={`${Theme_A.button.medBlackColoredButton}`}>
                     Transactions
                 </button>
 
                 <DropdownMenu dropdownItems={DisplayedMonths} backgroundColor="bg-white" selectId={selectedMonthTransactions} menuName="Période d'observation"
                     fctToCallOnClick={setSelectedMonthTransactions} />
-            </div>
+            </div >
             <TransactionList />
 
 
@@ -631,7 +631,7 @@ const Dashboard = () => {
             </div>
 
 
-        </div>
+        </div >
 
     );
 };

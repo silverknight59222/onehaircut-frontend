@@ -431,7 +431,7 @@ const SalonChoice = () => {
                                                     key={selectedSalon.id}
                                                     position={position}
                                                     mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
-                                                    getPixelPositionOffset={(width, height) => ({ x: width - 25, y: height - 15 })}
+                                                    getPixelPositionOffset={(width, height) => ({ x: width - 20, y: height - 15 })}
                                                 >
                                                     <div style={{
                                                         color: filteredSalons[index].id === selectedSalon.id ? "#FFF" : "#000",
@@ -440,7 +440,7 @@ const SalonChoice = () => {
                                                         fontWeight: 'bold',
                                                         zIndex: filteredSalons[index].id === selectedSalon.id ? 2 : 1,
                                                     }}>
-                                                        {`$ ${filteredSalons[index].final_price}`}
+                                                        {`${filteredSalons[index].final_price}€`}
 
                                                     </div>
                                                 </OverlayViewF>
@@ -501,7 +501,7 @@ const SalonChoice = () => {
                                             <div className="flex items-start justify-between text-black text-lg font-semibold px-3 pt-2 ">
                                                 <p className='w-36'>{fsalon.name}</p>
                                                 {/* TODO PRICE SHOULD BE IN EUROS HERE */}
-                                                <p className={`p-2 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white`}> ${fsalon.final_price}</p>
+                                                <p className={`p-2 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white`}> {fsalon.final_price}€</p>
                                             </div>
 
                                             {/* Évaluation et nombre d'avis */}
