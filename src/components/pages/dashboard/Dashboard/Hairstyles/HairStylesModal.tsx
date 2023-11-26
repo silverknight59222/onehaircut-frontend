@@ -82,9 +82,9 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
                 }
                 return [...prevData]
             });
-        } else if (payload.type  == "select_all") {
+        } else if (payload.type == "select_all") {
             setSelectedHaircutsMapping(payload.haircuts);
-        } else if (payload.type  == "reset_modal") {
+        } else if (payload.type == "reset_modal") {
             setSelectedHaircutsMapping([]);
         }
         else {
@@ -284,7 +284,7 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
         });
         data.hair_salon_id = Number(getLocalStorage("salon_id"));
         data.haircut_ids = selectedHaircuts;
-        
+
         await dashboard
             .addSalonHaircut(data)
             .then((res) => {
@@ -310,7 +310,7 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
         <div className="bg-stone-50 shadow-md border-2 border-stone-200 rounded-3xl p-4 md:sticky md:top-0 h-max">
             <div className="flex items-center justify-center gap-2">
                 <h2 className={`${Theme_A.textFont.headerH3}`}>
-                    Configurations des coiffures
+                    Configurations de vos prix
                 </h2>
                 {(selectedHaircutsMapping.length > 0) && <div className={`${Theme_A.indicators.counterIndicator}`}>{selectedHaircutsMapping.length}</div>}
             </div>
@@ -449,6 +449,9 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
                         </div>
                     </div>
                 </div>
+
+
+                {/* TODO CARE ABOUT THE THIKNESS LATER
                 <div className="mt-2">
                     <div>
                         <p className="text-medium text-sm text-grey italic text-center">
@@ -528,6 +531,9 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
                         </div>
                     </div>
                 </div>
+*/}
+
+
                 {!(activeMenu === "added" && selectedHaircutsMapping.length >= 0) ? (
                     <div className="flex items-center justify-center gap-4 mt-4">
                         <button onClick={addSalonHaircuts} className={`${Theme_A.button.mediumGradientButton}`}>

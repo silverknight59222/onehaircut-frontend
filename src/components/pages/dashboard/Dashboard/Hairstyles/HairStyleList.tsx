@@ -58,9 +58,9 @@ const HairStyleList = React.memo(({ activeMenu, hairStyleSelectEvent, resetStyle
                     listCountShowEvent.on(res.data.count)
                     if (res.data.count <= (currentPage * res.data.perPage)) {
                         setPage(-1)
-                      } else {
+                    } else {
                         setPage(currentPage + 1)
-                      }
+                    }
                 })
                 .finally(() => {
                     setIsLoading(false)
@@ -70,7 +70,7 @@ const HairStyleList = React.memo(({ activeMenu, hairStyleSelectEvent, resetStyle
     };
 
     const refreshDataWithPayload = (params) => {
-        setFilters({...params})
+        setFilters({ ...params })
         hairStyleParams = params
         reload()
     }
@@ -118,14 +118,14 @@ const HairStyleList = React.memo(({ activeMenu, hairStyleSelectEvent, resetStyle
                 {haircutList.map((item, index) => {
                     return (
                         <>
-                           <HairStyleListItem isAllSelected={isAllSelected} filters={filters} hairStyleSelectEvent={hairStyleSelectEvent} item={item} activeMenu={activeMenu}></HairStyleListItem>
+                            <HairStyleListItem isAllSelected={isAllSelected} filters={filters} hairStyleSelectEvent={hairStyleSelectEvent} item={item} activeMenu={activeMenu}></HairStyleListItem>
                         </>
                     );
                 })}
             </div>
             {page != -1 && <div onClick={() => getHaircuts(page)} className={`text-center `}>
                 <p
-                    className={`${Theme_A.Bars.proTopBar.standardShape}`}
+                    className={`${Theme_A.Bars.proTopBar.standardShape2} `}
                 >
                     CHARGER PLUS
                 </p>

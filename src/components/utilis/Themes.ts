@@ -31,6 +31,7 @@ export const Theme_A = {
       standardShape: `w-full flex items-center justify-center font-semibold bg-stone-50 opacity-100 border-x-2 border-stone-100 shadow-inner cursor-pointer rounded-lg px-5 h-11 hover:border-secondary hover:bg-gradient-to-b from-red-100 to-transparent`,
       activatedColor: "border border-red-50 bg-gradient-to-b from-red-100 to-transparent",
       inactivatedColor: "border border-stone-200 shadow-lg",
+      standardShape2: `w-full flex items-center justify-center font-semibold bg-stone-50 opacity-100 border-2 border-stone-300 shadow-inner cursor-pointer rounded-lg px-5 h-11 hover:border-x-secondary hover:bg-gradient-to-b from-red-100 to-transparent shadow-sm shadow-stone-300`,
     }
   },
   behaviour: {
@@ -109,7 +110,8 @@ export const Theme_A = {
     selectedCardGradientTop: "relative w-max px-4 pt-4 rounded-t-xl bg-gradient-to-r from-white via-red-200 to-red-100",
   },
   indicators: {
-    counterIndicator: `text-sm py-1 px-[12px] ml-2 rounded-full text-white ${ColorsThemeA.ohcVerticalGradient_A}`
+    counterIndicator: `text-sm py-1 px-[12px] ml-2 rounded-full text-white ${ColorsThemeA.ohcVerticalGradient_A}`,
+    counterIndicator_B: `text-sm py-1 px-[12px] ml-2 rounded-full text-white ${ColorsThemeA.OhcGradient_B}`
   },
   servicesCards: {
     modifyButton: `flex cursor-pointer my-2 py-1 px-2 rounded-md w-7 h-6 bg-gradient-to-r ${ColorsThemeA.OhcGradient_A} shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]`,

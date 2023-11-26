@@ -400,7 +400,7 @@ const HairStyleListHeader = React.memo(({ setActiveMenu, activeMenu, onFilterSel
                 </div>
             </div>
             <div className="flex flex-col-reverse lg:flex-row items-center gap-4 w-max p-1 mb-4 ml-5 text-[#737373]">
-                <div className={`${Theme_A.indicators.counterIndicator}`}>Résultat: {resultCount}</div>
+                <div className={`${Theme_A.indicators.counterIndicator_B}`}>Résultat: {resultCount}</div>
             </div>
         </div>
     );
