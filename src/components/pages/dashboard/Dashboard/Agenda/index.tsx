@@ -10,6 +10,8 @@ import { dashboard } from "@/api/dashboard";
 import EventDetailsModal from "./EventDetails";
 import { Booking, Coiffeur } from "./types";
 import { getLocalStorage } from "@/api/storage";
+import frLocale from '@fullcalendar/core/locales/fr'; // Importez la locale française
+
 
 export const Agenda = () => {
   // Initialisation des états et des références
@@ -140,14 +142,61 @@ export const Agenda = () => {
     getHairDresser();
   }, []);
 
+  // Fonction pour calculer le nombre d'événements à venir dans la plage visible
+  const [totalEventsCount, setTotalEventsCount] = useState(0);
+  const [upcomingEventsCount, setUpcomingEventsCount] = useState(0);
+
+  const countEventsInView = () => {
+    const calendarApi = calendarRef.current?.getApi();
+    if (!calendarApi) return { total: 0, upcoming: 0 };
+
+    const view = calendarApi.view;
+    const start = view.activeStart;
+    const end = view.activeEnd;
+    const now = new Date();
+
+    const eventsInView = events.filter(event => {
+      const eventStart = new Date(event.start);
+      const eventEnd = new Date(event.end);
+      return eventStart < end && eventEnd >= start;
+    });
+
+    const upcomingEvents = eventsInView.filter(event => new Date(event.end) > now);
+
+    return { total: eventsInView.length, upcoming: upcomingEvents.length };
+  };
+
+  useEffect(() => {
+    const { total, upcoming } = countEventsInView();
+    setTotalEventsCount(total);
+    setUpcomingEventsCount(upcoming);
+  }, [events, calendarRef]);
+
+  const TotalEventsCounter = ({ totalEventsCount }) => {
+    return (
+      <div className="total-events-counter">
+        Réservations sur cette plage: {totalEventsCount}
+      </div>
+    );
+  };
+
+  const UpcomingEventsCounter = ({ upcomingEventsCount }) => {
+    return (
+      <div className="upcoming-events-counter">
+        Réservations à venir: {upcomingEventsCount}
+      </div>
+    );
+  };
 
   // Rendu du composant
   return (
     <>
-      {isLoading && loadingView()} {/* Affichage du loader si le chargement est en cours */}
-      <div className="flex justify-end">
-        <div className="box-decoration-slice bg-gradient-to-r from-red-600 to-red-500  mb-2 rounded-md font-medium text-center p-1 box-border h-15 w-[200px] text-white px-3">Incoming Bookings 3</div>
+      {isLoading && loadingView()}
+      <div className="calendar-header">
+        <TotalEventsCounter totalEventsCount={totalEventsCount} />
+        <UpcomingEventsCounter upcomingEventsCount={upcomingEventsCount} />
       </div>
+
       <FullCalendar
         ref={calendarRef}
         events={events}
@@ -173,6 +222,13 @@ export const Agenda = () => {
           hour12: false // Cela indique d'utiliser le format 24 heures
         }}
         slotLabelInterval={{ hours: 2 }} // Ajouter ceci pour changer l'intervalle des étiquettes de temps
+        locale={frLocale} // Définissez la locale sur "fr"
+        datesSet={() => {
+          const { total, upcoming } = countEventsInView();
+          setTotalEventsCount(total);
+          setUpcomingEventsCount(upcoming);
+        }}
+
 
       />
 

@@ -106,7 +106,7 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
       {isModal &&
         <BaseModal close={() => setIsModal(false)} width="w-100">
           <div className="text-center">
-            <div className="h-[940px] w-full overflow-auto flex flex-col items-center justify-start gap-8 bg-lightGrey rounded-3xl p-4 md:p-12">
+            <div className="h-auto w-full overflow-auto flex flex-col items-center justify-start gap-8 bg-lightGrey rounded-3xl p-4 md:p-12">
               <div className={`${Theme_A.textFont.headerH2} underline`}>
                 Coiffeur(s)/-euse(s) disponible(s)
               </div>
@@ -138,7 +138,7 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
               </div>
             </div>
             {hairDresser.id > 0 && <button onClick={changeHairDresser} className={`${Theme_A.button.mediumGradientButton} mt-5`}>
-              Ajouter
+              Remplacer
             </button>}
           </div>
         </BaseModal>
