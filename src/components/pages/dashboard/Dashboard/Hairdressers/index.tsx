@@ -443,7 +443,7 @@ const Hairdressers = () => {
       {isModalPswrd && (
         <BaseModal close={() => setIsModalPswrd(false)}>
           <div className="flex flex-col items-center mt-4 mx-4">
-            <div className="w-full mb-8">
+            <div className="w-full mb-10">
               <CustomInput
                 id="old-password"
                 label="Ancien mot de passe"
@@ -452,7 +452,7 @@ const Hairdressers = () => {
                 type="password"
               />
             </div>
-            <div className="w-full mb-8">
+            <div className="w-full mb-10">
               <CustomInput
                 id="new-password"
                 label="Nouveau mot de passe"
@@ -461,7 +461,7 @@ const Hairdressers = () => {
                 type="password"
               />
             </div>
-            <div className="w-full mb-8">
+            <div className="w-full mb-10">
               <CustomInput
                 id="confirm-new-password"
                 label="Confirmer le nouveau mot de passe"
