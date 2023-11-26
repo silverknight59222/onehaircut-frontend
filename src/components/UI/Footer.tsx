@@ -1,4 +1,5 @@
 import React from 'react';
+import { InstagramGray, FacebookGray, YoutubeGray, LinkedInGray } from '../utilis/Icons';
 
 const Footer: React.FC = () => {
   return (
@@ -18,9 +19,12 @@ const Footer: React.FC = () => {
 
         {/* Section des liens à droite */}
         <div className="flex space-x-4">
+          <a href="#lien1" className="font-semibold hover:scale-110 transition duration-300 "><InstagramGray width="30px" height="30px" /></a>
+          <a href="#lien2" className="font-semibold hover:scale-110 transition duration-300"><FacebookGray width="28px" height="28px" /></a>
+          <a href="#lien3" className="font-semibold hover:scale-110 transition duration-300"><YoutubeGray width="30px" height="30px" /></a>
+          <a href="#lien4" className="font-semibold hover:scale-110 transition duration-300"><LinkedInGray width="25px" height="25px" /></a>
           {/* 
-          <a href="#lien1" className="font-semibold hover:underline">Lien 1</a>
-          <a href="#lien2" className="font-semibold hover:underline">Lien 2</a>
+          <a href="#lien3" className="font-semibold hover:underline">Lien 3</a>
           <a href="#lien3" className="font-semibold hover:underline">Lien 3</a>
           */}
         </div>
