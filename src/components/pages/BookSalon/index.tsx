@@ -3,7 +3,7 @@ import { client } from "@/api/clientSide";
 import DatePicker from "@/components/UI/DatePicker";
 import Navbar from "@/components/shared/Navbar";
 import {
-  CalenderIcon, LeftArrowIcon, RightArrowIcon
+  CalenderIcon, LeftArrowIcon, RightArrowIcon, CheckedIcon
 } from "@/components/utilis/Icons";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -162,6 +162,15 @@ const BookSalon = () => {
     }
   };
 
+  // TODO SEE IF THE SALON IS MOBILE - SELECT AT HOME OR IN SALON BOOKING 
+  const [locationType, setLocationType] = useState('salon');
+
+  // Gestionnaire de clic pour les boutons personnalisés
+  const handleLocationTypeClick = (type) => {
+    setLocationType(type);
+  };
+
+
   return (
     <div>
       {isLoading && salon && loadingView()}
@@ -209,14 +218,47 @@ const BookSalon = () => {
                   <p className="flex items-center gap-2 text-stone-700 text-base italic">{haircutData?.name}</p>
                 </div>
               )}
+
               <div>
                 <p className="font-semibold text-lg ">Durée: </p>
                 <p className="flex items-center gap-2 text-stone-700 text-base italic">{salon?.total_duration} minutes</p>
               </div>
-              <div >
-                <p className="font-semibold text-lg ">Lieu: </p>
-                <p className="flex items-center gap-2 text-stone-700 text-base italic">{salon?.Adresse}</p>
+
+              <p className="font-semibold text-lg">Lieu: </p>
+              <div className="flex space-x-4 text-sm">
+                {/* Bouton personnalisé pour "À domicile" avec texte centré */}
+                <div className="flex items-center space-x-2">
+                  <div
+                    onClick={() => handleLocationTypeClick('domicile')}
+                    className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded hover:scale-125 transition duration-300 ${locationType === 'domicile' ? ColorsThemeA.ohcVerticalGradient_A : "bg-[#D6D6D6]"}`}
+                  >
+                    {locationType === 'domicile' && <CheckedIcon />}
+                  </div>
+                  <span>À domicile</span>
+                </div>
+
+                {/* Bouton personnalisé pour "En salon" avec texte centré */}
+                <div className="flex items-center space-x-2">
+                  <div
+                    onClick={() => handleLocationTypeClick('salon')}
+                    className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded hover:scale-125 transition duration-300 ${locationType === 'salon' ? ColorsThemeA.ohcVerticalGradient_A : "bg-[#D6D6D6]"}`}
+                  >
+                    {locationType === 'salon' && <CheckedIcon />}
+                  </div>
+                  <span>En salon</span>
+                </div>
               </div>
+
+              {locationType === 'domicile' && (
+                <>
+                  <p className="text-stone-700 text-base italic">[Adresse à domicile]</p>
+                  <p className="font-semibold text-lg">Prix incluant le déplacement :</p>
+                  <div className="flex justify-center items-center bg-white border border-stone-400 rounded-lg px-4 py-2 mt-2">
+                    <p className="text-stone-700 text-base font-bold">80€</p> {/* TODO UPDATE THE PRICE WITH THE MOBILITY COST OF THE SALON */}
+                  </div>
+                </>
+              )}
+              {locationType === 'salon' && <p className="text-stone-700 text-base italic">{salon.Adresse}</p>}
             </div>
           )}
         </div>
@@ -378,7 +420,7 @@ const BookSalon = () => {
       <LogoCircleFixRight />
       <Footer />
 
-    </div>
+    </div >
   );
 };
 
