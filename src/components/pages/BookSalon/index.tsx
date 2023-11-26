@@ -254,7 +254,7 @@ const BookSalon = () => {
                   <p className="text-stone-700 text-base italic">[Adresse à domicile]</p>
                   <p className="font-semibold text-lg">Prix incluant le déplacement :</p>
                   <div className="flex justify-center items-center bg-white border border-stone-400 rounded-lg px-4 py-2 mt-2">
-                    <p className="text-stone-700 text-base font-bold">80€</p> {/* TODO UPDATE THE PRICE WITH THE MOBILITY COST OF THE SALON */}
+                    <p className="text-stone-700 text-xl font-bold">80€</p> {/* TODO UPDATE THE PRICE WITH THE MOBILITY COST OF THE SALON */}
                   </div>
                 </>
               )}

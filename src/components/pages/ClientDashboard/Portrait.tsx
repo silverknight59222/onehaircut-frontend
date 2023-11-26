@@ -21,11 +21,11 @@ const TextToDsplayifNoPic =
         </p>
     </div>
 
-const DefaultProfilFace = <Image src='/assets/PortraitClient/ProfilFace.jpg' alt='' fill={true} className='rounded-3xl ' />
-const DefaultProfilLeft = <Image src='/assets/PortraitClient/ProfilLeft.jpg' alt='' fill={true} className='rounded-3xl ' />
+const DefaultProfilFace = <Image src='/assets/PortraitClient/ProfilFace.png' alt='' fill={true} className='rounded-3xl ' />
+const DefaultProfilLeft = <Image src='/assets/PortraitClient/ProfilLeft.png' alt='' fill={true} className='rounded-3xl ' />
 const DefaultProfilLeft2 = <Image src='/assets/PortraitClient/ProfilLeft2.png' alt='' fill={true} className='rounded-3xl ' />
 const DefaultProfilRight = <Image src='/assets/PortraitClient/ProfilRight.png' alt='' fill={true} className='rounded-3xl ' />
-const DefaultProfilRight2 = <Image src='/assets/PortraitClient/ProfilRight2.jpg' alt='' fill={true} className='rounded-3xl ' />
+const DefaultProfilRight2 = <Image src='/assets/PortraitClient/ProfilRight2.png' alt='' fill={true} className='rounded-3xl ' />
 
 const SubTextToDisplay =
     ["Profil légèrement gauche",
