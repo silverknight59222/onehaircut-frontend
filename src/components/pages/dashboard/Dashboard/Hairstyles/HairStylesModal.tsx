@@ -307,7 +307,7 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
 
     // This component will re-render only if the `data` prop changes
     return (
-        <div className="bg-stone-50 shadow-md border-2 border-stone-200 rounded-3xl p-4 md:sticky md:top-0 h-max">
+        <div className="bg-stone-50 shadow-md border-2 border-stone-200 rounded-3xl p-4 md:sticky md:top-0 h-max mb-12">
             <div className="flex items-center justify-center gap-2">
                 <h2 className={`${Theme_A.textFont.headerH3}`}>
                     Configurations de vos prix
@@ -535,7 +535,7 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
 
 
                 {!(activeMenu === "added" && selectedHaircutsMapping.length >= 0) ? (
-                    <div className="flex items-center justify-center gap-4 mt-4">
+                    <div className="flex items-center justify-center gap-4 mt-4 ">
                         <button onClick={addSalonHaircuts} className={`${Theme_A.button.mediumGradientButton}`}>
                             Ajouter
                         </button>
