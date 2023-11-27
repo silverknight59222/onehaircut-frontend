@@ -630,6 +630,23 @@ export const InputArrowDown = () => {
   );
 };
 
+export const LoadingMoreArrow = () => {
+  return (
+    <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="26" cy="26" r="25.5" fill="url(#paint0_linear_3774_5)" stroke="#DBDBDB" />
+      <path d="M25.2929 40.7071C25.6834 41.0976 26.3166 41.0976 26.7071 40.7071L33.0711 34.3431C33.4616 33.9526 33.4616 33.3195 33.0711 32.9289C32.6805 32.5384 32.0474 32.5384 31.6569 32.9289L26 38.5858L20.3431 32.9289C19.9526 32.5384 19.3195 32.5384 18.9289 32.9289C18.5384 33.3195 18.5384 33.9526 18.9289 34.3431L25.2929 40.7071ZM25 14V40H27V14H25Z" fill="#3E3D3D" />
+      <defs>
+        <linearGradient id="paint0_linear_3774_5" x1="-48.5" y1="-79" x2="10.5" y2="5.5" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#DBDBDB" />
+          <stop offset="1" stop-color="#DBDBDB" />
+        </linearGradient>
+      </defs>
+    </svg>
+  );
+};
+
+
+
 export const DeleteIcon = () => {
   return (
     <svg

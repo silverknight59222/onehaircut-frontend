@@ -339,7 +339,7 @@ const Dashboard = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch mt-10">
                 {/*REVENU JOURNALIER */}
                 <div className="flex items-center justify-between gap-3">
-                    <button onClick={() => toggleModal('Incomes')} className={`${Theme_A.button.medBlackColoredButton}`}>
+                    <button onClick={() => toggleModal('Incomes')} className={`${Theme_A.button.medBlackColoredButton} hover:bg-stone-600`}>
                         Revenu journalier
                     </button>
                     {/* DROPDOWN AFFICHAGE REVENU JOURNALIER */}
@@ -352,7 +352,7 @@ const Dashboard = () => {
 
                 {/*Objectifs */}
                 <div className="flex items-center justify-between gap-3 ">
-                    <button onClick={() => toggleModal('goals')} className={`${Theme_A.button.medBlackColoredButton}`}>
+                    <button onClick={() => toggleModal('goals')} className={`${Theme_A.button.medBlackColoredButton} hover:bg-stone-600`}>
                         Objectifs du mois
                     </button>
                 </div>
@@ -431,7 +431,7 @@ const Dashboard = () => {
 
             {/* TRANSACTIONS */}
             < div className="flex items-center justify-between mt-10" >
-                <button onClick={() => toggleModal('TransactionfullTable')} className={`${Theme_A.button.medBlackColoredButton}`}>
+                <button onClick={() => toggleModal('TransactionfullTable')} className={`${Theme_A.button.medBlackColoredButton} hover:bg-stone-600`}>
                     Transactions
                 </button>
 
@@ -446,7 +446,7 @@ const Dashboard = () => {
 
                 {/* TITRE ACTIVITE CLIENT */}
                 <Grid item xs={4}>
-                    <button onClick={() => toggleModal('clientActivity')} className={`${Theme_A.button.medBlackColoredButton}`}>
+                    <button onClick={() => toggleModal('clientActivity')} className={`${Theme_A.button.medBlackColoredButton} hover:bg-stone-600`}>
                         Activité clients
                     </button>
                 </Grid>
@@ -458,7 +458,7 @@ const Dashboard = () => {
 
                 {/* TITRE TOP CLIENT */}
                 <Grid item xs={4}>
-                    <button onClick={() => toggleModal('topClient')} className={`${Theme_A.button.medBlackColoredButton}`}>
+                    <button onClick={() => toggleModal('topClient')} className={`${Theme_A.button.medBlackColoredButton} hover:bg-stone-600`}>
                         Top Clients
                     </button>
                 </Grid>
@@ -608,7 +608,7 @@ const Dashboard = () => {
 
             <div className="flex items-center justify-between gap-3 mt-10 ">
                 {/* TITRE OCCUPATION DU PERSONNEL */}
-                <button onClick={() => toggleModal('staff')} className={`${Theme_A.button.medBlackColoredButton}`}>
+                <button onClick={() => toggleModal('staff')} className={`${Theme_A.button.medBlackColoredButton} hover:bg-stone-600`}>
                     Répartition de la charge du personnel
                 </button>
 

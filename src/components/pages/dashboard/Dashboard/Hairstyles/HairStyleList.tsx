@@ -5,6 +5,7 @@ import {
     CheckedIcon,
     SearcIcon,
     SelectedIcon,
+    LoadingMoreArrow,
 } from "@/components/utilis/Icons";
 import { getLocalStorage } from "@/api/storage";
 import { Haircut, SalonHaircut } from "@/types";
@@ -124,6 +125,10 @@ const HairStyleList = React.memo(({ activeMenu, hairStyleSelectEvent, resetStyle
                 })}
             </div>
             {page != -1 && <div onClick={() => getHaircuts(page)} className={`text-center `}>
+                <div className={`flex justify-center mt-4 mb-4 animate-bounce cursor-pointer hover:scale-110 `}>
+
+                    <LoadingMoreArrow />
+                </div>
                 <p
                     className={`${Theme_A.Bars.proTopBar.standardShape2} `}
                 >
