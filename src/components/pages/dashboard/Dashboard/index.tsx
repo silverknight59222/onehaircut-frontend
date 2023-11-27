@@ -1,5 +1,5 @@
 import { CompletedHairStyleIcon, DashboardHeartIcon, DashboardUsersIcon, ProjectIncomeIcon } from "@/components/utilis/Icons";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Card from '@mui/material/Card'
 import "chart.js/auto";
 import ApexLineChart from '@/views/charts/chartjs/ApexLineChart'
@@ -13,6 +13,7 @@ import StaffModal from "@/components/pages/dashboard/Dashboard/ModalComponent/St
 import GoalsModal from "@/components/pages/dashboard/Dashboard/ModalComponent/GoalsModal";
 import TransactionList from "@/components/pages/dashboard/Dashboard/MainDashboardComponents/TransactionList";
 import ProgressBar from "@/components/UI/ProgressBar";
+import { dashboard } from "@/api/dashboard";
 import {
     overviewData,
     messagesData,
@@ -28,6 +29,7 @@ import RechartSingleBarChart from "@/views/charts/chartjs/RechartSingleBarChart"
 import RechartsLineChart from "@/views/charts/chartjs/RechartsLineChart";
 import { Theme_A } from "@/components/utilis/Themes";
 import ConversionChart from "@/views/charts/chartjs/ConversionChart";
+import Pagination from "@/components/UI/Pagination";
 
 
 const Dashboard = () => {
@@ -257,7 +259,29 @@ const Dashboard = () => {
     ];
 
 
+    const onPageChangeEvent = (page) => {
+        console.log(page)
+    }
 
+    const [salonStats, setSalonStats] = useState({
+        total_views: 0,
+        total_unique_customer: 0,
+        total_hairstyles_booked: 0,
+        total_orders: 0,
+        rating: 0,
+    })
+
+    const fetchStats = async () => {
+        await dashboard.salonStats()
+            .then((resp) => {
+                console.log(resp.data)
+                setSalonStats(resp.data);
+            });
+    }
+
+    useEffect(() => {
+        fetchStats()
+    },[])
 
 
 
@@ -307,30 +331,93 @@ const Dashboard = () => {
 
                 {/*<DialogShareProject />*/}
                 <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-8 gap-y-4 ">
-                    {overview.map((item, index) => {
-                        return (
-                            <div key={index} className="flex flex-col">
-
-                                {/* VIGNETTES SUPERIEURS */}
-                                <div className="flex p-8 bg-[rgba(255,255,255,0.69)] rounded-2xl shadow-sm shadow-stone-400">
-                                    <div className={`flex items-center justify-center w-14 h-14 rounded-full ${item.gradient}`}>
-                                        {item.icon}
-                                    </div>
-                                    <div className="ml-8 flex flex-col justify-center">
-                                        <p className="text-black text-3xl font-semibold">
-                                            {item.numbers}
-                                        </p>
-                                        <p className="text-black font-medium text-sm mt-2">{item.text}</p>
-                                    </div>
-                                </div>
-
-
-                                <div className="flex justify-center">
-                                    <div className={`rounded-xl w-2/4 h-2 -mt-1 ${item.borderClr}`} />
-                                </div>
+                    {/* Nombre de vistes */}
+                    <div className="flex flex-col">
+                        {/* VIGNETTES SUPERIEURS */}
+                        <div className="flex p-8 bg-[rgba(255,255,255,0.69)] rounded-2xl shadow-sm shadow-stone-400">
+                            <div className={`flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-t from-red-700 via-red-500 to-red-500`}>
+                                <ProjectIncomeIcon />
                             </div>
-                        );
-                    })}
+                            <div className="ml-8 flex flex-col justify-center">
+                                <p className="text-black text-3xl font-semibold">
+                                    {salonStats.total_views}
+                                </p>
+                                <p className="text-black font-medium text-sm mt-2">Nombre de vistes</p>
+                            </div>
+                        </div>
+
+
+                        <div className="flex justify-center">
+                            <div className={`rounded-xl w-2/4 h-2 -mt-1 bg-[#FE5352]`} />
+                        </div>
+                    </div>
+                    {/* -- */}
+
+                    {/* Nombre de vistes */}
+                    <div className="flex flex-col">
+                        {/* VIGNETTES SUPERIEURS */}
+                        <div className="flex p-8 bg-[rgba(255,255,255,0.69)] rounded-2xl shadow-sm shadow-stone-400">
+                            <div className={`flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-b from-blue-400 to-blue-600`}>
+                                <DashboardUsersIcon />
+                            </div>
+                            <div className="ml-8 flex flex-col justify-center">
+                                <p className="text-black text-3xl font-semibold">
+                                    {salonStats.total_unique_customer}
+                                </p>
+                                <p className="text-black font-medium text-sm mt-2">Nouveaux clients</p>
+                            </div>
+                        </div>
+
+
+                        <div className="flex justify-center">
+                            <div className={`rounded-xl w-2/4 h-2 -mt-1 bg-[#15BAF2]`} />
+                        </div>
+                    </div>
+                    {/* -- */}
+
+                    {/* Nombre de vistes */}
+                    <div className="flex flex-col">
+                        {/* VIGNETTES SUPERIEURS */}
+                        <div className="flex p-8 bg-[rgba(255,255,255,0.69)] rounded-2xl shadow-sm shadow-stone-400">
+                            <div className={`flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-b from-[#7ABF50] to-[#629E3E]`}>
+                                <CompletedHairStyleIcon />
+                            </div>
+                            <div className="ml-8 flex flex-col justify-center">
+                                <p className="text-black text-3xl font-semibold">
+                                    {salonStats.total_hairstyles_booked}
+                                </p>
+                                <p className="text-black font-medium text-sm mt-2">Coiffures effectuées</p>
+                            </div>
+                        </div>
+
+
+                        <div className="flex justify-center">
+                            <div className={`rounded-xl w-2/4 h-2 -mt-1 bg-[#7ABF50]`} />
+                        </div>
+                    </div>
+                    {/* -- */}
+
+                    {/* Nombre de vistes */}
+                    <div className="flex flex-col">
+                        {/* VIGNETTES SUPERIEURS */}
+                        <div className="flex p-8 bg-[rgba(255,255,255,0.69)] rounded-2xl shadow-sm shadow-stone-400">
+                            <div className={`flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-b from-[#FFB566] to-[#FA8E1B]`}>
+                                <DashboardHeartIcon />
+                            </div>
+                            <div className="ml-8 flex flex-col justify-center">
+                                <p className="text-black text-3xl font-semibold">
+                                    {salonStats.rating} / 5
+                                </p>
+                                <p className="text-black font-medium text-sm mt-2">Score générale</p>
+                            </div>
+                        </div>
+
+
+                        <div className="flex justify-center">
+                            <div className={`rounded-xl w-2/4 h-2 -mt-1 bg-[#FFB566]`} />
+                        </div>
+                    </div>
+                    {/* -- */}
                 </div>
             </div>
 
@@ -617,6 +704,8 @@ const Dashboard = () => {
                         fctToCallOnClick={handleNewMonthPayload} />
                 </span>
             </div>
+
+            {/* <Pagination from={1} to={10} perPage={10} total={123} currentPage={6} lastPage={13} onPageChangeEvent={onPageChangeEvent}></Pagination> */}
 
             {/* BAR CHART STAFF PAYLOAD */}
             <div className="rounded-xl shadow-sm shadow-stone-600 mb-20">
