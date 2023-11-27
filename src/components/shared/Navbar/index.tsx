@@ -534,140 +534,142 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
           }
         </div>
       </div>
-      <div className="flex flex-col xl:hidden items-center pr-2 rounded-xl bg-[#F7F7F7] overflow-auto mt-7">
-        <div
-          className="flex items-center flex-col gap-3 p-4"
-        >
-          <div className="flex items-center justify-center">
-            {isWelcomePage &&
-              <>
-                <div ref={EthicityMobileRef} className="border-r border-grey px-6 last:border-r-0 cursor-pointer">
-                  <p
-                    className={showMobileEthnicity ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7"}
-                    onClick={() => {
-                      setShowMobileGender(false);
-                      setShowMobileEthnicity(!showMobileEthnicity);
-                      setShowMobileLength(false);
-                    }}
-                  >
-                    Ethnicity
-                  </p>
-                  {showMobileEthnicity && (
-                    <div className="absolute top-[180px] z-20 -ml-8 xl:ml-0 flex flex-col items-center justify-center w-44 px-7 pt-5 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
-                      {Ethnicity.map((item, index) => {
-                        return (
-                          <div
-                            key={index}
-                            className="flex w-full cursor-pointer mb-[19px]"
-                            onClick={() => onClickEthnicityCheckbox(item.name)}
-                          >
+      {isServicesPage &&
+        <div className="flex flex-col xl:hidden items-center pr-2 rounded-xl bg-[#F7F7F7] overflow-auto mt-7">
+          <div
+            className="flex items-center flex-col gap-3 p-4"
+          >
+            <div className="flex items-center justify-center">
+              {isWelcomePage &&
+                <>
+                  <div ref={EthicityMobileRef} className="border-r border-grey px-6 last:border-r-0 cursor-pointer">
+                    <p
+                      className={showMobileEthnicity ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7"}
+                      onClick={() => {
+                        setShowMobileGender(false);
+                        setShowMobileEthnicity(!showMobileEthnicity);
+                        setShowMobileLength(false);
+                      }}
+                    >
+                      Ethnicity
+                    </p>
+                    {showMobileEthnicity && (
+                      <div className="absolute top-[180px] z-20 -ml-8 xl:ml-0 flex flex-col items-center justify-center w-44 px-7 pt-5 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                        {Ethnicity.map((item, index) => {
+                          return (
                             <div
-                              className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${ethnicityFilters.includes(item.name)
-                                ? ColorsThemeA.OhcGradient_A
-                                : "bg-[#D6D6D6]"
-                                }`}
+                              key={index}
+                              className="flex w-full cursor-pointer mb-[19px]"
+                              onClick={() => onClickEthnicityCheckbox(item.name)}
                             >
-                              <CheckedIcon />
+                              <div
+                                className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${ethnicityFilters.includes(item.name)
+                                  ? ColorsThemeA.OhcGradient_A
+                                  : "bg-[#D6D6D6]"
+                                  }`}
+                              >
+                                <CheckedIcon />
+                              </div>
+                              <p className="ml-2">{item.name}</p>
                             </div>
-                            <p className="ml-2">{item.name}</p>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-                <div ref={GenderMobileRef} className="border-r border-grey px-6 last:border-r-0 cursor-pointer">
-                  <p
-                    className={showMobileGender ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7"}
-                    onClick={() => {
-                      setShowMobileEthnicity(false);
-                      setShowMobileGender(!showMobileGender);
-                      setShowMobileLength(false);
-                    }}
-                  >
-                    Gender
-                  </p>
-                  {showMobileGender && (
-                    <div className="absolute top-[180px] z-20 -ml-5 xl:ml-0 flex flex-col items-center justify-center w-36 px-7 pt-5 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
-                      {Gender.map((item, index) => {
-                        return (
-                          <div
-                            key={index}
-                            className="flex w-full cursor-pointer mb-[19px]"
-                            onClick={() => onClickGenderCheckbox(item.name)}
-                          >
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                  <div ref={GenderMobileRef} className="border-r border-grey px-6 last:border-r-0 cursor-pointer">
+                    <p
+                      className={showMobileGender ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7"}
+                      onClick={() => {
+                        setShowMobileEthnicity(false);
+                        setShowMobileGender(!showMobileGender);
+                        setShowMobileLength(false);
+                      }}
+                    >
+                      Gender
+                    </p>
+                    {showMobileGender && (
+                      <div className="absolute top-[180px] z-20 -ml-5 xl:ml-0 flex flex-col items-center justify-center w-36 px-7 pt-5 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                        {Gender.map((item, index) => {
+                          return (
                             <div
-                              className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${genderFilters.includes(item.name)
-                                ? ColorsThemeA.OhcGradient_A
-                                : "bg-[#D6D6D6]"
-                                }`}
+                              key={index}
+                              className="flex w-full cursor-pointer mb-[19px]"
+                              onClick={() => onClickGenderCheckbox(item.name)}
                             >
-                              <CheckedIcon />
+                              <div
+                                className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${genderFilters.includes(item.name)
+                                  ? ColorsThemeA.OhcGradient_A
+                                  : "bg-[#D6D6D6]"
+                                  }`}
+                              >
+                                <CheckedIcon />
+                              </div>
+                              <p className="ml-2">{item.name}</p>
                             </div>
-                            <p className="ml-2">{item.name}</p>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-                <div ref={LengthDesktopRef} className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
-                  <p
-                    className={showMobileLength ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7"}
-                    onClick={() => {
-                      setShowMobileEthnicity(false);
-                      setShowMobileGender(false);
-                      setShowMobileLength(!showMobileLength);
-                    }}
-                  >
-                    Length
-                  </p>
-                  {showDesktopLength && (
-                    <div className="absolute top-[180px] -ml-3 xl:ml-0 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
-                      {Length.map((item, index) => {
-                        return (
-                          <div
-                            key={index}
-                            className="flex w-full cursor-pointer mb-[19px]"
-                            onClick={() => onClickLengthCheckbox(item.name)}
-                          >
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                  <div ref={LengthDesktopRef} className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
+                    <p
+                      className={showMobileLength ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7"}
+                      onClick={() => {
+                        setShowMobileEthnicity(false);
+                        setShowMobileGender(false);
+                        setShowMobileLength(!showMobileLength);
+                      }}
+                    >
+                      Length
+                    </p>
+                    {showDesktopLength && (
+                      <div className="absolute top-[180px] -ml-3 xl:ml-0 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                        {Length.map((item, index) => {
+                          return (
                             <div
-                              className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${lengthFilters.includes(item.name)
-                                ? ColorsThemeA.OhcGradient_A
-                                : "bg-[#D6D6D6]"
-                                }`}
+                              key={index}
+                              className="flex w-full cursor-pointer mb-[19px]"
+                              onClick={() => onClickLengthCheckbox(item.name)}
                             >
-                              <CheckedIcon />
+                              <div
+                                className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${lengthFilters.includes(item.name)
+                                  ? ColorsThemeA.OhcGradient_A
+                                  : "bg-[#D6D6D6]"
+                                  }`}
+                              >
+                                <CheckedIcon />
+                              </div>
+                              <p className="ml-2">{item.name}</p>
                             </div>
-                            <p className="ml-2">{item.name}</p>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-              </>
-            }
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                </>
+              }
 
 
-            {isServicesPage &&
-              <ServicesFilter onTypeSelect={onTypeSelect ? onTypeSelect : () => { }} />}
-          </div>
-          <div className="flex">
-            <div className="px-6 cursor-pointer">
-              <input
-                type="text"
-                placeholder="Rechercher"
-                className="text-base px-4 p-2 rounded-full outline-none"
-                onChange={onSearch && isSalonPage ? (e) => onSearch(e.target.value) : onServiceSearch && isServicesPage ? (e) => onServiceSearch(e.target.value) : () => { }}
-              />
+
+              <ServicesFilter onTypeSelect={onTypeSelect ? onTypeSelect : () => { }} />
             </div>
-            <div className="cursor-pointer p-3 rounded-full bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
-              <SearcIcon />
+            <div className="flex">
+              <div className="px-6 cursor-pointer">
+                <input
+                  type="text"
+                  placeholder="Rechercher"
+                  className="text-base px-4 p-2 rounded-full outline-none"
+                  onChange={onSearch && isSalonPage ? (e) => onSearch(e.target.value) : onServiceSearch && isServicesPage ? (e) => onServiceSearch(e.target.value) : () => { }}
+                />
+              </div>
+              <div className="cursor-pointer p-3 rounded-full bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
+                <SearcIcon />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      }
     </div>
   );
 };

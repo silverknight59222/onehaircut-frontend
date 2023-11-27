@@ -452,7 +452,7 @@ const SalonChoice = () => {
                         }
 
                         {/* Section affichant les vignettes des salons */}
-                        <div className='flex-1 pr-4 pb-4 overflow-y-auto h-[calc(100vh - 160px)] lg:relative lg:mt-0 lg:ml-[410px] 2xl:ml-[930px] 4xl:ml-[930px]'>
+                        <div className='flex-1 pr-4 pb-4 overflow-y-auto h-[calc(100vh - 160px)] lg:relative lg:mt-0 mt-3 lg:ml-[410px] 2xl:ml-[930px] 4xl:ml-[930px]'>
 
                             {/* Grid contenant les vignettes */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-10">
