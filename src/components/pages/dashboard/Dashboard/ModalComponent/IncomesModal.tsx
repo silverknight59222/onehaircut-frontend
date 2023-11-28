@@ -11,6 +11,7 @@ import { ColorsThemeA } from "@/components/utilis/Themes";
 import RechartsGroupBarChart from "@/views/charts/chartjs/RechartGroupBarChart";
 import { CrossIcon } from "@/components/utilis/Icons";
 import React, { useState } from "react";
+import RevenueChart from "@/components/UI/RevenueChart";
 
 // Define the table headers
 const tableHeaders = [
@@ -60,35 +61,6 @@ const IncomesModal = () => {
         // TODO: Ajoutez la logique pour sauvegarder la nouvelle préférence
     }
     const [selectedMonthRevenu, setSelectedMonthRevenu] = useState(DisplayedMonths[0]);
-
-    const yourChartOptions = {
-        responsive: true,
-        maintainAspectRatio: false,
-        animation: { duration: 500 },
-        scales: {
-            x: {
-                display: true,
-                grid: {
-                    color: "#f1f1f1" // Using borderColor prop directly here for simplicity
-                },
-                ticks: { color: "#000" } // Using labelColor prop directly here for simplicity
-            },
-            y: {
-                min: 0,
-                max: 100,
-                grid: {
-                    color: "#f1f1f1" // Using borderColor prop directly here for simplicity
-                },
-                ticks: {
-                    color: "#000", // Using labelColor prop directly here for simplicity
-                    padding: 10
-                }
-            }
-        },
-        plugins: {
-            legend: { display: false }
-        }
-    }
 
     // Data for the chart, can be dynamic and coming from props or state
     const chartData = [
@@ -153,7 +125,7 @@ const IncomesModal = () => {
                 </div>
 
                 {/*<RechartsLineChart direction="ltr" />*/}
-                <ApexAreaChart />
+                <RevenueChart period={selectedMonthRevenu} />
 
                 <div className='mt-10 mb-10'>
                     <p className="text-neutral-500 font-semibold text-2xl text-center">

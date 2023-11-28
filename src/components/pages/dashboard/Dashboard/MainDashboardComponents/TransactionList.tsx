@@ -1,59 +1,43 @@
+import { dashboard } from "@/api/dashboard";
 import DropdownMenu from "@/components/UI/DropDownMenu";
-import { ColorsThemeA } from "@/components/utilis/Themes";
-import Image from "next/image";
-import React from "react";
 
-const TransactionList = () => {
-    const Month = [
-        "Juliet",]
-    const handleNewMonth = (item: string) => {
-        // TODO: add backend to save the new preference
+import { ColorsThemeA } from "@/components/utilis/Themes";
+import { Pagination } from "@mui/material";
+
+import Image from "next/image";
+import React, { useEffect, useState } from "react";
+
+const TransactionList = (period) => {
+
+
+    const [data, setData] = useState({} as any);
+
+    const fetchData = async (periodKey, page = 1) => {
+        const { data } = await dashboard.salonTransactionList(periodKey, page)
+        console.log(data.data)
+        setData(data.data)
     }
 
-    const transactions = [
-        {
-            date: "12/07/2023",
-            client: "Amanda louis",
-            products: "Carré plongeant",
-            price: 80,
-            payment_method: "Visa",
-            status: "En vérification",
-        },
-        {
-            date: "12/07/2023",
-            client: "Angelina vitale",
-            products: "Shampoing",
-            price: 35,
-            payment_method: "Visa",
-            status: "En vérification",
-        },
-        {
-            date: "12/07/2023",
-            client: "Amanda louis",
-            products: "Tresse longue",
-            price: 180,
-            payment_method: "Paypal",
-            status: "Encaissé",
-        },
-        {
-            date: "12/07/2023",
-            client: "Angelina vitale",
-            products: "Coloration",
-            price: 50,
-            payment_method: "Paypal",
-            status: "Encaissé",
-        },
-    ];
+    useEffect(() => {
+        let periodKey = "month"
+        console.log(period)
+        switch (period) {
+            case "Ce mois":
+                periodKey = "month"
+                break;
+            case "3 derniers mois":
+                periodKey = "3_month"
+                break;
+            case "Cette année":
+                periodKey = "year"
+                break;
+        }
+        fetchData(periodKey)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [period])
 
     return (
         <div>
-            {/*<div className="flex items-center justify-between mb-4 mt-10">*/}
-            {/*    <p className="text-2xl text-[#727272] font-semibold">*/}
-            {/*        Transactions*/}
-            {/*    </p>*/}
-            {/*    <DropdownMenu dropdownItems={Month} backgroundClr={ColorsThemeA.standardBorderGray}*/}
-            {/*                  fctToCallOnClick={handleNewMonth} showDefaultMessage={false} />*/}
-            {/*</div>*/}
             <div className="pt-7 pb-4 px-6 bg-white rounded-lg shadow-sm shadow-stone-600">
                 <div className="relative overflow-x-auto">
                     <table className="w-full text-sm text-left text-gray-500 dark:text-gray-400">
@@ -89,9 +73,9 @@ const TransactionList = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {transactions.map((transaction, index) => {
+                            {data != null && data.data != null && data.data.map((transaction, index) => {
                                 let statusClass = '';
-                                switch (transaction.status) {
+                                switch (transaction.payment_status) {
                                     case 'En vérification':
                                         statusClass = 'text-yellow-500 font-semibold';
                                         break;
@@ -109,25 +93,39 @@ const TransactionList = () => {
                                         className="text-[#636363] bg-white border-b text-center hover:bg-gray-100"
                                     >
                                         <td scope="row" className="px-6 py-4">
-                                            {transaction.date}
+                                            {transaction.redable_date}
                                         </td>
                                         <td className="px-6 py-4 border-x border-[#E4E7EB]">
-                                            {transaction.client}
+                                            {transaction.user_info.name}
                                         </td>
-                                        <td className="px-6 py-4 border-r border-[#E4E7EB]">
-                                            {transaction.products}
+                                        <td className="px-6 py-4 border-r border-[#E4E7EB] text-left">
+                                            {transaction.items.map((item, index) => {
+                                                        return (
+                                                            <ul key={index}>
+                                                                <li >
+                                                                    <b>{item.type}:</b> {item.name}
+                                                                </li>
+                                                            </ul>
+                                                        )
+                                                    }
+                                                )
+                                            }
                                         </td>
-                                        <td className="px-10 py-4">{transaction.price}</td>
+                                        <td className="px-10 py-4">{transaction.total_amount}</td>
                                         <td className="px-6 py-4 border-x border-[#E4E7EB]">
-                                            {transaction.payment_method}
+                                            {transaction.payment_type}
                                         </td>
-                                        <td className={`px-6 py-4 ${statusClass}`}>{transaction.status}</td>
+                                        <td className={`px-6 py-4 ${statusClass}`}>{transaction.payment_status}</td>
                                     </tr>
                                 );
                             })}
                         </tbody>
                     </table>
+                    
                 </div>
+                {data != null && data.data != null && 
+                    <Pagination  onChange={(event, value) => {fetchData(period, value)}}  count={data.last_page} page={data.current_page} />
+                }
 
                 <div className="flex items-center gap-2 mt-3">
                     <Image

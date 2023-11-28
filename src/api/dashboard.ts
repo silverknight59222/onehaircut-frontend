@@ -161,6 +161,15 @@ const dashboard = {
   sendWhatsapp: async (data:any) => {
     return await request.post<any>(`send_whatsapp`, data);
   },
+  salonStats: async () => {
+    return await request.get<any>(`hair_salon_stats`);
+  },
+  monthlyRevenueChart: async (period) => {
+    return await request.get<any>(`revenue_chart`, {params: {period : period}});
+  },
+  salonTransactionList: async (period, page) => {
+    return await request.get<any>(`salon_transactions`, {params: {period : period, page: page}});
+  },
 };
 
 export { dashboard };
