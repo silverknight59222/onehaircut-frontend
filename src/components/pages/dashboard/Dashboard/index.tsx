@@ -261,7 +261,7 @@ const Dashboard = () => {
 
 
     const onPageChangeEvent = (page) => {
-        console.log(page)
+        //console.log(page)
     }
 
     const [salonStats, setSalonStats] = useState({
@@ -275,7 +275,7 @@ const Dashboard = () => {
     const fetchStats = async () => {
         await dashboard.salonStats()
             .then((resp) => {
-                console.log(resp.data)
+                //console.log(resp.data)
                 setSalonStats(resp.data);
             });
     }

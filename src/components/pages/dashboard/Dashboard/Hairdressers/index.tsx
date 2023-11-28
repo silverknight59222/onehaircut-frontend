@@ -94,7 +94,7 @@ const Hairdressers = () => {
       cb(reader.result)
     };
     reader.onerror = function (error) {
-      console.log('Error: ', error);
+      //console.log('Error: ', error);
     };
   }
   const handleProfileImageUpload = (

@@ -80,7 +80,7 @@ const SalonInfos = () => {
             showSnackbar("success", "Salon Type Saved Successfully.");            
         })
         .catch(err => {
-            console.log(err);
+            //console.log(err);
         })
         .finally(() => {
             setIsLoading(false);            
@@ -93,7 +93,7 @@ const SalonInfos = () => {
             showSnackbar("success", "Salon Mobility Saved Successfully.");            
         })
         .catch(err => {
-            console.log(err);
+            //console.log(err);
         })
         .finally(() => {
             setIsLoading(false);            
@@ -106,7 +106,7 @@ const SalonInfos = () => {
             showSnackbar("success", "Salon Mobility Zone Saved Successfully.");            
         })
         .catch(err => {
-            console.log(err);
+            //console.log(err);
         })
         .finally(() => {
             setIsLoading(false);            
@@ -179,7 +179,7 @@ const SalonInfos = () => {
     const [zoneSliderRange, setZoneSliderRange] = useState([0, 15]);
     const handleZoneSliderChange = (event: any, newValue: any) => {
         setZoneSliderRange(newValue);
-        console.log(newValue)
+        //console.log(newValue)
         //saveZoneRadius(newValue)
     };
     const setAddressFields = (address: any, arg: string, value: string) => {
@@ -269,7 +269,7 @@ const SalonInfos = () => {
                 setIsModal(false);
             })
             .catch(err => {
-                console.log(err);
+                //console.log(err);
             })
             .finally(() => {
                 setIsLoading(false);

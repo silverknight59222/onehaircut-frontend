@@ -97,7 +97,7 @@ const IncomesModal = () => {
     ];
 
     const yourDropdownClickHandler = (item: string) => {
-        console.log(`You selected: ${item}`);
+        //console.log(`You selected: ${item}`);
         // Here, you can add additional logic to handle the dropdown selection.
     }
 

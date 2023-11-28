@@ -46,7 +46,7 @@ const Subscription = () => {
   const [isCurrSubscriptionPro, setIsCurrSubscriptionPro] = useState(false); // TODO: link the BE
 
   const handleClickPay = () => {
-    console.log("PAY");
+    //console.log("PAY");
   }
 
   // const modifBankCard: React.JSX.Element =
@@ -63,7 +63,7 @@ const Subscription = () => {
     }
     // const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
     await dashboard.sendWhatsapp(data).then((resp) => {
-      console.log(resp.data.data);
+      //console.log(resp.data.data);
     });
 
 
@@ -76,7 +76,7 @@ const Subscription = () => {
     //   from: 'whatsapp:+14155238886', // Your Twilio WhatsApp-enabled phone number
     //   to: 'whatsapp:+1234567890', // The recipient's WhatsApp number
     // })
-    // .then(message => console.log(message.sid))
+    // .then(message => //console.log(message.sid))
     // .catch(error => console.error(error));
 
     setIsModal(true);

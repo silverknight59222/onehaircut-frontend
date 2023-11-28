@@ -89,7 +89,7 @@ const Welcome = () => {
         })
         .catch(error => {
           setIsLoading(false);
-          console.log(error)
+          //console.log(error)
         })
     }
   }
@@ -119,7 +119,7 @@ const Welcome = () => {
             showSnackbar('success', 'Added To Wishlist Successfully!')
           })
           .catch(err => {
-            console.log(err)
+            //console.log(err)
             showSnackbar('error', 'Error Occured!')
           })
       }

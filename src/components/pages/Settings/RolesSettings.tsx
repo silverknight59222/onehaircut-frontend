@@ -164,7 +164,7 @@ const RolesSettings = () => {
 
         try {
             const response = await user_api.updatePermission(requestData);
-            console.log("Permissions updated successfully:", response);
+            //console.log("Permissions updated successfully:", response);
         } catch (error) {
             console.error("Error updating permissions:", error);
         }
@@ -177,7 +177,7 @@ const RolesSettings = () => {
         checked: boolean,
         onChange: (checked: boolean) => void
     ) => {
-        // console.log(id, label, checked, onChange);
+        // //console.log(id, label, checked, onChange);
         const handleChange = () => {
             onChange(!checked);
         };

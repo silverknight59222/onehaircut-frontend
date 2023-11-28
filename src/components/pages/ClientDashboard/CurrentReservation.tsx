@@ -113,9 +113,9 @@ const Currentreservation = () => {
         const timeDifference = reservationDateTime.getTime() - currentDateTime.getTime();
         const hoursDifference = timeDifference / (1000 * 3600);
 
-        console.log(currentDateTime)
-        console.log(reservationDateTime)
-        console.log(hoursDifference)
+        //console.log(currentDateTime)
+        //console.log(reservationDateTime)
+        //console.log(hoursDifference)
 
         if (hoursDifference >= 24) {
             // Current time is 24 hours or more before the reservation time.

@@ -55,7 +55,7 @@ const ChatModal: FC<ChatModalProps> = ({
                     setMessage("");
                 })
                 .catch(err => {
-                    console.log(err)
+                    //console.log(err)
                 })
         }
     };

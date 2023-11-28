@@ -75,7 +75,7 @@ const UsersPage = () => {
         }
       })
       .catch(error => {
-        console.log(error);
+        //console.log(error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -104,7 +104,7 @@ const UsersPage = () => {
         }
       })
       .catch(error => {
-        console.log(error);
+        //console.log(error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -133,7 +133,7 @@ const UsersPage = () => {
         }
       })
       .catch(error => {
-        console.log(error);
+        //console.log(error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -177,7 +177,7 @@ const UsersPage = () => {
         setIsRoleModal(true);
       }
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
   };
 

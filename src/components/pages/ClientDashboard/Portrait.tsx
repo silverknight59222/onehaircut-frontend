@@ -152,7 +152,7 @@ const Portrait = () => {
             cb(reader.result)
         };
         reader.onerror = function (error) {
-            console.log('Error: ', error);
+            //console.log('Error: ', error);
         };
     }
     // handle the click to modify the pic
@@ -289,11 +289,11 @@ const Portrait = () => {
         });
         await client.storeUserPotrait(formData)
             .then(resp => {
-                console.log(resp.data);
+                //console.log(resp.data);
                 showSnackbar("succès", "Portrait enregistrés avec succès");
             })
             .catch(err => {
-                console.log(err)
+                //console.log(err)
             })
             .finally(() => {
                 setIsLoading(false)

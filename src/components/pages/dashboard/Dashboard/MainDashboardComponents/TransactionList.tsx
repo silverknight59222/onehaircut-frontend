@@ -14,13 +14,13 @@ const TransactionList = (period) => {
 
     const fetchData = async (periodKey, page = 1) => {
         const { data } = await dashboard.salonTransactionList(periodKey, page)
-        console.log(data.data)
+        //console.log(data.data)
         setData(data.data)
     }
 
     useEffect(() => {
         let periodKey = "month"
-        console.log(period)
+        //console.log(period)
         switch (period) {
             case "Ce mois":
                 periodKey = "month"

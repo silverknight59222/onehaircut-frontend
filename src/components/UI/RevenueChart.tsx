@@ -260,7 +260,6 @@ const RevenueChart = React.memo(({ period }: any) => {
 
     useEffect(() => {
         let periodKey = "month"
-        console.log(period)
         switch (period) {
             case "Ce mois":
                 periodKey = "month"

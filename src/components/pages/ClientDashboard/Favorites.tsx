@@ -34,7 +34,7 @@ const Favorites = () => {
                 })
                 .catch(error => {
                     setIsLoading(false);
-                    console.log(error)
+                    //console.log(error)
                 })
         }
 
@@ -47,13 +47,13 @@ const Favorites = () => {
                 .then((res) => {
                     if (res.data.data.length > 0) {
                         setSalons(res.data.data);
-                        console.log(res.data.data);
+                        //console.log(res.data.data);
                     }
                     setIsLoading(false);
                 })
                 .catch(error => {
                     setIsLoading(false);
-                    console.log(error)
+                    //console.log(error)
                 })
         }
     }

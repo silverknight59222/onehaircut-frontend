@@ -355,11 +355,11 @@ const Account = () => {
             long: locationLongitude
         })
             .then(resp => {
-                console.log(resp.data)
+                //console.log(resp.data)
                 setUserInfo(resp.data);
             })
             .catch(err => {
-                console.log(err)
+                //console.log(err)
             })
             .finally(() => {
                 setIsLoading(false)
@@ -488,11 +488,11 @@ const Account = () => {
                 phone_number: phoneField,
             })
                 .then(resp => {
-                    console.log(resp.data)
+                    //console.log(resp.data)
                     setUserInfo(resp.data)
                 })
                 .catch(err => {
-                    console.log(err)
+                    //console.log(err)
                 })
                 .finally(() => {
                     setIsLoading(false)
@@ -626,7 +626,7 @@ const Account = () => {
                 setShowItem(notifications);
             })
             .catch(err => {
-                console.log(err)
+                //console.log(err)
             })
             .finally(() => {
                 setIsLoading(false)
@@ -715,7 +715,7 @@ const Account = () => {
                 setShowItem(notifications);
             })
             .catch(err => {
-                console.log(err)
+                //console.log(err)
             })
             .finally(() => {
                 setIsLoading(false)
@@ -859,7 +859,7 @@ const Account = () => {
 
     const fetchUserInfo = async () => {
         const resp = await client.getUserProfile()
-        console.log(resp.data);
+        //console.log(resp.data);
         // to update informations description which is displayed
         informations[0].desc = resp.data.name;
         let name = resp.data.name;

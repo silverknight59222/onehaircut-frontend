@@ -110,7 +110,7 @@ const Step2 = () => {
     setPostalCode("")
 
 
-    console.log(place.address_components)
+    //console.log(place.address_components)
     // Check if the variable is defined before using it
     if (place !== undefined && place.address_components !== undefined) {
 
@@ -135,7 +135,7 @@ const Step2 = () => {
     }
     // if place is undefined, reset location
     else {
-      console.log("Place not defined")
+      //console.log("Place not defined")
       setLocation({ lat: 48.8584, lng: 2.2945 });
       setZoomMap(10) // default zoom
     }
@@ -143,7 +143,7 @@ const Step2 = () => {
 
 
   // useEffect(() => {
-  //   console.log(location)
+  //   //console.log(location)
   // }, [location])
 
   const zoneHandler = (operation: string) => {
