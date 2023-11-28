@@ -235,7 +235,7 @@ const Index = () => {
     return new Intl.DateTimeFormat('fr-FR', options).format(date);
   };
   const bookingDate = getLocalStorage('selectDate');
-  const formattedBookingDate = formatDate(bookingDate);
+  const formattedBookingDate = bookingDate ? formatDate(bookingDate) : "";
 
 
   return (
