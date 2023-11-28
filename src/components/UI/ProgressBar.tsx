@@ -58,14 +58,14 @@ const ProgressBar = ({ value, name, number, color, rotation }: ProgressBar) => {
 
     return (
         <div
-            className="w-48 sm:w-40 ml:w-24 lg:w-32 transform transition-transform duration-300 hover:scale-105"
+            className="w-64 sm:w-60 ml:w-56 lg:w-52 transform transition-transform duration-300 hover:scale-105"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             title={isHovered && value ? `${value}%` : ""}
         >
             <CircularProgressbarWithChildren
                 value={value ? value : 0}
-                strokeWidth={14}
+                strokeWidth={12}
                 styles={buildStyles({
                     rotation: rotation,
                     strokeLinecap: "round",
@@ -74,7 +74,7 @@ const ProgressBar = ({ value, name, number, color, rotation }: ProgressBar) => {
                     trailColor: "#FFEDE4",
                 })}
             >
-                <p className="font-semibold text-[#656565] text-center w-32 2xl:text-lg lg:w-20 lg:text-sm lg:font-normal mt-2 hover:text-black">{name}</p>
+                <p className="font-semibold text-[#656565] text-center w-28 text-md lg:font-normal mt-2 hover:text-black">{name}</p>
                 <p className="2xl:text-lg lg:w-20 lg:text-sm lg:font-normal font-semibold text-black hover:text-gray-600 text-center">{number ? `${number} %` : '-'}</p>
             </CircularProgressbarWithChildren>
             {/*{isHovered && <TooltipOverlay value={value} name={name} number={number} />}*/}

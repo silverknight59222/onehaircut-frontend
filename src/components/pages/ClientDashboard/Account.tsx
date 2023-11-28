@@ -168,6 +168,10 @@ const Account = () => {
         confirmPassword: "",
     });
 
+    // TODO EMAIL ADDRESS VEIRIFICATION DONE : 
+    const [isEmailVerified, setIsEmailVerified] = useState(false);
+
+
     const [oldPasswordVisiblity, setOldPasswordVisiblity] = useState(false);
     const [newPasswordVisiblity, setNewPasswordVisiblity] = useState(false);
     const [confirmPasswordVisiblity, setConfirmPasswordVisiblity] = useState(false);
@@ -217,7 +221,7 @@ const Account = () => {
             passwordField.oldPassword = "";
             passwordField.newPassword = "";
             passwordField.confirmPassword = "";
-        } catch (error:any) {
+        } catch (error: any) {
             setError((prev) => {
                 return { ...prev, text: error.response.data.message };
             });
@@ -797,7 +801,7 @@ const Account = () => {
 
     let notifications: infoInterface[] = [
         { name: "Rappels", desc: "Notification de rappel avant une réservation", modif: true, popup: modifReminderNotif },
-        { name: "Messages", desc: "Notification en cas de message sur le chat OneHairCut", modif: true, popup: modifMsgNotif },
+        { name: "Messages", desc: "Notification en cas de message sur le chat Onehaircut", modif: true, popup: modifMsgNotif },
     ];
 
     const payments: infoInterface[] = [
@@ -980,6 +984,11 @@ const Account = () => {
                     <p className="text-black font-medium text-3xl text-center">
                         Gestion du compte
                     </p>
+                    {!isEmailVerified && (
+                        <p className="text-red-600 text-center mt-2">
+                            Adresse email non vérifiée
+                        </p>
+                    )}
                     <div className="flex flex-col md:flex-row items-start justify-center gap-10 xl:gap-20 mt-10">
                         <div className="w-full md:w-auto flex flex-col items-center justify-center gap-6">
                             {items.map((item, index) => {

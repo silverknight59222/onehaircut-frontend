@@ -32,7 +32,7 @@ function MobilePricingTable() {
                 style={{
                   background: "linear-gradient(162deg, #FE2569 0%, #FD4C55 42.71%, #FF8637 86.46%, #FFE30F 100%)"
                 }}>
-                OneHaircut Pro
+                Onehaircut Pro
                 <div className='flex items-center justify-center w-full'>
                   <div className="mt-1 bg-[rgba(255,255,255,0.53)] p-2 rounded-lg w-36 text-white font-medium text-base">
                     recommandé
@@ -69,7 +69,7 @@ function MobilePricingTable() {
                 style={{
                   background: "linear-gradient(162deg, #FE2569 0%, #FD4C55 42.71%, #FF8637 86.46%, #FFE30F 100%)"
                 }}>
-                OneHaircut standard
+                Onehaircut standard
               </div>
               <div>
                 {packageNames.map((name, index) => {
