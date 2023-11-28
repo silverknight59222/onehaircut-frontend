@@ -38,7 +38,7 @@ const Pagination = ({ from, to, perPage, total, currentPage, lastPage, onPageCha
                 for (let i = (lastPage - 2); i <= lastPage; i++) {
                     list.push(i)
                 }
-                console.log(1);
+                //console.log(1);
             } else {
                 list.push(1)
                 list.push("...")

@@ -14,7 +14,7 @@ import userLoader from "@/hooks/useLoader";
 
 
 const HairStyleListItem = React.memo(({ item, activeMenu, hairStyleSelectEvent, filters, isAllSelected }: any) => {
-    // console.log("in HairStyleListItem")
+    // //console.log("in HairStyleListItem")
 
     const [isSelected, setIsSelected] = useState(false);
 

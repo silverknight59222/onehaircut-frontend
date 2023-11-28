@@ -31,7 +31,7 @@ const Messages = () => {
           setClients(resp.data.data)
         })
         .catch(err => {
-          console.log(err)
+          //console.log(err)
         })
         .finally(() => {
           setIsLoading(false)
@@ -69,7 +69,7 @@ const Messages = () => {
           setMessage('')
         })
         .catch(err => {
-          console.log(err)
+          //console.log(err)
         })
         .finally(() => {
           setIsLoading(false)

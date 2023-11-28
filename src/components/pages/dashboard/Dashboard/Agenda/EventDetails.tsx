@@ -50,7 +50,7 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
           setMessage("");
         })
         .catch(err => {
-          console.log(err)
+          //console.log(err)
         })
     }
   };
@@ -71,7 +71,7 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
         setIsModal(true)
       })
       .catch(err => {
-        console.log(err)
+        //console.log(err)
       })
   }
 
@@ -82,7 +82,7 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
         props.refresh()
       })
       .catch(err => {
-        console.log(err)
+        //console.log(err)
       })
   }
 

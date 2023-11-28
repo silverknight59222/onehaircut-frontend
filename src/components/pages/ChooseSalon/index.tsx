@@ -61,7 +61,7 @@ const SalonChoice = () => {
             totalLat += pos.lat;
             totalLng += pos.lng;
         });
-        console.log('lenght ', positions.length)
+        //console.log('lenght ', positions.length)
         if (positions.length > 1) {
             return {
                 lat: totalLat / positions.length,
@@ -107,14 +107,14 @@ const SalonChoice = () => {
     };
 
     const getCoordinates = (salons) => {
-        console.log('filtered salons', filteredSalons)
+        //console.log('filtered salons', filteredSalons)
         const positionArray: Position[] = []
         salons.forEach(fsalon => {
             if (fsalon.address.lat && fsalon.address.long) {
                 positionArray.push({ lat: Number(fsalon.address.lat), lng: Number(fsalon.address.long) })
             }
         })
-        console.log('position array', positionArray)
+        //console.log('position array', positionArray)
         setPositions(positionArray)
         const tempCenter: Position = getMapCenter(positionArray)
         setCenter(tempCenter);
@@ -146,7 +146,7 @@ const SalonChoice = () => {
             })
             .catch(error => {
                 setIsLoading(false);
-                console.log(error)
+                //console.log(error)
             })
     }
     // Fonction pour obtenir la liste de souhaits des salons

@@ -119,13 +119,13 @@ function StripePayment() {
           },
         })
         .then(function (result) {
-          console.log(result)
+          //console.log(result)
           registerSalon(result.paymentMethod?.id);
           // window.open("https://api.whatsapp.com/send?phone=" + userInfo.phone + "&text=Booking Success!", '_blank');
         })
         .catch(function (error) {
           setIsLoading(false)
-          console.log(error);
+          //console.log(error);
         })
     }
   };

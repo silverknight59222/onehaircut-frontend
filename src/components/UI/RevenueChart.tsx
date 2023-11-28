@@ -6,8 +6,8 @@ import CustomTextField from '@/@core/components/mui/text-field'
 import { format, getDaysInMonth, startOfMonth } from 'date-fns'
 import { ApexOptions } from 'apexcharts'
 import Icon from '@/@core/components/icon'
-import ReactApexcharts from 'react-apexcharts';
 import { dashboard } from '@/api/dashboard'
+import ReactApexcharts from '@/@core/components/react-apexcharts'
 
 interface PickerProps {
     start: Date | number
@@ -84,7 +84,7 @@ const RevenueChart = React.memo(({ period }: any) => {
             categories: categories,
         },
 
-    });
+    } as ApexOptions);
     useEffect(() => {
         // const today = new Date();
         // const dayOfMonth = today.getDate();
@@ -260,7 +260,6 @@ const RevenueChart = React.memo(({ period }: any) => {
 
     useEffect(() => {
         let periodKey = "month"
-        console.log(period)
         switch (period) {
             case "Ce mois":
                 periodKey = "month"
@@ -278,7 +277,7 @@ const RevenueChart = React.memo(({ period }: any) => {
 
     return (
         <CardContent>
-            <ReactApexcharts type='area' height={400} options={options} series={series} />
+            <ReactApexcharts width={"100%"} type='area' height={400} options={options} series={series} />
         </CardContent>
     )
 

@@ -29,10 +29,10 @@ const Messages = () => {
             await clientDashboard.getSalonsByUser(userId)
                 .then(resp => {
                     setSalons(resp.data.data)
-                    console.log(resp.data.data)
+                    //console.log(resp.data.data)
                 })
                 .catch(err => {
-                    console.log(err)
+                    //console.log(err)
                 })
         }
     }
@@ -69,7 +69,7 @@ const Messages = () => {
                     setMessage('')
                 })
                 .catch(err => {
-                    console.log(err)
+                    //console.log(err)
                 })
                 .finally(() => {
                     setIsLoading(false)

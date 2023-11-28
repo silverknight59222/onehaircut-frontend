@@ -18,7 +18,7 @@ const Login = () => {
 	const [showPassword, setShowPassword] = useState(false);
 	const searchParams = useSearchParams()
 
-	console.log(searchParams.get('redirect'))
+	//console.log(searchParams.get('redirect'))
 	const defaultUserInfo = {
 		email: "",
 		password: "",

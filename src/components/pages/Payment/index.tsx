@@ -72,7 +72,7 @@ const Index = () => {
           });
         })
         .catch(err => {
-          console.log(err)
+          //console.log(err)
         })
         .finally(() => {
           setIsLoading(false)
@@ -117,7 +117,7 @@ const Index = () => {
           setServicePrize(price + servicePrice)
         })
         .catch(err => {
-          console.log(err)
+          //console.log(err)
         })
         .finally(() => {
           setIsLoading(false)
@@ -126,7 +126,7 @@ const Index = () => {
   }
   const onBooking = async () => {
     // const userInfo = JSON.parse(getLocalStorage("user") as string);
-    // console.log(userInfo);
+    // //console.log(userInfo);
     if (isLoggedIn) {
       setIsModal(true)
     } else {

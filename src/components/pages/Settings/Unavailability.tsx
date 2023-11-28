@@ -38,7 +38,7 @@ const Unavailability = () => {
     const [days, setDays] = React.useState<Date[] | undefined>(initialDays);
 
     useEffect(() => {
-        console.log('Selected dates:', selectedDates);
+        //console.log('Selected dates:', selectedDates);
     }, [selectedDates]);
 
 

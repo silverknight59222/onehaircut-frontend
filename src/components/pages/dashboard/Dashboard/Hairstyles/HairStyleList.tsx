@@ -17,7 +17,7 @@ let hairStyleParams = {}
 
 
 const HairStyleList = React.memo(({ activeMenu, hairStyleSelectEvent, resetStyleForm, onFilterSelect, onReloadListener, selectAllListener, listCountShowEvent }: any) => {
-    // console.log("in HairStyleList", hairStyleSelectEvent)
+    // //console.log("in HairStyleList", hairStyleSelectEvent)
 
     const [haircutList, setHaircutList] = useState<Haircut[]>([]);
     const [isLoading, setIsLoading] = useState(false);

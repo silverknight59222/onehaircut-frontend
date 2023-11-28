@@ -119,7 +119,7 @@ const Filters = () => {
                 showSnackbar("succès", "Les préférences ont été réinitialisées avec succès");
             })
             .catch(err => {
-                console.log(err)
+                //console.log(err)
             })
             .finally(() => {
                 setIsLoading(false)
@@ -140,11 +140,11 @@ const Filters = () => {
             availability: '',
         })
             .then(resp => {
-                console.log(resp.data);
+                //console.log(resp.data);
                 showSnackbar("succès", "Les préférences ont été réinitialisées avec succès");
             })
             .catch(err => {
-                console.log(err)
+                //console.log(err)
             })
             .finally(() => {
                 setIsLoading(false)
@@ -162,11 +162,11 @@ const Filters = () => {
             budget: budgetSliderRange,
         })
             .then(resp => {
-                console.log(resp.data);
+                //console.log(resp.data);
                 showSnackbar("succès", "Les préférences ont été réinitialisées avec succès");
             })
             .catch(err => {
-                console.log(err)
+                //console.log(err)
             })
             .finally(() => {
                 setIsLoading(false)
@@ -189,7 +189,7 @@ const Filters = () => {
                 showSnackbar("succès", "Préférences mises à jour avec succès");
             })
             .catch(err => {
-                console.log(err)
+                //console.log(err)
             })
             .finally(() => {
                 setIsLoading(false)

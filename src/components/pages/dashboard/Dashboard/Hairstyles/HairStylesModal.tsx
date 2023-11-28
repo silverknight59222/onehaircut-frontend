@@ -31,7 +31,7 @@ export interface HaircutDetails {
 }
 
 const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetStyleForm, reloadListEvent, params }: any) => {
-    // console.log("in HairStylesModal")
+    // //console.log("in HairStylesModal")
 
     const showSnackbar = useSnackbar();
 
