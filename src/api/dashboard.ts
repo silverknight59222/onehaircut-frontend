@@ -164,6 +164,9 @@ const dashboard = {
   salonStats: async () => {
     return await request.get<any>(`hair_salon_stats`);
   },
+  monthlyRevenueChart: async (period) => {
+    return await request.get<any>(`revenue_chart`, {params: {period : period}});
+  },
 };
 
 export { dashboard };

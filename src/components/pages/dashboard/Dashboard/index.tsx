@@ -13,6 +13,7 @@ import StaffModal from "@/components/pages/dashboard/Dashboard/ModalComponent/St
 import GoalsModal from "@/components/pages/dashboard/Dashboard/ModalComponent/GoalsModal";
 import TransactionList from "@/components/pages/dashboard/Dashboard/MainDashboardComponents/TransactionList";
 import ProgressBar from "@/components/UI/ProgressBar";
+import RevenueChart from "@/components/UI/RevenueChart";
 import { dashboard } from "@/api/dashboard";
 import {
     overviewData,
@@ -451,7 +452,7 @@ const Dashboard = () => {
                     {/* REVENU CHART */}
                     <Card className="h-full mb-4">
                         <div>
-                            <ApexAreaChart />
+                            <RevenueChart period={selectedMonthRevenu} />
                         </div>
                     </Card>
                     {/* OBJECTIFS CHART */}
