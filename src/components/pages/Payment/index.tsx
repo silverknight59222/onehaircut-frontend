@@ -242,15 +242,15 @@ const Index = () => {
     <div>
       {isLoading && haircutData && loadingView()}
       <Navbar hideSearchBar={true} />
-      <div className="flex flex-col items-center justify-center mt-16 mb-5 px-6 ">
-        <div className="w-full md:w-auto flex md:block flex-col items-center justify-center ">
+      <div className="flex flex-col items-center justify-center mt-16 mb-5 ">
+        <div className="w-full flex  flex-col items-center justify-center ">
 
 
           <p className="text-2xl md:text-4xl text-black font-medium text-center md:text-start mb-4 ">
             Confirmer et payer
           </p>
-          <div className="w-full md:w-[750px] lg:w-[940px] pt-10 pb-10 px-6 sm:px-14 bg-[#F8F8F8] rounded-[22px] border border-[#ECECEC] shadow-sm shadow-stone-600">
-            <div className="grid grid-cols-2">
+          <div className=" mx-4 md:w-[750px] lg:w-[940px] pt-10 pb-10 px-4 sm:px-14 bg-[#F8F8F8] rounded-[22px] border border-[#ECECEC] shadow-sm shadow-stone-600">
+            <div className="flex flex-row justify-around">
               <div className="flex flex-col gap-3 text-xl font-medium text-black">
                 {haircutData ? <p className="text-base"><span className="font-bold text-lg   ">Coiffure: </span>{haircutData.name}</p> : ''}
                 {servicesData ? <p><span className="font-bold text-lg ">Services: </span>
@@ -265,16 +265,15 @@ const Index = () => {
                 {slotData && <p className="text-base"><span className="font-bold text-lg ">Heure de fin: </span>{slotData.slot[slotData.slot.length - 1].end}</p>}
                 {slotData && <p className="text-base"><span className="font-bold text-lg ">Durée totale: </span>{salonData.total_duration} Minutes</p>}
               </div>
-              {
-                haircutData && haircutData.image &&
-                <div className="flex flex-col gap-3 text-xl font-medium text-black">
-                  <div className={`${Theme_A.hairstyleCards.cardSize.big} ml-12`}>
-                    <Image src={haircutData.image.includes('http') ? haircutData.image : `https://api.onehaircut.com${haircutData.image}`} fill={true} alt="" className="rounded-t-xl" sizes="640w" />
-                  </div>
+
+              {haircutData && haircutData.image &&
+                <div className={` relative w-36 h-36 sm:w-52 sm:h-52 md:w-64 md:h-64 lg:w-72 lg:h-72`}>
+                  <Image src={haircutData.image.includes('http') ? haircutData.image : `https://api.onehaircut.com${haircutData.image}`}
+                    fill={true} alt="" className="rounded-t-xl" />
                 </div>
               }
             </div>
-            <div className="flex items-center justify-between border-t-2 border-[#CBCBCB] pt-9 mt-9">
+            <div className="flex items-center justify-between border-t-2 border-[#c12d2d] pt-9 mt-9">
               <button onClick={() => router.push('/book-salon')} className={`${Theme_A.button.bigWhiteColoredButton}`}>
                 Modifier
               </button>
