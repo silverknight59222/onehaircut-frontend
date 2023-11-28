@@ -102,7 +102,7 @@ const RolesSettings = () => {
         updatedRoleSwitches[id] = !updatedRoleSwitches[id];
 
         // Prepare an array of permissions to update
-        const permissionsToUpdate = [];
+        const permissionsToUpdate:any = [];
 
         // Loop through updatedRoleSwitches to find permissions with the updated state
         for (const permissionId in updatedRoleSwitches) {
@@ -146,7 +146,7 @@ const RolesSettings = () => {
     const updatePermissions = async () => {
         const updatedRoleSwitches = { ...roleSwitches[selectedRole] };
         const updatedPermissions = modalSwitchesByRole[selectedRole];
-        const permissionsToUpdate = [];
+        const permissionsToUpdate:any = [];
 
         // Combine the original roleSwitches with the updatedPermissions
         const combinedPermissions = { ...updatedRoleSwitches, ...updatedPermissions };
@@ -164,7 +164,7 @@ const RolesSettings = () => {
 
         try {
             const response = await user_api.updatePermission(requestData);
-            console.log("Permissions updated successfully:", response);
+            //console.log("Permissions updated successfully:", response);
         } catch (error) {
             console.error("Error updating permissions:", error);
         }
@@ -177,7 +177,7 @@ const RolesSettings = () => {
         checked: boolean,
         onChange: (checked: boolean) => void
     ) => {
-        // console.log(id, label, checked, onChange);
+        // //console.log(id, label, checked, onChange);
         const handleChange = () => {
             onChange(!checked);
         };

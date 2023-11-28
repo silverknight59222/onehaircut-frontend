@@ -1,5 +1,5 @@
 import { CompletedHairStyleIcon, DashboardHeartIcon, DashboardUsersIcon, ProjectIncomeIcon } from "@/components/utilis/Icons";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Card from '@mui/material/Card'
 import "chart.js/auto";
 import ApexLineChart from '@/views/charts/chartjs/ApexLineChart'
@@ -13,6 +13,8 @@ import StaffModal from "@/components/pages/dashboard/Dashboard/ModalComponent/St
 import GoalsModal from "@/components/pages/dashboard/Dashboard/ModalComponent/GoalsModal";
 import TransactionList from "@/components/pages/dashboard/Dashboard/MainDashboardComponents/TransactionList";
 import ProgressBar from "@/components/UI/ProgressBar";
+import RevenueChart from "@/components/UI/RevenueChart";
+import { dashboard } from "@/api/dashboard";
 import {
     overviewData,
     messagesData,
@@ -28,6 +30,7 @@ import RechartSingleBarChart from "@/views/charts/chartjs/RechartSingleBarChart"
 import RechartsLineChart from "@/views/charts/chartjs/RechartsLineChart";
 import { Theme_A } from "@/components/utilis/Themes";
 import ConversionChart from "@/views/charts/chartjs/ConversionChart";
+import Pagination from "@/components/UI/Pagination";
 
 
 const Dashboard = () => {
@@ -257,7 +260,29 @@ const Dashboard = () => {
     ];
 
 
+    const onPageChangeEvent = (page) => {
+        //console.log(page)
+    }
 
+    const [salonStats, setSalonStats] = useState({
+        total_views: 0,
+        total_unique_customer: 0,
+        total_hairstyles_booked: 0,
+        total_orders: 0,
+        rating: 0,
+    })
+
+    const fetchStats = async () => {
+        await dashboard.salonStats()
+            .then((resp) => {
+                //console.log(resp.data)
+                setSalonStats(resp.data);
+            });
+    }
+
+    useEffect(() => {
+        fetchStats()
+    },[])
 
 
 
@@ -306,44 +331,107 @@ const Dashboard = () => {
                 </p>
 
                 {/*<DialogShareProject />*/}
-                <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-x-8 gap-y-4 ">
-                    {overview.map((item, index) => {
-                        return (
-                            <div key={index} className="flex flex-col">
-
-                                {/* VIGNETTES SUPERIEURS */}
-                                <div className="flex p-8 bg-[rgba(255,255,255,0.69)] rounded-2xl shadow-sm shadow-stone-400">
-                                    <div className={`flex items-center justify-center w-14 h-14 rounded-full ${item.gradient}`}>
-                                        {item.icon}
-                                    </div>
-                                    <div className="ml-8 flex flex-col justify-center">
-                                        <p className="text-black text-3xl font-semibold">
-                                            {item.numbers}
-                                        </p>
-                                        <p className="text-black font-medium text-sm mt-2">{item.text}</p>
-                                    </div>
-                                </div>
-
-
-                                <div className="flex justify-center">
-                                    <div className={`rounded-xl w-2/4 h-2 -mt-1 ${item.borderClr}`} />
-                                </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2  2xl:grid-cols-4 gap-x-8 gap-y-4 ">
+                    {/* Nombre de vistes */}
+                    <div className="flex flex-col">
+                        {/* VIGNETTES SUPERIEURS */}
+                        <div className="flex p-8 bg-[rgba(255,255,255,0.69)] rounded-2xl shadow-sm shadow-stone-400">
+                            <div className={`flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-t from-red-700 via-red-500 to-red-500`}>
+                                <ProjectIncomeIcon />
                             </div>
-                        );
-                    })}
+                            <div className="ml-8 flex flex-col justify-center">
+                                <p className="text-black text-3xl font-semibold">
+                                    {salonStats.total_views}
+                                </p>
+                                <p className="text-black font-medium text-sm mt-2">Nombre de vistes</p>
+                            </div>
+                        </div>
+
+
+                        <div className="flex justify-center">
+                            <div className={`rounded-xl w-2/4 h-2 -mt-1 bg-[#FE5352]`} />
+                        </div>
+                    </div>
+                    {/* -- */}
+
+                    {/* Nombre de vistes */}
+                    <div className="flex flex-col">
+                        {/* VIGNETTES SUPERIEURS */}
+                        <div className="flex p-8 bg-[rgba(255,255,255,0.69)] rounded-2xl shadow-sm shadow-stone-400">
+                            <div className={`flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-b from-blue-400 to-blue-600`}>
+                                <DashboardUsersIcon />
+                            </div>
+                            <div className="ml-8 flex flex-col justify-center">
+                                <p className="text-black text-3xl font-semibold">
+                                    {salonStats.total_unique_customer}
+                                </p>
+                                <p className="text-black font-medium text-sm mt-2">Nouveaux clients</p>
+                            </div>
+                        </div>
+
+
+                        <div className="flex justify-center">
+                            <div className={`rounded-xl w-2/4 h-2 -mt-1 bg-[#15BAF2]`} />
+                        </div>
+                    </div>
+                    {/* -- */}
+
+                    {/* Nombre de vistes */}
+                    <div className="flex flex-col">
+                        {/* VIGNETTES SUPERIEURS */}
+                        <div className="flex p-8 bg-[rgba(255,255,255,0.69)] rounded-2xl shadow-sm shadow-stone-400">
+                            <div className={`flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-b from-[#7ABF50] to-[#629E3E]`}>
+                                <CompletedHairStyleIcon />
+                            </div>
+                            <div className="ml-8 flex flex-col justify-center">
+                                <p className="text-black text-3xl font-semibold">
+                                    {salonStats.total_hairstyles_booked}
+                                </p>
+                                <p className="text-black font-medium text-sm mt-2">Coiffures effectuées</p>
+                            </div>
+                        </div>
+
+
+                        <div className="flex justify-center">
+                            <div className={`rounded-xl w-2/4 h-2 -mt-1 bg-[#7ABF50]`} />
+                        </div>
+                    </div>
+                    {/* -- */}
+
+                    {/* Nombre de vistes */}
+                    <div className="flex flex-col">
+                        {/* VIGNETTES SUPERIEURS */}
+                        <div className="flex p-8 bg-[rgba(255,255,255,0.69)] rounded-2xl shadow-sm shadow-stone-400">
+                            <div className={`flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-b from-[#FFB566] to-[#FA8E1B]`}>
+                                <DashboardHeartIcon />
+                            </div>
+                            <div className="ml-8 flex flex-col justify-center">
+                                <p className="text-black text-3xl font-semibold">
+                                    {salonStats.rating} / 5
+                                </p>
+                                <p className="text-black font-medium text-sm mt-2">Score générale</p>
+                            </div>
+                        </div>
+
+
+                        <div className="flex justify-center">
+                            <div className={`rounded-xl w-2/4 h-2 -mt-1 bg-[#FFB566]`} />
+                        </div>
+                    </div>
+                    {/* -- */}
                 </div>
             </div>
 
 
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-stretch mt-10">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch mt-10">
                 {/*REVENU JOURNALIER */}
                 <div className="flex items-center justify-between gap-3">
-                    <button onClick={() => toggleModal('Incomes')} className={`${Theme_A.button.medBlackColoredButton}`}>
+                    <button onClick={() => toggleModal('Incomes')} className={`${Theme_A.button.medBlackColoredButton} hover:bg-stone-600`}>
                         Revenu journalier
                     </button>
                     {/* DROPDOWN AFFICHAGE REVENU JOURNALIER */}
-                    <span className="mr-4 mt-4">
+                    <span className="mr-0 mt-4 ">
                         <DropdownMenu dropdownItems={DisplayedMonths} backgroundColor="bg-white" selectId={selectedMonthRevenu} menuName="Période d'observation"
                             fctToCallOnClick={handleNewMonthRevenu} />
                     </span>
@@ -352,7 +440,7 @@ const Dashboard = () => {
 
                 {/*Objectifs */}
                 <div className="flex items-center justify-between gap-3 ">
-                    <button onClick={() => toggleModal('goals')} className={`${Theme_A.button.medBlackColoredButton}`}>
+                    <button onClick={() => toggleModal('goals')} className={`${Theme_A.button.medBlackColoredButton} hover:bg-stone-600`}>
                         Objectifs du mois
                     </button>
                 </div>
@@ -360,20 +448,20 @@ const Dashboard = () => {
 
 
             <div className="mb-12">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                     {/* REVENU CHART */}
-                    <Card className="h-full">
+                    <Card className="h-full rounded-xl">
                         <div>
-                            <ApexAreaChart />
+                            <RevenueChart period={selectedMonthRevenu} />
                         </div>
                     </Card>
                     {/* OBJECTIFS CHART */}
-                    <Card className="h-full flex flex-col justify-start">
+                    <Card className="h-full flex flex-col justify-start rounded-xl">
                         <div>
                             {/* Ligne du haut */}
                             <Grid container justifyContent="center" alignItems="start" spacing={2}>
-                                <Grid item xs={false} sm={1} lg={4} /> {/* Espace vide pour le décalage IMPORTANT*/}
-                                <Grid item xs={12} sm={5} lg={4} style={{ marginTop: '2rem' }}>
+                                <Grid item xs={false} sm={false} md={false} lg={2} /> {/* Espace vide pour le décalage IMPORTANT*/}
+                                <Grid item xs={12} sm={4} md={5} lg={5} style={{ marginTop: '1rem' }}>
                                     {/* Contenu pour Nouveaux Clients */}
                                     <ProgressBar
                                         value={61}
@@ -383,7 +471,7 @@ const Dashboard = () => {
                                         color='rgba(255, 70, 70, 1)'
                                     />
                                 </Grid>
-                                <Grid item xs={12} sm={5} lg={4} style={{ marginTop: '2rem' }}>
+                                <Grid item xs={12} sm={4} md={5} lg={3} style={{ marginTop: '1rem' }}>
                                     {/* Contenu pour Nombre de visite */}
                                     <ProgressBar
                                         value={73}
@@ -397,9 +485,9 @@ const Dashboard = () => {
 
                             {/* Ligne du bas */}
                             <Grid container justifyContent="center" alignItems="end" spacing={2}>
-                                <Grid item xs={12} sm={5} lg={4}>
+                                <Grid item xs={12} sm={4} md={5} lg={5} style={{ marginBottom: '1rem' }} >
                                     {/* Contenu pour Revenu mensuel */}
-                                    <ProgressBar
+                                    < ProgressBar
                                         value={50}
                                         name="Revenus mensuel"
                                         number={50}
@@ -409,7 +497,7 @@ const Dashboard = () => {
                                 </Grid>
                                 {/* Supprimez cet espace vide si vous voulez rapprocher le dernier ProgressBar vers la gauche */}
                                 {/* <Grid item xs={false} sm={1} lg={2} /> */}
-                                <Grid item xs={12} sm={5} lg={4}>
+                                <Grid item xs={12} sm={4} md={5} lg={6} style={{ marginBottom: '1rem' }}>
                                     {/* Contenu pour Commandes d'habitués */}
                                     <ProgressBar
                                         value={15}
@@ -424,21 +512,21 @@ const Dashboard = () => {
                         </div>
                     </Card>
                 </div>
-            </div>
+            </div >
 
 
 
 
             {/* TRANSACTIONS */}
-            <div className="flex items-center justify-between mt-10">
-                <button onClick={() => toggleModal('TransactionfullTable')} className={`${Theme_A.button.medBlackColoredButton}`}>
+            < div className="flex items-center justify-between mt-10" >
+                <button onClick={() => toggleModal('TransactionfullTable')} className={`${Theme_A.button.medBlackColoredButton} hover:bg-stone-600`}>
                     Transactions
                 </button>
 
                 <DropdownMenu dropdownItems={DisplayedMonths} backgroundColor="bg-white" selectId={selectedMonthTransactions} menuName="Période d'observation"
                     fctToCallOnClick={setSelectedMonthTransactions} />
             </div>
-            <TransactionList />
+            <TransactionList period={selectedMonthTransactions} />
 
 
 
@@ -446,7 +534,7 @@ const Dashboard = () => {
 
                 {/* TITRE ACTIVITE CLIENT */}
                 <Grid item xs={4}>
-                    <button onClick={() => toggleModal('clientActivity')} className={`${Theme_A.button.medBlackColoredButton}`}>
+                    <button onClick={() => toggleModal('clientActivity')} className={`${Theme_A.button.medBlackColoredButton} hover:bg-stone-600`}>
                         Activité clients
                     </button>
                 </Grid>
@@ -458,7 +546,7 @@ const Dashboard = () => {
 
                 {/* TITRE TOP CLIENT */}
                 <Grid item xs={4}>
-                    <button onClick={() => toggleModal('topClient')} className={`${Theme_A.button.medBlackColoredButton}`}>
+                    <button onClick={() => toggleModal('topClient')} className={`${Theme_A.button.medBlackColoredButton} hover:bg-stone-600`}>
                         Top Clients
                     </button>
                 </Grid>
@@ -608,7 +696,7 @@ const Dashboard = () => {
 
             <div className="flex items-center justify-between gap-3 mt-10 ">
                 {/* TITRE OCCUPATION DU PERSONNEL */}
-                <button onClick={() => toggleModal('staff')} className={`${Theme_A.button.medBlackColoredButton}`}>
+                <button onClick={() => toggleModal('staff')} className={`${Theme_A.button.medBlackColoredButton} hover:bg-stone-600`}>
                     Répartition de la charge du personnel
                 </button>
 
@@ -617,6 +705,8 @@ const Dashboard = () => {
                         fctToCallOnClick={handleNewMonthPayload} />
                 </span>
             </div>
+
+            {/* <Pagination from={1} to={10} perPage={10} total={123} currentPage={6} lastPage={13} onPageChangeEvent={onPageChangeEvent}></Pagination> */}
 
             {/* BAR CHART STAFF PAYLOAD */}
             <div className="rounded-xl shadow-sm shadow-stone-600 mb-20">
@@ -631,7 +721,7 @@ const Dashboard = () => {
             </div>
 
 
-        </div>
+        </div >
 
     );
 };

@@ -1,13 +1,11 @@
 "use client"
 import React from 'react';
 import { LogoIcon, UserIcon } from '../utilis/Icons';
-import { useRouter } from "next/navigation";
 import Footer from "@/components/UI/Footer";
 import { LogoCircleFixRight } from "@/components/utilis/Icons";
 import { Theme_A } from '../utilis/Themes';
 
-const termsPage = () => {
-  const router = useRouter();
+const termsPage = () => {  
 
   return (
     <div>
@@ -17,12 +15,12 @@ const termsPage = () => {
       <Footer />
       <div className="flex justify-between w-full p-5 border-b border-[#EBF0F2]">
         <div className='flex items-center justify-center cursor-pointer'
-          onClick={() => router.push('/')}>
+          >
           <LogoIcon />
         </div>
         <div className="flex items-center justify-end gap-4">
           <div className="w-14 h-14 flex items-center justify-center pb-1 border-2 border-secondary rounded-full cursor-pointer transform hover:scale-110 transition-transform"
-            onClick={() => router.push('/login')}>
+            >
             <UserIcon />
           </div>
         </div>

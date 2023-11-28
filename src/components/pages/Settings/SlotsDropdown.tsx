@@ -71,7 +71,7 @@ const SlotDropdown = ({ selectedItem, backgroundClr, getUpdatedSlots }: SlotDrop
     available: false,
   }
   const checkboxClickHandler = (time: string, orientation: string, day: string) => {
-    let prevSlots = [];
+    let prevSlots: OpenTimes[] = [];
     let updatedSlots: OpenTimes[] = [];
     if (slots.length > 0) {
       prevSlots = slots;

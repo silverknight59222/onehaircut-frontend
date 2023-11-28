@@ -8,8 +8,8 @@ const PaymentModal: React.FC = () => {
     // Function to handle the click on the credit card radio
     const [cardSide, setCardSide] = useState(true);
     const handleClickPay = () => {
-        console.log("clicked.....")
-        console.log(localStorage);
+        //console.log("clicked.....")
+        //console.log(localStorage);
     }
     
     // const { handleClickPay } = props;

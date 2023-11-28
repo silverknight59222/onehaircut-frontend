@@ -1,4 +1,5 @@
 import { request } from "./Request";
+
 export interface ResponseType {
   message: string;
   status: number;
@@ -17,7 +18,7 @@ interface SalonWishlistParams{
 
 interface SalonHaircut {
   haircut_id: number,
-  servicesIDs: number[]
+  servicesIds: number[]
 }
 interface MessageParam{
  client_id: number,
@@ -69,8 +70,8 @@ const dashboard = {
   addSalonHaircut: async (params: any) => {
     return await request.post<ResponseType>(`/salon_haircut`, params);
   },
-  updateSalonHaircut: async (id:number, params: any) => {
-    return await request.post<ResponseType>(`/salon_haircut/${id}`, params);
+  updateSalonHaircut: async (params: any) => {
+    return await request.post<ResponseType>(`/update_salon_haircut`, params);
   },
   getAllSalonHaircuts: async (id: number) => {
     return await request.get<any>(`/salon_haircuts_by_hair_salon/${id}`);
@@ -78,8 +79,12 @@ const dashboard = {
   getAllHaircuts: async (page: number) => {
     return await request.get<any>(`/haircuts/${page}`);
   },
-  getAllHaircutBySalon: async (id: number) => {
-    return await request.get<any>(`/filtered_haircuts/${id}`);
+  getAllHaircutBySalon: async (id: number, page: number, type: string, params = {}) => {
+    if (type == "new") {
+      return await request.get<any>(`/haircuts_list/${id}/${page}`, {params: params});
+    } else {
+      return await request.get<any>(`/salon_haircuts_list/${id}/${page}`, {params: params});
+    }
   },
   deleteSalonHaircut: async (id: number) => {
     return await request.delete<ResponseType>(`/salon_haircut/${id}`);
@@ -155,6 +160,15 @@ const dashboard = {
   },
   sendWhatsapp: async (data:any) => {
     return await request.post<any>(`send_whatsapp`, data);
+  },
+  salonStats: async () => {
+    return await request.get<any>(`hair_salon_stats`);
+  },
+  monthlyRevenueChart: async (period) => {
+    return await request.get<any>(`revenue_chart`, {params: {period : period}});
+  },
+  salonTransactionList: async (period, page) => {
+    return await request.get<any>(`salon_transactions`, {params: {period : period, page: page}});
   },
 };
 

@@ -108,7 +108,7 @@ const Reset = ({ email, token }: any) => {
     await Auth.reset(userInfo)
       .then((resp) => {
         const res = resp.data;
-        console.log(res);
+        //console.log(res);
         router.push("/login");
         showSnackbar(
           "success",

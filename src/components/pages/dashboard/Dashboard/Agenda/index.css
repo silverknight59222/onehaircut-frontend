@@ -1,8 +1,3 @@
-a.fc-event.fc-event-draggable.fc-event-resizable.fc-event-start.fc-event-end.fc-event-past.fc-timegrid-event.fc-v-event,
-a.fc-event.fc-event-draggable.fc-event-resizable.fc-event-start.fc-event-end.fc-event-today.fc-event-future.fc-timegrid-event.fc-v-event {
-    border: 1px white solid;
-}
-
 :root {
     --fc-daygrid-event-dot-width: 5px;
     --fc-small-font-size: .85em;
@@ -33,6 +28,17 @@ a.fc-event.fc-event-draggable.fc-event-resizable.fc-event-start.fc-event-end.fc-
     --fc-bg-event-opacity: 0.3;
     --fc-highlight-color: rgba(188, 232, 241, 0.3);
     --fc-now-indicator-color: red;
+}
+
+.fc-event.fc-event-past {
+    background-color: #dcdcdc !important;
+    border: 0px white solid;
+}
+
+.fc-event-past .fc-event-title,
+.fc-event-past .fc-event-time {
+    color: rgb(158, 158, 158) !important;
+    /* Force la couleur du texte en noir */
 }
 
 .fc-daygrid-event-dot {
@@ -72,6 +78,8 @@ a.fc-event.fc-event-draggable.fc-event-resizable.fc-event-start.fc-event-end.fc-
 
 }
 
+
+
 .custom-button {
     background-color: #f94b4b;
     /* Couleur d'arrière-plan du bouton */
@@ -99,6 +107,21 @@ a.fc-event.fc-event-draggable.fc-event-resizable.fc-event-start.fc-event-end.fc-
 .custom-button:active {
     background-color: #212121;
     /* Couleur d'arrière-plan du bouton lorsqu'il est enfoncé */
+}
+
+/* index.css */
+.fc-event:hover {
+    transform: scale(1.05);
+    /* exemple pour agrandir légèrement l'événement */
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+    /* exemple d'ombre portée */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Ajout de la transition fluide */
+}
+
+.fc-event {
+    border-radius: 7px;
+    /* Vous pouvez ajuster cette valeur selon vos préférences */
 }
 
 
@@ -129,6 +152,30 @@ a.fc-event.fc-event-draggable.fc-event-resizable.fc-event-start.fc-event-end.fc-
         height: 600px;
     }
 }
+
+.calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: white;
+    /* Fond blanc */
+    border: 1px solid #ccc;
+    /* Bordure légère */
+    border-radius: 8px;
+    /* Bordures arrondies */
+    padding: 10px;
+    /* Padding à l'intérieur du cadre */
+    margin-bottom: 10px;
+    /* Marge en bas */
+}
+
+.total-events-counter,
+.upcoming-events-counter {
+    font-weight: bold;
+    margin: 0 10px;
+    /* Marge à gauche et à droite pour séparer les textes */
+}
+
 
 /* Pour le chat du modal */
 .modalChat {
@@ -163,6 +210,7 @@ a.fc-event.fc-event-draggable.fc-event-resizable.fc-event-start.fc-event-end.fc-
     /* 4 lignes pour chaque colonne */
     gap: 10px;
     /* Espace entre les lignes et les colonnes */
+
 }
 
 

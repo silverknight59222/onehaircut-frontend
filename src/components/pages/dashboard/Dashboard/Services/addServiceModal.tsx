@@ -442,6 +442,8 @@ const AddServiceModal = (props: AddServiceModalType) => {
               </div>
 
             </div>
+
+            {/* TODO ADD THIS DISCOUNT INPUT WHEN DISCOUNT SERVICES ARE AVAILABLE
             <div className="flex flex-col gap-4 h-full items-start">
               <div className="max-w-[300px] w-[200px] relative">
                 <input
@@ -487,6 +489,9 @@ const AddServiceModal = (props: AddServiceModalType) => {
                 <span className="absolute right-3 top-1/2 transform -translate-y-1/2">€</span>
               </div>
             </div>
+
+                */}
+
           </div>
           <div className="mt-4 flex gap-4 items-center justify-center w-full">
             <button

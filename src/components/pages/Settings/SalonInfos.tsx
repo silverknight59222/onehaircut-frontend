@@ -8,8 +8,13 @@ import CustomSlider from "@/components/UI/OHC_Slider";
 import ComponentTheme from "@/components/UI/ComponentTheme";
 import Autocomplete from "react-google-autocomplete";
 import { client } from "@/api/clientSide";
+import { salonApi } from '@/api/salonSide';
 import useSnackbar from "@/hooks/useSnackbar";
+import { getLocalStorage, setLocalStorage } from "@/api/storage";
 
+const tempSalon = getLocalStorage('hair_salon');
+const salonInfo = tempSalon ? JSON.parse(tempSalon) : null;  
+  
 const SalonInfos = () => {
     const [isModal, setIsModal] = useState(false);
     const [name, setName] = useState("");
@@ -30,7 +35,20 @@ const SalonInfos = () => {
     const [SalonType, setSalonType] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const showSnackbar = useSnackbar();
-    const [addressResponse, setAddressResponse] = useState("");
+    const [addressResponse, setAddressResponse] = useState({
+        street: "",                
+        city: "",
+        state: "",
+        country: "",
+        name: "",
+        zipcode: "",
+        billing_name: "",
+        billing_city: "",
+        billing_zip_code: "",
+        billing_country: "",
+        billing_state: "",
+        billing_street: ""
+    });
     const [locationLatitude, setLocationLatitude] = useState(0.0);
     const [locationLongitude, setLocationLongitude] = useState(0.0);
     const openModal = () => {
@@ -44,18 +62,63 @@ const SalonInfos = () => {
     // Utilisez useEffect pour déclencher la recherche de la ville lorsque le code postal change
     useEffect(() => {
         fetchAdress();
-        // searchCityByPostalCode(postalCode);
+        if (salonInfo) {
+            if (salonInfo.type == 'barber_shop'){
+                setSelectedSalonType('Barber-shop')
+            } else {
+                setSelectedSalonType(salonInfo.type)
+            }
+            setTypeImage(salonInfo.type)
+            setIsMobilityAllowed(salonInfo.is_mobile)
+        }        
     }, []);
 
-    // handling the change of Salon type change
-    const SaveSalonType = (item: string) => {
-        // TODO: add backend to save the new preference
+    const saveSalonType = async (item) => {
+        await salonApi.saveSalonType({type: item})
+        .then((resp) => {
+            setLocalStorage("hair_salon", JSON.stringify(resp.data));
+            showSnackbar("success", "Salon Type Saved Successfully.");            
+        })
+        .catch(err => {
+            //console.log(err);
+        })
+        .finally(() => {
+            setIsLoading(false);            
+        })
     }
+
+    const saveSalonMobility = async () => {
+        await salonApi.saveSalonMobility({is_mobile: isMobilityAllowed})
+        .then((resp) => {                
+            showSnackbar("success", "Salon Mobility Saved Successfully.");            
+        })
+        .catch(err => {
+            //console.log(err);
+        })
+        .finally(() => {
+            setIsLoading(false);            
+        })
+    }
+
+    const saveZoneRadius = async (radius) => {
+        await salonApi.saveZoneRadius({zone_radius: radius})
+        .then((resp) => {                
+            showSnackbar("success", "Salon Mobility Zone Saved Successfully.");            
+        })
+        .catch(err => {
+            //console.log(err);
+        })
+        .finally(() => {
+            setIsLoading(false);            
+        })
+    }
+    // handling the change of Salon type change    
 
     //For mobility checkbox
     const [isMobilityAllowed, setIsMobilityAllowed] = useState(false); // État de la checkbox
-    const handleCheckboxChange = (event: any) => {
-        setIsMobilityAllowed(event.target.checked);
+    const handleCheckboxChange = (mobility: boolean) => {
+        setIsMobilityAllowed(mobility);
+        saveSalonMobility()
     };
     const [selectedWeekday, setSelectedWeekday] = useState<string>('');
 
@@ -72,6 +135,12 @@ const SalonInfos = () => {
 
     const [selectedImageUrl, setSelectedImageUrl] = useState('/assets/DefaultPictures/Profil.png');
     const HandleSelectedSalonType = (item: string) => {
+        setSelectedSalonType(item);
+        setTypeImage(item)
+        saveSalonType(item)
+    }
+
+    const setTypeImage = (item) => {
         let imageUrl = '/assets/DefaultPictures/Profil.png';
         switch (item) {
             case 'Barber-shop':
@@ -102,7 +171,6 @@ const SalonInfos = () => {
                 imageUrl = "/assets/salon_types/Salon de coiffure mixte.png";
                 break;
         }
-        setSelectedSalonType(item);
         setSelectedImageUrl(imageUrl);
     }
 
@@ -111,6 +179,8 @@ const SalonInfos = () => {
     const [zoneSliderRange, setZoneSliderRange] = useState([0, 15]);
     const handleZoneSliderChange = (event: any, newValue: any) => {
         setZoneSliderRange(newValue);
+        //console.log(newValue)
+        //saveZoneRadius(newValue)
     };
     const setAddressFields = (address: any, arg: string, value: string) => {
         switch (arg) {
@@ -177,7 +247,7 @@ const SalonInfos = () => {
     const SaveAddress = async () => {
         setIsLoading(true);
         isBillingAddressSame ? billingAddressIsSame() : ""
-        await client.storeAddresses({
+        await salonApi.storeAddresses({
             name: name,
             street: street,
             zipcode: postalCode,
@@ -194,13 +264,12 @@ const SalonInfos = () => {
             latitude: locationLatitude,
             longitude: locationLongitude
         })
-            .then((resp) => {
-                console.log(resp);
+            .then((resp) => {                
                 showSnackbar("success", "Adresse mise à jour avec succès.");
                 setIsModal(false);
             })
             .catch(err => {
-                console.log(err);
+                //console.log(err);
             })
             .finally(() => {
                 setIsLoading(false);
@@ -209,7 +278,7 @@ const SalonInfos = () => {
     };
 
     const fetchAdress = async () => {
-        const resp = await client.getAddresses()
+        const resp = await salonApi.getAddresses()
         setAddressResponse(resp.data);
         setName(resp.data.name);
         setStreet(resp.data.street);
@@ -255,8 +324,7 @@ const SalonInfos = () => {
                                 apiKey='AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E'
                                 onPlaceSelected={(place) => {
                                     setAddressData(place)
-                                }}
-                                value={street}
+                                }}                                
                                 options={{
                                     types: ["geocode"],
                                     fields: [
@@ -266,7 +334,7 @@ const SalonInfos = () => {
                                 }}
                                 onChange={handleChange}
                                 placeholder="Address"
-                                defaultValue=""
+                                defaultValue={street}
                             />
                             <div className="flex">
                                 <div className="flex-grow w-1/4 pr-2">
@@ -526,7 +594,7 @@ const SalonInfos = () => {
 
                 {/* Checkbox et label "Autoriser la mobilité" */}
                 <div className="flex-1 py-5 pl-5 ml-8 flex items-center"> {/* Utilisez flex items-center ici */}
-                    <div onClick={() => setIsMobilityAllowed(!isMobilityAllowed)} className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded ${isMobilityAllowed
+                    <div onClick={() => handleCheckboxChange(!isMobilityAllowed)} className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded ${isMobilityAllowed
                         ? ColorsThemeA.ohcVerticalGradient_A
                         : "bg-[#D6D6D6]"
                         }`}>

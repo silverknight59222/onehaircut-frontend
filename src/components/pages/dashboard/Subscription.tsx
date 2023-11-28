@@ -17,12 +17,18 @@ import BaseModal from "@/components/UI/BaseModal";
 import { useRouter } from "next/navigation";
 import PaymentModal from "./PaymentModal";
 import { dashboard } from "@/api/dashboard";
-// import Twilio from 'twilio';
-import * as twilio from 'twilio';
+
+const SubSelected_text = "text-white"
+const SubSelected_recommended = "bg-[rgba(255,255,255,0.53)] text-white"
+const SubSelected_BG = `${ColorsThemeA.ohcBigVerticalGradient_A}`
+// const SubSelected_BG = `"linear-gradient(162deg, #f54257 0%, #FD4C55 40.71%, #FF8637 70.46%, #FFE30F 100%)"`
+const SubUnselected_text = "text-black"
+const SubUnselected_recommended = `${ColorsThemeA.OhcGradient_D} text-black`
+const SubUnselected_BG = `bg-white`
 
 const Subscription = () => {
   const router = useRouter();
-  const [isAutomaticRenewal, setIsAutomaticRenewal] = useState(false);
+  const [isAutomaticRenewal, setIsAutomaticRenewal] = useState(true);
   const packageNames = [
     "Agenda dynamique",
     "Mise en avant de votre salon",
@@ -36,8 +42,11 @@ const Subscription = () => {
   ];
   const [isModal, setIsModal] = useState(false);
 
+  // state variable to know if the user has taken the pro subscription
+  const [isCurrSubscriptionPro, setIsCurrSubscriptionPro] = useState(false); // TODO: link the BE
+
   const handleClickPay = () => {
-    console.log("PAY");
+    //console.log("PAY");
   }
 
   // const modifBankCard: React.JSX.Element =
@@ -54,7 +63,7 @@ const Subscription = () => {
     }
     // const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
     await dashboard.sendWhatsapp(data).then((resp) => {
-      console.log(resp.data.data);
+      //console.log(resp.data.data);
     });
 
 
@@ -67,10 +76,15 @@ const Subscription = () => {
     //   from: 'whatsapp:+14155238886', // Your Twilio WhatsApp-enabled phone number
     //   to: 'whatsapp:+1234567890', // The recipient's WhatsApp number
     // })
-    // .then(message => console.log(message.sid))
+    // .then(message => //console.log(message.sid))
     // .catch(error => console.error(error));
 
     setIsModal(true);
+  }
+
+  // when clicking on the "choisir" button
+  const handleClickChoose = () => {
+    setIsCurrSubscriptionPro(!isCurrSubscriptionPro)
   }
 
   return (
@@ -112,16 +126,12 @@ const Subscription = () => {
                     </div>
                   </div>
                   <div
-                    style={{
-                      background:
-                        `${ColorsThemeA.ohcBigVerticalGradient_B}`,
-                    }}
-                    className="w-56 absolute -top-40 left-[216px] flex flex-col items-center justify-center py-6 rounded-[20px] shadow-[-71px_56px_56px_0px_rgba(255,125,60,0.13)]"
+                    className={`${isCurrSubscriptionPro ? SubSelected_BG : SubUnselected_BG} w-56 absolute -top-40 left-[216px] flex flex-col items-center justify-center py-6 rounded-2xl border border-stone-300 border-1] `}
                   >
-                    <div className="text-3xl font-semibold text-white w-48 text-center">
+                    <div className={`text-3xl font-semibold w-48 text-center ${isCurrSubscriptionPro ? SubSelected_text : SubUnselected_text}`}>
                       OneHaircut Pro
                     </div>
-                    <div className="flex items-center justify-center bg-[rgba(255,255,255,0.53)] mb-5 mt-1 rounded-lg w-36 h-10 text-white font-semibold">
+                    <div className={`flex items-center justify-center mb-5 mt-1 rounded-lg w-36 h-10  font-semibold ${isCurrSubscriptionPro ? SubSelected_recommended : SubUnselected_recommended}`}>
                       recommandé
                     </div>
                     {packageNames.map((_, index) => {
@@ -130,25 +140,30 @@ const Subscription = () => {
                           key={index}
                           className="flex items-center justify-center w-full h-16 border-b-2 border-[#E4E8E9] py-4"
                         >
-                          <PackageCheckedIcon />
+                          {isCurrSubscriptionPro && <PackageCheckedIcon />}
+                          {!isCurrSubscriptionPro && <RegistrationCheckedIcon />}
                         </div>
                       );
                     })}
-                    <div className="mt-1 h-10">
-                      <button className="text-white font-semibold text-center" onClick={handleClickPro}>
+                    <div className="mt-1 h-7">
+                      <button className={` font-semibold text-center pt-2 ${isCurrSubscriptionPro ? SubSelected_text : SubUnselected_text}`}
+                        onClick={handleClickPro}>
                         <span className="text-2xl">79€ /mois</span>
-                        <br />
-                        <p className="text-xs">+5 % de tax de service</p>
                       </button>
                     </div>
                   </div>
-                  <div className="w-48 absolute left-[230px] top-[650px]  flex items-center justify-center text-white font-semibold rounded-3xl -mb-12 h-12 bg-black">
+                  {isCurrSubscriptionPro && <div className="w-48 absolute left-[230px] top-[650px]  flex items-center justify-center text-white font-semibold rounded-3xl -mb-12 h-12 bg-black">
                     {/* <div className={`${Theme_A.button.medBlackColoredButton} w-52 absolute left-[224px] top-[650px]  flex items-center justify-center`}> */}
                     Abo actuel
-                  </div>
+                  </div>}
+                  {!isCurrSubscriptionPro && <div className="z-10 w-48 absolute left-[230px] top-[650px]  flex items-center justify-center text-black font-semibold border border-[#000000] rounded-3xl -mb-12 h-12 bg-white hover:scale-105 transition-transform hover:shadow-md"
+                    onClick={() => handleClickChoose()}>
+                    Choisir
+                  </div>}
                   {/* Regular side */}
-                  <div className=" z-10 bg-white w-52 absolute -top-40 left-[440px] flex flex-col items-center justify-center py-6 rounded-[20px]">
-                    <div className="text-3xl font-semibold text-black w-48 text-center mb-16">
+                  <div
+                    className={`${!isCurrSubscriptionPro ? SubSelected_BG : SubUnselected_BG} z-10 w-52 absolute -top-40 left-[440px] flex flex-col items-center justify-center py-6 rounded-[20px] border border-stone-300 border-1`}>
+                    <div className={`text-3xl font-semibold  w-48 text-center mb-16 ${!isCurrSubscriptionPro ? SubSelected_text : SubUnselected_text}`}>
                       OneHaircut Regular
                     </div>
                     <div className="w-full">
@@ -159,7 +174,7 @@ const Subscription = () => {
                             className="flex items-center justify-center w-full h-16 border-b-2 border-[#E4E8E9] py-4"
                           >
                             {index < 5 ? (
-                              <RegistrationCheckedIcon />
+                              !isCurrSubscriptionPro ? (<PackageCheckedIcon />) : (<RegistrationCheckedIcon />)
                             ) : (
                               <PackageUnCheckedIcon />
                             )}
@@ -167,27 +182,33 @@ const Subscription = () => {
                         );
                       })}
                     </div>
-                    <div className="w-full h-1 flex flex-col items-center justify-center py-4">
-                      <button className="text-black font-medium text-2xl pt-6">Gratuit
+                    <div className="w-full h-3 flex flex-col items-center justify-center py-4">
+                      <button className={`font-medium text-2xl pt-6 ${!isCurrSubscriptionPro ? SubSelected_text : SubUnselected_text}`}>Gratuit
                         <br />
-                        <p className="text-xs">+5 % de tax de service</p>
                       </button>
                     </div>
                   </div>
-                  {/* <div className={`w-52 absolute left-[450px] top-[650px]  flex items-center justify-center ${Theme_A.button.medWhiteColoredButton}`}> */}
-                  <div className="z-10 w-48 absolute left-[450px] top-[650px]  flex items-center justify-center text-black font-semibold border border-[#000000] rounded-3xl -mb-12 h-12 bg-white hover:scale-105 transition-transform hover:shadow-md">
+                  {!isCurrSubscriptionPro && <div className="w-48 absolute left-[450px] top-[650px]  flex items-center justify-center text-white font-semibold rounded-3xl -mb-12 h-12 bg-black">
+                    {/* <div className={`${Theme_A.button.medBlackColoredButton} w-52 absolute left-[224px] top-[650px]  flex items-center justify-center`}> */}
+                    Abo actuel
+                  </div>}
+                  {isCurrSubscriptionPro && <div className="z-10 w-48 absolute left-[450px] top-[650px]  flex items-center justify-center text-black font-semibold border border-[#000000] rounded-3xl -mb-12 h-12 bg-white hover:scale-105 transition-transform hover:shadow-md"
+                    onClick={() => handleClickChoose()}>
                     Choisir
-                  </div>
+                  </div>}
                 </div>
               </div>
             </div>
             <div className="relative z-10 flex items-center justify-center w-full lg:hidden">
               <MobilePricingTable />
             </div>
-            <div className="relative z-10 w-full sm:w-[415px] flex flex-col  sm:-mt-5 lg:mt-20 xl:mt-20">
+
+
+            <div className="relative z-10 w-full sm:w-[450px] flex flex-col  sm:-mt-5 lg:mt-20 xl:mt-20">
+
               <div className="py-4 px-5 2xl:text-xl text-center text-black whitespace-nowrap bg-[#F4F4F6] font-medium border border-[#9B9B9B] rounded-xl">
-                <p>Renouvellement de l’abonnement le: </p>
-                <p className="text-center mt-1">12 / 07 / 2024</p>
+                <p>Votre contrat se termine le: 12 / 07 / 2024</p>
+
                 <div
                   onClick={() => setIsAutomaticRenewal(!isAutomaticRenewal)}
                   className="flex items-center justify-start gap-3 mt-4 cursor-pointer"
@@ -205,22 +226,27 @@ const Subscription = () => {
                   <p>Renouvellement&nbsp;Automatique</p>
                 </div>
               </div>
-              <button className="w-40 h-10 flex items-center justify-center bg-[#ffffff] border border-secondary rounded-xl mt-40 mb-6 text-black font-normal hover:scale-90 transition-transform hover:bg-red-500 hover:font-bold">
+
+
+              <button className="w-40 h-10 flex items-center justify-center bg-[#ffffff] border border-black rounded-xl mt-20 mb-12 text-black font-normal hover:scale-95 transition-transform duration-300 hover:bg-stone-100 ">
                 Clôturer le compte
               </button>
             </div>
+
+
           </div>
         </div>
-      </DashboardLayout>
+      </DashboardLayout >
       <Footer />
-      {isModal && (
-        <BaseModal close={() => setIsModal(false)}>
-          <div>
-            <PaymentModal />
-          </div>
-        </BaseModal>)
+      {
+        isModal && (
+          <BaseModal close={() => setIsModal(false)}>
+            <div>
+              <PaymentModal />
+            </div>
+          </BaseModal>)
       }
-    </div>
+    </div >
   );
 };
 

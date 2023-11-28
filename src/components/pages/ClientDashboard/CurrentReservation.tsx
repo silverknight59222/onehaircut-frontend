@@ -29,7 +29,7 @@ const Currentreservation = () => {
         setIsModalOpen(true);
     };
 
-    const [items, setItems] = useState([]);
+    const [items, setItems] = useState<any>([]);
     const [itemCount, setItemCount] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -82,7 +82,7 @@ const Currentreservation = () => {
     // state variables
     // Modal for canceling the reservation
     const [isModalCancel, setIsModalCancel] = useState(false);
-    const [itemToCancel, setItemToCancel] = useState({});
+    const [itemToCancel, setItemToCancel] = useState<any>({});
     const [currentTime, setCurrentTime] = useState<Date | null>(null);
     const [cancelAccepted, setCancelAccepted] = useState(false);
 
@@ -113,9 +113,9 @@ const Currentreservation = () => {
         const timeDifference = reservationDateTime.getTime() - currentDateTime.getTime();
         const hoursDifference = timeDifference / (1000 * 3600);
 
-        console.log(currentDateTime)
-        console.log(reservationDateTime)
-        console.log(hoursDifference)
+        //console.log(currentDateTime)
+        //console.log(reservationDateTime)
+        //console.log(hoursDifference)
 
         if (hoursDifference >= 24) {
             // Current time is 24 hours or more before the reservation time.
@@ -210,6 +210,20 @@ const Currentreservation = () => {
             </div>
         </div >
 
+    const formatFrenchDate = (dateString) => {
+        const date = new Date(dateString);
+
+        // Options avec des valeurs littérales spécifiques
+        const optionsDate = { weekday: 'long' as const, day: 'numeric' as const, month: 'long' as const };
+        const optionsTime = { hour: '2-digit' as const, minute: '2-digit' as const, hour12: false };
+
+        const formattedDate = new Intl.DateTimeFormat('fr-FR', optionsDate).format(date);
+        const formattedTime = new Intl.DateTimeFormat('fr-FR', optionsTime).format(date);
+
+        return `${formattedDate}, ${formattedTime}`;
+    };
+
+
     return (
         <div>
             <div className="hidden lg:block fixed -right-2 md:-right-2 -bottom-2 md:-bottom-2 z-10">
@@ -245,10 +259,10 @@ const Currentreservation = () => {
                                     <div className='flex flex-col items-center sm:items-start justify-center sm:justify-start gap-5 mt-5 sm:mt-0'>
                                         <div>
                                             <p className='text-[#444343] font-bold text-center sm:text-start'>Date</p>
-                                            <p className='text-[#666] text-sm text-center sm:text-start'>{item.redable_date}</p>
+                                            <p className='text-[#666] text-sm text-center sm:text-start'>{formatFrenchDate(item.redable_date)}</p>
                                         </div>
                                         <div>
-                                            <p className='text-[#444343] font-bold text-center sm:text-start'>Heure</p>
+                                            <p className='text-[#444343] font-bold text-center sm:text-start'>Durée</p>
                                             <p className='text-[#666] text-sm text-center sm:text-start'>{item.total_duration} mins</p>
                                         </div>
                                         {item.haircut && <div>
@@ -257,7 +271,7 @@ const Currentreservation = () => {
                                         </div>}
                                         {item.salon_haircut && <div>
                                             <p className='text-[#444343] font-bold text-center sm:text-start'>Prix coiffure</p>
-                                            <p className='text-[#666] text-sm text-center sm:text-start'>{item.salon_haircut.base_price}</p>
+                                            <p className='text-[#666] text-sm text-center sm:text-start'>{item.salon_haircut.base_price}€</p>
                                         </div>}
                                         <div>
                                             <p className='text-[#444343] font-bold text-center sm:text-start'>Prestation</p>
@@ -268,15 +282,15 @@ const Currentreservation = () => {
                                                         return (<p key={index} className='text-[#666] text-sm text-center sm:text-start'>{ele.name}.</p>);
                                                     }
                                                     else {
-                                                        return (<p key={index} className='text-[#666] text-sm text-center sm:text-start'>none</p>);
+                                                        return (<p key={index} className='text-[#666] text-sm text-center sm:text-start'>-</p>);
                                                     }
                                                 })
                                             }
-                                            {item.items.filter((ele) => ele.type == 'service').length == 0 && <p key={index} className='text-[#666] text-sm text-center sm:text-start'>none.</p>}
+                                            {item.items.filter((ele) => ele.type == 'service').length == 0 && <p key={index} className='text-[#666] text-sm text-center sm:text-start'>-</p>}
                                         </div>
                                         <div>
                                             <p className='text-[#444343] font-bold text-center sm:text-start'>Prix prestation</p>
-                                            <p key={index} className='text-[#666] text-sm text-center sm:text-start'>{item.total_service_price}</p>
+                                            <p key={index} className='text-[#666] text-sm text-center sm:text-start'>{item.total_service_price}€</p>
                                             {/* {item.total_amount}</p> */}
                                         </div>
                                         <div>

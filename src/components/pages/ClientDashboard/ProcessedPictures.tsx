@@ -22,7 +22,7 @@ const ProcessedPictures = () => {
             <ClientDashboardLayout>
                 <div className="mt-14 mb-5 px-6">
                     {/* Première ligne de cartes */}
-                    <div className="flex flex-row justify-evenly">
+                    <div className="grid grid-rows-3 gap-4 md:flex flex-row justify-evenly">
                         <div className="flex-1">
                             <CustomCard
                                 title={DefaultName}
@@ -32,7 +32,7 @@ const ProcessedPictures = () => {
 
 
                         </div>
-                        <div className="flex-1 mr-4">
+                        <div className="flex-1">
                             <CustomCard
                                 title={DefaultName}
                                 imageUrl={DefaultProfilFace}
@@ -49,7 +49,7 @@ const ProcessedPictures = () => {
                     </div>
 
                     {/* Deuxième ligne de cartes */}
-                    <div className="flex flex-row mt-4 justify-evenly">
+                    <div className="grid grid-rows-3 gap-4 md:flex flex-row mt-4 justify-evenly">
                         <div className="flex-1">
                             <CustomCard
                                 title={DefaultName}

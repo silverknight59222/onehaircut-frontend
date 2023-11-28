@@ -18,6 +18,7 @@ const Login = () => {
 	const [showPassword, setShowPassword] = useState(false);
 	const searchParams = useSearchParams()
 
+	//console.log(searchParams.get('redirect'))
 	const defaultUserInfo = {
 		email: "",
 		password: "",
@@ -91,19 +92,24 @@ const Login = () => {
 		setIsLoading(true);
 		await Auth.login(userInfo)
 			.then((resp) => {
-				const res = resp.data;				
+				const res = resp.data;
 				setLocalStorage("user", JSON.stringify(res.user));
-				setLocalStorage("auth-token", res.token);
-				// if(searchParams.get('redirect') === 'payment'){
-				// 	router.push("/payment");
-				// }
-				const salonRoles = ['salon_professional', 'admin', 'staff'];
-				// if (res.user.role === 'salon_professional' || ) {
-				if (salonRoles.indexOf(res.user.role) != -1) {
-					router.push("/dashboard");
-				} else {
-					router.push("/client/dashboard");
+				if (res.user.hair_salon) {
+					setLocalStorage("hair_salon", JSON.stringify(res.user.hair_salon));
 				}
+				setLocalStorage("auth-token", res.token);
+				if (searchParams.get('redirect') === 'payment') {
+					router.push("/payment");
+				} else {
+					const salonRoles = ['salon_professional', 'admin', 'staff'];
+					// if (res.user.role === 'salon_professional' || ) {
+					if (salonRoles.indexOf(res.user.role) != -1) {
+						router.push("/dashboard");
+					} else {
+						router.push("/client/dashboard");
+					}
+				}
+
 			})
 			.catch((err) => {
 				showSnackbar('error', 'Le mot de passe et l\'adresse e-mail sont obligatoires.')
@@ -113,6 +119,10 @@ const Login = () => {
 			})
 	};
 
+	const onOHCLogoClick = () => {
+		router.push(`/`)
+	}
+
 	return (
 		<>
 			{isLoading && loadingView()}
@@ -121,7 +131,11 @@ const Login = () => {
 					<LogoCircleFixLeft />
 				</div>
 				<div className="mt-8">
-					<LogoIcon />
+					<button
+						onClick={onOHCLogoClick}
+					>
+						<LogoIcon />
+					</button>
 				</div>
 				<div className="z-10 mt-8 md:mt-12 w-full md:w-[767px] md:rounded-3xl md:bg-white md:shadow-2xl px-4 sm:px-16 md:px-24">
 					<div className="flex flex-col items-center justify-center">

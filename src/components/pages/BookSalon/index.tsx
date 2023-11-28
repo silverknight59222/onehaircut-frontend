@@ -3,7 +3,7 @@ import { client } from "@/api/clientSide";
 import DatePicker from "@/components/UI/DatePicker";
 import Navbar from "@/components/shared/Navbar";
 import {
-  CalenderIcon,
+  CalenderIcon, LeftArrowIcon, RightArrowIcon, CheckedIcon
 } from "@/components/utilis/Icons";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -74,8 +74,15 @@ const BookSalon = () => {
   const getSlots = async () => {
     setIsLoading(true);
     if (selectedHairdresser.id && selectedDate) {
+      const yyyy = selectedDate.getFullYear().toString();
+      let mm = (selectedDate.getMonth() + 1).toString(); // Months start at 0!
+      let dd = selectedDate.getDate().toString();
+
+      if (dd < '10') dd = '0' + dd;
+      if (mm < '10') mm = '0' + mm;
+      const formattedDate = dd + '-' + mm + '-' + yyyy;
       const data = {
-        date: selectedDate.toLocaleDateString().replaceAll("/", "-")
+        date: formattedDate
       }
       await client.getSlots(selectedHairdresser.id, data)
         .then((resp) => {
@@ -105,9 +112,9 @@ const BookSalon = () => {
 
   const onContinue = () => {
     setLocalStorage('slotData', JSON.stringify({ hairDresser: selectedHairdresser, slot: selectedSlot }))
-    const year = String(selectedDate?.getFullYear());
-    const month = String(selectedDate?.getMonth() + 1).padStart(2, '0');  // Month is zero-indexed
-    const day = String(selectedDate?.getDate()).padStart(2, '0');
+    const year = selectedDate ? String(selectedDate?.getFullYear()) : '';
+    const month = selectedDate ? String(selectedDate?.getMonth() + 1).padStart(2, '0') : '';  // Month is zero-indexed
+    const day = selectedDate ? String(selectedDate?.getDate()).padStart(2, '0') : '';
     setLocalStorage('selectDate', `${year}-${month}-${day}`)
 
     route.push('/payment')
@@ -116,7 +123,7 @@ const BookSalon = () => {
   const onSelectSlot = (slot: any) => {
     const currentIndex = slots.findIndex((item) => item.id === slot.id);
     if (currentIndex !== -1) {
-      const selectedObjects = [];
+      const selectedObjects: any = [];
       const ddd = Number(getLocalStorage('slotTime'))
       const time = durationTime
 
@@ -143,24 +150,44 @@ const BookSalon = () => {
     };
   };
 
+  const handleChangeDate = (days) => {
+    if (selectedDate) {
+      // Crée une nouvelle date basée sur la date sélectionnée et ajoute ou soustrait des jours
+      const newDate = new Date(selectedDate);
+      newDate.setDate(newDate.getDate() + days);
+
+      // Met à jour la date sélectionnée avec la nouvelle date
+      // Assurez-vous que 'onSelectedDate' accepte un objet Date
+      onSelectedDate(newDate);
+    }
+  };
+
+  // TODO SEE IF THE SALON IS MOBILE - SELECT AT HOME OR IN SALON BOOKING 
+  const [locationType, setLocationType] = useState('salon');
+
+  // Gestionnaire de clic pour les boutons personnalisés
+  const handleLocationTypeClick = (type) => {
+    setLocationType(type);
+  };
+
 
   return (
     <div>
-      {isLoading && loadingView()}
+      {isLoading && salon && loadingView()}
       <Navbar hideSearchBar={true} />
 
       {/* RETOUR AU PROFIL */}
       <div className='flex items-start cursor-pointer mt-8 mb-8 sm:mx-10 2xl:mx-14' onClick={() => route.push('/salon/profile')}>
         <BackArrow />
-        <p className={`${Theme_A.textFont.navigationGreyFont}`}>Retour au profil de {salon.name}</p>
+        <p className={`${Theme_A.textFont.navigationGreyFont}`}>Retour au profil de {salon?.name}</p>
       </div>
 
       {/* CADRE SUPERIEUR */}
-      <div className="flex flex-row items-start justify-center ml-12 gap-8">
+      <div className="flex lg:flex-row flex-col items-center justify-center ml-12 gap-8">
         {/* IMAGE PRINCIPALE */}
-        <div className="w-[320px] lg:w-[500px] 2xl:w-[600px] h-64 lg:h-[500px] relative rounded-4xl p-2 mb-3 ">
+        <div className="w-64 h-64 lg:w-44 lg:h-44 xl:w-[500px] 2xl:w-[600px] xl:h-[500px] 2xl:h-[600px] rounded-2xl ">
           {salon && (
-            <div className="w-full h-full relative rounded-full">
+            <div className="w-full h-full relative">
               <Image
                 src={
                   selectedImage.includes('http')
@@ -170,17 +197,17 @@ const BookSalon = () => {
                 alt="Image principale du salon"
                 layout="fill"
                 objectFit="fill"
-                className="rounded-3xl shadow-sm shadow-stone-600"
+                className="rounded-2xl shadow-sm shadow-stone-600"
               />
             </div>
           )}
         </div>
 
         {/* INFORMATIONS DU SALON */}
-        <div className=" h-64 lg:h-[470px]  bg-stone-50 rounded-xl shadow-sm shadow-stone-400 border-b-2 border-[#aeaeae] p-8 m-4">
+        <div className=" h-80 xl:h-[500px]  bg-stone-50 rounded-xl shadow-sm shadow-stone-400 border-b-2 border-[#aeaeae] p-8 m-4">
           {salon && (
             <p className="w-80 text-3xl text-center font-bold text-stone-800  border-b-2 border-[#d7d7d7] pb-3">
-              {salon.name}
+              {salon?.name}
             </p>
           )}
           {salon && (
@@ -188,17 +215,50 @@ const BookSalon = () => {
               {haircutData && (
                 <div >
                   <p className="font-semibold text-lg ">Choix de la coiffure: </p>
-                  <p className="flex items-center gap-2 text-stone-700 text-base italic">{haircutData.name}</p>
+                  <p className="flex items-center gap-2 text-stone-700 text-base italic">{haircutData?.name}</p>
                 </div>
               )}
+
               <div>
                 <p className="font-semibold text-lg ">Durée: </p>
-                <p className="flex items-center gap-2 text-stone-700 text-base italic">{salon.total_duration} minutes</p>
+                <p className="flex items-center gap-2 text-stone-700 text-base italic">{salon?.total_duration} minutes</p>
               </div>
-              <div >
-                <p className="font-semibold text-lg ">Lieu: </p>
-                <p className="flex items-center gap-2 text-stone-700 text-base italic">{salon.Adresse}</p>
+
+              <p className="font-semibold text-lg">Lieu: </p>
+              <div className="flex space-x-4 text-sm">
+                {/* Bouton personnalisé pour "À domicile" avec texte centré */}
+                <div className="flex items-center space-x-2">
+                  <div
+                    onClick={() => handleLocationTypeClick('domicile')}
+                    className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded hover:scale-125 transition duration-300 ${locationType === 'domicile' ? ColorsThemeA.ohcVerticalGradient_A : "bg-[#D6D6D6]"}`}
+                  >
+                    {locationType === 'domicile' && <CheckedIcon />}
+                  </div>
+                  <span>À domicile</span>
+                </div>
+
+                {/* Bouton personnalisé pour "En salon" avec texte centré */}
+                <div className="flex items-center space-x-2">
+                  <div
+                    onClick={() => handleLocationTypeClick('salon')}
+                    className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded hover:scale-125 transition duration-300 ${locationType === 'salon' ? ColorsThemeA.ohcVerticalGradient_A : "bg-[#D6D6D6]"}`}
+                  >
+                    {locationType === 'salon' && <CheckedIcon />}
+                  </div>
+                  <span>En salon</span>
+                </div>
               </div>
+
+              {locationType === 'domicile' && (
+                <>
+                  <p className="text-stone-700 text-base italic">[Adresse à domicile]</p>
+                  <p className="font-semibold text-lg">Prix incluant le déplacement :</p>
+                  <div className="flex justify-center items-center bg-white border border-stone-400 rounded-lg px-4 py-2 mt-2">
+                    <p className="text-stone-700 text-xl font-bold">80€</p> {/* TODO UPDATE THE PRICE WITH THE MOBILITY COST OF THE SALON */}
+                  </div>
+                </>
+              )}
+              {locationType === 'salon' && <p className="text-stone-700 text-base italic">{salon.Adresse}</p>}
             </div>
           )}
         </div>
@@ -206,18 +266,18 @@ const BookSalon = () => {
 
         {/* PARTIE STAFF DU SALON */}
         <div className="w-full lg:w-auto lg:mt-0">
-          {hairDressers.length > 1 && (
+          {hairDressers && hairDressers.length > 1 && (
             <p className="text-lg text-black font-semibold text-center lg:text-left">
               Choisissez votre coiffeur
             </p>
           )}
-          {hairDressers.length > 1 && (
+          {hairDressers && hairDressers.length > 1 && (
             <p className="text-sm text-stone-400 italic text-left">
-              {salon.name} fera au mieux pour respecter votre choix <br /> <br />
+              {salon?.name} fera au mieux pour respecter votre choix <br /> <br />
             </p>
           )}
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-1 2xl:gap-6 mt-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-1 2xl:gap-6 mt-4">
             {hairDressers.map((hairdresser, index) => {
               return (
                 <div
@@ -225,7 +285,9 @@ const BookSalon = () => {
                   onClick={() => setSelectedHairdresser({ name: hairdresser.name, id: hairdresser.id })}
                   className={`relative flex flex-col items-center justify-center p-4 border rounded-2xl cursor-pointer hover:border-stone-400 bg-stone-50 shadow-sm shadow-stone-500 ${selectedHairdresser.id === hairdresser.id ? "border-2 border-x-red-500 border-y-orange-500" : "border-white"}`}
                 >
-                  <div className="relative w-32 h-32 mb-2" style={{ minWidth: '128px', minHeight: '128px' }}>
+                  <div
+                    className="relative  xl:w-30 xl:h-30 2xl:w-36 2xl:h-36 w-20 h-20 mb-2"
+                    style={{ minWidth: '100px', minHeight: '100px' }}>
                     <Image
                       src={hairdresser.profile_image ? (hairdresser.profile_image.includes('http') ? hairdresser.profile_image : 'https://api.onehaircut.com/' + hairdresser.profile_image) : `https://api.onehaircut.com/avatars/man/man_01.jpg`}
                       alt={`Coiffeur ${hairdresser.name}`}
@@ -256,89 +318,112 @@ const BookSalon = () => {
 
 
       {/* PARTIE RESERVATION DE SLOT */}
-      <div className="mx-auto max-w-[600px] bg-white border-2 border-[#c3c3c3] py-2 rounded-[22px] mb-16 shadow-sm shadow-stone-600 mt-8">
+      <div className="flex justify-center">
+        <div className=" max-w-[800px] mx-2 bg-white border-2 border-[#c3c3c3] py-2 rounded-[22px] mb-16 shadow-sm shadow-stone-600 mt-8">
 
-        {/* TITRE */}
-        <div className="flex justify-center">
-          <p className="text-xl text-black font-semibold lg:text-center mb-2 ">Sélectionnez une date</p>
-        </div>
+          {/* TITRE */}
+          <div className="flex justify-center">
+            <p className="text-xl text-black font-semibold lg:text-center mb-2 ">Sélectionnez une date</p>
+          </div>
 
-        {/* INFO ABOUT HAIRDRESSER SELECTION */}
-        <p className="text-sm text-stone-400 italic mb-8 text-center">
-          Les disponibilités dépendent du coiffeur sélectionné
-        </p>
+          {/* INFO ABOUT HAIRDRESSER SELECTION */}
+          <p className="text-sm text-stone-400 italic mb-8 text-center">
+            Les disponibilités dépendent du coiffeur sélectionné
+          </p>
 
-        <div className="flex flex-col sm:flex-row items-center justify-evenly px-1 sm:px-10">
 
-          {/* DATEPICKER */}
-          <div className="relative">
-            <div className="cursor-pointer hover:scale-110 transition duration-300" onClick={() => setShowCalender(!showCalender)}>
-              <CalenderIcon />
-            </div>
-            {showCalender &&
-              <div className={`shadow-lg`}> {/* Ajoutez ici la classe pour l'ombre */}
-                <DatePicker
-                  startDate={new Date()}
-                  close={() => setShowCalender(false)}
-                  onSelectedDate={onSelectedDate}
-                // Ajoutez ici les props nécessaires pour personnaliser le style des dates sélectionnées
-                />
+          <div className="flex flex-col sm:flex-row items-center justify-evenly px-1 sm:px-10">
+            {/* DATEPICKER */}
+            <div className="relative">
+              <div className="cursor-pointer hover:scale-110 transition duration-300" onClick={() => setShowCalender(!showCalender)}>
+                <CalenderIcon />
               </div>
+              {showCalender &&
+                <div className={`shadow-lg`}> {/* Ajoutez ici la classe pour l'ombre */}
+                  <DatePicker
+                    startDate={new Date()}
+                    close={() => setShowCalender(false)}
+                    onSelectedDate={onSelectedDate}
+                  // Ajoutez ici les props nécessaires pour personnaliser le style des dates sélectionnées
+                  />
+                </div>
+              }
+            </div>
+
+
+            {/* NAVIGATION DE LA DATE */}
+            <div className="flex items-center">
+              {/* Flèche Gauche */}
+              {selectedDate && new Date(selectedDate) > new Date() &&
+                <button
+                  className="cursor-pointer hover:scale-110 transition duration-300 mr-4"
+                  onClick={() => handleChangeDate(-1)}>
+                  <LeftArrowIcon />
+                </button>
+              }
+
+              {/* AFFICHAGE DE LA DATE */}
+              <p className={`text-[#ffffff] text-lg font-medium ${ColorsThemeA.OhcGradient_A} shadow-sm shadow-stone-600 rounded-lg px-6 py-3`}>
+                {selectedDate ? new Intl.DateTimeFormat('fr-FR', {
+                  weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+                }).format(new Date(selectedDate)) : "Sélectionnez une date"}
+              </p>
+
+              {/* Flèche Droite */}
+              <button
+                className="cursor-pointer hover:scale-110 transition duration-300 ml-4"
+                onClick={() => handleChangeDate(1)}>
+                <RightArrowIcon />
+              </button>
+            </div>
+          </div>
+
+
+
+          {/* SLOTS */}
+          <div className="flex items-center justify-center mt-6 mb-4 px-4">
+            {slots.length ?
+              <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-6 gap-x-6 gap-y-7">
+                {slots.map((slot: any, index) => {
+                  return (
+                    <div
+                      key={index}
+                      onClick={() => { slot.is_booked ? "" : onSelectSlot(slot) }}
+                      className={`w-24 h-14 flex items-center justify-center text-xl font-semibold border rounded-2xl  ${slot.is_booked ? "curson-not-allowed" : "cursor-pointer"}  text-black ${selectedSlot.some((item: any) => item.id === slot.id)
+                        ? "bg-[#fbd3c6] text-[#312c2a] "
+                        : "border-[#b8b8b8] "
+                        } ${slot.is_booked && "bg-[#f1f1f1] shadow-inner shadow-stone-600 text-gray-400 cursor-not-allowed"}`}
+                    >
+                      {slot.start}
+                    </div>
+                  );
+                })}
+
+              </div>
+              :
+              <p className="text-[#A0A0A0] text-xl font-medium mb-8">Aucun créneau disponible pour cette date</p>
             }
           </div>
 
-          {/* AFFICHAGE DE LA DATE */}
-          <p className={`text-[#ffffff] text-lg font-medium ${ColorsThemeA.OhcGradient_A} shadow-sm shadow-stone-600 rounded-lg px-6 py-3 `} >
-            {selectedDate && new Intl.DateTimeFormat('fr-FR', {
-              weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-            }).format(new Date(selectedDate))}
-          </p>
+
+          {/* Bouton de réservation */}
+          <div className="flex justify-center mt-6 mb-4 ">
+            <button
+              disabled={!selectedSlot.length}
+              onClick={onContinue}
+              className={`w-72 h-14 rounded-xl text-xl font-semibold text-white ${selectedSlot.length ? Theme_A.button.medBlackColoredButton : 'bg-[#bcbcbc] cursor-not-allowed'}`}
+            >
+              Réservez ce créneau
+            </button>
+          </div>
 
         </div>
 
-        {/* SLOTS */}
-        <div className="flex items-center justify-center mt-6 mb-4">
-          {slots.length ?
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 lg:grid-cols-4 gap-x-6 gap-y-7">
-              {slots.map((slot: any, index) => {
-                return (
-                  <div
-                    key={index}
-                    onClick={() => { slot.is_booked ? "" : onSelectSlot(slot) }}
-                    className={`w-24 h-14 flex items-center justify-center text-xl font-semibold border rounded-2xl  ${slot.is_booked ? "curson-not-allowed" : "cursor-pointer"}  text-black ${selectedSlot.some((item: any) => item.id === slot.id)
-                      ? "bg-[#fbd3c6] text-[#312c2a] "
-                      : "border-[#b8b8b8] "
-                      } ${slot.is_booked && "bg-[#f1f1f1] shadow-inner shadow-stone-600 text-gray-400 cursor-not-allowed"}`}
-                  >
-                    {slot.start}
-                  </div>
-                );
-              })}
 
-            </div>
-            :
-            <p className="text-[#A0A0A0] text-xl font-medium mb-8">Aucun créneau disponible pour cette date</p>
-          }
-        </div>
+        <LogoCircleFixRight />
+        <Footer />
 
-
-        {/* Bouton de réservation */}
-        <div className="flex justify-center mt-6 mb-4 ">
-          <button
-            disabled={!selectedSlot.length}
-            onClick={onContinue}
-            className={`w-72 h-14 rounded-xl text-xl font-semibold text-white ${selectedSlot.length ? Theme_A.button.medBlackColoredButton : 'bg-[#bcbcbc] cursor-not-allowed'}`}
-          >
-            Réservez ce créneau
-          </button>
-        </div>
-
-      </div>
-
-
-      <LogoCircleFixRight />
-      <Footer />
-
+      </div >
     </div>
   );
 };

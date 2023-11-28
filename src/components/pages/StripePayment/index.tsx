@@ -1,10 +1,11 @@
 import React, { useMemo, useState } from "react";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
 import userLoader from "@/hooks/useLoader";
-import { getLocalStorage, removeFromLocalStorage } from "@/api/storage";
+import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/storage";
 import { SalonRegisterParams, registration } from "@/api/registration";
 import useSnackbar from "@/hooks/useSnackbar";
 import { useRouter } from "next/navigation";
+import { Theme_A } from "@/components/utilis/Themes";
 
 const useOptions = () => {
   const options = useMemo(
@@ -41,7 +42,7 @@ function StripePayment() {
     let data: SalonRegisterParams = {
       user_id: "",
       salon_name: "",
-      // salon_description: "",
+      salon_description: "",
       country: '',
       city: '',
       state: '',
@@ -78,14 +79,19 @@ function StripePayment() {
     await registration
       .registerSalon(data)
       .then((res) => {
+        const userInfo = JSON.parse(getLocalStorage("user_Info") as string);
+
+        setLocalStorage("auth-token", userInfo.token);
+        setLocalStorage('hair_salon', JSON.stringify(res.data.hair_salon));
+
         showSnackbar("success", "Salon successfully created");
-        router.push('/confirm-plan');
         // removeFromLocalStorage('user_Info')
         // removeFromLocalStorage('salon_name')
         // removeFromLocalStorage('salon_address')
         // removeFromLocalStorage('salon_type')
         // removeFromLocalStorage('plan_type')
         removeFromLocalStorage('secret_key')
+        router.push("/dashboard");
       })
       .catch((err) => {
         showSnackbar("error", "Error Occured!");
@@ -102,8 +108,8 @@ function StripePayment() {
     setIsLoading(true);
     const clientSecret = getLocalStorage("secret_key")?.toString();
     const cardElement = elements.getElement(CardElement);
-    if (clientSecret && cardElement) {      
-            await stripe
+    if (clientSecret && cardElement) {
+      await stripe
         .createPaymentMethod({
           type: "card",
           card: cardElement,
@@ -112,12 +118,13 @@ function StripePayment() {
           },
         })
         .then(function (result) {
+          //console.log(result)
           registerSalon(result.paymentMethod?.id);
           // window.open("https://api.whatsapp.com/send?phone=" + userInfo.phone + "&text=Booking Success!", '_blank');
         })
         .catch(function (error) {
           setIsLoading(false)
-          console.log(error);
+          //console.log(error);
         })
     }
   };
@@ -131,11 +138,11 @@ function StripePayment() {
         </div>
         <CardElement options={options} />
         <button
-          className="w-full h-14 mt-8 text-white text-xl font-semibold rounded-xl bg-background-gradient shadow-[0px_17px_36px_0px_rgba(255,125,60,0.25)]"
+          className={`w-full h-14 mt-8 text-white text-xl font-semibold rounded-xl bg-background-gradient shadow-md shadow-stone-300 hover:scale-95 transition duration-300`}
           type="submit"
           disabled={!stripe || !elements}
         >
-          Pay
+          Confirmer
         </button>
       </form>
     </div>

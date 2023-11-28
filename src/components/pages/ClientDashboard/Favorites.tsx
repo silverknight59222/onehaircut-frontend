@@ -34,7 +34,7 @@ const Favorites = () => {
                 })
                 .catch(error => {
                     setIsLoading(false);
-                    console.log(error)
+                    //console.log(error)
                 })
         }
 
@@ -47,13 +47,13 @@ const Favorites = () => {
                 .then((res) => {
                     if (res.data.data.length > 0) {
                         setSalons(res.data.data);
-                        console.log(res.data.data);
+                        //console.log(res.data.data);
                     }
                     setIsLoading(false);
                 })
                 .catch(error => {
                     setIsLoading(false);
-                    console.log(error)
+                    //console.log(error)
                 })
         }
     }
@@ -126,9 +126,9 @@ const Favorites = () => {
                                 {haircuts.length} favorites
                             </div>
                         </div>
-                        <div className="lg:absolute -top-10 ml-72  w-9/12 overflow-auto mt-3 mr-48">
+                        <div className="lg:absolute -top-10 md:ml-72  w-9/12 overflow-auto mt-3 md:mr-48">
                             <table>
-                                <tbody className="flex items-center  gap-8 pb-2">
+                                <tbody className="flex items-center flex-wrap md:flex-nowrap justify-center  gap-8 pb-2">
                                     {haircuts.map((item, index) => {
                                         return (
                                             <tr key={index} className="flex flex-col items-center justify-center">
@@ -160,16 +160,16 @@ const Favorites = () => {
                     </div>
 
                     {/* Salons' part */}
-                    <div className="w-full relative flex flex-col items-center justify-center mt-40">
+                    <div className="w-full relative flex flex-col items-center justify-center md:mt-40">
                         <div className="w-full">
                             <p className="text-black text-3xl mb-3">Salons</p>
                             <div className={`h-7 flex items-center rounded-xl text-white px-5 bg-gradient-to-r from-zinc-800 via-zinc-400 to-zinc-100`} >
                                 {salons.length} favorites
                             </div>
                         </div>
-                        <div className="lg:absolute -top-10 ml-72  w-9/12 overflow-auto mt-3 mr-48">
+                        <div className="lg:absolute -top-10 md:ml-72  w-9/12 overflow-auto mt-3 md:mr-48 h-screen">
                             <table>
-                                <tbody className="flex items-center  gap-8 pb-2">
+                                <tbody className="flex items-center justify-center  gap-8 pb-2">
                                     {salons.map((item, index) => {
                                         return (
                                             <tr key={index} className="flex flex-col items-center justify-center">

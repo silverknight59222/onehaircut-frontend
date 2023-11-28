@@ -4,6 +4,8 @@ import {
   Hamburger,
   LogoIcon,
   SearcIcon,
+  RightArrowIcon,
+  LeftArrowIcon
 } from "@/components/utilis/Icons";
 import React, { useEffect, useState } from "react";
 import { getLocalStorage } from "@/api/storage";
@@ -16,6 +18,8 @@ import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
+import CustomSlider from "@/components/UI/OHC_Slider";
+import ComponentTheme from "@/components/UI/ComponentTheme";
 
 
 interface Navbar {
@@ -51,7 +55,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
   const [ethnicityFilters, setEthnicityFilters] = useState<string[]>([]);
   const [lengthFilters, setLengthFilters] = useState<string[]>([]);
   const [mobileFilters, setMobileFilters] = useState<string>("");
-  const [rangeFilters, setRangeFilter] = useState<number[]>([2, 100]);
+  const [rangeFilters, setRangeFilter] = useState<number[]>([10, 100]);
 
   const router = useRouter()
   const EthnicityDesktopRef =
@@ -248,14 +252,13 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
     },
   });
 
-
   return (
     <div className="w-full flex flex-col items-center justify-between border-b border-[#EBF0F2] pb-3 xl:pb-0">
-      <div className={`w-full flex items-center justify-between px-4 md:px-14 ${!isLoggedIn ? 'flex-co sm:flex-row' : 'flex-row'}`}>
+      <div className={`w-full flex items-center justify-between px-4 md:px-14  ${!isLoggedIn ? 'flex-co sm:flex-row' : 'flex-row'}`}>
         <div onClick={() => router.push('/')} className="py-5 cursor-pointer">
           <LogoIcon />
         </div>
-        {!hideSearchBar && <div className="hidden xl:flex items-center pr-2 rounded-2xl bg-[#F7F7F7] h-[52px] shadow-md border border-stone-200">
+        {!hideSearchBar && <div className="hidden xl:flex items-center pr-2 rounded-2xl bg-[#F7F7F7] h-[52px]  shadow-sm shadow-stone-300 border border-stone-200">
           <div
             className="flex items-center justify-center"
           >
@@ -324,7 +327,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                           >
                             <div
                               className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  transform hover:scale-105 ${genderFilters.includes(item.name)
-                                ? "bg-gradient-to-b from-pink-500 to-orange-500"
+                                ? ColorsThemeA.OhcGradient_A
                                 : "bg-[#D6D6D6]"
                                 }`}
                             >
@@ -359,7 +362,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                           >
                             <div
                               className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  transform hover:scale-105 ${lengthFilters.includes(item.name)
-                                ? "bg-gradient-to-b from-pink-500 to-orange-500"
+                                ? ColorsThemeA.OhcGradient_A
                                 : "bg-[#D6D6D6]"
                                 }`}
                             >
@@ -400,7 +403,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                 <input
                   type="text"
                   placeholder="Ville"
-                  className={`text-base px-4 p-2 rounded-xl outline-none ${Theme_A.behaviour.fieldFocused_C}`}
+                  className={`text-base px-4 p-2 rounded-xl outline-none ${Theme_A.behaviour.fieldFocused_B}`}
                   onChange={onSearch && isWelcomePage ?
                     (e) => onSearch(e.target.value) :
                     onCitySearch && isSalonPage ? (e) => onCitySearch(e.target.value) : () => { }}
@@ -411,7 +414,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                 <input
                   type="text"
                   placeholder="Nom Salon"
-                  className={`text-base px-4 p-2 rounded-xl outline-none ${Theme_A.behaviour.fieldFocused_C}`}
+                  className={`text-base px-4 p-2 rounded-xl outline-none ${Theme_A.behaviour.fieldFocused_B}`}
                   onChange={onNameSearch && isWelcomePage ?
                     () => { } :
                     onNameSearch && isSalonPage ? (e) => onNameSearch(e.target.value) : () => { }}
@@ -442,7 +445,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                         >
                           <div
                             className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105 
-                            ${mobileFilters === item.value ? ColorsThemeA.ohcVerticalGradient_A : "bg-[#D6D6D6]"}`}
+                            ${mobileFilters === item.value ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}
                           >
                             <CheckedIcon />
                           </div>
@@ -476,19 +479,18 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                       <div className="flex flex-col items-center justify-center w-full"> {/* Use flex properties to center children */}
                         <Typography id="range-slider" gutterBottom>
                         </Typography>
-                        <Slider
+                        {/* TODO CHANGE THIS SLIDER WITH AN INPUT */}
+                        <CustomSlider
+                          theme={ComponentTheme}
                           value={rangeFilters}
                           onChange={rangeSelector}
+                          min={0}
+                          max={1000}
+                          unit="€"
+                          label="Budget" // Provide a label prop if your CustomSlider component expects it
                           valueLabelDisplay="auto"
-                          style={{ width: '70%' }}
+                          width="250%"
                         />
-                        <div className="mt-0 mb-1"> {/* Adjust spacing */}
-                          &#91;
-                          <span style={{ fontSize: '0.8em', fontWeight: '500', color: '#757575' }}>
-                            {rangeFilters[0]}€ &#8211; {rangeFilters[1]}€
-                          </span>
-                          &#93;
-                        </div>
                       </div>
                     </div>
                   </ThemeProvider>
@@ -510,8 +512,8 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
           className="relative flex items-center justify-center md:justify-end gap-4"
         >
           {!isLoggedIn &&
-            <button onClick={() => router.push('/registration')} className="w-52 2xl:w-60 h-11 text-white font-semibold bg-background-gradient rounded-3xl shadow-sm hover:shadow-lg transform hover:scale-105 transition-transform ">
-              Enregistre mon salon
+            <button onClick={() => router.push('/registration')} className={`w-52 2xl:w-60 h-11 text-white font-semibold ${Theme_A.button.mediumGradientButton} rounded-xl shadow-sm shadow-stone-300`}>
+              Enregistrer mon salon
             </button>}
           {/* {isLoggedIn ? (
               <div className="cursor-pointer">
@@ -532,140 +534,142 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
           }
         </div>
       </div>
-      <div className="flex flex-col xl:hidden items-center pr-2 rounded-xl bg-[#F7F7F7] overflow-auto mt-7">
-        <div
-          className="flex items-center flex-col gap-3 p-4"
-        >
-          <div className="flex items-center justify-center">
-            {isWelcomePage &&
-              <>
-                <div ref={EthicityMobileRef} className="border-r border-grey px-6 last:border-r-0 cursor-pointer">
-                  <p
-                    className={showMobileEthnicity ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7"}
-                    onClick={() => {
-                      setShowMobileGender(false);
-                      setShowMobileEthnicity(!showMobileEthnicity);
-                      setShowMobileLength(false);
-                    }}
-                  >
-                    Ethnicity
-                  </p>
-                  {showMobileEthnicity && (
-                    <div className="absolute top-[180px] z-20 -ml-8 xl:ml-0 flex flex-col items-center justify-center w-44 px-7 pt-5 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
-                      {Ethnicity.map((item, index) => {
-                        return (
-                          <div
-                            key={index}
-                            className="flex w-full cursor-pointer mb-[19px]"
-                            onClick={() => onClickEthnicityCheckbox(item.name)}
-                          >
+      {isServicesPage &&
+        <div className="flex flex-col xl:hidden items-center pr-2 rounded-xl bg-[#F7F7F7] overflow-auto mt-7">
+          <div
+            className="flex items-center flex-col gap-3 p-4"
+          >
+            <div className="flex items-center justify-center">
+              {isWelcomePage &&
+                <>
+                  <div ref={EthicityMobileRef} className="border-r border-grey px-6 last:border-r-0 cursor-pointer">
+                    <p
+                      className={showMobileEthnicity ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7"}
+                      onClick={() => {
+                        setShowMobileGender(false);
+                        setShowMobileEthnicity(!showMobileEthnicity);
+                        setShowMobileLength(false);
+                      }}
+                    >
+                      Ethnicity
+                    </p>
+                    {showMobileEthnicity && (
+                      <div className="absolute top-[180px] z-20 -ml-8 xl:ml-0 flex flex-col items-center justify-center w-44 px-7 pt-5 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                        {Ethnicity.map((item, index) => {
+                          return (
                             <div
-                              className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${ethnicityFilters.includes(item.name)
-                                ? "bg-gradient-to-b from-pink-500 to-orange-500"
-                                : "bg-[#D6D6D6]"
-                                }`}
+                              key={index}
+                              className="flex w-full cursor-pointer mb-[19px]"
+                              onClick={() => onClickEthnicityCheckbox(item.name)}
                             >
-                              <CheckedIcon />
+                              <div
+                                className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${ethnicityFilters.includes(item.name)
+                                  ? ColorsThemeA.OhcGradient_A
+                                  : "bg-[#D6D6D6]"
+                                  }`}
+                              >
+                                <CheckedIcon />
+                              </div>
+                              <p className="ml-2">{item.name}</p>
                             </div>
-                            <p className="ml-2">{item.name}</p>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-                <div ref={GenderMobileRef} className="border-r border-grey px-6 last:border-r-0 cursor-pointer">
-                  <p
-                    className={showMobileGender ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7"}
-                    onClick={() => {
-                      setShowMobileEthnicity(false);
-                      setShowMobileGender(!showMobileGender);
-                      setShowMobileLength(false);
-                    }}
-                  >
-                    Gender
-                  </p>
-                  {showMobileGender && (
-                    <div className="absolute top-[180px] z-20 -ml-5 xl:ml-0 flex flex-col items-center justify-center w-36 px-7 pt-5 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
-                      {Gender.map((item, index) => {
-                        return (
-                          <div
-                            key={index}
-                            className="flex w-full cursor-pointer mb-[19px]"
-                            onClick={() => onClickGenderCheckbox(item.name)}
-                          >
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                  <div ref={GenderMobileRef} className="border-r border-grey px-6 last:border-r-0 cursor-pointer">
+                    <p
+                      className={showMobileGender ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7"}
+                      onClick={() => {
+                        setShowMobileEthnicity(false);
+                        setShowMobileGender(!showMobileGender);
+                        setShowMobileLength(false);
+                      }}
+                    >
+                      Gender
+                    </p>
+                    {showMobileGender && (
+                      <div className="absolute top-[180px] z-20 -ml-5 xl:ml-0 flex flex-col items-center justify-center w-36 px-7 pt-5 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                        {Gender.map((item, index) => {
+                          return (
                             <div
-                              className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${genderFilters.includes(item.name)
-                                ? "bg-gradient-to-b from-pink-500 to-orange-500"
-                                : "bg-[#D6D6D6]"
-                                }`}
+                              key={index}
+                              className="flex w-full cursor-pointer mb-[19px]"
+                              onClick={() => onClickGenderCheckbox(item.name)}
                             >
-                              <CheckedIcon />
+                              <div
+                                className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${genderFilters.includes(item.name)
+                                  ? ColorsThemeA.OhcGradient_A
+                                  : "bg-[#D6D6D6]"
+                                  }`}
+                              >
+                                <CheckedIcon />
+                              </div>
+                              <p className="ml-2">{item.name}</p>
                             </div>
-                            <p className="ml-2">{item.name}</p>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-                <div ref={LengthDesktopRef} className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
-                  <p
-                    className={showMobileLength ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7"}
-                    onClick={() => {
-                      setShowMobileEthnicity(false);
-                      setShowMobileGender(false);
-                      setShowMobileLength(!showMobileLength);
-                    }}
-                  >
-                    Length
-                  </p>
-                  {showDesktopLength && (
-                    <div className="absolute top-[180px] -ml-3 xl:ml-0 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
-                      {Length.map((item, index) => {
-                        return (
-                          <div
-                            key={index}
-                            className="flex w-full cursor-pointer mb-[19px]"
-                            onClick={() => onClickLengthCheckbox(item.name)}
-                          >
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                  <div ref={LengthDesktopRef} className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
+                    <p
+                      className={showMobileLength ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7"}
+                      onClick={() => {
+                        setShowMobileEthnicity(false);
+                        setShowMobileGender(false);
+                        setShowMobileLength(!showMobileLength);
+                      }}
+                    >
+                      Length
+                    </p>
+                    {showDesktopLength && (
+                      <div className="absolute top-[180px] -ml-3 xl:ml-0 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                        {Length.map((item, index) => {
+                          return (
                             <div
-                              className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${lengthFilters.includes(item.name)
-                                ? "bg-gradient-to-b from-pink-500 to-orange-500"
-                                : "bg-[#D6D6D6]"
-                                }`}
+                              key={index}
+                              className="flex w-full cursor-pointer mb-[19px]"
+                              onClick={() => onClickLengthCheckbox(item.name)}
                             >
-                              <CheckedIcon />
+                              <div
+                                className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${lengthFilters.includes(item.name)
+                                  ? ColorsThemeA.OhcGradient_A
+                                  : "bg-[#D6D6D6]"
+                                  }`}
+                              >
+                                <CheckedIcon />
+                              </div>
+                              <p className="ml-2">{item.name}</p>
                             </div>
-                            <p className="ml-2">{item.name}</p>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  )}
-                </div>
-              </>
-            }
+                          );
+                        })}
+                      </div>
+                    )}
+                  </div>
+                </>
+              }
 
 
-            {isServicesPage &&
-              <ServicesFilter onTypeSelect={onTypeSelect ? onTypeSelect : () => { }} />}
-          </div>
-          <div className="flex">
-            <div className="px-6 cursor-pointer">
-              <input
-                type="text"
-                placeholder="Rechercher"
-                className="text-base px-4 p-2 rounded-full outline-none"
-                onChange={onSearch && isSalonPage ? (e) => onSearch(e.target.value) : onServiceSearch && isServicesPage ? (e) => onServiceSearch(e.target.value) : () => { }}
-              />
+
+              <ServicesFilter onTypeSelect={onTypeSelect ? onTypeSelect : () => { }} />
             </div>
-            <div className="cursor-pointer p-3 rounded-full bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
-              <SearcIcon />
+            <div className="flex">
+              <div className="px-6 cursor-pointer">
+                <input
+                  type="text"
+                  placeholder="Rechercher"
+                  className="text-base px-4 p-2 rounded-full outline-none"
+                  onChange={onSearch && isSalonPage ? (e) => onSearch(e.target.value) : onServiceSearch && isServicesPage ? (e) => onServiceSearch(e.target.value) : () => { }}
+                />
+              </div>
+              <div className="cursor-pointer p-3 rounded-full bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
+                <SearcIcon />
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      }
     </div>
   );
 };

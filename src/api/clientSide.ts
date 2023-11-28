@@ -7,11 +7,12 @@ interface SlotParam {
 interface BookingParams {
     user_id: number | null,
     hair_salon_id: number,
-    slot_id: number,
+    slot_ids: number,
     hair_dresser_id: number,
     amount: number | undefined,
-    salon_haircut_id: number,
+    salon_haircut_id: number | null,
     services: number[],
+    date: string | undefined
 }
 const client={
     getSalonDetail: async (id: string,hairId:string) => {
@@ -64,13 +65,7 @@ const client={
     },
     saveBookingRating: async (data: any) => {
         return await request.post(`/booking-rating`, data);
-    },
-    storeAddresses: async (params: any) => {
-        return await request.post(`/save_addresses`, params);
-    },
-    getAddresses: async () => {
-        return await request.get(`/fetch_addresses`);
-    },
+    },    
 }
 const user_api =  {
     getUsers: async () => {

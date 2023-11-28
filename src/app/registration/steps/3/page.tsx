@@ -7,7 +7,9 @@ import userLoader from "@/hooks/useLoader";
 import useSnackbar from "@/hooks/useSnackbar";
 import { getLocalStorage, setLocalStorage } from "@/api/storage";
 import UserProfile from "@/components/UI/UserProfile";
-import PhoneInput, { Value, isValidPhoneNumber } from 'react-phone-number-input'
+import PhoneInput from 'react-phone-number-input'
+import { Value } from 'react-phone-number-input'
+import 'react-phone-number-input/style.css'
 import { Theme_A } from "@/components/utilis/Themes";
 import CustomInput from "@/components/UI/CustomInput";
 import 'react-phone-number-input/style.css'
@@ -206,7 +208,9 @@ const Step3 = () => {
     await registration.createIntent(userDetails).then(res => {
       let data: any = userDetails;
       data.id = res.data.user.id;
+      data.token = res.data.token;
       setLocalStorage('user_Info', JSON.stringify(data));
+      setLocalStorage("user", JSON.stringify(res.data.user));
       if (res.data.intent.client_secret) {
         setLocalStorage('secret_key', res.data.intent.client_secret);
       }
@@ -222,6 +226,15 @@ const Step3 = () => {
       setIsLoading(false);
     })
   }
+
+  const setNewPhone = (value?: Value) => {
+    if (value != undefined) {
+      setUserDetails((prevState) => ({
+        ...prevState,
+        phone: value,
+      }))
+    }
+  };
 
 
   return (
@@ -263,36 +276,27 @@ const Step3 = () => {
             )}
           </div>
           <div className="w-full">
+            <div className="flex-col items-center justify-center gap-4 ">
 
-          <PhoneInput
-            placeholder="Téléphone"
-            value={userDetails.phone}
-            tabindex="-1"
-            id="phone-custom"
-            className={`w-full h-[50px] mr-2 phone-custom ${Theme_A.fields.configurationField2} text-sm peer`}
-            onChange={setPhone}
-            onFocus={setFocus}
-            />
-            {/* <CustomInput
-              type="text"
-              value={userDetails.phone}
-              onChange={(e) => {
-                const inputElement = e.target as HTMLInputElement;
-                const value = inputElement.value;
-                const sanitizedValue = value.replace(/[^+0-9]/g, ''); // Remove non-numeric characters
-                // inputElement.value = sanitizedValue;                
-                setUserDetails((prevState) => ({
-                  ...prevState,
-                  phone: sanitizedValue,
-                }))
-                setError((prev) => {
-                  return { ...prev, phone: "" };
-                })
-              }
-              }
-              id={"Phone"}
-              label={"Téléphone"} /> */}
-
+              <div className={`w-100 ${inputFieldsDesignNoW}`}>
+                <PhoneInput
+                  style={{ height: 8 }}
+                  // className={`${inputFieldsDesign}`}
+                  // inputComponent={{ phoneInput }}
+                  // containerClass={containerClass}
+                  defaultCountry={'FR'}
+                  value={userDetails.phone}
+                  placeholder={"Nouveau numéro"}
+                  onChange={(value) => {
+                    setNewPhone(value)
+                    setError((prev) => {
+                      return { ...prev, phone: "" };
+                    })
+                  }
+                  }
+                />
+              </div>
+            </div>
             {error.phone && (
               <p className="text-xs text-red-700 ml-3 mt-1">{error.phone}*</p>
             )}

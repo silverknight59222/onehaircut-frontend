@@ -307,7 +307,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
               Annuler
             </button>
             <button
-              className={`${Theme_A.button.medWhiteColoredButton}`}
+              className={`${Theme_A.button.medBlackColoredButton}`}
               onClick={() => deleteService()}
             >
               Supprimer

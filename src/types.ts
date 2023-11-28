@@ -1,4 +1,4 @@
-import { HaircutDetails } from "./components/pages/dashboard/Dashboard/Hairstyles";
+import { HaircutDetails } from "@/components/pages/dashboard/Dashboard/Hairstyles/HairStylesModal";
 
 interface SalonImages{
 	image: string,
@@ -10,9 +10,15 @@ export type Address = {
 	city: string;
 	state: string;
 	country: string;
+	lat: number | null;
+	long: number | null;
 }
 
 export type SalonDetails = {
+	haircut: {
+		rating_counts: number,
+		rating: number
+	};
 	address: Address;
 	city_name: string;
 	id: number;
@@ -23,8 +29,8 @@ export type SalonDetails = {
 	user_id: number;
 	logo: string;
 	salon_images: SalonImages[],
-	salon_cover_image: SalonImages,
-	ratings_count: number,
+	salon_cover_image: SalonImages | null,
+	rating_counts: number,
 	is_mobile:string,
 	range: number[],
 	base_price: number,
@@ -59,9 +65,9 @@ export type Hairdresser = {
 	email: string;
 	profile_image: string | null;
 	avatar_id: number;
-	avatar: Avatar,
+	avatar: Avatar | null,
 	role: string,
-	password: string | null;
+	password: string;
 };
 
 export type ImageSalon = {
@@ -120,6 +126,7 @@ export type Services={
 }
 
 export type Slot={
+  is_booked: any;
 	id: number,
 	start: string
 }

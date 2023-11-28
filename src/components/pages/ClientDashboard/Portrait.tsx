@@ -21,11 +21,11 @@ const TextToDsplayifNoPic =
         </p>
     </div>
 
-const DefaultProfilFace = <Image src='/assets/PortraitClient/ProfilFace.jpg' alt='' fill={true} className='rounded-3xl ' />
-const DefaultProfilLeft = <Image src='/assets/PortraitClient/ProfilLeft.jpg' alt='' fill={true} className='rounded-3xl ' />
+const DefaultProfilFace = <Image src='/assets/PortraitClient/ProfilFace.png' alt='' fill={true} className='rounded-3xl ' />
+const DefaultProfilLeft = <Image src='/assets/PortraitClient/ProfilLeft.png' alt='' fill={true} className='rounded-3xl ' />
 const DefaultProfilLeft2 = <Image src='/assets/PortraitClient/ProfilLeft2.png' alt='' fill={true} className='rounded-3xl ' />
 const DefaultProfilRight = <Image src='/assets/PortraitClient/ProfilRight.png' alt='' fill={true} className='rounded-3xl ' />
-const DefaultProfilRight2 = <Image src='/assets/PortraitClient/ProfilRight2.jpg' alt='' fill={true} className='rounded-3xl ' />
+const DefaultProfilRight2 = <Image src='/assets/PortraitClient/ProfilRight2.png' alt='' fill={true} className='rounded-3xl ' />
 
 const SubTextToDisplay =
     ["Profil légèrement gauche",
@@ -52,7 +52,7 @@ const Portrait = () => {
         "Moyen",
         "Long",]
 
-    const [imagesToUpload, setImagesToUpload] = useState([]);
+    const [imagesToUpload, setImagesToUpload] = useState<any>([]);
     const [gender, setGender] = useState('');
     const [ethnicGroup, setethnicGroup] = useState('');
     const [hairLength, sethairLength] = useState('');
@@ -86,7 +86,9 @@ const Portrait = () => {
             return;
         }
         const fileUploaded = event.target.files[0];
-        setProfileImage(URL.createObjectURL(fileUploaded));
+        getBase64(fileUploaded, (result) => {
+            setProfileImage(result);
+        });
         imagesToUpload.push({ 'type': 'front_profile', 'file': event.target.files[0] })
         //setImagesToUpload([{'type': 'profile_image',  'file': event.target.files[0]}])
     };
@@ -109,7 +111,9 @@ const Portrait = () => {
             return;
         }
         const fileUploaded = event.target.files[0];
-        setProfileLeftImage(URL.createObjectURL(fileUploaded));
+        getBase64(fileUploaded, (result) => {
+            setProfileLeftImage(result);
+        });
         imagesToUpload.push({ 'type': 'left_profile', 'file': event.target.files[0] })
         //setImagesToUpload([{'type': 'left_profile',  'file': event.target.files[0]}])
     };
@@ -132,10 +136,25 @@ const Portrait = () => {
             return;
         }
         const fileUploaded = event.target.files[0];
-        setprofileSlightlyLeftImage(URL.createObjectURL(fileUploaded));
+
+        getBase64(fileUploaded, (result) => {
+            setprofileSlightlyLeftImage(result);
+        });
+        //setprofileSlightlyLeftImage(URL.createObjectURL(fileUploaded));
         imagesToUpload.push({ 'type': 'slightly_left_profile', 'file': event.target.files[0] })
         //setImagesToUpload([{'type': 'slightly_left_profile',  'file': event.target.files[0]}])
     };
+
+    const getBase64 = (file, cb) => {
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = function () {
+            cb(reader.result)
+        };
+        reader.onerror = function (error) {
+            //console.log('Error: ', error);
+        };
+    }
     // handle the click to modify the pic
     const handleClickLeft2 = () => {
         if (hiddenFile3Input.current) {
@@ -155,7 +174,10 @@ const Portrait = () => {
             return;
         }
         const fileUploaded = event.target.files[0];
-        setProfileRightImage(URL.createObjectURL(fileUploaded));
+        getBase64(fileUploaded, (result) => {
+            setProfileRightImage(result);
+        });
+        //setProfileRightImage(URL.createObjectURL(fileUploaded));
         imagesToUpload.push({ 'type': 'right_profile', 'file': event.target.files[0] })
         //setImagesToUpload([{'type': 'right_profile',  'file': event.target.files[0]}])
     };
@@ -178,7 +200,9 @@ const Portrait = () => {
             return;
         }
         const fileUploaded = event.target.files[0];
-        setProfileSlightlyRightImage(URL.createObjectURL(fileUploaded));
+        getBase64(fileUploaded, (result) => {
+            setProfileSlightlyRightImage(result);
+        });
         imagesToUpload.push({ 'type': 'slightly_right_profile', 'file': event.target.files[0] })
         //setImagesToUpload([{'type': 'slightly_right_profile',  'file': event.target.files[0]}])
     };
@@ -249,22 +273,27 @@ const Portrait = () => {
         formData.append("ethnic_group", ethnicGroup);
         formData.append("hair_length", hairLength);
         formData.append("gender", gender);
-        formData.append("slightly_left_profile", profileSlightlyLeftImage);
-        formData.append("left_profile", profileLeftImage);
-        formData.append("front_profile", profileImage);
-        formData.append("slightly_right_profile", profileSlightlyRightImage);
-        formData.append("right_profile", profileRightImage);
+        if (profileSlightlyLeftImage)
+            formData.append("slightly_left_profile", profileSlightlyLeftImage);
+        if (profileLeftImage)
+            formData.append("left_profile", profileLeftImage);
+        if (profileImage)
+            formData.append("front_profile", profileImage);
+        if (profileSlightlyRightImage)
+            formData.append("slightly_right_profile", profileSlightlyRightImage);
+        if (profileRightImage)
+            formData.append("right_profile", profileRightImage);
         imagesToUpload.forEach(image => {
             if (image)
                 formData.append(image.type, image.file);
         });
         await client.storeUserPotrait(formData)
             .then(resp => {
-                console.log(resp.data);
+                //console.log(resp.data);
                 showSnackbar("succès", "Portrait enregistrés avec succès");
             })
             .catch(err => {
-                console.log(err)
+                //console.log(err)
             })
             .finally(() => {
                 setIsLoading(false)
@@ -334,7 +363,7 @@ const Portrait = () => {
                     </p>
                     <div className="flex flex-col sm:flex-row  sm:items-start justify-center gap-14">
                         {/* Left side of the head placed left */}
-                        <div className="flex sm:flex-col  gap-10 -mt-6 sm:-mt-0">
+                        <div className="flex sm:flex-col gap-6 md:gap-10 -mt-6 sm:-mt-0 ">
                             {profilPicToDisplay(handleClickLeft2, profileSlightlyLeftImage, SubTextToDisplay[0], 32, DefaultProfilLeft2)}
 
                             {profilPicToDisplay(handleClickLeft, profileLeftImage, SubTextToDisplay[1], 32, DefaultProfilLeft)}
@@ -347,7 +376,7 @@ const Portrait = () => {
                         {/* </div> */}
 
                         {/* Right side of the face on the right */}
-                        <div className="flex sm:flex-col  gap-10 -mt-6 sm:-mt-0">
+                        <div className="flex sm:flex-col gap-6 md:gap-10 -mt-6 sm:-mt-0">
                             {profilPicToDisplay(handleClickRight2, profileSlightlyRightImage, SubTextToDisplay[3], 32, DefaultProfilRight2)}
 
                             {profilPicToDisplay(handleClickRight, profileRightImage, SubTextToDisplay[4], 32, DefaultProfilRight)}
@@ -406,7 +435,7 @@ const Portrait = () => {
                         <button
                             onClick={savePotraits}
                             className={`${Theme_A.button.mediumGradientButton} ml-3`}>
-                            Save
+                            Enregistrer
                         </button>
                     </div>
                 </div>

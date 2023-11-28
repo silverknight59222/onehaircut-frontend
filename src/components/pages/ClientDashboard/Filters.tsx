@@ -20,7 +20,7 @@ const Filters = () => {
     const [selectedTab, setSelectedTab] = useState(0);
     const [selectedItems, SetAtHome] = useState<String[]>([])
     const daysOfWeek = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
-    
+
     const items = [
         "Recherche Coiffure",
         "Recherche Salon ",
@@ -41,7 +41,7 @@ const Filters = () => {
         }
     };
 
-    const handleBudgetSliderChange = (event: any, newValue: any) => {        
+    const handleBudgetSliderChange = (event: any, newValue: any) => {
         setBudgetSliderRange(newValue);
     };
     const handleZoneSliderChange = (event: any, newValue: any) => {
@@ -113,13 +113,13 @@ const Filters = () => {
             current_hair: '',
             length_sought: '',
             hairstyle_trend: '',
-            budget: [0, 200],
+            budget: [0, 500],
         })
-            .then(resp => {                
+            .then(resp => {
                 showSnackbar("succès", "Les préférences ont été réinitialisées avec succès");
             })
             .catch(err => {
-                console.log(err)
+                //console.log(err)
             })
             .finally(() => {
                 setIsLoading(false)
@@ -140,11 +140,11 @@ const Filters = () => {
             availability: '',
         })
             .then(resp => {
-                console.log(resp.data);
+                //console.log(resp.data);
                 showSnackbar("succès", "Les préférences ont été réinitialisées avec succès");
             })
             .catch(err => {
-                console.log(err)
+                //console.log(err)
             })
             .finally(() => {
                 setIsLoading(false)
@@ -162,11 +162,11 @@ const Filters = () => {
             budget: budgetSliderRange,
         })
             .then(resp => {
-                console.log(resp.data);
+                //console.log(resp.data);
                 showSnackbar("succès", "Les préférences ont été réinitialisées avec succès");
             })
             .catch(err => {
-                console.log(err)
+                //console.log(err)
             })
             .finally(() => {
                 setIsLoading(false)
@@ -185,11 +185,11 @@ const Filters = () => {
             max_ratings: MaxRating,
             availability: selectedItems,
         })
-            .then(resp => {                
+            .then(resp => {
                 showSnackbar("succès", "Préférences mises à jour avec succès");
             })
             .catch(err => {
-                console.log(err)
+                //console.log(err)
             })
             .finally(() => {
                 setIsLoading(false)
@@ -198,20 +198,32 @@ const Filters = () => {
     }
 
     const fetchFilterPrefrences = async () => {
-        const resp = await client.getUserFilterPrefrences();        
+        const resp = await client.getUserFilterPrefrences();
 
-        setCurrentLength(resp.data.current_hair);
-        setDesiredLength(resp.data.length_sought);
-        setHairstyleTrend(resp.data.hairstyle_trend);
-        setBudgetSliderRange([resp.data.budget[0], resp.data.budget[1]]);
-        setCountry(resp.data.country);
-        setHairdressingAtHome(resp.data.hairdressing_at_home);
-        setZipCodeValue(resp.data.postal_code);
-        setZoneSliderRange([resp.data.search_area[0], resp.data.search_area[1]]);
-        setMinRating(resp.data.ratings);
-        if(resp.data.max_ratings)
-            setMaxRating(resp.data.max_ratings);
-        SetAtHome(resp.data.availability)
+        if (resp && resp.data) {
+            if (resp.data.current_hair)
+                setCurrentLength(resp.data.current_hair);
+            if (resp.data.length_sought)
+                setDesiredLength(resp.data.length_sought);
+            if (resp.data.hairstyle_trend)
+                setHairstyleTrend(resp.data.hairstyle_trend);
+            if (resp.data.budget)
+                setBudgetSliderRange([resp.data.budget[0], resp.data.budget[1]]);
+            if (resp.data.country)
+                setCountry(resp.data.country);
+            if (resp.data.hairdressing_at_home)
+                setHairdressingAtHome(resp.data.hairdressing_at_home);
+            if (resp.data.postal_code)
+                setZipCodeValue(resp.data.postal_code);
+            if (resp.data.search_area)
+                setZoneSliderRange([resp.data.search_area[0], resp.data.search_area[1]]);
+            if (resp.data.ratings)
+                setMinRating(resp.data.ratings);
+            if (resp.data.max_ratings)
+                setMaxRating(resp.data.max_ratings);
+            if (resp.data.current_hair)
+                SetAtHome(resp.data.availability || [])
+        }
     }
 
     return (
@@ -240,43 +252,46 @@ const Filters = () => {
                             })}
                         </div>
                         {selectedTab === 0 ?
-                            <div className="relative z-10 w-full lg:w-[630px] mt-5 md:mt-0 rounded-3xl bg-white py-6 px- sm:px-10 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)]">
+                            <div className="relative z-10 w-full lg:w-[630px] mt-5 md:mt-0 rounded-3xl bg-white py-6 px- sm:px-10 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)] h-auto min-height-[500px] ">
 
                                 {/* Title of the Section "Coiffure" */}
-                                <p className="text-black text-lg mb-4 font-semibold">Coiffure</p>
+                                <p className="text-black text-lg mb-4 font-semibold pl-2 pr-2">Coiffure</p>
 
                                 {/* Column organization */}
-                                <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-6 md:gap-10 lg:gap-6 xl:gap-10">
+                                <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-6 ">
 
                                     {/* First Column */}
                                     <div className="flex flex-col items-center">
                                         {/* Dropdown for "cheveux actuelle" */}
-                                        <div className="flex items-center justify-center mb-2 mr-10"> {/* Increased horizontal spacing */}
+                                        <div className="flex items-center justify-center mb-2 mr-10 w-full"> {/* Increased horizontal spacing */}
                                             <p className="text-black text-sm mb-2 mr-10"></p>
-                                            <DropdownMenu dropdownItems={WishLength.map((item) => item)} fctToCallOnClick={handleCurrentLength} selectId={currentLength} menuName="cheveux actuelle" />
+                                            <DropdownMenu dropdownItems={WishLength.map((item) => item)} fctToCallOnClick={handleCurrentLength} selectId={currentLength} menuName="cheveux actuelle"
+                                                parentClass="w-full" backgroundColor="w-full" />
                                         </div>
 
                                         {/* Dropdown for "Longueur recherchée" */}
-                                        <div className="flex items-center justify-center mb-2"> {/* Increased horizontal spacing */}
-                                            <DropdownMenu dropdownItems={WishLength.map((item) => item)} fctToCallOnClick={handleLengthSought} selectId={desiredLength} menuName="Longueur recherchée" />
+                                        <div className="flex items-center justify-center mb-2 mr-10 w-full"> {/* Increased horizontal spacing */}
+                                            <p className="text-black text-sm mb-2 mr-10"></p>
+                                            <DropdownMenu parentClass="w-full" backgroundColor="w-full" dropdownItems={WishLength.map((item) => item)} fctToCallOnClick={handleLengthSought} selectId={desiredLength} menuName="Longueur recherchée" />
                                         </div>
                                     </div>
 
                                     {/* Second Column */}
                                     <div className="flex flex-col items-center">
                                         {/* Dropdown for "Tendance de la coiffure" */}
-                                        <div className="flex items-center justify-center mb-2"> {/* Increased horizontal spacing */}
-                                            <DropdownMenu dropdownItems={WishGender.map((item) => item)} fctToCallOnClick={handleWishGender} selectId={hairstyleTrend} menuName="Tendance de la coiffure" />
+                                        <div className="flex items-center justify-center mb-2 mr-10 w-full"> {/* Increased horizontal spacing */}
+                                            <p className="text-black text-sm mb-2 mr-10"></p>
+                                            <DropdownMenu parentClass="w-full" backgroundColor="w-full" dropdownItems={WishGender.map((item) => item)} fctToCallOnClick={handleWishGender} selectId={hairstyleTrend} menuName="Tendance de la coiffure" />
                                         </div>
 
                                         {/* Slider for budget */}
-                                        <div className="relative z-20 w-full">
+                                        <div className="relative z-20 w-full pl-4 pr-3">
                                             <CustomSlider
                                                 theme={ComponentTheme}
                                                 value={budgetSliderRange}
                                                 onChange={handleBudgetSliderChange}
                                                 min={0}
-                                                max={250}
+                                                max={1000}
                                                 unit="€"
                                                 label="Budget" // Provide a label prop if your CustomSlider component expects it
                                                 valueLabelDisplay="auto"
@@ -336,29 +351,32 @@ const Filters = () => {
 
                             /* SECOND PART - RECHERCHE SALON FILTER */
                             :
-                            <div className="relative z-10 w-full lg:w-[630px] mt-5 md:mt-0 rounded-3xl bg-white py-6 px- sm:px-10 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)]">
+                            <div className="relative z-10 w-full lg:w-[630px] mt-5 md:mt-0 rounded-3xl bg-white py-6 px- sm:px-10 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)] h-auto min-height-[500px]">
+
 
                                 {/* Title of the Section "Localisation" */}
-                                <p className="text-black text-lg mb-8 font-semibold">Localisation</p>
+                                <p className="text-black text-lg mb-8 font-semibold pl-2 pr-2">Localisation</p>
 
                                 {/* Column organization */}
                                 <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-6 md:gap-10 lg:gap-6 xl:gap-10">
 
 
                                     {/* Dropdown for "Country */}
-                                    <div className="flex items-center justify-center mb-2 mr-12 ">
+                                    <div className="flex items-center justify-center md:mb-2 md:mr-12 pl-2 pr-2 ">
                                         <p className="text-black text-sm"></p>
                                         <DropdownMenu
+                                            parentClass="w-full text-center"
+                                            backgroundColor="w-full"
                                             dropdownItems={EUCountriesList()}
                                             menuName="Pays"
                                             fctToCallOnClick={handleNewSetCountry}
-                                            labelId='Pays'
+                                            labelId='Pays top-2'
                                             selectId={CountryDefault}
                                             defaultSelected={CountryDefault} // Pass the default value as a prop
                                         />
                                     </div>
                                     <div>
-                                        <p className="text-black text-sm mb-2">Coiffure à domicile </p>
+                                        <p className="text-black text-sm mb-2 pl-2 pr-2">Coiffure à domicile </p>
                                         <div
                                             onClick={() => setHairdressingAtHome(!HairdressingAtHome)}
                                             className="flex items-center justify-center gap-3 mt-4 cursor-pointer"
@@ -377,7 +395,7 @@ const Filters = () => {
 
 
                                 <div className='flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-24 lg:flex-col xl:flex-row lg:items-start xl:items-center lg:gap-5 xl:gap-24 mt-6 sm:mt-3'>
-                                    <div className="w-46">
+                                    <div className="w-46 pl-2 pr-2">
                                         <CustomInput
                                             id="PostCode"
                                             label="Code postal"
@@ -394,7 +412,7 @@ const Filters = () => {
                                     </div>
 
                                     {/* Slider for Arround Address Searching circle */}
-                                    <div className="relative z-20 w-full">
+                                    <div className="relative z-20 w-full pl-4 pr-2">
                                         <CustomSlider
                                             theme={ComponentTheme}
                                             value={zoneSliderRange}
@@ -426,11 +444,11 @@ const Filters = () => {
 
                                     {/* Title of the Section "Classement" */}
                                     <div>
-                                        <p className="text-black text-lg mt-4 mb-8 font-semibold">Note du salon</p>
+                                        <p className="text-black text-lg mt-4 mb-8 font-semibold pr-2 pl-2">Note du salon</p>
                                         <div className='flex flex-col sm:flex-row lg:flex-col xl:flex-row items-start sm:items-center lg:items-start xl:items-center justify-between'>
                                             <div>
-                                                <p className='text-black text-sm'>Minimum</p>
-                                                <div className='flex items-center gap-4'>
+                                                <p className='text-black text-sm pl-2 pr-2'>Minimum</p>
+                                                <div className='flex items-center gap-4 pl-2 pr-2'>
                                                     <StarRatings
                                                         rating={MinRating}
                                                         starRatedColor="#FEDF10"
@@ -447,8 +465,8 @@ const Filters = () => {
 
                                             </div>
                                             <div className='mt-5 sm:mt-0 lg:mt-5 xl:mt-0'>
-                                                <p className='text-black text-sm'>Maximum</p>
-                                                <div className='flex items-center gap-4'>
+                                                <p className='text-black text-sm pl-2 pr-2'>Maximum</p>
+                                                <div className='flex items-center gap-4 pl-2 pr-2'>
                                                     <StarRatings
                                                         rating={MaxRating}
                                                         starRatedColor="#FEDF10"
@@ -468,16 +486,16 @@ const Filters = () => {
 
                                 {/* Title of the Section "Disponibilite" */}
                                 <div>
-                                    <p className="text-black text-lg mb-8 mt-6 font-semibold">Disponibilit&eacute;</p>
+                                    <p className="text-black text-lg mb-8 mt-6 font-semibold pl-2 pr-2">Disponibilit&eacute;</p>
 
                                     {/* Check box pour choisir les jours de préférences */}
-                                    <div className="flex justify-between">
+                                    <div className="flex justify-between pl-2 pr-2">
                                         {daysOfWeek.map((day) => (
                                             <div key={day} className="flex flex-col items-center justify-center">
                                                 <p className="text-black text-sm mb-2">{day}</p>
                                                 <div
                                                     onClick={() => checkboxClickHandler(day)}
-                                                    className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded hover:scale-125 transition duration-300 ${selectedItems.includes(day)
+                                                    className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded hover:scale-125 transition duration-300 ${selectedItems && selectedItems.includes(day)
                                                         ? ColorsThemeA.ohcVerticalGradient_A
                                                         : "bg-[#D6D6D6]"
                                                         }`}
@@ -513,13 +531,15 @@ const Filters = () => {
                                 </div>
                                 */}
                                 </div>
-                                <div className="flex justify-center mt-12">
-                                    <button onClick={resetAllValues_2} className={`${Theme_A.button.medBlackColoredButton}`}>Réinitialiser</button>
-                                    <button
-                                        onClick={updateSearchSalon}
-                                        className={`${Theme_A.button.mediumGradientButton} ml-3`}>
-                                        Mise à jour
-                                    </button>
+                                <div>
+                                    <div className="flex justify-center mt-12">
+                                        <button onClick={resetAllValues_2} className={`${Theme_A.button.medBlackColoredButton}`}>Réinitialiser</button>
+                                        <button
+                                            onClick={updateSearchSalon}
+                                            className={`${Theme_A.button.mediumGradientButton} ml-3`}>
+                                            Mise à jour
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         }

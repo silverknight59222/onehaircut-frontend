@@ -10,6 +10,7 @@ interface User {
   password: string;
   phone: string;
   role: string;
+  permissions: any
 }
 interface Role {
   id: number;
@@ -24,8 +25,8 @@ const UsersPage = () => {
   const [isModal, setIsModal] = useState(false);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
   const [users, setUsers] = useState<User[]>([])
-  const [userToDelete, setUserToDelete] = useState<{ name: String, id: number | null }>({ name: '', id: null, })
-  const [userToEdit, setUserToEdit] = useState<{ phone: String, role: String, email: String, password: String, name: string, id: number | null }>({ phone: '', role: '', email: '', password: '', name: '', id: null, })
+  const [userToDelete, setUserToDelete] = useState<{ name: string, id: number | null }>({ name: '', id: null, })
+  const [userToEdit, setUserToEdit] = useState<{ phone: string, role: string, email: string, password: string, name: string, id: number | null }>({ phone: '', role: '', email: '', password: '', name: '', id: null, })
 
   const [isLoading, setIsLoading] = useState(false);
   const [password, setPassword] = useState(''); // Initialize password state
@@ -48,7 +49,8 @@ const UsersPage = () => {
     },
   ];
 
-  const [roles, setRoles] = useState(initialRoles); const [newRoleName, setNewRoleName] = useState("");
+  const [roles, setRoles] = useState(initialRoles); 
+  const [newRoleName, setNewRoleName] = useState("");
 
   // State for the role edit modal
   const [isRoleModal, setIsRoleModal] = useState(false);
@@ -73,7 +75,7 @@ const UsersPage = () => {
         }
       })
       .catch(error => {
-        console.log(error);
+        //console.log(error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -102,7 +104,7 @@ const UsersPage = () => {
         }
       })
       .catch(error => {
-        console.log(error);
+        //console.log(error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -131,7 +133,7 @@ const UsersPage = () => {
         }
       })
       .catch(error => {
-        console.log(error);
+        //console.log(error);
       })
       .finally(() => {
         setIsLoading(false);
@@ -158,7 +160,7 @@ const UsersPage = () => {
         ...editedRole,
         permissions: {
           ...editedRole.permissions,
-          [permission]: !editedRole.permissions[permission],
+          [permission]: editedRole.permissions && editedRole.permissions[permission] ? true : false,
         },
       };
       setEditedRole(updatedRole);
@@ -175,7 +177,7 @@ const UsersPage = () => {
         setIsRoleModal(true);
       }
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
   };
 
@@ -252,7 +254,7 @@ const UsersPage = () => {
                   checked={editedRole.permissions[permission]}
                   onChange={() => togglePermission(permission)}
                 />
-                {permission.name}
+                {permission}
               </label>
             ))}
             <button onClick={saveRoleChanges}>Save Changes</button>

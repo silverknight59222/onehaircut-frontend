@@ -49,6 +49,7 @@ const ApexAreaChart = () => {
             const newValue = Math.floor(Math.random() * (max - min + 1)) + min;
             data.push(newValue);
         }
+
         return data;
     };
 
@@ -66,6 +67,7 @@ const ApexAreaChart = () => {
         const dateCategories = Array.from({ length: dayOfMonth }, (_, i) => {
             // Notez que getDay() renvoie le jour de la semaine, donc utilisez getDate() ici
             const date = new Date(currentYear, currentMonth, i + 1);
+
             return format(date, 'dd/MM'); // ou 'dd/MM' selon le format de date souhaité
         });
 
@@ -82,6 +84,7 @@ const ApexAreaChart = () => {
             if (index < coiffuresData.length) {
                 return value + coiffuresData[index];
             }
+            
             return value;
         });
 
