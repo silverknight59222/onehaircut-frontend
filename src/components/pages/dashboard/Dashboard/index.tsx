@@ -526,7 +526,7 @@ const Dashboard = () => {
                 <DropdownMenu dropdownItems={DisplayedMonths} backgroundColor="bg-white" selectId={selectedMonthTransactions} menuName="Période d'observation"
                     fctToCallOnClick={setSelectedMonthTransactions} />
             </div>
-            <TransactionList />
+            <TransactionList period={selectedMonthTransactions} />
 
 
 
