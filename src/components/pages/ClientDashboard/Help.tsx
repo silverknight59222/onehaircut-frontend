@@ -23,14 +23,16 @@ const Help = () => {
                         <p className="text-stone-500 italic font-normal text-lg text-center my-8">
                             Besoin de faire une réservation Onehaircut, rien de plus simple
                         </p>
-                        <div className='p-6 rounded-2xl bg-stone-900 shadow-lg shadow-slate-700'>
+                        <div className='p-6 rounded-2xl bg-stone-900 shadow-lg shadow-slate-700 w-[400px] h-[250px] md:w-[500px] md:h-[300px] lg:w-[600px] lg:h-[360px] xl:w-[800px] xl:h-[500px]'>
                             <iframe
-                                width="560"     // Set the width of the video player
-                                height="315"    // Set the height of the video player
+                                // className="w-96 h-52 md:w-full md:h-full"
+                                className="w-full h-full"
+                                // height="315"    // Set the height of the video player
                                 src={`https://www.youtube.com/embed/TW-LgJUiMX0`}  // Embed the video using the video ID
                                 title="Comment faire une réservation sur Onehaircut"  // Provide a title for accessibility
                                 allowFullScreen  // Allow full-screen mode
-                            /></div>
+                            />
+                        </div>
                     </div>
                 </div>
             </ClientDashboardLayout>

@@ -16,13 +16,13 @@ const DefaultName = "Cabine vide";
 const ProcessedPictures = () => {
     return (
         <div>
-            <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 -z-10">
+            <div className="fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 -z-10">
                 <LogoCircleFixRight />
             </div>
             <ClientDashboardLayout>
-                <div className="mt-14 mb-5 px-6">
+                <div className="mt-14 mb-5 px-6 w-full">
                     {/* Première ligne de cartes */}
-                    <div className="grid grid-rows-3 gap-4 md:flex flex-row justify-evenly">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4  justify-center">
                         <div className="flex-1">
                             <CustomCard
                                 title={DefaultName}
@@ -46,10 +46,10 @@ const ProcessedPictures = () => {
                                 initialProgress={50}
                             />
                         </div>
-                    </div>
+                        {/* </div> */}
 
-                    {/* Deuxième ligne de cartes */}
-                    <div className="grid grid-rows-3 gap-4 md:flex flex-row mt-4 justify-evenly">
+                        {/* Deuxième ligne de cartes */}
+                        {/* <div className="grid grid-rows-3 gap-4 md:flex flex-row mt-4 justify-evenly"> */}
                         <div className="flex-1">
                             <CustomCard
                                 title={DefaultName}
