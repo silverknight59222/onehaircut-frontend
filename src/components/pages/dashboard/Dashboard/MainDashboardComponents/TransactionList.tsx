@@ -121,11 +121,11 @@ const TransactionList = (period) => {
                             })}
                         </tbody>
                     </table>
-                    
+                    {data != null && data.data != null && 
+                        <Pagination  className={'float-right mt-3'} onChange={(event, value) => {fetchData(period, value)}}  count={data.last_page} page={data.current_page} />
+                    }
                 </div>
-                {data != null && data.data != null && 
-                    <Pagination  onChange={(event, value) => {fetchData(period, value)}}  count={data.last_page} page={data.current_page} />
-                }
+                
 
                 <div className="flex items-center gap-2 mt-3">
                     <Image
