@@ -276,7 +276,7 @@ const Subscription = () => {
                 <p>Votre contrat se termine le: {currentPlan.current_period_end}</p>
 
                 { currentPlan && currentPlan.stripe_status && currentPlan.stripe_status == 'trialing' &&
-                  <p>Trial Ends on : {currentPlan.trial_ends_at}</p>
+                  <p>Trial Ends on : {currentPlan.readable_trial_period}</p>
                 }
                 <div
                   // onClick={() => setIsAutomaticRenewal(!isAutomaticRenewal)}

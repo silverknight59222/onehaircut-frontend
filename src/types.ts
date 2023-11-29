@@ -161,5 +161,6 @@ export type Subscription={
 	stripe_status: string,
 	trial_ends_at: string | null,
 	updated_at: string,
-	user_id: number
+	user_id: number,
+	readable_trial_period:string
 }

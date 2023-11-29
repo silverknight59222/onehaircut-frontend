@@ -17,6 +17,7 @@ interface PlanDetails {
   name: string;
   price: string;
   description: string;
+  plan_slug: string;
 }
 const Step4 = () => {
   const route = useRouter();
@@ -29,6 +30,7 @@ const Step4 = () => {
       name: "",
       price: "",
       description: "",
+      plan_slug: ""
     },
   ];
   const [plans, setPlans] = useState<PlanDetails[]>(defaultPlan);

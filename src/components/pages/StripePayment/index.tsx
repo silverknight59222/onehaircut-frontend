@@ -72,6 +72,7 @@ function StripePayment() {
     data.payment_method = paymentMethod || "";
     data.plan_id = planType.plan_id;
     data.plan_name = planType.name;
+    data.plan_slug = planType.slug;
     // if (planType.name === "OneHaircut Regular") {
     //   data.plan_name = "Standard";
     // } else if (planType.name === "OneHaircut Pro") {
