@@ -15,7 +15,7 @@ import CustomInput from "@/components/UI/CustomInput";
 import 'react-phone-number-input/style.css'
 
 
-const inputFieldsDesignNoW = `border-2 border-red-500 p-3 placeholder:text-[#959595] placeholder:text-base ${Theme_A.behaviour.fieldFocused_B}${Theme_A.fields.inputField}`
+const inputFieldsDesignNoW = `border-2 border-red-500 p-1 placeholder:text-[#959595] placeholder:text-base ${Theme_A.behaviour.fieldFocused}${Theme_A.fields.inputField}`
 
 const Step3 = () => {
   const showSnackbar = useSnackbar();
@@ -66,7 +66,7 @@ const Step3 = () => {
     }));
 
   }
-  
+
   // const setPhone = (value: string) => {
 
   //   if (value && isValidPhoneNumber(value) === true) {
@@ -83,7 +83,7 @@ const Step3 = () => {
   //       return { ...prev, phone: "Entrer un numéro valide" };
   //     });
   //   }    
-    
+
   // }
 
   // const setFocus = () => {    
@@ -143,7 +143,7 @@ const Step3 = () => {
         setError((prev) => {
           return { ...prev, phone: "Numéro trop court" };
         });
-      } else if (phone.length > 16) {        
+      } else if (phone.length > 16) {
         setError((prev) => {
           return { ...prev, phone: "Numéro trop long" };
         });
@@ -280,7 +280,7 @@ const Step3 = () => {
 
               <div className={`w-100 ${inputFieldsDesignNoW}`}>
                 <PhoneInput
-                  style={{ height: 8 }}
+                  style={{ height: 42 }}
                   // className={`${inputFieldsDesign}`}
                   // inputComponent={{ phoneInput }}
                   // containerClass={containerClass}

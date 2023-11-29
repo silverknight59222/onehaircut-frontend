@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, CSSProperties } from "react";
 import Image from "next/image";
 import { Like, LogoIcon, StarIcon, InfoNodalIcon } from "@/components/utilis/Icons";
 import { dashboard } from "@/api/dashboard";
@@ -14,6 +14,7 @@ import Footer from "@/components/UI/Footer";
 import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 import BaseModal from "@/components/UI/BaseModal";
 import InfoModal from "@/components/UI/InfoModal";
+import InfoButton from "@/components/UI/InfoButton";
 //import StarRatings from "react-star-ratings";
 
 
@@ -314,6 +315,7 @@ const Welcome = () => {
     setIsInfoModalOpen(false);
   };
 
+
   return (
     <>
       <Navbar isWelcomePage={true} onSearch={(value: string) => setSearch(value)} onGenderFilter={(gender) => setGenderFilters(gender)} onEthnicityFilters={(groups) => setEthnicityFilters(groups)} onLengthFilters={(length) => setLengthFilters(length)} />
@@ -342,19 +344,7 @@ const Welcome = () => {
 
           {/* Icône Info à droite du bouton */}
           <div >
-            {/* Modal */}
-            {isInfoModalOpen && (
-              <InfoModal close={closeInfoModal} >
-                {/* Mettez ici le contenu de votre modal */}
-                <p>Contenu du modal</p>
-              </InfoModal>
-            )}
-            <div className="animate-pulse hover:scale-110 transition duration-300 cursor-pointer ml-4 z-1000">
-              {/* Icône Info qui ouvre le modal */}
-              <div onClick={openInfoModal}>
-                <InfoNodalIcon />
-              </div>
-            </div>
+            <InfoButton title_1="Selection d'une coiffure" onOpenModal={openInfoModal} />
           </div>
         </div>
 

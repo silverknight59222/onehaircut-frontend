@@ -69,7 +69,7 @@ const Subscription = () => {
   }
 
   useEffect(() => {
-    fetchSubscription();    
+    fetchSubscription();
   }, []);
 
   const fetchSubscription = async () => {
@@ -77,12 +77,12 @@ const Subscription = () => {
     if (resp.data.data.subscription) {
       setCurrentPlan(resp.data.data.subscription)
     }
-    if (resp.data.data.subscription && resp.data.data.subscription.name == 'OneHaircut Pro') {      
-      setIsCurrSubscriptionPro(true) 
+    if (resp.data.data.subscription && resp.data.data.subscription.name == 'OneHaircut Pro') {
+      setIsCurrSubscriptionPro(true)
     } else {
       setIsCurrSubscriptionPro(false)
     }
-}
+  }
   // const modifBankCard: React.JSX.Element =
   //   <div>
   //       <PaymentModal handleClickPay={handleClickPay} />
@@ -118,14 +118,14 @@ const Subscription = () => {
   // when clicking on the "choisir" button
   const handleClickChoose = () => {
     console.log(isCurrSubscriptionPro);
-    
+
     if (isCurrSubscriptionPro) {
       downgradePlan()
     } else {
       upgradePlan()
     }
     //setIsCurrSubscriptionPro(!isCurrSubscriptionPro)
-    
+
   }
 
   const upgradePlan = async () => {
@@ -134,8 +134,8 @@ const Subscription = () => {
       setCurrentPlan(resp.data.data.subscription)
     }
     if (resp.data.data.subscription && resp.data.data.subscription.name == 'OneHaircut Pro') {
-      
-      setIsCurrSubscriptionPro(true) 
+
+      setIsCurrSubscriptionPro(true)
     } else {
       setIsCurrSubscriptionPro(false)
     }
@@ -147,8 +147,8 @@ const Subscription = () => {
     if (resp.data.data.subscription) {
       setCurrentPlan(resp.data.data.subscription)
     }
-    if (resp.data.data.subscription && resp.data.data.subscription.name == 'OneHaircut Pro') {      
-      setIsCurrSubscriptionPro(true) 
+    if (resp.data.data.subscription && resp.data.data.subscription.name == 'OneHaircut Pro') {
+      setIsCurrSubscriptionPro(true)
     } else {
       setIsCurrSubscriptionPro(false)
     }
@@ -200,7 +200,7 @@ const Subscription = () => {
                     </div>
                     <div className={`flex items-center justify-center mb-5 mt-1 rounded-lg w-36 h-10  font-semibold ${isCurrSubscriptionPro ? SubSelected_recommended : SubUnselected_recommended}`}>
                       recommandé
-                    </div>                    
+                    </div>
                     {packageNames.map((_, index) => {
                       return (
                         <div
@@ -276,8 +276,8 @@ const Subscription = () => {
               <div className="py-4 px-5 2xl:text-xl text-center text-black whitespace-nowrap bg-[#F4F4F6] font-medium border border-[#9B9B9B] rounded-xl">
                 <p>Votre contrat se termine le: {currentPlan.current_period_end}</p>
 
-                { currentPlan && currentPlan.stripe_status && currentPlan.stripe_status == 'trialing' &&
-                  <p>Trial Ends on : {currentPlan.readable_trial_period}</p>
+                {currentPlan && currentPlan.stripe_status && currentPlan.stripe_status == 'trialing' &&
+                  <p>L'essai se termine le : {currentPlan.readable_trial_period}</p>
                 }
                 <div
                   // onClick={() => setIsAutomaticRenewal(!isAutomaticRenewal)}
@@ -290,7 +290,7 @@ const Subscription = () => {
                       }`}
                   >
                     {isAutomaticRenewal && (
-                      <CheckedIcon width="15" height="10"/>
+                      <CheckedIcon width="15" height="10" />
                     )}
                   </div>
                   <p>Renouvellement&nbsp;Automatique</p>

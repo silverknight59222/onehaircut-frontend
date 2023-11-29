@@ -630,7 +630,7 @@ export const InputArrowDown = () => {
   );
 };
 
-export const InfoNodalIcon = ({ width = "40px", height = "40px", fill = "#000000" }) => {
+export const InfoNodalIcon = ({ width = "35px", height = "35px", fill = "#000000" }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
