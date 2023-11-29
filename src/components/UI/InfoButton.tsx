@@ -18,7 +18,7 @@ const InfoButton = ({
   const keyframesPulse = `
 @keyframes pulse {
   0% { transform: scale(1); opacity: 0.1; }
-  50% { transform: scale(1.1); opacity: 0.5 }
+  50% { transform: scale(1.1); opacity: 0.6 }
   100% { transform: scale(1); opacity: 0.1; }
 }
 `;
@@ -33,7 +33,7 @@ const InfoButton = ({
     width: '45px', // Taille du cercle
     height: '45px', // Taille du cercle
     backgroundColor: 'white', // Couleur de fond blanche
-    border: '8px solid #e85a35', // Bordures rouges
+    border: '8px solid #f5742a', // Bordures rouges
     borderRadius: '50%',
     animation: 'pulse 2s infinite ease-in-out',
     zIndex: -1, // Assurez-vous que le cercle est derrière l'icône
