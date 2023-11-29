@@ -19,7 +19,7 @@ const Messages = () => {
   const userId = user ? Number(JSON.parse(user).id) : null;
   const { loadingView } = userLoader();
   const [isLoading, setIsLoading] = useState(false);
-  const [selectedChat, setSelectedChat] = useState({ client_id: 0, client: { name: '' } })
+  const [selectedChat, setSelectedChat] = useState({ client_id: 0, client: { name: '', front_profile: '' } })
   const [chats, setChats] = useState<Chat[]>([])
   const [message, setMessage] = useState('')
 
@@ -41,7 +41,7 @@ const Messages = () => {
 
   const getChat = async (client: ClientChat) => {
     if (userId && client.client_id) {
-      setSelectedChat({ client_id: client.client_id, client: { name: client.client.name } })
+      setSelectedChat({ client_id: client.client_id, client: { name: client.client.name, front_profile: client.client.front_profile } })
       setIsLoading(true)
       await dashboard.getChat(client.client_id, userId)
         .then(resp => {

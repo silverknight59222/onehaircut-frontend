@@ -138,7 +138,8 @@ export type Chat={
 }
 
 interface Client{
-	name: string
+	name: string,
+	front_profile: string
 }
 
 export type ClientChat={
