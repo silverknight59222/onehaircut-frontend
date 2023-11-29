@@ -31,6 +31,7 @@ import RechartsLineChart from "@/views/charts/chartjs/RechartsLineChart";
 import { Theme_A } from "@/components/utilis/Themes";
 import ConversionChart from "@/views/charts/chartjs/ConversionChart";
 import Pagination from "@/components/UI/Pagination";
+import HairdresserRevenueBarChart from "./ModalComponent/HairdresserRevenueBarChart";
 
 
 const Dashboard = () => {
@@ -225,7 +226,6 @@ const Dashboard = () => {
 
 
     // Calcul du pourcentage des commandes par rapport aux visites
-    
 
     const getColorForValue = (value: any) => {
         const seuilBas = 5;
@@ -251,7 +251,6 @@ const Dashboard = () => {
     const fetchStats = async () => {
         await dashboard.salonStats()
             .then((resp) => {
-                //console.log(resp.data)
                 setSalonStats(resp.data);
             });
     }
@@ -676,16 +675,7 @@ const Dashboard = () => {
             {/* <Pagination from={1} to={10} perPage={10} total={123} currentPage={6} lastPage={13} onPageChangeEvent={onPageChangeEvent}></Pagination> */}
 
             {/* BAR CHART STAFF PAYLOAD */}
-            <div className="rounded-xl shadow-sm shadow-stone-600 mb-20">
-                <RechartSingleBarChart
-                    direction="ltr"
-                    staffData={staffData}
-                    fill={''}
-                    barSize={200}
-                    chartTitle="Charge générale liées aux commandes"
-                    chartTitleColor="rgba(150,150,150,1)"
-                />
-            </div>
+            <HairdresserRevenueBarChart period={selectedMonthPayload}></HairdresserRevenueBarChart>
 
 
         </div >

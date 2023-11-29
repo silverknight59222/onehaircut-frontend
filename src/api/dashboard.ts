@@ -176,6 +176,9 @@ const dashboard = {
   hairstyleChart: async (period) => {
     return await request.get<any>(`hairstyle_chart`, {params: {period : period}});
   },
+  hairdresserRevenueChart: async (period) => {
+    return await request.get<any>(`hairdresser_revenue_chart`, {params: {period : period}});
+  },
 };
 
 export { dashboard };
