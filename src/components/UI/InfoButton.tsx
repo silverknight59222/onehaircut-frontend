@@ -3,7 +3,16 @@ import React, { useEffect, useState, CSSProperties } from "react";
 import { InfoNodalIcon } from "../utilis/Icons";
 import InfoModal from "./InfoModal";
 
-const InfoButton = ({ onOpenModal, title_1 }) => {
+const InfoButton = ({
+  onOpenModal,
+  title_1,
+  content_1,
+  title_2 = "",
+  content_2 = "",
+  title_3 = "",
+  content_3 = "",
+  videoUrl = "",
+}) => {
 
   // Keyframes pour l'animation de pulsation du cercle
   const keyframesPulse = `
@@ -58,9 +67,9 @@ const InfoButton = ({ onOpenModal, title_1 }) => {
   return (
     <div>
       {isInfoModalOpen && (
-        <InfoModal title_1={title_1} close={closeInfoModal}>
+        <InfoModal title_1={title_1} content_1={content_1} title_2={title_2} content_2={content_2} title_3={title_3} content_3={content_3} videoUrl={videoUrl} close={closeInfoModal}>
           {/* Mettez ici le contenu de votre modal */}
-          <p>Contenu du modal</p>
+          <p></p>
         </InfoModal>
       )}
       <div

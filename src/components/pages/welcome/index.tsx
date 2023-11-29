@@ -311,10 +311,11 @@ const Welcome = () => {
   const openInfoModal = () => {
     setIsInfoModalOpen(true);
   };
-  const closeInfoModal = () => {
-    setIsInfoModalOpen(false);
-  };
-
+  const InfoTitle_1 = "Selection d'une coiffure";
+  const InfoContent_1 = "Vous trouverez tous type de coiffure, pour tous les goût <br /> Vous pouvez ajouter une coiffure à vos favoris, et aussi prévisualiser une coiffure sur vous,  <br />  si vous avez ajouté vos photos dans la section portrait";
+  const InfoTitle_2 = "Utilisation";
+  const InfoContent_2 = `● Le choix d'une coiffure n'est pas obligatoire,<br /> Vous pouvez continuer et sélectionner une prestation.<br /> ● Il n'est pas possible de réserver un coiffeur sans avoir sélection soit une coiffure, soit une prestation. <br /> ● Si vous ne trouvez pas la coiffure qu'il vous faut, vous pouvez toujours opter pour une coiffure générique <br /> et expliquer vos attente au salon de coiffure.`;
+  const VideoUrl = "https://www.youtube.com/watch?v=4wBuKou-vMw";
 
   return (
     <>
@@ -344,7 +345,7 @@ const Welcome = () => {
 
           {/* Icône Info à droite du bouton */}
           <div >
-            <InfoButton title_1="Selection d'une coiffure" onOpenModal={openInfoModal} />
+            <InfoButton title_1={InfoTitle_1} content_1={InfoContent_1} title_2={InfoTitle_2} content_2={InfoContent_2} onOpenModal={openInfoModal} videoUrl={VideoUrl} />
           </div>
         </div>
 
