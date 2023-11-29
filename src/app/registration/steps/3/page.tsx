@@ -67,28 +67,28 @@ const Step3 = () => {
 
   }
   
-  const setPhone = (value: string) => {
+  // const setPhone = (value: string) => {
 
-    if (value && isValidPhoneNumber(value) === true) {
-      setError((prev) => {
-        return { ...prev, phone: "" };
-      });
-      setUserDetails((prevState) => ({
-        ...prevState,
-        phone: value,
-      }));
+  //   if (value && isValidPhoneNumber(value) === true) {
+  //     setError((prev) => {
+  //       return { ...prev, phone: "" };
+  //     });
+  //     setUserDetails((prevState) => ({
+  //       ...prevState,
+  //       phone: value,
+  //     }));
 
-    } else {
-      setError((prev) => {
-        return { ...prev, phone: "Entrer un numéro valide" };
-      });
-    }    
+  //   } else {
+  //     setError((prev) => {
+  //       return { ...prev, phone: "Entrer un numéro valide" };
+  //     });
+  //   }    
     
-  }
+  // }
 
-  const setFocus = () => {    
-    document.querySelector<HTMLInputElement>(`div[id=phone-custom]`)?.focus()
-  }
+  // const setFocus = () => {    
+  //   document.querySelector<HTMLInputElement>(`div[id=phone-custom]`)?.focus()
+  // }
   const [showPassword, setShowPassword] = useState(false);
 
   const onChangePassword = (value: string) => {

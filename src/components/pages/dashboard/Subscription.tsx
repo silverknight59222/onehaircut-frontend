@@ -43,7 +43,8 @@ const Subscription = () => {
     stripe_status: '',
     trial_ends_at: '',
     updated_at: '',
-    user_id: 0
+    user_id: 0,
+    readable_trial_period: ''
   }
   const [isAutomaticRenewal, setIsAutomaticRenewal] = useState(true);
   const [currentPlan, setCurrentPlan] = useState<Subscription>(defaultSubscription);
