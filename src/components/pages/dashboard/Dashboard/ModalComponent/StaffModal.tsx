@@ -3,8 +3,25 @@ import RechartsPieChart from '@/views/charts/chartjs/RechartsPieChart'
 import RechartsGroupBarChart from "@/views/charts/chartjs/RechartGroupBarChart";
 import RechartsRadarChart from "@/views/charts/chartjs/RechartsRadarChart";
 import DropdownMenu from "@/components/UI/DropDownMenu";
-import React, { useState } from "react";
-
+import React, { useEffect, useState } from "react";
+import { dashboard } from '@/api/dashboard';
+import Box from '@mui/material/Box'
+import Card from '@mui/material/Card'
+import Divider from '@mui/material/Divider'
+import CardHeader from '@mui/material/CardHeader'
+import Typography from '@mui/material/Typography'
+import CardContent from '@mui/material/CardContent'
+import {
+    Radar,
+    Tooltip,
+    PolarGrid,
+    RadarChart,
+    TooltipProps,
+    PolarAngleAxis,
+    PolarRadiusAxis,
+    ResponsiveContainer
+} from 'recharts'
+import Icon from '@/@core/components/icon'
 
 const DisplayedMonths = [
     "Ce mois",
@@ -13,76 +30,94 @@ const DisplayedMonths = [
 ]
 const StaffModal = () => {
 
-    const data = [
-        { name: 'Jason', value: 17, color: 'rgba(50, 120, 220, 1)' }, // Blue
-        { name: 'Melinda', value: 20, color: 'rgba(255, 70, 70, 0.8)' }, // Red
-        { name: 'Karim', value: 18, color: 'rgba(122, 191, 80, 1)' }, // Green
-        { name: 'Dyone', value: 23, color: 'rgba(255, 200, 102, 1)' }, // Yellow
-        { name: 'Deborah', value: 13, color: 'rgba(75, 150, 255, 1)' }, // Dark Blue
-        { name: 'Daniel', value: 9, color: '#FA8E1B' }, // Orange
-    ];
 
+    const CustomTooltip = (data: TooltipProps<any, any>) => {
+        const { active, payload } = data;
 
-    // Data for the chart, can be dynamic and coming from props or state
-    const chartData = [
-        {
-            name: 'Staff 1',
-            Service: 25,  // Approximated from image
-            Prestation: 50,  // Approximated from image
-            Total: 75,  // Approximated from image
-        },
-        {
-            name: 'Staff 2',
-            Service: 50,  // Approximated from image
-            Prestation: 75,  // Approximated from image
-            Total: 100,  // Approximated from image
-        },
-        {
-            name: 'Staff 3',
-            Service: 35,  // Approximated from image
-            Prestation: 60,  // Approximated from image
-            Total: 90,  // Approximated from image
-        },
-        {
-            name: 'Staff 4',
-            Service: 20,  // Approximated from image
-            Prestation: 80,  // Approximated from image
-            Total: 95,  // Approximated from image
-        },
-        {
-            name: 'Staff 5',
-            Service: 30,  // Approximated from image
-            Prestation: 45,  // Approximated from image
-            Total: 70,  // Approximated from image
-        },
-    ];
+        if (active && payload) {
+            return (
+                <div
+                    className='recharts-custom-tooltip'
+                    style={{
+                        backgroundColor: 'white',
+                        padding: '10px',
+                        border: '1px solid #dddddd',
+                        borderRadius: '4px',
+                        boxShadow: '0px 0px 5px #aaaaaa'
+                    }}
+                >
+                    <Typography variant="subtitle2" color="textPrimary">{data.label}</Typography>
+                    <Divider style={{ margin: '5px 0' }} />
+                    {payload.map((entry, index) => (
+                        <Box key={`item-${index}`} sx={{ display: 'flex', alignItems: 'center' }}>
+                            <Icon icon='mdi:circle' fontSize='small' style={{ color: entry.color }} />
+                            <Typography variant='body2' style={{ marginLeft: '5px' }}>{`${entry.name}: ${entry.value}`}</Typography>
+                        </Box>
+                    ))}
+                </div>
+            );
+        }
+
+        return null;
+    };
 
     // Fill colors for each type of bar in the chart
     const barColors = {
-        Service: '#FA8E1B',
+        Coiffures: '#FA8E1B',
         Prestation: 'rgba(75, 150, 255, 1)',
         Total: 'rgba(122, 191, 80, 1)',
     };
 
     // Legend information
     const chartLegends = [
-        { key: 'Service', color: '#FA8E1B', text: 'Service' },
-        { key: 'Prestation', color: 'rgba(75, 150, 255, 1)', text: 'Prestation' },
-        { key: 'Total', color: 'rgba(122, 191, 80, 1)', text: 'Total' },
+        { key: 'hairstyle', color: '#FA8E1B', text: 'Coiffures' },
+        { key: 'service', color: 'rgba(75, 150, 255, 1)', text: 'Prestation' },
+        { key: 'total', color: 'rgba(122, 191, 80, 1)', text: 'Total' },
     ];
 
-    const yourDropdownClickHandler = (item: string) => {
-        //console.log(`You selected: ${item}`);
-        // Here, you can add additional logic to handle the dropdown selection.
-    }
-
-
+    const [chartData, setChartData] = useState([])
+    const [data, setData] = useState([])
+    const [dayWiseVisitData, setDayWiseVisitData] = useState([])
     const [selectedMonthPayload, setSelectedMonthPayload] = useState(DisplayedMonths[0]);
     const handleNewMonthRevenu = (item: string) => {
         // Mettez à jour l'état avec la nouvelle valeur sélectionnée
         setSelectedMonthPayload(item);
         // TODO: Ajoutez la logique pour sauvegarder la nouvelle préférence
     }
+
+    const fetchStaffActivityChartData = async (period) => {
+        const { data } = await dashboard.staffActivityChart(period);
+        setChartData(data.hairstyle_sales_data)
+    }
+
+    const fetchStaffLoadChartData = async (period) => {
+        const { data } = await dashboard.staffLoadChart(period);
+        setData(data.hairstyle_load_data)
+    }
+
+    const fetchDayWiseVisitChart = async (period) => {
+        const { data } = await dashboard.dayWiseVisitChart(period);
+        setDayWiseVisitData(data.day_wise_visit_data)
+    }
+
+    useEffect(() => {
+        let periodKey = "month"
+        switch (selectedMonthPayload) {
+            case "Ce mois":
+                periodKey = "month"
+                break;
+            case "3 derniers mois":
+                periodKey = "3_month"
+                break;
+            case "Cette année":
+                periodKey = "year"
+                break;
+        }
+        fetchStaffActivityChartData(periodKey)
+        fetchStaffLoadChartData(periodKey)
+        fetchDayWiseVisitChart(periodKey)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedMonthPayload])
 
     return (
         <div>
@@ -123,7 +158,19 @@ const StaffModal = () => {
                         <p className="text-neutral-500 font-semibold text-2xl text-center">
                             Repartition visites sur les jours de la semaine
                         </p>
-                        <RechartsRadarChart />
+                        <CardContent>
+                            <Box sx={{ height: 350 }}>
+                                <ResponsiveContainer>
+                                    <RadarChart cx='50%' cy='50%' outerRadius='70%' data={dayWiseVisitData}>
+                                        <PolarGrid />
+                                        <PolarAngleAxis dataKey='day' />
+                                        <PolarRadiusAxis angle={30} domain={[0, 'dataMax + 50']} />
+                                        <Radar name='Visites' dataKey='visits' stroke='rgba(50, 150, 50, 1)' fill='rgba(122, 191, 80, 1)' fillOpacity={0.6} />
+                                        <Tooltip content={<CustomTooltip />} />
+                                    </RadarChart>
+                                </ResponsiveContainer>
+                            </Box>
+                        </CardContent>
                     </div>
                 </div>
             </div>
