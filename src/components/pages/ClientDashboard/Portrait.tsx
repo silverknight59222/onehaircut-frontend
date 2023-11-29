@@ -354,14 +354,14 @@ const Portrait = () => {
                 style={{ display: "none" }}
             />
             <ClientDashboardLayout>
-                <div className="relative mt-10 mb-5 px-6 sm:px-10 md:px-20">
+                <div className="relative mt-10 mb-5 px-4 sm:px-6 md:px-20">
                     <p className="text-black font-medium text-3xl text-center mb-8">
                         Modifiez vos photos de profils
                     </p>
                     <p className="text-stone-400 font-normal italic text-sm text-center my-10">
                         Pour modifiez une photo, cliquer sur celle-ci et selectionner la remplacente
                     </p>
-                    <div className="flex flex-col sm:flex-row  sm:items-start justify-center gap-14">
+                    <div className="flex flex-col sm:flex-row  items-center justify-center gap-x-4 gap-y-8 lg:gap-14">
                         {/* Left side of the head placed left */}
                         <div className="flex sm:flex-col gap-6 md:gap-10 -mt-6 sm:-mt-0 ">
                             {profilPicToDisplay(handleClickLeft2, profileSlightlyLeftImage, SubTextToDisplay[0], 32, DefaultProfilLeft2)}
@@ -383,25 +383,12 @@ const Portrait = () => {
                         </div>
                     </div>
                     <div className="flex flex-col md:flex-row items-center md:items-start justify-center gap-10 mt-10">
-                        {/* this must be rather in the filter part */}
-                        {/* <div className="flex flex-col items-center justify-center">
-                            <p className="text-black text-sm mb-2">Longueur de cheveux actuelle</p>
-                            <BaseDropdown dropdownItems={['Court']} width="w-52" height="h-14" rounded="rounded-2xl" />
-                        </div> */}
-                        {/* <div className="flex flex-col items-center justify-center gap-4 md:mt-8"> */}
-                        {/* <button className={`w-52 h-14 ${Theme_A.button.medWhiteColoredButton}`} >Supprimer</button> */}
-                        {/* <button className={`w-52 h-14 ${Theme_A.button.medWhiteColoredButton}`}>Parcourir</button> */}
-                        {/* <button className={`w-52 h-14 ${Theme_A.button.mediumGradientButton}`}>Enregistrer</button> */}
-                        {/* </div> */}
-                        {/* <div className="flex flex-col items-center justify-center">
-                            <p className="text-black text-sm mb-2">Ou Selectionner un avatar</p>
-                            <BaseDropdown dropdownItems={['Aucun']} width="w-52" height="h-14" rounded="rounded-2xl" />
-                        </div> */}
+
                     </div>
                     <p className="text-stone-400 font-normal italic text-sm text-center my-10">
                         Indiquer votre genre et groupe ethnique. Ceux-ci serviront lors de la presentation des coiffures à la page d'accueil
                     </p>
-                    <div className="flex flex-col sm:flex-row  sm:items-start justify-center gap-14">
+                    <div className="flex flex-col sm:flex-row  sm:items-start justify-center gap-2 lg:gap-14">
                         <div className="flex flex-col gap-2">
 
                             <DropdownMenu
