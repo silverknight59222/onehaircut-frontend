@@ -10,8 +10,9 @@ import DropdownMenu from "@/components/UI/DropDownMenu";
 import { ColorsThemeA } from "@/components/utilis/Themes";
 import RechartsGroupBarChart from "@/views/charts/chartjs/RechartGroupBarChart";
 import { CrossIcon } from "@/components/utilis/Icons";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import RevenueChart from "@/components/UI/RevenueChart";
+import { dashboard } from "@/api/dashboard";
 
 // Define the table headers
 const tableHeaders = [
@@ -32,18 +33,18 @@ const tableData = [
 
 
 // Define the staff data and fill color in the parent component
-const staffData = [
-    { name: 'Hairstyle 1', value: 8000 },
-    { name: 'Hairstyle 2', value: 7500 },
-    { name: 'Hairstyle 3', value: 6000 },
-    { name: 'Hairstyle 4', value: 4000 },
-    { name: 'Hairstyle 5', value: 3000 },
-    { name: 'Hairstyle 6', value: 2000 },
-    { name: 'Hairstyle 7', value: 1500 },
-    { name: 'Hairstyle 8', value: 1000 },
-    { name: 'Hairstyle 9', value: 500 },
-    { name: 'Hairstyle 10', value: 100 },
-];
+// const staffData = [
+//     { name: 'Hairstyle 1', value: 8000 },
+//     { name: 'Hairstyle 2', value: 7500 },
+//     { name: 'Hairstyle 3', value: 6000 },
+//     { name: 'Hairstyle 4', value: 4000 },
+//     { name: 'Hairstyle 5', value: 3000 },
+//     { name: 'Hairstyle 6', value: 2000 },
+//     { name: 'Hairstyle 7', value: 1500 },
+//     { name: 'Hairstyle 8', value: 1000 },
+//     { name: 'Hairstyle 9', value: 500 },
+//     { name: 'Hairstyle 10', value: 100 },
+// ];
 
 const fillColor = '#49A204'; // Example fill color
 const barSize = 80; // Example barSize
@@ -56,51 +57,40 @@ const IncomesModal = () => {
         "Cette année"
     ]
     const handleNewMonthRevenu = (item: string) => {
-        // Mettez à jour l'état avec la nouvelle valeur sélectionnée
         setSelectedMonthRevenu(item);
-        // TODO: Ajoutez la logique pour sauvegarder la nouvelle préférence
     }
     const [selectedMonthRevenu, setSelectedMonthRevenu] = useState(DisplayedMonths[0]);
+    const [data, setData] = useState({} as any);
+    const [hairstyleData, setHairstyleData] = useState([] as any);
 
-    // Data for the chart, can be dynamic and coming from props or state
-    const chartData = [
-        {
-            name: 'Staff 1',
-            Service: 25,  // Approximated from image
-            Prestation: 50,  // Approximated from image
-            Total: 75,  // Approximated from image
-        },
-        {
-            name: 'Staff 2',
-            Service: 50,  // Approximated from image
-            Prestation: 75,  // Approximated from image
-            Total: 100,  // Approximated from image
-        },
-        {
-            name: 'Staff 3',
-            Service: 35,  // Approximated from image
-            Prestation: 60,  // Approximated from image
-            Total: 90,  // Approximated from image
-        },
-        {
-            name: 'Staff 4',
-            Service: 20,  // Approximated from image
-            Prestation: 80,  // Approximated from image
-            Total: 95,  // Approximated from image
-        },
-        {
-            name: 'Staff 5',
-            Service: 30,  // Approximated from image
-            Prestation: 45,  // Approximated from image
-            Total: 70,  // Approximated from image
-        },
-    ];
-
-    const yourDropdownClickHandler = (item: string) => {
-        //console.log(`You selected: ${item}`);
-        // Here, you can add additional logic to handle the dropdown selection.
+    const fetchRevenueStats = async (periodKey) => {
+        const {data} = await dashboard.revenueStats(periodKey)
+        console.log(data)
+        setData(data)
     }
 
+    const fetchHairstyleChart = async (periodKey) => {
+        const {data} = await dashboard.hairstyleChart(periodKey)
+        setHairstyleData(data.hairstyle_data)
+    }
+
+    useEffect(() => {
+        let periodKey = "month"
+        switch (selectedMonthRevenu) {
+            case "Ce mois":
+                periodKey = "month"
+                break;
+            case "3 derniers mois":
+                periodKey = "3_month"
+                break;
+            case "Cette année":
+                periodKey = "year"
+                break;
+        }
+        fetchRevenueStats(periodKey)
+        fetchHairstyleChart(periodKey)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [selectedMonthRevenu])
 
     return (
         <div>
@@ -159,61 +149,98 @@ const IncomesModal = () => {
                                     <tr>
                                         {/* And also here */}
                                         <td className="w-1/4 px-6 py-4 whitespace-nowrap text-sm font-bold text-zinc-600 border-r border-gray-300">
-                                            17225 $
+                                            {data.total_hair_cut_price} $
                                         </td>
                                         <td className="w-1/4 px-6 py-4 whitespace-nowrap text-sm font-bold text-zinc-600 border-r border-gray-300">
-                                            6750 $
+                                            {data.total_services_price} $
                                         </td>
                                         <td className="w-1/4 px-6 py-4 whitespace-nowrap text-sm font-bold text-zinc-600 border-r border-gray-300">
-                                            650 $
+                                            {data.total_order_price} $
                                         </td>
                                         <td className="w-1/4 px-6 py-4 whitespace-nowrap text-sm font-bold text-red-600">
-                                            -6500 $
+                                            -0 $
                                         </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <div className="shadow-md sm:rounded-lg mb-12">
-                            <table className="min-w-full divide-y divide-gray-200">
-                                <thead className="bg-gray-100">
-                                    <tr>
-                                        {tableHeaders.map(header => (
-                                            <th
-                                                key={header.title}
-                                                scope="col"
-                                                className={`${header.width} px-6 py-3 text-left text-xs font-bold text-black-500 uppercase tracking-wider border-r border-gray-300`}
-                                            >
-                                                {header.title}
-                                            </th>
-                                        ))}
-                                    </tr>
-                                </thead>
-                                <tbody className="bg-white">
-                                    {tableData.map((data, index) => (
-                                        <tr key={index}>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-zinc-600 border-r border-gray-300">
-                                                {data.annulation}
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-zinc-600 border-r border-gray-300">
-                                                {data.remboursement}
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-zinc-600 border-r border-gray-300">
-                                                {data.enCours}
-                                            </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-red-600">
-                                                {data.transactions}
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+
+                        <div >
+                            <div className="flex">
+                                <div className="w-2/4 shadow-md sm:rounded-lg mb-12">
+                                    <table className="min-w-full divide-y divide-gray-200">
+                                        <thead className="bg-gray-100">
+                                            <tr>
+                                                <th
+                                                    scope="col"
+                                                    className={`w-1/4 px-6 py-3 text-left text-xs font-bold text-black-500 uppercase tracking-wider border-r border-gray-300`}
+                                                >
+                                                    Top 5 Coiffures
+                                                </th>
+                                                <th
+                                                    scope="col"
+                                                    className={`w-1/4 px-6 py-3 text-left text-xs font-bold text-black-500 uppercase tracking-wider border-r border-gray-300`}
+                                                >
+                                                    Nombre de commande
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="bg-white">
+                                            {data.top_hair_styles && data.top_hair_styles.map((data, index) => (
+                                                <tr key={index}>
+                                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-zinc-600 border-r border-gray-300">
+                                                        {data?.haircut?.name}
+                                                    </td>
+                                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-zinc-600 border-r border-gray-300">
+                                                        {data.haircut_count}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div className="w-2/4 shadow-md sm:rounded-lg mb-12">
+                                    <table className="min-w-full divide-y divide-gray-200">
+                                        <thead className="bg-gray-100">
+                                            <tr>
+                                                <th
+                                                    scope="col"
+                                                    className={`w-1/4 px-6 py-3 text-left text-xs font-bold text-black-500 uppercase tracking-wider border-r border-gray-300`}
+                                                >
+                                                    Top 5 Prestations
+                                                </th>
+                                                <th
+                                                    scope="col"
+                                                    className={`w-1/4 px-6 py-3 text-left text-xs font-bold text-black-500 uppercase tracking-wider border-r border-gray-300`}
+                                                >
+                                                    Nombre de commande
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="bg-white">
+                                            {data.top_services && data.top_services.map((data, index) => (
+                                                <tr key={index}>
+                                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-zinc-600 border-r border-gray-300">
+                                                        {data?.service?.name}
+                                                    </td>
+                                                    <td className="px-6 py-4 whitespace-nowrap text-sm font-bold text-zinc-600 border-r border-gray-300">
+                                                        {data.service_count}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div>
+
+                            </div>
                         </div>
                     </div>
                     <p className="text-neutral-500 font-semibold text-2xl text-center">
                         Top revenu coiffure
                     </p>
-                    <RechartSingleBarChart direction="ltr" chartTitle="Team Members" staffData={staffData} fill={fillColor} barSize={barSize} />
+                    <RechartSingleBarChart direction="ltr" chartTitle="Team Members" staffData={hairstyleData} fill={fillColor} barSize={barSize} />
                 </div>
             </div>
         </div>
