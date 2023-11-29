@@ -167,8 +167,32 @@ const dashboard = {
   monthlyRevenueChart: async (period) => {
     return await request.get<any>(`revenue_chart`, {params: {period : period}});
   },
+  revenueStats: async (period) => {
+    return await request.get<any>(`revenue_stats`, {params: {period : period}});
+  },
   salonTransactionList: async (period, page) => {
     return await request.get<any>(`salon_transactions`, {params: {period : period, page: page}});
+  },
+  hairstyleChart: async (period) => {
+    return await request.get<any>(`hairstyle_chart`, {params: {period : period}});
+  },
+  hairdresserRevenueChart: async (period) => {
+    return await request.get<any>(`hairdresser_revenue_chart`, {params: {period : period}});
+  },
+  staffActivityChart: async (period) => {
+    return await request.get<any>(`staff_activity_chart`, {params: {period : period}});
+  },
+  staffLoadChart: async (period) => {
+    return await request.get<any>(`staff_load_chart`, {params: {period : period}});
+  },
+  dayWiseVisitChart: async (period) => {
+    return await request.get<any>(`day_wise_visit_chart`, {params: {period : period}});
+  },
+  salonNotification: async () => {
+    return await request.get<any>(`hair_salon_notification`);
+  },
+  userNotification: async () => {
+    return await request.get<any>(`user_notification`);
   },
 };
 

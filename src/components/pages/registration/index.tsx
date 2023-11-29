@@ -49,18 +49,18 @@ const Registration = () => {
   const questions = [
     {
       title:
-        "Comment OneHaircut peut-il améliorer la gestion de mon salon de coiffure ou mon activité de coiffure à domicile ?",
+        "Comment Onehaircut peut-il améliorer la gestion de mon salon de coiffure ou mon activité de coiffure à domicile ?",
       answer:
-        "OneHaircut est une plateforme tout-en-un conçue pour simplifier et optimiser la gestion de votre salon de coiffure ou de votre activité de coiffure à domicile. Grâce à ses fonctionnalités telles que la gestion des réservations, la visibilité accrue en ligne, la communication client-coiffeur, la gestion de la comptabilité, et bien plus encore, vous pouvez améliorer considérablement l'efficacité de votre entreprise.",
+        "Onehaircut est une plateforme tout-en-un conçue pour simplifier et optimiser la gestion de votre salon de coiffure ou de votre activité de coiffure à domicile. Grâce à ses fonctionnalités telles que la gestion des réservations, la visibilité accrue en ligne, la communication client-coiffeur, la gestion de la comptabilité, et bien plus encore, vous pouvez améliorer considérablement l'efficacité de votre entreprise.",
     },
     {
       title:
-        "Comment puis-je gérer les réservations de mes clients avec OneHaircut ?",
+        "Comment puis-je gérer les réservations de mes clients avec Onehaircut ?",
       answer:
-        "Avec OneHaircut, la gestion des réservations est un jeu d'enfant. Les clients peuvent réserver en ligne, et vous recevez instantanément des notifications. Vous avez un contrôle total sur les rendez-vous, avec la possibilité de gérer les modifications et les annulations directement depuis votre tableau de bord.",
+        "Avec Onehaircut, la gestion des réservations est un jeu d'enfant. Les clients peuvent réserver en ligne, et vous recevez instantanément des notifications. Vous avez un contrôle total sur les rendez-vous, avec la possibilité de gérer les modifications et les annulations directement depuis votre tableau de bord.",
     },
     {
-      title: "Est-ce que OneHaircut offre un support en cas de besoin ?",
+      title: "Est-ce que Onehaircut offre un support en cas de besoin ?",
       answer:
         "Oui, nous avons une équipe de support dédiée prête à répondre à toutes vos questions et à vous aider en cas de problème. Vous pouvez nous contacter via notre chat en direct ou par e-mail à tout moment.",
     },
@@ -68,31 +68,31 @@ const Registration = () => {
       title:
         "Comment puis-je obtenir des avis et des commentaires de mes clients ?",
       answer:
-        "OneHaircut propose une fonctionnalité de feedback intégrée qui vous permet de recueillir facilement les avis de vos clients. Cela vous aide à améliorer vos services en fonction de leurs retours et à renforcer la confiance de votre clientèle.",
+        "Onehaircut propose une fonctionnalité de feedback intégrée qui vous permet de recueillir facilement les avis de vos clients. Cela vous aide à améliorer vos services en fonction de leurs retours et à renforcer la confiance de votre clientèle.",
     },
     {
       title:
-        " Puis-je personnaliser les offres pour mes clients réguliers avec OneHaircut ?",
+        " Puis-je personnaliser les offres pour mes clients réguliers avec Onehaircut ?",
       answer:
-        "Certainement. OneHaircut vous permet de créer des offres sur mesure pour vos clients réguliers, renforçant ainsi leur fidélité et les incitant à revenir.",
+        "Certainement. Onehaircut vous permet de créer des offres sur mesure pour vos clients réguliers, renforçant ainsi leur fidélité et les incitant à revenir.",
     },
     {
       title:
-        "Est-ce que je peux utiliser OneHaircut pour gérer plusieurs salons ?",
+        "Est-ce que je peux utiliser Onehaircut pour gérer plusieurs salons ?",
       answer:
-        "Oui, OneHaircut vous permet de gérer facilement plusieurs salons depuis un seul tableau de bord, centralisant ainsi toutes les informations importantes.",
+        "Oui, Onehaircut vous permet de gérer facilement plusieurs salons depuis un seul tableau de bord, centralisant ainsi toutes les informations importantes.",
     },
     {
       title:
-        "Comment puis-je visualiser les coiffures souhaitées par mes clients avec OneHaircut ?",
+        "Comment puis-je visualiser les coiffures souhaitées par mes clients avec Onehaircut ?",
       answer:
-        "OneHaircut affiche directement la coiffure souhaitée par le client. Si une personnalisation est nécessaire, vous pouvez discuter des préférences de style avec les clients grâce à notre système de messagerie intégré.",
+        "Onehaircut affiche directement la coiffure souhaitée par le client. Si une personnalisation est nécessaire, vous pouvez discuter des préférences de style avec les clients grâce à notre système de messagerie intégré.",
     },
     {
       title:
-        "Est-ce que OneHaircut garantit la sécurité de mes données et des transactions financières ?",
+        "Est-ce que Onehaircut garantit la sécurité de mes données et des transactions financières ?",
       answer:
-        "La sécurité de vos données est notre priorité. OneHaircut utilise des protocoles de sécurité avancés pour protéger vos informations et garantir des transactions financières sécurisées.",
+        "La sécurité de vos données est notre priorité. Onehaircut utilise des protocoles de sécurité avancés pour protéger vos informations et garantir des transactions financières sécurisées.",
     },
   ];
   const [openQuestion, setOpenQuestion] = useState<number | null>(0);
@@ -117,7 +117,7 @@ const Registration = () => {
                 Bien plus qu’un booker !
               </p>
               <p className="font-semibold text-2xl sm:text-3xl lg:text-5xl text-black text-center mt-1">
-                <span className="text-gradient">OneHaircut</span> devient votre
+                <span className="text-gradient">Onehaircut</span> devient votre
                 associer
               </p>
             </div>

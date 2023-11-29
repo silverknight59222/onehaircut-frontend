@@ -31,6 +31,7 @@ import RechartsLineChart from "@/views/charts/chartjs/RechartsLineChart";
 import { Theme_A } from "@/components/utilis/Themes";
 import ConversionChart from "@/views/charts/chartjs/ConversionChart";
 import Pagination from "@/components/UI/Pagination";
+import HairdresserRevenueBarChart from "./ModalComponent/HairdresserRevenueBarChart";
 
 
 const Dashboard = () => {
@@ -225,20 +226,6 @@ const Dashboard = () => {
 
 
     // Calcul du pourcentage des commandes par rapport aux visites
-    const tauxDeConversion = Math.round(FakeConversionValue / FakeVisiteCount * 100);
-    let indiceTauxConversion;
-    let couleurTaux;
-
-    if (tauxDeConversion >= 0 && tauxDeConversion <= 5) {
-        indiceTauxConversion = "Faible";
-        couleurTaux = 'rgba(255, 70, 70, 1)';
-    } else if (tauxDeConversion > 5 && tauxDeConversion <= 10) {
-        indiceTauxConversion = "Intéressant";
-        couleurTaux = 'rgba(255, 165, 0, 1)';
-    } else if (tauxDeConversion > 10) {
-        indiceTauxConversion = "Performant";
-        couleurTaux = 'rgba(50, 151, 80, 1)';
-    }
 
     const getColorForValue = (value: any) => {
         const seuilBas = 5;
@@ -253,17 +240,6 @@ const Dashboard = () => {
         }
     };
 
-
-    const conversionData = [
-        { name: 'Commandes', value: FakeConversionValue, color: getColorForValue(tauxDeConversion) },
-        { name: 'Visites', value: FakeVisiteCount, color: "rgba(16, 161, 216, 1)" },
-    ];
-
-
-    const onPageChangeEvent = (page) => {
-        //console.log(page)
-    }
-
     const [salonStats, setSalonStats] = useState({
         total_views: 0,
         total_unique_customer: 0,
@@ -275,17 +251,18 @@ const Dashboard = () => {
     const fetchStats = async () => {
         await dashboard.salonStats()
             .then((resp) => {
-                //console.log(resp.data)
                 setSalonStats(resp.data);
             });
     }
 
     useEffect(() => {
         fetchStats()
-    },[])
+    }, [])
 
 
 
+    // TODO EMAIL ADDRESS VEIRIFICATION DONE : 
+    const [isEmailVerified, setIsEmailVerified] = useState(false);
 
     return (
         <div className="px-4 lg:px-6">
@@ -324,7 +301,11 @@ const Dashboard = () => {
                     </Grid>
                 </Grid>
 
-
+                {!isEmailVerified && (
+                    <p className="text-red-600 text-center mt-2">
+                        Adresse email non vérifiée
+                    </p>
+                )}
                 {/* APPERçU ANALYTIQUE */}
                 <p className="text-primary text-2xl font-semibold mb-3 ">
                     Aperçu analytique
@@ -456,7 +437,7 @@ const Dashboard = () => {
                         </div>
                     </Card>
                     {/* OBJECTIFS CHART */}
-                    <Card className="h-full flex flex-col justify-start rounded-xl">
+                    <Card className="h-full flex flex-col justify-start rounded-xl text-sm">
                         <div>
                             {/* Ligne du haut */}
                             <Grid container justifyContent="center" alignItems="start" spacing={2}>
@@ -616,16 +597,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* CLIENT CONVERSION CHART */}
-                <div style={{ width: '32%' }} className="px-3 md:w-4/12 h-[460px] overflow-auto w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-xl shadow-sm shadow-stone-600">
-                    <p className="text-xl sm:text-2xl text-[#727272] font-semibold text-center mt-6 ">
-                        Taux de Conversion: <span style={{ color: couleurTaux }}>{indiceTauxConversion}</span>
-                    </p>
-                    {/* Wrapper for ProgressBar components */}
-                    <div className="flex flex-wrap items-center justify-center gap-4 ">
-                        <ConversionChart data={conversionData}
-                        />
-                    </div>
-                </div>
+                    <ConversionChart data={salonStats}/>
 
                 {/* TOP CLIENTS TABS*/}
                 <div style={{ width: '32%' }} className="px-3 md:w-4/12 w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-xl shadow-sm shadow-stone-600">
@@ -709,16 +681,7 @@ const Dashboard = () => {
             {/* <Pagination from={1} to={10} perPage={10} total={123} currentPage={6} lastPage={13} onPageChangeEvent={onPageChangeEvent}></Pagination> */}
 
             {/* BAR CHART STAFF PAYLOAD */}
-            <div className="rounded-xl shadow-sm shadow-stone-600 mb-20">
-                <RechartSingleBarChart
-                    direction="ltr"
-                    staffData={staffData}
-                    fill={''}
-                    barSize={200}
-                    chartTitle="Charge générale liées aux commandes"
-                    chartTitleColor="rgba(150,150,150,1)"
-                />
-            </div>
+            <HairdresserRevenueBarChart period={selectedMonthPayload}></HairdresserRevenueBarChart>
 
 
         </div >

@@ -53,6 +53,7 @@ function StripePayment() {
       payment_method: "",
       plan_id: "",
       plan_name: "",
+      plan_slug: ""
     };
     const userInfo = JSON.parse(getLocalStorage("user_Info") as string);
     const salonName = getLocalStorage("salon_name") as string;
@@ -71,11 +72,13 @@ function StripePayment() {
     data.salon_type = salonType;
     data.payment_method = paymentMethod || "";
     data.plan_id = planType.plan_id;
-    if (planType.name === "OneHaircut Regular") {
-      data.plan_name = "Standard";
-    } else if (planType.name === "OneHaircut Pro") {
-      data.plan_name = "Pro";
-    }
+    data.plan_name = planType.name;
+    data.plan_slug = planType.slug;
+    // if (planType.name === "OneHaircut Regular") {
+    //   data.plan_name = "Standard";
+    // } else if (planType.name === "OneHaircut Pro") {
+    //   data.plan_name = "Pro";
+    // }
     await registration
       .registerSalon(data)
       .then((res) => {
@@ -85,7 +88,6 @@ function StripePayment() {
         setLocalStorage('hair_salon', JSON.stringify(res.data.hair_salon));
 
         showSnackbar("success", "Salon successfully created");
-
         // removeFromLocalStorage('user_Info')
         // removeFromLocalStorage('salon_name')
         // removeFromLocalStorage('salon_address')

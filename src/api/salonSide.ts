@@ -45,6 +45,15 @@ const salonApi = {
     },
     updateBookingHairDresser: async (bookingId: number, hair_dresser_id: number) => {
       return await request.post(`/update-booking-hairdresser/${bookingId}`, {hair_dresser_id});
-    }
+    },    
+    getSubscription: async () => {
+      return await request.get('/current-plan');
+    },
+    upgradeToProPlan: async () => {
+      return await request.post(`/upgrade-plan`);
+    },
+    downgradeToFreePlan: async () => {
+      return await request.post(`/downgrade-plan`);
+    },
 }
 export { salonApi };

@@ -9,11 +9,11 @@ import { Theme_A } from "@/components/utilis/Themes";
 
 const Index = () => {
   const router = useRouter();
-  const userInfo = getLocalStorage("user") ? JSON.parse(getLocalStorage("user") as string) : null;
+  const userInfo = getLocalStorage("user_info") ? JSON.parse(getLocalStorage("user_info") as string) : '';
   const salonName = getLocalStorage("salon_name") as string;
-  const salon = getLocalStorage("selectedSalon") ? JSON.parse(getLocalStorage("selectedSalon") as string) : null;
+  const salon = getLocalStorage("selectedSalon") ? JSON.parse(getLocalStorage("selectedSalon") as string) : '';
   const salonType = getLocalStorage("salon_type") as string;
-  const planType = getLocalStorage("plan_type") ? JSON.parse(getLocalStorage("plan_type") as string) : null;
+  const planType = JSON.parse(getLocalStorage("plan_type") as string);
   const priceData = getLocalStorage('servicePrice')
   const servicePrice = priceData ? JSON.parse(priceData) : null
   const items = [

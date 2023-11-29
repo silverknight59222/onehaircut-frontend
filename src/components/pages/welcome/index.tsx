@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { Like, LogoIcon, StarIcon } from "@/components/utilis/Icons";
+import { Like, LogoIcon, StarIcon, InfoNodalIcon } from "@/components/utilis/Icons";
 import { dashboard } from "@/api/dashboard";
 import userLoader from "@/hooks/useLoader";
 import { Haircut } from "@/types";
@@ -13,6 +13,7 @@ import ScrollToTopButton from "@/components/utilis/Helper";
 import Footer from "@/components/UI/Footer";
 import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 import BaseModal from "@/components/UI/BaseModal";
+import InfoModal from "@/components/UI/InfoModal";
 //import StarRatings from "react-star-ratings";
 
 
@@ -305,6 +306,13 @@ const Welcome = () => {
   }, [isModal]);
 
 
+  const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+  const openInfoModal = () => {
+    setIsInfoModalOpen(true);
+  };
+  const closeInfoModal = () => {
+    setIsInfoModalOpen(false);
+  };
 
   return (
     <>
@@ -312,22 +320,45 @@ const Welcome = () => {
       <div className="flex flex-col items-center justify-center w-full overflow-hidden">
 
         {isLoading && loadingView()}
-        <p className="mt-10 sm:mt-14 mb-6  md:w-[700px] text-black text-center font-semibold text-3xl px-2 md:px-10">
+        <p className="mt-10 sm:mt-14 mb-6 md:w-[700px] text-black text-center font-semibold text-3xl px-2 md:px-10">
           Des doutes sur la finition ? pr&eacute;visualisez{" "}
         </p>
         <p className="text-4xl font-medium text-center mb-12">
-          <span className=" font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-30 to-yellow-300">votre style !</span>
+          <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-30 to-yellow-300">votre style !</span>
         </p>
-        <div className="flex flex-col md:flex-row gap-4 mb-10 sm:mb-10 ">
+
+        <div className="flex items-center justify-center w-full mb-10 sm:mb-10">
+          {/* Espace vide pour centrer le bouton */}
+          <div style={{ width: '48px' }}></div>
+
+          {/* Bouton Recherche un soin centré */}
           <div
-            className={`${Theme_A.button.bigWhiteGreyButton} shadow-sm shadow-stone-600 hover:shadow-md hover:shadow-stone-600 cursor-pointer `}
-            onClick={() => {
-              router.push('/services');
-            }}
+            className={`${Theme_A.button.bigWhiteGreyButton} ...`}
+            onClick={() => router.push('/services')}
           >
             Rechercher un soin / service uniquement
           </div>
+
+
+          {/* Icône Info à droite du bouton */}
+          <div >
+            {/* Modal */}
+            {isInfoModalOpen && (
+              <InfoModal close={closeInfoModal} >
+                {/* Mettez ici le contenu de votre modal */}
+                <p>Contenu du modal</p>
+              </InfoModal>
+            )}
+            <div className="animate-pulse hover:scale-110 transition duration-300 cursor-pointer ml-4 z-1000">
+              {/* Icône Info qui ouvre le modal */}
+              <div onClick={openInfoModal}>
+                <InfoNodalIcon />
+              </div>
+            </div>
+          </div>
         </div>
+
+
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-12 ">
           {haircuts().map((item, index) => {
             return <div key={index} onClick={() => onClickHaircut(item.id, item.name, item.image)} className={`shadow-md rounded-xl my-2 cursor-pointer border hover:outline outline-1 outline-stone-400 ${item.id === haircut?.id}`}>

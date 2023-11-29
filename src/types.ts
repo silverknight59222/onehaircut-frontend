@@ -138,11 +138,30 @@ export type Chat={
 }
 
 interface Client{
-	name: string
+	name: string,
+	front_profile: string
 }
 
 export type ClientChat={
 	id?: number,
 	client_id: number,
 	client: Client
+}
+
+export type Subscription={
+	created_at: string,
+	current_period_end: string,
+	ends_at: string|null,
+	id: number,
+	items: any,
+	name: string,
+	owner: any,
+	quantity: number,
+	stripe_id: string,
+	stripe_price: string,
+	stripe_status: string,
+	trial_ends_at: string | null,
+	updated_at: string,
+	user_id: number,
+	readable_trial_period:string
 }

@@ -12,6 +12,8 @@ import { Value } from 'react-phone-number-input'
 import 'react-phone-number-input/style.css'
 import { Theme_A } from "@/components/utilis/Themes";
 import CustomInput from "@/components/UI/CustomInput";
+import 'react-phone-number-input/style.css'
+
 
 const inputFieldsDesignNoW = `border-2 border-red-500 p-3 placeholder:text-[#959595] placeholder:text-base ${Theme_A.behaviour.fieldFocused_B}${Theme_A.fields.inputField}`
 
@@ -64,8 +66,29 @@ const Step3 = () => {
     }));
 
   }
+  
+  // const setPhone = (value: string) => {
 
+  //   if (value && isValidPhoneNumber(value) === true) {
+  //     setError((prev) => {
+  //       return { ...prev, phone: "" };
+  //     });
+  //     setUserDetails((prevState) => ({
+  //       ...prevState,
+  //       phone: value,
+  //     }));
 
+  //   } else {
+  //     setError((prev) => {
+  //       return { ...prev, phone: "Entrer un numéro valide" };
+  //     });
+  //   }    
+    
+  // }
+
+  // const setFocus = () => {    
+  //   document.querySelector<HTMLInputElement>(`div[id=phone-custom]`)?.focus()
+  // }
   const [showPassword, setShowPassword] = useState(false);
 
   const onChangePassword = (value: string) => {
@@ -88,7 +111,9 @@ const Step3 = () => {
     const phone = userDetails.phone
     let valid = false; // 
     // check first numbers
-    if (phone[0] != "0") { // doesn't start with 0
+    console.log(phone[0])
+    console.log(phone[1])
+    if (phone[0] != "+") { // doesn't start with 0
       setError((prev) => {
         return { ...prev, phone: "Entrer un numéro valide" };
       });
@@ -111,13 +136,14 @@ const Step3 = () => {
         valid = true;
       }
     } else {
+      console.log('yes international')
       // international number
       if (phone.length < 6) {
         // too short
         setError((prev) => {
           return { ...prev, phone: "Numéro trop court" };
         });
-      } else if (phone.length > 16) {
+      } else if (phone.length > 16) {        
         setError((prev) => {
           return { ...prev, phone: "Numéro trop long" };
         });

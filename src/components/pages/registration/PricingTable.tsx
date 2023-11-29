@@ -49,7 +49,7 @@ const PricingTable = () => {
             className="w-[324px] absolute -top-24 left-[245px] flex flex-col items-center justify-center py-6 rounded-[20px] cursor-pointer"
           >
             <div className={activePlan === "pro" ? "text-3xl font-semibold text-white w-48 text-center" : "text-3xl font-semibold text-black w-48 text-center"}>
-              OneHaircut Pro
+              Onehaircut Pro
             </div>
             <div className={activePlan === "pro" ? "flex items-center justify-center bg-[rgba(255,255,255,0.53)] mb-14 rounded-lg w-36 h-10 text-white font-semibold" : "flex items-center justify-center bg-slate-200 mb-14 rounded-lg w-36 h-10 text-black font-semibold"}>
               recommandé
@@ -82,7 +82,7 @@ const PricingTable = () => {
             }}
             className="w-[324px] absolute -top-24 left-[560px] flex flex-col items-center justify-center pt-6 pb-9 rounded-[20px] cursor-pointer">
             <div className={activePlan === "standard" ? "text-3xl font-semibold text-white w-48 text-center mb-24" : "text-3xl font-semibold text-black w-48 text-center mb-24"}>
-              OneHaircut standard
+              Onehaircut standard
             </div>
             <div className="w-full border-r-2 border-[#E4E8E9]">
               {packageNames.map((_, index) => {
@@ -128,7 +128,7 @@ const PricingTable = () => {
         </div>
         <div className={`flex relative content-center justify-center items-center text-center`}>
           <div
-            onClick={() => router.push('registration/plans?plan=standard')}
+            onClick={() => router.push(`registration/plans?plan=${activePlan}`)}
             className={`flex items-center justify-center rounded-xl  w-2/5 h-16 cursor-pointer ${Theme_A.button.bigGradientButton} `}>
             Vers le choix de l'abonnement
           </div>
