@@ -136,7 +136,7 @@ const Messages = () => {
                                         <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row sm:items-center lg:items-start xl:items-center justify-center gap-2 sm:gap-4">
                                             {/* Image du Salon */}
                                             <img
-                                                src={`https://api.onehaircut.com${salon.logo}`}
+                                                src={`${salon.logo}`}
                                                 alt={salon.name}
                                                 style={{
                                                     width: '40px',
