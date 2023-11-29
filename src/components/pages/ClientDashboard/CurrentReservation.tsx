@@ -255,65 +255,65 @@ const Currentreservation = () => {
                     {items.map((item, index) => {
                         return (
                             <div key={index} className={`relative z-10 w-full xl:w-[800px]  rounded-3xl bg-white border-2 border-zinc-100 py-6 px-12 shadow-sm shadow-stone-600 mb-12`}>
-                                <div className='flex flex-col-reverse sm:flex-row items-center sm:items-start justify-between'>
-                                    <div className='flex flex-col items-center sm:items-start justify-center sm:justify-start gap-5 mt-5 sm:mt-0'>
+                                <div className='grid grid-cols-2 gap-4 '>
+                                    <div className='flex flex-col items-start justify-start gap-5 mt-5 sm:mt-0'>
                                         <div>
-                                            <p className='text-[#444343] font-bold text-center sm:text-start'>Date</p>
-                                            <p className='text-[#666] text-sm text-center sm:text-start'>{formatFrenchDate(item.redable_date)}</p>
+                                            <p className='text-[#444343] font-bold text-start'>Date</p>
+                                            <p className='text-[#666] text-sm text-start'>{formatFrenchDate(item.redable_date)}</p>
                                         </div>
                                         <div>
-                                            <p className='text-[#444343] font-bold text-center sm:text-start'>Durée</p>
-                                            <p className='text-[#666] text-sm text-center sm:text-start'>{item.total_duration} mins</p>
+                                            <p className='text-[#444343] font-bold text-start'>Durée</p>
+                                            <p className='text-[#666] text-sm text-start'>{item.total_duration} mins</p>
                                         </div>
                                         {item.haircut && <div>
-                                            <p className='text-[#444343] font-bold text-center sm:text-start'>Coiffure</p>
-                                            <p className='text-[#666] text-sm text-center sm:text-start'>{item.haircut.name}</p>
+                                            <p className='text-[#444343] font-bold text-start'>Coiffure</p>
+                                            <p className='text-[#666] text-sm text-start'>{item.haircut.name}</p>
                                         </div>}
                                         {item.salon_haircut && <div>
-                                            <p className='text-[#444343] font-bold text-center sm:text-start'>Prix coiffure</p>
-                                            <p className='text-[#666] text-sm text-center sm:text-start'>{item.salon_haircut.base_price}€</p>
+                                            <p className='text-[#444343] font-bold text-start'>Prix coiffure</p>
+                                            <p className='text-[#666] text-sm text-start'>{item.salon_haircut.base_price}€</p>
                                         </div>}
                                         <div>
-                                            <p className='text-[#444343] font-bold text-center sm:text-start'>Prestation</p>
+                                            <p className='text-[#444343] font-bold text-start'>Prestation</p>
                                             {
                                                 item.items.filter((ele) => ele.type == 'service').map((ele, index) => {
 
                                                     if (ele.name) {
-                                                        return (<p key={index} className='text-[#666] text-sm text-center sm:text-start'>{ele.name}.</p>);
+                                                        return (<p key={index} className='text-[#666] text-sm text-start'>{ele.name}.</p>);
                                                     }
                                                     else {
-                                                        return (<p key={index} className='text-[#666] text-sm text-center sm:text-start'>-</p>);
+                                                        return (<p key={index} className='text-[#666] text-sm text-start'>-</p>);
                                                     }
                                                 })
                                             }
-                                            {item.items.filter((ele) => ele.type == 'service').length == 0 && <p key={index} className='text-[#666] text-sm text-center sm:text-start'>-</p>}
+                                            {item.items.filter((ele) => ele.type == 'service').length == 0 && <p key={index} className='text-[#666] text-sm text-start'>-</p>}
                                         </div>
                                         <div>
-                                            <p className='text-[#444343] font-bold text-center sm:text-start'>Prix prestation</p>
-                                            <p key={index} className='text-[#666] text-sm text-center sm:text-start'>{item.total_service_price}€</p>
+                                            <p className='text-[#444343] font-bold text-start'>Prix prestation</p>
+                                            <p key={index} className='text-[#666] text-sm text-start'>{item.total_service_price}€</p>
                                             {/* {item.total_amount}</p> */}
                                         </div>
                                         <div>
-                                            <p className='text-[#444343] font-bold text-center sm:text-start'>Coiffeur</p>
-                                            <p className='text-[#666] text-sm text-center sm:text-start'>{item.hair_dresser_info.name}</p>
+                                            <p className='text-[#444343] font-bold text-start'>Coiffeur</p>
+                                            <p className='text-[#666] text-sm text-start'>{item.hair_dresser_info.name}</p>
                                         </div>
                                     </div>
-                                    <div>
-                                        {item.haircut && <div className="relative xl:w-[200px] xl:h-[200px] lg:w-[150px] lg:h-[150px] sm:w-[100px] sm:h-[100px] mb-5">
+                                    <div className="">
+                                        {item.haircut && <div className="relative w-28 h-28 xl:w-[200px] xl:h-[200px] lg:w-[150px] lg:h-[150px] sm:w-[130px] sm:h-[130px] mb-5">
                                             <Image src={`https://api.onehaircut.com${item.haircut.image}`} alt='' fill={true} className='rounded-3xl ' />
                                         </div>}
                                         <div className='flex flex-col items-center sm:items-start justify-center sm:justify-start gap-4 mt-5 sm:mt-0'>
                                             <div>
-                                                <p className='text-[#494949] font-bold text-center sm:text-start'>Salon</p>
-                                                <p className='text-[#666] text-sm text-center sm:text-start'>{item.salon_info.name}</p>
+                                                <p className='text-[#494949] font-bold text-start'>Salon</p>
+                                                <p className='text-[#666] text-sm text-start'>{item.salon_info.name}</p>
                                             </div>
                                             <div>
-                                                <p className='text-[#494949] font-bold text-center sm:text-start'>Addresse du salon</p>
-                                                <p className='text-[#666] text-sm text-center sm:text-start'>{item.hair_salon.address.street} {item.hair_salon.address.city} {item.hair_salon.address.state} {item.hair_salon.address.country}</p>
+                                                <p className='text-[#494949] font-bold text-start'>Addresse du salon</p>
+                                                <p className='text-[#666] text-sm text-start'>{item.hair_salon.address.street} {item.hair_salon.address.city} {item.hair_salon.address.state} {item.hair_salon.address.country}</p>
                                             </div>
                                             <div>
-                                                <p className='text-[#494949] font-bold text-center sm:text-start'>Telephone</p>
-                                                <p className='text-[#666] text-sm text-center sm:text-start'>{item.hair_salon.phone || '-'}</p>
+                                                <p className='text-[#494949] font-bold text-start'>Telephone</p>
+                                                <p className='text-[#666] text-sm text-start'>{item.hair_salon.phone || '-'}</p>
                                             </div>
                                         </div>
                                         <div className='flex  justify-start mt-10 sm:mt-5'>

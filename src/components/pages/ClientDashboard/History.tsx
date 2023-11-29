@@ -120,7 +120,10 @@ const History = () => {
         if (currentPage == 1) {
           setHistories(resp.data.bookings);
         } else {
-          setHistories(prevData => [{ ...prevData, ...resp.data.bookings }]);
+          setHistories((prevData) => {
+            prevData.push(...resp.data.bookings)
+            return [...prevData]
+          });
         }
 
         setItemCount(resp.data.count);
@@ -214,16 +217,16 @@ const History = () => {
                           <div>
                             <p className='text-[#666] text-sm text-center sm:text-start'>Prestation:</p>
                             {
-                              item.items.filter((ele) => ele.type == 'service').map((ele, index) => {
+                              item.items && item.items.filter((ele) => ele.type == 'service').map((ele, index) => {
                                 return (<li key={index} className='text-[#666] text-sm text-center sm:text-start'>{ele.name}.</li>)
                               })
                             }
-                            {item.items.filter((ele) => ele.type == 'service').length == 0 && <p key={index} className='text-[#666] text-sm text-center sm:text-start'>none.</p>}
+                            {item.items && item.items.filter((ele) => ele.type == 'service').length == 0 && <p key={index} className='text-[#666] text-sm text-center sm:text-start'>none.</p>}
                           </div>
 
                           <p className='text-[#666] text-sm text-center sm:text-start'>Prix: {item.total_amount} euro</p>
-                          <p className='text-[#666] text-sm text-center sm:text-start'>Salon: {item.hair_salon.name}</p>
-                          <p className='text-[#666] text-sm text-center sm:text-start'>Coiffeur: {item.hair_dresser.name}</p>
+                          <p className='text-[#666] text-sm text-center sm:text-start'>Salon: {item.hair_salon && item.hair_salon.name}</p>
+                          <p className='text-[#666] text-sm text-center sm:text-start'>Coiffeur: {item.hair_dresser && item.hair_dresser.name}</p>
 
                         </div>
                         <div className='w-[150px] mr-3'>

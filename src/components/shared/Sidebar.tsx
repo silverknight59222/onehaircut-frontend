@@ -51,6 +51,7 @@ const colorIcon = "#FFFFFF"
 const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }: SidebarType) => {
   // State to store salon details
   const [salonDetail, setSalonDetails] = useState<SalonDetails[]>();
+  const [notifications, setNotifications] = useState({} as any);
   // State to store active salon info
   const [activeSalon, setActiveSalon] = useState<SalonDetails>();
   // State to store sidebar items
@@ -225,8 +226,20 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
       });
     }
   }
+
+  const fetchSalonNotifications = async () => {
+    const {data} = await dashboard.salonNotification()
+    setNotifications(data)
+  }
+
+  const fetchUserNotifications = async () => {
+    const {data} = await dashboard.userNotification()
+    setNotifications(data)
+  }
+
   // Use effect to fetch data on component mount
   useEffect(() => {
+    
     const temp = getLocalStorage("user");
     const user = temp ? JSON.parse(temp) : null;
 
@@ -246,8 +259,10 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
       setSidebarItem(sidebarItems)
     }
     if (user.role == 'client') {
+      fetchUserNotifications()
       setImageUrl(user.front_profile);
     } else {
+      fetchSalonNotifications()
       if (salonInfo) {
         setSalon([salonInfo])
         setSalonDetails(salonInfo)
@@ -478,9 +493,9 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
                         )}
                         {/* TODO make the message notification number dynamic */}
                         {/* {item.title === 'Message' && <p className="absolute top-3 -right-2.5 flex items-center justify-center w-4 h-4 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold">2</p>} */}
-                        {(item.title === 'Message') && < p className="left-56 top-[2.6px]	absolute flex items-center justify-center w-5 h-5 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold">2</p>}
-                        {(item.title === 'Réservations en cours') && < p className="left-56 top-[2.6px]	absolute  flex items-center justify-center w-5 h-5 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold">2</p>}
-                        {(item.title === 'Historique') && < p className="left-56 top-[2.6px]	absolute  flex items-center justify-center w-5 h-5 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold">2</p>}
+                        {(item.title === 'Message') && < p className="left-56 top-[2.6px]	absolute flex items-center justify-center w-5 h-5 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold"> {notifications.chat_count} </p>}
+                        {(item.title === 'Réservations en cours') && < p className="left-56 top-[2.6px]	absolute  flex items-center justify-center w-5 h-5 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold"> {notifications.reservation_count} </p>}
+                        {(item.title === 'Historique') && < p className="left-56 top-[2.6px]	absolute  flex items-center justify-center w-5 h-5 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold"> {notifications.history_count} </p>}
 
 
                       </div>

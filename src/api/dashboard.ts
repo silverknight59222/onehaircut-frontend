@@ -188,6 +188,12 @@ const dashboard = {
   dayWiseVisitChart: async (period) => {
     return await request.get<any>(`day_wise_visit_chart`, {params: {period : period}});
   },
+  salonNotification: async () => {
+    return await request.get<any>(`hair_salon_notification`);
+  },
+  userNotification: async () => {
+    return await request.get<any>(`user_notification`);
+  },
 };
 
 export { dashboard };
