@@ -71,11 +71,12 @@ function StripePayment() {
     data.salon_type = salonType;
     data.payment_method = paymentMethod || "";
     data.plan_id = planType.plan_id;
-    if (planType.name === "OneHaircut Regular") {
-      data.plan_name = "Standard";
-    } else if (planType.name === "OneHaircut Pro") {
-      data.plan_name = "Pro";
-    }
+    data.plan_name = planType.name;
+    // if (planType.name === "OneHaircut Regular") {
+    //   data.plan_name = "Standard";
+    // } else if (planType.name === "OneHaircut Pro") {
+    //   data.plan_name = "Pro";
+    // }
     await registration
       .registerSalon(data)
       .then((res) => {

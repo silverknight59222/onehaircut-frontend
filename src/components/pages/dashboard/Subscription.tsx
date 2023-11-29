@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DashboardLayout from "@/layout/DashboardLayout";
 import {
   BgDashboardPricingTable,
@@ -16,7 +16,8 @@ import Footer from "@/components/UI/Footer";
 import BaseModal from "@/components/UI/BaseModal";
 import { useRouter } from "next/navigation";
 import PaymentModal from "./PaymentModal";
-import { dashboard } from "@/api/dashboard";
+import { salonApi } from '@/api/salonSide';
+import { Subscription } from "../../../types";
 
 const SubSelected_text = "text-white"
 const SubSelected_recommended = "bg-[rgba(255,255,255,0.53)] text-white"
@@ -28,7 +29,24 @@ const SubUnselected_BG = `bg-white`
 
 const Subscription = () => {
   const router = useRouter();
+  const defaultSubscription = {
+    created_at: '',
+    current_period_end: '',
+    ends_at: '',
+    id: 0,
+    items: {},
+    name: '',
+    owner: {},
+    quantity: 0,
+    stripe_id: '',
+    stripe_price: '',
+    stripe_status: '',
+    trial_ends_at: '',
+    updated_at: '',
+    user_id: 0
+  }
   const [isAutomaticRenewal, setIsAutomaticRenewal] = useState(true);
+  const [currentPlan, setCurrentPlan] = useState<Subscription>(defaultSubscription);
   const packageNames = [
     "Agenda dynamique",
     "Mise en avant de votre salon",
@@ -49,22 +67,36 @@ const Subscription = () => {
     //console.log("PAY");
   }
 
+  useEffect(() => {
+    fetchSubscription();    
+  }, []);
+
+  const fetchSubscription = async () => {
+    const resp = await salonApi.getSubscription()
+    if (resp.data.data.subscription) {
+      setCurrentPlan(resp.data.data.subscription)
+    }
+    if (resp.data.data.subscription && resp.data.data.subscription.name == 'OneHaircut Pro') {      
+      setIsCurrSubscriptionPro(true) 
+    } else {
+      setIsCurrSubscriptionPro(false)
+    }
+}
   // const modifBankCard: React.JSX.Element =
   //   <div>
   //       <PaymentModal handleClickPay={handleClickPay} />
   //   </div >;
 
   const handleClickPro = async () => {
-    const accountSid = 'AC99a58b7c8d4cdeab1c149da8f1d02afe';
-    const authToken = '383a31d3080accbe3a0c3f992eeb6854';
-    const data = {
-      accountSid: accountSid,
-      authToken: authToken
-    }
-    // const client = twilio(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
-    await dashboard.sendWhatsapp(data).then((resp) => {
-      //console.log(resp.data.data);
-    });
+    // const accountSid = 'AC99a58b7c8d4cdeab1c149da8f1d02afe';
+    // const authToken = '383a31d3080accbe3a0c3f992eeb6854';
+    // const data = {
+    //   accountSid: accountSid,
+    //   authToken: authToken
+    // }    
+    // await dashboard.sendWhatsapp(data).then((resp) => {
+    //   console.log(resp.data.data);
+    // });
 
 
     // const client = twilio(accountSid, authToken);
@@ -84,7 +116,41 @@ const Subscription = () => {
 
   // when clicking on the "choisir" button
   const handleClickChoose = () => {
-    setIsCurrSubscriptionPro(!isCurrSubscriptionPro)
+    console.log(isCurrSubscriptionPro);
+    
+    if (isCurrSubscriptionPro) {
+      downgradePlan()
+    } else {
+      upgradePlan()
+    }
+    //setIsCurrSubscriptionPro(!isCurrSubscriptionPro)
+    
+  }
+
+  const upgradePlan = async () => {
+    const resp = await salonApi.upgradeToProPlan()
+    if (resp.data.data.subscription) {
+      setCurrentPlan(resp.data.data.subscription)
+    }
+    if (resp.data.data.subscription && resp.data.data.subscription.name == 'OneHaircut Pro') {
+      
+      setIsCurrSubscriptionPro(true) 
+    } else {
+      setIsCurrSubscriptionPro(false)
+    }
+  }
+
+  const downgradePlan = async () => {
+    console.log('downgrading plan')
+    const resp = await salonApi.downgradeToFreePlan()
+    if (resp.data.data.subscription) {
+      setCurrentPlan(resp.data.data.subscription)
+    }
+    if (resp.data.data.subscription && resp.data.data.subscription.name == 'OneHaircut Pro') {      
+      setIsCurrSubscriptionPro(true) 
+    } else {
+      setIsCurrSubscriptionPro(false)
+    }
   }
 
   return (
@@ -133,7 +199,7 @@ const Subscription = () => {
                     </div>
                     <div className={`flex items-center justify-center mb-5 mt-1 rounded-lg w-36 h-10  font-semibold ${isCurrSubscriptionPro ? SubSelected_recommended : SubUnselected_recommended}`}>
                       recommandé
-                    </div>
+                    </div>                    
                     {packageNames.map((_, index) => {
                       return (
                         <div
@@ -207,10 +273,13 @@ const Subscription = () => {
             <div className="relative z-10 w-full sm:w-[450px] flex flex-col  sm:-mt-5 lg:mt-20 xl:mt-20">
 
               <div className="py-4 px-5 2xl:text-xl text-center text-black whitespace-nowrap bg-[#F4F4F6] font-medium border border-[#9B9B9B] rounded-xl">
-                <p>Votre contrat se termine le: 12 / 07 / 2024</p>
+                <p>Votre contrat se termine le: {currentPlan.current_period_end}</p>
 
+                { currentPlan && currentPlan.stripe_status && currentPlan.stripe_status == 'trialing' &&
+                  <p>Trial Ends on : {currentPlan.trial_ends_at}</p>
+                }
                 <div
-                  onClick={() => setIsAutomaticRenewal(!isAutomaticRenewal)}
+                  // onClick={() => setIsAutomaticRenewal(!isAutomaticRenewal)}
                   className="flex items-center justify-start gap-3 mt-4 cursor-pointer"
                 >
                   <div
@@ -220,7 +289,7 @@ const Subscription = () => {
                       }`}
                   >
                     {isAutomaticRenewal && (
-                      <CheckedIcon width="15" height="10" />
+                      <CheckedIcon width="15" height="10"/>
                     )}
                   </div>
                   <p>Renouvellement&nbsp;Automatique</p>

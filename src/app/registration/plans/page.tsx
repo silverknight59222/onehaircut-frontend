@@ -108,9 +108,9 @@ const Page = ({ params }: Params) => {
           <div onClick={() => router.push('/')} className="w-full flex items-center justify-start gap-5 px-4 md:px-14 py-5 cursor-pointer">
             <LogoIcon />
           </div>
-          <div className="w-full flex items-center justify-center sm:justify-end gap-4 sm:px-14">
+          {/* <div className="w-full flex items-center justify-center sm:justify-end gap-4 sm:px-14">
             <UserProfile />
-          </div>
+          </div> */}
         </div>
         {plans.length > 1 && (<div className="flex flex-col items-center justify-center mt-12 px-6 w-full overflow-hidden">
           <div className="flex sm:flex-row flex-col gap-2 sm:gap-0 w-full items-center justify-center mb-6 max-w-[1300px] 2xl:max-w-[1340px]">
