@@ -225,20 +225,7 @@ const Dashboard = () => {
 
 
     // Calcul du pourcentage des commandes par rapport aux visites
-    const tauxDeConversion = Math.round(FakeConversionValue / FakeVisiteCount * 100);
-    let indiceTauxConversion;
-    let couleurTaux;
-
-    if (tauxDeConversion >= 0 && tauxDeConversion <= 5) {
-        indiceTauxConversion = "Faible";
-        couleurTaux = 'rgba(255, 70, 70, 1)';
-    } else if (tauxDeConversion > 5 && tauxDeConversion <= 10) {
-        indiceTauxConversion = "Intéressant";
-        couleurTaux = 'rgba(255, 165, 0, 1)';
-    } else if (tauxDeConversion > 10) {
-        indiceTauxConversion = "Performant";
-        couleurTaux = 'rgba(50, 151, 80, 1)';
-    }
+    
 
     const getColorForValue = (value: any) => {
         const seuilBas = 5;
@@ -252,17 +239,6 @@ const Dashboard = () => {
             return 'rgba(50, 120, 80, 1)'; // Vert
         }
     };
-
-
-    const conversionData = [
-        { name: 'Commandes', value: FakeConversionValue, color: getColorForValue(tauxDeConversion) },
-        { name: 'Visites', value: FakeVisiteCount, color: "rgba(16, 161, 216, 1)" },
-    ];
-
-
-    const onPageChangeEvent = (page) => {
-        //console.log(page)
-    }
 
     const [salonStats, setSalonStats] = useState({
         total_views: 0,
@@ -616,16 +592,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* CLIENT CONVERSION CHART */}
-                <div style={{ width: '32%' }} className="px-3 md:w-4/12 h-[460px] overflow-auto w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-xl shadow-sm shadow-stone-600">
-                    <p className="text-xl sm:text-2xl text-[#727272] font-semibold text-center mt-6 ">
-                        Taux de Conversion: <span style={{ color: couleurTaux }}>{indiceTauxConversion}</span>
-                    </p>
-                    {/* Wrapper for ProgressBar components */}
-                    <div className="flex flex-wrap items-center justify-center gap-4 ">
-                        <ConversionChart data={conversionData}
-                        />
-                    </div>
-                </div>
+                    <ConversionChart data={salonStats}/>
 
                 {/* TOP CLIENTS TABS*/}
                 <div style={{ width: '32%' }} className="px-3 md:w-4/12 w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-xl shadow-sm shadow-stone-600">
