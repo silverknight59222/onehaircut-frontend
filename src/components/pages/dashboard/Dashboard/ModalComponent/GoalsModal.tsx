@@ -199,6 +199,7 @@ const GoalsModal = () => {
                                     number={bar.number}
                                     rotation={0.25}
                                     color={bar.color}
+
                                 />
                                 {/* Position Icon with absolute positioning */}
                                 <div style={{

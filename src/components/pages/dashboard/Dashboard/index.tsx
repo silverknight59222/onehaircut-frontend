@@ -282,10 +282,12 @@ const Dashboard = () => {
 
     useEffect(() => {
         fetchStats()
-    },[])
+    }, [])
 
 
 
+    // TODO EMAIL ADDRESS VEIRIFICATION DONE : 
+    const [isEmailVerified, setIsEmailVerified] = useState(false);
 
     return (
         <div className="px-4 lg:px-6">
@@ -324,7 +326,11 @@ const Dashboard = () => {
                     </Grid>
                 </Grid>
 
-
+                {!isEmailVerified && (
+                    <p className="text-red-600 text-center mt-2">
+                        Adresse email non vérifiée
+                    </p>
+                )}
                 {/* APPERçU ANALYTIQUE */}
                 <p className="text-primary text-2xl font-semibold mb-3 ">
                     Aperçu analytique
@@ -456,7 +462,7 @@ const Dashboard = () => {
                         </div>
                     </Card>
                     {/* OBJECTIFS CHART */}
-                    <Card className="h-full flex flex-col justify-start rounded-xl">
+                    <Card className="h-full flex flex-col justify-start rounded-xl text-sm">
                         <div>
                             {/* Ligne du haut */}
                             <Grid container justifyContent="center" alignItems="start" spacing={2}>

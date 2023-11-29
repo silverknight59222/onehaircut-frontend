@@ -72,7 +72,7 @@ const Step4 = () => {
           <div className="flex flex-col lg:flex-row items-center justify-center gap-6 lg:gap-12 bg-background-gradient rounded-tl-3xl rounded-tr-3xl text-white py-9 px-14">
             <p className="text-3xl text-center lg:text-start">
               Votre abonnement :{" "}
-              <span className="font-semibold">OneHaircut Pro</span>{" "}
+              <span className="font-semibold">Onehaircut Pro</span>{" "}
             </p>
             {/* <button className="flex items-center justify-center font-semibold text-lg w-32 h-10 border border-white rounded-xl">
               Modifier
