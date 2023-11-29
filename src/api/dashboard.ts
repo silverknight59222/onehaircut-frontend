@@ -167,6 +167,9 @@ const dashboard = {
   monthlyRevenueChart: async (period) => {
     return await request.get<any>(`revenue_chart`, {params: {period : period}});
   },
+  revenueStats: async (period) => {
+    return await request.get<any>(`revenue_stats`, {params: {period : period}});
+  },
   salonTransactionList: async (period, page) => {
     return await request.get<any>(`salon_transactions`, {params: {period : period, page: page}});
   },
