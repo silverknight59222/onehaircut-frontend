@@ -130,15 +130,18 @@ const Messages = () => {
                     <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row sm:items-center lg:items-start xl:items-center justify-center gap-2 sm:gap-4">
                       {/* Icône du client (décommentez si nécessaire) */}
                       <div className="flex items-center">
-                        {/* Cercle ajouté */}
-                        <div className="w-10 h-10 rounded-full border border-stone-200 bg-stone-50 mr-2">
-                        {client && client.client && client.client.front_profile && <img
+                        {/* Cercle ajouté */}                        
+                          
+                        { client && client.client && client.client.front_profile ? <img
                             src={client.client.front_profile}
                             alt="profile"
-                            className="rounded-full absolute inset-0 m-auto shadow-md transform transition-transform duration-300 group-hover:scale-90 hover:shadow-inner border-2 border-stone-200 h-24 w-24"
+                            className="rounded-full inset-0 m-auto shadow-md transform transition-transform duration-300 group-hover:scale-90 hover:shadow-inner border-2 border-stone-200 h-12 w-12"
                           />
+                          : 
+                          <div className="w-10 h-10 rounded-full border border-stone-200 bg-stone-50 mr-2">
+                          </div>
                         }                        
-                        </div>
+                        
                         <p className="ml-4 text-black">{client.client.name}</p>
 
                       </div>
