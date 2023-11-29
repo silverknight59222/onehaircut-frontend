@@ -33,18 +33,18 @@ const tableData = [
 
 
 // Define the staff data and fill color in the parent component
-const staffData = [
-    { name: 'Hairstyle 1', value: 8000 },
-    { name: 'Hairstyle 2', value: 7500 },
-    { name: 'Hairstyle 3', value: 6000 },
-    { name: 'Hairstyle 4', value: 4000 },
-    { name: 'Hairstyle 5', value: 3000 },
-    { name: 'Hairstyle 6', value: 2000 },
-    { name: 'Hairstyle 7', value: 1500 },
-    { name: 'Hairstyle 8', value: 1000 },
-    { name: 'Hairstyle 9', value: 500 },
-    { name: 'Hairstyle 10', value: 100 },
-];
+// const staffData = [
+//     { name: 'Hairstyle 1', value: 8000 },
+//     { name: 'Hairstyle 2', value: 7500 },
+//     { name: 'Hairstyle 3', value: 6000 },
+//     { name: 'Hairstyle 4', value: 4000 },
+//     { name: 'Hairstyle 5', value: 3000 },
+//     { name: 'Hairstyle 6', value: 2000 },
+//     { name: 'Hairstyle 7', value: 1500 },
+//     { name: 'Hairstyle 8', value: 1000 },
+//     { name: 'Hairstyle 9', value: 500 },
+//     { name: 'Hairstyle 10', value: 100 },
+// ];
 
 const fillColor = '#49A204'; // Example fill color
 const barSize = 80; // Example barSize
@@ -61,11 +61,17 @@ const IncomesModal = () => {
     }
     const [selectedMonthRevenu, setSelectedMonthRevenu] = useState(DisplayedMonths[0]);
     const [data, setData] = useState({} as any);
+    const [hairstyleData, setHairstyleData] = useState([] as any);
 
     const fetchRevenueStats = async (periodKey) => {
         const {data} = await dashboard.revenueStats(periodKey)
         console.log(data)
         setData(data)
+    }
+
+    const fetchHairstyleChart = async (periodKey) => {
+        const {data} = await dashboard.hairstyleChart(periodKey)
+        setHairstyleData(data.hairstyle_data)
     }
 
     useEffect(() => {
@@ -82,6 +88,7 @@ const IncomesModal = () => {
                 break;
         }
         fetchRevenueStats(periodKey)
+        fetchHairstyleChart(periodKey)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [selectedMonthRevenu])
 
@@ -233,7 +240,7 @@ const IncomesModal = () => {
                     <p className="text-neutral-500 font-semibold text-2xl text-center">
                         Top revenu coiffure
                     </p>
-                    <RechartSingleBarChart direction="ltr" chartTitle="Team Members" staffData={staffData} fill={fillColor} barSize={barSize} />
+                    <RechartSingleBarChart direction="ltr" chartTitle="Team Members" staffData={hairstyleData} fill={fillColor} barSize={barSize} />
                 </div>
             </div>
         </div>
