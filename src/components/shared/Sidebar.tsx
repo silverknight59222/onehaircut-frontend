@@ -240,11 +240,46 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
     const { data } = await dashboard.userNotification()
     setNotifications(data)
   }
-
+  const [isEmailVerified, setIsEmailVerified] = useState(true);
   // Use effect to fetch data on component mount
   useEffect(() => {
 
-    fetchUserInfo()
+    const temp = getLocalStorage("user");
+    const user = temp ? JSON.parse(temp) : null;
+
+    const tempSalon = getLocalStorage('hair_salon');
+
+    const salonInfo = tempSalon ? JSON.parse(tempSalon) : null;
+
+    // Utilisation de l'opérateur chaînage optionnel pour éviter l'erreur
+    if (!user?.subscription) {
+      const filteredRoutes = sidebarItems.filter(route => {
+        return !proRoutes.includes(route.route);
+      });
+      setSidebarItem(filteredRoutes)
+      applyPermissions(filteredRoutes);
+
+    } else {
+      setSidebarItem(sidebarItems)
+    }
+    if (user.role == 'client') {
+      fetchUserNotifications()
+      setImageUrl(user.front_profile);
+    } else {
+      fetchSalonNotifications()
+      if (salonInfo) {
+        setSalon([salonInfo])
+        setSalonDetails(salonInfo)
+        setImageUrl(salonInfo.logo);
+        setTextLength(salonInfo.description);
+        setTextDescription(salonInfo.description);
+      }
+    }
+    if (user.email_verified_at) {
+      setIsEmailVerified(true)
+    } else {
+      setIsEmailVerified(false)
+    }
 
   }, []);
 
@@ -305,49 +340,6 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
   const SetCurrentLogo = () => {
 
   }
-  const SetCurrentDescription = () => {
-
-  }
-  const [isEmailVerified, setIsEmailVerified] = useState(true);
-  const fetchUserInfo = async () => {
-    const resp = await client.getUserProfile()
-
-    const user = resp.data;
-    //const user = temp ? JSON.parse(temp) : null;
-
-
-    const salonInfo = user.hair_salon ? user.hair_salon : null;
-
-    // Utilisation de l'opérateur chaînage optionnel pour éviter l'erreur
-    if (!user?.subscription) {
-      const filteredRoutes = sidebarItems.filter(route => {
-        return !proRoutes.includes(route.route);
-      });
-      setSidebarItem(filteredRoutes)
-      applyPermissions(filteredRoutes);
-
-    } else {
-      setSidebarItem(sidebarItems)
-    }
-    if (user.role == 'client') {
-      fetchUserNotifications()
-      setImageUrl(user.front_profile);
-    } else {
-      fetchSalonNotifications()
-      if (salonInfo) {
-        setSalon([salonInfo])
-        setSalonDetails(salonInfo)
-        setImageUrl(salonInfo.logo);
-        setTextLength(salonInfo.description);
-        setTextDescription(salonInfo.description);
-      }
-    }
-    if (resp.data.email_verified_at) {
-      setIsEmailVerified(true)
-    } else {
-      setIsEmailVerified(false)
-    }
-  }
   const resendVerification = async () => {
     let resp = await Auth.resendVerifyEmailNotification()
     if (resp.data.success) {
@@ -355,6 +347,9 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
     } else {
       showSnackbar("succès", "Cannot send Verification Email");
     }
+  }
+  const SetCurrentDescription = () => {
+
   }
   const handleClick = async () => {
     closeModal();
@@ -487,7 +482,6 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
                 </BaseModal>
 
               )}
-
             </div>
 
 
@@ -499,8 +493,8 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
               Rechercher une coiffure
             </div>}
             {!isEmailVerified && (
-              <p className="text-red-600 text-center mt-4">
-                Adresse email non vérifiée <button className={'underline hover:scale-105 transition duration-300'} onClick={() => resendVerification()}> Renvoyer le mail de vérification</button>
+              <p className="text-red-600 text-center mt-2">
+                Adresse email non vérifiée <button className={'underline'} onClick={() => resendVerification()}> Resend Verification</button>
               </p>
             )}
             {/* Sidebar items display - mb-8 added to be able to see the last element due to the bottom-bar */}
