@@ -222,10 +222,10 @@ const ServiceChoose = () => {
     const openInfoModal = () => {
         setIsInfoModalOpen(true);
     };
-    const InfoTitle_1 = "Selection d'une coiffure";
-    const InfoContent_1 = "Vous trouverez tous type de coiffure, pour tous les goût <br /> Vous pouvez ajouter une coiffure à vos favoris, et aussi prévisualiser une coiffure sur vous,  <br />  si vous avez ajouté vos photos dans la section portrait";
+    const InfoTitle_1 = "Selection d'un service";
+    const InfoContent_1 = "Il vous faut autre chose qu'une coupe ? c'est ici que ça se passe <br /> Vous trouverez tout type de services liés à votre cuir chevelu. <br /> Nous vous suggerons d'utiliser le filtre pour une recherche ciblée <br />";
     const InfoTitle_2 = "Utilisation";
-    const InfoContent_2 = `● Le choix d'une coiffure n'est pas obligatoire,<br /> Vous pouvez continuer et sélectionner une prestation.<br /> ● Il n'est pas possible de réserver un coiffeur sans avoir sélection soit une coiffure, soit une prestation. <br /> ● Si vous ne trouvez pas la coiffure qu'il vous faut, vous pouvez toujours opter pour une coiffure générique <br /> et expliquer vos attente au salon de coiffure.`;
+    const InfoContent_2 = `● Le choix d'un service n'est pas obligatoire,<br /> Vous pouvez continuer si vous avez au moins sélectionnée une coiffure.<br /> ● Il n'est pas possible de réserver un coiffeur sans avoir sélection soit une coiffure, soit une prestation. <br />`;
     const VideoUrl = "";
 
     // JSX retourné pour le rendu du composant.
