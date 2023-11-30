@@ -12,6 +12,7 @@ import BaseModal from '@/components/UI/BaseModal';
 import { Theme_A } from '@/components/utilis/Themes';
 import { ColorsThemeA } from '@/components/utilis/Themes';
 import Footer from "@/components/UI/Footer";
+import InfoButton from '@/components/UI/InfoButton';
 
 // Définition des interfaces pour typer les données manipulées dans le composant.
 interface Requirements {
@@ -59,9 +60,9 @@ const ServiceChoose = () => {
 
     // Obtention de tous les services.
     const getAllServices = () => {
-        const serviceIds = getLocalStorage('ServiceIds')        
+        const serviceIds = getLocalStorage('ServiceIds')
         if (serviceIds) {
-            const serviceIdsList:string[] = [];
+            const serviceIdsList: string[] = [];
             JSON.parse(serviceIds).forEach(service => {
                 serviceIdsList.push(String(service.id))
             });
@@ -126,8 +127,8 @@ const ServiceChoose = () => {
 
     // Fonction pour continuer à l'étape suivante.
     const onContinue = () => {
-        const arr:{
-            name:string,
+        const arr: {
+            name: string,
             id: number
         }[] = []
         for (let i = 0; i < services.length; i++) {
@@ -216,6 +217,16 @@ const ServiceChoose = () => {
         filteredServicesHandler()
     }, [search, filteredType])
 
+    //InfoModal
+    const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
+    const openInfoModal = () => {
+        setIsInfoModalOpen(true);
+    };
+    const InfoTitle_1 = "Selection d'une coiffure";
+    const InfoContent_1 = "Vous trouverez tous type de coiffure, pour tous les goût <br /> Vous pouvez ajouter une coiffure à vos favoris, et aussi prévisualiser une coiffure sur vous,  <br />  si vous avez ajouté vos photos dans la section portrait";
+    const InfoTitle_2 = "Utilisation";
+    const InfoContent_2 = `● Le choix d'une coiffure n'est pas obligatoire,<br /> Vous pouvez continuer et sélectionner une prestation.<br /> ● Il n'est pas possible de réserver un coiffeur sans avoir sélection soit une coiffure, soit une prestation. <br /> ● Si vous ne trouvez pas la coiffure qu'il vous faut, vous pouvez toujours opter pour une coiffure générique <br /> et expliquer vos attente au salon de coiffure.`;
+    const VideoUrl = "";
 
     // JSX retourné pour le rendu du composant.
     return (
@@ -235,6 +246,11 @@ const ServiceChoose = () => {
                 <div className='flex flex-col items-center'>
                     <div className='w-full flex flex-col md:flex-row items-center justify-between mt-14'>
                         <div className='flex flex-col sm:flex-row items-center gap-5 mb-5 md:mb-0'>
+
+
+                            <div>
+                                <InfoButton title_1={InfoTitle_1} content_1={InfoContent_1} title_2={InfoTitle_2} content_2={InfoContent_2} onOpenModal={openInfoModal} videoUrl={VideoUrl} />
+                            </div>
                             {haircut && <p className='text-stone-600 text-lg font-semibold bg-[#F7F7F7] shadow-inner rounded-lg px-7 py-3'>{haircut.name}</p>}
                             {selectedService.length ? (
                                 <p className='text-xl text-stone-600 bg-[#F7F7F7] shadow-inner rounded-lg px-7 py-3'>
@@ -247,8 +263,11 @@ const ServiceChoose = () => {
                                 <p></p>
                             )}
                         </div>
+
                         {(haircut || selectedService.length != 0) && <button onClick={onContinue} className={`flex items-center justify-center text-lg text-white font-medium w-full md:w-52 h-14 rounded-xl px-4 ${Theme_A.button.medLargeGradientButton}`}>Continue</button>}
                     </div>
+
+
                     <div className='mt-8 mb-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-x-9 gap-y-5 '>
                         {showServices().map((service, index) => {
                             return (

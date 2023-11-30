@@ -336,7 +336,7 @@ const Welcome = () => {
 
           {/* Bouton Recherche un soin centré */}
           <div
-            className={`${Theme_A.button.bigWhiteGreyButton} ...`}
+            className={`${Theme_A.button.bigWhiteGreyButton} cursor-pointer mr-4`}
             onClick={() => router.push('/services')}
           >
             Rechercher un soin / service uniquement

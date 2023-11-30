@@ -33,7 +33,7 @@ const InfoButton = ({
     width: '45px', // Taille du cercle
     height: '45px', // Taille du cercle
     backgroundColor: 'white', // Couleur de fond blanche
-    border: '8px solid #f5742a', // Bordures rouges
+    border: '8px solid #2f81d4', // Bordures rouges
     borderRadius: '50%',
     animation: 'pulse 2s infinite ease-in-out',
     zIndex: -1, // Assurez-vous que le cercle est derrière l'icône
