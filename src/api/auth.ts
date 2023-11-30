@@ -48,6 +48,9 @@ const Auth = {
   emailVerify: async (params: any) => {
     return await request.get(`/email-verify/${params.id}/${params.hash}`, {params: params.searchParams});
   },
+  resendVerifyEmailNotification: async () => {
+    return await request.get(`/resend-verification`);
+  },
 };
 
 export { Auth };

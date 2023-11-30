@@ -2,8 +2,6 @@ import { CompletedHairStyleIcon, DashboardHeartIcon, DashboardUsersIcon, Project
 import React, { useEffect, useMemo, useState } from "react";
 import Card from '@mui/material/Card'
 import "chart.js/auto";
-import ApexLineChart from '@/views/charts/chartjs/ApexLineChart'
-import ApexAreaChart from '@/views/charts/chartjs/ApexAreaChart'
 import DynamicClientTable from '@/views/datatable/DynamicClientTable'
 import DialogShareProject from '@/views/pages/dialog-examples/DialogShareProject'
 import Grid from '@mui/material/Grid'
@@ -15,58 +13,22 @@ import TransactionList from "@/components/pages/dashboard/Dashboard/MainDashboar
 import ProgressBar from "@/components/UI/ProgressBar";
 import RevenueChart from "@/components/UI/RevenueChart";
 import { dashboard } from "@/api/dashboard";
-import {
-    overviewData,
-    messagesData,
-    activityData,
+import {    
     activityClientData,
     clientTableData,
     TopClientData, topClientTableData
 } from "@/data/dashboardData";
 import DropdownMenu from "@/components/UI/DropDownMenu";
-import { ColorsThemeA } from "@/components/utilis/Themes";
 import FullTable from "@/views/datatable/FullTable";
-import RechartSingleBarChart from "@/views/charts/chartjs/RechartSingleBarChart";
-import RechartsLineChart from "@/views/charts/chartjs/RechartsLineChart";
 import { Theme_A } from "@/components/utilis/Themes";
 import ConversionChart from "@/views/charts/chartjs/ConversionChart";
-import Pagination from "@/components/UI/Pagination";
 import HairdresserRevenueBarChart from "./ModalComponent/HairdresserRevenueBarChart";
+import { Auth } from "@/api/auth";
+import { client } from "@/api/clientSide";
 
 
-const Dashboard = () => {
-    const overview = [
-        {
-            numbers: "8,420",
-            text: "Nombre de vistes",
-            gradient: "bg-gradient-to-t from-red-700 via-red-500 to-red-500",
-            borderClr: "bg-[#FE5352]",
-            icon: <ProjectIncomeIcon />,
-        },
-        {
-            numbers: "325",
-            text: "Nouveaux clients",
-            gradient: "bg-gradient-to-b from-blue-400 to-blue-600 ",
-            borderClr: "bg-[#15BAF2]",
-            icon: <DashboardUsersIcon />,
-        },
-        {
-            numbers: "567",
-            text: "Coiffures effectuées",
-            gradient: "bg-gradient-to-b from-[#7ABF50] to-[#629E3E]",
-            borderClr: "bg-[#7ABF50]",
-            icon: <CompletedHairStyleIcon />,
-        },
-        {
-            numbers: "4,7/5",
-            text: "Score générale",
-            gradient: "bg-gradient-to-b from-[#FFB566] to-[#FA8E1B]",
-            borderClr: "bg-[#FFB566]",
-            icon: <DashboardHeartIcon />,
-        },
-    ];
-    type ModalName = 'TransactionfullTable' | 'Incomes' | 'clientActivity' | 'staff' | 'topClient' | 'goals'; // Add more modal keys as needed
-
+const Dashboard = () => {    
+    type ModalName = 'TransactionfullTable' | 'Incomes' | 'clientActivity' | 'staff' | 'topClient' | 'goals'; // Add more modal keys as needed    
     const [modals, setModals] = useState<{ [key in ModalName]?: boolean }>({
         TransactionfullTable: false,
         Incomes: false,
@@ -80,9 +42,7 @@ const Dashboard = () => {
     // Update the toggleModal function to use the ModalName type for its parameter
     const toggleModal = (modal: ModalName) => {
         setModals(prev => ({ ...prev, [modal]: !prev[modal] }));
-    };
-    const messages = useMemo(() => messagesData, []);
-    const activity = useMemo(() => activityData, []);
+    };    
     const data = useMemo(() => clientTableData, []);
     const DisplayedMonths = [
         "Ce mois",
@@ -117,128 +77,14 @@ const Dashboard = () => {
     const topClientheaders = ["Utilisateur", "Date dernière commande", "Visites", "Commandes",
         "Dernière commande", "Details dernière commande", "Status dernière commande", "Total payé"];
 
-
-    //  CLIENT ACTIVITY DATA
-    const dataValue = [
-        {
-            Date: "12/07/2023",
-            Client: "Amanda louis",
-            Produits: "Carré plongeant",
-            Prix: "80 $",
-            Facture: "non Disponible",
-            "Moyen de paiement": "Visa",
-            Status: "En vérification"
-        },
-        {
-            Date: "12/07/2023",
-            Client: "Amanda louis",
-            Produits: "Carré plongeant",
-            Prix: "80 $",
-            Facture: "non Disponible",
-            "Moyen de paiement": "Visa",
-            Status: "En vérification"
-        },
-        {
-            Date: "12/07/2023",
-            Client: "Amanda louis",
-            Produits: "Carré plongeant",
-            Prix: "80 $",
-            Facture: "non Disponible",
-            "Moyen de paiement": "Visa",
-            Status: "En vérification"
-        },
-        {
-            Date: "12/07/2023",
-            Client: "Amanda louis",
-            Produits: "Carré plongeant",
-            Prix: "80 $",
-            Facture: "non Disponible",
-            "Moyen de paiement": "Visa",
-            Status: "En vérification"
-        },
-        {
-            Date: "12/07/2023",
-            Client: "Amanda louis",
-            Produits: "Carré plongeant",
-            Prix: "80 $",
-            Facture: "non Disponible",
-            "Moyen de paiement": "Visa",
-            Status: "En vérification"
-        },
-        {
-            Date: "12/07/2023",
-            Client: "Amanda louis",
-            Produits: "Carré plongeant",
-            Prix: "80 $",
-            Facture: "non Disponible",
-            "Moyen de paiement": "Visa",
-            Status: "En vérification"
-        },
-        {
-            Date: "12/07/2023",
-            Client: "Amanda louis",
-            Produits: "Carré plongeant",
-            Prix: "80 $",
-            Facture: "non Disponible",
-            "Moyen de paiement": "Visa",
-            Status: "En vérification"
-        }, {
-            Date: "12/07/2023",
-            Client: "Amanda louis",
-            Produits: "Carré plongeant",
-            Prix: "80 $",
-            Facture: "non Disponible",
-            "Moyen de paiement": "Visa",
-            Status: "En vérification"
-        },
-        {
-            Date: "12/07/2023",
-            Client: "Amanda louis",
-            Produits: "Carré plongeant",
-            Prix: "80 $",
-            Facture: "non Disponible",
-            "Moyen de paiement": "Visa",
-            Status: "En vérification"
-        },
-
-        // ... Add more rows as needed
-    ];
-
-
-    // STAFF DATA
-    const staffData = [
-        { name: 'Staff 1', value: 15 },
-        { name: 'Staff 2', value: 85 },
-        { name: 'Staff 3', value: 60 },
-        { name: 'Staff 4', value: 40 },
-        { name: 'Staff 5', value: 70 },
-    ];
-
+    
     // CONVERSION DATA 
 
     //TODO IMPORT TRUE DATA AND REMOVE FAKE VALUES
     function genererValeurAleatoire() {
         return Math.floor(Math.random() * 76);
-    }
-    // Exemple d'utilisation
-    const FakeConversionValue = genererValeurAleatoire();
-    const FakeVisiteCount = 480; // TODO IMPORTE REAL ORDER COUNT
-
-
-    // Calcul du pourcentage des commandes par rapport aux visites
-
-    const getColorForValue = (value: any) => {
-        const seuilBas = 5;
-        const seuilMoyen = 10;
-
-        if (value < seuilBas) {
-            return 'rgba(255, 70, 70, 1)'; // Rouge
-        } else if (value >= seuilBas && value <= seuilMoyen) {
-            return 'rgba(255, 165, 0, 1)'; // Jaune
-        } else {
-            return 'rgba(50, 120, 80, 1)'; // Vert
-        }
-    };
+    }    
+    
 
     const [salonStats, setSalonStats] = useState({
         total_views: 0,
@@ -253,23 +99,18 @@ const Dashboard = () => {
             .then((resp) => {
                 setSalonStats(resp.data);
             });
-    }
-
+    }        
     useEffect(() => {
         fetchStats()
     }, [])
 
-
-
     // TODO EMAIL ADDRESS VEIRIFICATION DONE : 
-    const [isEmailVerified, setIsEmailVerified] = useState(false);
+        
 
     return (
         <div className="px-4 lg:px-6">
             <Footer />
             <div>
-
-
                 <Grid container spacing={6} className='match-height  '>
                     <Grid item md={4} sm={6} xs={12}>
                         <DialogShareProject show={modals.TransactionfullTable} setShow={() => toggleModal('TransactionfullTable')}>
@@ -300,12 +141,7 @@ const Dashboard = () => {
                         </DialogShareProject>
                     </Grid>
                 </Grid>
-
-                {!isEmailVerified && (
-                    <p className="text-red-600 text-center mt-2">
-                        Adresse email non vérifiée
-                    </p>
-                )}
+                
                 {/* APPERçU ANALYTIQUE */}
                 <p className="text-primary text-2xl font-semibold mb-3 ">
                     Aperçu analytique
