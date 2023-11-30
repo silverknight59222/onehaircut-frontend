@@ -25,7 +25,10 @@ const Forgot = ({ props }: any) => {
             .then((resp) => {
                 const res = resp.data;
                 setLocalStorage("user", JSON.stringify(res.user));
-                setLocalStorage("auth-token", res.token);
+                setLocalStorage("auth-token", res.token);                
+				if (res.user.hair_salon) {
+					setLocalStorage("hair_salon", JSON.stringify(res.user.hair_salon));
+				}
                 const salonRoles = ['salon_professional', 'admin', 'staff'];
                 if (salonRoles.indexOf(res.user.role) != -1) {
                     router.push("/dashboard");
