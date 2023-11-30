@@ -48,7 +48,7 @@ const InfoButton = ({
   const [iconColor, setIconColor] = useState('#000000');
 
   const handleMouseEnter = () => {
-    setIconColor('#e66645'); // Couleur de l'icône lors du survol
+    setIconColor('#0552a1'); // Couleur de l'icône lors du survol
   };
 
   const handleMouseLeave = () => {
