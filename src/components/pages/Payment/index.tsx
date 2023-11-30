@@ -4,19 +4,16 @@ import { dashboard } from "@/api/dashboard";
 import Image from "next/image";
 import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/storage";
 import Navbar from "@/components/shared/Navbar";
-import {
-  CardIcon,
-  RegistrationCheckedIcon,
-} from "@/components/utilis/Icons";
 import useSnackbar from "@/hooks/useSnackbar";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import userLoader from "@/hooks/useLoader";
 import BaseModal from "@/components/UI/BaseModal";
-import StripePayment from "@/components/pages/StripePayment";
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
+import PaymentForm from "@/components/pages/Payment/PaymentForm";
+
 import { Theme_A } from "@/components/utilis/Themes";
+import {Elements} from '@stripe/react-stripe-js';
+import {loadStripe} from '@stripe/stripe-js';
 
 const Index = () => {
   const router = useRouter();
@@ -46,9 +43,9 @@ const Index = () => {
   const [isModal, setIsModal] = useState(false)
   const [duration, setDuration] = useState("")
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [mounted, setMounted] = useState(false);
-  const [stripePromise, setStripePromise] = useState<string>("pk_test_51OBGjoAHQOXKizcuQiaNTSGNA6lftEd3lekpQDN7DGGpx4lQGttBHwI62qzZiq85lelN91uyppVeLUsnC5WfmSZQ00LuhmW4QA");
+  const [mounted, setMounted] = useState(false);  
   const [serviceIds, setServiceIds] = useState<number[]>([])
+  const stripePromise = loadStripe('pk_test_51OBGjoAHQOXKizcuQiaNTSGNA6lftEd3lekpQDN7DGGpx4lQGttBHwI62qzZiq85lelN91uyppVeLUsnC5WfmSZQ00LuhmW4QA');  // public key for stripe
   const items = [
     { name: "Salon", desc: "Le Bon Coiffeur" },
     { name: "Type de coiffure", desc: "Curly" },
@@ -57,7 +54,7 @@ const Index = () => {
     { name: "Lieu", desc: "à domicile" },
   ];
   const options = {
-    clientSecret: getLocalStorage("secret_key")?.toString()
+    clientSecret: "sk_test_51OBGjoAHQOXKizcuykusB8Rqsycb4BemHfQrmbEyjG4zD6adMYGHXrcz3AY0yykBjaTbJ2kcR2GXwIq0hDBBxu2m00KimXnuTu"
   };
   const getHaircutPrize = async () => {
     if (haircut) {
@@ -181,8 +178,7 @@ const Index = () => {
     const userId = user ? user.id : null;
     if (!userId) {
       setIsLoggedIn(true);
-    }
-    setMounted(true)
+    }    
     getHaircutPrize()
     getServicesPrize()
     const arr: number[] = []
@@ -285,25 +281,14 @@ const Index = () => {
 
 
           <div className="w-full flex items-center justify-center">
-            {mounted && (
+            
               <div className="mt-7 w-full md:w-5/12 lg:w-4/12">
-                {/* <Elements
-                    stripe={loadStripe(stripePromise)}
-                    options={options}
-                  >
-                    <StripePayment/>
-                  </Elements> */}
-              </div>
-            )}
+                <Elements stripe={stripePromise}>
+                  <PaymentForm onSuccess={onBooking}/>
+                </Elements>                
+              </div>            
           </div>
-          <div className="w-full flex items-center justify-center">
-            <button
-              onClick={onBooking}
-              className={`${Theme_A.button.bigGradientButton}`}
-            >
-              Vers le paiement{" "}
-            </button>
-          </div>
+          
         </div>
       </div>
       {isModal &&

@@ -14,6 +14,11 @@ interface BookingParams {
     services: number[],
     date: string | undefined
 }
+
+interface paymentIntent {
+    amount: number,
+    token: string
+}
 const client={
     getSalonDetail: async (id: string,hairId:string) => {
         return await request.get(`/hair_salon_by_id/${id}/${hairId}`);
@@ -65,7 +70,10 @@ const client={
     },
     saveBookingRating: async (data: any) => {
         return await request.post(`/booking-rating`, data);
-    },    
+    },
+    paymentIntent: async (data: paymentIntent) => {
+        return await request.post(`/stripe/payment`, data)
+    }
 }
 const user_api =  {
     getUsers: async () => {
