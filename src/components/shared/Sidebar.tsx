@@ -232,19 +232,19 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
   }
 
   const fetchSalonNotifications = async () => {
-    const {data} = await dashboard.salonNotification()
+    const { data } = await dashboard.salonNotification()
     setNotifications(data)
   }
 
   const fetchUserNotifications = async () => {
-    const {data} = await dashboard.userNotification()
+    const { data } = await dashboard.userNotification()
     setNotifications(data)
   }
 
   // Use effect to fetch data on component mount
   useEffect(() => {
-    
-    fetchUserInfo()    
+
+    fetchUserInfo()
 
   }, []);
 
@@ -310,11 +310,11 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
   }
   const [isEmailVerified, setIsEmailVerified] = useState(true);
   const fetchUserInfo = async () => {
-    const resp = await client.getUserProfile()        
+    const resp = await client.getUserProfile()
 
     const user = resp.data;
     //const user = temp ? JSON.parse(temp) : null;
-    
+
 
     const salonInfo = user.hair_salon ? user.hair_salon : null;
 
@@ -342,20 +342,20 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
         setTextDescription(salonInfo.description);
       }
     }
-    if(resp.data.email_verified_at) {
-        setIsEmailVerified(true)
+    if (resp.data.email_verified_at) {
+      setIsEmailVerified(true)
     } else {
-        setIsEmailVerified(false)
-    }        
-}
-  const resendVerification = async () => {        
+      setIsEmailVerified(false)
+    }
+  }
+  const resendVerification = async () => {
     let resp = await Auth.resendVerifyEmailNotification()
     if (resp.data.success) {
-        showSnackbar("succès", "Verification Email Sent Successfully");
+      showSnackbar("succès", "Verification Email Sent Successfully");
     } else {
-        showSnackbar("succès", "Cannot send Verification Email");
+      showSnackbar("succès", "Cannot send Verification Email");
     }
-}
+  }
   const handleClick = async () => {
     closeModal();
     SetCurrentLogo();
@@ -487,7 +487,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
                 </BaseModal>
 
               )}
-              
+
             </div>
 
 
@@ -499,10 +499,10 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
               Rechercher une coiffure
             </div>}
             {!isEmailVerified && (
-                    <p className="text-red-600 text-center mt-2">
-                        Adresse email non vérifiée <button className={'underline'}  onClick={() => resendVerification()}> Resend Verification</button>
-                    </p>
-                )}
+              <p className="text-red-600 text-center mt-4">
+                Adresse email non vérifiée <button className={'underline hover:scale-105 transition duration-300'} onClick={() => resendVerification()}> Renvoyer le mail de vérification</button>
+              </p>
+            )}
             {/* Sidebar items display - mb-8 added to be able to see the last element due to the bottom-bar */}
             <div className="mt-8 mb-8">
               {sidebarItem.map((item, index) => {
@@ -522,7 +522,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
                         {/* TODO make the message notification number dynamic */}
                         {/* {item.title === 'Message' && <p className="absolute top-3 -right-2.5 flex items-center justify-center w-4 h-4 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold">2</p>} */}
                         {(item.title === 'Message') && < p className="left-56 top-[2.6px]	absolute flex items-center justify-center w-5 h-5 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold"> {notifications.chat_count} </p>}
-                        {(item.title === 'Réservations en cours') && < p className="left-56 top-[2.6px]	absolute  flex items-center justify-center w-5 h-5 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold"> {notifications.reservation_count} </p>}                        
+                        {(item.title === 'Réservations en cours') && < p className="left-56 top-[2.6px]	absolute  flex items-center justify-center w-5 h-5 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold"> {notifications.reservation_count} </p>}
 
 
                       </div>
