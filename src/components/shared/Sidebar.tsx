@@ -28,8 +28,10 @@ import { dashboard } from "@/api/dashboard";
 import { usePathname, useRouter } from "next/navigation";
 import { ColorsThemeA, Theme_A } from "../utilis/Themes";
 import BaseModal from "../UI/BaseModal";
-import { user_api } from "@/api/clientSide";
+import { client, user_api } from "@/api/clientSide";
 import { salonApi } from '@/api/salonSide'
+import { Auth } from "@/api/auth";
+import useSnackbar from "@/hooks/useSnackbar";
 
 interface SidebarItems {
   icon: string;
@@ -49,6 +51,8 @@ const colorIcon = "#FFFFFF"
 
 // Define the Sidebar component
 const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }: SidebarType) => {
+
+  const showSnackbar = useSnackbar();
   // State to store salon details
   const [salonDetail, setSalonDetails] = useState<SalonDetails[]>();
   const [notifications, setNotifications] = useState({} as any);
@@ -240,37 +244,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
   // Use effect to fetch data on component mount
   useEffect(() => {
     
-    const temp = getLocalStorage("user");
-    const user = temp ? JSON.parse(temp) : null;
-
-    const tempSalon = getLocalStorage('hair_salon');
-
-    const salonInfo = tempSalon ? JSON.parse(tempSalon) : null;
-
-    // Utilisation de l'opérateur chaînage optionnel pour éviter l'erreur
-    if (!user?.subscription) {
-      const filteredRoutes = sidebarItems.filter(route => {
-        return !proRoutes.includes(route.route);
-      });
-      setSidebarItem(filteredRoutes)
-      applyPermissions(filteredRoutes);
-
-    } else {
-      setSidebarItem(sidebarItems)
-    }
-    if (user.role == 'client') {
-      fetchUserNotifications()
-      setImageUrl(user.front_profile);
-    } else {
-      fetchSalonNotifications()
-      if (salonInfo) {
-        setSalon([salonInfo])
-        setSalonDetails(salonInfo)
-        setImageUrl(salonInfo.logo);
-        setTextLength(salonInfo.description);
-        setTextDescription(salonInfo.description);
-      }
-    }
+    fetchUserInfo()    
 
   }, []);
 
@@ -334,6 +308,54 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
   const SetCurrentDescription = () => {
 
   }
+  const [isEmailVerified, setIsEmailVerified] = useState(true);
+  const fetchUserInfo = async () => {
+    const resp = await client.getUserProfile()        
+
+    const user = resp.data;
+    //const user = temp ? JSON.parse(temp) : null;
+    
+
+    const salonInfo = user.hair_salon ? user.hair_salon : null;
+
+    // Utilisation de l'opérateur chaînage optionnel pour éviter l'erreur
+    if (!user?.subscription) {
+      const filteredRoutes = sidebarItems.filter(route => {
+        return !proRoutes.includes(route.route);
+      });
+      setSidebarItem(filteredRoutes)
+      applyPermissions(filteredRoutes);
+
+    } else {
+      setSidebarItem(sidebarItems)
+    }
+    if (user.role == 'client') {
+      fetchUserNotifications()
+      setImageUrl(user.front_profile);
+    } else {
+      fetchSalonNotifications()
+      if (salonInfo) {
+        setSalon([salonInfo])
+        setSalonDetails(salonInfo)
+        setImageUrl(salonInfo.logo);
+        setTextLength(salonInfo.description);
+        setTextDescription(salonInfo.description);
+      }
+    }
+    if(resp.data.email_verified_at) {
+        setIsEmailVerified(true)
+    } else {
+        setIsEmailVerified(false)
+    }        
+}
+  const resendVerification = async () => {        
+    let resp = await Auth.resendVerifyEmailNotification()
+    if (resp.data.success) {
+        showSnackbar("succès", "Verification Email Sent Successfully");
+    } else {
+        showSnackbar("succès", "Cannot send Verification Email");
+    }
+}
   const handleClick = async () => {
     closeModal();
     SetCurrentLogo();
@@ -465,6 +487,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
                 </BaseModal>
 
               )}
+              
             </div>
 
 
@@ -475,6 +498,11 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
             >
               Rechercher une coiffure
             </div>}
+            {!isEmailVerified && (
+                    <p className="text-red-600 text-center mt-2">
+                        Adresse email non vérifiée <button className={'underline'}  onClick={() => resendVerification()}> Resend Verification</button>
+                    </p>
+                )}
             {/* Sidebar items display - mb-8 added to be able to see the last element due to the bottom-bar */}
             <div className="mt-8 mb-8">
               {sidebarItem.map((item, index) => {
