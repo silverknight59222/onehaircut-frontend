@@ -101,7 +101,7 @@ const Page = ({ params }: Params) => {
     <div>
       {isLoading && loadingView()}
       <div>
-        <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
+        <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 -z-10">
           <LogoCircleFixRight />
         </div>
         <div className="flex flex-row items-center justify-center border-b border-[#EBF0F2]">
@@ -202,10 +202,9 @@ const Page = ({ params }: Params) => {
               
             /> 
           </div> */}
-          <div className='mt-12 p-6 rounded-2xl bg-stone-900 shadow-lg shadow-slate-700'>
+          <div className='mt-12 p-6 rounded-2xl bg-stone-900 shadow-lg shadow-slate-700 w-[400px] h-[250px] md:w-[500px] md:h-[300px] lg:w-[600px] lg:h-[360px] xl:w-[800px] xl:h-[500px]'>
             <iframe
-              width="560"     // Set the width of the video player
-              height="315"    // Set the height of the video player
+              className="w-full h-full"
               src={`https://www.youtube.com/embed/TW-LgJUiMX0`}  // Embed the video using the video ID
               title="Comment faire une réservation sur OneHairCut"  // Provide a title for accessibility
               allowFullScreen  // Allow full-screen mode

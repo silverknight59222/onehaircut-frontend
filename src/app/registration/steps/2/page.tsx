@@ -179,10 +179,10 @@ const Step2 = () => {
           Où est situé ton salon ? si tu es mobile, renseigne la zone dans
           laquelle tu peux exercer !
         </p>
-        <div className="w-[600px] md:w-[800px] xl:w-[1050px] flex flex-col items-center justify-center mt-5 sm:mt-7">
+        <div className="w-full md:w-[800px] xl:w-[1050px] flex flex-col items-center justify-center mt-5 sm:mt-7">
           <div className="w-full flex flex-col md:flex-row items-center justify-between">
             <Autocomplete
-              className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+              className="text-black placeholder-gray-600 w-full mx-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
               apiKey={"AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E"}
               style={{ width: "450px", borderRadius: '12px', marginTop: '28px', padding: '16px 24px', outline: 'none', }}
               onPlaceSelected={(place) => setAddressData(place)}

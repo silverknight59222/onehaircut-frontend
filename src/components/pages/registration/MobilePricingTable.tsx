@@ -25,7 +25,9 @@ function MobilePricingTable() {
         totalSlides={3}
         infinite={true}
       >
-        <Slider style={{ height: '950px' }}>
+        <Slider className='h-full pb-4'
+        // style={{ height: '980px' }}
+        >
           <Slide index={0}>
             <div className='w-full'>
               <div className="h-28 flex flex-col items-center justify-center text-3xl font-semibold text-white text-center py-5 rounded-t-xl"
@@ -128,7 +130,7 @@ function MobilePricingTable() {
               <div className='relative py-3 flex flex-col items-center justify-center rounded-b-xl' style={{
                 background: "linear-gradient(162deg, #FE2569 0%, #FD4C55 42.71%, #FF8637 86.46%, #FFE30F 100%)"
               }}>
-                <div className='text-white font-medium text-4xl text-center'>min. 79€<span className="text-2xl">/ mois</span></div>
+                <div className='text-white font-medium text-4xl text-center pb-4'>min. 79€<span className="text-2xl">/ mois</span></div>
               </div>
             </div>
           </Slide>
@@ -139,7 +141,7 @@ function MobilePricingTable() {
         div className={`flex relative content-center justify-center items-center text-center`}>
         <div
           onClick={() => router.push('registration/plans?plan=standard')}
-          className={`flex items-center justify-center rounded-xl  w-4/5 h-16 cursor-pointer ${Theme_A.button.bigGradientButton} `}>
+          className={`flex items-center justify-center rounded-xl w-4/5 h-16 cursor-pointer ${Theme_A.button.bigGradientButton} `}>
           Vers le choix de l'abonnement
         </div>
       </div>

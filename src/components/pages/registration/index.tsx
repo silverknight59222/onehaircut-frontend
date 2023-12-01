@@ -164,10 +164,10 @@ const Registration = () => {
               })}
             </div>
           </div>
-          <div className="mt-20  hidden xl:flex items-center justify-center w-full overflow-auto">
+          <div className="mt-20  hidden 2xl:flex items-center justify-center w-full overflow-auto">
             <PricingTable />
           </div>
-          <div className=" flex items-center justify-center w-full xl:hidden">
+          <div className=" flex items-center justify-center w-full 2xl:hidden">
             <MobilePricingTable />
           </div>
           <div className="mt-20">
