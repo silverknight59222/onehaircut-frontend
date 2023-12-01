@@ -48,6 +48,9 @@ const Auth = {
   emailVerify: async (params: any) => {
     return await request.get(`/email-verify/${params.id}/${params.hash}`, {params: params.searchParams});
   },
+  profile: async () => {
+    return await request.get(`/user_profile`);
+  },
 };
 
 export { Auth };
