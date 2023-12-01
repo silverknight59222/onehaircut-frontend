@@ -521,15 +521,19 @@ const Account = () => {
                         {errorPop}
                     </p>
                 )}
+
+                <p className={`text-stone-500 italic text-sm text-center pb-2`}>
+                    Ajouter l'indicateur ("+") ou sélectionner le pays
+                </p>
                 <div className={`w-60 ml-20 ${inputFieldsDesignNoW}`}>
                     <PhoneInput
-                        style={{ height: 8 }}
+                        style={{ height: 18 }}
                         // className={`${inputFieldsDesign}`}
                         // inputComponent={{ phoneInput }}
                         // containerClass={containerClass}
                         defaultCountry={'FR'}
                         value={phoneField}
-                        placeholder={"Nouveau numéro"}
+                        placeholder={"+33 623 45 67 89"}
                         onChange={phone => setNewPhone(phone)}
                     />
                 </div>

@@ -286,7 +286,7 @@ const Step3 = () => {
                   // containerClass={containerClass}
                   defaultCountry={'FR'}
                   value={userDetails.phone}
-                  placeholder={"Nouveau numéro"}
+                  placeholder={"+33 6 12 13 14 15"}
                   onChange={(value) => {
                     setNewPhone(value)
                     setError((prev) => {
