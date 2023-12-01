@@ -19,13 +19,16 @@ const Currentreservation = () => {
     // FOR CHAT MODAL 
     // Créez un état pour suivre si le Chat modal est ouvert ou fermé
     const [isChatModalOpen, setIsModalOpen] = useState<boolean>(false);
+    const [activeSalon, setActiveSalon] = useState<any>(null);
     const [message, setMessage] = useState<string>('');
     const [messages, setMessages] = useState<Array<{ content: string, sent: boolean }>>([]);
     const closeChatModal = () => {
+        setActiveSalon(null)
         setIsModalOpen(false);
     };
     // Cette fonction sera appelée lorsque l'utilisateur clique sur le bouton pour ouvrir le modal
-    const openChatModal = () => {
+    const openChatModal = (item) => {
+        setActiveSalon(item.hair_salon)
         setIsModalOpen(true);
     };
 
@@ -229,11 +232,11 @@ const Currentreservation = () => {
             <div className="hidden lg:block fixed -right-2 md:-right-2 -bottom-2 md:-bottom-2 z-10">
                 <LogoCircleFixRight />
             </div>
-            {isChatModalOpen && (
+            {isChatModalOpen && activeSalon && (
                 <ChatModal
                     isModalOpen={isChatModalOpen}
                     closeModal={closeChatModal}
-                    professionalData="" // TODO ADD TRUE SALON LINK
+                    professionalData={activeSalon} // TODO ADD TRUE SALON LINK
                     className="z-1000 opacity-100"
                 />
             )}
@@ -317,7 +320,7 @@ const Currentreservation = () => {
                                             </div>
                                         </div>
                                         <div className='flex  justify-start mt-10 sm:mt-5'>
-                                            <button onClick={openChatModal} className={`xl:w-full ${Theme_A.button.medBlackColoredButton}`}>
+                                            <button onClick={() => openChatModal(item)} className={`xl:w-full ${Theme_A.button.medBlackColoredButton}`}>
                                                 Contacter le salon
                                             </button>
                                         </div>

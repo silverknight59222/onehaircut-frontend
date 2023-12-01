@@ -17,6 +17,7 @@ const Messages = () => {
   const [clients, setClients] = useState<ClientChat[]>([])
   const user = getLocalStorage("user");
   const userId = user ? Number(JSON.parse(user).id) : null;
+  const salonId = user ? Number(JSON.parse(user).hair_salon_id) : null;
   const { loadingView } = userLoader();
   const [isLoading, setIsLoading] = useState(false);
   const [selectedChat, setSelectedChat] = useState({ client_id: 0, client: { name: '', front_profile: '' } })
@@ -24,9 +25,9 @@ const Messages = () => {
   const [message, setMessage] = useState('')
 
   const getClientsByProfessional = async () => {
-    if (userId) {
+    if (salonId) {
       setIsLoading(true)
-      await dashboard.getClientsBySalon(userId)
+      await dashboard.getClientsBySalon(salonId)
         .then(resp => {
           setClients(resp.data.data)
         })
@@ -40,10 +41,10 @@ const Messages = () => {
   }
 
   const getChat = async (client: ClientChat) => {
-    if (userId && client.client_id) {
+    if (salonId && client.client_id) {
       setSelectedChat({ client_id: client.client_id, client: { name: client.client.name, front_profile: client.client.front_profile } })
       setIsLoading(true)
-      await dashboard.getChat(client.client_id, userId)
+      await dashboard.getChat(client.client_id, salonId)
         .then(resp => {
           setChats(resp.data.data)
         })
@@ -55,11 +56,11 @@ const Messages = () => {
   }
 
   const onSendMessage = async () => {
-    if (userId) {
+    if (salonId) {
       setIsLoading(true)
       const data = {
         client_id: selectedChat.client_id,
-        professional_id: userId,
+        professional_id: salonId,
         message: message,
         by: 'professional',
       }

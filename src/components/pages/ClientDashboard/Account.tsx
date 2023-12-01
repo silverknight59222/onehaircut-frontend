@@ -17,6 +17,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import InputAdornment from '@mui/material/InputAdornment';
 import Autocomplete from "react-google-autocomplete";
+import { Auth } from "@/api/auth";
 
 interface infoInterface {
     name: string;
@@ -169,7 +170,7 @@ const Account = () => {
     });
 
     // TODO EMAIL ADDRESS VEIRIFICATION DONE : 
-    const [isEmailVerified, setIsEmailVerified] = useState(false);
+    const [isEmailVerified, setIsEmailVerified] = useState(true);
 
 
     const [oldPasswordVisiblity, setOldPasswordVisiblity] = useState(false);
@@ -890,8 +891,21 @@ const Account = () => {
         setCountry(country);
         setState(state);
         setShowItem(informations);
+        if(resp.data.email_verified_at) {
+            setIsEmailVerified(true)
+        } else {
+            setIsEmailVerified(false)
+        }        
     }
 
+    const resendVerification = async () => {        
+        let resp = await Auth.resendVerifyEmailNotification()
+        if (resp.data.success) {
+            showSnackbar("succès", "Verification Email Sent Successfully");
+        } else {
+            showSnackbar("succès", "Cannot send Verification Email");
+        }
+    }
     const setUserInfo = async (data: any) => {
 
         // to update informations description which is displayed
@@ -983,12 +997,7 @@ const Account = () => {
                     {/* NORMAL VIEW */}
                     <p className="text-black font-medium text-3xl text-center">
                         Gestion du compte
-                    </p>
-                    {!isEmailVerified && (
-                        <p className="text-red-600 text-center mt-2">
-                            Adresse email non vérifiée
-                        </p>
-                    )}
+                    </p>                    
                     <div className="flex flex-col md:flex-row items-start justify-center gap-10 xl:gap-20 mt-10">
                         <div className="w-full md:w-auto flex flex-col items-center justify-center gap-6">
                             {items.map((item, index) => {

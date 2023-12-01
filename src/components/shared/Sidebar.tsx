@@ -28,8 +28,10 @@ import { dashboard } from "@/api/dashboard";
 import { usePathname, useRouter } from "next/navigation";
 import { ColorsThemeA, Theme_A } from "../utilis/Themes";
 import BaseModal from "../UI/BaseModal";
-import { user_api } from "@/api/clientSide";
+import { client, user_api } from "@/api/clientSide";
 import { salonApi } from '@/api/salonSide'
+import { Auth } from "@/api/auth";
+import useSnackbar from "@/hooks/useSnackbar";
 
 interface SidebarItems {
   icon: string;
@@ -49,6 +51,8 @@ const colorIcon = "#FFFFFF"
 
 // Define the Sidebar component
 const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }: SidebarType) => {
+
+  const showSnackbar = useSnackbar();
   // State to store salon details
   const [salonDetail, setSalonDetails] = useState<SalonDetails[]>();
   const [notifications, setNotifications] = useState({} as any);
@@ -228,18 +232,18 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
   }
 
   const fetchSalonNotifications = async () => {
-    const {data} = await dashboard.salonNotification()
+    const { data } = await dashboard.salonNotification()
     setNotifications(data)
   }
 
   const fetchUserNotifications = async () => {
-    const {data} = await dashboard.userNotification()
+    const { data } = await dashboard.userNotification()
     setNotifications(data)
   }
-
+  const [isEmailVerified, setIsEmailVerified] = useState(true);
   // Use effect to fetch data on component mount
   useEffect(() => {
-    
+
     const temp = getLocalStorage("user");
     const user = temp ? JSON.parse(temp) : null;
 
@@ -270,6 +274,11 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
         setTextLength(salonInfo.description);
         setTextDescription(salonInfo.description);
       }
+    }
+    if (user.email_verified_at) {
+      setIsEmailVerified(true)
+    } else {
+      setIsEmailVerified(false)
     }
 
   }, []);
@@ -330,6 +339,14 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
   };
   const SetCurrentLogo = () => {
 
+  }
+  const resendVerification = async () => {
+    let resp = await Auth.resendVerifyEmailNotification()
+    if (resp.data.success) {
+      showSnackbar("succès", "Verification Email Sent Successfully");
+    } else {
+      showSnackbar("succès", "Cannot send Verification Email");
+    }
   }
   const SetCurrentDescription = () => {
 
@@ -475,6 +492,11 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
             >
               Rechercher une coiffure
             </div>}
+            {!isEmailVerified && (
+              <p className="text-red-600 text-center mt-2">
+                Adresse email non vérifiée <button className={'underline'} onClick={() => resendVerification()}> Resend Verification</button>
+              </p>
+            )}
             {/* Sidebar items display - mb-8 added to be able to see the last element due to the bottom-bar */}
             <div className="mt-8 mb-8">
               {sidebarItem.map((item, index) => {
@@ -495,7 +517,6 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
                         {/* {item.title === 'Message' && <p className="absolute top-3 -right-2.5 flex items-center justify-center w-4 h-4 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold">2</p>} */}
                         {(item.title === 'Message') && < p className="left-56 top-[2.6px]	absolute flex items-center justify-center w-5 h-5 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold"> {notifications.chat_count} </p>}
                         {(item.title === 'Réservations en cours') && < p className="left-56 top-[2.6px]	absolute  flex items-center justify-center w-5 h-5 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold"> {notifications.reservation_count} </p>}
-                        {(item.title === 'Historique') && < p className="left-56 top-[2.6px]	absolute  flex items-center justify-center w-5 h-5 rounded-full bg-[#F44336]  text-white text-[10px] font-semibold"> {notifications.history_count} </p>}
 
 
                       </div>

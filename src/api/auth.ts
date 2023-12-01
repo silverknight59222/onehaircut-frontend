@@ -51,6 +51,9 @@ const Auth = {
   profile: async () => {
     return await request.get(`/user_profile`);
   },
+  resendVerifyEmailNotification: async () => {
+    return await request.get(`/resend-verification`);
+  },
 };
 
 export { Auth };
