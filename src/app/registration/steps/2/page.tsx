@@ -5,12 +5,11 @@ import React, { useState, useEffect } from "react";
 import Autocomplete, { usePlacesWidget } from "react-google-autocomplete";
 import { setLocalStorage } from "@/api/storage";
 import userLoader from "@/hooks/useLoader";
-import Checkbox from '@mui/material/Checkbox'
 import {
   useJsApiLoader,
   GoogleMap,
-  Marker,
-  Circle,
+  MarkerF,
+  CircleF,
 } from '@react-google-maps/api'
 import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 
@@ -27,6 +26,7 @@ interface Address_int {
 }
 const Step2 = () => {
 
+  const [streetNb, setStreetNb] = useState("");
   const [street, setStreet] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [city, setCity] = useState("");
@@ -123,7 +123,7 @@ const Step2 = () => {
       setState(address.administrative_area_level_1 || "")
       setCountry(address.country || "")
       setPostalCode(address.postal_code || "")
-
+      setStreetNb(address.street_number || "")
 
       setStreet(address.route || "")
       if (address.street_number && address.street_number != address.route) {
@@ -148,16 +148,27 @@ const Step2 = () => {
 
   const zoneHandler = (operation: string) => {
     if (IamMobile) {
-      let temp
+      let temp = zone;
       if (operation === 'add') {
         if (zone < 30) {
           temp = zone + 1
           setZone(temp)
         }
       } else {
-        temp = zone - 1
-        setZone(temp)
+        if (zone > 1) {
+          temp = zone - 1
+          setZone(temp)
+        }
       }
+
+      // zoom calculation:
+      // Constants for estimation
+      const earthRadius = 6371; // Earth's radius in km
+      const degreesPerPixel = 0.00027; // An approximation, varies with latitude
+
+      // Calculate the zoom level based on the radius
+      const zoomLevel = (Math.log2((earthRadius * Math.PI * 156543.03392) / (temp * 1000 * 2400 * 256 * degreesPerPixel)));
+      setZoomMap(Math.round(zoomLevel));
     }
   }
 
@@ -237,20 +248,17 @@ const Step2 = () => {
               zoom={zoomMap}
               mapContainerStyle={{ width: '100%', height: '100%' }} >
 
-              <Marker position={location} />
+              {/* Marker on the map */}
+              {streetNb && <MarkerF position={location} />}
+
               {/* Circle representing the range */}
-              <Circle
+              {streetNb && IamMobile && <CircleF
                 center={{
                   lat: (location.lat),
                   lng: (location.lng)
                 }}
-                radius={zone}
-              // strokeColor="transparent"
-              // strokeOpacity={0}
-              // strokeWeight={5}
-              // fillColor="#FF0000"
-              // fillOpacity={0.2}
-              />
+                radius={zone * 1000} // radius is in meter
+              />}
             </GoogleMap>
           </div>
           <div className="w-full flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-7 mb-5">
