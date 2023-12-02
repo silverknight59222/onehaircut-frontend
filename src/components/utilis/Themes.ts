@@ -130,7 +130,7 @@ export const Theme_A = {
     headerH4: "text-md font-semibold text-left text-black block mb-2",
     headerH5: "text-md font-medium text-left text-black block",
     infoTextSmall: "text-[10px] justify-center font-medium text-[#959595]",
-    navigationGreyFont: "text-xl text-stone-600 justify-center font-medium ",
+    navigationGreyFont: "text-md md:text-xl text-stone-600 justify-center font-medium ",
   },
   thumbnails: {
     selectHaircutThumbnail: `mt-2 flex items-center justify-center w-36 h-36 bg-zinc-200 border-1 border-black rounded-2xl shadow-md`,

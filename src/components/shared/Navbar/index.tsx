@@ -536,9 +536,9 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
         </div>
       </div>
       {isServicesPage &&
-        <div className="flex flex-col xl:hidden items-center pr-2 rounded-xl bg-[#F7F7F7] overflow-auto mt-7">
+        <div className="flex flex-col xl:hidden items-center pr-2 rounded-xl bg-[#F7F7F7] overflow-auto mt-2 md:mt-7">
           <div
-            className="flex items-center flex-col gap-3 p-4"
+            className="flex items-center flex-col gap-1 md:gap-3 p-2 md:p-4"
           >
             <div className="flex items-center justify-center">
               {isWelcomePage &&

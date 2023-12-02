@@ -247,13 +247,13 @@ const ServiceChoose = () => {
                     <div className='w-full flex flex-col md:flex-row items-center justify-between mt-14'>
                         <div className='flex flex-col sm:flex-row items-center gap-5 mb-5 md:mb-0'>
 
-
-                            <div>
+                            <div className='flex flex-row gap-5 items-center'>
                                 <InfoButton title_1={InfoTitle_1} content_1={InfoContent_1} title_2={InfoTitle_2} content_2={InfoContent_2} onOpenModal={openInfoModal} videoUrl={VideoUrl} />
+
+                                {haircut && <p className='text-stone-600 text-md md:text-lg font-semibold bg-[#F7F7F7] shadow-inner rounded-lg px-7 py-3'>{haircut.name}</p>}
                             </div>
-                            {haircut && <p className='text-stone-600 text-lg font-semibold bg-[#F7F7F7] shadow-inner rounded-lg px-7 py-3'>{haircut.name}</p>}
                             {selectedService.length ? (
-                                <p className='text-xl text-stone-600 bg-[#F7F7F7] shadow-inner rounded-lg px-7 py-3'>
+                                <p className='text-md md:text-xl text-stone-600 bg-[#F7F7F7] shadow-inner rounded-lg px-7 py-3'>
                                     <span className='font-semibold'>
                                         {selectedService.length > 1 ? 'Services sélectionnés :' : 'Service sélectionné :'}
                                     </span>
@@ -272,7 +272,7 @@ const ServiceChoose = () => {
                         {showServices().map((service, index) => {
                             return (
                                 <div key={index} onClick={() => onServiceclick(service.name, service.id, service.requirements)}
-                                    className={`relative 2xl:w-[250px] h-40 border rounded-[20px] py-6 px-5 cursor-pointer ${selectedService.includes(String(service.id)) ? `shadow-inner ${ColorsThemeA.ohcBigVerticalGradient_A}` : `bg-white shadow-xl ${ColorsThemeA.standardBorderGray}`}`}>
+                                    className={`relative 2xl:w-[250px] h-20 md:h-40 border rounded-[20px] py-1 md:py-6 px-5 cursor-pointer ${selectedService.includes(String(service.id)) ? `shadow-inner ${ColorsThemeA.ohcBigVerticalGradient_A}` : `bg-white shadow-xl ${ColorsThemeA.standardBorderGray}`}`}>
                                     <div>
                                         <p className={`font-semibold mb-2 ${selectedService.includes(String(service.id)) ? 'text-white' : 'text-black'}`}>{service.name}</p>
                                         <p className={`text-xs mb-2 ${selectedService.includes(String(service.id)) ? 'text-white' : 'text-[#A0A0A0]'}`}>{service.description}</p>
