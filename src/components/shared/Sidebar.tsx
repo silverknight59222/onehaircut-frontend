@@ -494,7 +494,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
             </div>}
             {!isEmailVerified && (
               <p className="text-red-600 text-center mt-2">
-                Adresse email non vérifiée <button className={'underline'} onClick={() => resendVerification()}> Resend Verification</button>
+                Adresse email non vérifiée <button className={'underline hover:scale-105 transition duration-300 cursor-pointer'} onClick={() => resendVerification()}> Renvoyer le lien de vérification</button>
               </p>
             )}
             {/* Sidebar items display - mb-8 added to be able to see the last element due to the bottom-bar */}
