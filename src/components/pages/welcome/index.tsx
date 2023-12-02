@@ -17,6 +17,9 @@ import InfoModal from "@/components/UI/InfoModal";
 import InfoButton from "@/components/UI/InfoButton";
 //import StarRatings from "react-star-ratings";
 
+// to avoid modifying the theme
+const DemoButton = `text-white font-normal md:font-medium text-md md:text-lg ml-2 mr-2 mb-3 rounded-md w-[278px] py-2 bg-black border border-x-red-500 border-y-orange-500 transform hover:scale-105 transition-transform hover:shadow-md cursor-pointer`
+const LogInButton = `text-white font-normal md:font-medium text-md md:text-lg ml-2 mr-2 mb-3 rounded-md w-[278px] py-2 ${ColorsThemeA.OhcGradient_A} transform hover:scale-105 transition-transform hover:shadow-[0px_7px_12px_0px_rgba(255,125,60,0.25)]`
 
 const Welcome = () => {
   // Define state variables
@@ -350,12 +353,13 @@ const Welcome = () => {
         </div>
 
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-12 ">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 md:gap-12 ">
           {haircuts().map((item, index) => {
-            return <div key={index} onClick={() => onClickHaircut(item.id, item.name, item.image)} className={`shadow-md rounded-xl my-2 cursor-pointer border hover:outline outline-1 outline-stone-400 ${item.id === haircut?.id}`}>
+            return <div key={index} onClick={() => onClickHaircut(item.id, item.name, item.image)} className={`shadow-md rounded-xl cursor-pointer border hover:outline outline-1 outline-stone-400 ${item.id === haircut?.id}`}>
               <div className="relative w-max px-4 pt-4 bg-gradient-to-r from-white via-stone-50 to-zinc-200 rounded-t-xl ">
-                <div className={`${Theme_A.hairstyleCards.cardSize.med}`}>
-                  <Image src={item.image.includes('http') ? item.image : `https://api.onehaircut.com${item.image}`} fill={true} alt="" className="rounded-t-xl" sizes="640w" />
+                <div className={`relative w-32 h-32 md:w-52 md:h-52`}>
+                  <Image src={item.image.includes('http') ? item.image : `https://api.onehaircut.com${item.image}`} fill={true} alt="" className="rounded-t-xl"
+                  />
                   {!isLoggedIn &&
                     <div onClick={(e) => onWishlist(e, item.id)} className="absolute right-2 top-2 cursor-pointer">
                       <StarIcon
@@ -378,11 +382,12 @@ const Welcome = () => {
         </div>
 
         {isLoggedIn && (
-          <div className="flex py-4 mx-3 gap-3 sm:gap-12 md:gap-20 items-center justify-center bg-white w-full fixed bottom-8 border-2 border-t-slate-300">
-            <div className={`p-2 sm:p-4 md:p-5 text-center ${Theme_A.button.medLargeBlackButton}`}>
+          <div className="flex pt-2 pb-8 sm:pb-2 mx-2 gap-3 sm:gap-12 md:gap-20 items-center justify-center bg-white w-full fixed bottom-8 border-2 border-t-slate-300">
+            <div className={`p-2 sm:p-4 md:p-5 text-center ${DemoButton}`}>
               Démonstration d’utilisation
             </div>
-            <div onClick={() => router.push('/login')} className={`p-2 sm:p-4 md:p-5 text-center cursor-pointer ${Theme_A.button.medLargeGradientButton}`}>
+            <div onClick={() => router.push('/login')}
+              className={`p-2 sm:p-4 md:p-5 text-center cursor-pointer ${LogInButton}`}>
               Connexion / Inscription
             </div>
             {/*

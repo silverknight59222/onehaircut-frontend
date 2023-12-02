@@ -2642,7 +2642,7 @@ export const Instagram = () => {
 };
 
 
-export const InstagramGray = ({ width = "30px", height = "30px" }) => {
+export const InstagramGray = ({ width = "30px", height = "30px", className = "" }) => {
   return (
     <svg
       enableBackground="new 0 0 512 512"
@@ -2654,6 +2654,7 @@ export const InstagramGray = ({ width = "30px", height = "30px" }) => {
       xmlnsXlink="http://www.w3.org/1999/xlink"
       width={width}
       height={height}
+      className={className} // Add the className prop here
     >
       <g>
         <path
@@ -2673,17 +2674,19 @@ export const InstagramGray = ({ width = "30px", height = "30px" }) => {
   );
 };
 
-export const FacebookGray = ({ width = "30px", height = "30px" }) => {
+export const FacebookGray = ({ width = "30px", height = "30px", className = "" }) => {
   return (
     <svg
       enableBackground="new 0 0 512 512"
       id="Layer_1"
+      version="1.1"
       viewBox="0 0 512 512"
       xmlSpace="preserve"
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
       width={width}
       height={height}
+      className={className} // Add the className prop here
     >
       <g>
         <path d="M304,383c0,40.2-0.1,80.3,0.1,120.5c0,4.4-1.2,5.6-5.6,5.5c-34.2-0.2-68.3-0.2-102.5,0   c-4.7,0-6.2-1.1-6.2-6c0.2-79.7,0.1-159.3,0.1-239c0-8,0.9-7-7.3-7.1c-14.5,0-29-0.1-43.5,0.1c-3.5,0-4.5-1.1-4.5-4.6   c0.1-25.3,0.1-50.7,0-76c0-3.5,1-4.6,4.5-4.5c15.2,0.2,30.3-0.1,45.5,0.2c4.1,0.1,5.4-1,5.4-5.3c-0.2-21.3,0-42.7-0.1-64   c-0.1-17.7,2.6-34.8,11.5-50.4c9.6-17,24-28.7,41.8-36.3c15-6.4,30.8-9.4,47-10.3c32.1-1.8,64.3-0.3,96.4-0.9   c3.6-0.1,4.5,1.2,4.5,4.6c-0.1,26.3-0.1,52.7,0,79c0,4-1.5,4.6-5,4.6c-18.5-0.1-37-0.1-55.5-0.1c-15.4,0-26.5,11.1-26.5,26.3   c0,15.7,0.2,31.3-0.1,47c-0.1,4.5,1.4,5.6,5.7,5.6c25.3-0.2,50.7,0,76-0.2c4.2,0,5.6,1.2,5.1,5.4c-1.5,12.9-2.8,25.8-4.2,38.7   c-1.3,12.4-3.5,24.7-5.5,37c-0.6,3.5-1.7,4.3-4.9,4.3c-21.7-0.1-43.3-0.1-65,0c-8.5,0-7.3-1.1-7.3,7.5C304,304,304,343.5,304,383z" fill="#A7A7A7" />
@@ -2692,17 +2695,19 @@ export const FacebookGray = ({ width = "30px", height = "30px" }) => {
   );
 };
 
-export const YoutubeGray = ({ width = "30px", height = "30px" }) => {
+export const YoutubeGray = ({ width = "30px", height = "30px", className = "" }) => {
   return (
     <svg
       enableBackground="new 0 0 512 512"
       id="Layer_1"
+      version="1.1"
       viewBox="0 0 512 512"
       xmlSpace="preserve"
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
       width={width}
       height={height}
+      className={className} // Add the className prop here
     >
       <g>
         <path d="M256.4,74.2c22.7,0,45.3-0.4,68,0.1c28.8,0.6,57.6,1.7,86.3,3c11.9,0.6,24,0.9,35.8,3.2c28.1,5.4,44.8,22.7,52.5,50c4.1,14.5,5.6,29.4,6.9,44.3c3.5,40.1,2.8,80.2,1.8,120.3c-0.6,23.7-1.6,47.6-7.6,70.8c-2.5,9.5-5.4,19-10.9,27.3c-10,15.1-24.4,23.7-42,26.9c-15.1,2.8-30.4,3.1-45.7,3.8c-28.3,1.3-56.6,1.9-84.9,2.6c-33.5,0.9-67,0.7-100.4,0.4c-27.1-0.3-54.3-0.9-81.4-2c-22.9-0.9-45.9-1.3-68.5-5.7c-12.5-2.4-23.6-7.6-33.2-16.2c-9-8.2-13.6-18.8-17-30c-7.3-24-7.8-48.8-9.3-73.6c-1.7-29-1.2-58-0.5-86.9c0.6-24.4,1.7-48.9,6.8-72.9c3-14.2,7.1-28.3,17.4-39.2c12.7-13.4,28.9-19.8,47.2-21.1c21.9-1.5,43.9-2.5,65.8-3.4C181.1,74.3,218.8,73.8,256.4,74.2z M339.5,245.4c-0.4-1.2-1.5-1.4-2.3-1.8c-23.5-12.4-47.1-24.8-70.7-37.2c-18.7-9.8-37.4-19.7-56.1-29.6c-5.2-2.7-5.3-2.6-5.3,3.4c0,43.1,0,86.2,0,129.4c0,0.8,0,1.7,0,2.5c-0.1,2.6,0.9,3.4,3.3,2.1c2.9-1.6,5.8-3.2,8.8-4.8c39.4-20.4,78.9-40.9,118.3-61.3C336.9,247.3,338.7,247,339.5,245.4z" fill="#A7A7A7" />
@@ -2711,17 +2716,19 @@ export const YoutubeGray = ({ width = "30px", height = "30px" }) => {
   );
 };
 
-export const LinkedInGray = ({ width = "30px", height = "30px" }) => {
+export const LinkedInGray = ({ width = "30px", height = "30px", className = "" }) => {
   return (
     <svg
       enableBackground="new 0 0 512 512"
       id="Layer_1"
+      version="1.1"
       viewBox="0 0 512 512"
       xmlSpace="preserve"
       xmlns="http://www.w3.org/2000/svg"
       xmlnsXlink="http://www.w3.org/1999/xlink"
       width={width}
       height={height}
+      className={className} // Add the className prop here
     >
       <g>
         <path d="M1,53c2.5,0,1.7-2,1.9-3.3C5.9,29,16.6,13.9,36.6,7.4c16.1-5.2,32.9-4.6,47.9,4c9.4,5.5,16.6,14,20.4,24.5c2.8,7.8,4.9,15.9,4,24.2c-2.1,20.9-11.5,38.3-34.5,46.4c-17.4,6-34.3,3.8-50.2-5.7c-1-3.6-3.5-5.4-7.1-6c0,0,0,0,0,0c-0.1-1.4-0.3-2.8-2.2-2.8C7.7,84,4.3,74.3,2.9,63.8C2.7,62.6,3.2,60.9,1,61C1,58.3,1,55.7,1,53z" fill="#A7A7A7" />

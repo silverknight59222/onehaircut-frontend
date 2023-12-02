@@ -512,7 +512,8 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
           className="relative flex items-center justify-center md:justify-end gap-4"
         >
           {!isLoggedIn &&
-            <button onClick={() => router.push('/registration')} className={`w-52 2xl:w-60 h-11 text-white font-semibold ${Theme_A.button.mediumGradientButton} rounded-xl shadow-sm shadow-stone-300`}>
+            <button onClick={() => router.push('/registration')}
+              className={`w-32 md:w-52 2xl:w-60 h-16 md:h-11 text-white font-semibold ${Theme_A.button.mediumGradientButton} rounded-xl shadow-sm shadow-stone-300`}>
               Enregistrer mon salon
             </button>}
           {/* {isLoggedIn ? (
