@@ -82,7 +82,7 @@ const Forgot = () => {
 					<LogoCircleFixLeft />
 				</div>
 				<div className="mt-8">
-					<LogoIcon />
+					<LogoIcon className={''} />
 				</div>
 				<div className="z-10 mt-8 md:mt-12 w-full md:w-[767px] md:rounded-3xl md:bg-white md:shadow-2xl px-4 sm:px-16 md:px-24">
 					<div className="flex flex-col items-center justify-center">

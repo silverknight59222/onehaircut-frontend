@@ -29,7 +29,7 @@ const Index = () => {
         onClick={() => router.push("/")}
         className="py-5 cursor-pointer w-full flex items-center justify-center"
       >
-        <LogoIcon />
+        <LogoIcon className={''} />
       </div>
       <div className="mt-16 mb-5 px-6">
         <div className="flex flex-col items-center justify-center gap-3">

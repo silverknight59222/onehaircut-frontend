@@ -182,7 +182,7 @@ const Step2 = () => {
         <button className="cursor-pointer"
           onClick={onOHCLogoClick}
         >
-          <LogoIcon />
+          <LogoIcon className={''} />
         </button>
       </div>
       <div className="flex flex-col items-center justify-center mt-16">

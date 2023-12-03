@@ -204,7 +204,7 @@ const Registration = () => {
             </div>
           </div>
           <div className="mt-16">
-            <LogoIcon />
+            <LogoIcon className={''} />
           </div>
         </div>
       </div>

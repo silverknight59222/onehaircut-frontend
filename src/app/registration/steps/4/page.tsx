@@ -60,7 +60,7 @@ const Step4 = () => {
       {isLoading && loadingView()}
       <div className="flex flex-col md:flex-row items-center justify-center border-b border-[#EBF0F2] pb-4">
         <div className="absolute top-1 left-0 md:left-auto flex items-center justify-start sm:justify-center gap-5 px-4 sm:px-14 py-5">
-          <div onClick={() => route.push('/')} className='relative z-30 cursor-pointer'><LogoIcon /></div>
+          <div onClick={() => route.push('/')} className='relative z-30 cursor-pointer'><LogoIcon className={''} /></div>
         </div>
         <div className="relative z-20 md:z-40 w-full flex items-center justify-end gap-4 px-4 sm:px-14 mt-6">
           <UserProfile />

@@ -29,7 +29,7 @@ const Steps = () => {
         <button className="cursor-pointer"
           onClick={onOHCLogoClick}
         >
-          <LogoIcon />
+          <LogoIcon className={''} />
         </button>
       </div>
       <div className="relative flex flex-col items-center justify-center rounded-[60px] mt-20 md:mt-40 mb-6 sm:mb-10 mx-8 md:mx-20 2xl:mx-28 sm:bg-[#F8F8F8] border sm:border-[#DADADA] px-6 sm:px-12 py-24 2xl:px-20 md:py-32">

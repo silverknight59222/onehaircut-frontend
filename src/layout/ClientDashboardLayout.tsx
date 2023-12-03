@@ -91,7 +91,7 @@ const ClientDashboardLayout = ({ children }: DashboardLayout) => {
               }
               <div className="w-full hidden lg:block">
                 <div className='flex items-center justify-center cursor-pointer' onClick={() => router.push('/')}>
-                  <LogoIcon />
+                  <LogoIcon className={''} />
                 </div>
               </div>
             </div>
@@ -114,7 +114,7 @@ const ClientDashboardLayout = ({ children }: DashboardLayout) => {
                       className="flex flex-row gap-x-5 px-6 py-3 w-full hover:bg-[#F5F5F5] cursor-pointer"
                     >
                       {item.icon}
-                      <p>{item.name}</p>      
+                      <p>{item.name}</p>
                     </div>
                   );
                 })}
