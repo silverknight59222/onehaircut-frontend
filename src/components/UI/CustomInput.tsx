@@ -14,7 +14,7 @@ interface CustomInputProps {
     isZipCode?: boolean; // Ajoutez une nouvelle prop pour spécifier que c'est un streetNumber
     onBlur?: () => void;
     isPasswordMismatch?: boolean; // Nouvelle prop pour la vérification de mot de passe non identique
-
+    disable?: boolean;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -29,6 +29,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
     isStreetNumber = false,
     isZipCode = false,
     onBlur,
+    disable = false,
 }) => {
     const [isInputFocused, setIsInputFocused] = useState(false);
     const [isEmailError, setIsEmailError] = useState(false);
@@ -103,6 +104,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
                     onBlur={handleInputBlur}
                     onFocus={() => setIsInputFocused(true)}
                     placeholder={placeholder}
+                    disabled={disable}
                 />
                 <label
                     htmlFor={id}
