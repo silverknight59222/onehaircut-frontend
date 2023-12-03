@@ -18,6 +18,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import InputAdornment from '@mui/material/InputAdornment';
 import Autocomplete from "react-google-autocomplete";
 import { Auth } from "@/api/auth";
+import CustomInput from "@/components/UI/CustomInput";
 
 interface infoInterface {
     name: string;
@@ -88,9 +89,12 @@ const Account = () => {
         setState("")
         setCountry("")
         setPostalCode("")
+        setError((prev) => {
+            return { ...prev, text: "" };
+        });
 
         let address = {} as any
-        place.address_components.map((item, index) => {
+        place.address_components?.map((item, index) => {
             setAddressFields(address, item.types[0], item.long_name);
         });
 
@@ -99,10 +103,17 @@ const Account = () => {
         setCountry(address.country || "")
         setPostalCode(address.postal_code || "")
 
-
+        console.log(address);
         setStreet(address.route || "")
         if (address.street_number && address.street_number != address.route) {
+            console.log('numero');
             setStreet((pre) => address.street_number + " " + pre)
+        }
+        else if (!address.street_number) {
+            console.log('pas de numero');
+            setError((prev) => {
+                return { ...prev, text: 'Veuillez indiquer le numéro de rue' };
+            })
         }
 
         setLocationLatitude(place.geometry.location.lat());
@@ -133,7 +144,7 @@ const Account = () => {
         }
         return address
     }
-    // function to hadnle the click on the modify 
+    // function to handle the click on the modify 
     const handleModifierClick = (item: infoInterface) => {
         if (item.name == "Adresse") {
             setIsModalAdd(true); // Show the modal to modify add
@@ -169,7 +180,7 @@ const Account = () => {
         confirmPassword: "",
     });
 
-    // TODO EMAIL ADDRESS VEIRIFICATION DONE : 
+    // TODO EMAIL ADDRESS VERIFICATION DONE : 
     const [isEmailVerified, setIsEmailVerified] = useState(true);
 
 
@@ -383,7 +394,7 @@ const Account = () => {
 
     const modifAddress: React.JSX.Element =
         <div>
-            <BaseModal close={() => setIsModalAdd(false)} width="w-[600px]">
+            <BaseModal close={() => setIsModalAdd(false)} width="w-[420px] md:w-[600px]">
                 <div>
                     <p className="text-xl font-semibold text-black text-center mb-4">Modification de l'adresse</p>
 
@@ -406,15 +417,23 @@ const Account = () => {
                                 placeholder="Address"
                                 defaultValue={street}
                             />
+                            {error && (
+                                <p className={`${Theme_A.checkers.errorText}`}>
+                                    {error.text}
+                                </p>
+                            )}
                             <div className="flex">
-                                <div className="flex-grow w-1/4 pr-2">
+                                <div className="flex-grow w-[180px] pr-2">
                                     <input
+                                        id={"PostalCode"}
+                                        // label={"Code Postal"}
+                                        disabled={true}
                                         placeholder="Code Postal"
                                         type="text"
                                         value={postalCode}
                                         onChange={(e) => setPostalCode(e.target.value)}
                                         maxLength={50}
-                                        className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+                                        className={`${Theme_A.fields.inputFieldDisabled}`}
                                     />
                                     <input
                                         placeholder="État"
@@ -422,14 +441,14 @@ const Account = () => {
                                         value={state}
                                         onChange={(e) => setState(e.target.value)}
                                         maxLength={50}
-                                        className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+                                        className={`${Theme_A.fields.inputFieldDisabled}`}
                                     />
                                 </div>
                                 <div className="flex-grow">
                                     <input
                                         placeholder="Ville"
                                         type="text"
-                                        className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+                                        className={`${Theme_A.fields.inputFieldDisabled}`}
                                         value={city}
                                         onChange={(e) => setCity(e.target.value)}
                                     />
@@ -439,7 +458,7 @@ const Account = () => {
                                         value={country}
                                         onChange={(e) => setCountry(e.target.value)}
                                         maxLength={50}
-                                        className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+                                        className={`${Theme_A.fields.inputFieldDisabled}`}
                                     />
                                 </div>
                             </div>
@@ -452,8 +471,9 @@ const Account = () => {
                                 Annuler
                             </button>
                             <button
-                                className={`${Theme_A.button.mediumGradientButton}`}
+                                className={`${(street == '') || (error.text != '') ? Theme_A.button.medGreyColoredButton : Theme_A.button.mediumGradientButton}`}
                                 onClick={() => onSubmitAddress()}
+                                disabled={(street == '') || (error.text != '')}
                             >
                                 Actualiser
                             </button>
@@ -895,14 +915,14 @@ const Account = () => {
         setCountry(country);
         setState(state);
         setShowItem(informations);
-        if(resp.data.email_verified_at) {
+        if (resp.data.email_verified_at) {
             setIsEmailVerified(true)
         } else {
             setIsEmailVerified(false)
-        }        
+        }
     }
 
-    const resendVerification = async () => {        
+    const resendVerification = async () => {
         let resp = await Auth.resendVerifyEmailNotification()
         if (resp.data.success) {
             showSnackbar("succès", "Verification Email Sent Successfully");
@@ -1001,7 +1021,7 @@ const Account = () => {
                     {/* NORMAL VIEW */}
                     <p className="text-black font-medium text-3xl text-center">
                         Gestion du compte
-                    </p>                    
+                    </p>
                     <div className="flex flex-col md:flex-row items-start justify-center gap-10 xl:gap-20 mt-10">
                         <div className="w-full md:w-auto flex flex-col items-center justify-center gap-6">
                             {items.map((item, index) => {
