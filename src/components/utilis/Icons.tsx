@@ -712,7 +712,7 @@ export const AddIcon = () => {
   );
 };
 
-export const LogoIcon = ({ className }) => {
+export const LogoIcon = ({ className = "" }) => {
   // Define default size or fallback size
   let iconSize = "w-[274px] h-[52px]"; // Default size, adjust as needed
 
