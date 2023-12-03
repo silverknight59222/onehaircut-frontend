@@ -20,30 +20,30 @@ export type TopbarType = {
 	SidebarHandler: () => void;
 };
 const applyPermissions = (menus: any) => {
-    const temp = localStorage.getItem("user");
-    const user = temp ? JSON.parse(temp) : null;
-    if (user.role != 'salon_professional' && user.permissions.length > 0) {
-      menus.forEach((m: any, k: number) => {
-        if (user.permissions.indexOf(m.title) == -1) {
-          delete menus[k];
-        }
-      });
-    }
-  }
+	const temp = localStorage.getItem("user");
+	const user = temp ? JSON.parse(temp) : null;
+	if (user.role != 'salon_professional' && user.permissions.length > 0) {
+		menus.forEach((m: any, k: number) => {
+			if (user.permissions.indexOf(m.title) == -1) {
+				delete menus[k];
+			}
+		});
+	}
+}
 const Topbar = ({ isDashboard, tabHandler, SidebarHandler }: TopbarType) => {
 	const [salonDetail, setSalonDetails] = useState<SalonDetails[]>();
 	const [activeSalon, setActiveSalon] = useState<SalonDetails>();
 	const temp = getLocalStorage("user");
-    const user = temp ? JSON.parse(temp) : null;
-	const path=usePathname()
+	const user = temp ? JSON.parse(temp) : null;
+	const path = usePathname()
 	const topbarItems = [
-		{ title: "Dashboard", permission: "Dashboard"},
-		{ title: "Coiffeurs", permission: "Coiffeurs"},
-		{ title: "Images Salon", permission: "Image du Salon"},
-		{ title: "Coiffures", permission: "Coifures"},
-		{ title: "Prestation", permission: "Prestation"},
-		{ title: "Agenda", permission: "Agenda"},
-		{ title: "Ajouter un salon partenaire", permission: "Ajouter un salon partenaire"},
+		{ title: "Dashboard", permission: "Dashboard" },
+		{ title: "Coiffeurs", permission: "Coiffeurs" },
+		{ title: "Images Salon", permission: "Image du Salon" },
+		{ title: "Coiffures", permission: "Coifures" },
+		{ title: "Prestation", permission: "Prestation" },
+		{ title: "Agenda", permission: "Agenda" },
+		{ title: "Ajouter un salon partenaire", permission: "Ajouter un salon partenaire" },
 	];
 	const [selectedItem, setSelectedItem] = useState(0);
 	const onTabClick = (tab: string, index: number) => {
@@ -54,7 +54,7 @@ const Topbar = ({ isDashboard, tabHandler, SidebarHandler }: TopbarType) => {
 		salonList.forEach(salon => {
 			if (salon.is_primary) {
 				setActiveSalon(salon);
-        		if(getLocalStorage('salon_id')) {
+				if (getLocalStorage('salon_id')) {
 					setLocalStorage('salon_id', salon.id);
 				}
 			}
@@ -81,7 +81,7 @@ const Topbar = ({ isDashboard, tabHandler, SidebarHandler }: TopbarType) => {
 					</div>
 					{isDashboard && (
 						<div className="hidden lg:block">
-							<LogoIcon />
+							<LogoIcon className={''} />
 						</div>
 					)}
 				</div>
@@ -97,40 +97,40 @@ const Topbar = ({ isDashboard, tabHandler, SidebarHandler }: TopbarType) => {
 					<div className="cursor-pointer">
 						<Hamburger />
 					</div> */}
-					<UserProfile isDashboard={true}/>
+					<UserProfile isDashboard={true} />
 				</div>
 			</div>
 			{path === '/dashboard' &&
-			<div className="flex items-center justify-center gap-4 flex-wrap mt-12 mb-7">
-				{topbarItems.filter((item) => {
-					// if (user.permissions.length == 0) {
-					// 	return true
-					// }
-					if (user && user.permissions && user.permissions.indexOf(item.permission) != -1) {
-						return true
-					} else {
-						if (user && user.permissions && user.permissions.length == 0) {
+				<div className="flex items-center justify-center gap-4 flex-wrap mt-12 mb-7">
+					{topbarItems.filter((item) => {
+						// if (user.permissions.length == 0) {
+						// 	return true
+						// }
+						if (user && user.permissions && user.permissions.indexOf(item.permission) != -1) {
 							return true
 						} else {
-							return false
+							if (user && user.permissions && user.permissions.length == 0) {
+								return true
+							} else {
+								return false
+							}
 						}
-					}
-					//return user.permissions.indexOf(item.permission) != -1
-				}).map((item, index) => {
-					return (
-						<div key={index} onClick={() => onTabClick(item.title, index)}>
-							<p
-								className={`${Theme_A.Bars.proTopBar.standardShape} ${selectedItem === index
+						//return user.permissions.indexOf(item.permission) != -1
+					}).map((item, index) => {
+						return (
+							<div key={index} onClick={() => onTabClick(item.title, index)}>
+								<p
+									className={`${Theme_A.Bars.proTopBar.standardShape} ${selectedItem === index
 										? `${Theme_A.Bars.proTopBar.activatedColor}`
 										: `${Theme_A.Bars.proTopBar.inactivatedColor}`
-									}`}
-							>
-								{item.title}
-							</p>
-						</div>
-					);
-				})}
-			</div>}
+										}`}
+								>
+									{item.title}
+								</p>
+							</div>
+						);
+					})}
+				</div>}
 		</div>
 	);
 };

@@ -184,7 +184,7 @@ const Signup = () => {
 					<LogoCircleFixLeft />
 				</div>
 				<div className="mt-8">
-					<LogoIcon />
+					<LogoIcon className={''} />
 				</div>
 
 

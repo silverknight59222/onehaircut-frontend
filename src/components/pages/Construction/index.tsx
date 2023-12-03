@@ -8,7 +8,7 @@ const index = () => {
         <LogoCircleFixRight />
       </div>
       <div>
-        <LogoIcon />
+        <LogoIcon className={''} />
       </div>
       <div className="md:max-w-[1022px] w-full px-4 md:mx-16">
         <div className="mt-28 2xl:mt-40 mb-10 2xl:mb-16 text-center ">
