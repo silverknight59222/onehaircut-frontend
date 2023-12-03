@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { EditIcon, CheckedIcon } from "@/components/utilis/Icons";
+import { EditIcon, CheckedIcon, MinusIcon, AddIcon } from "@/components/utilis/Icons";
 import { Theme_A } from "@/components/utilis/Themes";
 import BaseModal from "@/components/UI/BaseModal";
 import DropdownMenu from "@/components/UI/DropDownMenu";
 import { ColorsThemeA } from "@/components/utilis/Themes";
 import CustomSlider from "@/components/UI/OHC_Slider";
+import CustomInput from "@/components/UI/CustomInput";
 import ComponentTheme from "@/components/UI/ComponentTheme";
 import Autocomplete from "react-google-autocomplete";
 import { client } from "@/api/clientSide";
@@ -13,8 +14,8 @@ import useSnackbar from "@/hooks/useSnackbar";
 import { getLocalStorage, setLocalStorage } from "@/api/storage";
 
 const tempSalon = getLocalStorage('hair_salon');
-const salonInfo = tempSalon ? JSON.parse(tempSalon) : null;  
-  
+const salonInfo = tempSalon ? JSON.parse(tempSalon) : null;
+
 const SalonInfos = () => {
     const [isModal, setIsModal] = useState(false);
     const [name, setName] = useState("");
@@ -36,7 +37,7 @@ const SalonInfos = () => {
     const [isLoading, setIsLoading] = useState(false);
     const showSnackbar = useSnackbar();
     const [addressResponse, setAddressResponse] = useState({
-        street: "",                
+        street: "",
         city: "",
         state: "",
         country: "",
@@ -63,54 +64,54 @@ const SalonInfos = () => {
     useEffect(() => {
         fetchAdress();
         if (salonInfo) {
-            if (salonInfo.type == 'barber_shop'){
+            if (salonInfo.type == 'barber_shop') {
                 setSelectedSalonType('Barber-shop')
             } else {
                 setSelectedSalonType(salonInfo.type)
             }
             setTypeImage(salonInfo.type)
             setIsMobilityAllowed(salonInfo.is_mobile)
-        }        
+        }
     }, []);
 
     const saveSalonType = async (item) => {
-        await salonApi.saveSalonType({type: item})
-        .then((resp) => {
-            setLocalStorage("hair_salon", JSON.stringify(resp.data));
-            showSnackbar("success", "Salon Type Saved Successfully.");            
-        })
-        .catch(err => {
-            //console.log(err);
-        })
-        .finally(() => {
-            setIsLoading(false);            
-        })
+        await salonApi.saveSalonType({ type: item })
+            .then((resp) => {
+                setLocalStorage("hair_salon", JSON.stringify(resp.data));
+                showSnackbar("success", "Salon Type Saved Successfully.");
+            })
+            .catch(err => {
+                //console.log(err);
+            })
+            .finally(() => {
+                setIsLoading(false);
+            })
     }
 
     const saveSalonMobility = async () => {
-        await salonApi.saveSalonMobility({is_mobile: isMobilityAllowed})
-        .then((resp) => {                
-            showSnackbar("success", "Salon Mobility Saved Successfully.");            
-        })
-        .catch(err => {
-            //console.log(err);
-        })
-        .finally(() => {
-            setIsLoading(false);            
-        })
+        await salonApi.saveSalonMobility({ is_mobile: isMobilityAllowed })
+            .then((resp) => {
+                showSnackbar("success", "Salon Mobility Saved Successfully.");
+            })
+            .catch(err => {
+                //console.log(err);
+            })
+            .finally(() => {
+                setIsLoading(false);
+            })
     }
 
     const saveZoneRadius = async (radius) => {
-        await salonApi.saveZoneRadius({zone_radius: radius})
-        .then((resp) => {                
-            showSnackbar("success", "Salon Mobility Zone Saved Successfully.");            
-        })
-        .catch(err => {
-            //console.log(err);
-        })
-        .finally(() => {
-            setIsLoading(false);            
-        })
+        await salonApi.saveZoneRadius({ zone_radius: radius })
+            .then((resp) => {
+                showSnackbar("success", "Salon Mobility Zone Saved Successfully.");
+            })
+            .catch(err => {
+                //console.log(err);
+            })
+            .finally(() => {
+                setIsLoading(false);
+            })
     }
     // handling the change of Salon type change    
 
@@ -264,7 +265,7 @@ const SalonInfos = () => {
             latitude: locationLatitude,
             longitude: locationLongitude
         })
-            .then((resp) => {                
+            .then((resp) => {
                 showSnackbar("success", "Adresse mise à jour avec succès.");
                 setIsModal(false);
             })
@@ -275,7 +276,7 @@ const SalonInfos = () => {
                 setIsLoading(false);
                 fetchAdress();
             })
-    };
+    }
 
     const fetchAdress = async () => {
         const resp = await salonApi.getAddresses()
@@ -295,11 +296,41 @@ const SalonInfos = () => {
         setBillingCountry(resp.data.billing_country);
     }
 
+
+
+    const [billingPerKm, setBillingPerKm] = useState('');
+    const [ZonePrice, setZonePrice] = useState(0);
+    const [maxFees, setMaxFees] = useState(0);
+
+    // Supposons que vous utilisiez la deuxième valeur du slider pour numericZoneSliderRange
+    const numericZoneSliderRange = zoneSliderRange[1];
+    const numericBillingPerKm = Number(billingPerKm);
+
+    const isInputValid = numericBillingPerKm > 0 && numericZoneSliderRange > 0;
+
+    useEffect(() => {
+        setMaxFees(ZonePrice * numericZoneSliderRange);
+    }, [ZonePrice, numericZoneSliderRange]);
+
+    const handleBillingPerKmChange = (e) => {
+        setBillingPerKm(e.target.value);
+    };
+
+    const zonePriceHandler = (operation) => {
+        if (isMobilityAllowed) {
+            if (operation === 'add' && ZonePrice < 30) {
+                setZonePrice(ZonePrice + 0.5);
+            } else if (operation === 'minus' && ZonePrice > 1) {
+                setZonePrice(ZonePrice - 0.5);
+            }
+        }
+    };
+
     /************************************************************************************************************************** */
 
     return (
         // ...
-        <div className={`w-[500px] h-max bg-white rounded-2xl py-4 shadow-lg mb-4`}>
+        <div className={`w-[500px] h-max bg-white rounded-2xl py-4 shadow-lg mb-8`}>
             {isModal && (
                 <BaseModal close={() => setIsModal(false)} width="w-[600px]">
                     <div className="relative z-100">
@@ -324,7 +355,7 @@ const SalonInfos = () => {
                                 apiKey='AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E'
                                 onPlaceSelected={(place) => {
                                     setAddressData(place)
-                                }}                                
+                                }}
                                 options={{
                                     types: ["geocode"],
                                     fields: [
@@ -600,24 +631,53 @@ const SalonInfos = () => {
                         }`}>
                         <CheckedIcon />
                     </div>
-                    <label htmlFor="mobilityZone" className="ml-2 text-sm text-gray-900">
+                    <label htmlFor="mobilityZone" className="ml-2 text-sm font-medium text-gray-900">
                         Coiffure à domicile
                     </label>
                 </div>
 
+
+                {/* TODO SAVE AND CHANGE THE PRICE FOR CUSTOMER*/}
                 {/* Label supplémentaire qui apparaît si la checkbox est cochée */}
                 {isMobilityAllowed && (
-                    <div className="relative items-center justify-center w-64 mx-auto"> {/* Utilisez mx-auto pour centrer */}
-                        <CustomSlider
-                            theme={ComponentTheme}
-                            value={zoneSliderRange}
-                            onChange={handleZoneSliderChange}
-                            min={0}
-                            max={30}
-                            unit="km"
-                            label="Zone de mobilité" // Fournissez une prop label si votre composant CustomSlider l'attend
-                            valueLabelDisplay="auto"
-                        />
+                    <div>
+                        <div className="relative items-center justify-center w-64 mx-auto"> {/* Utilisez mx-auto pour centrer */}
+                            <CustomSlider
+                                theme={ComponentTheme}
+                                value={zoneSliderRange}
+                                onChange={handleZoneSliderChange}
+                                min={0}
+                                max={30}
+                                unit="km"
+                                label="Zone de mobilité" // Fournissez une prop label si votre composant CustomSlider l'attend
+                                valueLabelDisplay="auto"
+                            />
+                        </div>
+
+                        {/* KM COST*/}
+                        <div className="md:mt-0 ml-14 mb-4">
+                            <p className="text-stone-700 text-sm font-medium mt-8 mb-1 ">Facturation au km</p>
+                            <div className="flex items-start justify-start gap-3">
+                                <div className='w-[85px] h-9 flex items-center justify-center text-black border border-black rounded-lg shadow-lg cursor-not-allowed bg-white'>
+                                    {ZonePrice} €
+                                </div>
+                                <div className={`flex items-center justify-center py-1 rounded-md ${isMobilityAllowed ? ColorsThemeA.OhcGradient_A : ColorsThemeA.inactivButtonColor} shadow-lg`}>
+                                    <div onClick={() => zonePriceHandler('minus')} className="border-r border-white px-4 py-3 cursor-pointer transform hover:scale-110 transition-transform">
+                                        <MinusIcon />
+                                    </div>
+                                    <div onClick={() => zonePriceHandler('add')} className="py-1 px-4 cursor-pointer transform hover:scale-110 transition-transform">
+                                        <AddIcon />
+                                    </div>
+                                </div>
+
+                                {/* Affichage des frais maximum */}
+                                <div className="ml-4 bg-slate-800 text-stone-200 font-thin rounded-lg p-2 flex items-center cursor-not-allowed">
+                                    <span className="text-sm font-medium">
+                                        Frais maximum: {maxFees.toFixed(2)} €
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 )}
             </div>
