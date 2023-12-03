@@ -1,5 +1,5 @@
 "use client";
-import { AddIcon, CheckedIcon, LogoIcon, MinusIcon } from "@/components/utilis/Icons";
+import MapIcon, { AddIcon, CheckedIcon, LogoIcon, MinusIcon } from "@/components/utilis/Icons";
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import Autocomplete, { usePlacesWidget } from "react-google-autocomplete";
@@ -12,6 +12,7 @@ import {
   CircleF,
 } from '@react-google-maps/api'
 import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
+import ReactDOMServer from "react-dom/server";
 
 interface Address_int {
   country: string,
@@ -48,11 +49,15 @@ const Step2 = () => {
     libraries: ['places'],
   })
 
-  const zoneDeactivated = 'w-[85px] h-9 flex items-center justify-center text-black border border-black rounded-lg shadow-lg cursor-not-allowed  bg-[#D6D6D6]'
+  const zoneDeactivated = 'w-[85px] h-9 flex items-center justify-center text-stone-800 rounded-lg shadow-lg cursor-not-allowed  bg-[#D6D6D6]'
   const zoneActivated = 'w-[85px] h-9 flex items-center justify-center text-black border border-black rounded-lg shadow-lg cursor-not-allowed bg-white'
 
   // Determine the class name based on the condition
   const ZoneClassName = IamMobile ? zoneActivated : zoneDeactivated;
+
+  // Pour l'icon sur la carte
+  const mapIconSvg = ReactDOMServer.renderToStaticMarkup(<MapIcon />);
+  const mapIconUrl = `data:image/svg+xml;base64,${btoa(mapIconSvg)}`;
 
   if (!isLoaded) {
     loadingView()
@@ -242,14 +247,16 @@ const Step2 = () => {
               </div>
             </div>
           </div>
-          <div className="w-full h-96 my-12">
+          <div className="w-full h-96 my-12 shadow-lg rounded-3xl">
             <GoogleMap
               center={location}
               zoom={zoomMap}
               mapContainerStyle={{ width: '100%', height: '100%' }} >
 
               {/* Marker on the map */}
-              {streetNb && <MarkerF position={location} />}
+              {streetNb && <MarkerF
+                position={location}
+                icon={mapIconUrl} />}
 
               {/* Circle representing the range */}
               {streetNb && IamMobile && <CircleF
@@ -258,6 +265,7 @@ const Step2 = () => {
                   lng: (location.lng)
                 }}
                 radius={zone * 1000} // radius is in meter
+                options={{ fillColor: 'red', fillOpacity: 0.15, strokeColor: 'black' }}
               />}
             </GoogleMap>
           </div>
