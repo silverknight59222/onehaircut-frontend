@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { EditIcon, CheckedIcon } from "@/components/utilis/Icons";
+import { EditIcon, CheckedIcon, MinusIcon, AddIcon } from "@/components/utilis/Icons";
 import { Theme_A } from "@/components/utilis/Themes";
 import BaseModal from "@/components/UI/BaseModal";
 import DropdownMenu from "@/components/UI/DropDownMenu";
 import { ColorsThemeA } from "@/components/utilis/Themes";
 import CustomSlider from "@/components/UI/OHC_Slider";
+import CustomInput from "@/components/UI/CustomInput";
 import ComponentTheme from "@/components/UI/ComponentTheme";
 import Autocomplete from "react-google-autocomplete";
 import { client } from "@/api/clientSide";
@@ -330,7 +331,7 @@ const SalonInfos = () => {
                 setIsLoading(false);
                 fetchAdress();
             })
-    };
+    }
 
     const fetchAdress = async () => {
         const resp = await salonApi.getAddresses()
@@ -350,11 +351,43 @@ const SalonInfos = () => {
         setBillingCountry(resp.data.billing_country);
     }
 
+
+
+    const [billingPerKm, setBillingPerKm] = useState('');
+    const [ZonePrice, setZonePrice] = useState(0);
+    const [maxFees, setMaxFees] = useState(0);
+
+    // Supposons que vous utilisiez la deuxième valeur du slider pour numericZoneSliderRange
+    const numericZoneSliderRange = zoneSliderRange[1];
+    const numericBillingPerKm = Number(billingPerKm);
+
+    const isInputValid = numericBillingPerKm > 0 && numericZoneSliderRange > 0;
+
+    useEffect(() => {
+        setMaxFees(ZonePrice * numericZoneSliderRange);
+    }, [ZonePrice, numericZoneSliderRange]);
+
+    const handleBillingPerKmChange = (e) => {
+        setBillingPerKm(e.target.value);
+    };
+
+    const zonePriceHandler = (operation) => {
+        if (isMobilityAllowed) {
+            let newPrice = ZonePrice;
+            if (operation === 'add' && ZonePrice < 30) {
+                newPrice = parseFloat((ZonePrice + 0.1).toFixed(2));
+            } else if (operation === 'minus' && ZonePrice > 0) {
+                newPrice = parseFloat((ZonePrice - 0.1).toFixed(2));
+            }
+            setZonePrice(newPrice);
+        }
+    };
+
     /************************************************************************************************************************** */
 
     return (
         // ...
-        <div className={`w-[500px] h-max bg-white rounded-2xl py-4 shadow-lg mb-4`}>
+        <div className={`w-[500px] h-max bg-white rounded-2xl py-4 shadow-lg mb-8`}>
             {isModal && (
                 <BaseModal close={() => setIsModal(false)} width="w-[600px]">
                     <div className="relative z-100">
@@ -673,24 +706,53 @@ const SalonInfos = () => {
                         }`}>
                         <CheckedIcon />
                     </div>
-                    <label htmlFor="mobilityZone" className="ml-2 text-sm text-gray-900">
+                    <label htmlFor="mobilityZone" className="ml-2 text-sm font-medium text-gray-900">
                         Coiffure à domicile
                     </label>
                 </div>
 
+
+                {/* TODO SAVE AND CHANGE THE PRICE FOR CUSTOMER*/}
                 {/* Label supplémentaire qui apparaît si la checkbox est cochée */}
                 {isMobilityAllowed && (
-                    <div className="relative items-center justify-center w-64 mx-auto"> {/* Utilisez mx-auto pour centrer */}
-                        <CustomSlider
-                            theme={ComponentTheme}
-                            value={zoneSliderRange}
-                            onChange={handleZoneSliderChange}
-                            min={0}
-                            max={30}
-                            unit="km"
-                            label="Zone de mobilité" // Fournissez une prop label si votre composant CustomSlider l'attend
-                            valueLabelDisplay="auto"
-                        />
+                    <div>
+                        <div className="relative items-center justify-center w-64 mx-auto"> {/* Utilisez mx-auto pour centrer */}
+                            <CustomSlider
+                                theme={ComponentTheme}
+                                value={zoneSliderRange}
+                                onChange={handleZoneSliderChange}
+                                min={0}
+                                max={30}
+                                unit="km"
+                                label="Zone de mobilité" // Fournissez une prop label si votre composant CustomSlider l'attend
+                                valueLabelDisplay="auto"
+                            />
+                        </div>
+
+                        {/* KM COST*/}
+                        <div className="md:mt-0 ml-14 mb-4">
+                            <p className="text-stone-700 text-sm font-medium mt-8 mb-1 ">Facturation au km</p>
+                            <div className="flex items-start justify-start gap-3">
+                                <div className='w-[85px] h-9 flex items-center justify-center text-black border border-black rounded-lg shadow-lg cursor-not-allowed bg-white'>
+                                    {ZonePrice} €
+                                </div>
+                                <div className={`flex items-center justify-center py-1 rounded-md ${isMobilityAllowed ? ColorsThemeA.OhcGradient_A : ColorsThemeA.inactivButtonColor} shadow-lg`}>
+                                    <div onClick={() => zonePriceHandler('minus')} className="border-r border-white px-4 py-3 cursor-pointer transform hover:scale-110 transition-transform">
+                                        <MinusIcon />
+                                    </div>
+                                    <div onClick={() => zonePriceHandler('add')} className="py-1 px-4 cursor-pointer transform hover:scale-110 transition-transform">
+                                        <AddIcon />
+                                    </div>
+                                </div>
+
+                                {/* Affichage des frais maximum */}
+                                <div className="ml-4 bg-slate-800 text-stone-200 font-thin rounded-lg p-2 flex items-center cursor-not-allowed">
+                                    <span className="text-sm font-medium">
+                                        Frais maximum: {maxFees.toFixed(2)} €
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 )}
             </div>

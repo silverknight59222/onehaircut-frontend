@@ -335,7 +335,7 @@ const BookSalon = () => {
           <div className="flex flex-col sm:flex-row items-center justify-evenly px-1 sm:px-10">
             {/* DATEPICKER */}
             <div className="relative">
-              <div className="cursor-pointer hover:scale-110 transition duration-300" onClick={() => setShowCalender(!showCalender)}>
+              <div className="cursor-pointer hover:scale-110 transition duration-300 mr-4" onClick={() => setShowCalender(!showCalender)}>
                 <CalenderIcon />
               </div>
               {showCalender &&
