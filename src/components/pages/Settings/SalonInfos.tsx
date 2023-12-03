@@ -373,11 +373,13 @@ const SalonInfos = () => {
 
     const zonePriceHandler = (operation) => {
         if (isMobilityAllowed) {
+            let newPrice = ZonePrice;
             if (operation === 'add' && ZonePrice < 30) {
-                setZonePrice(ZonePrice + 0.5);
-            } else if (operation === 'minus' && ZonePrice > 1) {
-                setZonePrice(ZonePrice - 0.5);
+                newPrice = parseFloat((ZonePrice + 0.1).toFixed(2));
+            } else if (operation === 'minus' && ZonePrice > 0) {
+                newPrice = parseFloat((ZonePrice - 0.1).toFixed(2));
             }
+            setZonePrice(newPrice);
         }
     };
 
