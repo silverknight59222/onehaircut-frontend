@@ -253,18 +253,30 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
   });
 
   return (
-    <div className="w-full flex flex-col items-center justify-between border-b border-[#EBF0F2] pb-3 xl:pb-0">
-      <div className={`w-full flex items-center justify-between px-4 md:px-14  ${!isLoggedIn ? 'flex-co sm:flex-row' : 'flex-row'}`}>
-        <div onClick={() => router.push('/')} className="py-5 cursor-pointer">
-          <LogoIcon className={'medium'} />
+    <div className=" flex flex-col md:items-center justify-between border-b border-[#EBF0F2] pb-3 xl:pb-0">
+      <div className={` flex md:items-center justify-between px-4 md:px-14 flex-col md:flex-row gap-4 ${!isLoggedIn ? 'flex-col sm:flex-row' : 'flex-row'}`}>
+        <div className="flex flex-row justify-around gap-2">
+          <div onClick={() => router.push('/')} className="py-5 cursor-pointer">
+            <LogoIcon className={'medium'} />
+          </div>
+          {isLoggedIn &&
+            <div className="mt-3 lg:hidden">
+              <UserProfile />
+            </div>}
+          {!isLoggedIn &&
+            <button onClick={() => router.push('/registration')}
+              className={`lg:hidden w-32 md:w-52 h-16 md:h-11 text-white font-sm ${Theme_A.button.mediumGradientButton} rounded-xl shadow-sm shadow-stone-300`}>
+              Enregistrer mon salon
+            </button>}
         </div>
-        {!hideSearchBar && <div className="hidden xl:flex items-center pr-2 rounded-2xl bg-[#F7F7F7] h-[52px]  shadow-sm shadow-stone-300 border border-stone-200">
+        {!hideSearchBar && <div className="flex items-center pr-2 rounded-2xl bg-[#F7F7F7] h-[42px] md:h-[52px]  shadow-sm shadow-stone-300 border border-stone-200">
           <div
-            className="flex items-center justify-center"
+            className="flex items-center justify-center text-sm lg:text-lg"
           >
             {isWelcomePage ?
               <>
-                <div ref={EthnicityDesktopRef} className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
+                <div ref={EthnicityDesktopRef}
+                  className=" border-r border-grey px-0 lg:px-2 2xl:px-6 last:border-r-0 cursor-pointer">
                   <p
                     className={
                       ethnicityFilters.length > 0
@@ -280,7 +292,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     Ethnicit&eacute;
                   </p>
                   {showDesktopEthnicity && (
-                    <div className="absolute top-[75px] -ml-2 z-20 flex flex-col items-center justify-center w-44 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                    <div className="absolute top-[105px] md:top-[75px] -ml-2 z-20 flex flex-col items-center justify-center w-40 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
                       {Ethnicity.map((item, index) => {
                         return (
                           <div
@@ -303,7 +315,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     </div>
                   )}
                 </div>
-                <div ref={GenderDesktopRef} className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
+                <div ref={GenderDesktopRef} className="border-r border-grey px-0 lg:px-2 2xl:px-6 last:border-r-0 cursor-pointer">
                   <p
                     className={genderFilters.length > 0
                       ? `rounded-xl py-2 px-7 ${ColorsThemeA.filterSelected} text-white font-semibold`
@@ -317,7 +329,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     Genre
                   </p>
                   {showDesktopGender && (
-                    <div className="absolute top-[75px] -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                    <div className="absolute top-[105px] md:top-[75px] -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
                       {Gender.map((item, index) => {
                         return (
                           <div
@@ -340,7 +352,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     </div>
                   )}
                 </div>
-                <div className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
+                <div className="border-r border-grey px-0 lg:px-2 2xl:px-6 last:border-r-0 cursor-pointer">
                   <p
                     className={showDesktopLength ? "rounded-xl py-2 px-7 bg-white  text-black font-semibold" : " hover:bg-white rounded-xl py-2 px-7 "}
                     onClick={() => {
@@ -352,7 +364,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     Longueur
                   </p>
                   {showDesktopLength && (
-                    <div className="absolute top-[75px] -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                    <div className="absolute top-[105px] md:top-[75px] -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
                       {Length.map((item, index) => {
                         return (
                           <div
@@ -388,11 +400,11 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
             }
 
             {(isWelcomePage || isServicesPage) &&
-              <div className={`border-r border-grey px-6 last:border-r-0 cursor-pointer`}>
+              <div className={`w-min lg:w-max border-r border-grey px-1 lg:px-6 last:border-r-0 cursor-pointer`}>
                 <input
                   type="text"
                   placeholder="Rechercher"
-                  className={`text-base px-4 p-2 rounded-full outline-none ${Theme_A.behaviour.fieldFocused_B}`}
+                  className={`text-sm md:text-base px-2 lg:px-4 p-2 rounded-full outline-none ${Theme_A.behaviour.fieldFocused_B}`}
                   onChange={onSearch && isWelcomePage ?
                     (e) => onSearch(e.target.value) :
                     onServiceSearch && isServicesPage ? (e) => onServiceSearch(e.target.value) : () => { }}
@@ -513,7 +525,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
         >
           {!isLoggedIn &&
             <button onClick={() => router.push('/registration')}
-              className={`w-32 md:w-52 2xl:w-60 h-16 md:h-11 text-white font-semibold ${Theme_A.button.mediumGradientButton} rounded-xl shadow-sm shadow-stone-300`}>
+              className={`hidden lg:flex w-32 md:w-52 2xl:w-60 h-16 md:h-11 text-white font-semibold ${Theme_A.button.mediumGradientButton} rounded-xl shadow-sm shadow-stone-300`}>
               Enregistrer mon salon
             </button>}
           {/* {isLoggedIn ? (
@@ -529,7 +541,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
               <Hamburger />
             </div> */}
           {isLoggedIn &&
-            <div>
+            <div className="hidden lg:flex">
               <UserProfile />
             </div>
           }

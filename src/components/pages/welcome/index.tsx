@@ -20,6 +20,7 @@ import InfoButton from "@/components/UI/InfoButton";
 // to avoid modifying the theme
 const DemoButton = `text-white font-normal md:font-medium text-md md:text-lg ml-2 mr-2 mb-3 rounded-md w-[278px] py-2 bg-black border border-x-red-500 border-y-orange-500 transform hover:scale-105 transition-transform hover:shadow-md cursor-pointer`
 const LogInButton = `text-white font-normal md:font-medium text-md md:text-lg ml-2 mr-2 mb-3 rounded-md w-[278px] py-2 ${ColorsThemeA.OhcGradient_A} transform hover:scale-105 transition-transform hover:shadow-[0px_7px_12px_0px_rgba(255,125,60,0.25)]`
+const ServicesOnly_Classname = `flex items-center justify-center min-w-56 h-14 rounded-lg shadow-sm text-black font-medium text-md md:text-xl px-8 py-2 mt-2 bg-white border border-x-stone-200 border-y-stone-100 hover:scale-105 transform transition-transform duration-300 hover:shadow-md`
 
 const Welcome = () => {
   // Define state variables
@@ -339,7 +340,7 @@ const Welcome = () => {
 
           {/* Bouton Recherche un soin centré */}
           <div
-            className={`${Theme_A.button.bigWhiteGreyButton} cursor-pointer mr-4`}
+            className={`${ServicesOnly_Classname} cursor-pointer mr-4`}
             onClick={() => router.push('/services')}
           >
             Rechercher un soin / service uniquement
@@ -347,7 +348,7 @@ const Welcome = () => {
 
 
           {/* Icône Info à droite du bouton */}
-          <div >
+          <div className="pr-4">
             <InfoButton title_1={InfoTitle_1} content_1={InfoContent_1} title_2={InfoTitle_2} content_2={InfoContent_2} onOpenModal={openInfoModal} videoUrl={VideoUrl} />
           </div>
         </div>
