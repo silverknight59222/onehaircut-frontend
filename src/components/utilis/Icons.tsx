@@ -712,11 +712,22 @@ export const AddIcon = () => {
   );
 };
 
-export const LogoIcon = () => {
+export const LogoIcon = ({ className }) => {
+  // Define default size or fallback size
+  let iconSize = "w-[274px] h-[52px]"; // Default size, adjust as needed
+
+  // Check for specific class names to determine size
+  if (className.includes("small")) {
+    iconSize = "w-[137px] h-[26px]"; // Small size
+  } else if (className.includes("medium")) {
+    iconSize = "w-[182px] h-[34px]"; // Medium size
+  } else if (className.includes("large")) {
+    iconSize = "w-[274px] h-[52px]"; // Large size
+  }
+
   return (
     <svg
-      width="274"
-      height="52"
+      className={iconSize + " " + className} // Combine default size with custom class names
       viewBox="0 0 274 52"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

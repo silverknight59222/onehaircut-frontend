@@ -333,7 +333,7 @@ const Welcome = () => {
           <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-30 to-yellow-300">votre style !</span>
         </p>
 
-        <div className="flex items-center justify-center w-full mb-10 sm:mb-10">
+        <div className="flex items-center justify-center w-full mb-10 sm:mb-10 px-2">
           {/* Espace vide pour centrer le bouton */}
           <div style={{ width: '48px' }}></div>
 
@@ -407,7 +407,7 @@ const Welcome = () => {
               <div className="relative w-52 h-52 sm:w-72 sm:h-72 md:w-96 md:h-96 mb-5">
                 {isPreview ? (
                   <div className="flex items-center justify-center rounded-xl w-full h-full object-cover">
-                    <LogoIcon />
+                    <LogoIcon className={''} />
                   </div>
                 ) : (
                   <Image

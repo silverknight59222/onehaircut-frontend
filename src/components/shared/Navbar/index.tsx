@@ -256,7 +256,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
     <div className="w-full flex flex-col items-center justify-between border-b border-[#EBF0F2] pb-3 xl:pb-0">
       <div className={`w-full flex items-center justify-between px-4 md:px-14  ${!isLoggedIn ? 'flex-co sm:flex-row' : 'flex-row'}`}>
         <div onClick={() => router.push('/')} className="py-5 cursor-pointer">
-          <LogoIcon />
+          <LogoIcon className={'medium'} />
         </div>
         {!hideSearchBar && <div className="hidden xl:flex items-center pr-2 rounded-2xl bg-[#F7F7F7] h-[52px]  shadow-sm shadow-stone-300 border border-stone-200">
           <div
