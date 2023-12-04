@@ -221,7 +221,7 @@ const Step3 = () => {
         route.push("/registration/steps/4");
       }
     }).catch(err => {
-      showSnackbar("erreur", "Un problème est apparu!");
+      showSnackbar("erreur", "Email déjà utilisé");
     }).finally(() => {
       setIsLoading(false);
     })
