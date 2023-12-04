@@ -265,7 +265,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
             </div>}
           {!isLoggedIn &&
             <button onClick={() => router.push('/registration')}
-              className={`lg:hidden w-32 md:w-52 h-16 md:h-11 text-white font-sm ${Theme_A.button.mediumGradientButton} rounded-xl shadow-sm shadow-stone-300`}>
+              className={`lg:hidden w-32 md:w-52 h-16 md:h-11 text-white mt-2 font-sm ${Theme_A.button.mediumGradientButton} rounded-xl shadow-sm shadow-stone-300`}>
               Enregistrer mon salon
             </button>}
         </div>
@@ -352,9 +352,9 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     </div>
                   )}
                 </div>
-                <div className="border-r border-grey px-0 lg:px-2 2xl:px-6 last:border-r-0 cursor-pointer">
+                <div className="border-r border-grey px-0 lg:px-2 2xl:px-6 last:border-r-0 cursor-pointer text-black">
                   <p
-                    className={showDesktopLength ? "rounded-xl py-2 px-7 bg-white  text-black font-semibold" : " hover:bg-white rounded-xl py-2 px-7 "}
+                    className={showDesktopLength ? "rounded-xl py-2 px-7 bg-white  font-semibold" : " hover:bg-white rounded-xl py-2 px-7 "}
                     onClick={() => {
                       setShowDesktopEthnicity(false);
                       setShowDesktopGender(false);
@@ -364,7 +364,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     Longueur
                   </p>
                   {showDesktopLength && (
-                    <div className="absolute top-[105px] md:top-[75px] -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                    <div className="relative top-[65px] md:top-[75px] -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
                       {Length.map((item, index) => {
                         return (
                           <div

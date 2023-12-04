@@ -1,5 +1,5 @@
 "use client";
-import { LogoIcon } from "@/components/utilis/Icons";
+import { BackArrow, LogoIcon } from "@/components/utilis/Icons";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { RegistrationCheckedIcon } from "@/components/utilis/Icons";
@@ -68,6 +68,11 @@ const Step1 = () => {
         >
           <LogoIcon className={''} />
         </button>
+      </div>
+      <div className='flex items-start cursor-pointer mt-4 mb-2 sm:mx-10 2xl:mx-14 text-stone-800'
+        onClick={() => route.push('/registration/steps')}>
+        <BackArrow />
+        <p className={`${Theme_A.textFont.navigationGreyFont}`}>Retour</p>
       </div>
       <div className="flex flex-col items-center justify-center mt-7">
         <p className="text-black font-semibold text-3xl md:text-4xl xl:text-5xl text-center">

@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import {
+  BackArrow,
   LogoCircleFixRight,
   LogoIcon,
   RegistrationCheckedIcon,
@@ -112,11 +113,15 @@ const Page = ({ params }: Params) => {
             <UserProfile />
           </div> */}
         </div>
+        <div className="w-full text-center text-black font-medium text-3xl mt-5">
+          Abonnement
+        </div>
         {plans.length > 1 && (<div className="flex flex-col items-center justify-center mt-12 px-6 w-full overflow-hidden">
           <div className="flex sm:flex-row flex-col gap-2 sm:gap-0 w-full items-center justify-center mb-6 max-w-[1300px] 2xl:max-w-[1340px]">
             <div className="flex sm:flex-row flex-col items-center justify-between w-full">
-              <div className="text-black font-medium text-3xl ml-5">
-                Abonnement
+              <div className='flex items-start cursor-pointer mt-8 mb-8 sm:mx-10 2xl:mx-14 text-stone-800' onClick={() => router.push('/registration')}>
+                <BackArrow />
+                <p className={`${Theme_A.textFont.navigationGreyFont}`}>Retour</p>
               </div>
               <button
                 onClick={() => onSubmit()}
@@ -142,7 +147,7 @@ const Page = ({ params }: Params) => {
                     {plans.length > 1 && plans[0].description}
                   </p>
                 </div>
-                <p className="font-semibold text-3xl mt-5">$ {plans.length > 1 && plans[0].price}</p>
+                <p className="font-semibold text-3xl mt-5"> {plans.length > 1 && plans[0].price}€</p>
               </Link>
               <Link
                 className={`w-full cursor-pointer sm:w-[600px] h-44 sm:h-[130px] px-8 flex flex-col sm:flex-row items-start sm:items-center justify-center sm:justify-between rounded-xl ${selectedPlan === "pro"
@@ -159,8 +164,8 @@ const Page = ({ params }: Params) => {
                   </p>
                 </div>
                 <div className="mt-3">
-                  <p className="">à partir de</p>
-                  <p className="font-semibold text-3xl">$ {plans.length > 1 && plans[1].price}</p>
+                  {/* <p className="">à partir de</p> */}
+                  <p className="font-semibold text-3xl">{plans.length > 1 && plans[1].price}€</p>
                 </div>
               </Link>
             </div>
@@ -202,7 +207,7 @@ const Page = ({ params }: Params) => {
               
             /> 
           </div> */}
-          <div className='mt-12 p-6 rounded-2xl bg-stone-900 shadow-lg shadow-slate-700 w-[400px] h-[250px] md:w-[500px] md:h-[300px] lg:w-[600px] lg:h-[360px] xl:w-[800px] xl:h-[500px]'>
+          <div className='my-12 p-6 rounded-2xl bg-stone-900 shadow-lg shadow-slate-700 w-[400px] h-[250px] md:w-[500px] md:h-[300px] lg:w-[600px] lg:h-[360px] xl:w-[800px] xl:h-[500px]'>
             <iframe
               className="w-full h-full"
               src={`https://www.youtube.com/embed/TW-LgJUiMX0`}  // Embed the video using the video ID
