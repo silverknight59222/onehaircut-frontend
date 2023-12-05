@@ -181,7 +181,7 @@ const ImagesContainer = ({
                         Photo
                       </p>
                       <p className="text-[10px] font-medium text-[#959595] text-center mt-2">
-                        Recommended size is 128px x 128px
+                        Ajouter une photo puis valider avec +
                       </p>
                     </div>
                   )}

@@ -589,10 +589,7 @@ const Hairdressers = () => {
               ) : (
                 <div>
                   <p className={`${Theme_A.textFont.infoTextSmall}`}>
-                    Ajouter une photo
-                  </p>
-                  <p className="text-[10px] font-medium text-[#959595] mt-2">
-                    Recommended size is 128px x 128px
+                    Ajouter une photo (optionnel)
                   </p>
                 </div>
               )}
