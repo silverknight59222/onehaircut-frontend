@@ -108,7 +108,7 @@ const PasswordSettings = () => {
     return (
         <div className={`w-[400px] h-max bg-white rounded-2xl py-4 shadow-lg mb-4`}>
             <div>
-                <div className="flex flex-col items-center justify-center mx-2 gap-4">
+                <div className="flex flex-col items-center justify-center mx-12 gap-4">
                     <p className="text-xl font-semibold text-black text-center">Modification du mot de passe</p>
 
                     {error && (
