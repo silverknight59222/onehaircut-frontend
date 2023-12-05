@@ -225,29 +225,33 @@ const SalonInfos = () => {
             return { ...prev, text: "" };
         });
 
-        let address = {} as any
-        place.address_components.map((item, index) => {
-            setAddressFields(address, item.types[0], item.long_name);
-        });
 
-        setCity(address.city || "")
-        setState(address.administrative_area_level_1 || "")
-        setCountry(address.country || "")
-        setPostalCode(address.postal_code || "")
+        // take actions only if there is a place
+        if (place != undefined) {
+            let address = {} as any
+            place.address_components.map((item, index) => {
+                setAddressFields(address, item.types[0], item.long_name);
+            });
+
+            setCity(address.city || "")
+            setState(address.administrative_area_level_1 || "")
+            setCountry(address.country || "")
+            setPostalCode(address.postal_code || "")
 
 
-        setStreet(address.route || "")
-        if (address.street_number && address.street_number != address.route) {
-            setStreet((pre) => address.street_number + " " + pre)
+            setStreet(address.route || "")
+            if (address.street_number && address.street_number != address.route) {
+                setStreet((pre) => address.street_number + " " + pre)
+            }
+            else if (!address.street_number) {
+                console.log('pas de numero');
+                setError((prev) => {
+                    return { ...prev, text: 'Veuillez indiquer le numéro de rue' };
+                })
+            }
+            setLocationLatitude(place.geometry.location.lat());
+            setLocationLongitude(place.geometry.location.lng());
         }
-        else if (!address.street_number) {
-            console.log('pas de numero');
-            setError((prev) => {
-                return { ...prev, text: 'Veuillez indiquer le numéro de rue' };
-            })
-        }
-        setLocationLatitude(place.geometry.location.lat());
-        setLocationLongitude(place.geometry.location.lng());
     }
 
     // function to set the state variables based on the google input parameters
