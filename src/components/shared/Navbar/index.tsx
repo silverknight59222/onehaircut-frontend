@@ -265,7 +265,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
             </div>}
           {!isLoggedIn &&
             <button onClick={() => router.push('/registration')}
-              className={`lg:hidden w-32 md:w-52 h-16 md:h-11 text-white font-sm ${Theme_A.button.mediumGradientButton} rounded-xl shadow-sm shadow-stone-300`}>
+              className={`lg:hidden w-32 md:w-52 h-16 md:h-11 text-white text-center font-sm ${Theme_A.button.mediumGradientButton} rounded-xl shadow-sm shadow-stone-300`}>
               Enregistrer mon salon
             </button>}
         </div>
@@ -525,7 +525,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
         >
           {!isLoggedIn &&
             <button onClick={() => router.push('/registration')}
-              className={`hidden lg:flex w-32 md:w-52 2xl:w-60 h-16 md:h-11 text-white font-semibold ${Theme_A.button.mediumGradientButton} rounded-xl shadow-sm shadow-stone-300`}>
+              className={`hidden lg:flex w-32 md:w-52 2xl:w-60 h-16 md:h-11 text-center items-center justify-center text-white font-semibold ${Theme_A.button.mediumGradientButton} rounded-xl shadow-sm shadow-stone-300`}>
               Enregistrer mon salon
             </button>}
           {/* {isLoggedIn ? (
