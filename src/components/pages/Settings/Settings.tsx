@@ -15,6 +15,7 @@ import TVASettings from "./TVASettings";
 import SalonInfos from "./SalonInfos";
 import RolesSettings from "./RolesSettings";
 import Unavailability from "./Unavailability";
+import PasswordSettings from "./PasswordSettings";
 export interface settingsStruct {
   name: string;
   display: () => React.JSX.Element;
@@ -27,6 +28,7 @@ const settingsMenu: settingsStruct[] = [
   { name: "Accès des rôles", display: RolesSettings },
   { name: "Paiements", display: PayementSettings },
   { name: "TVA", display: TVASettings },
+  { name: "Mot de passe", display: PasswordSettings },
   // { name: "Notifications", display: NotificationsSettings }, // not needed for the salon
   //{ name: "OnehairBot", display: BotSettings },
   //{ name: "Promotions", display: PromotionsSettings },

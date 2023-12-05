@@ -165,16 +165,35 @@ const Step2 = () => {
           setZone(temp)
         }
       }
-
-      // zoom calculation:
-      // Constants for estimation
-      const earthRadius = 6371; // Earth's radius in km
-      const degreesPerPixel = 0.00027; // An approximation, varies with latitude
-
-      // Calculate the zoom level based on the radius
-      const zoomLevel = (Math.log2((earthRadius * Math.PI * 156543.03392) / (temp * 1000 * 2400 * 256 * degreesPerPixel)));
-      setZoomMap(Math.round(zoomLevel));
+      zoomHandler(temp);
     }
+  }
+
+  // Zoom calculation depending on the zone radius
+  const zoomHandler = (zone: number) => {
+    // zoom calculation:
+    // Constants for estimation
+    const earthRadius = 6371; // Earth's radius in km
+    const degreesPerPixel = 0.00027; // An approximation, varies with latitude
+
+    // Calculate the zoom level based on the radius
+    const zoomLevel = (Math.log2((earthRadius * Math.PI * 156543.03392) / (zone * 1000 * 3000 * 256 * degreesPerPixel)));
+    setZoomMap(Math.round(zoomLevel));
+  }
+
+  // function for clicking on the "je suis mobile"
+  const onClickIamMobile = () => {
+    // calculate the new zoom
+    if (!IamMobile) {
+      // zoom according to the radius
+      zoomHandler(zone);
+    }
+    else {
+      // default zoom
+      setZoomMap(15);
+    }
+    // set the status
+    setIamMobile(!IamMobile);
   }
 
   const onOHCLogoClick = () => {
@@ -185,22 +204,22 @@ const Step2 = () => {
     <div>
       <div className="flex items-center justify-center border-b border-[#EBF0F2] mt-5 pb-3">
         <button className="cursor-pointer"
-          onClick={onOHCLogoClick}
+          onClick={() => onOHCLogoClick()}
         >
           <LogoIcon className={''} />
         </button>
       </div>
-      <div className="flex flex-col items-center justify-center mt-16">
+      <div className="flex flex-col items-center justify-center mt-6">
         <p className="text-black font-semibold text-xl md:text-2xl lg:text-3xl text-center px-6 w-full md:w-[800px] xl:w-[1100px]">
-          Où est situé ton salon ? si tu es mobile, renseigne la zone dans
+          Où est situé ton salon ? Si tu es mobile, renseigne la zone dans
           laquelle tu peux exercer !
         </p>
         <div className="w-full md:w-[800px] xl:w-[1050px] flex flex-col items-center justify-center mt-5 sm:mt-7">
           <div className="w-full flex flex-col md:flex-row items-center justify-between">
             <Autocomplete
-              className="text-black placeholder-gray-600 w-full mx-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
+              className="text-black placeholder-gray-600 w-full px-2 mx-2 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
               apiKey={"AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E"}
-              style={{ width: "450px", borderRadius: '12px', marginTop: '28px', padding: '16px 24px', outline: 'none', }}
+              style={{ padding: '16px 24px', outline: 'none', }}
               onPlaceSelected={(place) => setAddressData(place)}
               placeholder="Adresse"
               options={{
@@ -216,7 +235,7 @@ const Step2 = () => {
             <div className=" mt-5 md:mt-0">
               <p>Je suis mobile</p>
               <div
-                onClick={() => setIamMobile(!IamMobile)}
+                onClick={() => onClickIamMobile()}
                 className="flex items-center justify-center gap-3 cursor-pointer"
               >
                 <div className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${IamMobile
@@ -247,7 +266,7 @@ const Step2 = () => {
               </div>
             </div>
           </div>
-          <div className="w-full h-96 my-12 shadow-lg rounded-3xl">
+          <div className="w-full h-96 px-2 my-12 shadow-lg rounded-3xl">
             <GoogleMap
               center={location}
               zoom={zoomMap}

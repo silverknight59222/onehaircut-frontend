@@ -563,7 +563,7 @@ const Hairdressers = () => {
               value={hairDresser.role}
               className={`w-full p-3 placeholder:text-[#959595] placeholder:text-base rounded-md border border:stone-400 shadow-md  ${Theme_A.behaviour.fieldFocused_B}`}
               name="role" onChange={(e) => onChangeRole(e.target.value)}>
-              <option value="admin">Admin</option>
+              <option value="admin">Administrateur</option>
               <option value="staff">Staff</option>
             </select>
             {error.email && (

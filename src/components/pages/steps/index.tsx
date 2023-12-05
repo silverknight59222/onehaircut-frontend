@@ -1,6 +1,7 @@
 'use client';
 import {
   AccountIcon,
+  BackArrow,
   LocationIcon,
   LogoIcon,
   PaymentIcon,
@@ -31,6 +32,11 @@ const Steps = () => {
         >
           <LogoIcon className={''} />
         </button>
+      </div>
+      <div className='flex items-start cursor-pointer mt-4 mb-2  sm:mx-10 2xl:mx-14 text-stone-800'
+        onClick={() => route.push('/registration/plans')}>
+        <BackArrow />
+        <p className={`${Theme_A.textFont.navigationGreyFont}`}>Retour</p>
       </div>
       <div className="relative flex flex-col items-center justify-center rounded-[60px] mt-20 md:mt-40 mb-6 sm:mb-10 mx-8 md:mx-20 2xl:mx-28 sm:bg-[#F8F8F8] border sm:border-[#DADADA] px-6 sm:px-12 py-24 2xl:px-20 md:py-32">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-11">

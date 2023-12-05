@@ -25,7 +25,7 @@ function MobilePricingTable() {
         totalSlides={3}
         infinite={true}
       >
-        <Slider className='h-full pb-4'
+        <Slider className='h-[850px] pb-8'
         // style={{ height: '980px' }}
         >
           <Slide index={0}>
@@ -137,8 +137,8 @@ function MobilePricingTable() {
         </Slider>
         <ButtonBack className='absolute -left-2 top-1/3 mt-14 transform -translate-x-1/2 -translate-y-1/2  bg-white rounded-r-xl rounded-br-xl-xl'><LeftArrowIcon /></ButtonBack>
         <ButtonNext className='absolute -right-6 top-1/3 mt-14 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-l-xl rounded-bl-xl-xl'><RightArrowIcon /></ButtonNext>
-      </CarouselProvider><
-        div className={`flex relative content-center justify-center items-center text-center`}>
+      </CarouselProvider>
+      <div className={`flex pt-4 content-center justify-center items-center text-center`}>
         <div
           onClick={() => router.push('registration/plans?plan=standard')}
           className={`flex items-center justify-center rounded-xl w-4/5 h-16 cursor-pointer ${Theme_A.button.bigGradientButton} `}>
