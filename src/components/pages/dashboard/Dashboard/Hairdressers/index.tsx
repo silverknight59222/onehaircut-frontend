@@ -284,6 +284,8 @@ const Hairdressers = () => {
         });
     }
   };
+
+
   const getAllHairDresser = async () => {
     const user = getLocalStorage("user");
     const userId = user ? Number(JSON.parse(user).id) : null;
@@ -641,7 +643,7 @@ const Hairdressers = () => {
               className={`${Theme_A.button.medLargeGradientButton}`}
               onClick={() => addDresser()}
             >
-              Cr&eacute;er le profil
+              Créer le profil
             </button>
           ) : (
             <div className="flex items-center justify-center gap-3 mb-2">
