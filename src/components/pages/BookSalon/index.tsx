@@ -265,7 +265,7 @@ const BookSalon = () => {
 
 
         {/* PARTIE STAFF DU SALON */}
-        <div className="w-full lg:w-auto lg:mt-0">
+        <div className="w-full lg:w-auto lg:mt-0 z-50">
           {hairDressers && hairDressers.length > 1 && (
             <p className="text-lg text-black font-semibold text-center lg:text-left">
               Choisissez votre coiffeur
@@ -286,10 +286,19 @@ const BookSalon = () => {
                   className={`relative flex flex-col items-center justify-center p-4 border rounded-2xl cursor-pointer hover:border-stone-400 bg-stone-50 shadow-sm shadow-stone-500 ${selectedHairdresser.id === hairdresser.id ? "border-2 border-x-red-500 border-y-orange-500" : "border-white"}`}
                 >
                   <div
-                    className="relative  xl:w-30 xl:h-30 2xl:w-36 2xl:h-36 w-20 h-20 mb-2"
-                    style={{ minWidth: '100px', minHeight: '100px' }}>
+                    className="relative xl:w-30 xl:h-30 2xl:w-36 2xl:h-36 w-20 h-20 mb-2"
+                    style={{ minWidth: '100px', minHeight: '100px' }}
+                  >
                     <Image
-                      src={hairdresser.profile_image ? (hairdresser.profile_image.includes('http') ? hairdresser.profile_image : 'https://api.onehaircut.com/' + hairdresser.profile_image) : `https://api.onehaircut.com/avatars/man/man_01.jpg`}
+                      src={
+                        hairdresser.profile_image
+                          ? (hairdresser.profile_image.includes('http')
+                            ? hairdresser.profile_image
+                            : 'https://api.onehaircut.com/' + hairdresser.profile_image)
+                          : hairdresser.avatar && hairdresser.avatar.image
+                            ? 'https://api.onehaircut.com/' + hairdresser.avatar.image
+                            : '' // Remplacez par l'URL de votre image par défaut
+                      }
                       alt={`Coiffeur ${hairdresser.name}`}
                       layout="fill"
                       className="rounded-xl shadow-inner object-cover"
@@ -318,7 +327,7 @@ const BookSalon = () => {
 
 
       {/* PARTIE RESERVATION DE SLOT */}
-      <div className="flex justify-center">
+      <div className="flex justify-center z-50">
         <div className=" max-w-[800px] mx-2 bg-white border-2 border-[#c3c3c3] py-2 rounded-[22px] mb-16 shadow-sm shadow-stone-600 mt-8">
 
           {/* TITRE */}

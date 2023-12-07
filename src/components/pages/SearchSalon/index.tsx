@@ -406,7 +406,7 @@ const SearchSalon = () => {
               <div className="flex justify-between w-full">
                 {/* Durée de la coiffure*/}
                 <p className="text-md xl:text-lg font-semibold text-stone-400">
-                  <small>Dur&eacute;e des prestations :</small>
+                  <small>Durée des prestations :</small>
                 </p>
                 {salonProfile && <p className="text-md xl:text-lg font-normal text-stone-400 italic">
                   {salonProfile.total_service_duration} min

@@ -348,7 +348,7 @@ const Welcome = () => {
 
 
           {/* Icône Info à droite du bouton */}
-          <div className="pr-34">
+          <div className="pr-4">
             <InfoButton title_1={InfoTitle_1} content_1={InfoContent_1} title_2={InfoTitle_2} content_2={InfoContent_2} onOpenModal={openInfoModal} videoUrl={VideoUrl} />
           </div>
         </div>
