@@ -32,10 +32,13 @@ const BookSalon = () => {
   const [hairCut, setHairCut] = useState({});
   const { loadingView } = userLoader();
   const salonData = getLocalStorage('selectedSalon')
-
+  const userData = getLocalStorage("user")
   const service_ids = getLocalStorage('ServiceIds')
 
   const salon = salonData ? JSON.parse(salonData) : null
+  const user = userData ? JSON.parse(userData) : null
+  const services = service_ids ? JSON.parse(service_ids) : null
+
   const durationTime = salon?.total_duration
   const items = [
     { name: "Type de coiffure", desc: "Curly" },
@@ -204,24 +207,35 @@ const BookSalon = () => {
         </div>
 
         {/* INFORMATIONS DU SALON */}
-        <div className=" h-80 xl:h-[500px]  bg-stone-50 rounded-xl shadow-sm shadow-stone-400 border-b-2 border-[#aeaeae] p-8 m-4">
+        <div className=" h-auto bg-stone-50 rounded-xl shadow-sm shadow-stone-400 border-b-2 border-[#aeaeae] p-8 m-4">
           {salon && (
             <p className="w-80 text-3xl text-center font-bold text-stone-800  border-b-2 border-[#d7d7d7] pb-3">
               {salon?.name}
             </p>
           )}
           {salon && (
-            <div className="flex flex-col gap-3 text-xl font-medium mt-6">
+            <div className="flex flex-col gap-2 text-xl font-medium mt-6">
               {haircutData && (
-                <div >
+                <div>
                   <p className="font-semibold text-lg ">Choix de la coiffure: </p>
-                  <p className="flex items-center gap-2 text-stone-700 text-base italic">{haircutData?.name}</p>
+                  <p className="flex items-center gap-1 text-stone-600 text-base italic">{haircutData?.name}</p>
+                </div>
+              )}
+
+              {services && (
+                <div>
+                  <p className="font-semibold text-lg ">Choix des services: </p>
+                  <ul className="list-disc list-inside text-stone-600 text-xs italic">
+                    {services.map((service, index) => (
+                      <li key={index}>{service.name}</li>
+                    ))}
+                  </ul>
                 </div>
               )}
 
               <div>
                 <p className="font-semibold text-lg ">Durée: </p>
-                <p className="flex items-center gap-2 text-stone-700 text-base italic">{salon?.total_duration} minutes</p>
+                <p className="flex items-center gap-1 text-stone-600 text-sm italic">{salon?.total_duration} minutes</p>
               </div>
 
               <p className="font-semibold text-lg">Lieu: </p>
@@ -229,12 +243,28 @@ const BookSalon = () => {
                 {/* Bouton personnalisé pour "À domicile" avec texte centré */}
                 <div className="flex items-center space-x-2">
                   <div
-                    onClick={() => handleLocationTypeClick('domicile')}
-                    className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded hover:scale-125 transition duration-300 ${locationType === 'domicile' ? ColorsThemeA.ohcVerticalGradient_A : "bg-[#D6D6D6]"}`}
+                    onClick={() => {
+                      if (salon?.is_mobile === "yes") {
+                        handleLocationTypeClick('domicile');
+                      }
+                    }}
+                    className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded bg-[#D6D6D6]  ${salon?.is_mobile === 'yes'
+                      ? locationType === 'domicile'
+                        ? `${ColorsThemeA.ohcVerticalGradient_A}`
+                        : 'hover:scale-125 transition duration-300'
+                      : ''
+                      }`}
                   >
                     {locationType === 'domicile' && <CheckedIcon />}
                   </div>
-                  <span>À domicile</span>
+                  <span
+                    className={`${salon?.is_mobile === 'yes'
+                      ? "text-stone-700 font semi-bold"
+                      : "font-medium text-stone-400"
+                      }`}
+                  >
+                    À domicile
+                  </span>
                 </div>
 
                 {/* Bouton personnalisé pour "En salon" avec texte centré */}
@@ -251,14 +281,14 @@ const BookSalon = () => {
 
               {locationType === 'domicile' && (
                 <>
-                  <p className="text-stone-700 text-base italic">[Adresse à domicile]</p>
+                  <p className="text-xs text-stone-600 italic">{user?.street}<br />{user?.zipcode} {user?.city}<br />{user?.country}<br /></p>
                   <p className="font-semibold text-lg">Prix du déplacement :</p>
                   <div className="flex justify-center items-center bg-white border border-stone-400 rounded-lg px-4 py-2 mt-2">
-                    <p className="text-stone-700 text-xl font-bold">+ 15 €</p> {/* TODO UPDATE THE PRICE WITH THE MOBILITY COST OF THE SALON */}
+                    <p className="text-stone-600 text-xl font-bold">+ 15 €</p> {/* TODO UPDATE THE PRICE WITH THE MOBILITY COST OF THE SALON */}
                   </div>
                 </>
               )}
-              {locationType === 'salon' && <p className="text-stone-700 text-base italic">{salon.Adresse}</p>}
+              {locationType === 'salon' && <p className="text-xs text-stone-600 italic">{salon?.address.street}<br />{salon?.address.zipcode} {salon?.address.city}<br />{salon?.address.country}<br /></p>}
             </div>
           )}
         </div>
