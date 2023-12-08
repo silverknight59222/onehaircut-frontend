@@ -2,7 +2,7 @@
 import { LogoCircleFixRight, ChatSendIcon } from "@/components/utilis/Icons";
 import ClientDashboardLayout from "@/layout/ClientDashboardLayout";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Footer from "@/components/UI/Footer";
 import { getLocalStorage } from "@/api/storage";
 import { clientDashboard } from "@/api/clientDashboard";
@@ -11,6 +11,7 @@ import { dashboard } from "@/api/dashboard";
 import userLoader from "@/hooks/useLoader";
 import { Theme_A, ColorsThemeA } from "@/components/utilis/Themes";
 import CustomInput from "@/components/UI/CustomInput";
+
 
 
 const Messages = () => {
@@ -82,10 +83,11 @@ const Messages = () => {
     const formatDate = (date: string) => {
         const d = new Date(date);
         return {
-            day: `${d.getUTCDate()}/${d.getUTCMonth() + 1}`,
-            time: `${d.getUTCHours()}:${String(d.getUTCMinutes()).padStart(2, '0')}`
+            day: d.toLocaleDateString(),
+            time: d.toLocaleTimeString()
         };
     }
+
 
 
     // Appelle `getSalonsByUser` au chargement du composant    // Appelle `getSalonsByUser` au chargement du composant
@@ -99,6 +101,21 @@ const Messages = () => {
             getChat(salons[0])
         }
     }, [salons])
+
+
+    // For automatic scrolling down
+    // Créez la référence avec le type HTMLDivElement
+    const endOfMessagesRef = useRef<HTMLDivElement>(null);
+    // Défilement automatique vers le bas de la zone de chat
+    const scrollToBottom = () => {
+        endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
+    }
+    // Appelle scrollToBottom chaque fois que les messages changent
+    useEffect(() => {
+        scrollToBottom();
+    }, [chats]); // chats est le tableau des messages
+
+
 
     // Rendu du composant
     return (
@@ -188,6 +205,8 @@ const Messages = () => {
                                         </div>
                                     ))
                                 )}
+                                {/* Élément utilisé pour le défilement automatique en bas */}
+                                <div ref={endOfMessagesRef} />
                             </div>
 
 

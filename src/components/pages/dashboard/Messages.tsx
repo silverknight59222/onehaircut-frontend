@@ -78,15 +78,14 @@ const Messages = () => {
     }
   };
 
+  // Formatte une date en heures et minutes
   const formatDate = (date: string) => {
     const d = new Date(date);
     return {
-      day: `${d.getUTCDate()}/${d.getUTCMonth() + 1}`,
-      time: `${d.getUTCHours()}:${String(d.getUTCMinutes()).padStart(2, '0')}`
+      day: d.toLocaleDateString(),
+      time: d.toLocaleTimeString()
     };
   }
-
-
 
   useEffect(() => {
     getClientsByProfessional()
@@ -97,6 +96,14 @@ const Messages = () => {
     }
   }, [clients])
 
+
+
+  // Pour envoyer un message en appuyant sur enter :
+  const handleKeyPress = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      onSendMessage();
+    }
+  }
   return (
     <div>
       {isLoading && loadingView()}
@@ -131,18 +138,18 @@ const Messages = () => {
                     <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row sm:items-center lg:items-start xl:items-center justify-center gap-2 sm:gap-4">
                       {/* Icône du client (décommentez si nécessaire) */}
                       <div className="flex items-center">
-                        {/* Cercle ajouté */}                        
-                          
-                        { client && client.client && client.client.front_profile ? <img
-                            src={client.client.front_profile}
-                            alt="profile"
-                            className="rounded-full inset-0 m-auto shadow-md transform transition-transform duration-300 group-hover:scale-90 hover:shadow-inner border-2 border-stone-200 h-12 w-12"
-                          />
-                          : 
+                        {/* Cercle ajouté */}
+
+                        {client && client.client && client.client.front_profile ? <img
+                          src={client.client.front_profile}
+                          alt="profile"
+                          className="rounded-full inset-0 m-auto shadow-md transform transition-transform duration-300 group-hover:scale-90 hover:shadow-inner border-2 border-stone-200 h-12 w-12"
+                        />
+                          :
                           <div className="w-10 h-10 rounded-full border border-stone-200 bg-stone-50 mr-2">
                           </div>
-                        }                        
-                        
+                        }
+
                         <p className="ml-4 text-black">{client.client.name}</p>
 
                       </div>
@@ -197,11 +204,13 @@ const Messages = () => {
                 <div className="relative w-9/12 ">
                   {/* Champ de texte pour entrer un message */}
                   <CustomInput
-                    id="chatInput"
+                    id="sendMessageInput"
                     label="Ecrire un message"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
+                  //onKeyPress={handleKeyPress} // Ajoutez ceci
                   />
+
                   {/* 
                   <input onChange={(e) => setMessage(e.target.value)} value={message} className={`w-full shadow-inner border border:bg-stone-300 ${Theme_A.behaviour.fieldFocused_C} rounded-xl h-12 outline-none px-3`} />
                   */}
