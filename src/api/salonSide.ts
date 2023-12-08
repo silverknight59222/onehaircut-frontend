@@ -13,7 +13,7 @@ interface SalonType {
   type: string,    
 }
 interface SalonMobility {
-  is_mobile: boolean,    
+  is_mobile: boolean,
 }
 interface SalonMobilityZone {
   zone_radius: number
