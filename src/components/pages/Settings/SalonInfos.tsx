@@ -686,11 +686,8 @@ const SalonInfos = () => {
                         alt=""
                         className="w-32 h-24 mr-4 ml-8 bg-stone-300 rounded-lg mb-4 "
                     />
-
                 </div>
             </div>
-
-
             {/* Séparation */}
             <hr className=" mx-16 border-gray-300 h-4" />
 
@@ -759,7 +756,7 @@ const SalonInfos = () => {
                         </div>
                         {/* TODO SAVE MOBILITY AND TYPE OF SALON DATA WITH THIS BUTTON */}
                         <div className="flex justify-center items-center">
-                            <button className={`mt-6 flex gap-4 items-center justify-center w-22 ${Theme_A.button.medBlackColoredButton}`} onClick={() => ``}> Actualiser</button>
+                            <button className={`mt-6 flex gap-4 items-center justify-center w-22 ${Theme_A.button.medBlackColoredButton}`} onClick={() => ``}> Mettre à jour</button>
                         </div>
                     </div>
                 )}
