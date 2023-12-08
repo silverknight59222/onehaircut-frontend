@@ -33,7 +33,7 @@ const ChatModal: FC<ChatModalProps> = ({
 
     const getChat = async () => {
         if (userData) {
-            await dashboard.getChat(userData.id, professionalData.id)
+            await dashboard.getChat(userData.id, professionalData.user_id)
                 .then(resp => {
                     setChats(resp.data.data)
                 })
@@ -45,7 +45,7 @@ const ChatModal: FC<ChatModalProps> = ({
         if (message) {
             const data = {
                 client_id: userData.id,
-                professional_id: professionalData.id,
+                professional_id: professionalData.user_id,
                 message: message,
                 by: userData.role === 'salon_professional' ? 'professional' : 'client',
             }

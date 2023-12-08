@@ -17,7 +17,7 @@ const Messages = () => {
   const [clients, setClients] = useState<ClientChat[]>([])
   const user = getLocalStorage("user");
   const userId = user ? Number(JSON.parse(user).id) : null;
-  const salonId = user ? Number(JSON.parse(user).hair_salon_id) : null;
+  const salonId = user ? Number(JSON.parse(user).id) : null;
   const { loadingView } = userLoader();
   const [isLoading, setIsLoading] = useState(false);
   const [selectedChat, setSelectedChat] = useState({ client_id: 0, client: { name: '', front_profile: '' } })

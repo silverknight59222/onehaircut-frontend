@@ -17,6 +17,7 @@ import Footer from "@/components/UI/Footer";
 import { LogoCircleFixRight } from "@/components/utilis/Icons";
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import StarRatings from "react-star-ratings";
+import { salonApi } from "@/api/salonSide";
 
 const BookSalon = () => {
   const [selectedImage, setSelectedImage] = useState("");
@@ -31,6 +32,7 @@ const BookSalon = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [slots, setSlots] = useState<Slot[]>([])
   const [hairCut, setHairCut] = useState({});
+  const [price, setPrice] = useState(15)
   const { loadingView } = userLoader();
   const salonData = getLocalStorage('selectedSalon')
   const userData = getLocalStorage("user")
@@ -74,6 +76,17 @@ const BookSalon = () => {
       setIsLoading(false);
     }
   };
+
+  const getBillPerKM = async () => {
+    await salonApi.getBillPerKM(user?.id, salon.user_id)
+      .then(({ data }) => {
+        setHairDressers(data)
+        setPrice(15);
+      })
+      .catch(err => {
+        //console.log(err)
+      })
+  }
 
   const getSlots = async () => {
     setIsLoading(true);
@@ -172,6 +185,7 @@ const BookSalon = () => {
   // Gestionnaire de clic pour les boutons personnalisés
   const handleLocationTypeClick = (type) => {
     setLocationType(type);
+    setPrice(price);
   };
 
 
@@ -300,7 +314,7 @@ const BookSalon = () => {
                   <p className="text-xs text-stone-600 italic">{user?.street}<br />{user?.zipcode} {user?.city}<br />{user?.country}<br /></p>
                   <p className="font-semibold text-lg">Prix du déplacement :</p>
                   <div className="flex justify-center items-center bg-white border border-stone-400 rounded-lg px-4 py-2 mt-2">
-                    <p className="text-stone-600 text-xl font-bold">+ 16 €</p> {/* TODO UPDATE THE PRICE WITH THE MOBILITY COST OF THE SALON */}
+                    <p className="text-stone-600 text-xl font-bold">{`+ ${price} €`} </p> {/* TODO UPDATE THE PRICE WITH THE MOBILITY COST OF THE SALON */}
                   </div>
                 </>
               )}
