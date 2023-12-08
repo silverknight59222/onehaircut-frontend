@@ -97,7 +97,7 @@ const SalonInfos = () => {
     }
 
     const saveSalonMobility = async () => {
-        await salonApi.saveSalonMobility({ is_mobile: !isMobilityAllowed })
+        await salonApi.saveSalonMobility({ is_mobile: !isMobilityAllowed, price : ZonePrice })
             .then((resp) => {
                 showSnackbar("success", "Salon Mobility Saved Successfully.");
             })
