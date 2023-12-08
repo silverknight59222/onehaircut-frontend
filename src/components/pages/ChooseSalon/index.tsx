@@ -462,7 +462,7 @@ const SalonChoice = () => {
                                     <div
                                         key={index}
                                         onClick={() => setSelectedSalon(fsalon)}
-                                        className={`relative bg-stone-100 rounded-2xl border hover:border-stone-400 cursor-pointer ${selectedSalon.id === fsalon.id && 'border-2 border-red-300 shadow-xl'}`}
+                                        className={`relative bg-stone-100 rounded-2xl border hover:border-stone-400 cursor-pointer ${selectedSalon.id === fsalon.id && 'border-4 border-red-400 shadow-xl'}`}
                                         style={{ width: '100%', aspectRatio: '1/1', display: 'flex', flexDirection: 'column', minWidth: '200px', maxWidth: '450px', minHeight: '200px', maxHeight: '420px' }}
                                     >
                                         {selectedSalon.id === fsalon.id && (

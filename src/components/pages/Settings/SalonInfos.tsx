@@ -97,7 +97,7 @@ const SalonInfos = () => {
     }
 
     const saveSalonMobility = async () => {
-        await salonApi.saveSalonMobility({ is_mobile: !isMobilityAllowed, price : ZonePrice })
+        await salonApi.saveSalonMobility({ is_mobile: !isMobilityAllowed, price: ZonePrice })
             .then((resp) => {
                 showSnackbar("success", "Salon Mobility Saved Successfully.");
             })
@@ -750,12 +750,16 @@ const SalonInfos = () => {
                                 </div>
 
                                 {/* Affichage des frais maximum */}
-                                <div className="ml-4 bg-slate-800 text-stone-200 font-thin rounded-lg p-2 flex items-center cursor-not-allowed">
+                                <div className="ml-4 bg-slate-200 text-stone-400 font-thin rounded-lg p-2 flex items-center cursor-not-allowed">
                                     <span className="text-sm font-medium">
                                         Frais maximum: {maxFees.toFixed(2)} €
                                     </span>
                                 </div>
                             </div>
+                        </div>
+                        {/* TODO SAVE MOBILITY AND TYPE OF SALON DATA WITH THIS BUTTON */}
+                        <div className="flex justify-center items-center">
+                            <button className={`mt-6 flex gap-4 items-center justify-center w-22 ${Theme_A.button.medBlackColoredButton}`} onClick={() => ``}> Actualiser</button>
                         </div>
                     </div>
                 )}

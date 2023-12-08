@@ -160,7 +160,7 @@ const Dashboard = () => {
                                 <p className="text-black text-3xl font-semibold">
                                     {salonStats.total_views}
                                 </p>
-                                <p className="text-black font-medium text-sm mt-2">Nombre de vistes</p>
+                                <p className="text-black font-medium text-sm mt-2">Nombre de visites</p>
                             </div>
                         </div>
 
