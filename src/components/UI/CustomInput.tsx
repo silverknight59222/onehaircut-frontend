@@ -15,6 +15,7 @@ interface CustomInputProps {
     onBlur?: () => void;
     isPasswordMismatch?: boolean; // Nouvelle prop pour la vérification de mot de passe non identique
     disable?: boolean;
+    onEnterPress?: () => void;
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -30,6 +31,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
     isZipCode = false,
     onBlur,
     disable = false,
+    onEnterPress,
 }) => {
     const [isInputFocused, setIsInputFocused] = useState(false);
     const [isEmailError, setIsEmailError] = useState(false);
@@ -91,6 +93,12 @@ const CustomInput: React.FC<CustomInputProps> = ({
         }
     };
 
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+        if (e.key === 'Enter' && onEnterPress) {
+            onEnterPress();
+        }
+    };
+
     return (
         <div className="flex flex-col">
             <div className="relative group">
@@ -105,6 +113,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
                     onFocus={() => setIsInputFocused(true)}
                     placeholder={placeholder}
                     disabled={disable}
+                    onKeyDown={handleKeyDown}
                 />
                 <label
                     htmlFor={id}

@@ -273,7 +273,7 @@ const AddServiceModal = (props: AddServiceModalType) => {
   }, [typeFilters, search]);
 
   return (
-    <div className="bg-white w-9/12 max-h-full rounded-xl px-5 pb-5 relative ">
+    <div className="relative bg-white w-9/12 h-auto rounded-xl px-5 pb-5   ">
       {isLoading && loadingView()}
       <div className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2">
         <div

@@ -7,7 +7,7 @@ import {
 } from "@/components/utilis/Icons";
 import DashboardLayout from "@/layout/DashboardLayout";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import userLoader from "@/hooks/useLoader";
 import { Chat, ClientChat } from "@/types";
 import { Theme_A, ColorsThemeA } from "@/components/utilis/Themes";
@@ -104,6 +104,14 @@ const Messages = () => {
       onSendMessage();
     }
   }
+
+  const endOfMessagesRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chats]);
+
+
+
   return (
     <div>
       {isLoading && loadingView()}
@@ -195,6 +203,7 @@ const Messages = () => {
                     </div>
                   ))
                 )}
+                <div ref={endOfMessagesRef} />
               </div>
 
 
@@ -208,7 +217,7 @@ const Messages = () => {
                     label="Ecrire un message"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                  //onKeyPress={handleKeyPress} // Ajoutez ceci
+                    onEnterPress={onSendMessage}
                   />
 
                   {/* 

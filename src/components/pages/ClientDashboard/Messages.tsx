@@ -222,6 +222,7 @@ const Messages = () => {
                                         label="Ecrire un message"
                                         value={message}
                                         onChange={(e) => setMessage(e.target.value)}
+                                        onEnterPress={onSendMessage}
                                     />
                                     {/*
                                     <input onChange={(e) => setMessage(e.target.value)} 
