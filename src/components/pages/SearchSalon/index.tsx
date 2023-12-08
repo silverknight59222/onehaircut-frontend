@@ -274,7 +274,7 @@ const SearchSalon = () => {
                     <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-50 transition-opacity duration-300" />
                   </div>
                   {/* Titre pour la miniature gauche */}
-                  <p className="text-sm whitespace-nowrap mt-1"><strong>Images du salon</strong></p>
+                  <p className="text-sm whitespace-nowrap mt-1"><strong> Voir images du salon</strong></p>
                 </div>
 
 
@@ -295,7 +295,7 @@ const SearchSalon = () => {
                     <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-50 transition-opacity duration-300" />
                   </div>
                   {/* Titre pour la miniature droite */}
-                  <p className="text-sm whitespace-nowrap mt-1"><strong>Prestations du salon</strong></p>
+                  <p className="text-sm whitespace-nowrap mt-1"><strong>Voir prestations du salon</strong></p>
                 </div>
               </div>
             </div>

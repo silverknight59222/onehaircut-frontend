@@ -16,6 +16,7 @@ import { Theme_A, ColorsThemeA } from "@/components/utilis/Themes";
 import Footer from "@/components/UI/Footer";
 import { LogoCircleFixRight } from "@/components/utilis/Icons";
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
+import StarRatings from "react-star-ratings";
 
 const BookSalon = () => {
   const [selectedImage, setSelectedImage] = useState("");
@@ -209,9 +210,24 @@ const BookSalon = () => {
         {/* INFORMATIONS DU SALON */}
         <div className=" h-auto bg-stone-50 rounded-xl shadow-sm shadow-stone-400 border-b-2 border-[#aeaeae] p-8 m-4">
           {salon && (
-            <p className="w-80 text-3xl text-center font-bold text-stone-800  border-b-2 border-[#d7d7d7] pb-3">
-              {salon?.name}
-            </p>
+            <div>
+              <p className="w-80 text-3xl text-center font-bold text-stone-800  pb-3">
+                {salon?.name}
+              </p>
+
+              <div className="flex items-center gap-1 border-b-2 border-[#DBDBDB] text-xl 2xl:text-2xl font-semibold text-black pb-3 mt-1">
+                <StarRatings
+                  rating={salon?.haircut.rating}
+                  starRatedColor="#FEDF10"
+                  starSpacing="4px"
+                  starDimension="25px"
+                  numberOfStars={5}
+                  name="rating"
+                />
+                {/* TODO use salon's rating of the selected haircut {salonProfile.rating}*/}
+                <p className="-mb-2"> {salon?.haircut.rating}</p> <br /> <small><small>  ({salon?.haircut.rating_counts} avis</small></small> <p className="font-normal"><small><small><small>* sur cette coiffure</small></small></small> <br /></p> <small><small> ) </small></small>
+              </div>
+            </div>
           )}
           {salon && (
             <div className="flex flex-col gap-2 text-xl font-medium mt-6">
