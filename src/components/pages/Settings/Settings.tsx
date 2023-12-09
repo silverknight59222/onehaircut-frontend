@@ -11,7 +11,7 @@ import OpenningHours from "./OpenningHours";
 import Footer from "@/components/UI/Footer";
 import { Theme_A } from "@/components/utilis/Themes";
 import PayementSettings from "./PayementSettings";
-import TVASettings from "./TVASettings";
+import TaxesSettings from "./TaxesSettings";
 import SalonInfos from "./SalonInfos";
 import RolesSettings from "./RolesSettings";
 import Unavailability from "./Unavailability";
@@ -27,8 +27,8 @@ const settingsMenu: settingsStruct[] = [
   { name: "Indisponibilités", display: Unavailability },
   { name: "Accès des rôles", display: RolesSettings },
   { name: "Paiements", display: PayementSettings },
-  { name: "TVA", display: TVASettings },
   { name: "Mot de passe", display: PasswordSettings },
+  //{ name: "Taxes", display: TaxesSettings },
   // { name: "Notifications", display: NotificationsSettings }, // not needed for the salon
   //{ name: "OnehairBot", display: BotSettings },
   //{ name: "Promotions", display: PromotionsSettings },
