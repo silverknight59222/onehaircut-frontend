@@ -189,9 +189,9 @@ const Services = () => {
         </div>
       )}
 
-      <div className="flex items-center justify-center">
+      <div className="flex items-center justify-center ">
         {/* Grille pour afficher les services */}
-        <div className="gap-9 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5">
+        <div className="gap-9 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 mb-20">
           {/* Boucle pour cartographier et afficher chaque service */}
           {getServices().map((item, index) => {
             return (

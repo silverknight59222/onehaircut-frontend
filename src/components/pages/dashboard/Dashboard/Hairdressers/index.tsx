@@ -500,7 +500,7 @@ const Hairdressers = () => {
         <div className="bg-gradient-to-l  md:block fixed -left-32 md:-left-8 -bottom-32 md:-bottom-8 z-0 mix-blend-overlay ">
           <LogoCircleFixLeft />
         </div>
-        <div className="h-full w-full xl:w-2/5 overflow-auto flex flex-col items-center gap-8 bg-lightGrey rounded-3xl p-4 md:px-12 md:pt-12 md:pb-0 opacity-90 shadow-sm shadow-stone-300">
+        <div className="h-full w-full xl:w-2/5 overflow-auto flex flex-col items-center gap-8 mb-20 bg-lightGrey rounded-3xl p-4 md:px-12 md:pt-12 md:pb-0 opacity-90 shadow-sm shadow-stone-300">
           <div className={`${Theme_A.textFont.headerH2} underline`}>
             Ajouter un nouveau coiffeur
           </div>

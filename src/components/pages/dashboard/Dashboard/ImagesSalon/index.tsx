@@ -15,19 +15,19 @@ const Images = () => {
 
 	const getAllSalonImages = async () => {
 		let temp = getLocalStorage("hair_salon");
-    	const hairSalon = temp ? JSON.parse(temp) : null;
+		const hairSalon = temp ? JSON.parse(temp) : null;
 		if (hairSalon) {
-		setIsLoading(true);
-		await dashboard.getAllSalonImages(hairSalon.id).then((resp) => {
-			if (resp.data.data.length) {
-				setSalonImages(resp.data.data);
-			}
-		}).catch((error) => {
-			console.error(error);
-		}).finally(() => {
-			setIsLoading(false);
-		});
-	}
+			setIsLoading(true);
+			await dashboard.getAllSalonImages(hairSalon.id).then((resp) => {
+				if (resp.data.data.length) {
+					setSalonImages(resp.data.data);
+				}
+			}).catch((error) => {
+				console.error(error);
+			}).finally(() => {
+				setIsLoading(false);
+			});
+		}
 	};
 
 	useEffect(() => {
@@ -37,7 +37,7 @@ const Images = () => {
 	return (
 		<>
 			{isLoading && loadingView()}
-			<div className="w-full flex flex-col xl:flex-row items-center justify-center gap-4 mt-8">
+			<div className="w-full flex flex-col xl:flex-row items-center justify-center gap-4 mt-8 mb-20">
 				<div className="h-[940px] w-full xl:w-1/2 2xl:w-2/5 overflow-auto flex flex-col items-center gap-8 bg-lightGrey rounded-3xl p-4 md:px-12 md:pt-12 md:pb-0 opacity-95">
 					<ImagesContainer title='Images vitrine' type='showcase' setIsLoading={(value) => setIsLoading(value)} salonImages={salonImages} getAllSalonImages={getAllSalonImages} />
 				</div>
@@ -45,10 +45,10 @@ const Images = () => {
 					<ImagesContainer title='Exemples de coiffure' type='hairstyle' setIsLoading={(value) => setIsLoading(value)} salonImages={salonImages} getAllSalonImages={getAllSalonImages} />
 				</div>
 				<div className="bg-gradient-to-l  md:block fixed -left-32 md:-left-8 -bottom-32 md:-bottom-8 -z-10">
-      			  <LogoCircleFixLeft />
-      			</div>
+					<LogoCircleFixLeft />
+				</div>
 			</div>
-			<Footer/>
+			<Footer />
 		</>
 	)
 }
