@@ -12,8 +12,9 @@ import BaseModal from "@/components/UI/BaseModal";
 import PaymentForm from "@/components/pages/Payment/PaymentForm";
 
 import { Theme_A } from "@/components/utilis/Themes";
-import {Elements} from '@stripe/react-stripe-js';
-import {loadStripe} from '@stripe/stripe-js';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import { salonApi } from "@/api/salonSide";
 
 const Index = () => {
   const router = useRouter();
@@ -43,8 +44,9 @@ const Index = () => {
   const [isModal, setIsModal] = useState(false)
   const [duration, setDuration] = useState("")
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [mounted, setMounted] = useState(false);  
+  const [mounted, setMounted] = useState(false);
   const [serviceIds, setServiceIds] = useState<number[]>([])
+  const [KmPrice, setPrice] = useState(0);
   const stripePromise = loadStripe('pk_test_51OBGjoAHQOXKizcuQiaNTSGNA6lftEd3lekpQDN7DGGpx4lQGttBHwI62qzZiq85lelN91uyppVeLUsnC5WfmSZQ00LuhmW4QA');  // public key for stripe
   const items = [
     { name: "Salon", desc: "Le Bon Coiffeur" },
@@ -152,7 +154,9 @@ const Index = () => {
         amount: salonData.final_price,
         salon_haircut_id: salonData.haircut ? salonData.haircut.id : null,
         services: salonData.services || [],
-        date: bookingDate
+        date: bookingDate,
+        clientId : user.id,
+        salonId : salonData.user_id
       }
 
       await client.createBooking(data)
@@ -173,14 +177,38 @@ const Index = () => {
     }
   }
 
+  const getBillKMPrice = async () => {
+    setIsLoading(true)
+    await salonApi.getBillPerKM(user?.id, salonData.user_id)
+      .then(resp => {
+        console.log(resp.data.data.price);
+        setPrice(Math.round(resp.data.data.price * 100) / 100)
+      })
+      .catch(err => {
+        //console.log(err)
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
+    // const resp = await salonApi.getBillPerKM(user?.id, salonData.user_id);
+    // console.log(resp.data.data.price);
+    // setPrice(Math.round(resp.data.data.price * 100) / 100)
+    // console.log(price)
+  }
+
+  useEffect(() => {
+    console.log('Price', KmPrice);
+  }, [KmPrice])
+  
   useEffect(() => {
     //const user = getLocalStorage("user");
     const userId = user ? user.id : null;
     if (!userId) {
       setIsLoggedIn(true);
-    }    
+    }
     getHaircutPrize()
     getServicesPrize()
+    getBillKMPrice()
     const arr: number[] = []
     servicesData.forEach((service: { name: string, id: number }) => {
       arr.push(service.id)
@@ -209,7 +237,7 @@ const Index = () => {
       // setDuration(newTime)
     }
   }, [])
-
+  
   function calculateTimeAfterSeparatingMinutes(timeString: any, minutesToSeparate: any) {
     const [hours, minutes] = timeString.split(':').map(Number);
     const totalMinutes = hours * 60 + minutes;
@@ -260,6 +288,8 @@ const Index = () => {
                 {slotData && <p className="text-base"><span className="font-bold text-lg ">Heure de début: </span>{slotData.slot[0].start}</p>}
                 {slotData && <p className="text-base"><span className="font-bold text-lg ">Heure de fin: </span>{slotData.slot[slotData.slot.length - 1].end}</p>}
                 {slotData && <p className="text-base"><span className="font-bold text-lg ">Durée totale: </span>{salonData.total_duration} Minutes</p>}
+                {/* Add Checking condition does customer want to go to salon by own or need to cut at his/her home */}
+                {slotData && <p className="text-base"><span className="font-bold text-lg ">Additional Fee: </span>€ {KmPrice} </p>}
               </div>
 
               {haircutData && haircutData.image &&
@@ -274,21 +304,21 @@ const Index = () => {
                 Modifier
               </button>
               <p className="text-5xl md:text-5xl text-black font-semibold">
-                €{salonData?.final_price}
+                €{salonData?.final_price} + € {KmPrice}
               </p>
             </div>
           </div>
 
 
           <div className="w-full flex items-center justify-center">
-            
-              <div className="mt-7 w-full md:w-5/12 lg:w-4/12">
-                <Elements stripe={stripePromise}>
-                  <PaymentForm onSuccess={onBooking}/>
-                </Elements>                
-              </div>            
+
+            <div className="mt-7 w-full md:w-5/12 lg:w-4/12">
+              <Elements stripe={stripePromise}>
+                <PaymentForm onSuccess={onBooking} />
+              </Elements>
+            </div>
           </div>
-          
+
         </div>
       </div>
       {isModal &&

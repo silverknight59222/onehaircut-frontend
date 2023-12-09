@@ -2,10 +2,11 @@
 import Navbar from "@/components/shared/Navbar";
 import { LogoIcon, PaidIcon, QRCode } from "@/components/utilis/Icons";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getLocalStorage } from "@/api/storage";
 import { Theme_A } from "@/components/utilis/Themes";
+import { salonApi } from "@/api/salonSide";
 
 const Index = () => {
   const router = useRouter();
@@ -15,13 +16,39 @@ const Index = () => {
   const salonType = getLocalStorage("salon_type") as string;
   const planType = getLocalStorage("plan_type") ? JSON.parse(getLocalStorage("plan_type") as string) : null;
   const priceData = getLocalStorage('servicePrice')
+  const [isLoading, setIsLoading] = useState(false);
+  const [KmPrice, setPrice] = useState(0);
   const servicePrice = priceData ? JSON.parse(priceData) : null
   const items = [
     { name: "Nom", desc: userInfo ? userInfo?.name : '-' },
     { name: "Nom du salon", desc: salon?.name },
     { name: "Adresse du salon", desc: `${salon?.address?.city}, ${salon?.address?.state}, ${salon?.address?.country}` },
-    { name: "Type de salon", desc: salon?.type?.replace("_", " ") }
+    { name: "Type de salon", desc: salon?.type?.replace("_", " ") },
+    { name: "Additional Fee", desc: "€" + KmPrice}
   ];
+
+  const getBillKMPrice = async () => {
+    setIsLoading(true)
+    await salonApi.getBillPerKM(userInfo?.id, salon.user_id)
+      .then(resp => {
+        console.log(resp.data.data.price);
+        setPrice(Math.round(resp.data.data.price * 100) / 100)
+      })
+      .catch(err => {
+        //console.log(err)
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
+    // const resp = await salonApi.getBillPerKM(user?.id, salonData.user_id);
+    // console.log(resp.data.data.price);
+    // setPrice(Math.round(resp.data.data.price * 100) / 100)
+    // console.log(price)
+  }
+
+  useEffect(() => {
+    getBillKMPrice();
+  }, [])
 
   return (
     <div>
@@ -64,7 +91,7 @@ const Index = () => {
               </div>
               <div className="flex items-center justify-end mt-4">
                 <p className="text-black text-3xl font-medium ">
-                  Total: <span className="text-4xl font-semibold">€{salon?.final_price}</span>
+                  Total: <span className="text-4xl font-semibold">€{salon?.final_price + KmPrice}</span>
                 </p>
               </div>
               <div className="border-t-2 border-[#CBCBCB] pt-9 mt-4">

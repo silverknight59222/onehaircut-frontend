@@ -42,7 +42,9 @@ const PaymentForm = ({onSuccess}) => {
         amount: amount,
         token: token.id,
         email: customerEmail,
-        description: serviceDescription
+        description: serviceDescription,
+        clientId : userData.id,
+        salonId : salonData.user_id,
       }
     );    
     const clientSecret = response.data.clientSecret;

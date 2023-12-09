@@ -41,7 +41,8 @@ const BookSalon = () => {
   const salon = salonData ? JSON.parse(salonData) : null
   const user = userData ? JSON.parse(userData) : null
   const services = service_ids ? JSON.parse(service_ids) : null
-
+  // TODO SEE IF THE SALON IS MOBILE - SELECT AT HOME OR IN SALON BOOKING 
+  const [locationType, setLocationType] = useState('salon');
   const durationTime = salon?.total_duration
   const items = [
     { name: "Type de coiffure", desc: "Curly" },
@@ -67,6 +68,10 @@ const BookSalon = () => {
     getSlots()
   }, [selectedHairdresser, selectedDate])
 
+  useEffect(() => {
+    getBillKMPrice();
+  }, [locationType])
+
   const getAllHairDresser = async () => {
     if (salon) {
       setIsLoading(true);
@@ -77,15 +82,10 @@ const BookSalon = () => {
     }
   };
 
-  const getBillPerKM = async () => {
-    await salonApi.getBillPerKM(user?.id, salon.user_id)
-      .then(({ data }) => {
-        setHairDressers(data)
-        setPrice(15);
-      })
-      .catch(err => {
-        //console.log(err)
-      })
+  const getBillKMPrice = async() => {
+    const resp = await salonApi.getBillPerKM(user?.id, salon.user_id);
+    console.log(resp.data.data.price);
+    setPrice(Math.round(resp.data.data.price * 100)/100)
   }
 
   const getSlots = async () => {
@@ -179,13 +179,9 @@ const BookSalon = () => {
     }
   };
 
-  // TODO SEE IF THE SALON IS MOBILE - SELECT AT HOME OR IN SALON BOOKING 
-  const [locationType, setLocationType] = useState('salon');
-
   // Gestionnaire de clic pour les boutons personnalisés
-  const handleLocationTypeClick = (type) => {
+  const handleLocationTypeClick = async (type) => {
     setLocationType(type);
-    setPrice(price);
   };
 
 
