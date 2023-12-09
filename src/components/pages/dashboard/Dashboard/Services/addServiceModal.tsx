@@ -273,7 +273,7 @@ const AddServiceModal = (props: AddServiceModalType) => {
   }, [typeFilters, search]);
 
   return (
-    <div className="bg-white w-9/12 max-h-full rounded-xl px-5 pb-5 relative">
+    <div className="relative bg-white w-9/12 h-auto rounded-xl px-5 pb-5   ">
       {isLoading && loadingView()}
       <div className="absolute top-0 right-0 transform translate-x-1/2 -translate-y-1/2">
         <div
@@ -405,9 +405,11 @@ const AddServiceModal = (props: AddServiceModalType) => {
           })}
         </div>
         <div className="flex flex-col gap-4 h-full items-start mt-2">
+          {/*
           <p className="text-sm text-[#A0A0A0]">
             Age et rabais ne sont applicable que pour les prestations de type remise (discount)
           </p>
+        */}
           <div className="flex flex-col md:flex-row  gap-4 h-full items-center md:items-start justify-center w-full">
             <div className="flex flex-col gap-4 h-full items-start">
               <div className="max-w-[300px] w-[200px] relative">
@@ -493,7 +495,7 @@ const AddServiceModal = (props: AddServiceModalType) => {
                 */}
 
           </div>
-          <div className="mt-4 flex gap-4 items-center justify-center w-full">
+          <div className="mt-4 flex gap-4 items-center justify-center w-full ">
             <button
               className={`${Theme_A.button.medWhiteColoredButton}`}
               onClick={() => props.setShowAddServiceModal(false)}

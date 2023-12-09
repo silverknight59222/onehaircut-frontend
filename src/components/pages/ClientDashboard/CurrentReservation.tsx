@@ -238,6 +238,7 @@ const Currentreservation = () => {
                     closeModal={closeChatModal}
                     professionalData={activeSalon} // TODO ADD TRUE SALON LINK
                     className="z-1000 opacity-100"
+
                 />
             )}
             <ClientDashboardLayout>

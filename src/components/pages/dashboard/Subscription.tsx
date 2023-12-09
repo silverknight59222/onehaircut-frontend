@@ -219,7 +219,7 @@ const Subscription = () => {
                       </button>
                     </div>
                   </div>
-                  {isCurrSubscriptionPro && <div className="w-48 absolute left-[230px] top-[650px]  flex items-center justify-center text-white font-semibold rounded-3xl -mb-12 h-12 bg-black">
+                  {isCurrSubscriptionPro && <div className="w-48 absolute left-[230px] top-[650px]  flex items-center justify-center text-white font-semibold rounded-3xl -mb-12 h-12 bg-black cursor-not-allowed">
                     {/* <div className={`${Theme_A.button.medBlackColoredButton} w-52 absolute left-[224px] top-[650px]  flex items-center justify-center`}> */}
                     Abo actuel
                   </div>}
@@ -255,7 +255,7 @@ const Subscription = () => {
                       </button>
                     </div>
                   </div>
-                  {!isCurrSubscriptionPro && <div className="w-48 absolute left-[450px] top-[650px]  flex items-center justify-center text-white font-semibold rounded-3xl -mb-12 h-12 bg-black">
+                  {!isCurrSubscriptionPro && <div className="w-48 absolute left-[450px] top-[650px]  flex items-center justify-center text-white font-semibold rounded-3xl -mb-12 h-12 bg-black cursor-not-allowed">
                     {/* <div className={`${Theme_A.button.medBlackColoredButton} w-52 absolute left-[224px] top-[650px]  flex items-center justify-center`}> */}
                     Abo actuel
                   </div>}
@@ -273,32 +273,19 @@ const Subscription = () => {
 
             <div className="relative z-10 w-full sm:w-[450px] flex flex-col  sm:-mt-5 lg:mt-20 xl:mt-20">
 
-              <div className="py-4 px-5 2xl:text-xl text-center text-black whitespace-nowrap bg-[#F4F4F6] font-medium border border-[#9B9B9B] rounded-xl">
-                <p>Votre contrat se termine le: {currentPlan.current_period_end}</p>
-
-                {currentPlan && currentPlan.stripe_status && currentPlan.stripe_status == 'trialing' &&
-                  <p>L'essai se termine le : {currentPlan.readable_trial_period}</p>
-                }
-                <div
-                  // onClick={() => setIsAutomaticRenewal(!isAutomaticRenewal)}
-                  className="flex items-center justify-start gap-3 mt-4 cursor-pointer"
-                >
-                  <div
-                    className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${isAutomaticRenewal
-                      ? ColorsThemeA.ohcVerticalGradient_A
-                      : "border-[#767676]"
-                      }`}
-                  >
-                    {isAutomaticRenewal && (
-                      <CheckedIcon width="15" height="10" />
-                    )}
+              <div >
+                {currentPlan.current_period_end && (
+                  <div className="py-4 px-5 2xl:text-xl text-center text-black whitespace-nowrap bg-[#F4F4F6] font-medium border border-[#9B9B9B] rounded-xl">
+                    <p>Votre contrat sera renouvelé le: </p>
+                    <p>{currentPlan.current_period_end}</p>
+                    {currentPlan.stripe_status && currentPlan.stripe_status === 'trialing' &&
+                      <p>L'essai se termine le : {currentPlan.readable_trial_period}</p>
+                    }
                   </div>
-                  <p>Renouvellement&nbsp;Automatique</p>
-                </div>
+                )}
               </div>
 
-
-              <button className="w-40 h-10 flex items-center justify-center bg-[#ffffff] border border-black rounded-xl mt-20 mb-12 text-black font-normal hover:scale-95 transition-transform duration-300 hover:bg-stone-100 ">
+              <button className="w-40 h-10 flex items-center justify-center bg-[#ffffff] border border-black rounded-xl mt-20 mb-20 text-black font-normal hover:scale-95 transition-transform duration-300 hover:bg-stone-100 ">
                 Clôturer le compte
               </button>
             </div>

@@ -13,7 +13,7 @@ import TransactionList from "@/components/pages/dashboard/Dashboard/MainDashboar
 import ProgressBar from "@/components/UI/ProgressBar";
 import RevenueChart from "@/components/UI/RevenueChart";
 import { dashboard } from "@/api/dashboard";
-import {    
+import {
     activityClientData,
     clientTableData,
     TopClientData, topClientTableData
@@ -27,7 +27,7 @@ import { Auth } from "@/api/auth";
 import { client } from "@/api/clientSide";
 
 
-const Dashboard = () => {    
+const Dashboard = () => {
     type ModalName = 'TransactionfullTable' | 'Incomes' | 'clientActivity' | 'staff' | 'topClient' | 'goals'; // Add more modal keys as needed    
     const [modals, setModals] = useState<{ [key in ModalName]?: boolean }>({
         TransactionfullTable: false,
@@ -42,7 +42,7 @@ const Dashboard = () => {
     // Update the toggleModal function to use the ModalName type for its parameter
     const toggleModal = (modal: ModalName) => {
         setModals(prev => ({ ...prev, [modal]: !prev[modal] }));
-    };    
+    };
     const data = useMemo(() => clientTableData, []);
     const DisplayedMonths = [
         "Ce mois",
@@ -77,14 +77,14 @@ const Dashboard = () => {
     const topClientheaders = ["Utilisateur", "Date dernière commande", "Visites", "Commandes",
         "Dernière commande", "Details dernière commande", "Status dernière commande", "Total payé"];
 
-    
+
     // CONVERSION DATA 
 
     //TODO IMPORT TRUE DATA AND REMOVE FAKE VALUES
     function genererValeurAleatoire() {
         return Math.floor(Math.random() * 76);
-    }    
-    
+    }
+
 
     const [salonStats, setSalonStats] = useState({
         total_views: 0,
@@ -99,13 +99,13 @@ const Dashboard = () => {
             .then((resp) => {
                 setSalonStats(resp.data);
             });
-    }        
+    }
     useEffect(() => {
         fetchStats()
     }, [])
 
     // TODO EMAIL ADDRESS VEIRIFICATION DONE : 
-        
+
 
     return (
         <div className="px-4 lg:px-6">
@@ -141,7 +141,7 @@ const Dashboard = () => {
                         </DialogShareProject>
                     </Grid>
                 </Grid>
-                
+
                 {/* APPERçU ANALYTIQUE */}
                 <p className="text-primary text-2xl font-semibold mb-3 ">
                     Aperçu analytique
@@ -160,7 +160,7 @@ const Dashboard = () => {
                                 <p className="text-black text-3xl font-semibold">
                                     {salonStats.total_views}
                                 </p>
-                                <p className="text-black font-medium text-sm mt-2">Nombre de vistes</p>
+                                <p className="text-black font-medium text-sm mt-2">Nombre de visites</p>
                             </div>
                         </div>
 
@@ -224,7 +224,7 @@ const Dashboard = () => {
                             </div>
                             <div className="ml-8 flex flex-col justify-center">
                                 <p className="text-black text-3xl font-semibold">
-                                    {salonStats.rating} / 5
+                                    {salonStats.rating.toFixed(1)} / 5
                                 </p>
                                 <p className="text-black font-medium text-sm mt-2">Score générale</p>
                             </div>
@@ -433,7 +433,7 @@ const Dashboard = () => {
                 </div>
 
                 {/* CLIENT CONVERSION CHART */}
-                    <ConversionChart data={salonStats}/>
+                <ConversionChart data={salonStats} />
 
                 {/* TOP CLIENTS TABS*/}
                 <div style={{ width: '32%' }} className="px-3 md:w-4/12 w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-xl shadow-sm shadow-stone-600">

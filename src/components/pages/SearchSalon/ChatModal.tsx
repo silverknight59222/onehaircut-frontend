@@ -95,6 +95,7 @@ const ChatModal: FC<ChatModalProps> = ({
                                     label="Écrire un message"
                                     value={message}
                                     onChange={(e) => setMessage(e.target.value)}
+                                    onEnterPress={onSendMessage}
                                 />
                                 {/*
                             <input

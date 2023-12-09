@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { CrossIcon } from "@/components/utilis/Icons";
 import { ColorsThemeA } from "@/components/utilis/Themes";
 import { ChatSendIcon } from "@/components/utilis/Icons";
@@ -12,6 +12,7 @@ import { salonApi } from "@/api/salonSide";
 import { Chat, Hairdresser } from "@/types";
 import BaseModal from '@/components/UI/BaseModal';
 import { CSSProperties } from "@material-ui/core/styles/withStyles";
+import CustomInput from "@/components/UI/CustomInput";
 
 // Ajout de toutes les propriétes qu'on veut reprendre dans le modal
 interface EventDetailsModalProps {
@@ -100,6 +101,14 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
     getChat()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  // for autoscroll down : 
+  const endOfMessagesRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [chats]); // Ce useEffect est déclenché à chaque mise à jour de `chats`
+
+
   return (
     <div className="relative bg-white rounded-xl px-5 pb-5 shadow-lg mt-10 bg- modal">
 
@@ -231,18 +240,21 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
                 </div>
               </div>
             ))}
+            <div ref={endOfMessagesRef} />
           </div>
 
           {/* Zone d'écriture et envoi - ajouter nKeyDown={handleKeyPress} pour valider le message avec Enter */}
-          <div className="flex gap-1">
-            <input
-              type="text"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-              placeholder="Écrire un message"
-              className="flex-grow border border-gray-300 rounded-xl p-2 min-w-0 focus:outline-none focus:border-red-500 shadow-inner "
+          <div className="flex">
+            <div className="flex-grow  min-w-0 p-2">
+              <CustomInput
+                id="sendMessageInput"
+                label="Écrire un message"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                onEnterPress={() => sendMessage()} // Modifiez ceci
+              />
+            </div>
 
-            />
             <button type="button" onClick={sendMessage} className="hover:scale-125 transition duration-300 " > <ChatSendIcon /> </button>
           </div>
         </div>

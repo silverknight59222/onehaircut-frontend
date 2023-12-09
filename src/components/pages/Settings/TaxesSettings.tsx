@@ -8,7 +8,7 @@ import BaseModal from "@/components/UI/BaseModal";
 import PaymentForm from "@/components/shared/Payement";
 import DropdownMenu from "@/components/UI/DropDownMenu";
 
-const TVASettings = () => {
+const TaxesSettings = () => {
 
     return (
         <div className={`w-[400px] h-max bg-white rounded-2xl py-4 shadow-lg mb-4`}>
@@ -26,4 +26,4 @@ const TVASettings = () => {
     );
 };
 
-export default TVASettings;
+export default TaxesSettings;
