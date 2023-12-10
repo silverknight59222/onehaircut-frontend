@@ -245,9 +245,9 @@ const ServiceChoose = () => {
                 <p className='text-4xl font-medium text-black text-center'> Choisissez une ou plusieurs <span className={`font-bold ${ColorsThemeA.textGradient_Title}`}>prestations !</span></p>
                 <div className='flex flex-col items-center'>
                     <div className='w-full flex flex-col md:flex-row items-center justify-between mt-14'>
-                        <div className='flex flex-col sm:flex-row items-center gap-5 mb-5 md:mb-0'>
+                        <div className='flex flex-col sm:flex-row items-center gap-5 mb-5 md:mb-0 z-20'>
 
-                            <div className='flex flex-row gap-5 items-center'>
+                            <div className='flex flex-row gap-5 items-center z-20'>
                                 <InfoButton title_1={InfoTitle_1} content_1={InfoContent_1} title_2={InfoTitle_2} content_2={InfoContent_2} onOpenModal={openInfoModal} videoUrl={VideoUrl} />
 
                                 {haircut && <p className='text-stone-600 text-md md:text-lg font-semibold bg-[#F7F7F7] shadow-inner rounded-lg px-7 py-3'>{haircut.name}</p>}

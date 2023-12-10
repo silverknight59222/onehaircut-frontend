@@ -109,7 +109,7 @@ const UserProfile = ({ isDashboard }: UserProfileProfile) => {
       document.removeEventListener("click", closeSelectBox);
     };
   }, []);
-  
+
   return (
     <div ref={dropdownRef} className="relative">
       {isLoading && loadingView()}
@@ -120,7 +120,7 @@ const UserProfile = ({ isDashboard }: UserProfileProfile) => {
         <UserIcon />
       </div>
       {isDropdown && (
-        <div className={`absolute top-[52px] right-0 z-20 pt-3 pb-2 flex flex-col items-center justify-center text-black bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)] ${!isDashboard ? 'rounded-lg' : 'rounded-xl'}`}>
+        <div className={`absolute z-50 top-[52px] right-0 pt-3 pb-2 flex flex-col items-center justify-center text-black border-2 border-stone-300 bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)] ${!isDashboard ? 'rounded-lg' : 'rounded-xl'}`}>
           {!isDashboard &&
             <div className="flex flex-col gap-x-4 border-b w-44 border-[#D4CBCB] pb-3">
               {dropdownItems.map((item, index) => {
@@ -139,7 +139,7 @@ const UserProfile = ({ isDashboard }: UserProfileProfile) => {
           }
           <div
             onClick={onLogout}
-            className={`w-full flex flex-row items-center justify-center hover:bg-[#F5F5F5] cursor-pointer gap-4 ${!isDashboard ? 'mt-2 px-6 py-3' : 'px-6 pt-1 pb-2'}`}
+            className={`w-full flex flex-row items-center justify-center hover:bg-[#F5F5F5] cursor-pointer gap-4  ${!isDashboard ? 'mt-2 px-6 py-3' : 'px-6 pt-1 pb-2'}`}
           >
             <LogoutIcon width='25' height='25' />
             <p>Déconnexion</p>

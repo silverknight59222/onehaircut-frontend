@@ -83,7 +83,7 @@ const BookSalon = () => {
     }
   };
 
-  const getBillKMPrice = async() => {
+  const getBillKMPrice = async () => {
     const resp = await salonApi.getBillPerKM(user?.id, salon.user_id);
     console.log(resp.data.data.price);
     setPrice(Math.round(resp.data.data.price * 100)/100)
@@ -231,8 +231,8 @@ const BookSalon = () => {
                 <StarRatings
                   rating={salon?.haircut.rating}
                   starRatedColor="#FEDF10"
-                  starSpacing="4px"
-                  starDimension="25px"
+                  starSpacing="1px"
+                  starDimension="20px"
                   numberOfStars={5}
                   name="rating"
                 />
