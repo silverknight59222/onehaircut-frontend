@@ -229,8 +229,8 @@ const BookSalon = () => {
                 <StarRatings
                   rating={salon?.haircut.rating}
                   starRatedColor="#FEDF10"
-                  starSpacing="4px"
-                  starDimension="25px"
+                  starSpacing="1px"
+                  starDimension="20px"
                   numberOfStars={5}
                   name="rating"
                 />
