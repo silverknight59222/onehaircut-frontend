@@ -27,6 +27,12 @@ interface MessageParam{
  by: string,
 }
 
+interface FeedbackParam{
+  message: string,
+  title: string,
+  feedback_type: string,
+}
+
 const dashboard = {
   getHairSalon: async (id: number) => {
     return await request.get<any>(`/hair_salon/${id}`);
@@ -157,6 +163,9 @@ const dashboard = {
   },
   sendMessage: async ( param: MessageParam) => {
     return await request.post<any>(`send_message`, param);
+  },
+  sendFeedback: async ( param: FeedbackParam) => {
+    return await request.post<any>(`send_professional_feedback`, param);
   },
   sendWhatsapp: async (data:any) => {
     return await request.post<any>(`send_whatsapp`, data);
