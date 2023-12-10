@@ -17,6 +17,7 @@ import { BackArrow } from '@/components/utilis/Icons';
 import Footer from '@/components/UI/Footer';
 import MapIcon from "@/components/utilis/Icons";
 import { MapIconRed } from '@/components/utilis/Icons';
+import { HomeIcon } from '@/components/utilis/Icons';
 import ReactDOMServer from 'react-dom/server';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 
@@ -34,6 +35,7 @@ const SalonChoice = () => {
 
     const router = useRouter();
     let user = getLocalStorage("user");
+    const userData = user ? JSON.parse(user) : null;
     const userId = user ? Number(JSON.parse(user).id) : null;
     const getHaircut = getLocalStorage("haircut") as string;
     const haircut = getHaircut ? JSON.parse(getHaircut) : null;
@@ -75,6 +77,8 @@ const SalonChoice = () => {
         }
 
     };
+
+
     // const { isLoaded } = useJsApiLoader({
     //     googleMapsApiKey: 'AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E',
     //     libraries: ['places'],
@@ -238,38 +242,6 @@ const SalonChoice = () => {
         return loadingView()
     }
 
-    //TODO UNCOMMENT TO USE SALON ADRESSES ( NOT LAT AND LONG; FULL ADRESS)
-    // Pour utiliser l'adresse du salon 
-    /*
-     const getCoordinates = async (address: string) => {
-         try {
-             const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json`, {
-                 params: {
-                     address: address,
-                     key: 'VOTRE_CLÉ_API',
-                 }
-             });
-             if (response.data.status === 'OK') {
-                 return response.data.results[0].geometry.location;
-             }
-         } catch (error) {
-             console.error('Erreur de géocodage:', error);
-         }
-     };
-     useEffect(() => {
-         const getSalonCoordinates = async () => {
-             const updatedSalons = await Promise.all(salons.map(async (salon) => {
-                 const coords = await getCoordinates(salon.address);
-                 return { ...salon, coordinates: coords };
-             }));
-             setSalons(updatedSalons);
-         };
- 
-         getSalonCoordinates();
-     }, [salons]);
- */
-
-    //TODO : Delete once data are there
     // Définir un type pour une position individuelle
     type Position = {
         lat: number;
@@ -278,16 +250,6 @@ const SalonChoice = () => {
 
     // Définir un type pour un tableau de positions
     type Positions = Position[];
-
-    // Définir un tableau d'exemple de positions
-    // const positions: Positions = [
-    //     { lat: 47.1510, lng: 7.2676 },
-    //     { lat: 47.1310, lng: 7.2576 },
-    //     { lat: 47.1410, lng: 7.2776 },
-    //     // ... autres positions
-    // ];    
-
-    // Fonction pour calculer le centre des markers avec types explicites
 
 
     // Utilisation
@@ -315,6 +277,16 @@ const SalonChoice = () => {
         name: string;
         id: number;
     };
+
+    const getMarkerIconUrl = () => {
+        const svgString = encodeURIComponent(ReactDOMServer.renderToString(<HomeIcon />));
+        return `data:image/svg+xml,${svgString}`;
+    };
+
+    // Dans votre composant de carte
+    const HomeIconUrl = getMarkerIconUrl();
+
+    console.log(userData?.lat!, userData?.long!);
 
     // Rendu du composant
     return (
@@ -398,14 +370,28 @@ const SalonChoice = () => {
                                     {/*TODO USE salon.position when data are available  */}
                                     <GoogleMap
                                         onLoad={handleOnLoad}
-                                        center={center}
+                                        center={{ lat: userData?.lat!, lng: userData?.long! }}
                                         zoom={13}
                                         mapContainerStyle={{ width: '100%', height: '100%' }}
                                         options={{
                                             minZoom: 2,  // ici, définissez votre zoom minimum
-                                            maxZoom: 18   // et ici, votre zoom maximum
+                                            maxZoom: 18   // et ici, votre zoom maximumyy
                                         }}
                                     >
+                                        {userData?.lat! && userData?.long && (
+                                            <MarkerF
+                                                position={{ lat: userData?.lat!, lng: userData?.long! }}
+                                                options={{
+                                                    icon: {
+                                                        url: HomeIconUrl,
+                                                        scaledSize: new window.google.maps.Size(50, 50),
+                                                        anchor: new window.google.maps.Point(25, 25),
+                                                    }
+                                                }}
+
+                                            />
+                                        )}
+
                                         {positions.map((position, index) => (
 
                                             <React.Fragment key={index}>
