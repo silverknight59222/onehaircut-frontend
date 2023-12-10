@@ -6,10 +6,12 @@ import DashboardLayout from '@/layout/DashboardLayout';
 import React, { useState } from "react";
 import DropdownMenu from "@/components/UI/DropDownMenu";
 import CustomInput from '@/components/UI/CustomInput';
+import { dashboard } from "@/api/dashboard";
+import {getLocalStorage} from "@/api/storage";
 
 const ContactUs = () => {
 
-    // For Dropdown lists 
+    // For Dropdown lists
     const contactType = [
         "Signaler un problème",
         "Feedback",
@@ -37,8 +39,12 @@ const ContactUs = () => {
         }
     };
 
-    const onSend = () => {
-        // TODO: send per email to us
+    const onSend = async () => {
+      let data: any = {};
+      data.title = title;
+      data.message = multilineText;
+      data.feedback_type = SelectedContactType;
+      await dashboard.sendFeedback(data).then((res) => {alert(res)});
     };
 
     return (
