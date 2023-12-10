@@ -41,7 +41,7 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
     if (message) {
       const data = {
         client_id: props.event.clientId,
-        professional_id: userData.hair_salon_id,
+        professional_id: userData.user_id,
         message: message,
         by: userData.role === 'salon_professional' ? 'professional' : 'client',
       }
@@ -89,7 +89,7 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
 
   const getChat = async () => {
     if (userData) {
-      await dashboard.getChat(props.event.clientId, userData.hair_salon_id)
+      await dashboard.getChat(props.event.clientId, userData.user_id)
         .then(resp => {
           setChats(resp.data.data)
         })

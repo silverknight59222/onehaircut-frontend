@@ -41,8 +41,8 @@ const salonApi = {
     saveZoneRadius: async (params: SalonMobilityZone) => {
       return await request.post(`/save-salon-mobility-zone`, params);
     },
-    getBillPerKM : async(hairSalonId : number, clientId : number) => {
-      return await request.get(`/fetch_bill_per_km/${clientId}/${hairSalonId}`);
+    getBillPerKM : async(clientId : number, hairSalonId : number) => {
+      return await request.post(`/fetch_bill_per_km/${clientId}/${hairSalonId}`);
     },
     getAvailableHairDresser: async (bookingId: number) => {
       return await request.get(`/available-hairdresser/${bookingId}`);
