@@ -36,6 +36,7 @@ const SalonInfos = () => {
     const [SalonType, setSalonType] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const showSnackbar = useSnackbar();
+    const [ZonePrice, setZonePrice] = useState(0);
     const [addressResponse, setAddressResponse] = useState({
         street: "",
         city: "",
@@ -96,8 +97,8 @@ const SalonInfos = () => {
             })
     }
 
-    const saveSalonMobility = async () => {
-        await salonApi.saveSalonMobility({ is_mobile: !isMobilityAllowed, price: ZonePrice })
+    const saveSalonMobility = async (isMobilityAllowed) => {
+        await salonApi.saveSalonMobility({ is_mobile: isMobilityAllowed, price: ZonePrice })
             .then((resp) => {
                 showSnackbar("success", "Salon Mobility Saved Successfully.");
             })
@@ -126,8 +127,9 @@ const SalonInfos = () => {
     //For mobility checkbox
     const [isMobilityAllowed, setIsMobilityAllowed] = useState(false); // État de la checkbox
     const handleCheckboxChange = (mobility: boolean) => {
-        setIsMobilityAllowed(mobility);
-        saveSalonMobility()
+        console.log(!mobility);
+        setIsMobilityAllowed(!mobility);
+        saveSalonMobility(!mobility);
     };
     const [selectedWeekday, setSelectedWeekday] = useState<string>('');
 
@@ -186,10 +188,16 @@ const SalonInfos = () => {
     //For the slider :
     // Reset the slider values
     const [zoneSliderRange, setZoneSliderRange] = useState([0, 15]);
-    const handleZoneSliderChange = (event: any, newValue: any) => {
+    const handleZoneSliderChange = (newValue: any) => {
+        console.log(newValue);
+        setZonePrice(ZonePrice);
+        saveZoneRadius(newValue);
+        saveSalonType(SelectedSalonType);
+        saveSalonMobility(isMobilityAllowed);
+    };
+    const updateSliderChange = (event: any, newValue: any) => {
         setZoneSliderRange(newValue);
-        //console.log(newValue)
-        //saveZoneRadius(newValue)
+        console.log(newValue)
     };
     const setAddressFields = (address: any, arg: string, value: string) => {
         switch (arg) {
@@ -353,12 +361,14 @@ const SalonInfos = () => {
         setBillingCity(resp.data.billing_city);
         setBillingState(resp.data.billing_state);
         setBillingCountry(resp.data.billing_country);
+        setZonePrice(resp.data.bill_per_km)
+        setZoneSliderRange([resp.data.min_km,resp.data.max_km]);
+        setIsMobilityAllowed(resp.data.is_mobile);
     }
 
 
 
     const [billingPerKm, setBillingPerKm] = useState('');
-    const [ZonePrice, setZonePrice] = useState(0);
     const [maxFees, setMaxFees] = useState(0);
 
     // Supposons que vous utilisiez la deuxième valeur du slider pour numericZoneSliderRange
@@ -701,11 +711,12 @@ const SalonInfos = () => {
 
                 {/* Checkbox et label "Autoriser la mobilité" */}
                 <div className="flex-1 py-5 pl-5 ml-8 flex items-center"> {/* Utilisez flex items-center ici */}
-                    <div onClick={() => handleCheckboxChange(!isMobilityAllowed)} className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded ${isMobilityAllowed
+                    <div onClick={() => handleCheckboxChange(isMobilityAllowed)} className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded 
+                    ${isMobilityAllowed
                         ? ColorsThemeA.ohcVerticalGradient_A
                         : "bg-[#D6D6D6]"
                         }`}>
-                        <CheckedIcon />
+                        {isMobilityAllowed && <CheckedIcon />} 
                     </div>
                     <label htmlFor="mobilityZone" className="ml-2 text-sm font-medium text-gray-900">
                         Coiffure à domicile
@@ -721,7 +732,7 @@ const SalonInfos = () => {
                             <CustomSlider
                                 theme={ComponentTheme}
                                 value={zoneSliderRange}
-                                onChange={handleZoneSliderChange}
+                                onChange={updateSliderChange}
                                 min={0}
                                 max={30}
                                 unit="km"
@@ -756,7 +767,8 @@ const SalonInfos = () => {
                         </div>
                         {/* TODO SAVE MOBILITY AND TYPE OF SALON DATA WITH THIS BUTTON */}
                         <div className="flex justify-center items-center">
-                            <button className={`mt-6 flex gap-4 items-center justify-center w-22 ${Theme_A.button.medBlackColoredButton}`} onClick={() => ``}> Mettre à jour</button>
+                            <button className={`mt-6 flex gap-4 items-center justify-center w-22 ${Theme_A.button.medBlackColoredButton}`} 
+                                    onClick={() => handleZoneSliderChange(zoneSliderRange)}> Mettre à jour</button>
                         </div>
                     </div>
                 )}

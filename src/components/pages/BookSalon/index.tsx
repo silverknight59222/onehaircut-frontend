@@ -33,6 +33,7 @@ const BookSalon = () => {
   const [slots, setSlots] = useState<Slot[]>([])
   const [hairCut, setHairCut] = useState({});
   const [price, setPrice] = useState(15)
+  const [can_go_home, setCanGoHome] = useState(false)
   const { loadingView } = userLoader();
   const salonData = getLocalStorage('selectedSalon')
   const userData = getLocalStorage("user")
@@ -86,6 +87,7 @@ const BookSalon = () => {
     const resp = await salonApi.getBillPerKM(user?.id, salon.user_id);
     console.log(resp.data.data.price);
     setPrice(Math.round(resp.data.data.price * 100)/100)
+    setCanGoHome(resp.data.data.can_go_home);
   }
 
   const getSlots = async () => {
@@ -281,10 +283,10 @@ const BookSalon = () => {
                       : ''
                       }`}
                   >
-                    {locationType === 'domicile' && <CheckedIcon />}
+                  {locationType === 'domicile' && <CheckedIcon />}
                   </div>
                   <span
-                    className={`${salon?.is_mobile === 'yes'
+                    className={`${salon?.is_mobile === true
                       ? "text-stone-700 font semi-bold"
                       : "font-medium text-stone-400"
                       }`}
@@ -305,7 +307,7 @@ const BookSalon = () => {
                 </div>
               </div>
 
-              {locationType === 'domicile' && (
+              {locationType === 'domicile' && can_go_home === true && (
                 <>
                   <p className="text-xs text-stone-600 italic">{user?.street}<br />{user?.zipcode} {user?.city}<br />{user?.country}<br /></p>
                   <p className="font-semibold text-lg">Prix du déplacement :</p>
@@ -314,6 +316,17 @@ const BookSalon = () => {
                   </div>
                 </>
               )}
+              {
+                locationType === 'domicile' && can_go_home === false && (
+                  <>
+                  <p className="text-xs text-stone-600 italic">{user?.street}<br />{user?.zipcode} {user?.city}<br />{user?.country}<br /></p>
+                  <p className="font-semibold text-lg">Prix du déplacement :</p>
+                  <div className="flex justify-center items-center bg-white border border-stone-400 rounded-lg px-4 py-2 mt-2">
+                    <p className="text-stone-600 text-xl font-bold"> Range too far / not sync with salon </p> {/* TODO UPDATE THE PRICE WITH THE MOBILITY COST OF THE SALON */}
+                  </div>
+                  </>
+                )
+              }
               {locationType === 'salon' && <p className="text-xs text-stone-600 italic">{salon?.address.street}<br />{salon?.address.zipcode} {salon?.address.city}<br />{salon?.address.country}<br /></p>}
             </div>
           )}
