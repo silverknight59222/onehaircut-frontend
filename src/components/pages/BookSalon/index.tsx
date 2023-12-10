@@ -82,10 +82,10 @@ const BookSalon = () => {
     }
   };
 
-  const getBillKMPrice = async() => {
+  const getBillKMPrice = async () => {
     const resp = await salonApi.getBillPerKM(user?.id, salon.user_id);
     console.log(resp.data.data.price);
-    setPrice(Math.round(resp.data.data.price * 100)/100)
+    setPrice(Math.round(resp.data.data.price * 100) / 100)
   }
 
   const getSlots = async () => {
