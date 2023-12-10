@@ -258,7 +258,7 @@ const Hairdressers = () => {
           setProfileImageBinary(() => "");
           setIsEdit(false);
           setAvatarIndex(1);
-          showSnackbar("success", res.data.message);
+          showSnackbar("Données mises à jour", res.data.message);
         })
         .catch((err) => {
           showSnackbar("error", "Error Occured!");
@@ -274,7 +274,7 @@ const Hairdressers = () => {
           setHairDresser(() => defaultHairDresser);
           setProfileImage(() => "");
           setProfileImageBinary(() => "");
-          showSnackbar("success", res.data.message);
+          showSnackbar("Coiffeur ajouté", res.data.message);
         })
         .catch((err) => {
           showSnackbar("error", "Error Occured!");
@@ -320,7 +320,7 @@ const Hairdressers = () => {
   const onDeleteHairDresser = async () => {
     await dashboard.deleteHairDresser(hairDresser.id).then((res) => {
       getAllHairDresser();
-      showSnackbar("success", res.data.message);
+      showSnackbar("Coiffeur supprimé", res.data.message);
       setHairDresser({ ...defaultHairDresser });
       setProfileImage(() => "");
       setProfileImageBinary(() => "");
@@ -496,11 +496,11 @@ const Hairdressers = () => {
 
 
       {isLoading && loadingView()}
-      <div className="w-full flex flex-col lg:flex-row items-center justify-center gap-4 mt-8">
+      <div className="w-full flex flex-col lg:flex-row items-center justify-center gap-4 mt-8 mb-10">
         <div className="bg-gradient-to-l  md:block fixed -left-32 md:-left-8 -bottom-32 md:-bottom-8 z-0 mix-blend-overlay ">
           <LogoCircleFixLeft />
         </div>
-        <div className="h-full w-full xl:w-2/5 overflow-auto flex flex-col items-center gap-8 mb-20 bg-lightGrey rounded-3xl p-4 md:px-12 md:pt-12 md:pb-0 opacity-90 shadow-sm shadow-stone-300">
+        <div className="h-full w-full xl:w-2/5 overflow-auto flex flex-col items-center gap-8 bg-lightGrey rounded-3xl p-4 md:px-12 md:pt-12 md:pb-0 opacity-90 shadow-sm shadow-stone-300">
           <div className={`${Theme_A.textFont.headerH2} underline`}>
             Ajouter un nouveau coiffeur
           </div>
@@ -647,12 +647,6 @@ const Hairdressers = () => {
             </button>
           ) : (
             <div className="flex items-center justify-center gap-3 mb-2">
-              <button
-                className={`${Theme_A.button.mediumGradientButton} py-3`}
-                onClick={() => addDresser(true)}
-              >
-                Mettre à jour
-              </button>
 
               <button
                 onClick={onClear}
@@ -660,6 +654,21 @@ const Hairdressers = () => {
               >
                 Annuler
               </button>
+
+              <button
+                className={`${Theme_A.button.medBlackColoredButton} py-3`}
+                onClick={() => onDeleteHairDresser()}
+              >
+                Supprimer
+              </button>
+
+              <button
+                className={`${Theme_A.button.mediumGradientButton} py-3`}
+                onClick={() => addDresser(true)}
+              >
+                Mettre à jour
+              </button>
+
               <button
                 onClick={onDeleteHairDresser}
                 className={`${Theme_A.button.deleteButtonSmall} px-4 py-3 gap-3`}
