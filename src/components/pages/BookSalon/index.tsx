@@ -86,7 +86,7 @@ const BookSalon = () => {
   const getBillKMPrice = async () => {
     const resp = await salonApi.getBillPerKM(user?.id, salon.user_id);
     console.log(resp.data.data.price);
-    setPrice(Math.round(resp.data.data.price * 100)/100)
+    setPrice(Math.round(resp.data.data.price * 100) / 100)
     setCanGoHome(resp.data.data.can_go_home);
   }
 
@@ -283,7 +283,7 @@ const BookSalon = () => {
                       : ''
                       }`}
                   >
-                  {locationType === 'domicile' && <CheckedIcon />}
+                    {locationType === 'domicile' && <CheckedIcon />}
                   </div>
                   <span
                     className={`${salon?.is_mobile === true
@@ -319,11 +319,11 @@ const BookSalon = () => {
               {
                 locationType === 'domicile' && can_go_home === false && (
                   <>
-                  <p className="text-xs text-stone-600 italic">{user?.street}<br />{user?.zipcode} {user?.city}<br />{user?.country}<br /></p>
-                  <p className="font-semibold text-lg">Prix du déplacement :</p>
-                  <div className="flex justify-center items-center bg-white border border-stone-400 rounded-lg px-4 py-2 mt-2">
-                    <p className="text-stone-600 text-xl font-bold"> Range too far / not sync with salon </p> {/* TODO UPDATE THE PRICE WITH THE MOBILITY COST OF THE SALON */}
-                  </div>
+                    <p className="text-xs text-stone-600 italic">{user?.street}<br />{user?.zipcode} {user?.city}<br />{user?.country}<br /></p>
+                    <p className="font-semibold text-lg">Prix du déplacement :</p>
+                    <div className="flex justify-center items-center bg-white border border-stone-400 rounded-lg px-4 py-2 mt-2">
+                      <p className="text-stone-600 text-xl font-bold"> Vous être trop loin du salon </p> {/* TODO UPDATE THE PRICE WITH THE MOBILITY COST OF THE SALON */}
+                    </div>
                   </>
                 )
               }

@@ -47,6 +47,9 @@ const Index = () => {
   const [mounted, setMounted] = useState(false);
   const [serviceIds, setServiceIds] = useState<number[]>([])
   const [KmPrice, setPrice] = useState(0);
+  const OnehaircutFees = 0.09;
+  const PaymentGatewayVariableFees = 0.008; //TODO LINK WITH ACTUAL FEES
+  const PaymentGatewayFixFees = 0.11;
   const stripePromise = loadStripe('pk_test_51OBGjoAHQOXKizcuQiaNTSGNA6lftEd3lekpQDN7DGGpx4lQGttBHwI62qzZiq85lelN91uyppVeLUsnC5WfmSZQ00LuhmW4QA');  // public key for stripe
   const items = [
     { name: "Salon", desc: "Le Bon Coiffeur" },
@@ -58,6 +61,7 @@ const Index = () => {
   const options = {
     clientSecret: "sk_test_51OBGjoAHQOXKizcuykusB8Rqsycb4BemHfQrmbEyjG4zD6adMYGHXrcz3AY0yykBjaTbJ2kcR2GXwIq0hDBBxu2m00KimXnuTu"
   };
+
   const getHaircutPrize = async () => {
     if (haircut) {
       setIsLoading(true)
@@ -155,8 +159,8 @@ const Index = () => {
         salon_haircut_id: salonData.haircut ? salonData.haircut.id : null,
         services: salonData.services || [],
         date: bookingDate,
-        clientId : user.id,
-        salonId : salonData.user_id
+        clientId: user.id,
+        salonId: salonData.user_id
       }
 
       await client.createBooking(data)
@@ -198,8 +202,8 @@ const Index = () => {
 
   useEffect(() => {
     console.log('Price', KmPrice);
-  }, [KmPrice])
-  
+  }, [KmPrice])
+
   useEffect(() => {
     //const user = getLocalStorage("user");
     const userId = user ? user.id : null;
@@ -237,7 +241,7 @@ const Index = () => {
       // setDuration(newTime)
     }
   }, [])
-  
+
   function calculateTimeAfterSeparatingMinutes(timeString: any, minutesToSeparate: any) {
     const [hours, minutes] = timeString.split(':').map(Number);
     const totalMinutes = hours * 60 + minutes;
@@ -262,6 +266,11 @@ const Index = () => {
   const formattedBookingDate = bookingDate ? formatDate(bookingDate) : "";
 
 
+  const updatedOHCfees = (salonData?.final_price + KmPrice) * OnehaircutFees;
+  const bookingCost = salonData?.final_price + KmPrice;
+  const updatedTransactionFees = (((bookingCost) + ((bookingCost) * OnehaircutFees)) * PaymentGatewayVariableFees + PaymentGatewayFixFees);
+  const totalUpdatedCost = parseFloat(bookingCost + updatedOHCfees + updatedTransactionFees).toFixed(2);
+
   return (
     <div>
       {isLoading && haircutData && loadingView()}
@@ -276,20 +285,23 @@ const Index = () => {
           <div className=" mx-4 md:w-[750px] lg:w-[940px] pt-10 pb-10 px-4 sm:px-14 bg-[#F8F8F8] rounded-[22px] border border-[#ECECEC] shadow-sm shadow-stone-600">
             <div className="flex flex-row justify-around">
               <div className="flex flex-col gap-3 text-xl font-medium text-black">
-                {haircutData ? <p className="text-base"><span className="font-bold text-lg   ">Coiffure: </span>{haircutData.name}</p> : ''}
-                {servicesData ? <p><span className="font-bold text-lg ">Services: </span>
+                {haircutData ? <p className="text-base"><span className="font-bold text-sm   ">Coiffure: </span>{haircutData.name}</p> : ''}
+                {servicesData ? <p><span className="font-bold text-sm ">Services: </span>
                   {servicesData.map((item: { name: string, id: number }, index: number) => {
                     return <p key={index} className="text-base">{++index}. {item.name}</p>
                   })}
                 </p> : ''}
-                {salonData && <p className="text-base"><span className="font-bold text-lg ">Etablissement: </span>{salonData.name}</p>}
-                {slotData && <p className="text-base"><span className="font-bold text-lg ">Coiffeur: </span>{slotData.hairDresser.name}</p>}
-                {slotData && (<p className="text-base"><span className="font-bold text-lg ">Date du rendez-vous: </span>{formattedBookingDate}</p>)}
-                {slotData && <p className="text-base"><span className="font-bold text-lg ">Heure de début: </span>{slotData.slot[0].start}</p>}
-                {slotData && <p className="text-base"><span className="font-bold text-lg ">Heure de fin: </span>{slotData.slot[slotData.slot.length - 1].end}</p>}
-                {slotData && <p className="text-base"><span className="font-bold text-lg ">Durée totale: </span>{salonData.total_duration} Minutes</p>}
-                {/* Add Checking condition does customer want to go to salon by own or need to cut at his/her home */}
-                {slotData && <p className="text-base"><span className="font-bold text-lg ">Additional Fee: </span>€ {KmPrice} </p>}
+                {salonData && <p className="text-base"><span className="font-bold text-sm ">Etablissement: </span>{salonData.name}</p>}
+                {slotData && <p className="text-base"><span className="font-bold text-sm ">Coiffeur: </span>{slotData.hairDresser.name}</p>}
+                {slotData && (<p className="text-base"><span className="font-bold text-sm ">Date du rendez-vous: </span>{formattedBookingDate}</p>)}
+                {slotData && <p className="text-base"><span className="font-bold text-sm ">Heure de début: </span>{slotData.slot[0].start}</p>}
+                {slotData && <p className="text-base"><span className="font-bold text-sm ">Heure de fin: </span>{slotData.slot[slotData.slot.length - 1].end}</p>}
+                {slotData && <p className="text-base"><span className="font-bold text-sm ">Durée totale: </span>{salonData.total_duration} Minutes</p>}
+                {/* Les frais de déplacement ne doivent apparaître que si le client a choisi une coiffure à domicile */}
+                {slotData && <p className="text-base"><span className="font-bold text-sm ">Prix de la coiffure et services: </span> {salonData?.final_price.toFixed(2)}€</p>}
+                {slotData && <p className="text-base"><span className="font-bold text-sm ">Frais de déplacement: </span> {KmPrice.toFixed(2)}€ </p>}
+                {slotData && <p className="text-base"><span className="font-bold text-sm ">Frais de fonctionnement Onehaircut: </span> {updatedOHCfees.toFixed(2)}€ </p>}
+                {slotData && <p className="text-base"><span className="font-bold text-sm ">Frais de transaction : </span> {updatedTransactionFees.toFixed(2)}€ </p>}
               </div>
 
               {haircutData && haircutData.image &&
@@ -304,7 +316,7 @@ const Index = () => {
                 Modifier
               </button>
               <p className="text-5xl md:text-5xl text-black font-semibold">
-                €{salonData?.final_price} + € {KmPrice}
+                Prix total : {totalUpdatedCost}€
               </p>
             </div>
           </div>
