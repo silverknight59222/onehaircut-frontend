@@ -93,7 +93,7 @@ const Account = () => {
         setError((prev) => {
             return { ...prev, text: "" };
         });
-
+        console.log(place)
         // take actions only if there is a place
         if (place != undefined) {
             let address = {} as any
@@ -116,7 +116,12 @@ const Account = () => {
                     return { ...prev, text: 'Veuillez indiquer le numéro de rue' };
                 })
             }
-
+            console.log("Place Info");
+            if(place.geometry.location.lat() == 0 && place.geometry.location.lng() == 0){
+                setError((prev) => {
+                    return { ...prev, text: 'Please Reload Page and try again' };
+                })
+            }
             setLocationLatitude(place.geometry.location.lat());
             setLocationLongitude(place.geometry.location.lng());
         }
@@ -386,6 +391,7 @@ const Account = () => {
         setError((prev) => {
             return { ...prev, text: "" };
         });
+        // setAddressData(place)
         showSnackbar("success", "Adresse mise à jour avec succès.");
         setIsModalAdd(false);
         fetchUserInfo();
@@ -900,6 +906,8 @@ const Account = () => {
         let city = resp.data.city ?? "";
         let state = resp.data.state ?? "";
         let country = resp.data.country;
+        let lat = resp.data.lat;
+        let long = resp.data.long;
         if (street_number || street || zipcode || city) {
             informations[1].desc = [street, city, zipcode].filter((item) => item != null).join(" ");
         } else {
@@ -917,6 +925,8 @@ const Account = () => {
         setCountry(country);
         setState(state);
         setShowItem(informations);
+        setLocationLatitude(lat);
+        setLocationLongitude(long);
         if (resp.data.email_verified_at) {
             setIsEmailVerified(true)
         } else {
