@@ -23,18 +23,7 @@ const Forgot = ({ props }: any) => {
             searchParams: props.searchParams
         })
             .then((resp) => {
-                const res = resp.data;
-                setLocalStorage("user", JSON.stringify(res.user));
-                setLocalStorage("auth-token", res.token);
-                if (res.user.hair_salon) {
-                    setLocalStorage("hair_salon", JSON.stringify(res.user.hair_salon));
-                }
-                const salonRoles = ['salon_professional', 'admin', 'staff'];
-                if (salonRoles.indexOf(res.user.role) != -1) {
-                    router.push("/dashboard");
-                } else {
-                    router.push("/client/dashboard");
-                }
+                /* Do nothing as the route guard will route to login */
             })
             .finally(() => {
                 setIsLoading(false);

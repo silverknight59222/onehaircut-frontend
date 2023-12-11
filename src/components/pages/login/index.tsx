@@ -112,7 +112,7 @@ const Login = () => {
 
 			})
 			.catch((err) => {
-				showSnackbar('error', 'Le mot de passe et l\'adresse e-mail sont obligatoires.')
+				showSnackbar('error', err.response.data.message)
 			})
 			.finally(() => {
 				setIsLoading(false);
