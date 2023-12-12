@@ -23,7 +23,7 @@ const Forgot = ({ props }: any) => {
             searchParams: props.searchParams
         })
             .then((resp) => {
-                /* Do nothing as the route guard will route to login */
+                router.push('/login');
             })
             .finally(() => {
                 setIsLoading(false);
