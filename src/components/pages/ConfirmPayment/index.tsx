@@ -20,11 +20,11 @@ const Index = () => {
   const [KmPrice, setPrice] = useState(0);
   const servicePrice = priceData ? JSON.parse(priceData) : null
   const items = [
-    { name: "Nom", desc: userInfo ? userInfo?.name : '-' },
-    { name: "Nom du salon", desc: salon?.name },
+    { name: "Client", desc: userInfo ? userInfo?.name : '-' },
+    { name: "Salon", desc: salon?.name },
     { name: "Adresse du salon", desc: `${salon?.address?.city}, ${salon?.address?.state}, ${salon?.address?.country}` },
     { name: "Type de salon", desc: salon?.type?.replace("_", " ") },
-    { name: "Additional Fee", desc: "€" + KmPrice}
+    { name: "Fris de déplacement", desc: "€" + KmPrice }
   ];
 
   const getBillKMPrice = async () => {
@@ -91,7 +91,7 @@ const Index = () => {
               </div>
               <div className="flex items-center justify-end mt-4">
                 <p className="text-black text-3xl font-medium ">
-                  Total: <span className="text-4xl font-semibold">€{salon?.final_price + KmPrice}</span>
+                  Total: <span className="text-4xl font-semibold">€{parseFloat(salon?.final_price + KmPrice).toFixed(2)}</span>
                 </p>
               </div>
               <div className="border-t-2 border-[#CBCBCB] pt-9 mt-4">
@@ -100,7 +100,7 @@ const Index = () => {
                   <p className="text-gray-400 text-xl font-medium">{userInfo ? userInfo.email : '-'}</p>
                 </div>
                 <div className="flex flex-col sm:flex-row sm:items-center gap-2 text-black text-2xl mt-3 sm:mt-0">
-                  <p className="font-semibold">Numéro de téléphone: </p>
+                  <p className="font-semibold text-xl">Numéro de téléphone: </p>
                   <p className="text-gray-400 text-xl font-medium">{userInfo ? userInfo.phone : '-'}</p>
                 </div>
               </div>
