@@ -6,41 +6,86 @@ import BaseModal from "@/components/UI/BaseModal";
 import { Theme_A, ColorsThemeA } from "@/components/utilis/Themes";
 import CustomizedTable from "@/components/UI/CustomizedTable";
 import CustomInput from "@/components/UI/CustomInput";
+import { dashboard } from "@/api/dashboard";
+import { getLocalStorage } from "@/api/storage";
+import { salonApi } from "@/api/salonSide";
 
 
 // Définissez un type ou une interface pour les données d'indisponibilité
 interface UnavailabilityData {
-    startDate: Date;
-    endDate: Date;
+    start_date: String;
+    end_date: String;
     reason: string;
     status: string;
+    hdId : String
 }
 
 
 const Unavailability = () => {
+    const salonData = getLocalStorage('hair_salon')
+
+    const salon = salonData ? JSON.parse(salonData) : null
 
     const [selectedEntity, setSelectedEntity] = useState("Etablissement");
     const [showModal, setShowModal] = useState(false); // Initialize showModal state
     const [showCalender, setShowCalender] = useState(false)
     const [selectedDate, setSelectedDate] = useState<Date>()
+    const [hairDresserList, setHairDresserList] = useState<any>([])
+    const [hairdresserList, setDDHairDresserList] = useState([])
+    const [selectedHD, setSelectedHD] = useState("")
+    const [unavailList, setUnavailList] = useState<any>([])
 
 
     const [selectedDates, setSelectedDates] = useState<Date[]>([]);
+    const [startDate, setStartDate] = useState("");
+    const [endDate, setEndDate] = useState("");
 
     const onDatesSelect = (dates: Date[]) => {
         setSelectedDates(dates);
     };
     useEffect(() => {
         setSelectedDate(new Date())
+        getHairDresser()
     }, [])
+
+    useEffect(() => {
+        // console.log(selectedHD)
+        getHairDresserInfo()
+    }, [selectedHD])
+
+    const getHairDresserInfo = async () => {
+        let obj = hairDresserList.find(o => o.name == selectedHD);
+        let resp = await salonApi.getHairDresserAvailability(obj!.id);
+        setUnavailList(resp.data.data)
+        
+        setUnavailabilities(resp.data.data)
+
+    }
+    const getHairDresser = async () => {
+        let id_salon = salon?.id;
+        let resp = await dashboard.getAllHairDressers(id_salon);
+        let hair_dresser_data = resp.data.data
+        let temp_arr:any = [];
+        setHairDresserList(hair_dresser_data)
+        hair_dresser_data.forEach(item => {
+            if (item && item.hasOwnProperty("name")) {
+                temp_arr.push(item.name as String);
+            }
+        });
+        setDDHairDresserList(temp_arr)
+        // console.log(temp_arr)
+    }
 
     const initialDays: Date[] = [];
     const [days, setDays] = React.useState<Date[] | undefined>(initialDays);
 
     useEffect(() => {
-        //console.log('Selected dates:', selectedDates);
+        // console.log('Selected dates:', selectedDates);
+        let start = formatSingleDate([selectedDates[0]])
+        let end = formatSingleDate([selectedDates[selectedDates.length - 1]])
+        setStartDate(start)
+        setEndDate(end)
     }, [selectedDates]);
-
 
     // FORMATAGE POUR L'AFFICHAGE DE LA PLAGE/DATE SELECTIONNEE
     const formatDateRange = (dates: Date[]) => {
@@ -62,6 +107,16 @@ const Unavailability = () => {
             );
         }
     };
+    const formatSingleDate = (dates: Date[]) => {
+        if (dates.length === 0) return 'Aucune date sélectionnée';
+
+        const format = (date: Date) => new Intl.DateTimeFormat('en-EN', {
+            year: 'numeric', month: 'numeric', day: 'numeric'
+        }).format(date);
+        
+        return `${format(dates[0])}`;  // Modification ici
+    };
+    
 
     // ACTION SLORS DU CHOIX ENTRE ETABLISSEMENT ET Coiffeurs
     const handleEntityClick = (role: string) => {
@@ -79,9 +134,15 @@ const Unavailability = () => {
 
     //DATA UNAVALABILITY TO SAVE 
     const SalonColumns = ['Date de début', 'Date de fin', 'Raison', 'Actions'];
-    const HairdresserColumns = ['Date de début', 'Date de fin', 'Heure de début', 'Heure de fin', 'Raison', 'Actions'];
+    const HairdresserColumns = ['Start Date', 'End Date', 'Start Time', 'End Time', 'Reason', 'Actions'];
     const [unavailabilities, setUnavailabilities] = useState<UnavailabilityData[]>([]); // Déclaration de la variable unavailabilities
-
+    
+    // useEffect(() => {
+    //     console.log(unavailabilities)
+    // }, [unavailabilities])
+    useEffect(() => {
+        setUnavailabilities(unavailabilities)
+    },[unavailabilities]);
     const columnsToDisplay = selectedEntity === "Coiffeurs" ? HairdresserColumns : SalonColumns;
 
     // Dans le rendu JSX, utilisez columnsToDisplay comme colonnes à afficher dans le composant CustomizedTable
@@ -89,18 +150,21 @@ const Unavailability = () => {
 
     const [reason, setReason] = useState(""); // État local pour la raison
 
-    const handleSubmitClick = () => {
+    const handleSubmitClick = async () => {
+        let obj = hairDresserList.find(o => o.name == selectedHD);
         if (selectedDates.length > 0) {
             // Utilisez l'état local pour la raison
             const newUnavailability = {
-                startDate: selectedDates[0],
-                endDate: selectedDates[selectedDates.length - 1],
+                start_date: startDate,
+                end_date: endDate,
                 reason: reason, // Utilisez l'état local pour la raison
                 status: "En attente",
+                hdId : obj.id
             };
 
             // Ajoutez la nouvelle donnée d'indisponibilité à votre tableau de données
             setUnavailabilities([...unavailabilities, newUnavailability]);
+            await salonApi.addHairDresserUnavailability(newUnavailability);
 
             // Réinitialisez l'état des dates sélectionnées
             setSelectedDates([]);
@@ -113,14 +177,6 @@ const Unavailability = () => {
     // POUR AFFICHER LA LISTE DES COIFFEURS DU SALON
     const [showHairdresserDropdown, setShowHairdresserDropdown] = useState(false); // État local pour afficher ou masquer la dropdown
     const [mainContainerClass, setMainContainerClass] = useState("h-[800px]"); // Classe CSS par défaut
-
-    // TODO IMPORT TRUE LIST
-    const hairdresserList = [
-        "Dimitri",
-        "William",
-        "Florian",
-        "Ben",
-    ];
 
 
 
@@ -178,6 +234,7 @@ const Unavailability = () => {
                             dropdownItems={hairdresserList} // Assurez-vous d'avoir une liste de coiffeurs à afficher
                             selectId="" // Assurez-vous de définir l'ID approprié ici
                             menuName="Coiffeurs"
+                            fctToCallOnClick={(s : string) => setSelectedHD(s)}
                         />
                     </div>
 

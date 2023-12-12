@@ -19,6 +19,13 @@ interface SalonMobility {
 interface SalonMobilityZone {
   zone_radius: number
 }
+interface UnavailabilityData {
+  start_date: String;
+  end_date: String;
+  reason: string;
+  status: string;
+  hdId : String
+}
 const salonApi = {
     updateLogoAndDescription: async (params: any) => {
         return await request.post(`/update-logo-and-description`, params);
@@ -59,5 +66,11 @@ const salonApi = {
     downgradeToFreePlan: async () => {
       return await request.post(`/downgrade-plan`);
     },
+    getHairDresserAvailability : async(hairDresserID : number) => {
+      return await request.get(`/hair_dresser_unavaiablity/${hairDresserID}`);
+    },
+    addHairDresserUnavailability : async(params : UnavailabilityData) => {
+      return await request.post('hair_dresser_unavaiablity', params);
+    }
 }
 export { salonApi };
