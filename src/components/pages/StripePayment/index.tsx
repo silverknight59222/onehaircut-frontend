@@ -82,18 +82,7 @@ function StripePayment() {
     await registration
       .registerSalon(data)
       .then((res) => {
-        const userInfo = JSON.parse(getLocalStorage("user_Info") as string);
-
-        setLocalStorage("auth-token", userInfo.token);
-        setLocalStorage('hair_salon', JSON.stringify(res.data.hair_salon));
-
         showSnackbar("success", "Salon successfully created");
-        // removeFromLocalStorage('user_Info')
-        // removeFromLocalStorage('salon_name')
-        // removeFromLocalStorage('salon_address')
-        // removeFromLocalStorage('salon_type')
-        // removeFromLocalStorage('plan_type')
-        removeFromLocalStorage('secret_key')
         router.push("/dashboard");
       })
       .catch((err) => {
