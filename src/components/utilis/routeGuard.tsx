@@ -14,15 +14,11 @@ export const RouteGuard = ({ children }: any) => {
 	let professionalRoutes = ['/dashboard', '/dashboard/client-activity', '/dashboard/visites', '/dashboard/revenue', '/dashboard/messages', '/dashboard/settings', '/dashboard/subscription', '/dashboard/bot', '/dashboard/contactUs'];
 	let freeSubscriptionRoutes = ['/dashboard', '/dashboard/client-activity', '/dashboard/revenue', '/dashboard/messages', '/dashboard/settings', '/dashboard/subscription', '/dashboard/bot', '/dashboard/contactUs'];
 	let clientRoutes = ['/client/dashboard', '/client/favorites', '/client/filters', '/client/history', '/client/messages', '/client/portrait', '/client/currentreservation', '/client/help', '/client/processed'];
-	let verifyRoute = ['/email-verify']
+
 	const salonRoles = ['salon_professional', 'admin', 'staff'];
 
 	let index = -1;
-	if(verifyRoute.includes(`/${pathname.split('/')[1]}`))
-	{
-		index = verifyRoute.indexOf(`/${pathname.split('/')[1]}`)
-	}
-	else if (publicRoutes.includes(`/${pathname.split('/')[1]}`)) {
+	 if (publicRoutes.includes(`/${pathname.split('/')[1]}`)) {
 		index = publicRoutes.indexOf(`/${pathname.split('/')[1]}`)
 	}else if (user && user.role === 'client') {
 		index = clientRoutes.indexOf(pathname)
@@ -34,7 +30,7 @@ export const RouteGuard = ({ children }: any) => {
 		index = freeSubscriptionRoutes.indexOf(pathname)
 	}
 
-	if ((user && index === -1) || ((user == null) && (index != -1))) {
+	if (user && index === -1) {
 		router.push('/login');
 	}
 
