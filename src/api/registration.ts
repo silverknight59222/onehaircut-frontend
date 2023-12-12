@@ -21,7 +21,9 @@ export interface SalonRegisterParams {
   plan_id: string,
   plan_name: string,
   salon_description: string,
-  plan_slug: string
+  plan_slug: string,
+  street: string,
+  postalCode: string,
 }
 const registration = {
   getAllPlans: async () => {

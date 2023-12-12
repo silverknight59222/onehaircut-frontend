@@ -24,6 +24,7 @@ interface Address_int {
   long: number,
   zone: number,
   isMobile?: boolean
+  postalCode: String,
 }
 const Step2 = () => {
 
@@ -75,6 +76,8 @@ const Step2 = () => {
       long: location.lng,
       zone: zone,
       isMobile: isMobile,
+      postalCode: postalCode,
+      state: state,
     };
 
     setLocalStorage('salon_address', JSON.stringify(toSave));
