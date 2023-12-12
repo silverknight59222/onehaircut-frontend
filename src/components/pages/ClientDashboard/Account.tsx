@@ -117,7 +117,7 @@ const Account = () => {
                 })
             }
             console.log("Place Info");
-            if(place.geometry.location.lat() == 0 && place.geometry.location.lng() == 0){
+            if (place.geometry.location.lat() == 0 && place.geometry.location.lng() == 0) {
                 setError((prev) => {
                     return { ...prev, text: 'Please Reload Page and try again' };
                 })
