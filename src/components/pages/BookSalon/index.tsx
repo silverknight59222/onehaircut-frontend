@@ -334,7 +334,7 @@ const BookSalon = () => {
 
 
         {/* PARTIE STAFF DU SALON */}
-        <div className="w-full lg:w-auto lg:mt-0 z-40">
+        <div className="w-full lg:w-auto lg:mt-0 z-50">
           {hairDressers && hairDressers.length > 1 && (
             <p className="text-lg text-black font-semibold text-center lg:text-left">
               Choisissez votre coiffeur
