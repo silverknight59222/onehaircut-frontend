@@ -24,6 +24,7 @@ interface Address_int {
   long: number,
   zone: number,
   isMobile?: boolean
+  postalCode: String,
 }
 const Step2 = () => {
 
@@ -75,6 +76,8 @@ const Step2 = () => {
       long: location.lng,
       zone: zone,
       isMobile: isMobile,
+      postalCode: postalCode,
+      state: state,
     };
 
     setLocalStorage('salon_address', JSON.stringify(toSave));
@@ -183,6 +186,9 @@ const Step2 = () => {
 
   // function for clicking on the "je suis mobile"
   const onClickIamMobile = () => {
+    
+    setIsMobile(!IamMobile);
+
     // calculate the new zoom
     if (!IamMobile) {
       // zoom according to the radius
