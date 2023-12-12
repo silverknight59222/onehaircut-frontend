@@ -186,6 +186,9 @@ const Step2 = () => {
 
   // function for clicking on the "je suis mobile"
   const onClickIamMobile = () => {
+    
+    setIsMobile(!IamMobile);
+
     // calculate the new zoom
     if (!IamMobile) {
       // zoom according to the radius

@@ -55,7 +55,8 @@ function StripePayment() {
       plan_name: "",
       plan_slug: "",
       street: "",
-      postalCode: ""
+      postalCode: "",
+      isMobile: false,
     };
     const userInfo = JSON.parse(getLocalStorage("user_Info") as string);
     const salonName = getLocalStorage("salon_name") as string;
@@ -78,6 +79,7 @@ function StripePayment() {
     data.plan_slug = planType.slug;
     data.street = salonAddress.street;
     data.postalCode = salonAddress.postalCode;
+    data.isMobile = salonAddress.isMobile;
     // if (planType.name === "OneHaircut Regular") {
     //   data.plan_name = "Standard";
     // } else if (planType.name === "OneHaircut Pro") {
