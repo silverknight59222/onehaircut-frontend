@@ -362,7 +362,7 @@ const SalonInfos = () => {
         setBillingState(resp.data.billing_state);
         setBillingCountry(resp.data.billing_country);
         setZonePrice(resp.data.bill_per_km)
-        setZoneSliderRange([resp.data.min_km,resp.data.max_km]);
+        setZoneSliderRange([resp.data.min_km, resp.data.max_km]);
         setIsMobilityAllowed(resp.data.is_mobile);
     }
 
@@ -412,6 +412,7 @@ const SalonInfos = () => {
                                 <h1 className="inline text-2xl font-semibold leading-none">Adresse</h1>
                             </div>
                         </div>
+                        <p className="text-sm font-semibold text-grey text-center mt-4 italic ">Veuillez entrer votre adresse dans le 2ème champs et la sélectionner lorsqu'elle apparaît</p>
                         <div className="px-5 pb-5">
                             <input
                                 placeholder="Nom"
@@ -446,6 +447,7 @@ const SalonInfos = () => {
                             <div className="flex">
                                 <div className="flex-grow w-1/4 pr-2">
                                     <input
+                                        disabled={true}
                                         placeholder="Code Postal"
                                         type="text"
                                         value={postalCode}
@@ -454,6 +456,7 @@ const SalonInfos = () => {
                                         className={`${Theme_A.fields.inputFieldDisabled}`}
                                     />
                                     <input
+                                        disabled={true}
                                         placeholder="État"
                                         type="text"
                                         value={state}
@@ -464,6 +467,7 @@ const SalonInfos = () => {
                                 </div>
                                 <div className="flex-grow">
                                     <input
+                                        disabled={true}
                                         placeholder="Ville"
                                         type="text"
                                         className={`${Theme_A.fields.inputFieldDisabled}`}
@@ -471,6 +475,7 @@ const SalonInfos = () => {
                                         onChange={(e) => setCity(e.target.value)}
                                     />
                                     <input
+                                        disabled={true}
                                         placeholder="Pays"
                                         type="text"
                                         value={country}
@@ -541,6 +546,7 @@ const SalonInfos = () => {
                                 <div className="flex">
                                     <div className="flex-grow w-1/4 pr-2">
                                         <input
+                                            disabled={true}
                                             placeholder="Code postal de facturation"
                                             type="text"
                                             value={billingPostalCode}
@@ -549,6 +555,7 @@ const SalonInfos = () => {
                                             className={`${Theme_A.fields.inputFieldDisabled}`}
                                         />
                                         <input
+                                            disabled={true}
                                             placeholder="État de facturation"
                                             type="text"
                                             value={billingState}
@@ -559,6 +566,7 @@ const SalonInfos = () => {
                                     </div>
                                     <div className="flex-grow">
                                         <input
+                                            disabled={true}
                                             placeholder="Ville de facturation"
                                             type="text"
                                             className={`${Theme_A.fields.inputFieldDisabled}`}
@@ -567,6 +575,7 @@ const SalonInfos = () => {
                                             maxLength={50}
                                         />
                                         <input
+                                            disabled={true}
                                             placeholder="Pays de facturation"
                                             type="text"
                                             value={billingCountry}
@@ -713,10 +722,10 @@ const SalonInfos = () => {
                 <div className="flex-1 py-5 pl-5 ml-8 flex items-center"> {/* Utilisez flex items-center ici */}
                     <div onClick={() => handleCheckboxChange(isMobilityAllowed)} className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded 
                     ${isMobilityAllowed
-                        ? ColorsThemeA.ohcVerticalGradient_A
-                        : "bg-[#D6D6D6]"
+                            ? ColorsThemeA.ohcVerticalGradient_A
+                            : "bg-[#D6D6D6]"
                         }`}>
-                        {isMobilityAllowed && <CheckedIcon />} 
+                        {isMobilityAllowed && <CheckedIcon />}
                     </div>
                     <label htmlFor="mobilityZone" className="ml-2 text-sm font-medium text-gray-900">
                         Coiffure à domicile
@@ -767,8 +776,8 @@ const SalonInfos = () => {
                         </div>
                         {/* TODO SAVE MOBILITY AND TYPE OF SALON DATA WITH THIS BUTTON */}
                         <div className="flex justify-center items-center">
-                            <button className={`mt-6 flex gap-4 items-center justify-center w-22 ${Theme_A.button.medBlackColoredButton}`} 
-                                    onClick={() => handleZoneSliderChange(zoneSliderRange)}> Mettre à jour</button>
+                            <button className={`mt-6 flex gap-4 items-center justify-center w-22 ${Theme_A.button.medBlackColoredButton}`}
+                                onClick={() => handleZoneSliderChange(zoneSliderRange)}> Mettre à jour</button>
                         </div>
                     </div>
                 )}

@@ -407,7 +407,7 @@ const Account = () => {
                     <p className="text-xl font-semibold text-black text-center mb-4">Modification de l'adresse</p>
 
                     <div className="flex flex-col items-start justify-start gap-4">
-
+                        <p className="text-sm font-semibold text-grey text-center mt-4 italic ">Veuillez entrer votre adresse et la sélectionner lorsqu'elle apparaît</p>
                         <div>
                             <Autocomplete
                                 className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
@@ -444,6 +444,7 @@ const Account = () => {
                                         className={`${Theme_A.fields.inputFieldDisabled}`}
                                     />
                                     <input
+                                        disabled={true}
                                         placeholder="État"
                                         type="text"
                                         value={state}
@@ -454,6 +455,7 @@ const Account = () => {
                                 </div>
                                 <div className="flex-grow">
                                     <input
+                                        disabled={true}
                                         placeholder="Ville"
                                         type="text"
                                         className={`${Theme_A.fields.inputFieldDisabled}`}
@@ -461,6 +463,7 @@ const Account = () => {
                                         onChange={(e) => setCity(e.target.value)}
                                     />
                                     <input
+                                        disabled={true}
                                         placeholder="Pays"
                                         type="text"
                                         value={country}
