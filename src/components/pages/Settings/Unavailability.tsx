@@ -11,7 +11,6 @@ import { getLocalStorage } from "@/api/storage";
 import { salonApi } from "@/api/salonSide";
 import useSnackbar from '@/hooks/useSnackbar';
 import OpenningHours from "./OpenningHours";
-const showSnackbar = useSnackbar();
 
 // Définissez un type ou une interface pour les données d'indisponibilité
 interface UnavailabilityData {
@@ -64,6 +63,7 @@ const defaultHairDresser = {
 };
 
 const Unavailability = () => {
+    const showSnackbar = useSnackbar();
     const salonData = getLocalStorage('hair_salon')
 
     const salon = salonData ? JSON.parse(salonData) : null
