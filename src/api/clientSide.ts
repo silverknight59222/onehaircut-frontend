@@ -91,7 +91,7 @@ const user_api =  {
         return await request.delete(`/user/delete/${data.id}`);
     },
     deactivateUser: async (data:DeactivateAccountParams) => {
-        return await request.post(`/user/deactivate/`, data);
+        return await request.post(`/user/deactivate`, data);
     },
     getAllPermission: async () => {
         return await request.get(`/permissions`);
