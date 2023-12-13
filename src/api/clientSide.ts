@@ -19,6 +19,11 @@ interface paymentIntent {
     amount: number,
     token: string
 }
+
+export interface DeactivateAccountParams {
+    user_id: string,
+}
+
 const client={
     getSalonDetail: async (id: string,hairId:string) => {
         return await request.get(`/hair_salon_by_id/${id}/${hairId}`);
@@ -84,6 +89,9 @@ const user_api =  {
     },
     deleteUser: async (data:any) => {
         return await request.delete(`/user/delete/${data.id}`);
+    },
+    deactivateUser: async (data:DeactivateAccountParams) => {
+        return await request.post(`/user/deactivate/`, data);
     },
     getAllPermission: async () => {
         return await request.get(`/permissions`);

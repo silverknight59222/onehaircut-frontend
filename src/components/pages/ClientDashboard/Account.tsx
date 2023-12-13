@@ -20,6 +20,10 @@ import Autocomplete from "react-google-autocomplete";
 import { Auth } from "@/api/auth";
 import CustomInput from "@/components/UI/CustomInput";
 import { exists } from "i18next";
+import { user_api } from "@/api/clientSide";
+import { DeactivateAccountParams } from "@/api/clientSide";
+import { getLocalStorage } from "@/api/storage";
+import { useRouter } from "next/navigation";
 
 interface infoInterface {
     name: string;
@@ -39,6 +43,7 @@ const inputFieldsDesignNoW = `border-2 border-red-500 p-3 placeholder:text-[#959
 
 const Account = () => {
     const showSnackbar = useSnackbar();
+    const router = useRouter();
 
     const [selectedTab, setSelectedTab] = useState(0);
     const items = [
@@ -827,6 +832,7 @@ const Account = () => {
         { name: "Adresse", desc: "", modif: true, popup: modifAddress },
         { name: "Numéro de téléphone", desc: "", modif: true, popup: modifPhone },
         { name: "Adresse e-mail", desc: "", modif: false, popup: emptyPopup },
+        { name: "deactivate", desc: "", modif: false, popup: emptyPopup },
         // { name: "Pièce d'identité officielle", desc: "Information non fournie", modif: false, popup: emptyPopup },
         // { name: "Statut", desc: "Etudiant - vérifié", modif: false, popup: emptyPopup },
     ];
@@ -937,6 +943,37 @@ const Account = () => {
         }
     }
 
+    const handleCloseAccount = async () => {
+
+        let answer = confirm('Les données de votre compte seront dans le système pendant 30 jours, vous pourrez vous connecter et réactiver votre compte pendant cette période. Après les 30 jours, les données seront définitivement supprimées et vous ne pourrez plus les récupérer. Êtes-vous sûr de vouloir fermer le compte ?')
+
+        if (answer) {
+            let data: DeactivateAccountParams =
+            {
+                user_id: ""
+            }
+            const user = JSON.parse(getLocalStorage("user") as string);
+            data.user_id = user?.id;
+            await user_api.deactivateUser(data).then((resp) => {
+
+                /* Logout user */
+                Auth.logout()
+                    .then((response) => {
+                        showSnackbar('success', 'Account deactivated successfully')
+                        localStorage.clear();
+                        router.push("/login");
+                    })
+                    .catch((error) => console.log(error))
+                    .finally(() => {
+                    })
+
+
+            }).catch((error) => {
+
+            });
+        }
+    }
+
     const resendVerification = async () => {
         let resp = await Auth.resendVerifyEmailNotification()
         if (resp.data.success) {
@@ -970,6 +1007,7 @@ const Account = () => {
 
         setShowItem(informations);
     }
+
 
     // Use useEffect to update informations when state variables change
     useEffect(() => {
@@ -1060,8 +1098,18 @@ const Account = () => {
                                         className="flex items-start justify-between my-6"
                                     >
                                         <div>
-                                            <p className="text-black">{item.name}</p>
-                                            <p className="text-[#666] text-sm">{item.desc}</p>
+                                            {item.name === "deactivate" ?
+                                                <div>
+                                                    <button onClick={handleCloseAccount} className="w-40 h-10 flex items-center justify-center bg-[#ffffff] border border-black rounded-xl mt-20 mb-20 text-black font-normal hover:scale-95 transition-transform duration-300 hover:bg-stone-100 ">
+                                                        Clôturer le compte
+                                                    </button>
+                                                </div>
+                                                :
+                                                <div>
+                                                    <p className="text-black">{item.name}</p>
+                                                    <p className="text-[#666] text-sm">{item.desc}</p>
+                                                </div>
+                                            }
                                         </div>
                                         {item.modif === true ?
                                             <div className="cursor-pointer text-black underline text-xs"

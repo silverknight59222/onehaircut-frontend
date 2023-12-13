@@ -17,7 +17,12 @@ import BaseModal from "@/components/UI/BaseModal";
 import { useRouter } from "next/navigation";
 import PaymentModal from "./PaymentModal";
 import { salonApi } from '@/api/salonSide';
+import { user_api } from "@/api/clientSide";
+import { DeactivateAccountParams } from "@/api/clientSide";
 import { Subscription } from "../../../types";
+import { Auth } from "@/api/auth";
+import { getLocalStorage } from "@/api/storage";
+import useSnackbar from "@/hooks/useSnackbar";
 
 const SubSelected_text = "text-white"
 const SubSelected_recommended = "bg-[rgba(255,255,255,0.53)] text-white"
@@ -28,6 +33,7 @@ const SubUnselected_recommended = `${ColorsThemeA.OhcGradient_D} text-black`
 const SubUnselected_BG = `bg-white`
 
 const Subscription = () => {
+  const showSnackbar = useSnackbar();
   const router = useRouter();
   const defaultSubscription = {
     created_at: '',
@@ -151,6 +157,37 @@ const Subscription = () => {
       setIsCurrSubscriptionPro(true)
     } else {
       setIsCurrSubscriptionPro(false)
+    }
+  }
+
+  const handleCloseAccount = async () => {
+
+    let answer = confirm('Les données de votre compte seront dans le système pendant 30 jours, vous pourrez vous connecter et réactiver votre compte pendant cette période. Après les 30 jours, les données seront définitivement supprimées et vous ne pourrez plus les récupérer. Êtes-vous sûr de vouloir fermer le compte ?')
+
+    if (answer) {
+      let data: DeactivateAccountParams = 
+      {
+        user_id: ""
+      }
+      const user = JSON.parse(getLocalStorage("user") as string);
+      data.user_id = user?.id;
+      await user_api.deactivateUser(data).then((resp) => {
+
+        /* Logout user */
+        Auth.logout()
+          .then((response) => {
+            showSnackbar('success', 'Account deactivated successfully')
+            localStorage.clear();
+            router.push("/login");
+          })
+          .catch((error) => console.log(error))
+          .finally(() => {
+          })
+
+
+      }).catch((error) => {
+
+      });
     }
   }
 
@@ -285,7 +322,7 @@ const Subscription = () => {
                 )}
               </div>
 
-              <button className="w-40 h-10 flex items-center justify-center bg-[#ffffff] border border-black rounded-xl mt-20 mb-20 text-black font-normal hover:scale-95 transition-transform duration-300 hover:bg-stone-100 ">
+              <button onClick={handleCloseAccount} className="w-40 h-10 flex items-center justify-center bg-[#ffffff] border border-black rounded-xl mt-20 mb-20 text-black font-normal hover:scale-95 transition-transform duration-300 hover:bg-stone-100 ">
                 Clôturer le compte
               </button>
             </div>
