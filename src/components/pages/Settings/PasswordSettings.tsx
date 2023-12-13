@@ -8,6 +8,7 @@ import { TextField } from "@material-ui/core";
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
+import { client } from "@/api/clientSide";
 
 const PasswordSettings = () => {
 
@@ -68,36 +69,36 @@ const PasswordSettings = () => {
 
     const onSubmitPassword = async () => {
         // TODO: link with BE
-        // try {
-        //     let resp = await client.resetPassword({
-        //         old_password: passwordField.oldPassword,
-        //         new_password: passwordField.newPassword,
-        //         repeat_password: passwordField.confirmPassword,
-        //     })
-        //     showSnackbar("success", resp.data.message);
-        //     passwordField.oldPassword = "";
-        //     passwordField.newPassword = "";
-        //     passwordField.confirmPassword = "";
-        // } catch (error: any) {
-        //     setError((prev) => {
-        //         return { ...prev, text: error.response.data.message };
-        //     });
-        //     if (error.response.data.errors.old_password) {
-        //         showSnackbar("error", error.response.data.errors.old_password[0]);
-        //     }
-        //     if (error.response.data.errors.new_password) {
-        //         showSnackbar("error", error.response.data.errors.new_password[0]);
-        //     }
-        //     if (error.response.data.errors.repeat_password) {
-        //         showSnackbar("error", error.response.data.errors.repeat_password[0]);
-        //     }
-        //     return
-        // } finally {
-        //     setIsLoading(false);
-        // }
-        // setError((prev) => {
-        //     return { ...prev, text: "" };
-        // });
+        try {
+            let resp = await client.resetPassword({
+                old_password: passwordField.oldPassword,
+                new_password: passwordField.newPassword,
+                repeat_password: passwordField.confirmPassword,
+            })
+            if(resp.data.status == 200) {
+                showSnackbar("success",resp.data.message)
+            }
+            else {
+                showSnackbar("error",resp.data.message)
+            }
+            showSnackbar("success", resp.data.message);
+        } catch (error: any) {
+            if (error.response.data.errors.old_password) {
+                showSnackbar("error", error.response.data.errors.old_password[0]);
+            }
+            if (error.response.data.errors.new_password) {
+                showSnackbar("error", error.response.data.errors.new_password[0]);
+            }
+            if (error.response.data.errors.repeat_password) {
+                showSnackbar("error", error.response.data.errors.repeat_password[0]);
+            }
+            return;
+        } finally {
+            setIsLoading(false);
+        }
+        setOldPassword("")
+        setNewPassword("")
+        setConfirmPassword("")
     }
 
     const [error, setError] = useState({
