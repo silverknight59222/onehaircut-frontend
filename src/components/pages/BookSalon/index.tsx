@@ -396,7 +396,7 @@ const BookSalon = () => {
 
 
       {/* PARTIE RESERVATION DE SLOT */}
-      {!((locationType === 'domicile' && can_go_home === false) || (locationType === 'salon')) && (
+      {can_go_home === true || locationType === 'salon' && (
         <div className="flex justify-center z-50">
           <div className=" max-w-[800px] mx-2 bg-white border-2 border-[#c3c3c3] py-2 rounded-[22px] mb-16 shadow-sm shadow-stone-600 mt-8">
 
