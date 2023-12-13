@@ -24,7 +24,7 @@ const Index = () => {
     { name: "Salon", desc: salon?.name },
     { name: "Adresse du salon", desc: `${salon?.address?.city}, ${salon?.address?.state}, ${salon?.address?.country}` },
     { name: "Type de salon", desc: salon?.type?.replace("_", " ") },
-    { name: "Fris de déplacement", desc: "€" + KmPrice }
+    { name: "Frais de déplacement", desc: "€" + KmPrice }
   ];
 
   const getBillKMPrice = async () => {
