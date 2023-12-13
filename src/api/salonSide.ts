@@ -71,6 +71,10 @@ const salonApi = {
     },
     addHairDresserUnavailability : async(params : UnavailabilityData) => {
       return await request.post('hair_dresser_unavaiablity', params);
-    }
+    },
+    delHairDresserUnavailability : async(hairDresserID : number) => {
+      return await request.delete(`hair_dresser_unavaiablity/${hairDresserID}`);
+    },
+    
 }
 export { salonApi };

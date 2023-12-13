@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { CalenderIcon } from "@/components/utilis/Icons";
+import { CalenderIcon, CheckedIcon } from "@/components/utilis/Icons";
 import MultipleDatePicker from "@/components/UI/MultipleDatePicker";
 import DropdownMenu from "@/components/UI/DropDownMenu";
 import BaseModal from "@/components/UI/BaseModal";
@@ -9,7 +9,9 @@ import CustomInput from "@/components/UI/CustomInput";
 import { dashboard } from "@/api/dashboard";
 import { getLocalStorage } from "@/api/storage";
 import { salonApi } from "@/api/salonSide";
-
+import useSnackbar from '@/hooks/useSnackbar';
+import OpenningHours from "./OpenningHours";
+const showSnackbar = useSnackbar();
 
 // Définissez un type ou une interface pour les données d'indisponibilité
 interface UnavailabilityData {
@@ -17,9 +19,49 @@ interface UnavailabilityData {
     end_date: String;
     reason: string;
     status: string;
-    hdId : String
+    hdId: String
+}
+interface HairdresserSlot {
+    id: string;
+    status: number;
+    hair_dresser_id: number;
+    available: boolean;
+    day: string;
+    end: string;
+    start: string;
 }
 
+interface HairdressersWithSlots {
+    id: number;
+    hair_salon_id: number;
+    profile_image: string | null;
+    name: string;
+    avatar: {
+        image: string;
+    };
+    slots: HairdresserSlot[];
+}
+
+const defaultHairDresser = {
+    id: 0,
+    hair_salon_id: 0,
+    profile_image: "",
+    name: "",
+    avatar: {
+        image: "",
+    },
+    slots: [
+        {
+            id: "",
+            status: 0,
+            hair_dresser_id: 0,
+            available: false,
+            day: "",
+            end: "",
+            start: "",
+        },
+    ],
+};
 
 const Unavailability = () => {
     const salonData = getLocalStorage('hair_salon')
@@ -34,7 +76,14 @@ const Unavailability = () => {
     const [hairdresserList, setDDHairDresserList] = useState([])
     const [selectedHD, setSelectedHD] = useState("")
     const [unavailList, setUnavailList] = useState<any>([])
-
+    const [unavailListSalon, setUnavailListSalon] = useState<any>([])
+    const [timeState, setTimeState] = useState(false)
+    const [HDTimeList, setHDTimeList] = useState<any>([]);
+    const [updatedSlots, setUpdatedSlots] = useState<any>([]);
+    const [selectedSalonHairDresser, setSelectedSalonHairDresser] =
+        useState<HairdressersWithSlots>(defaultHairDresser);
+    const [slotList, setSlotList] = useState<any[]>([]);
+    const [selectedSlots, setSelectedSlots] = useState<string[]>([]);
 
     const [selectedDates, setSelectedDates] = useState<Date[]>([]);
     const [startDate, setStartDate] = useState("");
@@ -42,9 +91,23 @@ const Unavailability = () => {
 
     const onDatesSelect = (dates: Date[]) => {
         setSelectedDates(dates);
+        let start = formatSingleDate([dates[0]])
+        let end = formatSingleDate([dates[dates.length - 1]])
+        console.log(start)
+        console.log(end)
+        console.log(start == end)
+        if (start == end) {
+            setTimeState(true);
+        }
+        else {
+            setTimeState(false)
+        }
+        setStartDate(start)
+        setEndDate(end)
     };
+
     useEffect(() => {
-        setSelectedDate(new Date())
+        // setSelectedDate(new Date())
         getHairDresser()
     }, [])
 
@@ -57,7 +120,6 @@ const Unavailability = () => {
         let obj = hairDresserList.find(o => o.name == selectedHD);
         let resp = await salonApi.getHairDresserAvailability(obj!.id);
         setUnavailList(resp.data.data)
-        
         setUnavailabilities(resp.data.data)
 
     }
@@ -65,7 +127,7 @@ const Unavailability = () => {
         let id_salon = salon?.id;
         let resp = await dashboard.getAllHairDressers(id_salon);
         let hair_dresser_data = resp.data.data
-        let temp_arr:any = [];
+        let temp_arr: any = [];
         setHairDresserList(hair_dresser_data)
         hair_dresser_data.forEach(item => {
             if (item && item.hasOwnProperty("name")) {
@@ -75,17 +137,45 @@ const Unavailability = () => {
         setDDHairDresserList(temp_arr)
         // console.log(temp_arr)
     }
+    const selectSlot = (slot: HairdresserSlot) => {
+        if (selectedSlots?.includes(slot.id)) {
+            setSelectedSlots(selectedSlots.filter((item) => item !== slot.id));
+        } else {
+            setSelectedSlots((prev) => [...prev, slot.id]);
+        }
+    };
+    const getTimeList = async () => {
+        let obj = hairDresserList.find(o => o.name == selectedHD);
+        let hd_id = obj.id;
+        const data = {
+            date: startDate
+        }
+        let resp = await salonApi.getSlots(hd_id, data);
+        console.log(resp.data)
+        setSlotList(resp.data.data)
+        let data_count = resp.data.data.length
+        setMainContainerClass(`h-[1200px + ${data_count * 100}]`);
+    }
 
     const initialDays: Date[] = [];
     const [days, setDays] = React.useState<Date[] | undefined>(initialDays);
 
     useEffect(() => {
         // console.log('Selected dates:', selectedDates);
-        let start = formatSingleDate([selectedDates[0]])
-        let end = formatSingleDate([selectedDates[selectedDates.length - 1]])
-        setStartDate(start)
-        setEndDate(end)
+
     }, [selectedDates]);
+
+    useEffect(() => {
+        console.log("TimeState :" + timeState)
+        if (timeState == true) 
+        {
+            getTimeList()
+        }
+    }, [timeState])
+
+    useEffect(() => {
+        console.log(selectedSlots)
+    },[selectedSlots])
 
     // FORMATAGE POUR L'AFFICHAGE DE LA PLAGE/DATE SELECTIONNEE
     const formatDateRange = (dates: Date[]) => {
@@ -113,10 +203,10 @@ const Unavailability = () => {
         const format = (date: Date) => new Intl.DateTimeFormat('en-EN', {
             year: 'numeric', month: 'numeric', day: 'numeric'
         }).format(date);
-        
+
         return `${format(dates[0])}`;  // Modification ici
     };
-    
+
 
     // ACTION SLORS DU CHOIX ENTRE ETABLISSEMENT ET Coiffeurs
     const handleEntityClick = (role: string) => {
@@ -134,19 +224,19 @@ const Unavailability = () => {
 
     //DATA UNAVALABILITY TO SAVE 
     const SalonColumns = ['Date de début', 'Date de fin', 'Raison', 'Actions'];
-    const HairdresserColumns = ['Start Date', 'End Date', 'Start Time', 'End Time', 'Reason', 'Actions'];
+    const HairdresserColumns = ['uv_id', 'Start Date', 'End Date', 'Start Time', 'End Time', 'Reason', 'Actions'];
     const [unavailabilities, setUnavailabilities] = useState<UnavailabilityData[]>([]); // Déclaration de la variable unavailabilities
-    
+
     // useEffect(() => {
     //     console.log(unavailabilities)
     // }, [unavailabilities])
     useEffect(() => {
-        setUnavailabilities(unavailabilities)
-    },[unavailabilities]);
+        console.log(unavailabilities)
+    }, [unavailabilities]);
     const columnsToDisplay = selectedEntity === "Coiffeurs" ? HairdresserColumns : SalonColumns;
 
     // Dans le rendu JSX, utilisez columnsToDisplay comme colonnes à afficher dans le composant CustomizedTable
-    <CustomizedTable columns={columnsToDisplay} data={unavailabilities} />
+    <CustomizedTable columns={columnsToDisplay} data={unavailabilities} cB={setUnavailList} />
 
     const [reason, setReason] = useState(""); // État local pour la raison
 
@@ -159,15 +249,28 @@ const Unavailability = () => {
                 end_date: endDate,
                 reason: reason, // Utilisez l'état local pour la raison
                 status: "En attente",
-                hdId : obj.id
+                hdId: obj.id,
+                slot_times : selectedSlots
             };
 
             // Ajoutez la nouvelle donnée d'indisponibilité à votre tableau de données
-            setUnavailabilities([...unavailabilities, newUnavailability]);
-            await salonApi.addHairDresserUnavailability(newUnavailability);
-
+            let resp = await salonApi.addHairDresserUnavailability(newUnavailability);
+            if (resp.data.status == 200) {
+                showSnackbar("success", "Hair Dresser Unavailability added.");
+            }
+            else {
+                showSnackbar("error", "Hair Dresser Unavailability process cannot be proceed.");
+            }
+            if(resp.data.data.length > 1){
+                setUnavailabilities(unavailabilities.concat(resp.data.data));
+            }
+            else {
+                setUnavailabilities([...unavailabilities, resp.data.data]);
+            }
             // Réinitialisez l'état des dates sélectionnées
+            setSelectedSlots([])
             setSelectedDates([]);
+            setTimeState(false);
 
             // Réinitialisez la raison dans le champ de saisie
             setReason(""); // Réinitialisez la raison en vidant l'état local
@@ -184,7 +287,6 @@ const Unavailability = () => {
 
         <div className={`w-[500px] mb-2 bg-white rounded-2xl py-4 shadow-lg overflow-hidden z-50 ${mainContainerClass}`}>
 
-
             {/* MODAL POUR AFFICHER LES PERIODES D'INDISPONIBILITE ENREGISTREES */}
             {
                 showModal && (
@@ -192,7 +294,7 @@ const Unavailability = () => {
                         close={() => setShowModal(false)}
                     >
                         {/* Contenu du Modal ici. Assurez-vous que c'est un seul élément JSX ou un fragment */}
-                        <CustomizedTable columns={columnsToDisplay} data={unavailabilities} />
+                        <CustomizedTable columns={columnsToDisplay} data={unavailabilities} cB={setUnavailabilities} />
                     </BaseModal>
                 )
             }
@@ -234,7 +336,7 @@ const Unavailability = () => {
                             dropdownItems={hairdresserList} // Assurez-vous d'avoir une liste de coiffeurs à afficher
                             selectId="" // Assurez-vous de définir l'ID approprié ici
                             menuName="Coiffeurs"
-                            fctToCallOnClick={(s : string) => setSelectedHD(s)}
+                            fctToCallOnClick={(s: string) => setSelectedHD(s)}
                         />
                     </div>
 
@@ -296,6 +398,35 @@ const Unavailability = () => {
                 />
             </div>
 
+            {timeState && (
+                <>
+                    {selectedHD ? (
+                        <div className="flex items-center justify-center gap-4 flex-wrap mt-4 w-full">
+                            {slotList.map((slot, index) => {
+                                return (
+                                    slot
+                                    && (
+                                        <div
+                                            key={index}
+                                            className={`flex items-center justify-center py-2 px-2 text-base font-medium border-2 rounded-lg w-72 border-gray-200 cursor-pointer
+                                            ${slot.status === 1 ? "bg-white text-black" : "bg-white text-black opacity-50"}
+                                            ${selectedSlots && selectedSlots.includes(slot.id) ? "!bg-[#FFE7DF] !text-[#FF7143] !opacity-100" : ""}
+                                            `}
+                                            onClick={() => selectSlot(slot)}
+                                        >
+                                            {/* Horaires du créneau */}
+                                            {slot.start} - {slot.end}
+                                        </div>
+                                    )
+                                );
+                            })}
+                        </div>
+                    ) : (
+                        /* Message s'affichant en l'absence de coiffeur sélectionné */
+                        <></>
+                    )}
+                </>
+            )}
 
             {/* BOUTON POUR AFFICHER LES PÉRIODES D'INDISPONIBILITÉ */}
             <div className="flex justify-center items-center mt-10 mb-4">
