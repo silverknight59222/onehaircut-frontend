@@ -33,6 +33,11 @@ interface FeedbackParam{
   feedback_type: string,
 }
 
+interface SetChatReadParam{
+  client_id: number,
+  professional_id: number,
+}
+
 const dashboard = {
   getHairSalon: async (id: number) => {
     return await request.get<any>(`/hair_salon/${id}`);
@@ -160,6 +165,9 @@ const dashboard = {
   },
   getChat: async (clientId: number, professionalId:number) => {
     return await request.get(`/fetch_chat/${clientId}/${professionalId}`);
+  },
+  setChatRead: async (data:SetChatReadParam) => {
+    return await request.post(`/set_chat_read`, data);
   },
   sendMessage: async ( param: MessageParam) => {
     return await request.post<any>(`send_message`, param);

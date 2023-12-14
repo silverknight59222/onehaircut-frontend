@@ -36,7 +36,8 @@ export type SalonDetails = {
 	base_price: number,
 	service_price:number,
 	final_price: number,
-	openTimes: any[]
+	openTimes: any[],
+	chat_status: number,
 };
 
 export type FileDetails = {
@@ -135,6 +136,7 @@ export type Chat={
 	message: string,
 	by: string,
 	created_at: string,
+	is_read: number
 }
 
 interface Client{
@@ -145,7 +147,8 @@ interface Client{
 export type ClientChat={
 	id?: number,
 	client_id: number,
-	client: Client
+	client: Client,
+	is_read: number,
 }
 
 export type Subscription={
