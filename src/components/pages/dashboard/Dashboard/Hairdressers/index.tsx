@@ -61,6 +61,7 @@ const Hairdressers = () => {
   const [profileImageBinary, setProfileImageBinary] = useState<string | File | null>("");
   const [isLoading, setIsLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [hasHairDresser, setHasHairDresser] = useState(false);
   const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
   const [error, setError] = useState({
     name: "",
@@ -70,7 +71,6 @@ const Hairdressers = () => {
     text: "",
   });
   let [errorPop, setErrorPop] = useState("")
-
 
   const RoleList = [
     "Admin",
@@ -297,6 +297,9 @@ const Hairdressers = () => {
         .then((resp) => {
           if (resp.data.data.length) {
             setHairDressers(resp.data.data);
+            if(resp.data.data.length > 0){
+              setHasHairDresser(true)
+            }
           }
           setIsLoading(false);
         });
@@ -372,10 +375,16 @@ const Hairdressers = () => {
       setAvatarIndex(avatars.man[0].id);
     }
   }, [showAvatar]);
+
   useEffect(() => {
     getAllHairDresser();
     getAllAvatars();
   }, []);
+
+  // useEffect(() => {
+  //   setHasHairDresser(hasHairDresser)
+  //   console.log(hasHairDresser)
+  // },[hasHairDresser])
 
 
   // To open the modal when clic on EDIT 
@@ -510,19 +519,21 @@ const Hairdressers = () => {
         <div className="h-full w-full xl:w-2/5 overflow-auto flex flex-col items-center gap-8 bg-lightGrey rounded-3xl p-4 md:px-12 md:pt-12 md:pb-0 opacity-90 shadow-sm shadow-stone-300">
 
           {/* TODO MESSAGE NOTIFICATION WHEN NO HAIRDRESSER SET */}
-          <div>
-            <style>
-              {pulseAnimation}
-            </style>
-            <div
-              className={`${Theme_A.indicators.counterIndicator_C}`}
-              style={{
-                animation: 'pulse 3s infinite',
-              }}
-            >
-              Vous devez ajouter un ou plusieurs coiffeurs pour être visible par les clients
+          {!hasHairDresser && (
+            <div>
+              <style>
+                {pulseAnimation}
+              </style>
+              <div
+                className={`${Theme_A.indicators.counterIndicator_C}`}
+                style={{
+                  animation: 'pulse 3s infinite',
+                }}
+              >
+                Vous devez ajouter un ou plusieurs coiffeurs pour être visible par les clients
+              </div>
             </div>
-          </div>
+          )}
 
 
           {/* ADDING  */}
