@@ -501,6 +501,10 @@ const Hairdressers = () => {
           <LogoCircleFixLeft />
         </div>
         <div className="h-full w-full xl:w-2/5 overflow-auto flex flex-col items-center gap-8 bg-lightGrey rounded-3xl p-4 md:px-12 md:pt-12 md:pb-0 opacity-90 shadow-sm shadow-stone-300">
+          <div className={`${Theme_A.indicators.counterIndicator_C}`}>
+            Vous devez ajouter un ou plusieurs coiffeurs pour être visible par les clients
+          </div>
+          {/* ADDING  */}
           <div className={`${Theme_A.textFont.headerH2} underline`}>
             Ajouter un nouveau coiffeur
           </div>

@@ -117,8 +117,10 @@ const Topbar = ({ isDashboard, tabHandler, SidebarHandler }: TopbarType) => {
 						}
 						//return user.permissions.indexOf(item.permission) != -1
 					}).map((item, index) => {
+						// Condition pour vérifier si l'item actuel est l'un des trois spécifiés
+						const isNotificationNeeded = ["Coiffeurs", "Images Salon", "Coiffures"].includes(item.title);
 						return (
-							<div key={index} onClick={() => onTabClick(item.title, index)}>
+							<div key={index} onClick={() => onTabClick(item.title, index)} className="relative">
 								<p
 									className={`${Theme_A.Bars.proTopBar.standardShape} ${selectedItem === index
 										? `${Theme_A.Bars.proTopBar.activatedColor}`
@@ -127,6 +129,14 @@ const Topbar = ({ isDashboard, tabHandler, SidebarHandler }: TopbarType) => {
 								>
 									{item.title}
 								</p>
+								{/* CONDITION TO ADD THE CIRCLE */}
+								{/* TODO LINK WITH BACKEND DATE - IF NO HAIRDRESSER, NO PICTURES, NO HAIRCUTS */}
+								{isNotificationNeeded && (
+									<span className="absolute top-1 right-1  transform translate-x-1/2 -translate-y-1/2 h-3 w-3">
+										<span className="absolute top-0 right-0  animate-ping inline-flex h-full w-full rounded-full bg-stone-800 opacity-75"></span>
+										<span className="absolute top-0 right-0  inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+									</span>
+								)}
 							</div>
 						);
 					})}

@@ -11,6 +11,7 @@ export const ColorsThemeA = {
   OhcGradient_C: "bg-gradient-to-r from-rose-500 via-orange-400 to-yellow-300",
   OhcGradient_D: "bg-gradient-to-r from-orange-500 via-orange-400 to-orange-400",
   OhcGradient_E: "bg-gradient-to-r from-stone-200 via-stone-100 to-stone-300",
+  OhcGradient_F: "bg-gradient-to-r from-stone-800 via-stone-800 to-stone-700",
   ohcVerticalGradient_A: `bg-gradient-to-b from-rose-500 via-orange-600 to-orange-500`,
   ohcVerticalGradient_B: `bg-gradient-to-b from-pink-600 via-orange-600 to-orange-500`,
   ohcBigVerticalGradient_A: `bg-gradient-to-br from-rose-600 via-orange-600 to-yellow-400 opacity-90`,
@@ -112,7 +113,8 @@ export const Theme_A = {
   },
   indicators: {
     counterIndicator: `text-sm py-1 px-[12px] ml-2 rounded-full text-white ${ColorsThemeA.ohcVerticalGradient_A}`,
-    counterIndicator_B: `text-sm py-1 px-[12px] ml-2 rounded-full text-white ${ColorsThemeA.OhcGradient_B}`
+    counterIndicator_B: `text-sm py-1 px-[12px] ml-2 rounded-full text-white ${ColorsThemeA.OhcGradient_B}`,
+    counterIndicator_C: `text-sm py-1 px-[12px] ml-2 rounded-lg text-white ${ColorsThemeA.OhcGradient_F}`
   },
   servicesCards: {
     modifyButton: `flex cursor-pointer my-2 py-1 px-2 rounded-md w-7 h-6 bg-gradient-to-r ${ColorsThemeA.OhcGradient_A} shadow-[0px_14px_24px_0px_rgba(255,125,60,0.25)]`,
