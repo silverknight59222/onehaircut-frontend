@@ -150,6 +150,7 @@ const Login = () => {
 								label="Adresse email"
 								value={userInfo.email}
 								onChange={(e) => setUserMail(e.target.value)}
+								onEnterPress={onLogin}
 								error={error.email}
 								isEmail={true} // Activez la vérification d'e-mail en utilisant isEmail={true}
 							/>
@@ -165,6 +166,7 @@ const Login = () => {
 										type={showPassword ? "text" : "password"}
 										value={userInfo.password}
 										onChange={(e) => setUserPassword(e.target.value)}
+										onEnterPress={onLogin}
 										error={error.password}
 									/>
 								</div>
