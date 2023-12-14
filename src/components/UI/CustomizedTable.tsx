@@ -10,7 +10,6 @@ import TableCell, { TableCellProps, tableCellClasses } from '@mui/material/Table
 import { Button } from '@mui/material';
 import { salonApi } from '@/api/salonSide';
 import useSnackbar from '@/hooks/useSnackbar';
-const showSnackbar = useSnackbar();
 
 const StyledTableCell = styled(TableCell)<TableCellProps>(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -39,6 +38,7 @@ interface CustomizedTableProps {
 
 const CustomizedTable: React.FC<CustomizedTableProps> = ({ columns, data, cB}) => {
   const [newData, setData] = useState(data);
+  const showSnackbar = useSnackbar();
 
   const deleteData = (rowToDelete) => {
     // Implement your logic to delete the row from the data

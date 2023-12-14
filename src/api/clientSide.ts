@@ -19,8 +19,13 @@ interface paymentIntent {
     amount: number,
     token: string
 }
-const client={
-    getSalonDetail: async (id: string,hairId:string) => {
+
+export interface DeactivateAccountParams {
+    user_id: string,
+}
+
+const client = {
+    getSalonDetail: async (id: string, hairId: string) => {
         return await request.get(`/hair_salon_by_id/${id}/${hairId}`);
     },
     getSlots: async (id: number, params: SlotParam) => {
@@ -75,26 +80,29 @@ const client={
         return await request.post(`/stripe/payment`, data)
     }
 }
-const user_api =  {
+const user_api = {
     getUsers: async () => {
         return await request.get(`/user/list`);
     },
-    saveUsers: async (data:any) => {
+    saveUsers: async (data: any) => {
         return await request.post(`/user/store`, data);
     },
-    deleteUser: async (data:any) => {
+    deleteUser: async (data: any) => {
         return await request.delete(`/user/delete/${data.id}`);
+    },
+    deactivateUser: async (data: DeactivateAccountParams) => {
+        return await request.post(`/user/deactivate`, data);
     },
     getAllPermission: async () => {
         return await request.get(`/permissions`);
     },
-    getPermission: async (role:any) => {
+    getPermission: async (role: any) => {
         return await request.get(`/permissions/${role}`);
     },
-    updatePermission: async (data:any) => {
+    updatePermission: async (data: any) => {
         return await request.post(`/roles/assign-permissions`, data);
     },
-    updateSaloonInformation: async (data:any) => {
+    updateSaloonInformation: async (data: any) => {
         return await request.post(`/user-info`, data);
     },
     getSaloonInformation: async () => {

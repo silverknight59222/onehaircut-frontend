@@ -394,114 +394,118 @@ const BookSalon = () => {
       </div>
 
 
+      {((locationType === 'domicile' && can_go_home === true) || (locationType === 'salon')) && (
+        <>
+          {/* PARTIE RESERVATION DE SLOT */}
+          <div className="flex justify-center z-50">
+            <div className=" max-w-[800px] mx-2 bg-white border-2 border-[#c3c3c3] py-2 rounded-[22px] mb-16 shadow-sm shadow-stone-600 mt-8">
 
-      {/* PARTIE RESERVATION DE SLOT */}
-      <div className="flex justify-center z-50">
-        <div className=" max-w-[800px] mx-2 bg-white border-2 border-[#c3c3c3] py-2 rounded-[22px] mb-16 shadow-sm shadow-stone-600 mt-8">
-
-          {/* TITRE */}
-          <div className="flex justify-center">
-            <p className="text-xl text-black font-semibold lg:text-center mb-2 ">Sélectionnez une date</p>
-          </div>
-
-          {/* INFO ABOUT HAIRDRESSER SELECTION */}
-          <p className="text-sm text-stone-400 italic mb-8 text-center">
-            Les disponibilités dépendent du coiffeur sélectionné
-          </p>
-
-
-          <div className="flex flex-col sm:flex-row items-center justify-evenly px-1 sm:px-10">
-            {/* DATEPICKER */}
-            <div className="relative">
-              <div className="cursor-pointer hover:scale-110 transition duration-300 mr-4" onClick={() => setShowCalender(!showCalender)}>
-                <CalenderIcon />
+              {/* TITRE */}
+              <div className="flex justify-center">
+                <p className="text-xl text-black font-semibold lg:text-center mb-2 ">Sélectionnez une date</p>
               </div>
-              {showCalender &&
-                <div className={`shadow-lg`}> {/* Ajoutez ici la classe pour l'ombre */}
-                  <DatePicker
-                    startDate={new Date()}
-                    close={() => setShowCalender(false)}
-                    onSelectedDate={onSelectedDate}
-                  // Ajoutez ici les props nécessaires pour personnaliser le style des dates sélectionnées
-                  />
-                </div>
-              }
-            </div>
 
-
-            {/* NAVIGATION DE LA DATE */}
-            <div className="flex items-center">
-              {/* Flèche Gauche */}
-              {selectedDate && new Date(selectedDate) > new Date() &&
-                <button
-                  className="cursor-pointer hover:scale-110 transition duration-300 mr-4"
-                  onClick={() => handleChangeDate(-1)}>
-                  <LeftArrowIcon />
-                </button>
-              }
-
-              {/* AFFICHAGE DE LA DATE */}
-              <p className={`text-[#ffffff] text-lg font-medium ${ColorsThemeA.OhcGradient_A} shadow-sm shadow-stone-600 rounded-lg px-6 py-3`}>
-                {selectedDate ? new Intl.DateTimeFormat('fr-FR', {
-                  weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
-                }).format(new Date(selectedDate)) : "Sélectionnez une date"}
+              {/* INFO ABOUT HAIRDRESSER SELECTION */}
+              <p className="text-sm text-stone-400 italic mb-8 text-center">
+                Les disponibilités dépendent du coiffeur sélectionné
               </p>
 
-              {/* Flèche Droite */}
-              <button
-                className="cursor-pointer hover:scale-110 transition duration-300 ml-4"
-                onClick={() => handleChangeDate(1)}>
-                <RightArrowIcon />
-              </button>
-            </div>
-          </div>
 
-
-
-          {/* SLOTS */}
-          <div className="flex items-center justify-center mt-6 mb-4 px-4">
-            {slots.length ?
-              <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-6 gap-x-6 gap-y-7">
-                {slots.map((slot: any, index) => {
-                  return (
-                    <div
-                      key={index}
-                      onClick={() => { slot.is_booked ? "" : onSelectSlot(slot) }}
-                      className={`w-24 h-14 flex items-center justify-center text-xl font-semibold border rounded-2xl  ${slot.is_booked ? "curson-not-allowed" : "cursor-pointer"}  text-black ${selectedSlot.some((item: any) => item.id === slot.id)
-                        ? "bg-[#fbd3c6] text-[#312c2a] "
-                        : "border-[#b8b8b8] "
-                        } ${slot.is_booked && "bg-[#f1f1f1] shadow-inner shadow-stone-600 text-gray-400 cursor-not-allowed"}`}
-                    >
-                      {slot.start}
+              <div className="flex flex-col sm:flex-row items-center justify-evenly px-1 sm:px-10">
+                {/* DATEPICKER */}
+                <div className="relative">
+                  <div className="cursor-pointer hover:scale-110 transition duration-300 mr-4" onClick={() => setShowCalender(!showCalender)}>
+                    <CalenderIcon />
+                  </div>
+                  {showCalender &&
+                    <div className={`shadow-lg`}> {/* Ajoutez ici la classe pour l'ombre */}
+                      <DatePicker
+                        startDate={new Date()}
+                        close={() => setShowCalender(false)}
+                        onSelectedDate={onSelectedDate}
+                      // Ajoutez ici les props nécessaires pour personnaliser le style des dates sélectionnées
+                      />
                     </div>
-                  );
-                })}
+                  }
+                </div>
 
+
+                {/* NAVIGATION DE LA DATE */}
+                <div className="flex items-center">
+                  {/* Flèche Gauche */}
+                  {selectedDate && new Date(selectedDate) > new Date() &&
+                    <button
+                      className="cursor-pointer hover:scale-110 transition duration-300 mr-4"
+                      onClick={() => handleChangeDate(-1)}>
+                      <LeftArrowIcon />
+                    </button>
+                  }
+
+                  {/* AFFICHAGE DE LA DATE */}
+                  <p className={`text-[#ffffff] text-lg font-medium ${ColorsThemeA.OhcGradient_A} shadow-sm shadow-stone-600 rounded-lg px-6 py-3`}>
+                    {selectedDate ? new Intl.DateTimeFormat('fr-FR', {
+                      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'
+                    }).format(new Date(selectedDate)) : "Sélectionnez une date"}
+                  </p>
+
+                  {/* Flèche Droite */}
+                  <button
+                    className="cursor-pointer hover:scale-110 transition duration-300 ml-4"
+                    onClick={() => handleChangeDate(1)}>
+                    <RightArrowIcon />
+                  </button>
+                </div>
               </div>
-              :
-              <p className="text-[#A0A0A0] text-xl font-medium mb-8">Aucun créneau disponible pour cette date</p>
-            }
-          </div>
 
 
-          {/* Bouton de réservation */}
-          <div className="flex justify-center mt-6 mb-4 ">
-            <button
-              disabled={!selectedSlot.length}
-              onClick={onContinue}
-              className={`w-72 h-14 rounded-xl text-xl font-semibold text-white ${selectedSlot.length ? Theme_A.button.medBlackColoredButton : 'bg-[#bcbcbc] cursor-not-allowed'}`}
-            >
-              Réservez ce créneau
-            </button>
-          </div>
 
-        </div>
+              {/* SLOTS */}
+              <div className="flex items-center justify-center mt-6 mb-4 px-4">
+                {slots.length ?
+                  <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-6 gap-x-6 gap-y-7">
+                    {slots.map((slot: any, index) => {
+                      return (
+                        <div
+                          key={index}
+                          onClick={() => { slot.is_booked ? "" : onSelectSlot(slot) }}
+                          className={`w-24 h-14 flex items-center justify-center text-xl font-semibold border rounded-2xl  ${slot.is_booked ? "curson-not-allowed" : "cursor-pointer"}  text-black ${selectedSlot.some((item: any) => item.id === slot.id)
+                            ? "bg-[#fbd3c6] text-[#312c2a] "
+                            : "border-[#b8b8b8] "
+                            } ${slot.is_booked && "bg-[#f1f1f1] shadow-inner shadow-stone-600 text-gray-400 cursor-not-allowed"}`}
+                        >
+                          {slot.start}
+                        </div>
+                      );
+                    })}
+
+                  </div>
+                  :
+                  <p className="text-[#A0A0A0] text-xl font-medium mb-8">Aucun créneau disponible pour cette date</p>
+                }
+              </div>
 
 
-        <LogoCircleFixRight />
-        <Footer />
+              {/* Bouton de réservation */}
+              <div className="flex justify-center mt-6 mb-4 ">
+                <button
+                  disabled={!selectedSlot.length}
+                  onClick={onContinue}
+                  className={`w-72 h-14 rounded-xl text-xl font-semibold text-white ${selectedSlot.length ? Theme_A.button.medBlackColoredButton : 'bg-[#bcbcbc] cursor-not-allowed'}`}
+                >
+                  Réservez ce créneau
+                </button>
+              </div>
 
-      </div >
+            </div>
+
+
+            <LogoCircleFixRight />
+            <Footer />
+
+          </div >
+        </>
+      )
+      }
     </div>
   );
 };

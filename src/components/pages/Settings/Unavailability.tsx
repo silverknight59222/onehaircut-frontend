@@ -11,7 +11,6 @@ import { getLocalStorage } from "@/api/storage";
 import { salonApi } from "@/api/salonSide";
 import useSnackbar from '@/hooks/useSnackbar';
 import OpenningHours from "./OpenningHours";
-const showSnackbar = useSnackbar();
 
 // Définissez un type ou une interface pour les données d'indisponibilité
 interface UnavailabilityData {
@@ -64,6 +63,7 @@ const defaultHairDresser = {
 };
 
 const Unavailability = () => {
+    const showSnackbar = useSnackbar();
     const salonData = getLocalStorage('hair_salon')
 
     const salon = salonData ? JSON.parse(salonData) : null
@@ -167,15 +167,14 @@ const Unavailability = () => {
 
     useEffect(() => {
         console.log("TimeState :" + timeState)
-        if (timeState == true) 
-        {
+        if (timeState == true) {
             getTimeList()
         }
     }, [timeState])
 
     useEffect(() => {
         console.log(selectedSlots)
-    },[selectedSlots])
+    }, [selectedSlots])
 
     // FORMATAGE POUR L'AFFICHAGE DE LA PLAGE/DATE SELECTIONNEE
     const formatDateRange = (dates: Date[]) => {
@@ -250,7 +249,7 @@ const Unavailability = () => {
                 reason: reason, // Utilisez l'état local pour la raison
                 status: "En attente",
                 hdId: obj.id,
-                slot_times : selectedSlots
+                slot_times: selectedSlots
             };
 
             // Ajoutez la nouvelle donnée d'indisponibilité à votre tableau de données
@@ -261,7 +260,7 @@ const Unavailability = () => {
             else {
                 showSnackbar("error", "Hair Dresser Unavailability process cannot be proceed.");
             }
-            if(resp.data.data.length > 1){
+            if (resp.data.data.length > 1) {
                 setUnavailabilities(unavailabilities.concat(resp.data.data));
             }
             else {
