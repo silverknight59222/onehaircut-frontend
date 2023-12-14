@@ -325,19 +325,21 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
         <div className="bg-stone-50 shadow-md border-2 border-stone-200 rounded-3xl p-4 md:sticky md:top-0 h-max mb-12">
 
             {/* TODO MESSAGO NOTIFICATION WHEN NO HAIRDRESSER SET */}
-            <div className="mb-4">
-                <style>
-                    {pulseAnimation}
-                </style>
-                <div
-                    className={`text-center ${Theme_A.indicators.counterIndicator_C}`}
-                    style={{
-                        animation: 'pulse 3s infinite',
-                    }}
-                >
-                    Vous devez ajouter une ou plusieurs coiffures pour être visible par les clients
+            {selectedHaircutsMapping.length > 0 && (
+                <div className="mb-4">
+                    <style>
+                        {pulseAnimation}
+                    </style>
+                    <div
+                        className={`text-center ${Theme_A.indicators.counterIndicator_C}`}
+                        style={{
+                            animation: 'pulse 3s infinite',
+                        }}
+                    >
+                        Vous devez ajouter une ou plusieurs coiffures pour être visible par les clients
+                    </div>
                 </div>
-            </div>
+            )}
 
 
             <div className="flex items-center justify-center gap-2">
