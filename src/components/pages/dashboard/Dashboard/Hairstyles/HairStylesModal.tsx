@@ -305,10 +305,37 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activeMenu])
 
+    const pulseAnimation = `
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 0.7; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+    `;
+
+
     // This component will re-render only if the `data` prop changes
     return (
         <div className="bg-stone-50 shadow-md border-2 border-stone-200 rounded-3xl p-4 md:sticky md:top-0 h-max mb-12">
+
+            {/* TODO MESSAGO NOTIFICATION WHEN NO HAIRDRESSER SET */}
+            <div className="mb-4">
+                <style>
+                    {pulseAnimation}
+                </style>
+                <div
+                    className={`text-center ${Theme_A.indicators.counterIndicator_C}`}
+                    style={{
+                        animation: 'pulse 3s infinite',
+                    }}
+                >
+                    Vous devez ajouter une ou plusieurs coiffures pour être visible par les clients
+                </div>
+            </div>
+
+
             <div className="flex items-center justify-center gap-2">
+
                 <h2 className={`${Theme_A.textFont.headerH3}`}>
                     Configurations de vos prix
                 </h2>
