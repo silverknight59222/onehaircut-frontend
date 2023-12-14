@@ -305,6 +305,12 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activeMenu])
 
+
+    // TODO REMOVE HAIRCUT FUNCTION
+    const onRemove = async () => {
+
+    };
+
     const pulseAnimation = `
     @keyframes pulse {
       0% { transform: scale(1); opacity: 1; }
@@ -569,21 +575,32 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
                     </div>
 
                 ) : (
-                    <div className="flex items-center justify-center gap-4 mt-4 w-full">
-                        <button
-                            className={`${Theme_A.button.medWhiteColoredButton}`}
-                            onClick={() => {
-                                setForm(defaultFormDetails);
-                                setSelectedHaircutsMapping([]);
-                            }}>
-                            Annuler
-                        </button>
-                        <button
-                            onClick={updateSalonHaircuts}
-                            className={`${Theme_A.button.mediumGradientButton}`}>
-                            Mettre &agrave; jour
-                        </button>
+                    <div >
+                        <div className="flex items-center justify-center gap-4 mt-4 w-full">
+                            <button
+                                className={`${Theme_A.button.medWhiteColoredButton}`}
+                                onClick={() => {
+                                    setForm(defaultFormDetails);
+                                    setSelectedHaircutsMapping([]);
+                                }}>
+                                Annuler
+                            </button>
+                            {/* TODO REMOVE NOT WANTED HAIRCUTS */}
+                            <button
+                                onClick={onRemove}
+                                className={`${Theme_A.button.medBlackColoredButton}`}>
+                                Retirer
+                            </button>
+                        </div>
+                        <div className='flex p-2 items-center justify-center'>
+                            <button
+                                onClick={updateSalonHaircuts}
+                                className={`${Theme_A.button.mediumGradientButton}`}>
+                                Mettre à jour
+                            </button>
+                        </div>
                     </div>
+
                 )}
                 {error.select_haircut && (
                     <p className={`${Theme_A.checkers.errorText}`}>
