@@ -83,9 +83,9 @@ const SalonChoice = () => {
     //     googleMapsApiKey: 'AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E',
     //     libraries: ['places'],
     // })
-    const filteredCityHandler = () => {
+    const filteredCityHandler = async () => {
         //const filteredSalons = salons
-        const filteredSalons = salons.filter((salon) => {
+        let filteredSalonsFunc = salons.filter((salon) => {
             const cityNameMatches = citySearch
                 ? salon.address.city.toLowerCase().includes(citySearch.toLowerCase())
                 : true; // If citySearch is empty, consider it as a match
@@ -107,8 +107,17 @@ const SalonChoice = () => {
                 salonInRange
             );
         });
-        setFilteredSalons(filteredSalons);
+        setFilteredSalons(filteredSalonsFunc);
     };
+
+    // useEffect(() => {
+    //     console.log(filteredSalons)
+    //     setFilteredSalons(filteredSalons)
+    // }, [filteredSalons])
+
+    function timeout(delay: number) {
+        return new Promise( res => setTimeout(res, delay) );
+    }
 
     const getCoordinates = (salons) => {
         //console.log('filtered salons', filteredSalons)
@@ -232,11 +241,31 @@ const SalonChoice = () => {
     //         getSalonsWishlist()
     //     }
     // }, [salons])
-
-    useEffect(() => {
+    const doFilter = async () => {
+        // await timeout(100)
+        // timeout(500)
+        console.log('filtering')
         filteredCityHandler()
         getCoordinates(filteredSalons)
-    }, [citySearch, nameSearch, filteredMobile, filtereRange, filtereRange])
+        // const delayTime = 1000;
+        // const timeoutId = setTimeout(delayedFunction, delayTime);
+        // return () => clearTimeout(timeoutId);
+    }
+    // useEffect(() => {
+    //     const delay = setTimeout(()=>{
+    //         doFilter()
+    //     },1000)
+    //     return () => clearTimeout(delay)
+    // }, [filtereRange])
+
+    useEffect(() => {
+        // const delay = setTimeout(()=>{
+        //     // doFilter()
+        // },1000)
+        filteredCityHandler()
+        getCoordinates(filteredSalons)
+        // return () => clearTimeout(delay)
+    }, [citySearch, nameSearch, filteredMobile,filtereRange])
 
     if (!isLoaded) {
         return loadingView()
@@ -392,25 +421,27 @@ const SalonChoice = () => {
                                             />
                                         )}
 
-                                        {positions.map((position, index) => (
-
+                                        {filteredSalons.length > 0 && positions.map((position, index) => (
                                             <React.Fragment key={index}>
+
                                                 <MarkerF
                                                     key={index}
                                                     // lat={positions[index].lat}
                                                     // lng={positions[index].lng}
                                                     position={position} // Utiliser la position du salon
-                                                    onClick={() => setSelectedSalon(filteredSalons[index])}
-                                                    options={{
-                                                        icon: {
-                                                            url: filteredSalons[index].id === selectedSalon.id ? MapIconRedUrl : mapIconUrl,
-                                                            scaledSize: filteredSalons[index].id === selectedSalon.id ? new window.google.maps.Size(70, 90) : new window.google.maps.Size(60, 80),
-                                                            origin: new window.google.maps.Point(0, -10),
-                                                            anchor: filteredSalons[index].id === selectedSalon.id ? new window.google.maps.Point(25, 37) : new window.google.maps.Point(20, 35),
+                                                    onClick={() => setSelectedSalon(filteredSalons[index] != null ? filteredSalons[index] : {"name" : "Null", "id" : 0})}
+                                                    options={
+                                                        {
+                                                            icon: {
+                                                                url: filteredSalons[index]?.id === selectedSalon.id ? MapIconRedUrl : mapIconUrl,
+                                                                scaledSize: filteredSalons[index]?.id === selectedSalon.id ? new window.google.maps.Size(70, 90) : new window.google.maps.Size(60, 80),
+                                                                origin: new window.google.maps.Point(0, -10),
+                                                                anchor: filteredSalons[index]?.id === selectedSalon.id ? new window.google.maps.Point(25, 37) : new window.google.maps.Point(20, 35),
 
+                                                            }
                                                         }
-                                                    }}
-                                                    zIndex={filteredSalons[index].id === selectedSalon.id ? 4 : 3}
+                                                    }
+                                                    zIndex={filteredSalons[index]?.id === selectedSalon.id ? 4 : 3}
 
                                                 />
                                                 <OverlayViewF
@@ -420,13 +451,13 @@ const SalonChoice = () => {
                                                     getPixelPositionOffset={(width, height) => ({ x: width - 20, y: height - 15 })}
                                                 >
                                                     <div style={{
-                                                        color: filteredSalons[index].id === selectedSalon.id ? "#FFF" : "#000",
+                                                        color: filteredSalons[index]?.id === selectedSalon.id ? "#FFF" : "#000",
                                                         whiteSpace: 'nowrap',
-                                                        fontSize: filteredSalons[index].id === selectedSalon.id ? '12px' : "12px",
+                                                        fontSize: filteredSalons[index]?.id === selectedSalon.id ? '12px' : "12px",
                                                         fontWeight: 'bold',
-                                                        zIndex: filteredSalons[index].id === selectedSalon.id ? 2 : 1,
+                                                        zIndex: filteredSalons[index]?.id === selectedSalon.id ? 2 : 1,
                                                     }}>
-                                                        {`${filteredSalons[index].final_price}€`}
+                                                        {`${filteredSalons[index]?.final_price}€`}
 
                                                     </div>
                                                 </OverlayViewF>
@@ -444,7 +475,9 @@ const SalonChoice = () => {
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6 pb-10">
 
                                 {/* VIGNETTES (ITERATIONS) */}
-                                {filteredSalons.length > 0 && filteredSalons.map((fsalon, index) => (
+                                {filteredSalons.length > 0 && filteredSalons.map((fsalon, index) => {
+                                    console.log('fsalon',fsalon)
+                                    return (
                                     <div
                                         key={index}
                                         onClick={() => setSelectedSalon(fsalon)}
@@ -487,7 +520,7 @@ const SalonChoice = () => {
                                             <div className="flex items-start justify-between text-black text-lg font-semibold px-3 pt-2 ">
                                                 <p className='w-36'>{fsalon.name}</p>
                                                 {/* TODO PRICE SHOULD BE IN EUROS HERE */}
-                                                <p className={`p-2 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white`}> {fsalon.final_price}€</p>
+                                                <p className={`p-2 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white`}>{fsalon.final_price}</p>
                                             </div>
 
                                             {/* Évaluation et nombre d'avis */}
@@ -504,7 +537,8 @@ const SalonChoice = () => {
                                             </div>
                                         </div>
                                     </div>
-                                ))}
+                                )
+                                 })}
 
 
 

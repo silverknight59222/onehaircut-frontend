@@ -20,6 +20,7 @@ import Slider from '@material-ui/core/Slider';
 import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import CustomSlider from "@/components/UI/OHC_Slider";
 import ComponentTheme from "@/components/UI/ComponentTheme";
+import { Button } from "@material-ui/core";
 
 
 interface Navbar {
@@ -55,6 +56,8 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
   const [ethnicityFilters, setEthnicityFilters] = useState<string[]>([]);
   const [lengthFilters, setLengthFilters] = useState<string[]>([]);
   const [mobileFilters, setMobileFilters] = useState<string>("");
+
+  const [tmpRange, setTmpRange] = useState<number[]>([10, 100]);
   const [rangeFilters, setRangeFilter] = useState<number[]>([10, 100]);
 
   const router = useRouter()
@@ -140,7 +143,6 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
       value: "no"
     }
   ];
-
 
 
   const rangeSelector = (event: any, newValue: any) => {
