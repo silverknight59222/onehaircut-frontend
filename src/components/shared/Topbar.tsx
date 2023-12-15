@@ -88,6 +88,9 @@ const Topbar = ({ isDashboard, tabHandler, SidebarHandler }: TopbarType) => {
 				});
 		}
 	};
+	useEffect(() => {
+		setLocalStorage("check_status",JSON.stringify(checkTopbar))
+	},[checkTopbar]);
 
 	return (
 		<div>

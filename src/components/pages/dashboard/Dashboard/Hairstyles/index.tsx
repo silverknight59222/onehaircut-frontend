@@ -42,7 +42,7 @@ const Hairstyles = () => {
     <div>
       <HairStyleListHeader onListCountShow={listCountShow} selectAllEvent={selectAll} params={params} onFilterSelect={onFilterSelect} setActiveMenu={setActiveMenu} activeMenu={activeMenu} ></HairStyleListHeader>
       <div className="flex flex-col md:flex-row gap-8">
-        <HairStylesModal params={params} reloadListEvent={reloadList} onResetStyleForm={resetStyleForm} hairStyleSelectEvent={hairStyleSelectEvent} activeMenu={activeMenu}></HairStylesModal>
+        <HairStylesModal hairStyleSelectEvent={hairStyleSelectEvent} params={params} reloadListEvent={reloadList} onResetStyleForm={resetStyleForm} activeMenu={activeMenu}></HairStylesModal>
         <HairStyleList listCountShowEvent={listCountShow}  selectAllListener={selectAll} onReloadListener={reloadList} resetStyleForm={resetStyleForm} onFilterSelect={onFilterSelect} hairStyleSelectEvent={hairStyleSelectEvent} activeMenu={activeMenu}></HairStyleList>
       </div>
       <Footer />

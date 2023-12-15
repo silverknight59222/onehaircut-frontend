@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useDebugValue, useEffect, useState } from 'react';
 import { Theme_A } from "@/components/utilis/Themes";
 import Image from "next/image";
 import { getLocalStorage } from "@/api/storage";
@@ -70,6 +70,7 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
 
     const [form, setForm] = useState<HaircutDetails>(defaultFormDetails);
     const [selectedHaircut, setSelectedHaircut] = useState<Haircut>();
+    const [noHaircut, setNoHaircut] = useState(true)
 
     const [selectedHaircutsMapping, setSelectedHaircutsMapping] = useState<Haircut[]>([]);
 
@@ -291,6 +292,7 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
                 setSelectedHaircutsMapping([]);
                 setForm(defaultFormDetails);
                 reloadListEvent.on()
+                setNoHaircut(false)
                 showSnackbar("success", "Haircuts added successfully");
                 // TODO refresh list
             })
@@ -305,6 +307,19 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activeMenu])
 
+    useEffect(() => {
+        let haircuts_registered = getLocalStorage("check_status")
+        checkHaircut(haircuts_registered)
+    },[])
+
+    const checkHaircut = (haircut_registered) => {
+        if(JSON.parse(haircut_registered).haircut == 0){
+            setNoHaircut(true)
+        }
+        else {
+            setNoHaircut(false)
+        }
+    }
 
     // TODO REMOVE HAIRCUT FUNCTION
     const onRemove = async () => {
@@ -325,7 +340,7 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
         <div className="bg-stone-50 shadow-md border-2 border-stone-200 rounded-3xl p-4 md:sticky md:top-0 h-max mb-12">
 
             {/* TODO MESSAGO NOTIFICATION WHEN NO HAIRDRESSER SET */}
-            {selectedHaircutsMapping.length > 0 && (
+            {noHaircut && (
                 <div className="mb-4">
                     <style>
                         {pulseAnimation}
