@@ -105,8 +105,15 @@ const Messages = () => {
     }
   }
 
+  const [notifications, setNotifications] = useState({} as any);
+  const fetchSalonNotifications = async () => {
+    const { data } = await dashboard.salonNotification()
+    setNotifications(data)
+  }
+
   const endOfMessagesRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
+    fetchSalonNotifications();
     endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chats]);
 
@@ -118,7 +125,7 @@ const Messages = () => {
       <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
         <LogoCircleFixRight />
       </div>
-      <DashboardLayout>
+      <DashboardLayout notifications={notifications}>
         <div className="mt-10 mb-5  sm:px-0 2xl:px-5">
 
           {/* Titre du centre de messagerie */}

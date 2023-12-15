@@ -23,6 +23,7 @@ import { Subscription } from "../../../types";
 import { Auth } from "@/api/auth";
 import { getLocalStorage } from "@/api/storage";
 import useSnackbar from "@/hooks/useSnackbar";
+import { dashboard } from "@/api/dashboard";
 
 const SubSelected_text = "text-white"
 const SubSelected_recommended = "bg-[rgba(255,255,255,0.53)] text-white"
@@ -73,9 +74,16 @@ const Subscription = () => {
   const handleClickPay = () => {
     //console.log("PAY");
   }
+  const [notifications, setNotifications] = useState({} as any);
+  const fetchSalonNotifications = async () => {
+    const { data } = await dashboard.salonNotification()
+    setNotifications(data)
+  }
+  
 
   useEffect(() => {
     fetchSubscription();
+    fetchSalonNotifications();
   }, []);
 
   const fetchSubscription = async () => {
@@ -196,7 +204,7 @@ const Subscription = () => {
       <div className="hidden sm:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
         <LogoCircleFixRight />
       </div>
-      <DashboardLayout>
+      <DashboardLayout notifications={notifications}>
         <div className="mt-16 px-4 lg:px-11">
           <div className="flex items-center justify-center">
             {/* TODO: slide button not working */}

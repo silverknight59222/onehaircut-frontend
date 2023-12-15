@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import Switch from "@material-ui/core/Switch";
 import BaseModal from '@/components/UI/BaseModal';
 import { TailSpin } from 'react-loader-spinner'
+import { dashboard } from "@/api/dashboard";
 
 const Bot = () => {
 
@@ -276,8 +277,13 @@ const Bot = () => {
     console.info(optimizationMenu)
   };
 
+  const [notifications, setNotifications] = useState({} as any);
+  const fetchSalonNotifications = async () => {
+    const { data } = await dashboard.salonNotification()
+    setNotifications(data)
+  }
 
-
+  useEffect(()=>{fetchSalonNotifications();})
 
   return (
     <div>
@@ -323,7 +329,7 @@ const Bot = () => {
       <div className="hidden sm:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
         <LogoCircleFixRight />
       </div>
-      <DashboardLayout>
+      <DashboardLayout notifications={notifications}>
         <div className="flex flex-col md:flex-row items-start justify-center gap-6 xl:gap-14 2xl:gap-28">
           <div>
             <div className="">

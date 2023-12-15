@@ -1,8 +1,9 @@
 "use client";
+import { dashboard } from "@/api/dashboard";
 import { GiftIcon } from "@/components/utilis/Icons";
 import DashboardLayout from "@/layout/DashboardLayout";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const ClientActivity = () => {
   const activity = [
@@ -57,10 +58,16 @@ const ClientActivity = () => {
       discount: null,
     },
   ];
+  const [notifications, setNotifications] = useState({} as any);
+  const fetchSalonNotifications = async () => {
+    const { data } = await dashboard.salonNotification()
+    setNotifications(data)
+  }
 
+  useEffect(()=>{fetchSalonNotifications();})
 return (
     <div>
-      <DashboardLayout>
+      <DashboardLayout notifications={notifications}>
         <div>
           <p className="text-primary text-2xl font-semibold">Client Activity</p>
           <div className="relative overflow-auto h-[calc(100vh-100px)] w-full px-6 pt-4 bg-[rgba(255,255,255,0.69)] rounded-[20px] mt-5 shadow-[0px_26px_31px_0px_rgba(176, 176, 176, 0.10)]">

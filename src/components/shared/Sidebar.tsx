@@ -44,18 +44,18 @@ type SidebarType = {
   sidebarItems: SidebarItems[];
   isClientDashboard?: boolean;
   SidebarHandler: () => void;
+  notifications: any[];
 };
 
 // Declare icon color
 const colorIcon = "#FFFFFF"
 
 // Define the Sidebar component
-const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }: SidebarType) => {
+const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, notifications }: SidebarType) => {
 
   const showSnackbar = useSnackbar();
   // State to store salon details
   const [salonDetail, setSalonDetails] = useState<SalonDetails[]>();
-  const [notifications, setNotifications] = useState({} as any);
   // State to store active salon info
   const [activeSalon, setActiveSalon] = useState<SalonDetails>();
   // State to store sidebar items
@@ -230,16 +230,6 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
       });
     }
   }
-
-  const fetchSalonNotifications = async () => {
-    const { data } = await dashboard.salonNotification()
-    setNotifications(data)
-  }
-
-  const fetchUserNotifications = async () => {
-    const { data } = await dashboard.userNotification()
-    setNotifications(data)
-  }
   const [isEmailVerified, setIsEmailVerified] = useState(true);
   // Use effect to fetch data on component mount
   useEffect(() => {
@@ -263,10 +253,10 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard }:
       setSidebarItem(sidebarItems)
     }
     if (user.role == 'client') {
-      fetchUserNotifications()
+      //fetchUserNotifications()
       setImageUrl(user.front_profile);
     } else {
-      fetchSalonNotifications()
+      //fetchSalonNotifications()
       if (salonInfo) {
         setSalon([salonInfo])
         setSalonDetails(salonInfo)
