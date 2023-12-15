@@ -211,6 +211,9 @@ const dashboard = {
   userNotification: async () => {
     return await request.get<any>(`user_notification`);
   },
+  checkTopBarStatus: async(salonId) => {
+    return await request.get(`check_topbar_status/${salonId}`);
+  },
 };
 
 export { dashboard };

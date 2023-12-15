@@ -204,6 +204,7 @@ const Signup = () => {
 								value={userInfo.name}
 								onChange={(e) => setUserName(e.target.value)}
 								error={error.name}
+								onEnterPress={onSignup}
 							/>
 						</div>
 
@@ -216,6 +217,7 @@ const Signup = () => {
 								value={userInfo.phone}
 								onChange={(e) => setUserPhone(e.target.value)}
 								error={error.phone}
+								onEnterPress={onSignup}
 							/>
 						</div>
 
@@ -229,6 +231,7 @@ const Signup = () => {
 								onChange={(e) => setUserMail(e.target.value)}
 								error={error.email}
 								isEmail={true}
+								onEnterPress={onSignup}
 							/>
 						</div>
 
@@ -243,6 +246,7 @@ const Signup = () => {
 									value={userInfo.password}
 									onChange={(e) => setUserInfo({ ...userInfo, password: e.target.value })}
 									error={error.password}
+									onEnterPress={onSignup}
 								/>
 								<p className="mr-6 "> </p>
 								<CustomInput
@@ -252,6 +256,7 @@ const Signup = () => {
 									value={userInfo.repeatPassword}
 									onChange={(e) => setUserInfo({ ...userInfo, repeatPassword: e.target.value })}
 									error={error.password}
+									onEnterPress={onSignup}
 								/>
 							</div>
 							{passwordMismatchError && (

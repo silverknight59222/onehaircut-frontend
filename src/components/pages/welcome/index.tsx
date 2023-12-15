@@ -383,7 +383,7 @@ const Welcome = () => {
         </div>
 
         {isLoggedIn && (
-          <div className="flex pt-2 pb-8 sm:pb-2 mx-2 gap-3 sm:gap-12 md:gap-20 items-center justify-center bg-white w-full fixed bottom-8 border-2 border-t-slate-300">
+          <div className="flex text-sm pt-2 pb-2 sm:pb-2 mx-2 gap-3 sm:gap-12 md:gap-20 items-center justify-center bg-white w-full fixed bottom-8 border-2 border-t-slate-300">
             <div className={`p-2 sm:p-4 md:p-5 text-center ${DemoButton}`}>
               Démonstration d’utilisation
             </div>

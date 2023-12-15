@@ -267,7 +267,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
             </div>}
           {!isLoggedIn &&
             <button onClick={() => router.push('/registration')}
-              className={`lg:hidden w-32 md:w-52 h-16 md:h-11 text-white text-center font-sm ${Theme_A.button.mediumGradientButton} rounded-xl shadow-sm shadow-stone-300`}>
+              className={`lg:hidden mt-2 w-32 md:w-32 h-14 text-white text-center text-sm ${Theme_A.button.mediumGradientButton} rounded-xl shadow-sm shadow-stone-300`}>
               Enregistrer mon salon
             </button>}
         </div>
@@ -283,7 +283,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     className={
                       ethnicityFilters.length > 0
                         ? `rounded-xl py-2 px-7 ${ColorsThemeA.filterSelected} text-white font-semibold`
-                        : "hover:bg-white rounded-xl py-2 px-7"
+                        : (showDesktopEthnicity ? "rounded-xl py-2 px-7 bg-white text-black font-semibold" : "hover:bg-white rounded-xl py-2 px-7")
                     }
                     onClick={() => {
                       setShowDesktopGender(false);
@@ -294,7 +294,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     Ethnicit&eacute;
                   </p>
                   {showDesktopEthnicity && (
-                    <div className="absolute top-[105px] md:top-[75px] -ml-2 z-20 flex flex-col items-center justify-center w-40 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                    <div className="absolute top-[130px] md:top-[65px] -ml-2 z-20 flex flex-col items-center justify-center w-45 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
                       {Ethnicity.map((item, index) => {
                         return (
                           <div
@@ -331,7 +331,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     Genre
                   </p>
                   {showDesktopGender && (
-                    <div className="absolute top-[105px] md:top-[75px] -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                    <div className="absolute top-[130px] md:top-[65px] -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
                       {Gender.map((item, index) => {
                         return (
                           <div
@@ -366,7 +366,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     Longueur
                   </p>
                   {showDesktopLength && (
-                    <div className="relative top-[65px] md:top-[75px] -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                    <div className="absolute top-[130px] md:top-[65px] -ml-3 z-20 flex flex-col items-center justify-center w-40 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
                       {Length.map((item, index) => {
                         return (
                           <div

@@ -97,6 +97,7 @@ const Forgot = () => {
 								onChange={(e) => setUserMail(e.target.value)}
 								isEmail={true} // Activez la vérification d'e-mail en utilisant isEmail={true}
 								error={error.email}
+								onEnterPress={onForgot}
 							/>
 						</div>
 
