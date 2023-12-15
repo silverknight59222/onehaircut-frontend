@@ -8,6 +8,8 @@ import ChatModal from "../SearchSalon/ChatModal";
 import React, { useEffect, useState, useRef } from "react";
 import { client } from "@/api/clientSide";
 import BaseModal from "@/components/UI/BaseModal";
+import { dashboard } from "@/api/dashboard";
+import useSnackbar from "@/hooks/useSnackbar";
 
 interface selectedSalonInterface {
     name: string, id: number
@@ -22,6 +24,7 @@ const Currentreservation = () => {
     const [activeSalon, setActiveSalon] = useState<any>(null);
     const [message, setMessage] = useState<string>('');
     const [messages, setMessages] = useState<Array<{ content: string, sent: boolean }>>([]);
+    const showSnackbar = useSnackbar();
     const closeChatModal = () => {
         setActiveSalon(null)
         setIsModalOpen(false);
@@ -72,8 +75,14 @@ const Currentreservation = () => {
             allReservations(page);
         }
     };
+    const [notifications, setNotifications] = useState({} as any);
+    const fetchUserNotifications = async () => {
+        const { data } = await dashboard.userNotification();
+        setNotifications(data);
+    }
 
     useEffect(() => {
+        fetchUserNotifications();
         allReservations(page);
         window.addEventListener('scroll', handleScroll);
         return () => {
@@ -116,9 +125,9 @@ const Currentreservation = () => {
         const timeDifference = reservationDateTime.getTime() - currentDateTime.getTime();
         const hoursDifference = timeDifference / (1000 * 3600);
 
-        //console.log(currentDateTime)
-        //console.log(reservationDateTime)
-        //console.log(hoursDifference)
+        // console.log(currentDateTime)
+        // console.log(reservationDateTime)
+        // console.log(hoursDifference)
 
         if (hoursDifference >= 24) {
             // Current time is 24 hours or more before the reservation time.
@@ -136,8 +145,19 @@ const Currentreservation = () => {
     }, [itemToCancel, cancelAccepted])
 
     // function to cancel the booking
-    const onConfirm = () => {
+    const onConfirm = async () => {
         // TODO add Backend
+        console.log(itemToCancel)
+        let resp = await dashboard.cancelBooking(itemToCancel.id);
+        if (resp.data.status == 200) {
+            showSnackbar("success", resp.data.message)
+        }
+        else {
+            showSnackbar("error", resp.data.message)
+        }
+        setItems(items.filter((data) => data.id != itemToCancel.id))
+        // setItemToCancel({})
+        localStorage.setItem("rv_after", items.length)
         setIsModalCancel(false); // start modal
     }
 
@@ -241,7 +261,7 @@ const Currentreservation = () => {
 
                 />
             )}
-            <ClientDashboardLayout>
+            <ClientDashboardLayout notifications={notifications}>
                 <div className="flex flex-col items-center justify-center mt-10 mb-5 px-6 sm:px-10 md:px-20">
                     {/* MODAL FOR CANCELLATION */}
                     {isModalCancel && (

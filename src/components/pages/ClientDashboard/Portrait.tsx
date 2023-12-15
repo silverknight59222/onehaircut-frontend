@@ -313,8 +313,15 @@ const Portrait = () => {
         sethairLength(resp.data.hair_length);
     }
 
+    const [notifications, setNotifications] = useState({} as any);
+    const fetchUserNotifications = async () => {
+        const { data } = await dashboard.userNotification();
+        setNotifications(data);
+    }
+
     useEffect(() => {
         fetchPotraits();
+        fetchUserNotifications();
     }, []);
 
 
@@ -353,7 +360,7 @@ const Portrait = () => {
                 onChange={handleProfileRight2ImageUpload}
                 style={{ display: "none" }}
             />
-            <ClientDashboardLayout>
+            <ClientDashboardLayout notifications={notifications}>
                 <div className="relative mt-10 mb-5 px-4 sm:px-6 md:px-20">
                     <p className="text-black font-medium text-3xl text-center mb-8">
                         Modifiez vos photos de profils

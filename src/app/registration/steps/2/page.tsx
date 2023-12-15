@@ -186,7 +186,7 @@ const Step2 = () => {
 
   // function for clicking on the "je suis mobile"
   const onClickIamMobile = () => {
-    
+
     setIsMobile(!IamMobile);
 
     // calculate the new zoom
@@ -221,6 +221,7 @@ const Step2 = () => {
           laquelle tu peux exercer !
         </p>
         <div className="w-full md:w-[800px] xl:w-[1050px] flex flex-col items-center justify-center mt-5 sm:mt-7">
+          <p className="text-sm font-semibold text-grey text-start mt-4 italic ">Veuillez entrer votre adresse complète et la sélectionner lorsqu'elle apparaît</p>
           <div className="w-full flex flex-col md:flex-row items-center justify-between">
             <Autocomplete
               className="text-black placeholder-gray-600 w-full px-2 mx-2 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"

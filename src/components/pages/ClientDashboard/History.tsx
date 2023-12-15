@@ -10,6 +10,7 @@ import { pathToFileURL } from 'url';
 import StarRatings from "react-star-ratings";
 import Footer from '@/components/UI/Footer';
 import { client } from '@/api/clientSide';
+import { dashboard } from '@/api/dashboard';
 
 const History = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -149,8 +150,13 @@ const History = () => {
       fetchHistories(page);
     }
   };
-
+  const [notifications, setNotifications] = useState({} as any);
+  const fetchUserNotifications = async () => {
+      const { data } = await dashboard.userNotification();
+      setNotifications(data);
+  }
   useEffect(() => {
+    fetchUserNotifications();
     fetchHistories(page);
     window.addEventListener('scroll', handleScroll);
     return () => {
@@ -163,7 +169,7 @@ const History = () => {
       <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 -z-10">
         <LogoCircleFixRight />
       </div>
-      <ClientDashboardLayout>
+      <ClientDashboardLayout notifications={notifications}>
         <div className="mt-14 mb-5 px-6">
           {/*  For displaying the rating popup */}
           {isRatePopUp &&

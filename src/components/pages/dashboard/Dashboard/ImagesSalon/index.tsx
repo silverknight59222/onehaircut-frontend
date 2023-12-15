@@ -22,7 +22,9 @@ const Images = () => {
 
 	const [isLoading, setIsLoading] = useState(false);
 	const [salonImages, setSalonImages] = useState<ImageSalon[]>([]);
-
+	useEffect(() => {
+		// window.location.reload()
+	},[salonImages])
 	const getAllSalonImages = async () => {
 		let temp = getLocalStorage("hair_salon");
 		const hairSalon = temp ? JSON.parse(temp) : null;
@@ -52,19 +54,21 @@ const Images = () => {
 				<div className="h-[940px] w-full xl:w-1/2 2xl:w-2/5 overflow-auto flex flex-col items-center gap-8 bg-lightGrey rounded-3xl p-4 md:px-12 md:pt-12 md:pb-0 opacity-95">
 
 					{/* TODO MESSAGE NOTIFICATION WHEN NO HAIRDRESSER SET */}
-					<div>
-						<style>
-							{pulseAnimation}
-						</style>
-						<div
-							className={`${Theme_A.indicators.counterIndicator_C}`}
-							style={{
-								animation: 'pulse 3s infinite',
-							}}
-						>
-							Vous devez ajouter un ou plusieurs images pour être visible par les clients
+					{!(salonImages.length > 0) && (
+						<div>
+							<style>
+								{pulseAnimation}
+							</style>
+							<div
+								className={`${Theme_A.indicators.counterIndicator_C}`}
+								style={{
+									animation: 'pulse 3s infinite',
+								}}
+							>
+								Vous devez ajouter un ou plusieurs images pour être visible par les clients
+							</div>
 						</div>
-					</div>
+					)}
 
 					<ImagesContainer title='Images vitrine' type='showcase' setIsLoading={(value) => setIsLoading(value)} salonImages={salonImages} getAllSalonImages={getAllSalonImages} />
 				</div>

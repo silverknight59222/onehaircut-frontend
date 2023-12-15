@@ -24,6 +24,7 @@ import { user_api } from "@/api/clientSide";
 import { DeactivateAccountParams } from "@/api/clientSide";
 import { getLocalStorage } from "@/api/storage";
 import { useRouter } from "next/navigation";
+import { dashboard } from "@/api/dashboard";
 
 interface infoInterface {
     name: string;
@@ -1009,17 +1010,25 @@ const Account = () => {
     }
 
 
+    const [globalNotifications, setNotifications] = useState({} as any);
+    const fetchUserNotifications = async () => {
+        const { data } = await dashboard.userNotification()
+        setNotifications(data)
+    }
     // Use useEffect to update informations when state variables change
     useEffect(() => {
         fetchUserInfo();
+        fetchUserNotifications();
     }, [])
+    
+
 
     return (
         <div>
             <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 -z-10">
                 <LogoCircleFixRight />
             </div>
-            <ClientDashboardLayout>
+            <ClientDashboardLayout notifications={globalNotifications}>
                 <div className="mt-14 mb-5 px-6">
 
                     {/* PLACE FOR ALL MODALS */}

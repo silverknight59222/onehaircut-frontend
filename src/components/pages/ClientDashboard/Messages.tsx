@@ -16,6 +16,7 @@ import CustomInput from "@/components/UI/CustomInput";
 
 const Messages = () => {
     const [selectedChat, setSelectedChat] = useState({ user_id: 0, name: '' })
+    const [notifications, setNotifications] = useState({} as any);
     const [message, setMessage] = useState('')
     const user = getLocalStorage("user");
     const userId = user ? Number(JSON.parse(user).id) : null;
@@ -39,13 +40,19 @@ const Messages = () => {
     }
 
     // Récupère les messages du chat pour un salon donné
-    const getChat = async (salon: { user_id: number, name: string }) => {
+    const getChat = async (salon: SalonDetails) => {
         setSelectedChat({ user_id: salon.user_id, name: salon.name })
         if (userId) {
             setIsLoading(true)
             await dashboard.getChat(userId, salon.user_id)
                 .then(resp => {
                     setChats(resp.data.data)
+                    let data = {
+                      client_id: userId,
+                      professional_id: salon.user_id
+                    }
+                    clientDashboard.setChatRead(data);
+                    salon.chat_status = 1;
                 })
                 .catch(err => console.log(err))
                 .finally(() => {
@@ -66,7 +73,6 @@ const Messages = () => {
             }
             await dashboard.sendMessage(data)
                 .then(resp => {
-                    getChat(selectedChat)
                     setMessage('')
                 })
                 .catch(err => {
@@ -95,12 +101,11 @@ const Messages = () => {
         getSalonsByUser()
     }, [])
 
-    // Appelle `getChat` lorsque les `salons` sont mis à jour
-    useEffect(() => {
-        if (salons.length) {
-            getChat(salons[0])
-        }
-    }, [salons])
+    
+      const fetchUserNotifications = async () => {
+        const { data } = await dashboard.userNotification()
+        setNotifications(data)
+      }
 
 
     // For automatic scrolling down
@@ -112,6 +117,7 @@ const Messages = () => {
     }
     // Appelle scrollToBottom chaque fois que les messages changent
     useEffect(() => {
+        fetchUserNotifications();
         scrollToBottom();
     }, [chats]); // chats est le tableau des messages
 
@@ -124,7 +130,7 @@ const Messages = () => {
             <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
                 <LogoCircleFixRight />
             </div>
-            <ClientDashboardLayout>
+            <ClientDashboardLayout notifications={notifications}>
                 <div className="mt-10 mb-5 px-8 sm:px-14 2xl:px-36">
 
                     {/* Titre du centre de messagerie */}
@@ -167,14 +173,13 @@ const Messages = () => {
                                             {/* Nom du Salon */}
                                             <p className="text-black">{salon.name}</p>
                                         </div>
-                                        {/* {message.num ? (
-                                            <p className="w-5 h-5 rounded-full text-xs flex items-center justify-center text-white bg-gradient-to-tr from-red-500 to-yellow-400">
-                                                {message.num}
-                                            </p>
-                                        ) : (
-                                            <p></p>
-                                        )} */}
-                                    </div>
+                                    {salon.chat_status === 0 ?
+                                        <div className="ml-auto w-4 h-4 rounded-full bg-red-500"></div>
+                                        :
+                                        <div></div>
+                                      }
+                                    </div>  
+                                    
                                 );
                             })}
                         </div>

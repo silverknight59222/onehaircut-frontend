@@ -18,6 +18,7 @@ export type TopbarType = {
 	isDashboard: Boolean;
 	tabHandler: (tab: string) => void;
 	SidebarHandler: () => void;
+	// cB: () => void
 };
 const applyPermissions = (menus: any) => {
 	const temp = localStorage.getItem("user");
@@ -30,12 +31,18 @@ const applyPermissions = (menus: any) => {
 		});
 	}
 }
+interface checkDetails {
+	hairdress: number,
+	haircut: number,
+	images: number
+}
 const Topbar = ({ isDashboard, tabHandler, SidebarHandler }: TopbarType) => {
 	const [salonDetail, setSalonDetails] = useState<SalonDetails[]>();
 	const [activeSalon, setActiveSalon] = useState<SalonDetails>();
 	const temp = getLocalStorage("user");
 	const user = temp ? JSON.parse(temp) : null;
 	const path = usePathname()
+	const [checkTopbar, setCheckTopbar] = useState<checkDetails>({ hairdress: 0, haircut: 0, images: 0 })
 	const topbarItems = [
 		{ title: "Dashboard", permission: "Dashboard" },
 		{ title: "Coiffeurs", permission: "Coiffeurs" },
@@ -62,15 +69,28 @@ const Topbar = ({ isDashboard, tabHandler, SidebarHandler }: TopbarType) => {
 	};
 
 	useEffect(() => {
-		// applyPermissions(topbarItems);
-		// const user = getLocalStorage("user");
-		// const userId = user ? Number(JSON.parse(user).id) : null;
-		// if (userId) 
-		// 	dashboard.getHairSalon(userId).then((res) => {
-		// 		setSalonDetails(res.data.data);
-		// 		setSalon(res.data.data);
-		// 	});
+		getSalonInfo()
 	}, []);
+
+	const getSalonInfo = async () => {
+		const user = getLocalStorage("user");
+		const userId = user ? Number(JSON.parse(user).id) : null;
+		const salonId = Number(getLocalStorage("salon_id"));
+		console.log(salonId)
+		if (userId) {
+			await dashboard
+				.checkTopBarStatus(salonId)
+				.then((resp) => {
+					if (resp.data) {
+						console.log(resp.data)
+						setCheckTopbar(resp.data);
+					}
+				});
+		}
+	};
+	useEffect(() => {
+		setLocalStorage("check_status",JSON.stringify(checkTopbar))
+	},[checkTopbar]);
 
 	return (
 		<div>
@@ -118,7 +138,7 @@ const Topbar = ({ isDashboard, tabHandler, SidebarHandler }: TopbarType) => {
 						//return user.permissions.indexOf(item.permission) != -1
 					}).map((item, index) => {
 						// Condition pour vérifier si l'item actuel est l'un des trois spécifiés
-						const isNotificationNeeded = ["Coiffeurs", "Images Salon", "Coiffures"].includes(item.title);
+						const isNotificationNeeded = [checkTopbar.hairdress == 0 ? "Coiffeurs" : "", checkTopbar.images == 0 ? "Images Salon" : "", checkTopbar.haircut == 0 ? "Coiffures" : ""].includes(item.title);
 						return (
 							<div key={index} onClick={() => onTabClick(item.title, index)} className="relative">
 								<p

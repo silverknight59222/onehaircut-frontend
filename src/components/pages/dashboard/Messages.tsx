@@ -35,7 +35,7 @@ const Messages = () => {
           //console.log(err)
         })
         .finally(() => {
-          setIsLoading(false)
+          setIsLoading(false);
         })
     }
   }
@@ -46,7 +46,13 @@ const Messages = () => {
       setIsLoading(true)
       await dashboard.getChat(client.client_id, salonId)
         .then(resp => {
-          setChats(resp.data.data)
+          let data = {
+            client_id: client.client_id,
+            professional_id: salonId
+          }
+          setChats(resp.data.data);
+          dashboard.setChatRead(data);
+          client.is_read = 1;
         })
         .catch(err => console.log(err))
         .finally(() => {
@@ -66,7 +72,6 @@ const Messages = () => {
       }
       await dashboard.sendMessage(data)
         .then(resp => {
-          getChat(selectedChat)
           setMessage('')
         })
         .catch(err => {
@@ -88,14 +93,8 @@ const Messages = () => {
   }
 
   useEffect(() => {
-    getClientsByProfessional()
+    getClientsByProfessional();
   }, [])
-  useEffect(() => {
-    if (clients.length) {
-      getChat(clients[0])
-    }
-  }, [clients])
-
 
 
   // Pour envoyer un message en appuyant sur enter :
@@ -105,8 +104,15 @@ const Messages = () => {
     }
   }
 
+  const [notifications, setNotifications] = useState({} as any);
+  const fetchSalonNotifications = async () => {
+    const { data } = await dashboard.salonNotification()
+    setNotifications(data)
+  }
+
   const endOfMessagesRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
+    fetchSalonNotifications();
     endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chats]);
 
@@ -118,7 +124,7 @@ const Messages = () => {
       <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
         <LogoCircleFixRight />
       </div>
-      <DashboardLayout>
+      <DashboardLayout notifications={notifications}>
         <div className="mt-10 mb-5  sm:px-0 2xl:px-5">
 
           {/* Titre du centre de messagerie */}
@@ -161,9 +167,11 @@ const Messages = () => {
                         <p className="ml-4 text-black">{client.client.name}</p>
 
                       </div>
-                    </div>
-                    {/* Cercle rouge pour indiquer un nouveau message TODO ADD RED DOT IF NEW MESSAGE*/}
-                    <div className="ml-auto w-4 h-4 rounded-full bg-red-500"></div>
+                    </div>{client.is_read === 0 ?
+                      <div className="ml-auto w-4 h-4 rounded-full bg-red-500"></div>
+                      :
+                      <div></div>
+                    }
 
                     {/* Vous pouvez décommenter ce bloc si vous avez besoin d'afficher un message ou une notification */}
                     {/* {message.num ? (
