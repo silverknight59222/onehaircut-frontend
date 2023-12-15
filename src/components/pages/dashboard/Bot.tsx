@@ -283,7 +283,7 @@ const Bot = () => {
     setNotifications(data)
   }
 
-  useEffect(()=>{fetchSalonNotifications();})
+  useEffect(()=>{fetchSalonNotifications();},[]);
 
   return (
     <div>
