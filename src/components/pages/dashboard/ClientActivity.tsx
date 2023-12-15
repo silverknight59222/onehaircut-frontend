@@ -64,7 +64,7 @@ const ClientActivity = () => {
     setNotifications(data)
   }
 
-  useEffect(()=>{fetchSalonNotifications();})
+  useEffect(()=>{fetchSalonNotifications();}, [])
 return (
     <div>
       <DashboardLayout notifications={notifications}>
