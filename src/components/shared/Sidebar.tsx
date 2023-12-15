@@ -39,12 +39,19 @@ interface SidebarItems {
   route: string;
 
 }
+
+interface NotificationsParams{
+  chat_count : number,
+  reservation_count : number
+}
+
 type SidebarType = {
   isSidebar: Boolean;
   sidebarItems: SidebarItems[];
   isClientDashboard?: boolean;
   SidebarHandler: () => void;
-  notifications: any[];
+  notifications: NotificationsParams;
+
 };
 
 // Declare icon color

@@ -4,9 +4,13 @@ import React, { useState, useEffect } from "react";
 import { dashboard } from "@/api/dashboard";
 import { getLocalStorage } from "@/api/storage";
 
+interface NotificationsParams{
+  chat_count : number, reservation_count : number
+}
+
 interface DashboardLayout {
   children: JSX.Element;
-  notifications: any[]
+  notifications: NotificationsParams
 }
 
 const DashboardLayout = ({ children, notifications }: DashboardLayout) => {

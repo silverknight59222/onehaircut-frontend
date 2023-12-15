@@ -18,9 +18,13 @@ import { Auth } from "@/api/auth";
 import userLoader from '@/hooks/useLoader';
 import { dashboard } from "@/api/dashboard";
 
+interface NotificationsParams{
+  chat_count : number, reservation_count : number
+}
+
 interface DashboardLayout {
   children: JSX.Element,
-  notifications: any[]
+  notifications: NotificationsParams
 }
 
 
