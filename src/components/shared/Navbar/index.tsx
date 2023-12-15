@@ -356,7 +356,9 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                 </div>
                 <div className="sm:border-r border-grey px-0 lg:px-2 2xl:px-6 last:border-r-0 cursor-pointer text-black">
                   <p
-                    className={showDesktopLength ? "rounded-xl py-2 px-7 bg-white  font-semibold" : " hover:bg-white rounded-xl py-2 px-7 "}
+                    className={lengthFilters.length > 0
+                      ? `rounded-xl py-2 px-7 ${ColorsThemeA.filterSelected} text-white font-semibold`
+                      : (showDesktopLength ? "rounded-xl py-2 px-7 bg-white text-black font-semibold" : "hover:bg-white rounded-xl py-2 px-7")}
                     onClick={() => {
                       setShowDesktopEthnicity(false);
                       setShowDesktopGender(false);
@@ -401,8 +403,19 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                   <BooksalonFilter />
             }
 
-            {(isWelcomePage || isServicesPage) &&
+            {(isWelcomePage) &&
               <div className={`hidden sm:block w-min lg:w-max border-r border-grey px-1 lg:px-6 last:border-r-0 cursor-pointer`}>
+                <input
+                  type="text"
+                  placeholder="Rechercher"
+                  className={`text-sm md:text-base px-2 lg:px-4 p-2 rounded-full outline-none ${Theme_A.behaviour.fieldFocused_B}`}
+                  onChange={onSearch && isWelcomePage ?
+                    (e) => onSearch(e.target.value) :
+                    onServiceSearch && isServicesPage ? (e) => onServiceSearch(e.target.value) : () => { }}
+                />
+              </div>}
+            {(isServicesPage) &&
+              <div className={`w-max border-r border-grey px-1 lg:px-6 last:border-r-0 cursor-pointer`}>
                 <input
                   type="text"
                   placeholder="Rechercher"
