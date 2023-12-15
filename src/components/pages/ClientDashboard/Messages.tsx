@@ -73,7 +73,6 @@ const Messages = () => {
             }
             await dashboard.sendMessage(data)
                 .then(resp => {
-                    getChat(selectedChat)
                     setMessage('')
                 })
                 .catch(err => {
