@@ -116,7 +116,7 @@ const SalonChoice = () => {
     // }, [filteredSalons])
 
     function timeout(delay: number) {
-        return new Promise( res => setTimeout(res, delay) );
+        return new Promise(res => setTimeout(res, delay));
     }
 
     const getCoordinates = (salons) => {
@@ -265,7 +265,7 @@ const SalonChoice = () => {
         filteredCityHandler()
         getCoordinates(filteredSalons)
         // return () => clearTimeout(delay)
-    }, [citySearch, nameSearch, filteredMobile,filtereRange])
+    }, [citySearch, nameSearch, filteredMobile, filtereRange])
 
     if (!isLoaded) {
         return loadingView()
@@ -429,7 +429,7 @@ const SalonChoice = () => {
                                                     // lat={positions[index].lat}
                                                     // lng={positions[index].lng}
                                                     position={position} // Utiliser la position du salon
-                                                    onClick={() => setSelectedSalon(filteredSalons[index] != null ? filteredSalons[index] : {"name" : "Null", "id" : 0})}
+                                                    onClick={() => setSelectedSalon(filteredSalons[index] != null ? filteredSalons[index] : { "name": "Null", "id": 0 })}
                                                     options={
                                                         {
                                                             icon: {
@@ -476,69 +476,69 @@ const SalonChoice = () => {
 
                                 {/* VIGNETTES (ITERATIONS) */}
                                 {filteredSalons.length > 0 && filteredSalons.map((fsalon, index) => {
-                                    console.log('fsalon',fsalon)
+                                    console.log('fsalon', fsalon)
                                     return (
-                                    <div
-                                        key={index}
-                                        onClick={() => setSelectedSalon(fsalon)}
-                                        className={`relative bg-stone-100 rounded-2xl border hover:border-stone-400 cursor-pointer ${selectedSalon.id === fsalon.id && 'border-4 border-red-400 shadow-xl'}`}
-                                        style={{ width: '100%', aspectRatio: '1/1', display: 'flex', flexDirection: 'column', minWidth: '200px', maxWidth: '450px', minHeight: '200px', maxHeight: '420px' }}
-                                    >
-                                        {selectedSalon.id === fsalon.id && (
-                                            <div className="absolute bottom-0 translate-y-1/2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
-                                                <span className="text-white font-bold justify-center items-center">
-                                                    <CheckOutlinedIcon style={{ width: '15px', height: '15px' }} />
-                                                </span>
-                                            </div>
-                                        )}
+                                        <div
+                                            key={index}
+                                            onClick={() => setSelectedSalon(fsalon)}
+                                            className={`relative bg-stone-100 rounded-2xl border hover:border-stone-400 cursor-pointer ${selectedSalon.id === fsalon.id && 'border-4 border-red-400 shadow-xl'}`}
+                                            style={{ width: '100%', aspectRatio: '1/1', display: 'flex', flexDirection: 'column', minWidth: '200px', maxWidth: '450px', minHeight: '200px', maxHeight: '420px' }}
+                                        >
+                                            {selectedSalon.id === fsalon.id && (
+                                                <div className="absolute bottom-0 translate-y-1/2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
+                                                    <span className="text-white font-bold justify-center items-center">
+                                                        <CheckOutlinedIcon style={{ width: '15px', height: '15px' }} />
+                                                    </span>
+                                                </div>
+                                            )}
 
 
-                                        {/* Contenu de la vignette */}
-                                        <div className="flex flex-col p-4 shadow-md rounded-2xl " style={{ flexGrow: 1 }}>
+                                            {/* Contenu de la vignette */}
+                                            <div className="flex flex-col p-4 shadow-md rounded-2xl " style={{ flexGrow: 1 }}>
 
-                                            <div className='relative mb-4 hover:scale-105 transition duration-1000 m-2' style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                                {!isLoggedIn &&
-                                                    <div onClick={(e) => onWishlist(e, fsalon.id)} className="absolute right-6 top-6 z-20 cursor-pointer">
-                                                        <StarIcon width='35' height='35'
-                                                            color={wishlist.includes(String(fsalon.id)) ? "#FF5B5B" : ""}
-                                                            stroke={wishlist.includes(String(fsalon.id)) ? "#FFFFFF" : ""} />
-                                                    </div>}
+                                                <div className='relative mb-4 hover:scale-105 transition duration-1000 m-2' style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                                    {!isLoggedIn &&
+                                                        <div onClick={(e) => onWishlist(e, fsalon.id)} className="absolute right-6 top-6 z-20 cursor-pointer">
+                                                            <StarIcon width='35' height='35'
+                                                                color={wishlist.includes(String(fsalon.id)) ? "#FF5B5B" : ""}
+                                                                stroke={wishlist.includes(String(fsalon.id)) ? "#FFFFFF" : ""} />
+                                                        </div>}
 
-                                                {fsalon && fsalon.salon_cover_image &&
-                                                    <Image
-                                                        src={fsalon && fsalon.salon_cover_image ? fsalon.salon_cover_image?.image?.includes('api') ? fsalon.salon_cover_image.image : `https://api.onehaircut.com${fsalon.salon_cover_image.image}` : fsalon.logo.includes('api') ? fsalon.logo : `https://api.onehaircut.com${fsalon.logo}`}
-                                                        sizes="640w"
-                                                        fill={true}
-                                                        alt="image"
-                                                        style={{ objectFit: 'cover', height: '100%', width: '100%', display: 'block' }}
-                                                        className="rounded-2xl "
+                                                    {fsalon && fsalon.salon_cover_image &&
+                                                        <Image
+                                                            src={fsalon && fsalon.salon_cover_image ? fsalon.salon_cover_image?.image?.includes('api') ? fsalon.salon_cover_image.image : `https://api.onehaircut.com${fsalon.salon_cover_image.image}` : fsalon.logo.includes('api') ? fsalon.logo : `https://api.onehaircut.com${fsalon.logo}`}
+                                                            sizes="640w"
+                                                            fill={true}
+                                                            alt="image"
+                                                            style={{ objectFit: 'cover', height: '100%', width: '100%', display: 'block' }}
+                                                            className="rounded-2xl "
+                                                        />
+                                                    }
+                                                </div>
+
+                                                {/* Nom et prix du salon */}
+                                                <div className="flex items-start justify-between text-black text-lg font-semibold px-3 pt-2 ">
+                                                    <p className='w-36'>{fsalon.name}</p>
+                                                    {/* TODO PRICE SHOULD BE IN EUROS HERE */}
+                                                    <p className={`p-2 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white`}>{fsalon.final_price}€</p>
+                                                </div>
+
+                                                {/* Évaluation et nombre d'avis */}
+                                                <div className='flex items-center text-xs text-[#7B7B7B] px-3 pt-1'>
+                                                    <StarRatings
+                                                        rating={fsalon.haircut ? fsalon.haircut.rating : fsalon.rating}
+                                                        starRatedColor="#FEDF10"
+                                                        starSpacing="4px"
+                                                        starDimension="12px"
+                                                        numberOfStars={5}
+                                                        name="rating"
                                                     />
-                                                }
-                                            </div>
-
-                                            {/* Nom et prix du salon */}
-                                            <div className="flex items-start justify-between text-black text-lg font-semibold px-3 pt-2 ">
-                                                <p className='w-36'>{fsalon.name}</p>
-                                                {/* TODO PRICE SHOULD BE IN EUROS HERE */}
-                                                <p className={`p-2 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white`}>{fsalon.final_price}</p>
-                                            </div>
-
-                                            {/* Évaluation et nombre d'avis */}
-                                            <div className='flex items-center text-xs text-[#7B7B7B] px-3 pt-1'>
-                                                <StarRatings
-                                                    rating={fsalon.haircut ? fsalon.haircut.rating : fsalon.rating}
-                                                    starRatedColor="#FEDF10"
-                                                    starSpacing="4px"
-                                                    starDimension="12px"
-                                                    numberOfStars={5}
-                                                    name="rating"
-                                                />
-                                                <p>{fsalon.haircut ? fsalon.haircut.rating_counts : fsalon.rating_counts} d'avis</p>
+                                                    <p>{fsalon.haircut ? fsalon.haircut.rating_counts : fsalon.rating_counts} d'avis</p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                )
-                                 })}
+                                    )
+                                })}
 
 
 
