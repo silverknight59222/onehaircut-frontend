@@ -206,6 +206,9 @@ const dashboard = {
   checkTopBarStatus: async(salonId) => {
     return await request.get(`check_topbar_status/${salonId}`);
   },
+  cancelBooking: async(bookingId) => {
+    return await request.get(`booking-cancel/${bookingId}`);
+  }
 };
 
 export { dashboard };
