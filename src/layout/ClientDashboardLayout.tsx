@@ -1,7 +1,8 @@
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from "next/navigation";
 import Sidebar from "@/components/shared/Sidebar";
+import Messages from '@/components/pages/ClientDashboard/Messages';
 import {
   CircleRight,
   Hamburger,
@@ -12,16 +13,18 @@ import {
   LogoutIcon,
 } from "@/components/utilis/Icons";
 import { request } from "../api/Request";
-import { removeFromLocalStorage } from "@/api/storage";
+import { getLocalStorage,removeFromLocalStorage } from "@/api/storage";
 import { Auth } from "@/api/auth";
 import userLoader from '@/hooks/useLoader';
+import { dashboard } from "@/api/dashboard";
 
 interface DashboardLayout {
   children: JSX.Element,
+  notifications: any[]
 }
 
 
-const ClientDashboardLayout = ({ children }: DashboardLayout) => {
+const ClientDashboardLayout = ({ children, notifications }: DashboardLayout) => {
   const router = useRouter()
   const [isSidebar, setIsSidebar] = useState(true);
   const sidebarItems = [
@@ -70,10 +73,13 @@ const ClientDashboardLayout = ({ children }: DashboardLayout) => {
       })
   };
 
+
+
   return (
     <div>
       {isLoading && loadingView()}
       <Sidebar
+        notifications={notifications}
         sidebarItems={sidebarItems}
         isSidebar={isSidebar}
         SidebarHandler={SidebarHandler}

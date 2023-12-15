@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Topbar from "@/components/shared/Topbar";
 import Sidebar from "@/components/shared/Sidebar";
 import Dashboard from '@/components/pages/dashboard/Dashboard'
@@ -11,8 +11,11 @@ import AddPartner from '@/components/pages/dashboard/Dashboard/AddPartner'
 import { ColorsThemeA } from "@/components/utilis/Themes";
 import { Agenda } from "@/components/pages/dashboard/Dashboard/Agenda";
 import UsersPage from "@/components/pages/dashboard/Dashboard/Users";
+import { dashboard } from "@/api/dashboard";
+import { getLocalStorage, setLocalStorage } from "@/api/storage";
 
 const Page = () => {
+	const [notifications, setNotifications] = useState({} as any);
 	const [isSidebar, setIsSidebar] = useState(true);
 	const [tab, setTab] = useState("Dashboard");
 	const sidebarItems = [
@@ -21,7 +24,7 @@ const Page = () => {
 		{ icon: "StatsIcon", title: "Visites / Stats", route: "/dashboard/visites" },
 		// { icon: "RevenueIcon", title: "Revenue", route:"/dashboard/revenue" },
 		{ icon: "MessageIcon", title: "Message", route: "/dashboard/messages" },
-		{ icon: "SettingsIcon", title: "Réglages", permission: "Reglages",route: "/dashboard/settings" },
+		{ icon: "SettingsIcon", title: "Réglages", permission: "Reglages", route: "/dashboard/settings" },
 		{ icon: "PersonalizationIcon", title: "Abonnement", route: "/dashboard/subscription" },
 		// { icon: "BoostIcon", title: "Boost", route: "" },
 		{ icon: "BotIcon", title: "OnehairBot", permission: "Onehairbot", route: "/dashboard/bot" },
@@ -34,10 +37,22 @@ const Page = () => {
 		setTab(name);
 	};
 
+
+	const fetchSalonNotifications = async () => {
+		const { data } = await dashboard.salonNotification()
+		setNotifications(data)
+	}
+
+	useEffect(() => {
+		fetchSalonNotifications()
+	}
+		, []
+	)
+
 	return (
 		<>
 			{tab === "Dashboard" && (
-				<Sidebar sidebarItems={sidebarItems} isSidebar={isSidebar} SidebarHandler={SidebarHandler} />
+				<Sidebar notifications={notifications} sidebarItems={sidebarItems} isSidebar={isSidebar} SidebarHandler={SidebarHandler} />
 			)}
 			<div className={`h-screen px-4 lg:px-8 py-5 overflow-x-hidden ${tab === "Dashboard" && `${ColorsThemeA.pageBgColorLight} ml-0 lg:ml-72`}`}>
 				<Topbar

@@ -3,7 +3,7 @@ import Footer from '@/components/UI/Footer';
 import { LogoCircleFixRight } from '@/components/utilis/Icons';
 import { Theme_A } from '@/components/utilis/Themes';
 import DashboardLayout from '@/layout/DashboardLayout';
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DropdownMenu from "@/components/UI/DropDownMenu";
 import CustomInput from '@/components/UI/CustomInput';
 import { dashboard } from "@/api/dashboard";
@@ -46,10 +46,16 @@ const ContactUs = () => {
       data.feedback_type = SelectedContactType;
       await dashboard.sendFeedback(data).then((res) => {alert(res)});
     };
-
+    const [notifications, setNotifications] = useState({} as any);
+    const fetchSalonNotifications = async () => {
+      const { data } = await dashboard.salonNotification()
+      setNotifications(data)
+    }
+  
+    useEffect(()=>{fetchSalonNotifications();})
     return (
         <div>
-            <DashboardLayout>
+            <DashboardLayout notifications={notifications}>
                 {/* Main card (la vignette) */}
                 <div className="mt-14 mb-5 px-6 bg-white w-full lg:w-auto lg:max-w-4xl mx-auto p-6 rounded-xl shadow-lg relative" style={{ zIndex: 1 }}>
                     <div className="flex flex-col items-center justify-center mt-10 mb-5 px-6 sm:px-10 md:px-20">

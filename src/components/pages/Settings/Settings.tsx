@@ -42,8 +42,14 @@ const Settings = () => {
   const [activeMenu, setActiveMenu] = useState(settingsMenu[0].name);
 
 
+  
+  const [notifications, setNotifications] = useState({} as any);
+  const fetchSalonNotifications = async () => {
+    const { data } = await dashboard.salonNotification()
+    setNotifications(data)
+  }
   useEffect(() => {
-
+    fetchSalonNotifications()
   }, []);
 
   return (
@@ -52,7 +58,7 @@ const Settings = () => {
       <div className="hidden sm:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
         <LogoCircleFixRight />
       </div>
-      <DashboardLayout>
+      <DashboardLayout notifications={notifications}>
         <div className="flex gap-4 ">
           {/* DISPLAY SETTINGS MENU */}
           {!isLoading && (

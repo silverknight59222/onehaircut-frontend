@@ -8,6 +8,7 @@ import ChatModal from "../SearchSalon/ChatModal";
 import React, { useEffect, useState, useRef } from "react";
 import { client } from "@/api/clientSide";
 import BaseModal from "@/components/UI/BaseModal";
+import { dashboard } from "@/api/dashboard";
 
 interface selectedSalonInterface {
     name: string, id: number
@@ -72,8 +73,14 @@ const Currentreservation = () => {
             allReservations(page);
         }
     };
+    const [notifications, setNotifications] = useState({} as any);
+    const fetchUserNotifications = async () => {
+        const { data } = await dashboard.userNotification();
+        setNotifications(data);
+    }
 
     useEffect(() => {
+        fetchUserNotifications();
         allReservations(page);
         window.addEventListener('scroll', handleScroll);
         return () => {
@@ -241,7 +248,7 @@ const Currentreservation = () => {
 
                 />
             )}
-            <ClientDashboardLayout>
+            <ClientDashboardLayout notifications={notifications}>
                 <div className="flex flex-col items-center justify-center mt-10 mb-5 px-6 sm:px-10 md:px-20">
                     {/* MODAL FOR CANCELLATION */}
                     {isModalCancel && (

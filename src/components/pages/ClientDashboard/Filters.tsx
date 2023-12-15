@@ -14,6 +14,7 @@ import CustomSlider from '@/components/UI/OHC_Slider';
 import { client } from '@/api/clientSide';
 import useSnackbar from '@/hooks/useSnackbar';
 import CustomInput from '@/components/UI/CustomInput';
+import { dashboard } from '@/api/dashboard';
 
 
 const Filters = () => {
@@ -101,9 +102,16 @@ const Filters = () => {
         }
     };
 
+    const [notifications, setNotifications] = useState({} as any);
+    const fetchUserNotifications = async () => {
+        const { data } = await dashboard.userNotification();
+        setNotifications(data);
+    }
+
     // Update the selectedItem when the CountryDefault prop changes
     useEffect(() => {
         fetchFilterPrefrences();
+        fetchUserNotifications();
     }, []);
 
     const resetAllValues_1 = async () => {
@@ -231,7 +239,7 @@ const Filters = () => {
             <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
                 <LogoCircleFixRight />
             </div>
-            <ClientDashboardLayout>
+            <ClientDashboardLayout notifications={notifications}>
                 <div className="mt-14 mb-5 px-5 sm:px-10">
                     <p className="text-black font-medium text-3xl text-center">
                         Gestion du compte

@@ -1,9 +1,10 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import DashboardLayout from "@/layout/DashboardLayout";
 import "react-circular-progressbar/dist/styles.css";
 import ProgressBar from "@/components/UI/ProgressBar";
 import { DownArrow } from "@/components/utilis/Icons";
+import { dashboard } from "@/api/dashboard";
 
 const Visites = () => {
   const clients = [
@@ -12,10 +13,18 @@ const Visites = () => {
     { user: "Marina", hairstyle: "Boucle court", orders: 68 },
     { user: "Kevin K", hairstyle: "Carré plongeant", orders: 62 },
     { user: "Bernardo", hairstyle: "Dread", orders: 61 },
-  ];
+  ];  
+  
+  const [notifications, setNotifications] = useState({} as any);
+  const fetchSalonNotifications = async () => {
+    const { data } = await dashboard.salonNotification()
+    setNotifications(data)
+  }
+
+  useEffect(()=>{fetchSalonNotifications()}, []);
   return (
     <div>
-      <DashboardLayout>
+      <DashboardLayout notifications={notifications}>
         <div className="flex items-center justify-center">
           <div className="grid grid-cols-1 xl:grid-cols-2 2xl:grid-cols-3 gap-6">
             <div className="w-full  sm:h-[332px] py-5 px-4 sm:px-6 bg-white rounded-lg shadow-[0px_4px_33px_0px_rgba(176,176,176,0.25)]">

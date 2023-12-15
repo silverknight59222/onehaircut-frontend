@@ -16,6 +16,7 @@ import CustomInput from "@/components/UI/CustomInput";
 
 const Messages = () => {
     const [selectedChat, setSelectedChat] = useState({ user_id: 0, name: '' })
+    const [notifications, setNotifications] = useState({} as any);
     const [message, setMessage] = useState('')
     const user = getLocalStorage("user");
     const userId = user ? Number(JSON.parse(user).id) : null;
@@ -101,6 +102,11 @@ const Messages = () => {
         getSalonsByUser()
     }, [])
 
+    
+      const fetchUserNotifications = async () => {
+        const { data } = await dashboard.userNotification()
+        setNotifications(data)
+      }
 
 
     // For automatic scrolling down
@@ -112,6 +118,7 @@ const Messages = () => {
     }
     // Appelle scrollToBottom chaque fois que les messages changent
     useEffect(() => {
+        fetchUserNotifications();
         scrollToBottom();
     }, [chats]); // chats est le tableau des messages
 
@@ -124,7 +131,7 @@ const Messages = () => {
             <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
                 <LogoCircleFixRight />
             </div>
-            <ClientDashboardLayout>
+            <ClientDashboardLayout notifications={notifications}>
                 <div className="mt-10 mb-5 px-8 sm:px-14 2xl:px-36">
 
                     {/* Titre du centre de messagerie */}

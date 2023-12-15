@@ -1,18 +1,28 @@
 "use client";
+import { dashboard } from '@/api/dashboard';
 import Footer from '@/components/UI/Footer';
 import { LogoCircleFixRight } from '@/components/utilis/Icons';
 import { Theme_A } from '@/components/utilis/Themes';
 import ClientDashboardLayout from '@/layout/ClientDashboardLayout'
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const Help = () => {
+    
+
+    const [notifications, setNotifications] = useState({} as any);
+    const fetchUserNotifications = async () => {
+        const { data } = await dashboard.userNotification();
+        setNotifications(data);
+    }
+
+    useEffect(()=>{fetchUserNotifications()},[])
 
     return (
         <div>
             <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 -z-10">
                 <LogoCircleFixRight />
             </div>
-            <ClientDashboardLayout>
+            <ClientDashboardLayout notifications={notifications}>
                 <div className="mt-14 mb-5 px-6">
                     {/*  For displaying the rating popup */}
 

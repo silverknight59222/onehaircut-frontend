@@ -99,10 +99,16 @@ const Favorites = () => {
 
         }
     }
+    const [notifications, setNotifications] = useState({} as any);
+    const fetchUserNotifications = async () => {
+        const { data } = await dashboard.userNotification();
+        setNotifications(data);
+    }
 
     useEffect(() => {
         getWishlistHaircuts()
         getSalonsWishlist()
+        fetchUserNotifications()
     }, [])
 
 
@@ -112,7 +118,7 @@ const Favorites = () => {
             <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 -z-10">
                 <LogoCircleFixRight />
             </div>
-            <ClientDashboardLayout>
+            <ClientDashboardLayout notifications={notifications}>
                 <div className="flex flex-col items-center justify-center mt-10 mb-5 px-8">
                     {isLoading && loadingView()}
                     <p className={`text-black ${Theme_A.fonts.header} ${Theme_A.textFont.headerH1} mb-10 static`}>

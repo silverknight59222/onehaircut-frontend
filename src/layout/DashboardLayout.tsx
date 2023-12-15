@@ -1,25 +1,28 @@
 import Sidebar from "@/components/shared/Sidebar";
 import Topbar from "@/components/shared/Topbar";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { dashboard } from "@/api/dashboard";
+import { getLocalStorage } from "@/api/storage";
 
 interface DashboardLayout {
   children: JSX.Element;
+  notifications: any[]
 }
 
-const DashboardLayout = ({ children }: DashboardLayout) => {
+const DashboardLayout = ({ children, notifications }: DashboardLayout) => {
   const [isSidebar, setIsSidebar] = useState(true);
   const [tab, setTab] = useState("Dashboard");
   const sidebarItems = [
     { icon: "DashboardIcon", title: "Dashboard", route: "/dashboard" },
-		{ icon: "ClientActivityIcon", title: "Client Activité", route: "/dashboard/client-activity" },
-		{ icon: "StatsIcon", title: "Visites / Stats", route: "/dashboard/visites" },
-		// { icon: "RevenueIcon", title: "Revenue", route:"/dashboard/revenue" },
-		{ icon: "MessageIcon", title: "Message", route: "/dashboard/messages" },
-		{ icon: "SettingsIcon", title: "Réglages", permission: "Reglages",route: "/dashboard/settings" },
-		{ icon: "PersonalizationIcon", title: "Abonnement", route: "/dashboard/subscription" },
-		// { icon: "BoostIcon", title: "Boost", route: "" },
-		{ icon: "BotIcon", title: "OnehairBot", permission: "Onehairbot", route: "/dashboard/bot" },
-		{ icon: "ContactIcon", title: "Contactez-nous", route: "/dashboard/contactUs" },
+    { icon: "ClientActivityIcon", title: "Client Activité", route: "/dashboard/client-activity" },
+    { icon: "StatsIcon", title: "Visites / Stats", route: "/dashboard/visites" },
+    // { icon: "RevenueIcon", title: "Revenue", route:"/dashboard/revenue" },
+    { icon: "MessageIcon", title: "Message", route: "/dashboard/messages" },
+    { icon: "SettingsIcon", title: "Réglages", permission: "Reglages", route: "/dashboard/settings" },
+    { icon: "PersonalizationIcon", title: "Abonnement", route: "/dashboard/subscription" },
+    // { icon: "BoostIcon", title: "Boost", route: "" },
+    { icon: "BotIcon", title: "OnehairBot", permission: "Onehairbot", route: "/dashboard/bot" },
+    { icon: "ContactIcon", title: "Contactez-nous", route: "/dashboard/contactUs" },
   ];
   const SidebarHandler = () => {
     setIsSidebar(!isSidebar);
@@ -27,10 +30,11 @@ const DashboardLayout = ({ children }: DashboardLayout) => {
   const tabHandler = (name: string) => {
     setTab(name);
   };
-  
+
   return (
     <div>
       <Sidebar
+        notifications={notifications}
         sidebarItems={sidebarItems}
         isSidebar={isSidebar}
         SidebarHandler={SidebarHandler}
