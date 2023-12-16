@@ -92,7 +92,7 @@ const salonApi = {
     return await request.delete(`salon_unavailability/${salonID}`);
   },
   removeHaircuts: async(params: any) => {
-    return await request.post(`remove_haircuts_from_salon`);
+    return await request.post(`remove_haircuts_from_salon`,params);
   }
 
 }

@@ -31,7 +31,7 @@ export interface HaircutDetails {
     epais_duration_type: string;
 }
 
-const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, setFinalItems, onResetStyleForm, reloadListEvent, finalItems, params }: any) => {
+const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairStyleSelectEvent, setFinalItems, onResetStyleForm, reloadListEvent, finalItems, params }: any) => {
     // //console.log("in HairStylesModal")
 
     const showSnackbar = useSnackbar();
@@ -86,6 +86,7 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, setFinal
             });
         } else if (payload.type == "select_all") {
             setSelectedHaircutsMapping(payload.haircuts);
+            setFinalItems(payload.haircuts)
         } else if (payload.type == "reset_modal") {
             setSelectedHaircutsMapping([]);
         }
@@ -324,14 +325,21 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, setFinal
 
     // TODO REMOVE HAIRCUT FUNCTION
     const onRemove = async () => {
-        let resp = await salonApi.removeHaircuts(finalItems);
+        let finalItemsIDs = finalItems.map(item => item.id);
+        let resp = await salonApi.removeHaircuts({ data: finalItemsIDs });
         if (resp.data.status == 200) {
             showSnackbar('success', resp.data.message)
         }
         else {
             showSnackbar('error', resp.data.message)
         }
-        setFinalItems([]);
+        setISD(false);
+        setSelectedHaircutsMapping([]);
+        setForm(defaultFormDetails);
+        reloadListEvent.on()
+        setNoHaircut(false)
+        reset()
+
     };
 
     const pulseAnimation = `

@@ -16,7 +16,7 @@ import HairStyleListItem from './HairStyleListItem';
 let hairStyleParams = {}
 
 
-const HairStyleList = React.memo(({ activeMenu, hairStyleSelectEvent, resetStyleForm, onFilterSelect, onReloadListener, selectAllListener, listCountShowEvent, setFinal }: any) => {
+const HairStyleList = React.memo(({ activeMenu, setISD, hairStyleSelectEvent, resetStyleForm, onFilterSelect, onReloadListener, selectAllListener, listCountShowEvent, setFinal }: any) => {
     // //console.log("in HairStyleList", hairStyleSelectEvent)
 
     const [haircutList, setHaircutList] = useState<Haircut[]>([]);
@@ -140,6 +140,7 @@ const HairStyleList = React.memo(({ activeMenu, hairStyleSelectEvent, resetStyle
                 type: "select_all",
                 haircuts: haircutList
             })
+            setISD(true);
             
         } else {
             hairStyleSelectEvent.on({
