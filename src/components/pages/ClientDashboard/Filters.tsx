@@ -173,6 +173,13 @@ const Filters = () => {
             .then(resp => {
                 //console.log(resp.data);
                 showSnackbar("succès", "Les préférences ont été réinitialisées avec succès");
+                /* Update user preference in local storage */
+                const user = JSON.parse(getLocalStorage("user"));
+                user.user_preferences.current_hair = currentLength;
+                user.user_preferences.length_sought = desiredLength;
+                user.user_preferences.hairstyle_trend = hairstyleTrend;
+                user.user_preferences.budget = budgetSliderRange;
+                setLocalStorage("user", JSON.stringify(user));
             })
             .catch(err => {
                 //console.log(err)
