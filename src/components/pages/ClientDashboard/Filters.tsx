@@ -15,6 +15,7 @@ import { client } from '@/api/clientSide';
 import useSnackbar from '@/hooks/useSnackbar';
 import CustomInput from '@/components/UI/CustomInput';
 import { dashboard } from '@/api/dashboard';
+import { getLocalStorage, setLocalStorage } from '@/api/storage';
 
 
 const Filters = () => {
@@ -172,6 +173,13 @@ const Filters = () => {
             .then(resp => {
                 //console.log(resp.data);
                 showSnackbar("succès", "Les préférences ont été réinitialisées avec succès");
+                /* Update user preference in local storage */
+                const user = JSON.parse(getLocalStorage("user"));
+                user.user_preferences.current_hair = currentLength;
+                user.user_preferences.length_sought = desiredLength;
+                user.user_preferences.hairstyle_trend = hairstyleTrend;
+                user.user_preferences.budget = budgetSliderRange;
+                setLocalStorage("user", JSON.stringify(user));
             })
             .catch(err => {
                 //console.log(err)
@@ -195,6 +203,16 @@ const Filters = () => {
         })
             .then(resp => {
                 showSnackbar("succès", "Préférences mises à jour avec succès");
+                /* Update user preference in local storage */
+                const user = JSON.parse(getLocalStorage("user"));
+                user.user_preferences.country = CountryDefault;
+                user.user_preferences.hairdressing_at_home = HairdressingAtHome;
+                user.user_preferences.postal_code = ZipCodeValue;
+                user.user_preferences.search_area = zoneSliderRange;
+                user.user_preferences.ratings = MinRating;
+                user.user_preferences.max_ratings = MaxRating;
+                user.user_preferences.availability = selectedItems;
+                setLocalStorage("user", JSON.stringify(user));
             })
             .catch(err => {
                 //console.log(err)
