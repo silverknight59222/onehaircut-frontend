@@ -149,6 +149,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
     setRangeFilter(newValue);
   };
   const onClickGenderCheckbox = (gender: string) => {
+    onGenderFilter && onGenderFilter(gender === 'Homme' ? 'men' : gender === 'Femme' ? 'women' : 'Mix')
     if (genderFilters === gender) {
       setGenderFilters("");
     } else {
@@ -182,13 +183,12 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
     }
   };
 
+
+
+
   useEffect(() => {
     onEthnicityFilters && onEthnicityFilters(ethnicityFilters)
   }, [ethnicityFilters])
-  useEffect(() => {
-    let wrappedGenderFilters = genderFilters === 'Homme' ? 'men' : genderFilters === 'Femme' ? 'women' : 'Mix';
-    onGenderFilter && onGenderFilter(wrappedGenderFilters)
-  }, [genderFilters])
   useEffect(() => {
     onLengthFilters && onLengthFilters(lengthFilters)
   }, [lengthFilters])
@@ -202,24 +202,12 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
 
   useEffect(() => {
     const user = getLocalStorage("user");
-    const hairstyle_trend = user ? String(JSON.parse(user).user_preferences.hairstyle_trend) : null;
-    const length_sought = user ? String(JSON.parse(user).user_preferences.length_sought) : null;
-    const budget = user ? JSON.parse(user).user_preferences.budget : null;
-    const hairdressing_at_home = user ? JSON.parse(user).user_preferences.hairdressing_at_home : null;
     const userId = user ? Number(JSON.parse(user).id) : null;
     if (userId) {
       setIsLoggedIn(true);
-
-      let gender = hairstyle_trend === 'Masculine' ? 'Homme' : hairstyle_trend === 'Feminine' ? 'Femme' : 'Mix';
-      let length = length_sought === 'Long' ? 'Long' : length_sought === 'Moyen' ? 'Medium' : 'Short';
-      let mobile = hairdressing_at_home === 0 ? 'no' : 'yes';
-
-      setGenderFilters(gender);
-      setLengthFilters((prev) => [...prev, length]);
-      setRangeFilter(budget);
-      setMobileFilters(mobile);
     }
     document.addEventListener("click", closeSelectBox);
+
     return () => {
       document.removeEventListener("click", closeSelectBox);
     };

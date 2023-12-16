@@ -286,7 +286,7 @@ const Welcome = () => {
 
   useEffect(() => {
     getFilteredCuts();
-  }, [ethnicityFilters, genderFilters, lengthFilters, search, salonHaircut]);
+  }, [ethnicityFilters, genderFilters, lengthFilters, search]);
 
   useEffect(() => {
     getAllHaircuts();
