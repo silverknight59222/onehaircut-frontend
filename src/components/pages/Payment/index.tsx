@@ -311,20 +311,20 @@ const Index = () => {
                 </div>
               }
             </div>
-            <div className="flex items-center justify-between border-t-2 border-[#c12d2d] pt-9 mt-9">
+            <div className="flex items-center justify-around border-t-2 border-[#c12d2d] pt-9 mt-9">
               <button onClick={() => router.push('/book-salon')} className={`${Theme_A.button.bigWhiteColoredButton}`}>
                 Modifier
               </button>
-              <p className="text-5xl md:text-5xl text-black font-semibold">
+              <p className="text-3xl xl:text-5xl text-black font-semibold">
                 Prix total : {totalUpdatedCost}€
               </p>
             </div>
           </div>
 
 
-          <div className="w-full flex items-center justify-center">
+          <div className="mx-4 mt-4 w-max md:w-[750px] lg:w-[940px] px-4 sm:px-14 bg-[#F8F8F8] rounded-[22px] border border-[#ECECEC] shadow-sm shadow-stone-600 justify-center">
 
-            <div className="mt-7 w-full md:w-5/12 lg:w-4/12">
+            <div className="mt-7 w-full md:w-5/12 lg:w-4/12 justify-center">
               <Elements stripe={stripePromise}>
                 <PaymentForm onSuccess={onBooking} />
               </Elements>
