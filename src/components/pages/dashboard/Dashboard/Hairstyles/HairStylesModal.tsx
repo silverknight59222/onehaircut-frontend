@@ -11,6 +11,7 @@ import {
     SelectedIcon,
 } from "@/components/utilis/Icons";
 import { Haircut, SalonHaircut } from "@/types";
+import { salonApi } from '@/api/salonSide';
 
 export interface HaircutDetails {
     id: number;
@@ -30,7 +31,7 @@ export interface HaircutDetails {
     epais_duration_type: string;
 }
 
-const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetStyleForm, reloadListEvent, params }: any) => {
+const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, setFinalItems, onResetStyleForm, reloadListEvent, finalItems, params }: any) => {
     // //console.log("in HairStylesModal")
 
     const showSnackbar = useSnackbar();
@@ -310,10 +311,10 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
     useEffect(() => {
         let haircuts_registered = getLocalStorage("check_status")
         checkHaircut(haircuts_registered)
-    },[])
+    }, [])
 
     const checkHaircut = (haircut_registered) => {
-        if(JSON.parse(haircut_registered).haircut == 0){
+        if (JSON.parse(haircut_registered).haircut == 0) {
             setNoHaircut(true)
         }
         else {
@@ -323,7 +324,14 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
 
     // TODO REMOVE HAIRCUT FUNCTION
     const onRemove = async () => {
-
+        let resp = await salonApi.removeHaircuts(finalItems);
+        if (resp.data.status == 200) {
+            showSnackbar('success', resp.data.message)
+        }
+        else {
+            showSnackbar('error', resp.data.message)
+        }
+        setFinalItems([]);
     };
 
     const pulseAnimation = `
