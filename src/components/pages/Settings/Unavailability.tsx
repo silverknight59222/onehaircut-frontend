@@ -7,7 +7,7 @@ import { Theme_A, ColorsThemeA } from "@/components/utilis/Themes";
 import CustomizedTable from "@/components/UI/CustomizedTable";
 import CustomInput from "@/components/UI/CustomInput";
 import { dashboard } from "@/api/dashboard";
-import { getLocalStorage } from "@/api/storage";
+import { getLocalStorage, setLocalStorage } from "@/api/storage";
 import { salonApi } from "@/api/salonSide";
 import useSnackbar from '@/hooks/useSnackbar';
 import OpenningHours from "./OpenningHours";
@@ -96,7 +96,7 @@ const Unavailability = () => {
         console.log(start)
         console.log(end)
         console.log(start == end)
-        if (start == end) {
+        if (start == end && selectedHD) {
             setTimeState(true);
         }
         else {
@@ -109,10 +109,10 @@ const Unavailability = () => {
     useEffect(() => {
         // setSelectedDate(new Date())
         getHairDresser()
+        getSalonInfo()
     }, [])
 
     useEffect(() => {
-        // console.log(selectedHD)
         getHairDresserInfo()
     }, [selectedHD])
 
@@ -121,7 +121,12 @@ const Unavailability = () => {
         let resp = await salonApi.getHairDresserAvailability(obj!.id);
         setUnavailList(resp.data.data)
         setUnavailabilities(resp.data.data)
-
+    }
+    const getSalonInfo = async() => {
+        let resp = await salonApi.getSalonUnavailability(salon.id);
+        setUnavailList(resp.data.data)
+        setUnavailabilities(resp.data.data)
+        setLocalStorage("salon_default",resp.data.data)
     }
     const getHairDresser = async () => {
         let id_salon = salon?.id;
@@ -154,7 +159,7 @@ const Unavailability = () => {
         console.log(resp.data)
         setSlotList(resp.data.data)
         let data_count = resp.data.data.length
-        setMainContainerClass(`h-[1200px + ${data_count * 100}]`);
+        setMainContainerClass(`h-[1500px + ${data_count * 100}]`);
     }
 
     const initialDays: Date[] = [];
@@ -175,6 +180,10 @@ const Unavailability = () => {
     useEffect(() => {
         console.log(selectedSlots)
     }, [selectedSlots])
+
+    useEffect(() => {
+        setUnavailList(unavailList)
+    },[unavailList])
 
     // FORMATAGE POUR L'AFFICHAGE DE LA PLAGE/DATE SELECTIONNEE
     const formatDateRange = (dates: Date[]) => {
@@ -209,20 +218,27 @@ const Unavailability = () => {
 
     // ACTION SLORS DU CHOIX ENTRE ETABLISSEMENT ET Coiffeurs
     const handleEntityClick = (role: string) => {
+        setUnavailabilities([]);
+        setTimeState(false);
         setSelectedEntity(role);
+        setShowCalender(false)
+        setSelectedHD('')
+        setReason('')
+        onDatesSelect([]);
         if (role === "Coiffeurs") {
             setShowHairdresserDropdown(true);
             // Mettez à jour la classe CSS en fonction de la sélection
             setMainContainerClass("h-[900px]");
         } else {
             setShowHairdresserDropdown(false);
+            getSalonInfo()
             // Mettez à jour la classe CSS en fonction de la sélection
-            setMainContainerClass("h-[800px]");
+            setMainContainerClass("h-[900px]");
         }
     };
 
     //DATA UNAVALABILITY TO SAVE 
-    const SalonColumns = ['Date de début', 'Date de fin', 'Raison', 'Actions'];
+    const SalonColumns = ['id', 'Start Date', 'End Date', 'Reason', 'Actions'];
     const HairdresserColumns = ['uv_id', 'Start Date', 'End Date', 'Start Time', 'End Time', 'Reason', 'Actions'];
     const [unavailabilities, setUnavailabilities] = useState<UnavailabilityData[]>([]); // Déclaration de la variable unavailabilities
 
@@ -241,39 +257,67 @@ const Unavailability = () => {
 
     const handleSubmitClick = async () => {
         let obj = hairDresserList.find(o => o.name == selectedHD);
-        if (selectedDates.length > 0) {
-            // Utilisez l'état local pour la raison
-            const newUnavailability = {
-                start_date: startDate,
-                end_date: endDate,
-                reason: reason, // Utilisez l'état local pour la raison
-                status: "En attente",
-                hdId: obj.id,
-                slot_times: selectedSlots
-            };
-
-            // Ajoutez la nouvelle donnée d'indisponibilité à votre tableau de données
-            let resp = await salonApi.addHairDresserUnavailability(newUnavailability);
-            if (resp.data.status == 200) {
-                showSnackbar("success", "Hair Dresser Unavailability added.");
+        if(obj != undefined){
+            if (selectedDates.length > 0) {
+                // Utilisez l'état local pour la raison
+                const newUnavailability = {
+                    start_date: startDate,
+                    end_date: endDate,
+                    reason: reason, // Utilisez l'état local pour la raison
+                    status: "En attente",
+                    hdId: obj.id,
+                    slot_times: selectedSlots
+                };
+    
+                // Ajoutez la nouvelle donnée d'indisponibilité à votre tableau de données
+                let resp = await salonApi.addHairDresserUnavailability(newUnavailability);
+                if (resp.data.status == 200) {
+                    showSnackbar("success", "Hair Dresser Unavailability added.");
+                }
+                else {
+                    showSnackbar("error", "Hair Dresser Unavailability process cannot be proceed.");
+                }
+                if (resp.data.data.length > 1) {
+                    setUnavailabilities(unavailabilities.concat(resp.data.data));
+                }
+                else {
+                    setUnavailabilities([...unavailabilities, resp.data.data]);
+                }
             }
-            else {
-                showSnackbar("error", "Hair Dresser Unavailability process cannot be proceed.");
-            }
-            if (resp.data.data.length > 1) {
-                setUnavailabilities(unavailabilities.concat(resp.data.data));
-            }
-            else {
-                setUnavailabilities([...unavailabilities, resp.data.data]);
-            }
-            // Réinitialisez l'état des dates sélectionnées
-            setSelectedSlots([])
-            setSelectedDates([]);
-            setTimeState(false);
-
-            // Réinitialisez la raison dans le champ de saisie
-            setReason(""); // Réinitialisez la raison en vidant l'état local
         }
+        else {
+            console.log(salon)
+            if(selectedDates.length > 0){
+                const newSalonUnavailability = {
+                    start_date: startDate,
+                    end_date: endDate,
+                    reason: reason, // Utilisez l'état local pour la raison
+                    status: "En attente",
+                    salon_id: salon.id,
+                };
+                let resp = await salonApi.addSalonUnavailability(newSalonUnavailability);
+                if (resp.data.status == 200) {
+                    showSnackbar("success", "Hair Dresser Unavailability added.");
+                }
+                else {
+                    showSnackbar("error", "Hair Dresser Unavailability process cannot be proceed.");
+                }
+                if (resp.data.data.length > 1) {
+                    setUnavailabilities(unavailabilities.concat(resp.data.data));
+                }
+                else {
+                    setUnavailabilities([...unavailabilities, resp.data.data]);
+                }
+                setLocalStorage('salon_default',[...unavailabilities, resp.data.data])
+            }
+        }
+        // Réinitialisez l'état des dates sélectionnées
+        setSelectedSlots([])
+        setSelectedDates([]);
+        setTimeState(false);
+
+        // Réinitialisez la raison dans le champ de saisie
+        setReason(""); // Réinitialisez la raison en vidant l'état local
     };
 
     // POUR AFFICHER LA LISTE DES COIFFEURS DU SALON
@@ -397,9 +441,11 @@ const Unavailability = () => {
                 />
             </div>
 
-            {timeState && (
+            {timeState && showHairdresserDropdown  && (
+                // console.log(timeState)
                 <>
                     {selectedHD ? (
+                        
                         <div className="flex items-center justify-center gap-4 flex-wrap mt-4 w-full">
                             {slotList.map((slot, index) => {
                                 return (
