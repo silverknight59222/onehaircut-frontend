@@ -12,7 +12,7 @@ import { ColorsThemeA } from "@/components/utilis/Themes";
 
 
 
-const HairStyleListHeader = React.memo(({ setActiveMenu, activeMenu, onFilterSelect, params, selectAllEvent, onListCountShow }: any) => {
+const HairStyleListHeader = React.memo(({ setActiveMenu, isd_value, activeMenu, onFilterSelect, params, selectAllEvent, onListCountShow }: any) => {
     // //console.log("in HairStyleListHeader")
 
 

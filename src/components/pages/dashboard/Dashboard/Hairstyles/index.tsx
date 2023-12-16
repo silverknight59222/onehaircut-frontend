@@ -37,13 +37,14 @@ const params = {
 
 const Hairstyles = () => {
   const [activeMenu, setActiveMenu] = useState<string>("new");
-
+  const [finalSelectedItems, setFinalSelectedItems] = useState([]);
+  const [isSelectedDelete, setIsSelectedDelete] = useState(false);
   return (
     <div>
-      <HairStyleListHeader onListCountShow={listCountShow} selectAllEvent={selectAll} params={params} onFilterSelect={onFilterSelect} setActiveMenu={setActiveMenu} activeMenu={activeMenu} ></HairStyleListHeader>
+      <HairStyleListHeader onListCountShow={listCountShow} isd={isSelectedDelete} selectAllEvent={selectAll} params={params} onFilterSelect={onFilterSelect} setActiveMenu={setActiveMenu} activeMenu={activeMenu} ></HairStyleListHeader>
       <div className="flex flex-col md:flex-row gap-8">
-        <HairStylesModal hairStyleSelectEvent={hairStyleSelectEvent} params={params} reloadListEvent={reloadList} onResetStyleForm={resetStyleForm} activeMenu={activeMenu}></HairStylesModal>
-        <HairStyleList listCountShowEvent={listCountShow}  selectAllListener={selectAll} onReloadListener={reloadList} resetStyleForm={resetStyleForm} onFilterSelect={onFilterSelect} hairStyleSelectEvent={hairStyleSelectEvent} activeMenu={activeMenu}></HairStyleList>
+        <HairStylesModal hairStyleSelectEvent={hairStyleSelectEvent} setISD={setIsSelectedDelete} selectAllListener={selectAll} setFinalItems={setFinalSelectedItems} finalItems={finalSelectedItems} params={params} reloadListEvent={reloadList} onResetStyleForm={resetStyleForm} activeMenu={activeMenu}></HairStylesModal>
+        <HairStyleList listCountShowEvent={listCountShow} setISD={setIsSelectedDelete} selectAllListener={selectAll} onReloadListener={reloadList} resetStyleForm={resetStyleForm} onFilterSelect={onFilterSelect} hairStyleSelectEvent={hairStyleSelectEvent} activeMenu={activeMenu}  setFinal={setFinalSelectedItems}></HairStyleList>
       </div>
       <Footer />
     </div>
