@@ -250,6 +250,10 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
   useEffect(() => {
     onAvailabilityFilter && onAvailabilityFilter(availabilityFilter)
   }, [availabilityFilter]);
+  useEffect(() => {
+    let wrappedGenderFilters = genderFilters === 'Homme' ? 'men' : genderFilters === 'Femme' ? 'women' : 'Mix';
+    onGenderFilter && onGenderFilter(wrappedGenderFilters)
+  }, [genderFilters])
 
 
   useEffect(() => {
