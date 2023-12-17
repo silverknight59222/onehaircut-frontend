@@ -346,7 +346,7 @@ const BookSalon = () => {
             </p>
           )}
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-1 2xl:gap-6 mt-4">
+          <div className={` mt-4 ${hairDressers.length == 1 ? 'flex justify-center' : 'grid gap-1 2xl:gap-6 grid-cols-2 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 '}`}>
             {hairDressers.map((hairdresser, index) => {
               return (
                 <div
