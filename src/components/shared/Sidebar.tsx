@@ -40,9 +40,9 @@ interface SidebarItems {
 
 }
 
-interface NotificationsParams{
-  chat_count : number,
-  reservation_count : number
+interface NotificationsParams {
+  chat_count: number,
+  reservation_count: number
 }
 
 type SidebarType = {
@@ -364,8 +364,8 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
 
   return (
     <>
-      {isSidebar && (
-        <div className="fixed z-20">
+      {(
+        <div className={`${isSidebar ? 'fixed z-20' : 'hidden lg:flex lg:fixed z-20'}`}>
           <div
             className="lg:hidden fixed top-0 left-0 h-full w-screen bg-[#2E465C] bg-opacity-90 cursor-pointer"
             onClick={SidebarHandler}

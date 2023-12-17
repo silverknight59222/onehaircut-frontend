@@ -18,6 +18,7 @@ export type TopbarType = {
 	isDashboard: Boolean;
 	tabHandler: (tab: string) => void;
 	SidebarHandler: () => void;
+	isSidebar: Boolean;
 	// cB: () => void
 };
 const applyPermissions = (menus: any) => {
@@ -36,7 +37,7 @@ interface checkDetails {
 	haircut: number,
 	images: number
 }
-const Topbar = ({ isDashboard, tabHandler, SidebarHandler }: TopbarType) => {
+const Topbar = ({ isDashboard, tabHandler, SidebarHandler, isSidebar }: TopbarType) => {
 	const [salonDetail, setSalonDetails] = useState<SalonDetails[]>();
 	const [activeSalon, setActiveSalon] = useState<SalonDetails>();
 	const temp = getLocalStorage("user");
@@ -89,14 +90,14 @@ const Topbar = ({ isDashboard, tabHandler, SidebarHandler }: TopbarType) => {
 		}
 	};
 	useEffect(() => {
-		setLocalStorage("check_status",JSON.stringify(checkTopbar))
-	},[checkTopbar]);
+		setLocalStorage("check_status", JSON.stringify(checkTopbar))
+	}, [checkTopbar]);
 
 	return (
 		<div>
 			<div className="flex items-center justify-center">
 				<div className="w-full flex items-center gap-5">
-					<div className="lg:hidden" onClick={SidebarHandler}>
+					<div className={`${isSidebar ? 'hidden' : 'lg:hidden'}`} onClick={SidebarHandler}>
 						<HamburgerIcon />
 					</div>
 					{isDashboard && (
