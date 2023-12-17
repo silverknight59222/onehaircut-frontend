@@ -98,7 +98,7 @@ const ConversionChart = ({ data }) => {
     }, [data])
 
     return (
-        <div className="px-3 lg:w-4/12 h-[460px] overflow-auto w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-xl shadow-sm shadow-stone-600">
+        <div className="px-3 xl:w-4/12 h-[460px] overflow-auto w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-xl shadow-sm shadow-stone-600">
             <p className="text-xl sm:text-2xl text-[#727272] font-semibold text-center mt-6 ">
                 Taux de Conversion: <span style={{ color: couleurTaux }}>{indiceTauxConversion}</span>
             </p>

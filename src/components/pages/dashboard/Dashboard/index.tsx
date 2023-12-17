@@ -365,20 +365,21 @@ const Dashboard = () => {
 
                 {/* TITRE FIDELITE CLIENTS */}
                 <Grid item xs={4}>
-                    <p className="text-primary cursor-pointer text-left text-2xl font-semibold">Conversion des visites</p>
+                    <p className="hidden xl:flex text-primary cursor-pointer text-left text-2xl font-semibold">Conversion des visites</p>
                 </Grid>
 
                 {/* TITRE TOP CLIENT */}
                 <Grid item xs={4}>
-                    <button onClick={() => toggleModal('topClient')} className={`${Theme_A.button.medBlackColoredButton} hover:bg-stone-600`}>
+                    <button onClick={() => toggleModal('topClient')}
+                        className={`hidden xl:flex ${Theme_A.button.medBlackColoredButton} hover:bg-stone-600`}>
                         Top Clients
                     </button>
                 </Grid>
             </Grid>
 
-            <div className="flex flex-col lg:flex-row -mx-3 mt-5 gap-4">
+            <div className="flex flex-col xl:flex-row -mx-3 mt-5 gap-4">
                 {/* Client Activity */}
-                <div className="px-3 w-full lg:w-4/12 p-6 bg-[rgba(255,255,255,0.69)] rounded-xl shadow-sm shadow-stone-600">
+                <div className="px-3 w-full xl:w-4/12 p-6 bg-[rgba(255,255,255,0.69)] rounded-xl shadow-sm shadow-stone-600">
                     <div className="relative ml-4">
                         <table className="w-full text-sm text-left">
                             <thead className="text-grey text-sm font-semibold">
@@ -440,10 +441,15 @@ const Dashboard = () => {
                 </div>
 
                 {/* CLIENT CONVERSION CHART */}
+                <p className="xl:hidden text-primary cursor-pointer text-left text-2xl font-semibold">Conversion des visites</p>
                 <ConversionChart data={salonStats} />
 
                 {/* TOP CLIENTS TABS*/}
-                <div className="px-3 w-full lg:w-4/12  p-6 bg-[rgba(255,255,255,0.69)] rounded-xl shadow-sm shadow-stone-600">
+                <button onClick={() => toggleModal('topClient')}
+                    className={` xl:hidden w-max ${Theme_A.button.medBlackColoredButton} hover:bg-stone-600`}>
+                    Top Clients
+                </button>
+                <div className="px-3 w-full xl:w-4/12  p-6 bg-[rgba(255,255,255,0.69)] rounded-xl shadow-sm shadow-stone-600">
                     <div className="relative ml-4">
                         <table className="w-full text-sm text-left">
                             <thead className="text-grey text-sm font-semibold">
