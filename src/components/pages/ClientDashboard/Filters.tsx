@@ -174,7 +174,7 @@ const Filters = () => {
                 //console.log(resp.data);
                 showSnackbar("succès", "Les préférences ont été réinitialisées avec succès");
                 /* Update user preference in local storage */
-                const user = JSON.parse(getLocalStorage("user"));
+                const user = JSON.parse(getLocalStorage("user") as string);
                 user.user_preferences.current_hair = currentLength;
                 user.user_preferences.length_sought = desiredLength;
                 user.user_preferences.hairstyle_trend = hairstyleTrend;
@@ -204,7 +204,7 @@ const Filters = () => {
             .then(resp => {
                 showSnackbar("succès", "Préférences mises à jour avec succès");
                 /* Update user preference in local storage */
-                const user = JSON.parse(getLocalStorage("user"));
+                const user = JSON.parse(getLocalStorage("user") as string);
                 user.user_preferences.country = CountryDefault;
                 user.user_preferences.hairdressing_at_home = HairdressingAtHome;
                 user.user_preferences.postal_code = ZipCodeValue;
