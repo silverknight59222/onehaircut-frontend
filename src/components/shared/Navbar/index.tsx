@@ -22,7 +22,7 @@ import CustomSlider from "@/components/UI/OHC_Slider";
 import ComponentTheme from "@/components/UI/ComponentTheme";
 import { Button } from "@material-ui/core";
 import EUCountriesList from "./EUCountries";
-
+import StarRatings from "react-star-ratings";
 
 
 interface Navbar {
@@ -330,6 +330,9 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
     },
   });
 
+  // For budget slider
+  const [minBudget, setMinBudget] = useState(0);
+  const [maxBudget, setMaxBudget] = useState(1000);
 
   return (
     <div className=" flex flex-col md:items-center justify-between border-b border-[#EBF0F2] pb-2 xl:pb-0">
@@ -521,131 +524,6 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                 />
               </div>}
             {(isSalonPage) &&
-              <div className="hidden md:block border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
-                <p
-                  className={showDesktopLength ? "rounded-xl py-2 px-7 bg-white  text-black font-semibold" : " hover:bg-white rounded-xl py-2 px-7 "}
-                  onClick={() => {
-                    setShowDesktopEthnicity(false);
-                    setShowDesktopGender(false);
-                    setShowDesktopLength(!showDesktopLength);
-                    setShowDesktopBudget(false);
-                    setShowDesktopRating(false);
-                    setShowDesktopCountry(false);
-                    setShowDesktopAvailability(false);
-
-                  }}
-                >
-                  Mobilité
-                </p>
-                {showDesktopLength && isSalonPage && (
-                  <div className="absolute -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
-                    {Mobile.map((item, index) => {
-                      return (
-                        <div
-                          key={index}
-                          className="flex w-full cursor-pointer mb-[19px]  transform hover:scale-110"
-                          onClick={() => onClickMobileCheckbox(item.value)}
-                        >
-                          <div
-                            className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105 
-                            ${mobileFilters === item.value ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}
-                          >
-                            <CheckedIcon />
-                          </div>
-                          <p className="ml-2">{item.name}</p>
-                        </div>
-                      );
-                    })}
-
-
-
-                  </div>
-                )}
-              </div>
-            }
-            {(isSalonPage) &&
-              <div className="hidden md:block border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer relative"> {/* Retain relative positioning for this div */}
-                <p
-                  className={showDesktopBudget ? "rounded-xl py-2 px-7 bg-white text-black font-semibold" : "hover:bg-white rounded-xl py-2 px-7"}
-                  onClick={() => {
-                    setShowDesktopEthnicity(false);
-                    setShowDesktopGender(false);
-                    setShowDesktopLength(false);
-                    setShowDesktopBudget(!showDesktopBudget);
-                    setShowDesktopRating(false);
-                    setShowDesktopCountry(false);
-                    setShowDesktopAvailability(false);
-                  }}
-                >
-                  Budget
-                </p>
-                {showDesktopBudget && isSalonPage && (
-                  <ThemeProvider theme={theme}>
-                    <div className="absolute top-[100%] left-1/2 transform -translate-x-1/2 mt-2 z-20 w-64 pt-3 px-4 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
-                      <div className="flex flex-col items-center justify-center w-full">
-                        <Typography id="range-slider" gutterBottom>
-                        </Typography>
-                        {/* TODO CHANGE THIS SLIDER WITH AN INPUT */}
-                        <CustomSlider
-                          theme={ComponentTheme}
-                          value={rangeFilters}
-                          onChange={rangeSelector}
-                          min={0}
-                          max={1000}
-                          unit="€"
-                          label="Budget" // Provide a label prop if your CustomSlider component expects it
-                          valueLabelDisplay="auto"
-                          width="250%"
-                        />
-                      </div>
-                    </div>
-                  </ThemeProvider>
-                )}
-              </div>
-            }
-            {(isSalonPage) &&
-              <div className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
-                <p
-                  className={showDesktopRating ? "rounded-xl py-2 px-7 bg-white  text-black font-semibold" : " hover:bg-white rounded-xl py-2 px-7 "}
-                  onClick={() => {
-                    setShowDesktopEthnicity(false);
-                    setShowDesktopGender(false);
-                    setShowDesktopLength(false);
-                    setShowDesktopBudget(false);
-                    setShowDesktopRating(!showDesktopRating);
-                    setShowDesktopCountry(false);
-                    setShowDesktopAvailability(false);
-                  }}
-                >
-                  Note
-                </p>
-                {showDesktopRating && isSalonPage && (
-                  <div className="absolute top-[75px] -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
-                    {Ratings.map((item, index) => {
-                      return (
-                        <div
-                          key={index}
-                          className="flex w-full cursor-pointer mb-[10px]  transform hover:scale-110"
-                          onClick={() => onClickRatingCheckbox(item)}
-                        >
-                          <div
-                            className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105 
-                            ${ratingFilter === item ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}
-                          >
-                            <CheckedIcon />
-                          </div>
-                          <p className="ml-2">{item}</p>
-                        </div>
-                      );
-                    })}
-
-
-
-                  </div>
-                )}
-              </div>
-            }
-            {(isSalonPage) &&
               <div className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
                 <p
                   className={showDesktopCountry ? "rounded-xl py-2 px-7 bg-white text-black font-semibold" : "hover:bg-white rounded-xl py-2 px-7"}
@@ -683,6 +561,178 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
 
 
 
+                  </div>
+                )}
+              </div>
+            }
+            {(isSalonPage) &&
+              <div className="hidden md:block border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
+                <p
+                  className={showDesktopLength ? "rounded-xl py-2 px-7 bg-white  text-black font-semibold" : " hover:bg-white rounded-xl py-2 px-7 "}
+                  onClick={() => {
+                    setShowDesktopEthnicity(false);
+                    setShowDesktopGender(false);
+                    setShowDesktopLength(!showDesktopLength);
+                    setShowDesktopBudget(false);
+                    setShowDesktopRating(false);
+                    setShowDesktopCountry(false);
+                    setShowDesktopAvailability(false);
+
+                  }}
+                >
+                  Mobilité
+                </p>
+                {showDesktopLength && isSalonPage && (
+                  <div className="absolute -ml-3 z-20 flex flex-col items-center justify-center mt-4 w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
+                    {Mobile.map((item, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className="flex w-full cursor-pointer mb-[10px]  transform hover:scale-110"
+                          onClick={() => onClickMobileCheckbox(item.value)}
+                        >
+                          <div
+                            className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105 
+                            ${mobileFilters === item.value ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}
+                          >
+                            <CheckedIcon />
+                          </div>
+                          <p className="ml-2">{item.name}</p>
+                        </div>
+                      );
+                    })}
+
+
+
+                  </div>
+                )}
+              </div>
+            }
+            {(isSalonPage) &&
+              <div className="hidden md:block border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer relative"> {/* Retain relative positioning for this div */}
+                <p
+                  className={showDesktopBudget ? "rounded-xl py-2 px-7 bg-white text-black font-semibold" : "hover:bg-white rounded-xl py-2 px-7"}
+                  onClick={() => {
+                    setShowDesktopEthnicity(false);
+                    setShowDesktopGender(false);
+                    setShowDesktopLength(false);
+                    setShowDesktopBudget(!showDesktopBudget);
+                    setShowDesktopRating(false);
+                    setShowDesktopCountry(false);
+                    setShowDesktopAvailability(false);
+                  }}
+                >
+                  Budget
+                </p>
+                {showDesktopBudget && isSalonPage && (
+                  <ThemeProvider theme={theme}>
+                    <div className="absolute top-[100%] left-1/2 transform -translate-x-1/2 mt-4 z-20 w-96 pt-3 px-4 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
+                      <div className="flex flex-col items-center justify-center w-full">
+                        {/* Votre CustomSlider ici */}
+                        <CustomSlider
+                          theme={ComponentTheme}
+                          value={rangeFilters}
+                          onChange={rangeSelector}
+                          min={0}
+                          max={500}
+                          unit="€"
+                          label="Budget"
+                          valueLabelDisplay="auto"
+                          width="320px"
+                        />
+                        {/* Labels et champs de saisie pour valeurs min et max */}
+                        <div className="flex justify-between w-full mt-4 mb-4">
+                          {/* Label et input pour la valeur minimale */}
+                          <div className="flex flex-col items-center">
+                            <label className="mb-1 text-xs">Min</label>
+                            <div className="flex items-center">
+                              <input
+                                type="number"
+                                value={rangeFilters[0]}
+                                onChange={(e) => {
+                                  const minValue = Number(e.target.value);
+                                  const maxValue = rangeFilters[1];
+                                  if (minValue <= maxValue) { // Vérifie que Min n'est pas supérieur à Max
+                                    setRangeFilter([minValue, maxValue]);
+                                  }
+                                }}
+                                className="w-20 p-1 border rounded-xl text-center"
+                                min={0}
+                              />
+                              <span className="ml-1">€</span>
+                            </div>
+                          </div>
+                          {/* Label et input pour la valeur maximale */}
+                          <div className="flex flex-col items-center">
+                            <label className="mb-1 text-xs">Max</label>
+                            <div className="flex items-center">
+                              <input
+                                type="number"
+                                value={rangeFilters[1]}
+                                onChange={(e) => {
+                                  const maxValue = Number(e.target.value);
+                                  const minValue = rangeFilters[0];
+                                  if (maxValue >= minValue) { // Vérifie que Max n'est pas inférieur à Min
+                                    setRangeFilter([minValue, maxValue]);
+                                  }
+                                }}
+                                className="w-20 p-1 border rounded-xl text-center"
+                                max={500}
+                              />
+                              <span className="ml-1">€</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </ThemeProvider>
+                )}
+
+              </div>
+            }
+            {(isSalonPage) &&
+              <div className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
+                <p
+                  className={showDesktopRating ? "rounded-xl py-2 px-7 bg-white  text-black font-semibold" : " hover:bg-white rounded-xl py-2 px-7 "}
+                  onClick={() => {
+                    setShowDesktopEthnicity(false);
+                    setShowDesktopGender(false);
+                    setShowDesktopLength(false);
+                    setShowDesktopBudget(false);
+                    setShowDesktopRating(!showDesktopRating);
+                    setShowDesktopCountry(false);
+                    setShowDesktopAvailability(false);
+                  }}
+                >
+                  Note
+                </p>
+                {showDesktopRating && isSalonPage && (
+                  <div className="absolute top-[75px] -ml-3 z-20 flex flex-col items-center justify-center w-42 pt-5 px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
+                    {Ratings.map((item, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className="flex w-full cursor-pointer mb-[10px] items-center transform hover:scale-110"
+                          onClick={() => onClickRatingCheckbox(item)}
+                        >
+                          <div
+                            className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105  mr-2
+              ${ratingFilter === item ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}
+                          >
+                            <CheckedIcon />
+                          </div>
+                          {/* <p className="ml-1 mr-2">{`${item}`}</p> */}
+                          <StarRatings
+                            rating={item}
+                            starRatedColor="#FEDF10"
+                            starSpacing="1px"
+                            starDimension="12px"
+                            numberOfStars={5}
+                            name={`rating-${item}`}
+                          />
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
               </div>

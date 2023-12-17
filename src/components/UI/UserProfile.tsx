@@ -58,12 +58,12 @@ const UserProfile = ({ isDashboard }: UserProfileProfile) => {
       route: "/client/processed",
     },
     {
-      name: "Filtre",
+      name: "Filtres",
       icon: <FilterIcon width="18" height="18" color="#000000" />,
       route: "/client/filters",
     },
     {
-      name: "Reservation",
+      name: "Reservations",
       icon: <ReservationIcon width="18" height="18" color="#000000" />,
       route: "/client/currentreservation",
     },
@@ -122,7 +122,7 @@ const UserProfile = ({ isDashboard }: UserProfileProfile) => {
       {isDropdown && (
         <div className={`absolute z-50 top-[52px] right-0 pt-3 pb-2 flex flex-col items-center justify-center text-black border-2 border-stone-300 bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)] ${!isDashboard ? 'rounded-lg' : 'rounded-xl'}`}>
           {!isDashboard &&
-            <div className="flex flex-col gap-x-4 border-b w-44 border-[#D4CBCB] pb-3">
+            <div className="flex flex-col gap-x-4 border-b w-48 border-[#D4CBCB] pb-3">
               {dropdownItems.map((item, index) => {
                 return (
                   <div
