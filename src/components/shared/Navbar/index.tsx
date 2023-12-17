@@ -21,6 +21,7 @@ import { createTheme, ThemeProvider } from '@material-ui/core/styles';
 import CustomSlider from "@/components/UI/OHC_Slider";
 import ComponentTheme from "@/components/UI/ComponentTheme";
 import { Button } from "@material-ui/core";
+import EUCountriesList from "./EUCountries";
 
 
 interface Navbar {
@@ -39,23 +40,33 @@ interface Navbar {
   onMobileFilters?: (arg0: string) => void
   onRangeFilters?: (arg0: string[]) => void
   onTypeSelect?: (arg0: string[]) => void,
+  onRatingFilter?: (arg0: number) => void,
+  onCountryFilter?: (arg0: string) => void,
+  onAvailabilityFilter?: (arg0: string[]) => void,
 }
 
-const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideSearchBar, onTypeSelect, onSearch, onServiceSearch, onGenderFilter, onEthnicityFilters, onLengthFilters, onMobileFilters, onCitySearch, onNameSearch, onRangeFilters }: Navbar) => {
+const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideSearchBar, onTypeSelect, onSearch, onServiceSearch, onGenderFilter, onEthnicityFilters, onLengthFilters, onMobileFilters, onCitySearch, onNameSearch, onRangeFilters, onRatingFilter, onCountryFilter, onAvailabilityFilter }: Navbar) => {
   const [isDropdown, setIsDropdown] = useState(false);
   const [showDesktopGender, setShowDesktopGender] = useState(false);
   const [showDesktopLength, setShowDesktopLength] = useState(false);
   const [showDesktopBudget, setShowDesktopBudget] = useState(false);
   const [showDesktopEthnicity, setShowDesktopEthnicity] = useState(false);
+  const [showDesktopRating, setShowDesktopRating] = useState(false);
+  const [showDesktopCountry, setShowDesktopCountry] = useState(false);
+  const [showDesktopAvailability, setShowDesktopAvailability] = useState(false);
 
   const [showMobileGender, setShowMobileGender] = useState(false);
   const [showMobileEthnicity, setShowMobileEthnicity] = useState(false);
   const [showMobileLength, setShowMobileLength] = useState(false);
+
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [genderFilters, setGenderFilters] = useState<string>('');
   const [ethnicityFilters, setEthnicityFilters] = useState<string[]>([]);
   const [lengthFilters, setLengthFilters] = useState<string[]>([]);
   const [mobileFilters, setMobileFilters] = useState<string>("");
+  const [ratingFilter, setRatingFilter] = useState<number>(1);
+  const [countryFilter, setCountryFilter] = useState<string>("");
+  const [availabilityFilter, setAvailabilityFilter] = useState<string[]>([]);
 
   const [tmpRange, setTmpRange] = useState<number[]>([10, 100]);
   const [rangeFilters, setRangeFilter] = useState<number[]>([10, 100]);
@@ -144,6 +155,11 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
     }
   ];
 
+  const Ratings = [1, 2, 3, 4, 5];
+
+  const Countries = EUCountriesList();
+  const WeekDays = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+
 
   const rangeSelector = (event: any, newValue: any) => {
     setRangeFilter(newValue);
@@ -182,9 +198,28 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
       setMobileFilters(value);  // Otherwise, set the filter to the selected mobile value
     }
   };
-
-
-
+  const onClickRatingCheckbox = (value: number) => {
+    if (ratingFilter === value) {
+      setRatingFilter(1);
+    } else {
+      setRatingFilter(value);
+    }
+  };
+  const onClickCountryCheckbox = (value: string) => {
+    if (countryFilter === value) {
+      setCountryFilter('');  // Reset or clear the filter if it's already selected
+    }
+    else {
+      setCountryFilter(value);  // Otherwise, set the filter to the selected mobile value
+    }
+  }
+  const onAvailabilityCheckbox = (value: string) => {
+    if (availabilityFilter.includes(value)) {
+      setAvailabilityFilter(availabilityFilter.filter((item) => item !== value));
+    } else {
+      setAvailabilityFilter((prev) => [...prev, value]);
+    }
+  }
 
   useEffect(() => {
     onEthnicityFilters && onEthnicityFilters(ethnicityFilters)
@@ -198,13 +233,42 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
   useEffect(() => {
     onRangeFilters && onRangeFilters(rangeFilters.map(String))
   }, [rangeFilters]);
+  useEffect(() => {
+    onRatingFilter && onRatingFilter(ratingFilter)
+  }, [ratingFilter]);
+  useEffect(() => {
+    onCountryFilter && onCountryFilter(countryFilter)
+  }, [countryFilter]);
+  useEffect(() => {
+    onAvailabilityFilter && onAvailabilityFilter(availabilityFilter)
+  }, [availabilityFilter]);
 
 
   useEffect(() => {
     const user = getLocalStorage("user");
+    const hairstyle_trend = user ? String(JSON.parse(user).user_preferences.hairstyle_trend) : null;
+    const length_sought = user ? String(JSON.parse(user).user_preferences.length_sought) : null;
+    const budget = user ? JSON.parse(user).user_preferences.budget : null;
+    const hairdressing_at_home = user ? JSON.parse(user).user_preferences.hairdressing_at_home : null;
+    const rating = user ? Number(JSON.parse(user).user_preferences.ratings) : 1;
+    const country = user ? String(JSON.parse(user).user_preferences.country) : "null";
+    const availability = user ? JSON.parse(user).user_preferences.availability : [];
+    console.log(availability);
     const userId = user ? Number(JSON.parse(user).id) : null;
     if (userId) {
       setIsLoggedIn(true);
+
+      let gender = hairstyle_trend === 'Masculine' ? 'Homme' : hairstyle_trend === 'Feminine' ? 'Femme' : 'Mix';
+      let length = length_sought === 'Long' ? 'Long' : length_sought === 'Moyen' ? 'Medium' : 'Short';
+      let mobile = hairdressing_at_home === 0 ? 'no' : 'yes';
+
+      setGenderFilters(gender);
+      setLengthFilters((prev) => [...prev, length]);
+      setRangeFilter(budget);
+      setMobileFilters(mobile);
+      setRatingFilter(rating);
+      setCountryFilter(country);
+      setAvailabilityFilter(availability);
     }
     document.addEventListener("click", closeSelectBox);
 
@@ -456,6 +520,9 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     setShowDesktopGender(false);
                     setShowDesktopLength(!showDesktopLength);
                     setShowDesktopBudget(false);
+                    setShowDesktopRating(false);
+                    setShowDesktopCountry(false);
+                    setShowDesktopAvailability(false);
 
                   }}
                 >
@@ -496,6 +563,9 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     setShowDesktopGender(false);
                     setShowDesktopLength(false);
                     setShowDesktopBudget(!showDesktopBudget);
+                    setShowDesktopRating(false);
+                    setShowDesktopCountry(false);
+                    setShowDesktopAvailability(false);
                   }}
                 >
                   Budget
@@ -524,6 +594,133 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                 )}
               </div>
             }
+            {(isSalonPage) &&
+              <div className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
+                <p
+                  className={showDesktopRating ? "rounded-xl py-2 px-7 bg-white  text-black font-semibold" : " hover:bg-white rounded-xl py-2 px-7 "}
+                  onClick={() => {
+                    setShowDesktopEthnicity(false);
+                    setShowDesktopGender(false);
+                    setShowDesktopLength(false);
+                    setShowDesktopBudget(false);
+                    setShowDesktopRating(!showDesktopRating);
+                    setShowDesktopCountry(false);
+                    setShowDesktopAvailability(false);
+                  }}
+                >
+                  Rating
+                </p>
+                {showDesktopRating && isSalonPage && (
+                  <div className="absolute top-[75px] -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                    {Ratings.map((item, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className="flex w-full cursor-pointer mb-[19px]  transform hover:scale-110"
+                          onClick={() => onClickRatingCheckbox(item)}
+                        >
+                          <div
+                            className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105 
+                            ${ratingFilter === item ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}
+                          >
+                            <CheckedIcon />
+                          </div>
+                          <p className="ml-2">{item}</p>
+                        </div>
+                      );
+                    })}
+
+
+
+                  </div>
+                )}
+              </div>
+            }
+            {(isSalonPage) &&
+              <div className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
+                <p
+                  className={showDesktopCountry ? "rounded-xl py-2 px-7 bg-white  text-black font-semibold" : " hover:bg-white rounded-xl py-2 px-7 "}
+                  onClick={() => {
+                    setShowDesktopEthnicity(false);
+                    setShowDesktopGender(false);
+                    setShowDesktopLength(false);
+                    setShowDesktopBudget(false);
+                    setShowDesktopRating(false);
+                    setShowDesktopCountry(!showDesktopCountry);
+                    setShowDesktopAvailability(false);
+                  }}
+                >
+                  Country
+                </p>
+                {showDesktopCountry && isSalonPage && (
+                  <div className="absolute top-[75px] -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                    {Countries.map((item, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className="flex w-full cursor-pointer mb-[19px]  transform hover:scale-110"
+                          onClick={() => onClickCountryCheckbox(item)}
+                        >
+                          <div
+                            className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105 
+                            ${countryFilter === item ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}
+                          >
+                            <CheckedIcon />
+                          </div>
+                          <p className="ml-2">{item}</p>
+                        </div>
+                      );
+                    })}
+
+
+
+                  </div>
+                )}
+              </div>
+            }
+            {isSalonPage &&
+              <div className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
+                <p
+                  className={showDesktopAvailability ? "rounded-xl py-2 px-7 bg-white  text-black font-semibold" : " hover:bg-white rounded-xl py-2 px-7 "}
+                  onClick={() => {
+                    setShowDesktopEthnicity(false);
+                    setShowDesktopGender(false);
+                    setShowDesktopLength(false);
+                    setShowDesktopBudget(false);
+                    setShowDesktopRating(false);
+                    setShowDesktopCountry(false);
+                    setShowDesktopAvailability(!showDesktopAvailability);
+                  }}
+                >
+                  Disponibilit&eacute;
+                </p>
+                {showDesktopAvailability && (
+                  <div className="absolute top-[130px] md:top-[65px] -ml-2 z-20 flex flex-col items-center justify-center w-45 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                    {WeekDays.map((item, index) => {
+                      return (
+                        <div
+                          key={index}
+                          className="flex w-full cursor-pointer mb-[19px] transform hover:scale-110"
+                          onClick={() => onAvailabilityCheckbox(item)}
+                        >
+                          <div
+                            className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105 ${availabilityFilter.includes(item)
+                              ? ColorsThemeA.ohcVerticalGradient_A
+                              : "bg-[#D6D6D6]"
+                              }`}>
+                            <CheckedIcon />
+                          </div>
+
+                          <p className="ml-2">{item}</p>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            }
+
+
 
           </div>
           {showDesktopBudget && isSalonPage && (
