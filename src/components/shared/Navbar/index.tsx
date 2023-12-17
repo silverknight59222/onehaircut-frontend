@@ -262,12 +262,12 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
             <LogoIcon className={'medium'} />
           </div>
           {isLoggedIn &&
-            <div className="mt-3">
+            <div className="lg:hidden mt-3">
               <UserProfile />
             </div>}
           {!isLoggedIn &&
             <button onClick={() => router.push('/registration')}
-              className={` mt-2 w-max md:w-40 h-10 lg:w-28 lg:h-14  text-center text-sm text-white font-medium rounded-md px-1 py-1 lg:my-3 ${ColorsThemeA.OhcGradient_A} transform hover:scale-105 transition-transform hover:shadow-[0px_3px_6px_0px_rgba(255,125,60,0.25)] rounded-xl shadow-sm shadow-stone-300`}>
+              className={`lg:hidden mt-2 w-max md:w-40 h-10 lg:w-28 lg:h-14  text-center text-sm text-white font-medium rounded-md px-1 py-1 lg:my-3 ${ColorsThemeA.OhcGradient_A} transform hover:scale-105 transition-transform hover:shadow-[0px_3px_6px_0px_rgba(255,125,60,0.25)] rounded-xl shadow-sm shadow-stone-300`}>
               Enregistrer mon salon
             </button>}
         </div>
@@ -643,6 +643,15 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
           </div>
 
         </div>}
+        {isLoggedIn &&
+          <div className="hidden lg:flex mt-3">
+            <UserProfile />
+          </div>}
+        {!isLoggedIn &&
+          <button onClick={() => router.push('/registration')}
+            className={`hidden lg:flex mt-2 w-max md:w-40 h-10 lg:w-28 lg:h-14  text-center text-sm text-white font-medium rounded-md px-1 py-1 lg:my-3 ${ColorsThemeA.OhcGradient_A} transform hover:scale-105 transition-transform hover:shadow-[0px_3px_6px_0px_rgba(255,125,60,0.25)] rounded-xl shadow-sm shadow-stone-300`}>
+            Enregistrer mon salon
+          </button>}
       </div>
     </div>
   );
