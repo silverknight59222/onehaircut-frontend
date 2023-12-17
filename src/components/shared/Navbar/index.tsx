@@ -24,6 +24,7 @@ import { Button } from "@material-ui/core";
 import EUCountriesList from "./EUCountries";
 
 
+
 interface Navbar {
   isWelcomePage?: boolean,
   isServicesPage?: boolean,
@@ -325,9 +326,11 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
     },
   });
 
+
   return (
     <div className=" flex flex-col md:items-center justify-between border-b border-[#EBF0F2] pb-2 xl:pb-0">
       <div className={` flex justify-between px-4 lg:px-14 flex-col lg:flex-row gap-3 ${!isLoggedIn ? 'flex-col' : 'flex-row'}`}>
+
         <div className="flex flex-row gap-2">
           <div onClick={() => router.push('/')} className="py-2 lg:py-5 cursor-pointer">
             <LogoIcon className={'medium'} />
@@ -362,7 +365,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                       setShowDesktopEthnicity(!showDesktopEthnicity);
                     }}
                   >
-                    Ethnicit&eacute;
+                    Ethnicité
                   </p>
                   {showDesktopEthnicity && (
                     <div className="absolute -ml-2 z-20 flex flex-col items-center justify-center w-45 pt-5 px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
@@ -528,10 +531,10 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
 
                   }}
                 >
-                  Mobilit&eacute;
+                  Mobilité
                 </p>
                 {showDesktopLength && isSalonPage && (
-                  <div className="absolute -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                  <div className="absolute -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
                     {Mobile.map((item, index) => {
                       return (
                         <div
@@ -574,8 +577,8 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                 </p>
                 {showDesktopBudget && isSalonPage && (
                   <ThemeProvider theme={theme}>
-                    <div className="absolute top-[100%] left-1/2 transform -translate-x-1/2 mt-2 z-20 w-64 pt-3 px-4 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]"> {/* Adjusted modal positioning */}
-                      <div className="flex flex-col items-center justify-center w-full"> {/* Use flex properties to center children */}
+                    <div className="absolute top-[100%] left-1/2 transform -translate-x-1/2 mt-2 z-20 w-64 pt-3 px-4 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
+                      <div className="flex flex-col items-center justify-center w-full">
                         <Typography id="range-slider" gutterBottom>
                         </Typography>
                         {/* TODO CHANGE THIS SLIDER WITH AN INPUT */}
@@ -610,15 +613,15 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     setShowDesktopAvailability(false);
                   }}
                 >
-                  Rating
+                  Note
                 </p>
                 {showDesktopRating && isSalonPage && (
-                  <div className="absolute top-[75px] -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                  <div className="absolute top-[75px] -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
                     {Ratings.map((item, index) => {
                       return (
                         <div
                           key={index}
-                          className="flex w-full cursor-pointer mb-[19px]  transform hover:scale-110"
+                          className="flex w-full cursor-pointer mb-[10px]  transform hover:scale-110"
                           onClick={() => onClickRatingCheckbox(item)}
                         >
                           <div
@@ -641,7 +644,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
             {(isSalonPage) &&
               <div className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
                 <p
-                  className={showDesktopCountry ? "rounded-xl py-2 px-7 bg-white  text-black font-semibold" : " hover:bg-white rounded-xl py-2 px-7 "}
+                  className={showDesktopCountry ? "rounded-xl py-2 px-7 bg-white text-black font-semibold" : "hover:bg-white rounded-xl py-2 px-7"}
                   onClick={() => {
                     setShowDesktopEthnicity(false);
                     setShowDesktopGender(false);
@@ -652,15 +655,15 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     setShowDesktopAvailability(false);
                   }}
                 >
-                  Country
+                  Pays
                 </p>
                 {showDesktopCountry && isSalonPage && (
-                  <div className="absolute top-[75px] -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                  <div id="CountryList" className="absolute top-[75px] -ml-3 z-50  items-center justify-center w-42 pt-[2px] px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300 " style={{ maxHeight: '800px', overflowY: 'auto', marginTop: '10px' }}>
                     {Countries.map((item, index) => {
                       return (
                         <div
                           key={index}
-                          className="flex w-full cursor-pointer mb-[19px]  transform hover:scale-110"
+                          className="flex w-full cursor-pointer mb-4 transform hover:scale-110 text-sm"
                           onClick={() => onClickCountryCheckbox(item)}
                         >
                           <div
@@ -694,10 +697,10 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     setShowDesktopAvailability(!showDesktopAvailability);
                   }}
                 >
-                  Disponibilit&eacute;
+                  Disponibilité
                 </p>
                 {showDesktopAvailability && (
-                  <div className="absolute top-[130px] md:top-[65px] -ml-2 z-20 flex flex-col items-center justify-center w-45 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                  <div className="absolute top-[130px] md:top-[65px] text-sm -ml-2 z-50 items-center justify-center w-45 pt-5 px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
                     {WeekDays.map((item, index) => {
                       return (
                         <div
@@ -720,16 +723,14 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                   </div>
                 )}
               </div>
+
             }
-
-
-
           </div>
-          {showDesktopBudget && isSalonPage && (
-            <div className="hidden md:block cursor-pointer p-3 rounded-full hover:scale-90 transform transition-transform duration-300 bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
-              <SearcIcon />
-            </div>
-          )}
+
+          <div className="hidden md:block cursor-pointer p-3 rounded-full hover:scale-90 transform transition-transform duration-300 bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
+            <SearcIcon />
+          </div>
+
         </div>}
 
         {/* For salons' page and for small screens
@@ -750,15 +751,15 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
 
                 }}
               >
-                Mobilit&eacute;
+                Mobilité
               </p>
               {showDesktopLength && (
-                <div className="absolute -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                <div className="absolute -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-md shadow-300">
                   {Mobile.map((item, index) => {
                     return (
                       <div
                         key={index}
-                        className="flex w-full cursor-pointer mb-[19px]  transform hover:scale-110"
+                        className="flex w-full cursor-pointer mb-[19px]  transform hover:scale-110 text-sm"
                         onClick={() => onClickMobileCheckbox(item.value)}
                       >
                         <div
@@ -817,11 +818,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
 
 
           </div>
-          {showDesktopBudget && (
-            <div className="cursor-pointer p-3 rounded-full hover:scale-90 transform transition-transform duration-300 bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
-              <SearcIcon />
-            </div>
-          )}
+
         </div>}
 
         {/* For welcome page and small screen */}
