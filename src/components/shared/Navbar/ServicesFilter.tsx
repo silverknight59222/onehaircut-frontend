@@ -34,7 +34,7 @@ const ServicesFilter = ({ onTypeSelect }: ServicesFilterProps) => {
     {
       name: "Special treatment",
       value: "special_treatment",
-      nameFr: "Traitement",
+      nameFr: "Traitement spécial",
     },
     {
       name: "Men",
@@ -92,7 +92,7 @@ const ServicesFilter = ({ onTypeSelect }: ServicesFilterProps) => {
               return (
                 <div
                   key={index}
-                  className="flex w-full cursor-pointer mb-[19px]"
+                  className="flex w-full cursor-pointer mb-[19px] text-sm "
                   // Utilisez 'value' pour la gestion des états et des clics
                   onClick={() => onClickTypeCheckbox(item.value)}
                 >

@@ -107,15 +107,19 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
   const Ethnicity = [
     {
       name: "Afro",
+      nameFr: "Afro",
     },
     {
       name: "Asian",
+      nameFr: "Asiatique",
     },
     {
       name: "Occidental",
+      nameFr: "Occidental",
     },
     {
       name: "Oriental",
+      nameFr: "Oriental",
     },
   ];
   const Gender = [
@@ -132,12 +136,15 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
   const Length = [
     {
       name: "Short",
+      nameFr: "Court",
     },
     {
       name: "Medium",
+      nameFr: "Moyen",
     },
     {
       name: "Long",
+      nameFr: "Long",
     },
   ];
   const Mobile = [
@@ -358,23 +365,20 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     Ethnicit&eacute;
                   </p>
                   {showDesktopEthnicity && (
-                    <div className="absolute -ml-2 z-20 flex flex-col items-center justify-center w-45 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                    <div className="absolute -ml-2 z-20 flex flex-col items-center justify-center w-45 pt-5 px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
                       {Ethnicity.map((item, index) => {
                         return (
                           <div
                             key={index}
-                            className="flex w-full cursor-pointer mb-[19px] transform hover:scale-110"
-                            onClick={() => onClickEthnicityCheckbox(item.name)}
+                            className="flex w-full cursor-pointer mb-[19px] transform hover:scale-110 text-sm "
+                            onClick={() => onClickEthnicityCheckbox(item.name)} // Utilisez 'item.name' pour la logique interne
                           >
                             <div
-                              className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105 ${ethnicityFilters.includes(item.name)
-                                ? ColorsThemeA.ohcVerticalGradient_A
-                                : "bg-[#D6D6D6]"
-                                }`}>
+                              className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105 ${ethnicityFilters.includes(item.name) ? ColorsThemeA.ohcVerticalGradient_A : "bg-[#D6D6D6]"}`}
+                            >
                               <CheckedIcon />
                             </div>
-
-                            <p className="ml-2">{item.name}</p>
+                            <p className="ml-2">{item.nameFr}</p> {/* Affichez 'item.nameFr' pour l'utilisateur */}
                           </div>
                         );
                       })}
@@ -395,16 +399,16 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     Genre
                   </p>
                   {showDesktopGender && (
-                    <div className="absolute  -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                    <div className="absolute  -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
                       {Gender.map((item, index) => {
                         return (
                           <div
                             key={index}
-                            className="flex w-full cursor-pointer mb-[19px] transform hover:scale-110"
+                            className="flex w-full cursor-pointer mb-[19px] transform hover:scale-110 text-sm "
                             onClick={() => onClickGenderCheckbox(item.name)}
                           >
                             <div
-                              className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  transform hover:scale-105 ${genderFilters.includes(item.name)
+                              className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  transform hover:scale-105  ${genderFilters.includes(item.name)
                                 ? ColorsThemeA.OhcGradient_A
                                 : "bg-[#D6D6D6]"
                                 }`}
@@ -432,27 +436,25 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     Longueur
                   </p>
                   {showDesktopLength && (
-                    <div className="absolute  -ml-3 z-20 flex flex-col items-center justify-center w-40 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                    <div className="absolute  -ml-3 z-20 flex flex-col items-center justify-center w-40 pt-5 px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
                       {Length.map((item, index) => {
                         return (
                           <div
                             key={index}
-                            className="flex w-full cursor-pointer mb-[19px]  transform hover:scale-110"
-                            onClick={() => onClickLengthCheckbox(item.name)}
+                            className="flex w-full cursor-pointer mb-[19px]  transform hover:scale-110 text-sm "
+                            onClick={() => onClickLengthCheckbox(item.name)} // Conservez 'item.name' pour la logique interne
                           >
                             <div
-                              className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  transform hover:scale-105 ${lengthFilters.includes(item.name)
-                                ? ColorsThemeA.OhcGradient_A
-                                : "bg-[#D6D6D6]"
-                                }`}
+                              className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  transform hover:scale-105 ${lengthFilters.includes(item.name) ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}
                             >
                               <CheckedIcon />
                             </div>
-                            <p className="ml-2">{item.name}</p>
+                            <p className="ml-2">{item.nameFr}</p> {/* Utilisez 'item.nameFr' pour l'affichage */}
                           </div>
                         );
                       })}
                     </div>
+
                   )}
                 </div>
               </>
