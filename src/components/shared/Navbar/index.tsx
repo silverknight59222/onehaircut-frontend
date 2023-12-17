@@ -165,6 +165,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
     setRangeFilter(newValue);
   };
   const onClickGenderCheckbox = (gender: string) => {
+    onGenderFilter && onGenderFilter(gender === 'Homme' ? 'men' : gender === 'Femme' ? 'women' : 'Mix')
     if (genderFilters === gender) {
       setGenderFilters("");
     } else {
@@ -224,10 +225,6 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
     onEthnicityFilters && onEthnicityFilters(ethnicityFilters)
   }, [ethnicityFilters])
   useEffect(() => {
-    let wrappedGenderFilters = genderFilters === 'Homme' ? 'men' : genderFilters === 'Femme' ? 'women' : 'Mix';
-    onGenderFilter && onGenderFilter(wrappedGenderFilters)
-  }, [genderFilters])
-  useEffect(() => {
     onLengthFilters && onLengthFilters(lengthFilters)
   }, [lengthFilters])
   useEffect(() => {
@@ -274,6 +271,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
       setAvailabilityFilter(availability);
     }
     document.addEventListener("click", closeSelectBox);
+
     return () => {
       document.removeEventListener("click", closeSelectBox);
     };
@@ -321,25 +319,25 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
   });
 
   return (
-    <div className=" flex flex-col md:items-center justify-between border-b border-[#EBF0F2] pb-3 xl:pb-0">
-      <div className={` flex md:items-center justify-between px-4 md:px-14 flex-col md:flex-row gap-4 ${!isLoggedIn ? 'flex-col sm:flex-row' : 'flex-row'}`}>
-        <div className="flex flex-row justify-around gap-2">
-          <div onClick={() => router.push('/')} className="py-5 cursor-pointer">
+    <div className=" flex flex-col md:items-center justify-between border-b border-[#EBF0F2] pb-2 xl:pb-0">
+      <div className={` flex justify-between px-4 lg:px-14 flex-col lg:flex-row gap-3 ${!isLoggedIn ? 'flex-col' : 'flex-row'}`}>
+        <div className="flex flex-row gap-2">
+          <div onClick={() => router.push('/')} className="py-2 lg:py-5 cursor-pointer">
             <LogoIcon className={'medium'} />
           </div>
           {isLoggedIn &&
-            <div className="mt-3 lg:hidden">
+            <div className="lg:hidden mt-3">
               <UserProfile />
             </div>}
           {!isLoggedIn &&
             <button onClick={() => router.push('/registration')}
-              className={`lg:hidden mt-2 w-32 md:w-32 h-14 text-white text-center text-sm ${Theme_A.button.mediumGradientButton} rounded-xl shadow-sm shadow-stone-300`}>
+              className={`lg:hidden mt-2 w-max md:w-40 h-10 lg:w-28 lg:h-14  text-center text-sm text-white font-medium rounded-md px-1 py-1 lg:my-3 ${ColorsThemeA.OhcGradient_A} transform hover:scale-105 transition-transform hover:shadow-[0px_3px_6px_0px_rgba(255,125,60,0.25)] rounded-xl shadow-sm shadow-stone-300`}>
               Enregistrer mon salon
             </button>}
         </div>
-        {!hideSearchBar && <div className="flex items-center pr-2 rounded-2xl bg-[#F7F7F7] h-[42px] md:h-[52px]  shadow-sm shadow-stone-300 border border-stone-200">
+        {!hideSearchBar && <div className="flex items-center pr-2 rounded-2xl bg-[#F7F7F7] h-[42px] lg:h-[52px] lg:mt-3 shadow-sm shadow-stone-300 border border-stone-200">
           <div
-            className="flex items-center justify-center text-sm lg:text-lg"
+            className="flex items-center justify-evenly text-sm lg:text-lg w-full"
           >
             {isWelcomePage ?
               <>
@@ -360,7 +358,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     Ethnicit&eacute;
                   </p>
                   {showDesktopEthnicity && (
-                    <div className="absolute top-[130px] md:top-[65px] -ml-2 z-20 flex flex-col items-center justify-center w-45 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                    <div className="absolute -ml-2 z-20 flex flex-col items-center justify-center w-45 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
                       {Ethnicity.map((item, index) => {
                         return (
                           <div
@@ -397,7 +395,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     Genre
                   </p>
                   {showDesktopGender && (
-                    <div className="absolute top-[130px] md:top-[65px] -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                    <div className="absolute  -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
                       {Gender.map((item, index) => {
                         return (
                           <div
@@ -420,9 +418,11 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     </div>
                   )}
                 </div>
-                <div className="border-r border-grey px-0 lg:px-2 2xl:px-6 last:border-r-0 cursor-pointer text-black">
+                <div className="sm:border-r border-grey px-0 lg:px-2 2xl:px-6 last:border-r-0 cursor-pointer text-black">
                   <p
-                    className={showDesktopLength ? "rounded-xl py-2 px-7 bg-white  font-semibold" : " hover:bg-white rounded-xl py-2 px-7 "}
+                    className={lengthFilters.length > 0
+                      ? `rounded-xl py-2 px-7 ${ColorsThemeA.filterSelected} text-white font-semibold`
+                      : (showDesktopLength ? "rounded-xl py-2 px-7 bg-white text-black font-semibold" : "hover:bg-white rounded-xl py-2 px-7")}
                     onClick={() => {
                       setShowDesktopEthnicity(false);
                       setShowDesktopGender(false);
@@ -432,7 +432,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     Longueur
                   </p>
                   {showDesktopLength && (
-                    <div className="absolute top-[130px] md:top-[65px] -ml-3 z-20 flex flex-col items-center justify-center w-40 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                    <div className="absolute  -ml-3 z-20 flex flex-col items-center justify-center w-40 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
                       {Length.map((item, index) => {
                         return (
                           <div
@@ -467,8 +467,19 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                   <BooksalonFilter />
             }
 
-            {(isWelcomePage || isServicesPage) &&
-              <div className={`w-min lg:w-max border-r border-grey px-1 lg:px-6 last:border-r-0 cursor-pointer`}>
+            {(isWelcomePage) &&
+              <div className={`hidden sm:block w-min lg:w-max border-r border-grey px-1 lg:px-6 last:border-r-0 cursor-pointer`}>
+                <input
+                  type="text"
+                  placeholder="Rechercher"
+                  className={`text-sm md:text-base px-2 lg:px-4 p-2 rounded-full outline-none ${Theme_A.behaviour.fieldFocused_B}`}
+                  onChange={onSearch && isWelcomePage ?
+                    (e) => onSearch(e.target.value) :
+                    onServiceSearch && isServicesPage ? (e) => onServiceSearch(e.target.value) : () => { }}
+                />
+              </div>}
+            {(isServicesPage) &&
+              <div className={`w-max border-r border-grey px-1 lg:px-6 last:border-r-0 cursor-pointer`}>
                 <input
                   type="text"
                   placeholder="Rechercher"
@@ -479,29 +490,29 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                 />
               </div>}
             {(isSalonPage) &&
-              <div className={`border-r border-grey px-6 last:border-r-0 cursor-pointer`}>
+              <div className={`border-r border-grey px-2 xl:px-6 last:border-r-0 cursor-pointer `}>
                 <input
                   type="text"
                   placeholder="Ville"
-                  className={`text-base px-4 p-2 rounded-xl outline-none ${Theme_A.behaviour.fieldFocused_B}`}
+                  className={`text-base lg:w-40 px-4 p-2 rounded-xl outline-none ${Theme_A.behaviour.fieldFocused_B}`}
                   onChange={onSearch && isWelcomePage ?
                     (e) => onSearch(e.target.value) :
                     onCitySearch && isSalonPage ? (e) => onCitySearch(e.target.value) : () => { }}
                 />
               </div>}
             {(isSalonPage) &&
-              <div className={`border-r border-grey px-6 last:border-r-0 cursor-pointer`}>
+              <div className={`md:border-r border-grey px-2 xl:px-6 last:border-r-0 cursor-pointer`}>
                 <input
                   type="text"
                   placeholder="Nom Salon"
-                  className={`text-base px-4 p-2 rounded-xl outline-none ${Theme_A.behaviour.fieldFocused_B}`}
+                  className={`text-base lg:w-40 px-4 p-2 rounded-xl outline-none ${Theme_A.behaviour.fieldFocused_B}`}
                   onChange={onNameSearch && isWelcomePage ?
                     () => { } :
                     onNameSearch && isSalonPage ? (e) => onNameSearch(e.target.value) : () => { }}
                 />
               </div>}
             {(isSalonPage) &&
-              <div className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
+              <div className="hidden md:block border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
                 <p
                   className={showDesktopLength ? "rounded-xl py-2 px-7 bg-white  text-black font-semibold" : " hover:bg-white rounded-xl py-2 px-7 "}
                   onClick={() => {
@@ -518,7 +529,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                   Mobilit&eacute;
                 </p>
                 {showDesktopLength && isSalonPage && (
-                  <div className="absolute top-[75px] -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                  <div className="absolute -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
                     {Mobile.map((item, index) => {
                       return (
                         <div
@@ -544,7 +555,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
               </div>
             }
             {(isSalonPage) &&
-              <div className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer relative"> {/* Retain relative positioning for this div */}
+              <div className="hidden md:block border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer relative"> {/* Retain relative positioning for this div */}
                 <p
                   className={showDesktopBudget ? "rounded-xl py-2 px-7 bg-white text-black font-semibold" : "hover:bg-white rounded-xl py-2 px-7"}
                   onClick={() => {
@@ -582,9 +593,6 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                   </ThemeProvider>
                 )}
               </div>
-
-
-
             }
             {(isSalonPage) &&
               <div className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
@@ -716,174 +724,132 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
 
           </div>
           {showDesktopBudget && isSalonPage && (
+            <div className="hidden md:block cursor-pointer p-3 rounded-full hover:scale-90 transform transition-transform duration-300 bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
+              <SearcIcon />
+            </div>
+          )}
+        </div>}
+
+        {/* For salons' page and for small screens
+        */}
+        {!hideSearchBar && isSalonPage && <div className="md:hidden flex pr-2 rounded-2xl bg-[#F7F7F7] h-[42px] shadow-sm shadow-stone-300 border border-stone-200">
+          <div
+            className="flex w-full items-center justify-evenly text-sm lg:text-lg"
+          >
+
+            <div className="cursor-pointer">
+              <p
+                className={showDesktopLength ? "rounded-xl py-2 px-7 bg-white  text-black font-semibold" : " hover:bg-white rounded-xl py-2 px-7 "}
+                onClick={() => {
+                  setShowDesktopEthnicity(false);
+                  setShowDesktopGender(false);
+                  setShowDesktopLength(!showDesktopLength);
+                  setShowDesktopBudget(false);
+
+                }}
+              >
+                Mobilit&eacute;
+              </p>
+              {showDesktopLength && (
+                <div className="absolute -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+                  {Mobile.map((item, index) => {
+                    return (
+                      <div
+                        key={index}
+                        className="flex w-full cursor-pointer mb-[19px]  transform hover:scale-110"
+                        onClick={() => onClickMobileCheckbox(item.value)}
+                      >
+                        <div
+                          className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105 
+                            ${mobileFilters === item.value ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}
+                        >
+                          <CheckedIcon />
+                        </div>
+                        <p className="ml-2">{item.name}</p>
+                      </div>
+                    );
+                  })}
+
+
+
+                </div>
+              )}
+            </div>
+
+
+            <div className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer relative"> {/* Retain relative positioning for this div */}
+              <p
+                className={showDesktopBudget ? "rounded-xl py-2 px-7 bg-white text-black font-semibold" : "hover:bg-white rounded-xl py-2 px-7"}
+                onClick={() => {
+                  setShowDesktopEthnicity(false);
+                  setShowDesktopGender(false);
+                  setShowDesktopLength(false);
+                  setShowDesktopBudget(!showDesktopBudget);
+                }}
+              >
+                Budget
+              </p>
+              {showDesktopBudget && (
+                <ThemeProvider theme={theme}>
+                  <div className="absolute top-[100%] left-1/2 transform -translate-x-1/2 mt-2 z-20 w-64 pt-3 px-4 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]"> {/* Adjusted modal positioning */}
+                    <div className="flex flex-col items-center justify-center w-full"> {/* Use flex properties to center children */}
+                      <Typography id="range-slider" gutterBottom>
+                      </Typography>
+                      {/* TODO CHANGE THIS SLIDER WITH AN INPUT */}
+                      <CustomSlider
+                        theme={ComponentTheme}
+                        value={rangeFilters}
+                        onChange={rangeSelector}
+                        min={0}
+                        max={1000}
+                        unit="€"
+                        label="Budget" // Provide a label prop if your CustomSlider component expects it
+                        valueLabelDisplay="auto"
+                        width="250%"
+                      />
+                    </div>
+                  </div>
+                </ThemeProvider>
+              )}
+            </div>
+
+
+          </div>
+          {showDesktopBudget && (
             <div className="cursor-pointer p-3 rounded-full hover:scale-90 transform transition-transform duration-300 bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
               <SearcIcon />
             </div>
           )}
         </div>}
-        <div
-          className="relative flex items-center justify-center md:justify-end gap-4"
-        >
-          {!isLoggedIn &&
-            <button onClick={() => router.push('/registration')}
-              className={`hidden lg:flex w-32 md:w-52 2xl:w-60 h-16 md:h-11 text-center items-center justify-center text-white font-semibold ${Theme_A.button.mediumGradientButton} rounded-xl shadow-sm shadow-stone-300`}>
-              Enregistrer mon salon
-            </button>}
-          {/* {isLoggedIn ? (
-              <div className="cursor-pointer">
-                <HeartIcon />
-              </div>
-            ) : (
-              <div className="cursor-pointer">
-                <GiftIcon />
-              </div>
-            )} */}
-          {/* <div className="cursor-pointer">
-              <Hamburger />
-            </div> */}
-          {isLoggedIn &&
-            <div className="hidden lg:flex">
-              <UserProfile />
-            </div>
-          }
-        </div>
-      </div>
-      {isServicesPage &&
-        <div className="flex flex-col xl:hidden items-center pr-2 rounded-xl bg-[#F7F7F7] overflow-auto mt-2 md:mt-7">
+
+        {/* For welcome page and small screen */}
+        {!hideSearchBar && isWelcomePage && <div className="sm:hidden flex pr-2 rounded-2xl bg-[#F7F7F7] h-[42px] shadow-sm shadow-stone-300 border border-stone-200">
           <div
-            className="flex items-center flex-col gap-1 md:gap-3 p-2 md:p-4"
+            className="flex w-full items-center justify-around text-sm lg:text-lg"
           >
-            <div className="flex items-center justify-center">
-              {isWelcomePage &&
-                <>
-                  <div ref={EthicityMobileRef} className="border-r border-grey px-6 last:border-r-0 cursor-pointer">
-                    <p
-                      className={showMobileEthnicity ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7"}
-                      onClick={() => {
-                        setShowMobileGender(false);
-                        setShowMobileEthnicity(!showMobileEthnicity);
-                        setShowMobileLength(false);
-                      }}
-                    >
-                      Ethnicity
-                    </p>
-                    {showMobileEthnicity && (
-                      <div className="absolute top-[180px] z-20 -ml-8 xl:ml-0 flex flex-col items-center justify-center w-44 px-7 pt-5 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
-                        {Ethnicity.map((item, index) => {
-                          return (
-                            <div
-                              key={index}
-                              className="flex w-full cursor-pointer mb-[19px]"
-                              onClick={() => onClickEthnicityCheckbox(item.name)}
-                            >
-                              <div
-                                className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${ethnicityFilters.includes(item.name)
-                                  ? ColorsThemeA.OhcGradient_A
-                                  : "bg-[#D6D6D6]"
-                                  }`}
-                              >
-                                <CheckedIcon />
-                              </div>
-                              <p className="ml-2">{item.name}</p>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    )}
-                  </div>
-                  <div ref={GenderMobileRef} className="border-r border-grey px-6 last:border-r-0 cursor-pointer">
-                    <p
-                      className={showMobileGender ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7"}
-                      onClick={() => {
-                        setShowMobileEthnicity(false);
-                        setShowMobileGender(!showMobileGender);
-                        setShowMobileLength(false);
-                      }}
-                    >
-                      Gender
-                    </p>
-                    {showMobileGender && (
-                      <div className="absolute top-[180px] z-20 -ml-5 xl:ml-0 flex flex-col items-center justify-center w-36 px-7 pt-5 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
-                        {Gender.map((item, index) => {
-                          return (
-                            <div
-                              key={index}
-                              className="flex w-full cursor-pointer mb-[19px]"
-                              onClick={() => onClickGenderCheckbox(item.name)}
-                            >
-                              <div
-                                className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${genderFilters.includes(item.name)
-                                  ? ColorsThemeA.OhcGradient_A
-                                  : "bg-[#D6D6D6]"
-                                  }`}
-                              >
-                                <CheckedIcon />
-                              </div>
-                              <p className="ml-2">{item.name}</p>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    )}
-                  </div>
-                  <div ref={LengthDesktopRef} className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
-                    <p
-                      className={showMobileLength ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7"}
-                      onClick={() => {
-                        setShowMobileEthnicity(false);
-                        setShowMobileGender(false);
-                        setShowMobileLength(!showMobileLength);
-                      }}
-                    >
-                      Length
-                    </p>
-                    {showDesktopLength && (
-                      <div className="absolute top-[180px] -ml-3 xl:ml-0 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
-                        {Length.map((item, index) => {
-                          return (
-                            <div
-                              key={index}
-                              className="flex w-full cursor-pointer mb-[19px]"
-                              onClick={() => onClickLengthCheckbox(item.name)}
-                            >
-                              <div
-                                className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${lengthFilters.includes(item.name)
-                                  ? ColorsThemeA.OhcGradient_A
-                                  : "bg-[#D6D6D6]"
-                                  }`}
-                              >
-                                <CheckedIcon />
-                              </div>
-                              <p className="ml-2">{item.name}</p>
-                            </div>
-                          );
-                        })}
-                      </div>
-                    )}
-                  </div>
-                </>
-              }
-
-
-
-              <ServicesFilter onTypeSelect={onTypeSelect ? onTypeSelect : () => { }} />
-            </div>
-            <div className="flex">
-              <div className="px-6 cursor-pointer">
-                <input
-                  type="text"
-                  placeholder="Rechercher"
-                  className="text-base px-4 p-2 rounded-full outline-none"
-                  onChange={onSearch && isSalonPage ? (e) => onSearch(e.target.value) : onServiceSearch && isServicesPage ? (e) => onServiceSearch(e.target.value) : () => { }}
-                />
-              </div>
-              <div className="cursor-pointer p-3 rounded-full bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
-                <SearcIcon />
-              </div>
+            <div className={`sm:hidden w-full  border-r border-grey px-1 lg:px-6 last:border-r-0 cursor-pointer`}>
+              <input
+                type="text"
+                placeholder="Rechercher"
+                className={`text-sm md:text-base px-2 p-2 w-full rounded-full outline-none ${Theme_A.behaviour.fieldFocused_B}`}
+                onChange={onSearch && isWelcomePage ?
+                  (e) => onSearch(e.target.value) :
+                  onServiceSearch && isServicesPage ? (e) => onServiceSearch(e.target.value) : () => { }}
+              />
             </div>
           </div>
-        </div>
-      }
+
+        </div>}
+        {isLoggedIn &&
+          <div className="hidden lg:flex mt-3">
+            <UserProfile />
+          </div>}
+        {!isLoggedIn &&
+          <button onClick={() => router.push('/registration')}
+            className={`hidden lg:flex mt-2 w-max md:w-40 h-10 lg:w-28 lg:h-14  text-center text-sm text-white font-medium rounded-md px-1 py-1 lg:my-3 ${ColorsThemeA.OhcGradient_A} transform hover:scale-105 transition-transform hover:shadow-[0px_3px_6px_0px_rgba(255,125,60,0.25)] rounded-xl shadow-sm shadow-stone-300`}>
+            Enregistrer mon salon
+          </button>}
+      </div>
     </div>
   );
 };

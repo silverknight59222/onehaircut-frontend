@@ -62,17 +62,19 @@ const ServicesFilter = ({ onTypeSelect }: ServicesFilterProps) => {
   }, []);
   return (
     <>
-      <div ref={servicesDesktopRef} className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
+      <div ref={servicesDesktopRef}
+        className={typeFilters.length > 0
+          ? `rounded-xl py-2 px-7 ${ColorsThemeA.filterSelected} text-white font-semibold`
+          : (servicesDesktopRef ? "rounded-xl py-2 px-7 bg-white text-black font-semibold" : "hover:bg-white rounded-xl py-2 px-7")}
+      >
         <p
           onClick={() => setShowDesktopType(!showDesktopType)}
-          className={
-            showDesktopType ? "rounded-xl py-2 px-7 bg-white" : "py-2 px-7"
-          }
+
         >
           Type
         </p>
         {showDesktopType &&
-          <div className="absolute top-[75px] -ml-2 z-20 flex flex-col items-center justify-center w-56 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
+          <div className="absolute -ml-2 z-30 flex flex-col items-center justify-center w-56 pt-5 px-7 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]">
             {types.map((item, index) => {
               return (
                 <div

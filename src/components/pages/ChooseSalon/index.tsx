@@ -294,7 +294,7 @@ const SalonChoice = () => {
         //getCoordinates(filteredSalons)
 
         // return () => clearTimeout(delay)
-    }, [citySearch, nameSearch, filteredMobile, filtereRange, ratingFilter, countryFilter, availabilityFilter, salons])
+    }, [citySearch, nameSearch, filteredMobile,filtereRange])
 
     if (!isLoaded) {
         return loadingView()
@@ -548,12 +548,12 @@ const SalonChoice = () => {
                                                     }
                                                 </div>
 
-                                                {/* Nom et prix du salon */}
-                                                <div className="flex items-start justify-between text-black text-lg font-semibold px-3 pt-2 ">
-                                                    <p className='w-36'>{fsalon.name}</p>
-                                                    {/* TODO PRICE SHOULD BE IN EUROS HERE */}
-                                                    <p className={`p-2 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white`}>{fsalon.final_price}</p>
-                                                </div>
+                                            {/* Nom et prix du salon */}
+                                            <div className="flex items-start justify-between text-black text-lg font-semibold px-3 pt-2 ">
+                                                <p className='w-36'>{fsalon.name}</p>
+                                                {/* TODO PRICE SHOULD BE IN EUROS HERE */}
+                                                <p className={`p-2 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white`}>{fsalon.final_price}</p>
+                                            </div>
 
                                                 {/* Évaluation et nombre d'avis */}
                                                 <div className='flex items-center text-xs text-[#7B7B7B] px-3 pt-1'>

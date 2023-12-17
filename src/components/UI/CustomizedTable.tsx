@@ -10,6 +10,8 @@ import TableCell, { TableCellProps, tableCellClasses } from '@mui/material/Table
 import { Button } from '@mui/material';
 import { salonApi } from '@/api/salonSide';
 import useSnackbar from '@/hooks/useSnackbar';
+import userLoader from "@/hooks/useLoader";
+
 
 const StyledTableCell = styled(TableCell)<TableCellProps>(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -39,6 +41,8 @@ interface CustomizedTableProps {
 const CustomizedTable: React.FC<CustomizedTableProps> = ({ columns, data, cB}) => {
   const [newData, setData] = useState(data);
   const showSnackbar = useSnackbar();
+  const { loadingView } = userLoader();
+  const [isLoading, setIsLoading] = useState(false);
 
   const deleteData = (rowToDelete) => {
     // Implement your logic to delete the row from the data
@@ -49,10 +53,22 @@ const CustomizedTable: React.FC<CustomizedTableProps> = ({ columns, data, cB}) =
   const handleButtonClick = async (row,index,len) => {
     // Handle button click for the specific row data
     console.log('Button clicked for row:', row);
+    setIsLoading(true)
     if(len === 6){
       let uv_id = newData[index].uv_id;
       let resp = await salonApi.delHairDresserUnavailability(uv_id);
-      console.log(resp);
+      // console.log(resp);
+      if(resp.data.status == 200){
+        showSnackbar("success", "Hair Dresser Unavailability removed.");
+      }
+      else {
+        showSnackbar("error", "Hair Dresser Unavailability process cannot be proceed.");
+      }
+    }
+    else {
+      let uv_id = newData[index].uv_id;
+      let resp = await salonApi.delSalonUnavailability(uv_id);
+      // console.log(resp);
       if(resp.data.status == 200){
         showSnackbar("success", "Hair Dresser Unavailability removed.");
       }
@@ -61,17 +77,28 @@ const CustomizedTable: React.FC<CustomizedTableProps> = ({ columns, data, cB}) =
       }
     }
     deleteData(row);
-    cB(newData)
+    setIsLoading(false)
+  };
+
+  const delay = async (ms) => {
+    return new Promise((resolve) => 
+        setTimeout(resolve, ms));
   };
 
   useEffect(() => {
-    console.log(newData)
+    cB(newData)
   },[newData]);
 
-  const visibleColumns = columns.slice(1);
+  useEffect(() => {
+    console.log("Salon Part Table")
+    console.log(newData)
+  },[])
 
+  const visibleColumns = columns.slice(1);
+  
   return (
     <TableContainer component={Paper}>
+      {isLoading && loadingView()}
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
