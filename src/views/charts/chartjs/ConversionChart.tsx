@@ -50,7 +50,7 @@ const renderCustomizedLabel = ({
 };
 
 // Update the component to accept props
-const ConversionChart = ({data}) => {
+const ConversionChart = ({ data }) => {
     const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
     const [conversionData, setConversionData] = useState([] as any)
@@ -71,7 +71,7 @@ const ConversionChart = ({data}) => {
         if (data.total_orders != 0) {
             tauxDeConversion = (data.total_orders / data.total_views) * 100
         }
-        
+
         if (tauxDeConversion >= 0 && tauxDeConversion <= 5) {
             setIndiceTauxConversion("Faible");
             setCouleurTaux('rgba(255, 70, 70, 1)');
@@ -98,7 +98,7 @@ const ConversionChart = ({data}) => {
     }, [data])
 
     return (
-        <div style={{ width: '32%' }} className="px-3 md:w-4/12 h-[460px] overflow-auto w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-xl shadow-sm shadow-stone-600">
+        <div className="px-3 lg:w-4/12 h-[460px] overflow-auto w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-xl shadow-sm shadow-stone-600">
             <p className="text-xl sm:text-2xl text-[#727272] font-semibold text-center mt-6 ">
                 Taux de Conversion: <span style={{ color: couleurTaux }}>{indiceTauxConversion}</span>
             </p>

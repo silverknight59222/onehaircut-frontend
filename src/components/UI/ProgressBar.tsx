@@ -58,7 +58,7 @@ const ProgressBar = ({ value, name, number, color, rotation }: ProgressBar) => {
 
     return (
         <div
-            className="w-64 sm:w-60 ml:w-56 lg:w-52 transform transition-transform duration-300 hover:scale-105"
+            className="w-56 lg:w-52 transform transition-transform duration-300 hover:scale-105"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             title={isHovered && value ? `${value}%` : ""}

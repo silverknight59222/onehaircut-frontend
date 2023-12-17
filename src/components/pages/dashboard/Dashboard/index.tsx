@@ -243,7 +243,7 @@ const Dashboard = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch mt-10">
                 {/*REVENU JOURNALIER */}
-                <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center justify-between mb-8 lg:mb-0">
                     <button onClick={() => toggleModal('Incomes')} className={`${Theme_A.button.medBlackColoredButton} hover:bg-stone-600`}>
                         Revenu journalier
                     </button>
@@ -256,7 +256,7 @@ const Dashboard = () => {
 
 
                 {/*Objectifs */}
-                <div className="flex items-center justify-between gap-3 ">
+                <div className="hidden lg:flex items-center justify-between gap-3 ">
                     <button onClick={() => toggleModal('goals')} className={`${Theme_A.button.medBlackColoredButton} hover:bg-stone-600`}>
                         Objectifs du mois
                     </button>
@@ -264,21 +264,28 @@ const Dashboard = () => {
             </div>
 
 
-            <div className="mb-12">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            <div className="mb-12 lg:mb-0">
+                <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-3">
                     {/* REVENU CHART */}
-                    <Card className="h-full rounded-xl">
+                    <Card className="h-full rounded-xl mb-16 lg:mb-0">
                         <div>
                             <RevenueChart period={selectedMonthRevenu} />
                         </div>
                     </Card>
+
+                    {/*Objectifs */}
+                    <div className="lg:hidden flex items-center justify-between mb-3">
+                        <button onClick={() => toggleModal('goals')} className={`${Theme_A.button.medBlackColoredButton} hover:bg-stone-600`}>
+                            Objectifs du mois
+                        </button>
+                    </div>
                     {/* OBJECTIFS CHART */}
                     <Card className="h-full flex flex-col justify-start rounded-xl text-sm">
                         <div>
                             {/* Ligne du haut */}
                             <Grid container justifyContent="center" alignItems="start" spacing={2}>
                                 <Grid item xs={false} sm={false} md={false} lg={2} /> {/* Espace vide pour le décalage IMPORTANT*/}
-                                <Grid item xs={12} sm={4} md={5} lg={5} style={{ marginTop: '1rem' }}>
+                                <Grid item xs={12} sm={6} md={5} lg={5} style={{ marginTop: '1rem' }}>
                                     {/* Contenu pour Nouveaux Clients */}
                                     <ProgressBar
                                         value={61}
@@ -288,7 +295,7 @@ const Dashboard = () => {
                                         color='rgba(255, 70, 70, 1)'
                                     />
                                 </Grid>
-                                <Grid item xs={12} sm={4} md={5} lg={3} style={{ marginTop: '1rem' }}>
+                                <Grid item xs={12} sm={5} md={5} lg={3} style={{ marginTop: '1rem' }}>
                                     {/* Contenu pour Nombre de visite */}
                                     <ProgressBar
                                         value={73}
@@ -302,7 +309,7 @@ const Dashboard = () => {
 
                             {/* Ligne du bas */}
                             <Grid container justifyContent="center" alignItems="end" spacing={2}>
-                                <Grid item xs={12} sm={4} md={5} lg={5} style={{ marginBottom: '1rem' }} >
+                                <Grid item xs={12} sm={6} md={5} lg={5} style={{ marginBottom: '1rem' }} >
                                     {/* Contenu pour Revenu mensuel */}
                                     < ProgressBar
                                         value={50}
@@ -314,7 +321,7 @@ const Dashboard = () => {
                                 </Grid>
                                 {/* Supprimez cet espace vide si vous voulez rapprocher le dernier ProgressBar vers la gauche */}
                                 {/* <Grid item xs={false} sm={1} lg={2} /> */}
-                                <Grid item xs={12} sm={4} md={5} lg={6} style={{ marginBottom: '1rem' }}>
+                                <Grid item xs={12} sm={5} md={5} lg={6} style={{ marginBottom: '1rem' }}>
                                     {/* Contenu pour Commandes d'habitués */}
                                     <ProgressBar
                                         value={15}
@@ -369,9 +376,9 @@ const Dashboard = () => {
                 </Grid>
             </Grid>
 
-            <div className="flex flex-wrap -mx-3 mt-5 gap-4">
+            <div className="flex flex-col lg:flex-row -mx-3 mt-5 gap-4">
                 {/* Client Activity */}
-                <div style={{ width: '32%' }} className="px-3 md:w-4/12 w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-xl shadow-sm shadow-stone-600">
+                <div className="px-3 w-full lg:w-4/12 p-6 bg-[rgba(255,255,255,0.69)] rounded-xl shadow-sm shadow-stone-600">
                     <div className="relative ml-4">
                         <table className="w-full text-sm text-left">
                             <thead className="text-grey text-sm font-semibold">
@@ -436,7 +443,7 @@ const Dashboard = () => {
                 <ConversionChart data={salonStats} />
 
                 {/* TOP CLIENTS TABS*/}
-                <div style={{ width: '32%' }} className="px-3 md:w-4/12 w-full p-6 bg-[rgba(255,255,255,0.69)] rounded-xl shadow-sm shadow-stone-600">
+                <div className="px-3 w-full lg:w-4/12  p-6 bg-[rgba(255,255,255,0.69)] rounded-xl shadow-sm shadow-stone-600">
                     <div className="relative ml-4">
                         <table className="w-full text-sm text-left">
                             <thead className="text-grey text-sm font-semibold">
