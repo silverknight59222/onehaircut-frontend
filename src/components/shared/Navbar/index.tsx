@@ -262,7 +262,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
             <LogoIcon className={'medium'} />
           </div>
           {isLoggedIn &&
-            <div className="mt-3 lg:hidden">
+            <div className="mt-3">
               <UserProfile />
             </div>}
           {!isLoggedIn &&
