@@ -284,7 +284,7 @@ const Dashboard = () => {
                         <div>
                             {/* Ligne du haut */}
                             <Grid container justifyContent="center" alignItems="start" spacing={2}>
-                                <Grid item xs={false} sm={false} md={false} lg={2} /> {/* Espace vide pour le décalage IMPORTANT*/}
+                                <Grid item xs={false} sm={false} md={3} lg={2} /> {/* Espace vide pour le décalage IMPORTANT*/}
                                 <Grid item xs={12} sm={6} md={5} lg={5} style={{ marginTop: '1rem' }}>
                                     {/* Contenu pour Nouveaux Clients */}
                                     <ProgressBar
@@ -295,7 +295,7 @@ const Dashboard = () => {
                                         color='rgba(255, 70, 70, 1)'
                                     />
                                 </Grid>
-                                <Grid item xs={12} sm={5} md={5} lg={3} style={{ marginTop: '1rem' }}>
+                                <Grid item xs={12} sm={5} md={4} lg={3} style={{ marginTop: '1rem' }}>
                                     {/* Contenu pour Nombre de visite */}
                                     <ProgressBar
                                         value={73}
@@ -321,7 +321,7 @@ const Dashboard = () => {
                                 </Grid>
                                 {/* Supprimez cet espace vide si vous voulez rapprocher le dernier ProgressBar vers la gauche */}
                                 {/* <Grid item xs={false} sm={1} lg={2} /> */}
-                                <Grid item xs={12} sm={5} md={5} lg={6} style={{ marginBottom: '1rem' }}>
+                                <Grid item xs={12} sm={5} md={6} lg={6} style={{ marginBottom: '1rem' }}>
                                     {/* Contenu pour Commandes d'habitués */}
                                     <ProgressBar
                                         value={15}
