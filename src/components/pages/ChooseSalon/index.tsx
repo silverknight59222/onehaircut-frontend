@@ -115,13 +115,14 @@ const SalonChoice = () => {
             };
             let salonAvailable = false;
 
-            availabilityFilter.forEach(day => {
-                salonAvailable = salon.openTimes[frenchToEnglishMapping[availabilityFilter[0]]].available;
+            for(const day of availabilityFilter)
+            {
+                salonAvailable = salon.openTimes[frenchToEnglishMapping[day]].available;
                 if(salonAvailable)
                 {
-                    return;
+                    break;
                 }
-            })
+            }
 
 
             return (
