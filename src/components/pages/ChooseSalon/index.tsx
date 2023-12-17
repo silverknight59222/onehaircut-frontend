@@ -292,10 +292,10 @@ const SalonChoice = () => {
         // },1000)
 
         filteredCityHandler()
-        //getCoordinates(filteredSalons)
+        getCoordinates(filteredSalons)
 
         // return () => clearTimeout(delay)
-    }, [citySearch, nameSearch, filteredMobile,filtereRange])
+    }, [citySearch, nameSearch, filteredMobile, filtereRange, ratingFilter, countryFilter, availabilityFilter, salons])
 
     if (!isLoaded) {
         return loadingView()
