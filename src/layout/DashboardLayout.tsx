@@ -4,8 +4,8 @@ import React, { useState, useEffect } from "react";
 import { dashboard } from "@/api/dashboard";
 import { getLocalStorage } from "@/api/storage";
 
-interface NotificationsParams{
-  chat_count : number, reservation_count : number
+interface NotificationsParams {
+  chat_count: number, reservation_count: number
 }
 
 interface DashboardLayout {
@@ -50,6 +50,7 @@ const DashboardLayout = ({ children, notifications }: DashboardLayout) => {
           isDashboard={tab !== "Dashboard"}
           SidebarHandler={SidebarHandler}
           tabHandler={tabHandler}
+          isSidebar={isSidebar}
         />
         <div className="mt-12 px-4 lg:px-6">
           {children}
