@@ -89,6 +89,9 @@ const SalonChoice = () => {
     const filteredCityHandler = async () => {
         //const filteredSalons = salons
         let filteredSalonsFunc = salons.filter((salon) => {
+            console.log(countryFilter !== '');
+            console.log('Range ' + filtereRange);
+            console.log('Rating ' + ratingFilter);
             const cityNameMatches = citySearch
                 ? salon.address.city.toLowerCase().includes(citySearch.toLowerCase())
                 : true; // If citySearch is empty, consider it as a match
@@ -103,7 +106,7 @@ const SalonChoice = () => {
 
             const salonInRange = filtereRange[0] <= salon.final_price && salon.final_price <= filtereRange[1];
             const salonAboveEqualRating = salon.rating >= ratingFilter;
-            const salonInCountry = salon.address.country === countryFilter;
+            const salonInCountry = (countryFilter === '') || (salon.address.country === countryFilter);
             const frenchToEnglishMapping = {
                 'Lundi' : 1,
                 'Mardi' : 2,
@@ -113,7 +116,7 @@ const SalonChoice = () => {
                 'Samedi' : 6,
                 'Dimanche' : 0
             };
-            let salonAvailable = false;
+            let salonAvailable = true;
 
             for(const day of availabilityFilter)
             {
