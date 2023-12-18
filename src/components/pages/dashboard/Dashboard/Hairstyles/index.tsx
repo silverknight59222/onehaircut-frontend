@@ -3,6 +3,7 @@ import Footer from "@/components/UI/Footer";
 import HairStyleList from "./HairStyleList";
 import HairStylesModal from "./HairStylesModal";
 import HairStyleListHeader from "./HairStyleListHeader";
+import { getLocalStorage } from "@/api/storage";
 
 const hairStyleSelectEvent = {
   on: () => {}
@@ -39,6 +40,20 @@ const Hairstyles = () => {
   const [activeMenu, setActiveMenu] = useState<string>("new");
   const [finalSelectedItems, setFinalSelectedItems] = useState([]);
   const [isSelectedDelete, setIsSelectedDelete] = useState(false);
+  const [baseGender, setBaseGender] = useState("");
+  const salon = getLocalStorage("hair_salon")
+  const salonData = salon ? JSON.parse(salon) : null;
+
+  useEffect(() => {
+    params.genderFilters = "";
+    if(salonData.type.includes("men")){
+      params.genderFilters = "Men";
+    }
+    if(salonData.type.includes("women")){
+      params.genderFilters = "Women";
+    }
+  },[])
+  
   return (
     <div>
       <HairStyleListHeader onListCountShow={listCountShow} isd={isSelectedDelete} selectAllEvent={selectAll} params={params} onFilterSelect={onFilterSelect} setActiveMenu={setActiveMenu} activeMenu={activeMenu} ></HairStyleListHeader>

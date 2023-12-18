@@ -61,6 +61,10 @@ const HairStyleListHeader = React.memo(({ setActiveMenu, isd_value, activeMenu, 
         },
     ];
 
+    useEffect(() => {
+        // setGenderFilters(baseSelectedGender)
+    },[])
+
     const onClickEthnicityCheckbox = (ethnicity: string) => {
         if (ethnicityFilters.includes(ethnicity)) {
             params.ethnicityFilters = ethnicityFilters.filter((item) => item !== ethnicity)
@@ -82,6 +86,8 @@ const HairStyleListHeader = React.memo(({ setActiveMenu, isd_value, activeMenu, 
             params.genderFilters = gender
             setGenderFilters(gender);
         }
+        // baseSelectedGender = ""
+        // setBaseGender(baseSelectedGender)
         resetSelectALl()
     };
 
@@ -244,15 +250,19 @@ const HairStyleListHeader = React.memo(({ setActiveMenu, isd_value, activeMenu, 
     onListCountShow.on = setListCount
 
     useEffect(() => {
-        setGenderFilters("");
+        setGenderFilters(params != null ? params.genderFilters : "");
         setEthnicityFilters([]);
         setLengthFilters([]);
     }, [activeMenu]);
 
     useEffect(() => {
         getFilteredCuts()
+        console.log("Params")
+        console.log(params)
+        console.log("Base Selected Gender : "+params.genderFilters)
+        console.log(genderFilters)
+        console.log(genderFilters.includes("Men"))
     }, [ethnicityFilters, genderFilters, lengthFilters, search]);
-
 
     // This component will re-render only if the `data` prop changes
     return (
