@@ -44,9 +44,10 @@ interface Navbar {
   onRatingFilter?: (arg0: number) => void,
   onCountryFilter?: (arg0: string) => void,
   onAvailabilityFilter?: (arg0: string[]) => void,
+  onNewSalonFilter?: (arg0: boolean) => void
 }
 
-const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideSearchBar, onTypeSelect, onSearch, onServiceSearch, onGenderFilter, onEthnicityFilters, onLengthFilters, onMobileFilters, onCitySearch, onNameSearch, onRangeFilters, onRatingFilter, onCountryFilter, onAvailabilityFilter }: Navbar) => {
+const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideSearchBar, onTypeSelect, onSearch, onServiceSearch, onGenderFilter, onEthnicityFilters, onLengthFilters, onMobileFilters, onCitySearch, onNameSearch, onRangeFilters, onRatingFilter, onCountryFilter, onAvailabilityFilter, onNewSalonFilter }: Navbar) => {
   const [isDropdown, setIsDropdown] = useState(false);
   const [showDesktopGender, setShowDesktopGender] = useState(false);
   const [showDesktopLength, setShowDesktopLength] = useState(false);
@@ -68,6 +69,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
   const [ratingFilter, setRatingFilter] = useState<number>(1);
   const [countryFilter, setCountryFilter] = useState<string>("");
   const [availabilityFilter, setAvailabilityFilter] = useState<string[]>([]);
+  const [newSalonFilter, setNewSalonFilter] = useState(true);
 
   const [tmpRange, setTmpRange] = useState<number[]>([10, 100]);
   const [rangeFilters, setRangeFilter] = useState<number[]>([10, 100]);
@@ -213,6 +215,9 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
       setRatingFilter(value);
     }
   };
+  const onNewSalonCheckbox = (value: boolean) => {
+    setNewSalonFilter(value);
+  }
   const onClickCountryCheckbox = (value: string) => {
     if (countryFilter === value) {
       setCountryFilter('');  // Reset or clear the filter if it's already selected
@@ -253,7 +258,10 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
   useEffect(() => {
     let wrappedGenderFilters = genderFilters === 'Homme' ? 'men' : genderFilters === 'Femme' ? 'women' : 'Mix';
     onGenderFilter && onGenderFilter(wrappedGenderFilters)
-  }, [genderFilters])
+  }, [genderFilters]);
+  useEffect(() => {
+    onNewSalonFilter && onNewSalonFilter(newSalonFilter)
+  }, [newSalonFilter]);
 
 
   useEffect(() => {
@@ -272,7 +280,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
 
       let gender = hairstyle_trend === 'Masculine' ? 'Homme' : hairstyle_trend === 'Feminine' ? 'Femme' : 'Mix';
       let length = length_sought === 'Long' ? ['Long'] : length_sought === 'Moyen' ? ['Medium'] : length_sought === 'Court' ? ['Short'] : [];
-      let mobile = hairdressing_at_home === 0 ? 'no' : 'yes';
+      let mobile = hairdressing_at_home === 0 ? '' : 'yes';
 
       setGenderFilters(gender);
       setLengthFilters(length);
@@ -281,6 +289,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
       setRatingFilter(rating);
       setCountryFilter(country);
       setAvailabilityFilter(availability);
+      setNewSalonFilter(true);
     }
     document.addEventListener("click", closeSelectBox);
 
@@ -708,6 +717,22 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                 </p>
                 {showDesktopRating && isSalonPage && (
                   <div className="absolute top-[75px] -ml-3 z-20 flex flex-col items-center justify-center w-42 pt-5 px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
+                    
+                    <div
+                          key={0}
+                          className="flex w-full cursor-pointer mb-[10px] items-center transform hover:scale-110"
+                          onClick={() => onNewSalonCheckbox(!newSalonFilter)}
+                        >
+                          <div
+                            className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105  mr-2
+              ${newSalonFilter ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}
+                          >
+                            <CheckedIcon />
+                          </div>
+                          <p className="ml-1 mr-2">Nouveau salon</p>
+    
+                          
+                        </div>
                     {Ratings.map((item, index) => {
                       return (
                         <div
