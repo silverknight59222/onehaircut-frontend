@@ -72,8 +72,12 @@ const Messages = () => {
                 by: 'client',
             }
             await dashboard.sendMessage(data)
-                .then(resp => {
+                .then(async resp => {
                     setMessage('')
+
+                    await dashboard.getChat(userId, selectedChat.user_id).then(resp => {
+                      setChats(resp.data.data);
+                    });
                 })
                 .catch(err => {
                     //console.log(err)

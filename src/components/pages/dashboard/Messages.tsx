@@ -71,8 +71,12 @@ const Messages = () => {
         by: 'professional',
       }
       await dashboard.sendMessage(data)
-        .then(resp => {
+        .then(async resp => {
           setMessage('')
+
+          await dashboard.getChat(selectedChat.client_id, salonId).then(resp => {
+            setChats(resp.data.data);
+          });
         })
         .catch(err => {
           //console.log(err)
