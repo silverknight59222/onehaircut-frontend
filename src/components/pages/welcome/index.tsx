@@ -137,7 +137,6 @@ const Welcome = () => {
     const haircuts: Haircut[] = [];
     let list = salonHaircut
 
-
     // Apply filters
     if (search) {
       list = list.filter((haircut) =>

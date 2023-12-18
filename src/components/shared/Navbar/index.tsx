@@ -258,24 +258,24 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
 
   useEffect(() => {
     const user = getLocalStorage("user");
-    const hairstyle_trend = user ? String(JSON.parse(user).user_preferences.hairstyle_trend) : null;
-    const length_sought = user ? String(JSON.parse(user).user_preferences.length_sought) : null;
-    const budget = user ? JSON.parse(user).user_preferences.budget : [];
-    const hairdressing_at_home = user ? JSON.parse(user).user_preferences.hairdressing_at_home : null;
-    const rating = user ? Number(JSON.parse(user).user_preferences.ratings) : 1;
-    const country = user ? String(JSON.parse(user).user_preferences.country) : "null";
-    const availability = user ? JSON.parse(user).user_preferences.availability : [];
+    const hairstyle_trend = user ? (JSON.parse(user).user_preferences ? String(JSON.parse(user).user_preferences.hairstyle_trend) : "") : "";
+    const length_sought = user ? (JSON.parse(user).user_preferences ? String(JSON.parse(user).user_preferences.length_sought) : "") : "";
+    const budget = user ? (JSON.parse(user).user_preferences ?  JSON.parse(user).user_preferences.budget : [10, 100]) : [10, 100];
+    const hairdressing_at_home = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.hairdressing_at_home : "all") : "all";
+    const rating = user ? (JSON.parse(user).user_preferences ? Number(JSON.parse(user).user_preferences.ratings) : 1) : 1;
+    const country = user ? (JSON.parse(user).user_preferences ?  String(JSON.parse(user).user_preferences.country) : "") : "";
+    const availability = user ? (JSON.parse(user).user_preferences ?   JSON.parse(user).user_preferences.availability : ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"]) : ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];
     console.log(availability);
     const userId = user ? Number(JSON.parse(user).id) : null;
     if (userId) {
       setIsLoggedIn(true);
 
       let gender = hairstyle_trend === 'Masculine' ? 'Homme' : hairstyle_trend === 'Feminine' ? 'Femme' : 'Mix';
-      let length = length_sought === 'Long' ? 'Long' : length_sought === 'Moyen' ? 'Medium' : 'Short';
+      let length = length_sought === 'Long' ? ['Long'] : length_sought === 'Moyen' ? ['Medium'] : length_sought === 'Court' ? ['Short'] : [];
       let mobile = hairdressing_at_home === 0 ? 'no' : 'yes';
 
       setGenderFilters(gender);
-      setLengthFilters((prev) => [...prev, length]);
+      setLengthFilters(length);
       setRangeFilter(budget);
       setMobileFilters(mobile);
       setRatingFilter(rating);

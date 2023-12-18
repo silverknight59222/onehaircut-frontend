@@ -103,7 +103,7 @@ const SalonChoice = () => {
 
             const salonInRange = filtereRange[0] <= salon.final_price && salon.final_price <= filtereRange[1];
             const salonAboveEqualRating = salon.rating >= ratingFilter;
-            const salonInCountry = salon.address.country === countryFilter;
+            const salonInCountry = (countryFilter === '') || (salon.address.country === countryFilter);
             const frenchToEnglishMapping = {
                 'Lundi' : 1,
                 'Mardi' : 2,
@@ -113,7 +113,8 @@ const SalonChoice = () => {
                 'Samedi' : 6,
                 'Dimanche' : 0
             };
-            let salonAvailable = false;
+            let salonAvailable = true;
+            
 
             for(const day of availabilityFilter)
             {
@@ -123,7 +124,14 @@ const SalonChoice = () => {
                     break;
                 }
             }
-
+            console.log(
+                cityNameMatches &&
+                salonNameMatches &&
+                salonMobileMatches &&
+                salonInRange &&
+                salonAboveEqualRating &&
+                salonInCountry &&
+                salonAvailable)
 
             return (
                 cityNameMatches &&
@@ -156,9 +164,12 @@ const SalonChoice = () => {
             }
         })
         //console.log('position array', positionArray)
-        setPositions(positionArray)
-        const tempCenter: Position = getMapCenter(positionArray)
-        setCenter(tempCenter);
+        if(positionArray.length > 0)
+        {
+            setPositions(positionArray)
+            const tempCenter: Position = getMapCenter(positionArray)
+            setCenter(tempCenter);
+        }
     }
     // Fonction pour récupérer tous les salons
     const getAllSalons = async () => {
