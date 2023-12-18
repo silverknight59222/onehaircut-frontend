@@ -53,6 +53,7 @@ const SalonChoice = () => {
     const [ratingFilter, setRatingFilter] = useState<number>(1);
     const [countryFilter, setCountryFilter] = useState<string>("");
     const [availabilityFilter, setAvailabilityFilter] = useState<string[]>([]);
+    const [newSalonFilter, setNewSalonFilter] = useState(true);
     const [positions, setPositions] = useState<Position[]>([])
     const [center, setCenter] = useState<Position>()
     const { isLoaded } = useLoadScript({
@@ -102,7 +103,7 @@ const SalonChoice = () => {
                 filteredMobile.includes(salon.is_mobile.toLowerCase());
 
             const salonInRange = filtereRange[0] <= salon.final_price && salon.final_price <= filtereRange[1];
-            const salonAboveEqualRating = salon.rating >= ratingFilter;
+            const salonAboveEqualRating = (salon.rating >= ratingFilter) || (newSalonFilter && salon.rating === 0);
             const salonInCountry = (countryFilter === '') || (salon.address.country === countryFilter);
             const frenchToEnglishMapping = {
                 'Lundi' : 1,
@@ -306,7 +307,7 @@ const SalonChoice = () => {
         getCoordinates(filteredSalons)
 
         // return () => clearTimeout(delay)
-    }, [citySearch, nameSearch, filteredMobile, filtereRange, ratingFilter, countryFilter, availabilityFilter, salons])
+    }, [citySearch, nameSearch, filteredMobile, filtereRange, ratingFilter, countryFilter, availabilityFilter, newSalonFilter, salons])
 
     if (!isLoaded) {
         return loadingView()
@@ -404,6 +405,7 @@ const SalonChoice = () => {
                 onRatingFilter={(rating: number) => setRatingFilter(rating)}
                 onCountryFilter={(country: string) => setCountryFilter(country)}
                 onAvailabilityFilter={(availability: string[]) => setAvailabilityFilter(availability)}
+                onNewSalonFilter={(newSalon: boolean) => setNewSalonFilter(newSalon)}
             />
 
             {/* Corps du composant */}
