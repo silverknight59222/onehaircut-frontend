@@ -89,9 +89,6 @@ const SalonChoice = () => {
     const filteredCityHandler = async () => {
         //const filteredSalons = salons
         let filteredSalonsFunc = salons.filter((salon) => {
-            console.log(countryFilter !== '');
-            console.log('Range ' + filtereRange);
-            console.log('Rating ' + ratingFilter);
             const cityNameMatches = citySearch
                 ? salon.address.city.toLowerCase().includes(citySearch.toLowerCase())
                 : true; // If citySearch is empty, consider it as a match
@@ -117,6 +114,7 @@ const SalonChoice = () => {
                 'Dimanche' : 0
             };
             let salonAvailable = true;
+            
 
             for(const day of availabilityFilter)
             {
@@ -126,7 +124,14 @@ const SalonChoice = () => {
                     break;
                 }
             }
-
+            console.log(
+                cityNameMatches &&
+                salonNameMatches &&
+                salonMobileMatches &&
+                salonInRange &&
+                salonAboveEqualRating &&
+                salonInCountry &&
+                salonAvailable)
 
             return (
                 cityNameMatches &&
@@ -159,9 +164,12 @@ const SalonChoice = () => {
             }
         })
         //console.log('position array', positionArray)
-        setPositions(positionArray)
-        const tempCenter: Position = getMapCenter(positionArray)
-        setCenter(tempCenter);
+        if(positionArray.length > 0)
+        {
+            setPositions(positionArray)
+            const tempCenter: Position = getMapCenter(positionArray)
+            setCenter(tempCenter);
+        }
     }
     // Fonction pour récupérer tous les salons
     const getAllSalons = async () => {
