@@ -260,11 +260,11 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
     const user = getLocalStorage("user");
     const hairstyle_trend = user ? (JSON.parse(user).user_preferences ? String(JSON.parse(user).user_preferences.hairstyle_trend) : "") : "";
     const length_sought = user ? (JSON.parse(user).user_preferences ? String(JSON.parse(user).user_preferences.length_sought) : "") : "";
-    const budget = user ? (JSON.parse(user).user_preferences ?  JSON.parse(user).user_preferences.budget : [10, 100]) : [10, 100];
+    const budget = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.budget : [10, 100]) : [10, 100];
     const hairdressing_at_home = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.hairdressing_at_home : "all") : "all";
     const rating = user ? (JSON.parse(user).user_preferences ? Number(JSON.parse(user).user_preferences.ratings) : 1) : 1;
-    const country = user ? (JSON.parse(user).user_preferences ?  String(JSON.parse(user).user_preferences.country) : "") : "";
-    const availability = user ? (JSON.parse(user).user_preferences ?   JSON.parse(user).user_preferences.availability : ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"]) : ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];
+    const country = user ? (JSON.parse(user).user_preferences ? String(JSON.parse(user).user_preferences.country) : "") : "";
+    const availability = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.availability : ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]) : ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
     console.log(availability);
     const userId = user ? Number(JSON.parse(user).id) : null;
     if (userId) {
@@ -348,7 +348,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
             </div>}
           {!isLoggedIn &&
             <button onClick={() => router.push('/registration')}
-              className={`lg:hidden mt-2 w-max md:w-40 h-10 lg:w-28 lg:h-14  text-center text-sm text-white font-medium rounded-md px-1 py-1 lg:my-3 ${ColorsThemeA.OhcGradient_A} transform hover:scale-105 transition-transform hover:shadow-[0px_3px_6px_0px_rgba(255,125,60,0.25)] rounded-xl shadow-sm shadow-stone-300`}>
+              className={`lg:hidden mt-2 w-max md:w-40 h-11 lg:w-28 lg:h-14  text-center text-sm text-white font-medium rounded-md px-1 py-1 lg:my-3 ${ColorsThemeA.OhcGradient_A} transform hover:scale-105 transition-transform hover:shadow-[0px_3px_6px_0px_rgba(255,125,60,0.25)] rounded-xl shadow-sm shadow-stone-300`}>
               Enregistrer mon salon
             </button>}
         </div>

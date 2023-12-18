@@ -258,9 +258,9 @@ const Filters = () => {
                 <LogoCircleFixRight />
             </div>
             <ClientDashboardLayout notifications={notifications}>
-                <div className="mt-14 mb-5 px-5 sm:px-10">
+                <div className="mt-14 mb-15 px-5 sm:px-10">
                     <p className="text-black font-medium text-3xl text-center">
-                        Gestion du compte
+                        Paramétrage des filtres
                     </p>
                     <div className="flex flex-col lg:flex-row items-start justify-center gap-10 2xl:gap-20 mt-10">
                         <div className="w-full lg:w-auto flex flex-col items-center justify-center gap-6">
@@ -278,13 +278,13 @@ const Filters = () => {
                             })}
                         </div>
                         {selectedTab === 0 ?
-                            <div className="relative z-10 w-full lg:w-[630px] mt-5 md:mt-0 rounded-3xl bg-white py-6 px- sm:px-10 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)] h-auto min-height-[500px] ">
+                            <div className="relative z-10 w-full lg:w-[630px] mt-5 md:mt-0 rounded-3xl bg-white py-6 px-2 lg:px-10 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)] h-auto min-height-[500px]">
 
                                 {/* Title of the Section "Coiffure" */}
-                                <p className="text-black text-lg mb-4 font-semibold pl-2 pr-2">Coiffure</p>
+                                <p className="text-black text-lg ml-6 mb-4 font-semibold pl-2 pr-2">Coiffure</p>
 
                                 {/* Column organization */}
-                                <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-6 ">
+                                <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-2 lg:gap-6 justify-around">
 
                                     {/* First Column */}
                                     <div className="flex flex-col items-center">
