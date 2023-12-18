@@ -268,11 +268,11 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
     const user = getLocalStorage("user");
     const hairstyle_trend = user ? (JSON.parse(user).user_preferences ? String(JSON.parse(user).user_preferences.hairstyle_trend) : "") : "";
     const length_sought = user ? (JSON.parse(user).user_preferences ? String(JSON.parse(user).user_preferences.length_sought) : "") : "";
-    const budget = user ? (JSON.parse(user).user_preferences ?  JSON.parse(user).user_preferences.budget : [10, 100]) : [10, 100];
+    const budget = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.budget : [10, 100]) : [10, 100];
     const hairdressing_at_home = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.hairdressing_at_home : "all") : "all";
     const rating = user ? (JSON.parse(user).user_preferences ? Number(JSON.parse(user).user_preferences.ratings) : 1) : 1;
-    const country = user ? (JSON.parse(user).user_preferences ?  String(JSON.parse(user).user_preferences.country) : "") : "";
-    const availability = user ? (JSON.parse(user).user_preferences ?   JSON.parse(user).user_preferences.availability : ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"]) : ["Lundi","Mardi","Mercredi","Jeudi","Vendredi","Samedi","Dimanche"];
+    const country = user ? (JSON.parse(user).user_preferences ? String(JSON.parse(user).user_preferences.country) : "") : "";
+    const availability = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.availability : ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]) : ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
     console.log(availability);
     const userId = user ? Number(JSON.parse(user).id) : null;
     if (userId) {
@@ -357,7 +357,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
             </div>}
           {!isLoggedIn &&
             <button onClick={() => router.push('/registration')}
-              className={`lg:hidden mt-2 w-max md:w-40 h-10 lg:w-28 lg:h-14  text-center text-sm text-white font-medium rounded-md px-1 py-1 lg:my-3 ${ColorsThemeA.OhcGradient_A} transform hover:scale-105 transition-transform hover:shadow-[0px_3px_6px_0px_rgba(255,125,60,0.25)] rounded-xl shadow-sm shadow-stone-300`}>
+              className={`lg:hidden mt-2 w-max md:w-40 h-11 lg:w-28 lg:h-14  text-center text-sm text-white font-medium rounded-md px-1 py-1 lg:my-3 ${ColorsThemeA.OhcGradient_A} transform hover:scale-105 transition-transform hover:shadow-[0px_3px_6px_0px_rgba(255,125,60,0.25)] rounded-xl shadow-sm shadow-stone-300`}>
               Enregistrer mon salon
             </button>}
         </div>
@@ -373,7 +373,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     className={
                       ethnicityFilters.length > 0
                         ? `rounded-xl py-2 px-7 ${ColorsThemeA.filterSelected} text-white font-semibold`
-                        : (showDesktopEthnicity ? "rounded-xl py-2 px-7 bg-white text-black font-semibold" : "hover:bg-white rounded-xl py-2 px-7")
+                        : (showDesktopEthnicity ? "rounded-xl py-2 px-7 bg-white text-black font-semibold" : "hover:bg-stone-200 rounded-xl py-2 px-7")
                     }
                     onClick={() => {
                       setShowDesktopGender(false);
@@ -408,7 +408,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                   <p
                     className={genderFilters.length > 0
                       ? `rounded-xl py-2 px-7 ${ColorsThemeA.filterSelected} text-white font-semibold`
-                      : (showDesktopGender ? "rounded-xl py-2 px-7 bg-white text-black font-semibold" : "hover:bg-white rounded-xl py-2 px-7")}
+                      : (showDesktopGender ? "rounded-xl py-2 px-7 bg-white text-black font-semibold" : "hover:bg-stone-200 rounded-xl py-2 px-7")}
                     onClick={() => {
                       setShowDesktopEthnicity(false);
                       setShowDesktopLength(false);
@@ -445,7 +445,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                   <p
                     className={lengthFilters.length > 0
                       ? `rounded-xl py-2 px-7 ${ColorsThemeA.filterSelected} text-white font-semibold`
-                      : (showDesktopLength ? "rounded-xl py-2 px-7 bg-white text-black font-semibold" : "hover:bg-white rounded-xl py-2 px-7")}
+                      : (showDesktopLength ? "rounded-xl py-2 px-7 bg-white text-black font-semibold" : "hover:bg-stone-200 rounded-xl py-2 px-7")}
                     onClick={() => {
                       setShowDesktopEthnicity(false);
                       setShowDesktopGender(false);
@@ -535,7 +535,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
             {(isSalonPage) &&
               <div className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
                 <p
-                  className={showDesktopCountry ? "rounded-xl py-2 px-7 bg-white text-black font-semibold" : "hover:bg-white rounded-xl py-2 px-7"}
+                  className={showDesktopCountry ? "rounded-xl py-2 px-7 bg-white text-black font-semibold" : "hover:bg-stone-200 rounded-xl py-2 px-7"}
                   onClick={() => {
                     setShowDesktopEthnicity(false);
                     setShowDesktopGender(false);
@@ -577,7 +577,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
             {(isSalonPage) &&
               <div className="hidden md:block border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
                 <p
-                  className={showDesktopLength ? "rounded-xl py-2 px-7 bg-white  text-black font-semibold" : " hover:bg-white rounded-xl py-2 px-7 "}
+                  className={showDesktopLength ? "rounded-xl py-2 px-7 bg-white  text-black font-semibold" : " hover:bg-stone-200 rounded-xl py-2 px-7 "}
                   onClick={() => {
                     setShowDesktopEthnicity(false);
                     setShowDesktopGender(false);
@@ -620,7 +620,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
             {(isSalonPage) &&
               <div className="hidden md:block border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer relative"> {/* Retain relative positioning for this div */}
                 <p
-                  className={showDesktopBudget ? "rounded-xl py-2 px-7 bg-white text-black font-semibold" : "hover:bg-white rounded-xl py-2 px-7"}
+                  className={showDesktopBudget ? "rounded-xl py-2 px-7 bg-white text-black font-semibold" : "hover:bg-stone-200 rounded-xl py-2 px-7"}
                   onClick={() => {
                     setShowDesktopEthnicity(false);
                     setShowDesktopGender(false);
@@ -702,7 +702,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
             {(isSalonPage) &&
               <div className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
                 <p
-                  className={showDesktopRating ? "rounded-xl py-2 px-7 bg-white  text-black font-semibold" : " hover:bg-white rounded-xl py-2 px-7 "}
+                  className={showDesktopRating ? "rounded-xl py-2 px-7 bg-white  text-black font-semibold" : " hover:bg-stone-200 rounded-xl py-2 px-7 "}
                   onClick={() => {
                     setShowDesktopEthnicity(false);
                     setShowDesktopGender(false);
@@ -765,7 +765,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
             {isSalonPage &&
               <div className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
                 <p
-                  className={showDesktopAvailability ? "rounded-xl py-2 px-7 bg-white  text-black font-semibold" : " hover:bg-white rounded-xl py-2 px-7 "}
+                  className={showDesktopAvailability ? "rounded-xl py-2 px-7 bg-white  text-black font-semibold" : " hover:bg-stone-200 rounded-xl py-2 px-7 "}
                   onClick={() => {
                     setShowDesktopEthnicity(false);
                     setShowDesktopGender(false);
@@ -821,7 +821,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
 
             <div className="cursor-pointer">
               <p
-                className={showDesktopLength ? "rounded-xl py-2 px-7 bg-white  text-black font-semibold" : " hover:bg-white rounded-xl py-2 px-7 "}
+                className={showDesktopLength ? "rounded-xl py-2 px-7 bg-white  text-black font-semibold" : " hover:bg-stone-200 rounded-xl py-2 px-7 "}
                 onClick={() => {
                   setShowDesktopEthnicity(false);
                   setShowDesktopGender(false);
@@ -861,7 +861,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
 
             <div className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer relative"> {/* Retain relative positioning for this div */}
               <p
-                className={showDesktopBudget ? "rounded-xl py-2 px-7 bg-white text-black font-semibold" : "hover:bg-white rounded-xl py-2 px-7"}
+                className={showDesktopBudget ? "rounded-xl py-2 px-7 bg-white text-black font-semibold" : "hover:bg-stone-200 rounded-xl py-2 px-7"}
                 onClick={() => {
                   setShowDesktopEthnicity(false);
                   setShowDesktopGender(false);

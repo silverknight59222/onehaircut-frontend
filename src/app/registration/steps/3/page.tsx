@@ -244,15 +244,15 @@ const Step3 = () => {
         <div className="absolute top-1 flex items-center justify-start sm:justify-center w-full gap-5 px-4 sm:px-14 py-5">
           <div onClick={() => route.push('/')} className='relative z-30 cursor-pointer'><LogoIcon className={''} /></div>
         </div>
-        <div className="relative z-20 w-full flex items-center justify-end gap-4 px-4 sm:px-14 mt-6">
+        {/* <div className="relative z-20 w-full flex items-center justify-end gap-4 px-4 sm:px-14 mt-6">
           <UserProfile />
-        </div>
+        </div> */}
       </div>
       <div className="w-full flex-col gap-10 flex items-center justify-center px-3">
         <div className="mt-20">
           <div className="flex items-center justify-center w-full font-medium text-xl md:text-2xl lg:text-3xl text-center ">Il faut maintenant renseigner tes information personnelles</div>
         </div>
-        <div className="flex flex-col gap-10 w-[400px]">
+        <div className="flex flex-col gap-10 w-full sm:w-[400px]">
           <div className="w-full">
             <CustomInput
               type="text"
