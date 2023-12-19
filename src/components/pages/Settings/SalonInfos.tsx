@@ -37,6 +37,7 @@ const SalonInfos = () => {
     const [isLoading, setIsLoading] = useState(false);
     const showSnackbar = useSnackbar();
     const [ZonePrice, setZonePrice] = useState(0);
+    const [ZoneDuration, setZoneDuration] = useState(0);
     const [addressResponse, setAddressResponse] = useState({
         street: "",
         city: "",
@@ -98,7 +99,7 @@ const SalonInfos = () => {
     }
 
     const saveSalonMobility = async (isMobilityAllowed) => {
-        await salonApi.saveSalonMobility({ is_mobile: isMobilityAllowed, price: ZonePrice })
+        await salonApi.saveSalonMobility({ is_mobile: isMobilityAllowed})
             .then((resp) => {
                 showSnackbar("success", "Salon Mobility Saved Successfully.");
             })
@@ -110,8 +111,8 @@ const SalonInfos = () => {
             })
     }
 
-    const saveZoneRadius = async (radius) => {
-        await salonApi.saveZoneRadius({ zone_radius: radius })
+    const saveZoneRadius = async (radius, duration) => {
+        await salonApi.saveZoneRadius({ zone_radius: radius, zone_duration : duration, price: ZonePrice })
             .then((resp) => {
                 showSnackbar("success", "Salon Mobility Zone Saved Successfully.");
             })
@@ -191,7 +192,7 @@ const SalonInfos = () => {
     const handleZoneSliderChange = (newValue: any) => {
         console.log(newValue);
         setZonePrice(ZonePrice);
-        saveZoneRadius(newValue);
+        saveZoneRadius(newValue, ZoneDuration);
         saveSalonType(SelectedSalonType);
         saveSalonMobility(isMobilityAllowed);
     };
@@ -347,6 +348,7 @@ const SalonInfos = () => {
 
     const fetchAdress = async () => {
         const resp = await salonApi.getAddresses()
+        console.log(resp)
         setAddressResponse(resp.data);
         setName(resp.data.name);
         setStreet(resp.data.street);
@@ -362,6 +364,7 @@ const SalonInfos = () => {
         setBillingState(resp.data.billing_state);
         setBillingCountry(resp.data.billing_country);
         setZonePrice(resp.data.bill_per_km)
+        setZoneDuration(resp.data.dur_per_km)
         setZoneSliderRange([resp.data.min_km, resp.data.max_km]);
         setIsMobilityAllowed(resp.data.is_mobile);
     }
@@ -370,6 +373,7 @@ const SalonInfos = () => {
 
     const [billingPerKm, setBillingPerKm] = useState('');
     const [maxFees, setMaxFees] = useState(0);
+    const [maxDurationTravel, setMaxDurationTravel] = useState(0);
 
     // Supposons que vous utilisiez la deuxième valeur du slider pour numericZoneSliderRange
     const numericZoneSliderRange = zoneSliderRange[1];
@@ -379,7 +383,8 @@ const SalonInfos = () => {
 
     useEffect(() => {
         setMaxFees(ZonePrice * numericZoneSliderRange);
-    }, [ZonePrice, numericZoneSliderRange]);
+        setMaxDurationTravel(ZoneDuration * numericZoneSliderRange)
+    }, [ZonePrice, numericZoneSliderRange, ZoneDuration]);
 
     const handleBillingPerKmChange = (e) => {
         setBillingPerKm(e.target.value);
@@ -394,6 +399,18 @@ const SalonInfos = () => {
                 newPrice = parseFloat((ZonePrice - 0.1).toFixed(2));
             }
             setZonePrice(newPrice);
+        }
+    };
+
+    const zoneDurationHandler = (operation) => {
+        if (isMobilityAllowed) {
+            let newZoneDuration = ZoneDuration;
+            if (operation === 'add' && ZoneDuration < 60) {
+                newZoneDuration = ZoneDuration + 1;
+            } else if (operation === 'minus' && ZonePrice > 0) {
+                newZoneDuration = ZoneDuration - 1;
+            }
+            setZoneDuration(newZoneDuration);
         }
     };
 
@@ -768,12 +785,44 @@ const SalonInfos = () => {
 
                                 {/* Affichage des frais maximum */}
                                 <div className="ml-4 bg-slate-200 text-stone-400 font-thin rounded-lg p-2 flex items-center cursor-not-allowed">
-                                    <span className="text-sm font-medium">
-                                        Frais maximum: {maxFees.toFixed(2)} €
+                                    <span className="text-xs font-medium">
+                                        Max: {maxFees.toFixed(2)} €
                                     </span>
                                 </div>
                             </div>
                         </div>
+
+                        {/* TODO LINK WITH BE - MAKE SLOT UNAVAILABLE ACCORDING TO DURATION */}
+                        {/* KM TIME SLOT TO MAKE UNAVAILABLE*/}
+                        <div className="md:mt-0 ml-14 mb-4">
+                            <p className="text-stone-700 text-sm font-medium mt-8 mb-1 ">Durée nécessaire par km</p>
+                            <div className="flex items-start justify-start gap-3">
+                                <div className='w-[85px] h-9 flex items-center justify-center text-black border border-black rounded-lg shadow-lg cursor-not-allowed bg-white'>
+                                    {ZoneDuration} Min
+                                </div>
+                                <div className={`flex items-center justify-center py-1 rounded-md ${isMobilityAllowed ? ColorsThemeA.OhcGradient_A : ColorsThemeA.inactivButtonColor} shadow-lg`}>
+                                    <div onClick={() => zoneDurationHandler('minus')} className="border-r border-white px-4 py-3 cursor-pointer transform hover:scale-110 transition-transform">
+                                        <MinusIcon />
+                                    </div>
+                                    <div onClick={() => zoneDurationHandler('add')} className="py-1 px-4 cursor-pointer transform hover:scale-110 transition-transform">
+                                        <AddIcon />
+                                    </div>
+                                </div>
+
+                                {/* Affichage des frais maximum */}
+                                <div className="ml-4 bg-slate-200 text-stone-400 font-thin rounded-lg p-2 flex items-center cursor-not-allowed">
+                                    <span className="text-xs font-medium">
+                                        Max: {maxDurationTravel} min
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+
                         {/* TODO SAVE MOBILITY AND TYPE OF SALON DATA WITH THIS BUTTON */}
                         <div className="flex justify-center items-center">
                             <button className={`mt-6 flex gap-4 items-center justify-center w-22 ${Theme_A.button.medBlackColoredButton}`}

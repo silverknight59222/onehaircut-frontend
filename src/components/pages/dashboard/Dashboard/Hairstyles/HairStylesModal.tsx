@@ -11,6 +11,7 @@ import {
     SelectedIcon,
 } from "@/components/utilis/Icons";
 import { Haircut, SalonHaircut } from "@/types";
+import { salonApi } from '@/api/salonSide';
 
 export interface HaircutDetails {
     id: number;
@@ -30,7 +31,7 @@ export interface HaircutDetails {
     epais_duration_type: string;
 }
 
-const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetStyleForm, reloadListEvent, params }: any) => {
+const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairStyleSelectEvent, setFinalItems, onResetStyleForm, reloadListEvent, finalItems, params }: any) => {
     // //console.log("in HairStylesModal")
 
     const showSnackbar = useSnackbar();
@@ -66,6 +67,12 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
         base_price: "",
         base_duration: "",
         select_haircut: "",
+        court_price_length: "",
+        court_duration_length: "",
+        moyen_price_length: "",
+        moyen_duration_length: "",
+        long_price_length: "",
+        long_duration_length: "",
     });
 
     const [form, setForm] = useState<HaircutDetails>(defaultFormDetails);
@@ -85,6 +92,7 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
             });
         } else if (payload.type == "select_all") {
             setSelectedHaircutsMapping(payload.haircuts);
+            setFinalItems(payload.haircuts)
         } else if (payload.type == "reset_modal") {
             setSelectedHaircutsMapping([]);
         }
@@ -278,6 +286,7 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
                 return { ...prev, select_haircut: "" };
             });
         }
+        
         let data: any = form;
         const selectedHaircuts: number[] = [];
         selectedHaircutsMapping.map((item) => {
@@ -310,10 +319,10 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
     useEffect(() => {
         let haircuts_registered = getLocalStorage("check_status")
         checkHaircut(haircuts_registered)
-    },[])
+    }, [])
 
     const checkHaircut = (haircut_registered) => {
-        if(JSON.parse(haircut_registered).haircut == 0){
+        if (JSON.parse(haircut_registered).haircut == 0) {
             setNoHaircut(true)
         }
         else {
@@ -323,6 +332,20 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
 
     // TODO REMOVE HAIRCUT FUNCTION
     const onRemove = async () => {
+        let finalItemsIDs = finalItems.map(item => item.id);
+        let resp = await salonApi.removeHaircuts({ data: finalItemsIDs });
+        if (resp.data.status == 200) {
+            showSnackbar('success', resp.data.message)
+        }
+        else {
+            showSnackbar('error', resp.data.message)
+        }
+        setISD(false);
+        setSelectedHaircutsMapping([]);
+        setForm(defaultFormDetails);
+        reloadListEvent.on()
+        setNoHaircut(false)
+        reset()
 
     };
 
@@ -437,6 +460,11 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
                                     onChangeInput(e.target.value, "court_price_length")
                                 }
                             />
+                            {error.court_price_length && (
+                                <p className="text-xs text-red-700 ml-3 mt-1">
+                                    {error.court_price_length}*
+                                </p>
+                            )}
                         </div>
                         <div className="flex gap-2 items-center">
                             <input
@@ -447,6 +475,11 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
                                     onChangeInput(e.target.value, "court_duration_length")
                                 }
                             />
+                            {error.court_duration_length && (
+                                <p className="text-xs text-red-700 ml-3 mt-1">
+                                    {error.court_duration_length}*
+                                </p>
+                            )}
                             <p className="text-xs">min</p>
                         </div>
                     </div>
@@ -461,6 +494,11 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
                                     onChangeInput(e.target.value, "moyen_price_length")
                                 }
                             />
+                            {error.moyen_price_length && (
+                                <p className="text-xs text-red-700 ml-3 mt-1">
+                                    {error.moyen_price_length}*
+                                </p>
+                            )}
                         </div>
                         <div className="flex gap-2 items-center">
                             <input
@@ -471,6 +509,11 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
                                     onChangeInput(e.target.value, "moyen_duration_length")
                                 }
                             />
+                            {error.moyen_duration_length && (
+                                <p className="text-xs text-red-700 ml-3 mt-1">
+                                    {error.moyen_duration_length}*
+                                </p>
+                            )}
                             <p className="text-xs">min</p>
                         </div>
                     </div>
@@ -485,6 +528,11 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
                                     onChangeInput(e.target.value, "long_price_length")
                                 }
                             />
+                            {error.long_price_length && (
+                                <p className="text-xs text-red-700 ml-3 mt-1">
+                                    {error.long_price_length}*
+                                </p>
+                            )}
                         </div>
                         <div className="flex gap-2 items-center">
                             <input
@@ -495,6 +543,11 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
                                     onChangeInput(e.target.value, "long_duration_length")
                                 }
                             />
+                            {error.long_duration_length && (
+                                <p className="text-xs text-red-700 ml-3 mt-1">
+                                    {error.long_duration_length}*
+                                </p>
+                            )}
                             <p className="text-xs">min</p>
                         </div>
                     </div>
@@ -628,5 +681,5 @@ const HairStylesModal = React.memo(({ activeMenu, hairStyleSelectEvent, onResetS
         </div>
     );
 });
-
+// Try to do commit to update
 export default HairStylesModal;
