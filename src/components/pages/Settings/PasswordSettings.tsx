@@ -75,11 +75,11 @@ const PasswordSettings = () => {
                 new_password: passwordField.newPassword,
                 repeat_password: passwordField.confirmPassword,
             })
-            if(resp.data.status == 200) {
-                showSnackbar("success",resp.data.message)
+            if (resp.data.status == 200) {
+                showSnackbar("success", resp.data.message)
             }
             else {
-                showSnackbar("error",resp.data.message)
+                showSnackbar("error", resp.data.message)
             }
             showSnackbar("success", resp.data.message);
         } catch (error: any) {
@@ -109,7 +109,7 @@ const PasswordSettings = () => {
     return (
         <div className={`w-[400px] h-max bg-white rounded-2xl py-4 shadow-lg mb-4`}>
             <div>
-                <div className="flex flex-col items-center justify-center mx-12 gap-4">
+                <div className="flex flex-col items-center justify-center mx-1 md:mx-12 gap-4">
                     <p className="text-xl font-semibold text-black text-center">Modification du mot de passe</p>
 
                     {error && (

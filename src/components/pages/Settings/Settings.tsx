@@ -42,7 +42,7 @@ const Settings = () => {
   const [activeMenu, setActiveMenu] = useState(settingsMenu[0].name);
 
 
-  
+
   const [notifications, setNotifications] = useState({} as any);
   const fetchSalonNotifications = async () => {
     const { data } = await dashboard.salonNotification()
@@ -59,15 +59,15 @@ const Settings = () => {
         <LogoCircleFixRight />
       </div>
       <DashboardLayout notifications={notifications}>
-        <div className="flex gap-4 ">
+        <div className="flex md:gap-4 ">
           {/* DISPLAY SETTINGS MENU */}
           {!isLoading && (
-            <div className="max-w-[300px]  h-max flex flex-col items-left justify-center text-center px-2 py-6 gap-8 rounded-2xl bg-white text- font-medium text-[#909090] shadow-md">
+            <div className="max-w-[300px] h-max flex flex-col items-left justify-center text-center px-1 md:px-2 py-6 gap-8 rounded-2xl bg-white text-sm md:text-lg font-medium text-[#909090] shadow-md">
               {settingsMenu.map((item, index) => {
                 return (
                   <p
                     key={index}
-                    className={` cursor-pointer ml-2 mr-2 ${activeMenu === item.name &&
+                    className={` cursor-pointer md:ml-2 md:mr-2 ${activeMenu === item.name &&
                       " text-black "
                       }`}
                     onClick={() => setActiveMenu(item.name)}
