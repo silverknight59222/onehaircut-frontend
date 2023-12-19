@@ -175,6 +175,8 @@ const SalonChoice = () => {
     // Fonction pour récupérer tous les salons
     const getAllSalons = async () => {
         const services = getLocalStorage('ServiceIds')
+        const user = getLocalStorage("user");
+        const hair_length = user ? String(JSON.parse(user).hair_length) : "";
         const servicesData = services ? JSON.parse(services) : null
         const serviceIds: number[] = []
         servicesData.forEach((service: { name: string, id: number }) => {
@@ -185,7 +187,8 @@ const SalonChoice = () => {
 
         let data = {
             servicesIds: serviceIds,
-            haircut_id: 0
+            haircut_id: 0,
+            hair_length: hair_length,
         }
         if (haircut) {
             data['haircut_id'] = haircut.id

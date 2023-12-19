@@ -48,6 +48,8 @@ interface SalonProfile {
   user_id: number,
   openTimes: any[],
   final_price: number,
+  haircut_duration: number,
+  haircut_price: number,
   total_duration: number,
   rating_counts: number,
   haircut: any,
@@ -251,6 +253,7 @@ const SearchSalon = () => {
                     objectFit="fill"
                     className="rounded-lg shadow-sm shadow-stone-600"
                   />
+
                 </div>}
               </div>
 
@@ -387,7 +390,7 @@ const SearchSalon = () => {
                   <small>Dur&eacute;e de la coiffure :</small>
                 </p>
                 <p className="text-md xl:text-lg font-normal text-stone-400 italic">
-                  {salonProfile.haircut.base_duration} min
+                  {salonProfile.haircut_duration} min
                 </p>
               </div>}
               <div className="flex justify-between w-full">
