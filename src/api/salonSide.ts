@@ -14,10 +14,11 @@ interface SalonType {
 }
 interface SalonMobility {
   is_mobile: boolean,
-  price: Number,
 }
 interface SalonMobilityZone {
-  zone_radius: number
+  zone_radius: number,
+  zone_duration: number
+  price: Number,
 }
 interface UnavailabilityData {
   start_date: String;
