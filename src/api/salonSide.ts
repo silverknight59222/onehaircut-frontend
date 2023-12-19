@@ -14,10 +14,11 @@ interface SalonType {
 }
 interface SalonMobility {
   is_mobile: boolean,
-  price: Number,
 }
 interface SalonMobilityZone {
-  zone_radius: number
+  zone_radius: number,
+  zone_duration: number
+  price: Number,
 }
 interface UnavailabilityData {
   start_date: String;
@@ -91,6 +92,9 @@ const salonApi = {
   delSalonUnavailability: async(salonID : number) => {
     return await request.delete(`salon_unavailability/${salonID}`);
   },
+  removeHaircuts: async(params: any) => {
+    return await request.post(`remove_haircuts_from_salon`,params);
+  }
 
 }
 export { salonApi };

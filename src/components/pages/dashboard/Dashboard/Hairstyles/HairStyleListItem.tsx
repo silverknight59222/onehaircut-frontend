@@ -13,12 +13,14 @@ import userLoader from "@/hooks/useLoader";
 
 
 
-const HairStyleListItem = React.memo(({ item, activeMenu, hairStyleSelectEvent, filters, isAllSelected }: any) => {
+const HairStyleListItem = React.memo(({ item, activeMenu, hairStyleSelectEvent, filters, isAllSelected, cB, tB }: any) => {
     // //console.log("in HairStyleListItem")
 
     const [isSelected, setIsSelected] = useState(false);
-
+    const [itemSelected, setItemSelected] = useState({});
     const selectHaircut = (item: Haircut) => {
+        console.log(isSelected)
+        console.log(item)
         if (isAllSelected) {
             return
         }
@@ -27,18 +29,35 @@ const HairStyleListItem = React.memo(({ item, activeMenu, hairStyleSelectEvent, 
                 type: "remove",
                 item
             })
+            tB(item)
         } else {
             hairStyleSelectEvent.on({
                 type: "add",
                 item
             })
+            cB(item)
         }
         setIsSelected(!isSelected)
+        setItemSelected(item)
     };
+
+    // useEffect(() => {
+    //     console.log(isSelected)
+    //     console.log(itemSelected)
+    //     if(isSelected){
+    //         cB(itemSelected)
+    //     }
+    //     else {
+    //         tB(itemSelected)
+    //     }
+    // },[isSelected])
 
     useEffect(() => {
         if (isAllSelected == false) {
             setIsSelected(false)
+        }
+        else {
+            setIsSelected(true)
         }
     }, [isAllSelected])
 
