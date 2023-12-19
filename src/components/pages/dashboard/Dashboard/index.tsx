@@ -25,6 +25,7 @@ import ConversionChart from "@/views/charts/chartjs/ConversionChart";
 import HairdresserRevenueBarChart from "./ModalComponent/HairdresserRevenueBarChart";
 import { Auth } from "@/api/auth";
 import { client } from "@/api/clientSide";
+import InfoButton from "@/components/UI/InfoButton";
 
 
 const Dashboard = () => {
@@ -142,10 +143,17 @@ const Dashboard = () => {
                     </Grid>
                 </Grid>
 
-                {/* APPERçU ANALYTIQUE */}
-                <p className="text-primary text-2xl font-semibold mb-3 ">
-                    Aperçu analytique
-                </p>
+                <div className="flex flex-row">
+                    {/* APPERçU ANALYTIQUE */}
+                    <p className="text-primary text-2xl font-semibold mb-3 ">
+                        Aperçu analytique
+                    </p>
+
+                    {/* Info icon  */}
+                    <div className="pr-4">
+                        <InfoButton title_1={"Dashboard"} content_1={"Cette page contient les informations concernant votre salon. Les boutons au dessus des graphiques peuvent être cliqués pour afficher plus de détails."} onOpenModal={undefined} />
+                    </div>
+                </div>
 
                 {/*<DialogShareProject />*/}
                 <div className="grid grid-cols-1 sm:grid-cols-2  2xl:grid-cols-4 gap-x-8 gap-y-4 ">
