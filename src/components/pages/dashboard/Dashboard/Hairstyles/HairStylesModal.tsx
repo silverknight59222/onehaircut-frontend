@@ -681,5 +681,5 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
         </div>
     );
 });
-
+// Try to do commit to update
 export default HairStylesModal;
