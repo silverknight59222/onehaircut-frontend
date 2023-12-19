@@ -49,12 +49,12 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
         id: -1,
         base_price: "",
         base_duration: "",
-        court_price_length: "",
-        court_duration_length: "",
-        moyen_price_length: "",
-        moyen_duration_length: "",
-        long_price_length: "",
-        long_duration_length: "",
+        court_price_length: "0",
+        court_duration_length: "0",
+        moyen_price_length: "0",
+        moyen_duration_length: "0",
+        long_price_length: "0",
+        long_duration_length: "0",
         fin_price_type: "0",
         fin_duration_type: "0",
         moyen_price_type: "0",
@@ -232,72 +232,6 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
                 return { ...prev, base_duration: "" };
             });
         }
-        /* Validate hair for short hair */
-        if (!form.court_price_length) {
-            setError((prev) => {
-                return { ...prev, court_price_length: "Price for short hair is required" };
-            });
-            return;
-        } else {
-            setError((prev) => {
-                return { ...prev, court_price_length: "" };
-            });
-        }
-        
-        if (!form.court_duration_length) {
-            setError((prev) => {
-                return { ...prev, court_duration_length: "Duration for short hair is required" };
-            });
-            return;
-        } else {
-            setError((prev) => {
-                return { ...prev, court_duration_length: "" };
-            });
-        }
-        /* Validate hair for medium hair */
-        if (!form.moyen_price_length) {
-            setError((prev) => {
-                return { ...prev, moyen_price_length: "Price for medium hair is required" };
-            });
-            return;
-        } else {
-            setError((prev) => {
-                return { ...prev, moyen_price_length: "" };
-            });
-        }
-        
-        if (!form.moyen_duration_length) {
-            setError((prev) => {
-                return { ...prev, moyen_duration_length: "Duration for medium hair is required" };
-            });
-            return;
-        } else {
-            setError((prev) => {
-                return { ...prev, moyen_duration_length: "" };
-            });
-        }
-        /* Validate hair for long hair */
-        if (!form.long_price_length) {
-            setError((prev) => {
-                return { ...prev, long_price_length: "Price for long hair is required" };
-            });
-            return;
-        } else {
-            setError((prev) => {
-                return { ...prev, long_price_length: "" };
-            });
-        }
-        
-        if (!form.long_duration_length) {
-            setError((prev) => {
-                return { ...prev, long_duration_length: "Duration for long hair is required" };
-            });
-            return;
-        } else {
-            setError((prev) => {
-                return { ...prev, long_duration_length: "" };
-            });
-        }
         let data: any = form;
         data.hair_salon_id = Number(getLocalStorage("salon_id"));
         const selectedHaircuts: number[] = [];
@@ -352,72 +286,7 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
                 return { ...prev, select_haircut: "" };
             });
         }
-        /* Validate hair for short hair */
-        if (!form.court_price_length) {
-            setError((prev) => {
-                return { ...prev, court_price_length: "Price for short hair is required" };
-            });
-            return;
-        } else {
-            setError((prev) => {
-                return { ...prev, court_price_length: "" };
-            });
-        }
         
-        if (!form.court_duration_length) {
-            setError((prev) => {
-                return { ...prev, court_duration_length: "Duration for short hair is required" };
-            });
-            return;
-        } else {
-            setError((prev) => {
-                return { ...prev, court_duration_length: "" };
-            });
-        }
-        /* Validate hair for medium hair */
-        if (!form.moyen_price_length) {
-            setError((prev) => {
-                return { ...prev, moyen_price_length: "Price for medium hair is required" };
-            });
-            return;
-        } else {
-            setError((prev) => {
-                return { ...prev, moyen_price_length: "" };
-            });
-        }
-        
-        if (!form.moyen_duration_length) {
-            setError((prev) => {
-                return { ...prev, moyen_duration_length: "Duration for medium hair is required" };
-            });
-            return;
-        } else {
-            setError((prev) => {
-                return { ...prev, moyen_duration_length: "" };
-            });
-        }
-        /* Validate hair for long hair */
-        if (!form.long_price_length) {
-            setError((prev) => {
-                return { ...prev, long_price_length: "Price for long hair is required" };
-            });
-            return;
-        } else {
-            setError((prev) => {
-                return { ...prev, long_price_length: "" };
-            });
-        }
-        
-        if (!form.long_duration_length) {
-            setError((prev) => {
-                return { ...prev, long_duration_length: "Duration for long hair is required" };
-            });
-            return;
-        } else {
-            setError((prev) => {
-                return { ...prev, long_duration_length: "" };
-            });
-        }
         let data: any = form;
         const selectedHaircuts: number[] = [];
         selectedHaircutsMapping.map((item) => {
