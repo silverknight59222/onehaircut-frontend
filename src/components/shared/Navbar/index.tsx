@@ -266,14 +266,13 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
 
   useEffect(() => {
     const user = getLocalStorage("user");
-    const hairstyle_trend = user ? (JSON.parse(user).user_preferences ? String(JSON.parse(user).user_preferences.hairstyle_trend) : "") : "";
-    const length_sought = user ? (JSON.parse(user).user_preferences ? String(JSON.parse(user).user_preferences.length_sought) : "") : "";
-    const budget = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.budget : [10, 100]) : [10, 100];
-    const hairdressing_at_home = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.hairdressing_at_home : "all") : "all";
-    const rating = user ? (JSON.parse(user).user_preferences ? Number(JSON.parse(user).user_preferences.ratings) : 1) : 1;
-    const country = user ? (JSON.parse(user).user_preferences ? String(JSON.parse(user).user_preferences.country) : "") : "";
-    const availability = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.availability : ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]) : ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
-    console.log(availability);
+    const hairstyle_trend = user ? (JSON.parse(user).user_preferences == null ? String(JSON.parse(user).user_preferences.hairstyle_trend) : "") : "";
+    const length_sought = user ? (JSON.parse(user).user_preferences == null ? String(JSON.parse(user).user_preferences.length_sought) : "") : "";
+    const budget = user ? (JSON.parse(user).user_preferences == null ? JSON.parse(user).user_preferences.budget : [10, 100]) : [10, 100];
+    const hairdressing_at_home = user ? (JSON.parse(user).user_preferences == null ? JSON.parse(user).user_preferences.hairdressing_at_home : "all") : "all";
+    const rating = user ? (JSON.parse(user).user_preferences == null ? Number(JSON.parse(user).user_preferences.ratings) : 1) : 1;
+    const country = user ? (JSON.parse(user).user_preferences == null ? String(JSON.parse(user).user_preferences.country) : "") : "";
+    const availability = user ? (JSON.parse(user).user_preferences == null ? JSON.parse(user).user_preferences.availability : ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]) : ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
     const userId = user ? Number(JSON.parse(user).id) : null;
     if (userId) {
       setIsLoggedIn(true);
