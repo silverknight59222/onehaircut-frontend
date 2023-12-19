@@ -21,13 +21,26 @@ const Footer: React.FC = () => {
 
         {/* Section des liens à droite */}
         <div className="flex space-x-2 md:space-x-4 ">
-          <a href="#lien1" className="font-semibold hover:scale-110 transition duration-200">
+          <a
+            href="https://www.instagram.com/onehaircut/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold hover:scale-110 transition duration-200">
             <InstagramGray className="w-4 h-4 md:w-6 md:h-6" />  </a>
-          <a href="#lien2" className="font-semibold hover:scale-110 transition duration-200">
+          <a href="https://www.instagram.com/onehaircut/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold hover:scale-110 transition duration-200">
             <FacebookGray className="w-4 h-4 md:w-6 md:h-6" /></a>
-          <a href="#lien3" className="font-semibold hover:scale-110 transition duration-200">
+          <a href="https://www.instagram.com/onehaircut/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold hover:scale-110 transition duration-200">
             <YoutubeGray className="w-4 h-4 md:w-6 md:h-6" /> </a>
-          <a href="#lien4" className="font-semibold hover:scale-110 transition duration-200">
+          <a href="https://www.linkedin.com/company/onehaircut/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold hover:scale-110 transition duration-200">
             <LinkedInGray className="w-4 h-4 md:w-6 md:h-6" /> </a>
           {/* 
           <a href="#lien3" className="font-semibold hover:underline">Lien 3</a>

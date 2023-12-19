@@ -18,7 +18,8 @@ interface SalonWishlistParams{
 
 interface SalonHaircut {
   haircut_id: number,
-  servicesIds: number[]
+  servicesIds: number[],
+  hair_length: string,
 }
 interface MessageParam{
  client_id: number,

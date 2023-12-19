@@ -59,6 +59,7 @@ const Page = () => {
 					isDashboard={tab !== "Dashboard"}
 					SidebarHandler={SidebarHandler}
 					tabHandler={tabHandler}
+					isSidebar={isSidebar}
 				/>
 				{tab === 'Dashboard' && <Dashboard />}
 				{tab === 'Coiffeurs' && <Hairdressers />}

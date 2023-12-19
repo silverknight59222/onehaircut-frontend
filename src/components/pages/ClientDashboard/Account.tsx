@@ -1020,7 +1020,7 @@ const Account = () => {
         fetchUserInfo();
         fetchUserNotifications();
     }, [])
-    
+
 
 
     return (
@@ -1109,7 +1109,7 @@ const Account = () => {
                                         <div>
                                             {item.name === "deactivate" ?
                                                 <div>
-                                                    <button onClick={handleCloseAccount} className="w-40 h-10 flex items-center justify-center bg-[#ffffff] border border-black rounded-xl mt-20 mb-20 text-black font-normal hover:scale-95 transition-transform duration-300 hover:bg-stone-100 ">
+                                                    <button onClick={handleCloseAccount} className="w-40 h-10 flex items-center justify-center bg-[#ffffff] border-2 border-black rounded-xl mt-20 mb-4 text-black font-normal hover:scale-95 transition-transform duration-300 hover:bg-stone-100 ">
                                                         Clôturer le compte
                                                     </button>
                                                 </div>

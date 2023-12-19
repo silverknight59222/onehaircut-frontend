@@ -19,13 +19,13 @@ interface CustomSliderProps {
 const CustomSlider: React.FC<CustomSliderProps> = ({
   theme,
   value,
-  unit, // Include the 'unit' prop here
+  unit,
   onChange,
   min,
   max,
   label,
   valueLabelDisplay,
-  width = '100%',
+  width = '300px', // Largeur fixe en pixels
 }) => {
   return (
     <ThemeProvider theme={ComponentTheme}>
@@ -38,7 +38,7 @@ const CustomSlider: React.FC<CustomSliderProps> = ({
           valueLabelDisplay={valueLabelDisplay}
           min={min}
           max={max}
-          style={{ width: width }}
+          style={{ width }} // Utilisation de la prop 'width' pour définir la largeur
         />
         <div className="mt-0 text-center">
           &#91;

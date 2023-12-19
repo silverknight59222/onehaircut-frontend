@@ -50,6 +50,10 @@ const SalonChoice = () => {
     const [nameSearch, setNameSearch] = useState<string>('');
     const [filteredMobile, setFilteredMobile] = useState<string[]>([]);
     const [filtereRange, setRangeFilter] = useState([2, 100]);
+    const [ratingFilter, setRatingFilter] = useState<number>(1);
+    const [countryFilter, setCountryFilter] = useState<string>("");
+    const [availabilityFilter, setAvailabilityFilter] = useState<string[]>([]);
+    const [newSalonFilter, setNewSalonFilter] = useState(true);
     const [positions, setPositions] = useState<Position[]>([])
     const [center, setCenter] = useState<Position>()
     const { isLoaded } = useLoadScript({
@@ -99,12 +103,45 @@ const SalonChoice = () => {
                 filteredMobile.includes(salon.is_mobile.toLowerCase());
 
             const salonInRange = filtereRange[0] <= salon.final_price && salon.final_price <= filtereRange[1];
+            const salonAboveEqualRating = (salon.rating >= ratingFilter) || (newSalonFilter && salon.rating === 0);
+            const salonInCountry = (countryFilter === '') || (salon.address.country === countryFilter);
+            const frenchToEnglishMapping = {
+                'Lundi' : 1,
+                'Mardi' : 2,
+                'Mercredi' : 3,
+                'Jeudi' : 4,
+                'Vendredi' : 5,
+                'Samedi' : 6,
+                'Dimanche' : 0
+            };
+            let salonAvailable = true;
+            
+
+            for(const day of availabilityFilter)
+            {
+                salonAvailable = salon.openTimes[frenchToEnglishMapping[day]].available;
+                if(salonAvailable)
+                {
+                    break;
+                }
+            }
+            console.log(
+                cityNameMatches &&
+                salonNameMatches &&
+                salonMobileMatches &&
+                salonInRange &&
+                salonAboveEqualRating &&
+                salonInCountry &&
+                salonAvailable)
 
             return (
                 cityNameMatches &&
                 salonNameMatches &&
                 salonMobileMatches &&
-                salonInRange
+                salonInRange &&
+                salonAboveEqualRating &&
+                salonInCountry &&
+                salonAvailable
             );
         });
         setFilteredSalons(filteredSalonsFunc);
@@ -128,13 +165,18 @@ const SalonChoice = () => {
             }
         })
         //console.log('position array', positionArray)
-        setPositions(positionArray)
-        const tempCenter: Position = getMapCenter(positionArray)
-        setCenter(tempCenter);
+        if(positionArray.length > 0)
+        {
+            setPositions(positionArray)
+            const tempCenter: Position = getMapCenter(positionArray)
+            setCenter(tempCenter);
+        }
     }
     // Fonction pour récupérer tous les salons
     const getAllSalons = async () => {
         const services = getLocalStorage('ServiceIds')
+        const user = getLocalStorage("user");
+        const hair_length = user ? String(JSON.parse(user).hair_length) : "";
         const servicesData = services ? JSON.parse(services) : null
         const serviceIds: number[] = []
         servicesData.forEach((service: { name: string, id: number }) => {
@@ -145,7 +187,8 @@ const SalonChoice = () => {
 
         let data = {
             servicesIds: serviceIds,
-            haircut_id: 0
+            haircut_id: 0,
+            hair_length: hair_length,
         }
         if (haircut) {
             data['haircut_id'] = haircut.id
@@ -262,10 +305,12 @@ const SalonChoice = () => {
         // const delay = setTimeout(()=>{
         //     // doFilter()
         // },1000)
+
         filteredCityHandler()
         getCoordinates(filteredSalons)
+
         // return () => clearTimeout(delay)
-    }, [citySearch, nameSearch, filteredMobile, filtereRange])
+    }, [citySearch, nameSearch, filteredMobile, filtereRange, ratingFilter, countryFilter, availabilityFilter, newSalonFilter, salons])
 
     if (!isLoaded) {
         return loadingView()
@@ -360,6 +405,10 @@ const SalonChoice = () => {
                         return pre
                     });
                 }}
+                onRatingFilter={(rating: number) => setRatingFilter(rating)}
+                onCountryFilter={(country: string) => setCountryFilter(country)}
+                onAvailabilityFilter={(availability: string[]) => setAvailabilityFilter(availability)}
+                onNewSalonFilter={(newSalon: boolean) => setNewSalonFilter(newSalon)}
             />
 
             {/* Corps du composant */}
@@ -516,12 +565,12 @@ const SalonChoice = () => {
                                                     }
                                                 </div>
 
-                                                {/* Nom et prix du salon */}
-                                                <div className="flex items-start justify-between text-black text-lg font-semibold px-3 pt-2 ">
-                                                    <p className='w-36'>{fsalon.name}</p>
-                                                    {/* TODO PRICE SHOULD BE IN EUROS HERE */}
-                                                    <p className={`p-2 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white`}>{fsalon.final_price}€</p>
-                                                </div>
+                                            {/* Nom et prix du salon */}
+                                            <div className="flex items-start justify-between text-black text-lg font-semibold px-3 pt-2 ">
+                                                <p className='w-36'>{fsalon.name}</p>
+                                                {/* TODO PRICE SHOULD BE IN EUROS HERE */}
+                                                <p className={`p-2 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white`}>{fsalon.final_price}</p>
+                                            </div>
 
                                                 {/* Évaluation et nombre d'avis */}
                                                 <div className='flex items-center text-xs text-[#7B7B7B] px-3 pt-1'>

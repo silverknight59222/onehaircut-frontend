@@ -397,6 +397,9 @@ const SalonInfos = () => {
         }
     };
 
+    const zoneDurationHandler = (operation) => {
+    };
+
     /************************************************************************************************************************** */
 
     return (
@@ -768,12 +771,44 @@ const SalonInfos = () => {
 
                                 {/* Affichage des frais maximum */}
                                 <div className="ml-4 bg-slate-200 text-stone-400 font-thin rounded-lg p-2 flex items-center cursor-not-allowed">
-                                    <span className="text-sm font-medium">
-                                        Frais maximum: {maxFees.toFixed(2)} €
+                                    <span className="text-xs font-medium">
+                                        Max: {maxFees.toFixed(2)} €
                                     </span>
                                 </div>
                             </div>
                         </div>
+
+                        {/* TODO LINK WITH BE - MAKE SLOT UNAVAILABLE ACCORDING TO DURATION */}
+                        {/* KM TIME SLOT TO MAKE UNAVAILABLE*/}
+                        <div className="md:mt-0 ml-14 mb-4">
+                            <p className="text-stone-700 text-sm font-medium mt-8 mb-1 ">Durée nécessaire par km</p>
+                            <div className="flex items-start justify-start gap-3">
+                                <div className='w-[85px] h-9 flex items-center justify-center text-black border border-black rounded-lg shadow-lg cursor-not-allowed bg-white'>
+                                    TODO Min
+                                </div>
+                                <div className={`flex items-center justify-center py-1 rounded-md ${isMobilityAllowed ? ColorsThemeA.OhcGradient_A : ColorsThemeA.inactivButtonColor} shadow-lg`}>
+                                    <div onClick={() => zoneDurationHandler('minus')} className="border-r border-white px-4 py-3 cursor-pointer transform hover:scale-110 transition-transform">
+                                        <MinusIcon />
+                                    </div>
+                                    <div onClick={() => zoneDurationHandler('add')} className="py-1 px-4 cursor-pointer transform hover:scale-110 transition-transform">
+                                        <AddIcon />
+                                    </div>
+                                </div>
+
+                                {/* Affichage des frais maximum */}
+                                <div className="ml-4 bg-slate-200 text-stone-400 font-thin rounded-lg p-2 flex items-center cursor-not-allowed">
+                                    <span className="text-xs font-medium">
+                                        Max: TODO min
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+
                         {/* TODO SAVE MOBILITY AND TYPE OF SALON DATA WITH THIS BUTTON */}
                         <div className="flex justify-center items-center">
                             <button className={`mt-6 flex gap-4 items-center justify-center w-22 ${Theme_A.button.medBlackColoredButton}`}

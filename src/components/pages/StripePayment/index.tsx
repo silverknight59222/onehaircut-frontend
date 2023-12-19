@@ -89,7 +89,7 @@ function StripePayment() {
       .registerSalon(data)
       .then((res) => {
         showSnackbar("success", "Salon successfully created");
-        router.push("/dashboard");
+        router.push("/verification");
       })
       .catch((err) => {
         showSnackbar("error", "Error Occured!");

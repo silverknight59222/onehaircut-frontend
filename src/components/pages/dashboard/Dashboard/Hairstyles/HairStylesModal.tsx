@@ -49,12 +49,12 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
         id: -1,
         base_price: "",
         base_duration: "",
-        court_price_length: "0",
-        court_duration_length: "0",
-        moyen_price_length: "0",
-        moyen_duration_length: "0",
-        long_price_length: "0",
-        long_duration_length: "0",
+        court_price_length: "",
+        court_duration_length: "",
+        moyen_price_length: "",
+        moyen_duration_length: "",
+        long_price_length: "",
+        long_duration_length: "",
         fin_price_type: "0",
         fin_duration_type: "0",
         moyen_price_type: "0",
@@ -67,6 +67,12 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
         base_price: "",
         base_duration: "",
         select_haircut: "",
+        court_price_length: "",
+        court_duration_length: "",
+        moyen_price_length: "",
+        moyen_duration_length: "",
+        long_price_length: "",
+        long_duration_length: "",
     });
 
     const [form, setForm] = useState<HaircutDetails>(defaultFormDetails);
@@ -226,6 +232,72 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
                 return { ...prev, base_duration: "" };
             });
         }
+        /* Validate hair for short hair */
+        if (!form.court_price_length) {
+            setError((prev) => {
+                return { ...prev, court_price_length: "Price for short hair is required" };
+            });
+            return;
+        } else {
+            setError((prev) => {
+                return { ...prev, court_price_length: "" };
+            });
+        }
+        
+        if (!form.court_duration_length) {
+            setError((prev) => {
+                return { ...prev, court_duration_length: "Duration for short hair is required" };
+            });
+            return;
+        } else {
+            setError((prev) => {
+                return { ...prev, court_duration_length: "" };
+            });
+        }
+        /* Validate hair for medium hair */
+        if (!form.moyen_price_length) {
+            setError((prev) => {
+                return { ...prev, moyen_price_length: "Price for medium hair is required" };
+            });
+            return;
+        } else {
+            setError((prev) => {
+                return { ...prev, moyen_price_length: "" };
+            });
+        }
+        
+        if (!form.moyen_duration_length) {
+            setError((prev) => {
+                return { ...prev, moyen_duration_length: "Duration for medium hair is required" };
+            });
+            return;
+        } else {
+            setError((prev) => {
+                return { ...prev, moyen_duration_length: "" };
+            });
+        }
+        /* Validate hair for long hair */
+        if (!form.long_price_length) {
+            setError((prev) => {
+                return { ...prev, long_price_length: "Price for long hair is required" };
+            });
+            return;
+        } else {
+            setError((prev) => {
+                return { ...prev, long_price_length: "" };
+            });
+        }
+        
+        if (!form.long_duration_length) {
+            setError((prev) => {
+                return { ...prev, long_duration_length: "Duration for long hair is required" };
+            });
+            return;
+        } else {
+            setError((prev) => {
+                return { ...prev, long_duration_length: "" };
+            });
+        }
         let data: any = form;
         data.hair_salon_id = Number(getLocalStorage("salon_id"));
         const selectedHaircuts: number[] = [];
@@ -278,6 +350,72 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
         } else {
             setError((prev) => {
                 return { ...prev, select_haircut: "" };
+            });
+        }
+        /* Validate hair for short hair */
+        if (!form.court_price_length) {
+            setError((prev) => {
+                return { ...prev, court_price_length: "Price for short hair is required" };
+            });
+            return;
+        } else {
+            setError((prev) => {
+                return { ...prev, court_price_length: "" };
+            });
+        }
+        
+        if (!form.court_duration_length) {
+            setError((prev) => {
+                return { ...prev, court_duration_length: "Duration for short hair is required" };
+            });
+            return;
+        } else {
+            setError((prev) => {
+                return { ...prev, court_duration_length: "" };
+            });
+        }
+        /* Validate hair for medium hair */
+        if (!form.moyen_price_length) {
+            setError((prev) => {
+                return { ...prev, moyen_price_length: "Price for medium hair is required" };
+            });
+            return;
+        } else {
+            setError((prev) => {
+                return { ...prev, moyen_price_length: "" };
+            });
+        }
+        
+        if (!form.moyen_duration_length) {
+            setError((prev) => {
+                return { ...prev, moyen_duration_length: "Duration for medium hair is required" };
+            });
+            return;
+        } else {
+            setError((prev) => {
+                return { ...prev, moyen_duration_length: "" };
+            });
+        }
+        /* Validate hair for long hair */
+        if (!form.long_price_length) {
+            setError((prev) => {
+                return { ...prev, long_price_length: "Price for long hair is required" };
+            });
+            return;
+        } else {
+            setError((prev) => {
+                return { ...prev, long_price_length: "" };
+            });
+        }
+        
+        if (!form.long_duration_length) {
+            setError((prev) => {
+                return { ...prev, long_duration_length: "Duration for long hair is required" };
+            });
+            return;
+        } else {
+            setError((prev) => {
+                return { ...prev, long_duration_length: "" };
             });
         }
         let data: any = form;
@@ -453,6 +591,11 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
                                     onChangeInput(e.target.value, "court_price_length")
                                 }
                             />
+                            {error.court_price_length && (
+                                <p className="text-xs text-red-700 ml-3 mt-1">
+                                    {error.court_price_length}*
+                                </p>
+                            )}
                         </div>
                         <div className="flex gap-2 items-center">
                             <input
@@ -463,6 +606,11 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
                                     onChangeInput(e.target.value, "court_duration_length")
                                 }
                             />
+                            {error.court_duration_length && (
+                                <p className="text-xs text-red-700 ml-3 mt-1">
+                                    {error.court_duration_length}*
+                                </p>
+                            )}
                             <p className="text-xs">min</p>
                         </div>
                     </div>
@@ -477,6 +625,11 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
                                     onChangeInput(e.target.value, "moyen_price_length")
                                 }
                             />
+                            {error.moyen_price_length && (
+                                <p className="text-xs text-red-700 ml-3 mt-1">
+                                    {error.moyen_price_length}*
+                                </p>
+                            )}
                         </div>
                         <div className="flex gap-2 items-center">
                             <input
@@ -487,6 +640,11 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
                                     onChangeInput(e.target.value, "moyen_duration_length")
                                 }
                             />
+                            {error.moyen_duration_length && (
+                                <p className="text-xs text-red-700 ml-3 mt-1">
+                                    {error.moyen_duration_length}*
+                                </p>
+                            )}
                             <p className="text-xs">min</p>
                         </div>
                     </div>
@@ -501,6 +659,11 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
                                     onChangeInput(e.target.value, "long_price_length")
                                 }
                             />
+                            {error.long_price_length && (
+                                <p className="text-xs text-red-700 ml-3 mt-1">
+                                    {error.long_price_length}*
+                                </p>
+                            )}
                         </div>
                         <div className="flex gap-2 items-center">
                             <input
@@ -511,6 +674,11 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
                                     onChangeInput(e.target.value, "long_duration_length")
                                 }
                             />
+                            {error.long_duration_length && (
+                                <p className="text-xs text-red-700 ml-3 mt-1">
+                                    {error.long_duration_length}*
+                                </p>
+                            )}
                             <p className="text-xs">min</p>
                         </div>
                     </div>
