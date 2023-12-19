@@ -33,6 +33,20 @@ interface SalonUnavailability {
   status: String;
   salon_id: number
 }
+interface FilterSalon{
+  client_id : Number,
+  haircut_id : Number,
+  services : Number[],
+  citySearch : String,
+  nameSearch : String,
+  filteredMobile : String[],
+  filtereRange : Number[],
+  ratingFilter : Number,
+  countryFilter : String,
+  availabilityFilter : String[],
+  newSalonFilter :Boolean
+}
+
 const salonApi = {
   updateLogoAndDescription: async (params: any) => {
     return await request.post(`/update-logo-and-description`, params);
@@ -91,6 +105,8 @@ const salonApi = {
   delSalonUnavailability: async(salonID : number) => {
     return await request.delete(`salon_unavailability/${salonID}`);
   },
-
+  filterSalon:async(params : FilterSalon) => {
+    return await request.post(`salon_filter`,params);
+  }
 }
 export { salonApi };

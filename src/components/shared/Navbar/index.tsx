@@ -227,10 +227,17 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
     }
   }
   const onAvailabilityCheckbox = (value: string) => {
-    if (availabilityFilter.includes(value)) {
+    // console.log(availabilityFilter)
+    if (availabilityFilter?.includes(value)) {
       setAvailabilityFilter(availabilityFilter.filter((item) => item !== value));
     } else {
       setAvailabilityFilter((prev) => [...prev, value]);
+    }
+  }
+
+  const handleSearch = () => {
+    if(onSearch){
+      onSearch('')
     }
   }
 
@@ -244,7 +251,8 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
     onMobileFilters && onMobileFilters(mobileFilters)
   }, [mobileFilters])
   useEffect(() => {
-    onRangeFilters && onRangeFilters(rangeFilters.map(String))
+    console.log('rangeFilters',rangeFilters)
+      onRangeFilters && onRangeFilters(rangeFilters.map(String))
   }, [rangeFilters]);
   useEffect(() => {
     onRatingFilter && onRatingFilter(ratingFilter)
@@ -268,12 +276,12 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
     const user = getLocalStorage("user");
     const hairstyle_trend = user ? (JSON.parse(user).user_preferences ? String(JSON.parse(user).user_preferences.hairstyle_trend) : "") : "";
     const length_sought = user ? (JSON.parse(user).user_preferences ? String(JSON.parse(user).user_preferences.length_sought) : "") : "";
-    const budget = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.budget : [10, 100]) : [10, 100];
+    const budget = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.budget?JSON.parse(user).user_preferences.budget:[10,100] : [10, 100]) : [10, 100];
     const hairdressing_at_home = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.hairdressing_at_home : "all") : "all";
     const rating = user ? (JSON.parse(user).user_preferences ? Number(JSON.parse(user).user_preferences.ratings) : 1) : 1;
     const country = user ? (JSON.parse(user).user_preferences ? String(JSON.parse(user).user_preferences.country) : "") : "";
-    const availability = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.availability : ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]) : ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
-    console.log(availability);
+    const availability = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.availability?JSON.parse(user).user_preferences.availability : ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"] : ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]) : ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
+    console.log('availability',user);
     const userId = user ? Number(JSON.parse(user).id) : null;
     if (userId) {
       setIsLoggedIn(true);
@@ -788,7 +796,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                           onClick={() => onAvailabilityCheckbox(item)}
                         >
                           <div
-                            className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105 ${availabilityFilter.includes(item)
+                            className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105 ${availabilityFilter?.includes(item)
                               ? ColorsThemeA.ohcVerticalGradient_A
                               : "bg-[#D6D6D6]"
                               }`}>
@@ -806,7 +814,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
             }
           </div>
 
-          <div className="hidden md:block cursor-pointer p-3 rounded-full hover:scale-90 transform transition-transform duration-300 bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
+          <div onClick={handleSearch} className="hidden md:block cursor-pointer p-3 rounded-full hover:scale-90 transform transition-transform duration-300 bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
             <SearcIcon />
           </div>
 
