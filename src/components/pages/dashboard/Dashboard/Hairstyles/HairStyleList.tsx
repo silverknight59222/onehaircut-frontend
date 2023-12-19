@@ -14,7 +14,7 @@ import userLoader from "@/hooks/useLoader";
 import HairStyleListItem from './HairStyleListItem';
 
 let hairStyleParams = {}
-
+// For update commit
 
 const HairStyleList = React.memo(({ activeMenu, setISD, hairStyleSelectEvent, resetStyleForm, onFilterSelect, onReloadListener, selectAllListener, listCountShowEvent, setFinal }: any) => {
     // //console.log("in HairStyleList", hairStyleSelectEvent)

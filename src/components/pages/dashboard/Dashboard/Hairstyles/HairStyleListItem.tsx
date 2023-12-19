@@ -12,7 +12,7 @@ import { dashboard } from "@/api/dashboard";
 import userLoader from "@/hooks/useLoader";
 
 
-
+// For update commit
 const HairStyleListItem = React.memo(({ item, activeMenu, hairStyleSelectEvent, filters, isAllSelected, cB, tB }: any) => {
     // //console.log("in HairStyleListItem")
 

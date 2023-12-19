@@ -4,7 +4,7 @@ import HairStyleList from "./HairStyleList";
 import HairStylesModal from "./HairStylesModal";
 import HairStyleListHeader from "./HairStyleListHeader";
 import { getLocalStorage } from "@/api/storage";
-
+// For update commit
 const hairStyleSelectEvent = {
   on: () => {}
 }
