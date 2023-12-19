@@ -10,7 +10,7 @@ import _debounce from 'lodash/debounce';
 
 import { ColorsThemeA } from "@/components/utilis/Themes";
 
-
+// For update commit
 
 const HairStyleListHeader = React.memo(({ setActiveMenu, isd_value, activeMenu, onFilterSelect, params, selectAllEvent, onListCountShow }: any) => {
     // //console.log("in HairStyleListHeader")
