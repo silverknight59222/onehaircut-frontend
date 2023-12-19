@@ -50,7 +50,7 @@ const SalonChoice = () => {
     const [nameSearch, setNameSearch] = useState<string>('');
     const [filteredMobile, setFilteredMobile] = useState<string[]>([]);
     const [filtereRange, setRangeFilter] = useState([2, 100]);
-    const [ratingFilter, setRatingFilter] = useState<number>(1);
+    const [ratingFilter, setRatingFilter] = useState<number[]>([1,2,3,4,5]);
     const [countryFilter, setCountryFilter] = useState<string>("");
     const [availabilityFilter, setAvailabilityFilter] = useState<string[]>([]);
     const [newSalonFilter, setNewSalonFilter] = useState(true);
@@ -103,7 +103,7 @@ const SalonChoice = () => {
                 filteredMobile.includes(salon.is_mobile.toLowerCase());
 
             const salonInRange = filtereRange[0] <= salon.final_price && salon.final_price <= filtereRange[1];
-            const salonAboveEqualRating = (salon.rating >= ratingFilter) || (newSalonFilter && salon.rating === 0);
+            const salonInRating = (ratingFilter.length === 0) || ((ratingFilter.length > 0) && (ratingFilter.includes(salon.rating))) || (newSalonFilter && salon.rating === 0);
             const salonInCountry = (countryFilter === '') || (salon.address.country === countryFilter);
             const frenchToEnglishMapping = {
                 'Lundi' : 1,
@@ -125,21 +125,13 @@ const SalonChoice = () => {
                     break;
                 }
             }
-            console.log(
-                cityNameMatches &&
-                salonNameMatches &&
-                salonMobileMatches &&
-                salonInRange &&
-                salonAboveEqualRating &&
-                salonInCountry &&
-                salonAvailable)
 
             return (
                 cityNameMatches &&
                 salonNameMatches &&
                 salonMobileMatches &&
                 salonInRange &&
-                salonAboveEqualRating &&
+                salonInRating &&
                 salonInCountry &&
                 salonAvailable
             );

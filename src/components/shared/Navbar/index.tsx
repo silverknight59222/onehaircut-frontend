@@ -41,7 +41,7 @@ interface Navbar {
   onMobileFilters?: (arg0: string) => void
   onRangeFilters?: (arg0: string[]) => void
   onTypeSelect?: (arg0: string[]) => void,
-  onRatingFilter?: (arg0: number) => void,
+  onRatingFilter?: (arg0: number[]) => void,
   onCountryFilter?: (arg0: string) => void,
   onAvailabilityFilter?: (arg0: string[]) => void,
   onNewSalonFilter?: (arg0: boolean) => void
@@ -66,7 +66,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
   const [ethnicityFilters, setEthnicityFilters] = useState<string[]>([]);
   const [lengthFilters, setLengthFilters] = useState<string[]>([]);
   const [mobileFilters, setMobileFilters] = useState<string>("");
-  const [ratingFilter, setRatingFilter] = useState<number>(1);
+  const [ratingFilter, setRatingFilter] = useState<number[]>([1,2,3,4,5]);
   const [countryFilter, setCountryFilter] = useState<string>("");
   const [availabilityFilter, setAvailabilityFilter] = useState<string[]>([]);
   const [newSalonFilter, setNewSalonFilter] = useState(true);
@@ -209,10 +209,10 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
     }
   };
   const onClickRatingCheckbox = (value: number) => {
-    if (ratingFilter === value) {
-      setRatingFilter(1);
+    if (ratingFilter.includes(value)) {
+      setRatingFilter(ratingFilter.filter((item) => item !== value));
     } else {
-      setRatingFilter(value);
+      setRatingFilter((prev) => [...prev, value]);
     }
   };
   const onNewSalonCheckbox = (value: boolean) => {
@@ -270,8 +270,9 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
     const length_sought = user ? (JSON.parse(user).user_preferences ? String(JSON.parse(user).user_preferences.length_sought) : "") : "";
     const budget = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.budget : [10, 100]) : [10, 100];
     const hairdressing_at_home = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.hairdressing_at_home : "all") : "all";
-    const rating = user ? (JSON.parse(user).user_preferences ? Number(JSON.parse(user).user_preferences.ratings) : 1) : 1;
-    const country = user ? (JSON.parse(user).user_preferences ? String(JSON.parse(user).user_preferences.country) : "") : "";
+    const minRating = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.ratings : 1) :  1;
+    const maxRating = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.max_ratings : 5) :  5;
+    let country = user ? (JSON.parse(user).user_preferences ? String(JSON.parse(user).user_preferences.country) : "") : "";
     const availability = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.availability : ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]) : ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
     console.log(availability);
     const userId = user ? Number(JSON.parse(user).id) : null;
@@ -280,15 +281,22 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
 
       let gender = hairstyle_trend === 'Masculine' ? 'Homme' : hairstyle_trend === 'Feminine' ? 'Femme' : 'Mix';
       let length = length_sought === 'Long' ? ['Long'] : length_sought === 'Moyen' ? ['Medium'] : length_sought === 'Court' ? ['Short'] : [];
-      let mobile = hairdressing_at_home === 0 ? '' : 'yes';
+      let mobile = hairdressing_at_home != null ?  hairdressing_at_home === 0 ? '' : 'yes' : '';
+      country = country == "null" ? "" : country;
+      
+      let rating = [] as number[];
+      for(let i=(minRating ?? 1); i<=(maxRating ?? 5);i++)
+      {
+        rating.push(Number(i));
+      }
 
       setGenderFilters(gender);
       setLengthFilters(length);
-      setRangeFilter(budget);
+      setRangeFilter(budget ?? [10,100]);
       setMobileFilters(mobile);
       setRatingFilter(rating);
       setCountryFilter(country);
-      setAvailabilityFilter(availability);
+      setAvailabilityFilter(availability ?? ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]);
       setNewSalonFilter(true);
     }
     document.addEventListener("click", closeSelectBox);
@@ -742,7 +750,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                         >
                           <div
                             className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105  mr-2
-              ${ratingFilter === item ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}
+                            ${ratingFilter.includes(item) ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}
                           >
                             <CheckedIcon />
                           </div>
