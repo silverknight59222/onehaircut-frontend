@@ -110,7 +110,7 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
 
 
   return (
-    <div className="relative bg-white rounded-xl px-5 pb-5 shadow-lg mt-10 bg- modal">
+    <div className="relative bg-white rounded-xl px-5 pb-5 shadow-lg mt-10 bg- modal " >
 
       {isModal &&
         <BaseModal close={() => setIsModal(false)} width="w-100">
@@ -169,10 +169,10 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
         {/* Nom du client */}
         {/* Cercle de couleur du coiffeur */}
         <div
-          className="coiffeur-color"
+          className="coiffeur-color shadow-inner shadow-stone-300"
           style={{ backgroundColor: props.coiffeurCouleur }}
         ></div>
-        <div className="text-xl font-semibold text-center">
+        <div className="text-xl font-semibold text-center bg-rounded-lg " >
           Client: {nomClient}
         </div>
 
@@ -209,10 +209,10 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
           <strong>coiffures:</strong> {props.event.booking.haircut.name}
         </div>}
         {props.event.booking.salon_haircut && <div className="text-center mb-[-4px]">
-          <strong>coiffures Dur&eacute;e &eacute;stim&eacute;e :</strong> {props.event.booking.salon_haircut.base_duration}&nbsp;Mins
+          <strong>coiffures Durée éstimée :</strong> {props.event.booking.salon_haircut.base_duration}&nbsp;Mins
         </div>}
         <div className="text-center mb-[-4px]">
-          <strong>Pr&eacute;station :</strong>
+          <strong>Préstation :</strong>
           {props.event.booking.items.filter((item) => item.type == 'service').length != 0 &&
             <ul>
               {props.event.booking.items.filter((item) => item.type == 'service').map((item, index) => (
@@ -223,7 +223,7 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
           {props.event.booking.items.filter((item) => item.type == 'service').length == 0 && <span> none</span>}
         </div>
         <div className="text-center mb-[-4px]">
-          <strong>Dur&eacute;e totale &eacute;stim&eacute;e :</strong> {props.event.total_duration} Mins
+          <strong>Durée totale éstimée :</strong> {props.event.total_duration} Mins
         </div>
 
 
@@ -232,9 +232,9 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
           {/* Conversation */}
           <div className=" border border-gray-300 rounded-xl p-2 rounded-bl-lg overflow-auto h-40 bg-stone-100 shadow-inner mb-2 ">
             {chats.map((msg, index) => (
-              <div key={`msg-${index}`} className={`${msg.by === 'professional' ? 'text-right' : 'text-left '} mb-2`}>
+              <div key={`msg-${index}`} className={`${msg.by === 'professional' ? 'text-left ' : 'text-right'} mb-2 `}>
                 <div
-                  className={`inline-block p-2 text-xs outline-1 ${msg.by === 'professional' ? 'rounded-l-lg rounded-b-lg outline outline-orange-500 bg-stone-100 ' : 'rounded-r-lg rounded-b-lg outline outline-stone-400 bg-white'}`}
+                  className={`inline-block p-2 outline-1 text-xs  ${msg.by === 'professional' ? `rounded-r-lg rounded-b-lg  ${ColorsThemeA.OhcGradient_D} font-light text-white shadow-md shadow-stone-300` : ' font-medium rounded-l-lg rounded-b-lg bg-stone-300 shadow-sm shadow-stone-300'}`}
                 >
                   <strong>{msg.by === 'professional' ? 'Vous:' : 'Client:'}</strong> {msg.message}
                 </div>
