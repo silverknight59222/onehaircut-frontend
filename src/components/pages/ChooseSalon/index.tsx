@@ -397,7 +397,7 @@ const SalonChoice = () => {
                         return pre
                     });
                 }}
-                onRatingFilter={(rating: number) => setRatingFilter(rating)}
+                onRatingFilter={(rating: number[]) => setRatingFilter(rating)}
                 onCountryFilter={(country: string) => setCountryFilter(country)}
                 onAvailabilityFilter={(availability: string[]) => setAvailabilityFilter(availability)}
                 onNewSalonFilter={(newSalon: boolean) => setNewSalonFilter(newSalon)}
