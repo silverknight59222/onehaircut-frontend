@@ -739,7 +739,7 @@ const SalonInfos = () => {
                     </h4>
                     {/* Info icon  */}
                     <div className="pr-4">
-                        <InfoButton title_1={"Mobilité"} content_1={"Vous pouvez configurer ici si vous êtes mobile et si oui, la distance que vous seriez prêt à parcourir, le montant de l’indemnité et le temps nécessaire lié au déplacement."} content_2="Une fois la configuration effectuée, n'oubliez pas de cliquer sur le bouton de mise à jour" onOpenModal={undefined} />
+                        <InfoButton title_1={"Mobilité"} content_1={"Vous pouvez configurer si vous êtes mobile, la distance que vous seriez prêt à parcourir, le montant de l’indemnité et le temps nécessaire lié au déplacement."} content_2="Une fois la configuration effectuée, n'oubliez pas de cliquer sur le bouton de mise à jour" onOpenModal={undefined} />
                     </div>
                 </div>
 
