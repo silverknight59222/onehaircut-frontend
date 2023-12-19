@@ -11,6 +11,7 @@ import { getLocalStorage, setLocalStorage } from "@/api/storage";
 import { salonApi } from "@/api/salonSide";
 import useSnackbar from '@/hooks/useSnackbar';
 import OpenningHours from "./OpenningHours";
+import InfoButton from "@/components/UI/InfoButton";
 
 // Définissez un type ou une interface pour les données d'indisponibilité
 interface UnavailabilityData {
@@ -122,11 +123,11 @@ const Unavailability = () => {
         setUnavailList(resp.data.data)
         setUnavailabilities(resp.data.data)
     }
-    const getSalonInfo = async() => {
+    const getSalonInfo = async () => {
         let resp = await salonApi.getSalonUnavailability(salon.id);
         setUnavailList(resp.data.data)
         setUnavailabilities(resp.data.data)
-        setLocalStorage("salon_default",resp.data.data)
+        setLocalStorage("salon_default", resp.data.data)
     }
     const getHairDresser = async () => {
         let id_salon = salon?.id;
@@ -183,7 +184,7 @@ const Unavailability = () => {
 
     useEffect(() => {
         setUnavailList(unavailList)
-    },[unavailList])
+    }, [unavailList])
 
     // FORMATAGE POUR L'AFFICHAGE DE LA PLAGE/DATE SELECTIONNEE
     const formatDateRange = (dates: Date[]) => {
@@ -257,7 +258,7 @@ const Unavailability = () => {
 
     const handleSubmitClick = async () => {
         let obj = hairDresserList.find(o => o.name == selectedHD);
-        if(obj != undefined){
+        if (obj != undefined) {
             if (selectedDates.length > 0) {
                 // Utilisez l'état local pour la raison
                 const newUnavailability = {
@@ -268,7 +269,7 @@ const Unavailability = () => {
                     hdId: obj.id,
                     slot_times: selectedSlots
                 };
-    
+
                 // Ajoutez la nouvelle donnée d'indisponibilité à votre tableau de données
                 let resp = await salonApi.addHairDresserUnavailability(newUnavailability);
                 if (resp.data.status == 200) {
@@ -287,7 +288,7 @@ const Unavailability = () => {
         }
         else {
             console.log(salon)
-            if(selectedDates.length > 0){
+            if (selectedDates.length > 0) {
                 const newSalonUnavailability = {
                     start_date: startDate,
                     end_date: endDate,
@@ -308,7 +309,7 @@ const Unavailability = () => {
                 else {
                     setUnavailabilities([...unavailabilities, resp.data.data]);
                 }
-                setLocalStorage('salon_default',[...unavailabilities, resp.data.data])
+                setLocalStorage('salon_default', [...unavailabilities, resp.data.data])
             }
         }
         // Réinitialisez l'état des dates sélectionnées
@@ -363,6 +364,10 @@ const Unavailability = () => {
                 >
                     Coiffeurs
                 </button>
+                {/* Info icon  */}
+                <div className="pr-4">
+                    <InfoButton title_1={"Indisponibilités"} content_1={"Vous pouvez entrer ici les indisponibilités de votre salon ainsi que ceux de votre staff."} onOpenModal={undefined} />
+                </div>
             </div>
 
 
@@ -441,11 +446,11 @@ const Unavailability = () => {
                 />
             </div>
 
-            {timeState && showHairdresserDropdown  && (
+            {timeState && showHairdresserDropdown && (
                 // console.log(timeState)
                 <>
                     {selectedHD ? (
-                        
+
                         <div className="flex items-center justify-center gap-4 flex-wrap mt-4 w-full">
                             {slotList.map((slot, index) => {
                                 return (

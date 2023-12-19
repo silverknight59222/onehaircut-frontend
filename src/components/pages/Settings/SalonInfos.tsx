@@ -13,6 +13,7 @@ import { salonApi } from '@/api/salonSide';
 import useSnackbar from "@/hooks/useSnackbar";
 import { getLocalStorage, setLocalStorage } from "@/api/storage";
 import { ErrorBar } from "recharts";
+import InfoButton from "@/components/UI/InfoButton";
 
 const tempSalon = getLocalStorage('hair_salon');
 const salonInfo = tempSalon ? JSON.parse(tempSalon) : null;
@@ -99,7 +100,7 @@ const SalonInfos = () => {
     }
 
     const saveSalonMobility = async (isMobilityAllowed) => {
-        await salonApi.saveSalonMobility({ is_mobile: isMobilityAllowed})
+        await salonApi.saveSalonMobility({ is_mobile: isMobilityAllowed })
             .then((resp) => {
                 showSnackbar("success", "Salon Mobility Saved Successfully.");
             })
@@ -112,7 +113,7 @@ const SalonInfos = () => {
     }
 
     const saveZoneRadius = async (radius, duration) => {
-        await salonApi.saveZoneRadius({ zone_radius: radius, zone_duration : duration, price: ZonePrice })
+        await salonApi.saveZoneRadius({ zone_radius: radius, zone_duration: duration, price: ZonePrice })
             .then((resp) => {
                 showSnackbar("success", "Salon Mobility Zone Saved Successfully.");
             })
@@ -730,10 +731,17 @@ const SalonInfos = () => {
 
             {/* ZONE DE MOBILITE */}
             <div className="flex flex-col">
-                {/* Titre "Zone de mobilité" */}
-                <h4 className="flex ml-6 mb-2 font-semibold text-lg">
-                    Zone de mobilité
-                </h4>
+                <div className="flex flex-row">
+
+                    {/* Titre "Zone de mobilité" */}
+                    <h4 className="flex ml-6 mb-2 font-semibold text-lg">
+                        Zone de mobilité
+                    </h4>
+                    {/* Info icon  */}
+                    <div className="pr-4">
+                        <InfoButton title_1={"Mobilité"} content_1={"Vous pouvez configurer ici si vous êtes mobile et si oui, la distance que vous seriez prêt à parcourir, le montant de l’indemnité et le temps nécessaire lié au déplacement."} content_2="Une fois la configuration effectuée, n'oubliez pas de cliquer sur le bouton de mise à jour" onOpenModal={undefined} />
+                    </div>
+                </div>
 
                 {/* Checkbox et label "Autoriser la mobilité" */}
                 <div className="flex-1 py-5 pl-5 ml-8 flex items-center"> {/* Utilisez flex items-center ici */}

@@ -172,8 +172,8 @@ const BookSalon = () => {
       }
 
       let err_message = ""
-      if(travelTime > 0){
-        err_message = "Please choose another slot time Your Hairdresser need : "+ travelTime +" min to travel"
+      if (travelTime > 0) {
+        err_message = "Please choose another slot time Your Hairdresser need : " + travelTime + " min to travel"
       }
       else {
         err_message = "Please choose another slot time. Because your salon is not available on this time"
@@ -181,7 +181,7 @@ const BookSalon = () => {
 
       for (let i = currentIndex; i <= maxValue; i++) {
         if (slots[i] && currentIndex > -1) {
-          if (slots[i].is_booked) { 
+          if (slots[i].is_booked) {
             showSnackbar("error", err_message)
             selectedObjects.splice(0)
             break;
@@ -527,15 +527,15 @@ const BookSalon = () => {
 
             </div>
 
-
-            <LogoCircleFixRight />
-            <Footer />
-
           </div >
+
         </>
       )
       }
+      <LogoCircleFixRight />
+      <Footer />
     </div>
+
   );
 };
 
