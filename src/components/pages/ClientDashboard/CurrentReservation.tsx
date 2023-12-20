@@ -191,20 +191,18 @@ const Currentreservation = () => {
     const modifReservation: React.JSX.Element =
         <div>
             <div className="flex flex-col items-center justify-center gap-4">
-                <p className="text-2xl font-semibold text-black text-center mb-6">Annulation de la réservation</p>
+
                 {/* check if cancellation was accepted */}
                 {cancelAccepted &&
-                    <div>
-                        <p className="text-sm font-medium text-red-600 text-center">
-                            Êtes-vous sûr de vouloir annuler la reservation du </p>
-                        <p className="text-sm font-medium text-red-600 text-center">
-                            {formaterDate(itemToCancel.redable_date)} ?
-                        </p>
-                    </div>
+                    <p className="text-2xl font-semibold text-black text-center mb-6">Voulez-vous vraiment annuler cette réservation?</p>
+                    // <div>
+                    //     <p className="text-sm font-medium text-red-600 text-center">
+                    //         Êtes-vous sûr de vouloir annuler la reservation ?</p>
+                    // </div>
                 }
                 {!cancelAccepted &&
                     // Cancellation denied
-                    <div className="text-stone-800 font-normal italic text-sm text-center my-2">
+                    <div className="text-stone-800 font-normal italic text-lg text-center my-2">
                         <p >
                             Une reservation ne peut être annuler si elle ne se situe pas dans les 24 heures suivant l'annulation. Veuillez vous référez à nos
                         </p>
