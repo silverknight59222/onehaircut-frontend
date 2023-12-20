@@ -30,6 +30,11 @@ const Services = () => {
   const [showAddServiceModal, setShowAddServiceModal] = useState(false);
   const [showEditServiceModal, setShowEditServiceModal] = useState(false);
   const [editServiceInfo, setEditServiceInfo] = useState<SalonService>();
+  const sortingRef =
+    React.useRef() as React.MutableRefObject<HTMLInputElement>;
+  const groupRef =
+    React.useRef() as React.MutableRefObject<HTMLInputElement>;
+
   const sortDropdown = [
     {
       name: "Nom ( A à Z )",
@@ -72,7 +77,6 @@ const Services = () => {
   ];
 
   const onSortingFilter = (filter: string) => {
-    console.log('Sort : ' + filter)
     if (sortingFilter === filter) {
       setSortingFilter(''); 
     }
@@ -105,11 +109,10 @@ const Services = () => {
   };
 
   useEffect(() => {
-    console.log('State sort ' + sortingFilter)
+    /* Create a deep copy of the array as the sort function does in array sorting */
     const copyArray = JSON.parse(JSON.stringify(allServices)) as typeof allServices;
     if (sortingFilter === 'Nom ( A à Z )') {
       copyArray?.sort((a, b) => (a.service.name.toLowerCase() > b.service.name.toLowerCase() ? 1 : -1))
-      console.log('here 0');
     }
     if (sortingFilter === 'Nom ( Z à A )') {
       copyArray?.sort((a, b) => (a.service.name.toLowerCase() > b.service.name.toLowerCase() ? -1 : 1))
@@ -131,8 +134,6 @@ const Services = () => {
 
     if (sortingFilter !== '') {
       setFilteredServices(copyArray);
-      console.log(allServices);
-      console.log('here 1');
     } else {
       fetchAllServices();
     }
@@ -168,9 +169,22 @@ const Services = () => {
   }, [groupFilter])
 
 
+  const closeSelectBox = ({ target }: MouseEvent): void => {
+    if (!sortingRef.current?.contains(target as Node)) {
+      setIsDropdownSort(false);
+    }
+    if (!groupRef.current?.contains(target as Node)) {
+      setIsDropdownGroup(false);
+    }
+  };
 
   useEffect(() => {
-    fetchAllServices();        
+    fetchAllServices();  
+    document.addEventListener("click", closeSelectBox);
+
+    return () => {
+      document.removeEventListener("click", closeSelectBox);
+    };      
   }, []);
 
   return (
@@ -189,7 +203,7 @@ const Services = () => {
         {/* Section des filtres de tri pour les services */}
         <div className="flex flex-col sm:flex-row gap-3 items-center">
           {/* Composant de liste déroulante pour le tri par nom */}          
-          <div className="relative w-52">
+          <div ref={sortingRef} className="relative w-52">
             <button onClick={() => setIsDropdownSort(!isDropdownSort)} className={sortingFilter !== '' ? "flex items-center justify-center gap-8 font-medium rounded-xl h-[52px] pl-3 pr-4 bg-stone-800 text-white shadow-[0px_15px_18px_0px_rgba(0, 0, 0, 0.14)]" : "flex items-center justify-center gap-8 bg-[#F7F7F7] font-medium rounded-xl h-[52px] pl-3 pr-4 shadow-[0px_15px_18px_0px_rgba(0, 0, 0, 0.14)]"}>
                 Trier par nom
                 <DownArrow color={sortingFilter !== '' ? 'white' : '#000'} />
@@ -212,7 +226,7 @@ const Services = () => {
             )}
         </div>
           {/* Composant de liste déroulante pour le tri par groupe/type */}
-          <div className="relative w-52">
+          <div ref={groupRef} className="relative w-52">
             <button onClick={() => setIsDropdownGroup(!isDropdownGroup)} className={groupFilter !== '' ? "flex items-center justify-center gap-8 font-medium rounded-xl h-[52px] pl-3 pr-4 bg-stone-800 text-white shadow-[0px_15px_18px_0px_rgba(0, 0, 0, 0.14)]" : "flex items-center justify-center gap-8 bg-[#F7F7F7] font-medium rounded-xl h-[52px] pl-3 pr-4 shadow-[0px_15px_18px_0px_rgba(0, 0, 0, 0.14)]"}>
                 Filtrer par group
                 <DownArrow color={groupFilter !== '' ? 'white' : '#000'} />
