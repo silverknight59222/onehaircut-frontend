@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./index.css";
 import userLoader from "@/hooks/useLoader";
 import BaseMultiSelectbox from "@/components/UI/BaseMultiSelectbox";
-import { EditIcon, LogoCircleFixLeft } from "@/components/utilis/Icons";
+import { CheckedIcon, DownArrow, EditIcon, LogoCircleFixLeft } from "@/components/utilis/Icons";
 import { dashboard } from "@/api/dashboard";
 import { getLocalStorage } from "@/api/storage";
 import AddServiceModal, { Service } from "./addServiceModal";
@@ -21,6 +21,7 @@ export interface SalonService {
 const Services = () => {
   const { loadingView } = userLoader();
   const [allServices, setAllServices] = useState<SalonService[]>([]);
+  const [isDropdown, setIsDropdown] = useState(false);
   const [filteredServices, setFilteredServices] = useState<SalonService[]>([]);
   const [sortingFilter, setSortingFilter] = useState<string>('');
   const [groupFilter, setGroupFilter] = useState<string>('');
@@ -99,33 +100,12 @@ const Services = () => {
     }
   }
 
-  const getActiveTypeFilter = (filter: string) => {
-    let list: SalonService[] = [];
-    if (filter === 'Coloration') {
-      list = allServices?.filter(service => service.service.type === 'coloration')
+  const onServiceGroupFitler = (filter: string) => {
+    if (groupFilter === filter) {
+      setGroupFilter('');  // Reset or clear the filter if it's already selected
     }
-    if (filter === 'Discount') {
-      list = allServices?.filter(service => service.service.type === 'discount')
-    }
-
-    if (filter === 'Care') {
-      list = allServices?.filter(service => service.service.type === 'care')
-    }
-    if (filter === 'Special Treatment') {
-      list = allServices?.filter(service => service.service.type === 'special_treatment')
-    }
-
-    if (filter === 'Men') {
-      list = allServices?.filter(service => service.service.type === 'men')
-    }
-    if (filter === 'Styling') {
-      list = allServices?.filter(service => service.service.type === 'styling')
-    }
-    if (filter.length) {
-      setFilteredServices(list);
-    } else {
-      setGroupFilter('');
-      fetchAllServices();
+    else {
+      setGroupFilter(filter);  // Otherwise, set the filter to the selected mobile value
     }
   }
 
@@ -148,6 +128,37 @@ const Services = () => {
       return allServices;
     }
   }
+
+  useEffect(() => {
+
+    let list: SalonService[] = [];
+    if (groupFilter === 'Coloration') {
+      list = allServices?.filter(service => service.service.type === 'coloration')
+    }
+    if (groupFilter === 'Discount') {
+      list = allServices?.filter(service => service.service.type === 'discount')
+    }
+
+    if (groupFilter === 'Care') {
+      list = allServices?.filter(service => service.service.type === 'care')
+    }
+    if (groupFilter === 'Special Treatment') {
+      list = allServices?.filter(service => service.service.type === 'special_treatment')
+    }
+
+    if (groupFilter === 'Men') {
+      list = allServices?.filter(service => service.service.type === 'men')
+    }
+    if (groupFilter === 'Styling') {
+      list = allServices?.filter(service => service.service.type === 'styling')
+    }
+    if (groupFilter.length) {
+      setFilteredServices(list);
+    } else {
+      fetchAllServices();
+    }
+  }, [groupFilter])
+
   useEffect(() => {
     fetchAllServices();
   }, []);
@@ -171,7 +182,28 @@ const Services = () => {
           <BaseMultiSelectbox dropdownItems={sortDropdown} dropdownTitle='Trier par nom' getActiveFilters={getActiveFilters} />
           {/* Composant de liste déroulante pour le tri par groupe/type */}
           {/* TODO Group filter not working */}
-          <BaseMultiSelectbox dropdownItems={typeDropdown} dropdownTitle='Trier par groupe' getActiveFilters={getActiveTypeFilter} />
+          <div className="relative w-52">
+            <button onClick={() => setIsDropdown(!isDropdown)} className={groupFilter !== '' ? "flex items-center justify-center gap-8 font-medium rounded-xl h-[52px] pl-3 pr-4 bg-stone-800 text-white shadow-[0px_15px_18px_0px_rgba(0, 0, 0, 0.14)]" : "flex items-center justify-center gap-8 bg-[#F7F7F7] font-medium rounded-xl h-[52px] pl-3 pr-4 shadow-[0px_15px_18px_0px_rgba(0, 0, 0, 0.14)]"}>
+                Filtrer par group
+                <DownArrow color={groupFilter !== '' ? 'white' : '#000'} />
+            </button>
+            {isDropdown && (
+                <div className="mt-2 absolute rounded-xl border border-checkbox bg-white p-6">
+                    {typeDropdown.map((item, index) => {
+                        return (
+                            <div key={index} onClick={() => onServiceGroupFitler(item.name)} className="flex cursor-pointer mb-[19px]">
+                                <div className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${groupFilter === item.name ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}>
+                                    <CheckedIcon />
+                                </div>
+                                <p className="ml-2">
+                                    {item.name}
+                                </p>
+                            </div>)
+                    })}
+
+                </div>
+            )}
+        </div>
 
           {/* Bouton pour ouvrir le modal d'ajout d'un nouveau service */}
           <div
