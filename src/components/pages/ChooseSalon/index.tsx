@@ -51,7 +51,7 @@ const SalonChoice = () => {
     const [nameSearch, setNameSearch] = useState<string>('');
     const [filteredMobile, setFilteredMobile] = useState<string[]>([]);
     const [filtereRange, setRangeFilter] = useState([2, 100]);
-    const [ratingFilter, setRatingFilter] = useState<number>(1);
+    const [ratingFilter, setRatingFilter] = useState<number[]>([1,2,3,4,5]);
     const [countryFilter, setCountryFilter] = useState<string>("");
     const [availabilityFilter, setAvailabilityFilter] = useState<string[]>([]);
     const [newSalonFilter, setNewSalonFilter] = useState(true);
@@ -91,10 +91,6 @@ const SalonChoice = () => {
 
     };
 
-    useEffect(()=>{
-        console.log('mapBound',mapBound)
-    },[mapBound])
-
     const recalculateMap = (positionArray) => {
         if(map){
             const bounds = new google.maps.LatLngBounds();
@@ -109,65 +105,57 @@ const SalonChoice = () => {
     //     googleMapsApiKey: 'AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E',
     //     libraries: ['places'],
     // })
-    // const filteredCityHandler = async () => {
-    //     //const filteredSalons = salons
-    //     let filteredSalonsFunc = salons.filter((salon) => {
-    //         const cityNameMatches = citySearch
-    //             ? salon.address.city.toLowerCase().includes(citySearch.toLowerCase())
-    //             : true; // If citySearch is empty, consider it as a match
+    const filteredCityHandler = async () => {
+        //const filteredSalons = salons
+        let filteredSalonsFunc = salons.filter((salon) => {
+            const cityNameMatches = citySearch
+                ? salon.address.city.toLowerCase().includes(citySearch.toLowerCase())
+                : true; // If citySearch is empty, consider it as a match
 
-    //         const salonNameMatches = nameSearch
-    //             ? salon.name.toLowerCase().includes(nameSearch.toLowerCase())
-    //             : true; // If nameSearch is empty, consider it as a match
+            const salonNameMatches = nameSearch
+                ? salon.name.toLowerCase().includes(nameSearch.toLowerCase())
+                : true; // If nameSearch is empty, consider it as a match
 
-    //         const salonMobileMatches =
-    //             filteredMobile.length === 0 ||
-    //             filteredMobile.includes(salon.is_mobile.toLowerCase());
+            const salonMobileMatches =
+                filteredMobile.length === 0 ||
+                filteredMobile.includes(salon.is_mobile.toLowerCase());
 
-    //         const salonInRange = filtereRange[0] <= salon.final_price && salon.final_price <= filtereRange[1];
-    //         const salonAboveEqualRating = (salon.rating >= ratingFilter) || (newSalonFilter && salon.rating === 0);
-    //         const salonInCountry = (countryFilter === '') || (salon.address.country === countryFilter);
-    //         const frenchToEnglishMapping = {
-    //             'Lundi' : 1,
-    //             'Mardi' : 2,
-    //             'Mercredi' : 3,
-    //             'Jeudi' : 4,
-    //             'Vendredi' : 5,
-    //             'Samedi' : 6,
-    //             'Dimanche' : 0
-    //         };
-    //         let salonAvailable = true;
+            const salonInRange = filtereRange[0] <= salon.final_price && salon.final_price <= filtereRange[1];
+            const salonInRating = (ratingFilter.length === 0) || ((ratingFilter.length > 0) && (ratingFilter.includes(salon.rating))) || (newSalonFilter && salon.rating === 0);
+            const salonInCountry = (countryFilter === '') || (salon.address.country === countryFilter);
+            const frenchToEnglishMapping = {
+                'Lundi' : 1,
+                'Mardi' : 2,
+                'Mercredi' : 3,
+                'Jeudi' : 4,
+                'Vendredi' : 5,
+                'Samedi' : 6,
+                'Dimanche' : 0
+            };
+            let salonAvailable = true;
             
 
-    //         for(const day of availabilityFilter)
-    //         {
-    //             salonAvailable = salon.openTimes[frenchToEnglishMapping[day]].available;
-    //             if(salonAvailable)
-    //             {
-    //                 break;
-    //             }
-    //         }
-    //         console.log(
-    //             cityNameMatches &&
-    //             salonNameMatches &&
-    //             salonMobileMatches &&
-    //             salonInRange &&
-    //             salonAboveEqualRating &&
-    //             salonInCountry &&
-    //             salonAvailable)
+            for(const day of availabilityFilter)
+            {
+                salonAvailable = salon.openTimes[frenchToEnglishMapping[day]].available;
+                if(salonAvailable)
+                {
+                    break;
+                }
+            }
 
-    //         return (
-    //             cityNameMatches &&
-    //             salonNameMatches &&
-    //             salonMobileMatches &&
-    //             salonInRange &&
-    //             salonAboveEqualRating &&
-    //             salonInCountry &&
-    //             salonAvailable
-    //         );
-    //     });
-    //     setFilteredSalons(filteredSalonsFunc);
-    // };
+            return (
+                cityNameMatches &&
+                salonNameMatches &&
+                salonMobileMatches &&
+                salonInRange &&
+                salonInRating &&
+                salonInCountry &&
+                salonAvailable
+            );
+        });
+        setFilteredSalons(filteredSalonsFunc);
+    };
 
     // useEffect(() => {
     //     console.log(filteredSalons)
@@ -338,16 +326,16 @@ const SalonChoice = () => {
     //     return () => clearTimeout(delay)
     // }, [filtereRange])
 
-    useEffect(() => {
-        // const delay = setTimeout(()=>{
-        //     // doFilter()
-        // },1000)
+    // useEffect(() => {
+    //     // const delay = setTimeout(()=>{
+    //     //     // doFilter()
+    //     // },1000)
 
-        // filteredCityHandler()
-        getCoordinates(filteredSalons)
+    //     // filteredCityHandler()
+    //     getCoordinates(filteredSalons)
 
-        // return () => clearTimeout(delay)
-    }, [citySearch, nameSearch, filteredMobile, filtereRange, ratingFilter, countryFilter, availabilityFilter, newSalonFilter, salons])
+    //     // return () => clearTimeout(delay)
+    // }, [citySearch, nameSearch, filteredMobile, filtereRange, ratingFilter, countryFilter, availabilityFilter, newSalonFilter, salons])
 
     if (!isLoaded) {
         return loadingView()
@@ -474,9 +462,10 @@ const SalonChoice = () => {
     }
 
     const handleZoomChange = () => {
+        const ZOOM_THRESHOLD = 5
         if(map){
             const zoom = map.getZoom() ?? 10
-            if(zoom<5){
+            if(ZOOM_THRESHOLD<5){
                 setShowMarker(false)
             }
             else{
@@ -544,7 +533,7 @@ const SalonChoice = () => {
                         return pre
                     });
                 }}
-                onRatingFilter={(rating: number) => setRatingFilter(rating)}
+                onRatingFilter={(rating: number[]) => setRatingFilter(rating)}
                 onCountryFilter={(country: string) => setCountryFilter(country)}
                 onAvailabilityFilter={(availability: string[]) => setAvailabilityFilter(availability)}
                 onNewSalonFilter={(newSalon: boolean) => setNewSalonFilter(newSalon)}

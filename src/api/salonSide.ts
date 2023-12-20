@@ -14,10 +14,11 @@ interface SalonType {
 }
 interface SalonMobility {
   is_mobile: boolean,
-  price: Number,
 }
 interface SalonMobilityZone {
-  zone_radius: number
+  zone_radius: number,
+  zone_duration: number
+  price: Number,
 }
 interface UnavailabilityData {
   start_date: String;
@@ -41,7 +42,7 @@ interface FilterSalon{
   nameSearch : String,
   filteredMobile : String[],
   filtereRange : Number[],
-  ratingFilter : Number,
+  ratingFilter : Number[],
   countryFilter : String,
   availabilityFilter : String[],
   newSalonFilter :Boolean
@@ -107,6 +108,10 @@ const salonApi = {
   },
   filterSalon:async(params : FilterSalon) => {
     return await request.post(`salon_filter`,params);
+  },
+  removeHaircuts: async(params: any) => {
+    return await request.post(`remove_haircuts_from_salon`,params);
   }
+
 }
 export { salonApi };

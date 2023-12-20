@@ -14,18 +14,70 @@ import userLoader from "@/hooks/useLoader";
 import HairStyleListItem from './HairStyleListItem';
 
 let hairStyleParams = {}
+// For update commit
 
-
-const HairStyleList = React.memo(({ activeMenu, hairStyleSelectEvent, resetStyleForm, onFilterSelect, onReloadListener, selectAllListener, listCountShowEvent }: any) => {
+const HairStyleList = React.memo(({ activeMenu, setISD, hairStyleSelectEvent, resetStyleForm, onFilterSelect, onReloadListener, selectAllListener, listCountShowEvent, setFinal }: any) => {
     // //console.log("in HairStyleList", hairStyleSelectEvent)
 
     const [haircutList, setHaircutList] = useState<Haircut[]>([]);
     const [isLoading, setIsLoading] = useState(false);
     const [filters, setFilters] = useState(false);
     const [isAllSelected, setIsAllSelected] = useState(false);
+    const [selectedItems, setSelectedItems] = useState([]);
+    const [removedItems, setRemovedItems] = useState<any>();
+    const [selectedListItem, setSelectedListItem] = useState<any>([]);
     const { loadingView } = userLoader();
     let isPageLoading = false
     const [page, setPage] = useState(1);
+
+    useEffect(() => {
+        setFinal(selectedListItem)
+    },[selectedListItem])
+
+    const addItems = (selectedItem) => {
+
+        if(selectedItem){
+            const cpy = JSON.parse(JSON.stringify(selectedListItem)).concat([selectedItem])
+            setSelectedListItem(cpy)
+        }
+    }
+
+    const removeItems = (selectedItem) => {
+
+        if(selectedItem){
+            let items = JSON.parse(JSON.stringify(selectedListItem)).filter((e) => e.id !== selectedItem.id)
+            setSelectedListItem(items)
+        }
+    }
+
+    // useEffect(() => {
+    //     console.log("Parents CB")
+    //     if(selectedItems.length > 0){
+    //         const cpy = JSON.parse(JSON.stringify(selectedListItem)).concat([selectedItems])
+    //         setSelectedListItem(cpy)
+    //         setSelectedItems([])
+    //         console.log("cpy")
+    //         console.log(cpy)
+    //     }
+    //     // setSelectedListItem(selectedListItem.concat([selectedItems]))
+    // },[selectedItems])
+
+    // useEffect(() => {
+    //     console.log("Parents TB")
+    //     let items = JSON.parse(JSON.stringify(selectedListItem)).filter((e) => e.id !== removedItems.id)
+    //     setSelectedListItem(items)
+    //     // let items = selectedListItem.filter((e) => e.id !== removedItems.id)
+    //     // setSelectedListItem(items)
+    // },[removedItems])
+
+
+    useEffect(() => {
+        if(isAllSelected){
+            setSelectedListItem([])
+            setSelectedListItem(haircutList)
+        }
+    },[isAllSelected])
+
 
     const getHaircuts = async (currentPage) => {
         setIsLoading(true);
@@ -88,11 +140,14 @@ const HairStyleList = React.memo(({ activeMenu, hairStyleSelectEvent, resetStyle
                 type: "select_all",
                 haircuts: haircutList
             })
+            setISD(true);
+            
         } else {
             hairStyleSelectEvent.on({
                 type: "reset_modal"
             })
             setIsAllSelected(false)
+            setSelectedListItem([])
         }
     }
     useEffect(() => {
@@ -119,7 +174,7 @@ const HairStyleList = React.memo(({ activeMenu, hairStyleSelectEvent, resetStyle
                 {haircutList.map((item, index) => {
                     return (
                         <>
-                            <HairStyleListItem isAllSelected={isAllSelected} filters={filters} hairStyleSelectEvent={hairStyleSelectEvent} item={item} activeMenu={activeMenu}></HairStyleListItem>
+                            <HairStyleListItem isAllSelected={isAllSelected} filters={filters} hairStyleSelectEvent={hairStyleSelectEvent} item={item} activeMenu={activeMenu} cB={addItems} tB={removeItems}></HairStyleListItem>
                         </>
                     );
                 })}

@@ -18,6 +18,7 @@ import { LogoCircleFixRight } from "@/components/utilis/Icons";
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import StarRatings from "react-star-ratings";
 import { salonApi } from "@/api/salonSide";
+import useSnackbar from "@/hooks/useSnackbar";
 
 const BookSalon = () => {
   const [selectedImage, setSelectedImage] = useState("");
@@ -38,10 +39,12 @@ const BookSalon = () => {
   const salonData = getLocalStorage('selectedSalon')
   const userData = getLocalStorage("user")
   const service_ids = getLocalStorage('ServiceIds')
+  const showSnackbar = useSnackbar();
 
   const salon = salonData ? JSON.parse(salonData) : null
   const user = userData ? JSON.parse(userData) : null
   const services = service_ids ? JSON.parse(service_ids) : null
+  const [travel_duration, setTravelDuration] = useState(0)
   // TODO SEE IF THE SALON IS MOBILE - SELECT AT HOME OR IN SALON BOOKING 
   const [locationType, setLocationType] = useState('salon');
   const durationTime = salon?.total_duration
@@ -71,6 +74,7 @@ const BookSalon = () => {
 
   useEffect(() => {
     getBillKMPrice();
+
   }, [locationType])
 
   const getAllHairDresser = async () => {
@@ -84,8 +88,9 @@ const BookSalon = () => {
   };
 
   const getBillKMPrice = async () => {
-    const resp = await salonApi.getBillPerKM(user?.id, salon.user_id);
-    console.log(resp.data.data.price);
+    const resp = await salonApi.getBillPerKM(user?.id, salon.id);
+    console.log(resp.data.data)
+    setTravelDuration(resp.data.data.travel_duration)
     setPrice(Math.round(resp.data.data.price * 100) / 100)
     setCanGoHome(resp.data.data.can_go_home);
   }
@@ -140,27 +145,50 @@ const BookSalon = () => {
   }
 
   const onSelectSlot = (slot: any) => {
-    const currentIndex = slots.findIndex((item) => item.id === slot.id);
+    let currentIndex = slots.findIndex((item) => item.id === slot.id);
     if (currentIndex !== -1) {
       const selectedObjects: any = [];
       const ddd = Number(getLocalStorage('slotTime'))
       const time = durationTime
-
+      let travelTime = 0
+      if (locationType != 'salon') {
+        travelTime = travel_duration
+      }
       let maxValue = currentIndex
       if (Number.isInteger(time / 30)) {
         maxValue = currentIndex + time / 30 - 1
       } else {
         maxValue = currentIndex + Math.floor(time / 30)
       }
+      if (travelTime > 0) {
+        if (Number.isInteger(travelTime / 30)) {
+          maxValue += travelTime / 30 - 1
+          currentIndex -= travelTime / 30 - 1
+        }
+        else {
+          maxValue += Math.floor(travelTime / 30)
+          currentIndex -= Math.floor(travelTime / 30)
+        }
+      }
+
+      let err_message = ""
+      if (travelTime > 0) {
+        err_message = "Please choose another slot time Your Hairdresser need : " + travelTime + " min to travel"
+      }
+      else {
+        err_message = "Please choose another slot time. Because your salon is not available on this time"
+      }
 
       for (let i = currentIndex; i <= maxValue; i++) {
-        if (slots[i]) {
+        if (slots[i] && currentIndex > -1) {
           if (slots[i].is_booked) {
+            showSnackbar("error", err_message)
             selectedObjects.splice(0)
             break;
           }
           selectedObjects.push(slots[i]);
         } else {
+          showSnackbar("error", err_message)
           selectedObjects.splice(0)
           break;
         }
@@ -184,6 +212,7 @@ const BookSalon = () => {
   // Gestionnaire de clic pour les boutons personnalisés
   const handleLocationTypeClick = async (type) => {
     setLocationType(type);
+    setSelectedSlot([])
   };
 
 
@@ -498,15 +527,15 @@ const BookSalon = () => {
 
             </div>
 
-
-            <LogoCircleFixRight />
-            <Footer />
-
           </div >
+
         </>
       )
       }
+      <LogoCircleFixRight />
+      <Footer />
     </div>
+
   );
 };
 

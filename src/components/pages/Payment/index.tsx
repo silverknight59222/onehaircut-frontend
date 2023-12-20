@@ -183,7 +183,7 @@ const Index = () => {
 
   const getBillKMPrice = async () => {
     setIsLoading(true)
-    await salonApi.getBillPerKM(user?.id, salonData.user_id)
+    await salonApi.getBillPerKM(user?.id, salonData.id)
       .then(resp => {
         console.log(resp.data.data.price);
         setPrice(Math.round(resp.data.data.price * 100) / 100)
@@ -315,16 +315,16 @@ const Index = () => {
               <button onClick={() => router.push('/book-salon')} className={`${Theme_A.button.bigWhiteColoredButton}`}>
                 Modifier
               </button>
-              <p className="text-3xl xl:text-5xl text-black font-semibold">
+              <p className="text-3xl xl:text-4xl text-black font-semibold">
                 Prix total : {totalUpdatedCost}€
               </p>
             </div>
           </div>
 
 
-          <div className="mx-4 mt-4 w-max md:w-[750px] lg:w-[940px] px-4 sm:px-14 bg-[#F8F8F8] rounded-[22px] border border-[#ECECEC] shadow-sm shadow-stone-600 justify-center">
+          <div className="flex mx-4 mt-4 mb-8 w-max md:w-[750px] lg:w-[940px] px-4 sm:px-14 bg-[#F8F8F8] rounded-[22px] border border-[#ECECEC] shadow-sm shadow-stone-600 justify-center">
 
-            <div className="mt-7 w-full md:w-5/12 lg:w-4/12 justify-center">
+            <div className="mt-7 mb-8 w-full md:w-5/12 lg:w-4/12  items-center justify-center">
               <Elements stripe={stripePromise}>
                 <PaymentForm onSuccess={onBooking} />
               </Elements>

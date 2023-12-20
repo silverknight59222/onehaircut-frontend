@@ -12,6 +12,7 @@ import SlotDropdown from "./SlotsDropdown";
 import Footer from "@/components/UI/Footer";
 import { Theme_A } from "@/components/utilis/Themes";
 import { ColorsThemeA } from "@/components/utilis/Themes";
+import InfoButton from "@/components/UI/InfoButton";
 export interface OpenTimes {
     available: boolean;
     day: string;
@@ -142,7 +143,7 @@ const OpenningHours = () => {
             {isLoading && loadingView()}
             <div className="flex items-center flex-col justify-center w-max mb-4">
                 {!isLoading && (
-                    <div className="w-[580px] flex   text-center  md:px-1 lg:justify-center xl:justify-center py-6 mb-3 gap-8 rounded-2xl bg-white text-lg font-light shadow-lg">
+                    <div className="w-[580px] flex   text-center  md:px-1 lg:justify-evenly py-6 mb-3 gap-8 rounded-2xl bg-white text-lg font-light shadow-lg">
                         <p
                             className={`cursor-pointer text-black  px-2 py-2 rounded-md hover:bg-stone-100 hover:text-black ${activeMenu === "salon-time" &&
                                 " bg-black text-white font-medium"
@@ -159,6 +160,11 @@ const OpenningHours = () => {
                         >
                             Horaires des coiffeurs
                         </p>
+
+                        {/* Info icon  */}
+                        <div className="pr-4">
+                            <InfoButton title_1={"Horaires"} content_1={"Vous pouvez configurer ici les horaires d'ouverture de votre salon ainsi que les disponibilités de vos coiffeurs."} onOpenModal={undefined} />
+                        </div>
                     </div>
                 )}
                 {activeMenu === "salon-time" && !isLoading && (

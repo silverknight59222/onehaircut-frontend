@@ -163,22 +163,23 @@ const Services = () => {
         <span className={`${ColorsThemeA.textGradient_Title}`}>prestations !</span>
       </p>
 
-      <div className="flex w-full items-center justify-between ">
+
+      <div className="flex flex-col md:flex-row w-full justify-center gap-3 md:gap-4 my-3 md:my-7 z-0 ">
         {/* Section des filtres de tri pour les services */}
-        <div className="flex gap-4 my-7 z-0 ">
+        <div className="flex flex-col sm:flex-row gap-3 items-center">
           {/* Composant de liste déroulante pour le tri par nom */}
           <BaseMultiSelectbox dropdownItems={sortDropdown} dropdownTitle='Trier par nom' getActiveFilters={getActiveFilters} />
           {/* Composant de liste déroulante pour le tri par groupe/type */}
           {/* TODO Group filter not working */}
           <BaseMultiSelectbox dropdownItems={typeDropdown} dropdownTitle='Trier par groupe' getActiveFilters={getActiveTypeFilter} />
-        </div>
 
-        {/* Bouton pour ouvrir le modal d'ajout d'un nouveau service */}
-        <div
-          className={`${Theme_A.button.bigGradientButton} cursor-pointer `}
-          onClick={() => setShowAddServiceModal(true)}
-        >
-          Ajouter un service
+          {/* Bouton pour ouvrir le modal d'ajout d'un nouveau service */}
+          <div
+            className={`${Theme_A.button.bigGradientButton} cursor-pointer`}
+            onClick={() => setShowAddServiceModal(true)}
+          >
+            Ajouter un service
+          </div>
         </div>
       </div>
 

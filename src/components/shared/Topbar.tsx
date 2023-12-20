@@ -108,7 +108,7 @@ const Topbar = ({ isDashboard, tabHandler, SidebarHandler, isSidebar }: TopbarTy
 				</div>
 				{isDashboard && (
 					<div className="hidden lg:block w-full text-center text-black font-bold text-4xl">
-						{activeSalon?.name ? activeSalon.name : "-"}
+						{activeSalon?.name ? activeSalon.name : ""}
 					</div>
 				)}
 				<div className="w-full flex items-center justify-end gap-4">
