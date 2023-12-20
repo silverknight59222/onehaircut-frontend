@@ -29,6 +29,8 @@ export interface HaircutDetails {
     moyen_duration_type: string;
     epais_price_type: string;
     epais_duration_type: string;
+    rating: number;
+    rating_counts: number;
 }
 
 const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairStyleSelectEvent, setFinalItems, onResetStyleForm, reloadListEvent, finalItems, params }: any) => {
@@ -61,6 +63,8 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
         moyen_duration_type: "0",
         epais_price_type: "0",
         epais_duration_type: "0",
+        rating: 0,
+        rating_counts: 0,
     };
 
     const [error, setError] = useState({

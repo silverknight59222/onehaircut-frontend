@@ -10,17 +10,16 @@ import { getLocalStorage } from "@/api/storage";
 import { Haircut, SalonHaircut } from "@/types";
 import { dashboard } from "@/api/dashboard";
 import userLoader from "@/hooks/useLoader";
+import StarRatings from "react-star-ratings";
 
 
 // For update commit
 const HairStyleListItem = React.memo(({ item, activeMenu, hairStyleSelectEvent, filters, isAllSelected, cB, tB }: any) => {
-    // //console.log("in HairStyleListItem")
 
     const [isSelected, setIsSelected] = useState(false);
     const [itemSelected, setItemSelected] = useState({});
+    const [salon_id, setSalonId] = useState(0);
     const selectHaircut = (item: Haircut) => {
-        console.log(isSelected)
-        console.log(item)
         if (isAllSelected) {
             return
         }
@@ -69,6 +68,13 @@ const HairStyleListItem = React.memo(({ item, activeMenu, hairStyleSelectEvent, 
         setIsSelected(false)
     }, [activeMenu])
 
+    useEffect(() => {
+        if(getLocalStorage('salon_id'))
+        {
+            setSalonId(Number(getLocalStorage('salon_id')));
+        }
+    }, [])
+
     // This component will re-render only if the `data` prop changes
     return (
 
@@ -89,6 +95,17 @@ const HairStyleListItem = React.memo(({ item, activeMenu, hairStyleSelectEvent, 
             <div className={`${activeMenu === "new" ? Theme_A.hairstyleCards.cardGradientBott : Theme_A.hairstyleCards.selectedCardGradientBott}`}>
                 <p className={`${Theme_A.hairstyleCards.cardText}`}>
                     {item.name}
+                </p>
+                <p className={`${Theme_A.hairstyleCards.cardText}`}>
+                    {activeMenu === "added" ?
+                    <StarRatings
+                            rating={item.salon_haircuts.findIndex(el => el.hair_salon_id == salon_id) !== -1 ? item.salon_haircuts[item.salon_haircuts.findIndex(el => el.hair_salon_id == salon_id)].rating : 0}
+                            starRatedColor="#FEDF10"
+                            starSpacing="1px"
+                            starDimension="12px"
+                            numberOfStars={5}
+                            name={`rating-${item.salon_haircuts.findIndex(el => el.hair_salon_id == salon_id) !== -1 ? item.salon_haircuts[item.salon_haircuts.findIndex(el => el.hair_salon_id == salon_id)].rating : 0}`}
+                          /> : ''}
                 </p>
             </div>
         </div>
