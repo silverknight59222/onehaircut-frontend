@@ -63,6 +63,8 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
         moyen_duration_type: "0",
         epais_price_type: "0",
         epais_duration_type: "0",
+        rating: 0,
+        rating_counts: 0,
     };
 
     const [error, setError] = useState({
