@@ -97,6 +97,7 @@ const Currentreservation = () => {
     const [itemToCancel, setItemToCancel] = useState<any>({});
     const [currentTime, setCurrentTime] = useState<Date | null>(null);
     const [cancelAccepted, setCancelAccepted] = useState(false);
+    const [isModalCancelConfirm, setIsModalCancelConfirm] = useState(false);
 
     // function to update the time every seconds
     useEffect(() => {
@@ -151,6 +152,7 @@ const Currentreservation = () => {
         let resp = await dashboard.cancelBooking(itemToCancel.id);
         if (resp.data.status == 200) {
             showSnackbar("success", resp.data.message)
+            setIsModalCancelConfirm(true)
         }
         else {
             showSnackbar("error", resp.data.message)
@@ -231,6 +233,24 @@ const Currentreservation = () => {
             </div>
         </div >
 
+    // function to confirm the cancellation
+    const ConfirmCancellation: React.JSX.Element =
+        <div>
+            <div className="text-stone-800 font-normal italic text-lg text-center my-2">
+                <p >
+                    La réservation a bien été annulé!
+                </p>
+            </div>
+            <div className="mt-12 flex gap-4 items-center justify-center w-full ">
+                <button
+                    className={`${Theme_A.button.medWhiteColoredButton}`}
+                    onClick={() => setIsModalCancelConfirm(false)}
+                >
+                    Fermer cette fenêtre
+                </button>
+            </div>
+        </div >
+
     const formatFrenchDate = (dateString) => {
         const date = new Date(dateString);
 
@@ -266,6 +286,12 @@ const Currentreservation = () => {
                         <BaseModal close={() => setIsModalCancel(false)}>
                             <div>
                                 {modifReservation}
+                            </div>
+                        </BaseModal>)}
+                    {isModalCancelConfirm && (
+                        <BaseModal close={() => setIsModalCancelConfirm(false)}>
+                            <div>
+                                {ConfirmCancellation}
                             </div>
                         </BaseModal>)}
                     {/* REST OF THE PAGE */}
