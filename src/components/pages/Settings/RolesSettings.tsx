@@ -102,7 +102,7 @@ const RolesSettings = () => {
         updatedRoleSwitches[id] = !updatedRoleSwitches[id];
 
         // Prepare an array of permissions to update
-        const permissionsToUpdate:any = [];
+        const permissionsToUpdate: any = [];
 
         // Loop through updatedRoleSwitches to find permissions with the updated state
         for (const permissionId in updatedRoleSwitches) {
@@ -146,7 +146,7 @@ const RolesSettings = () => {
     const updatePermissions = async () => {
         const updatedRoleSwitches = { ...roleSwitches[selectedRole] };
         const updatedPermissions = modalSwitchesByRole[selectedRole];
-        const permissionsToUpdate:any = [];
+        const permissionsToUpdate: any = [];
 
         // Combine the original roleSwitches with the updatedPermissions
         const combinedPermissions = { ...updatedRoleSwitches, ...updatedPermissions };
@@ -258,7 +258,7 @@ const RolesSettings = () => {
             <ThemeProvider theme={ComponentTheme}>
                 <div className="relative flex flex-col items-start rounded-[20px] w-max-content max-w-[95%] mx-auto bg-white bg-clip-border shadow-3xl shadow-shadow-500 p-5 pb-8 transition duration-200 linear">
 
-                    <p className="text-stone-400 italic font-normal text-md text-center my-1 px-14">
+                    <p className="text-stone-400 italic font-normal text-md text-center my-1 px-1 md:px-14">
                         Le bouton sur la droite donne l'accès.
                     </p>
                     <div className="relative mb-3 flex items-center justify-between pt-1 w-full">

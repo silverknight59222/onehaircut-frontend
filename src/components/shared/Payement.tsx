@@ -44,7 +44,7 @@ const PaymentForm: React.FC = () => {
                             </div>
                         </div>
                         <div className="mb-3">
-                            <label className="font-bold text-sm mb-2 ml-1">Numéro de carte</label>
+                            <label className="font-bold text-sm mb-4 ml-1">Numéro de carte</label>
                             <div>
 
                                 {/* NUMERO DE CARTE */}

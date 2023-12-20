@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import BaseModal from "@/components/UI/BaseModal";
 import { ChatSendIcon } from "@/components/utilis/Icons";
-import { Theme_A } from '@/components/utilis/Themes';
+import { Theme_A, ColorsThemeA } from '@/components/utilis/Themes';
 import { useRouter } from "next/navigation";
 import { dashboard } from "@/api/dashboard";
 import { getLocalStorage } from "@/api/storage";
@@ -79,9 +79,9 @@ const ChatModal: FC<ChatModalProps> = ({
                         </button>
                         <div className="border border-gray-300 rounded-xl p-2 rounded-bl-lg overflow-auto h-40 bg-stone-100 shadow-inner mb-2">
                             {chats.map((msg, index) => (
-                                <div key={`msg-${index}`} className={`${msg.by === 'client' ? 'text-right' : 'text-left'} mb-2`}>
+                                <div key={`msg-${index}`} className={`${msg.by === 'client' ? 'text-left' : 'text-right'} mb-2`}>
                                     <div
-                                        className={`inline-block p-2 text-xs outline-1 ${msg.by === 'client' ? 'rounded-l-lg rounded-b-lg outline outline-orange-500 bg-stone-100' : 'rounded-r-lg rounded-b-lg outline outline-stone-400 bg-white'}`}
+                                        className={`inline-block p-2 text-xs outline-1 ${msg.by === 'client' ? `rounded-r-lg rounded-b-lg text-white text-xs font-light  ${ColorsThemeA.OhcGradient_D}  shadow-md shadow-stone-300 ` : 'rounded-l-lg rounded-b-lg bg-stone-200 shadow-md shadow-stone-300 '}`}
                                     >
                                         <strong>{msg.by === 'client' ? 'Vous' : professionalData.name}:</strong> {msg.message}
                                     </div>

@@ -44,7 +44,7 @@ const DashboardLayout = ({ children, notifications }: DashboardLayout) => {
         SidebarHandler={SidebarHandler}
       />
       <div
-        className={`h-screen px-4 lg:px-8 py-5 overflow-x-hidden bg-[#F4F4F6] ml-0 lg:ml-72`}
+        className={`h-screen px-1 md:px-4 lg:px-8 py-5 overflow-x-hidden bg-[#F4F4F6] ml-0 lg:ml-72`}
       >
         <Topbar
           isDashboard={tab !== "Dashboard"}
@@ -52,7 +52,7 @@ const DashboardLayout = ({ children, notifications }: DashboardLayout) => {
           tabHandler={tabHandler}
           isSidebar={isSidebar}
         />
-        <div className="mt-12 px-4 lg:px-6">
+        <div className="mt-12 px-1 md:px-4 lg:px-6">
           {children}
         </div>
       </div>
