@@ -29,7 +29,7 @@ const Index = () => {
 
   const getBillKMPrice = async () => {
     setIsLoading(true)
-    await salonApi.getBillPerKM(userInfo?.id, salon.user_id)
+    await salonApi.getBillPerKM(userInfo?.id, salon.id)
       .then(resp => {
         console.log(resp.data.data.price);
         setPrice(Math.round(resp.data.data.price * 100) / 100)

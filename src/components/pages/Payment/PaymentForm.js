@@ -44,7 +44,7 @@ const PaymentForm = ({onSuccess}) => {
         email: customerEmail,
         description: serviceDescription,
         clientId : userData.id,
-        salonId : salonData.user_id,
+        salonId : salonData.id,
       }
     );    
     const clientSecret = response.data.clientSecret;
