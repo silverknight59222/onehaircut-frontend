@@ -88,7 +88,7 @@ const BookSalon = () => {
   };
 
   const getBillKMPrice = async () => {
-    const resp = await salonApi.getBillPerKM(user?.id, salon.user_id);
+    const resp = await salonApi.getBillPerKM(user?.id, salon.id);
     console.log(resp.data.data)
     setTravelDuration(resp.data.data.travel_duration)
     setPrice(Math.round(resp.data.data.price * 100) / 100)

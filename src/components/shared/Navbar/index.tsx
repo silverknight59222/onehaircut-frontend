@@ -23,6 +23,7 @@ import ComponentTheme from "@/components/UI/ComponentTheme";
 import { Button } from "@material-ui/core";
 import EUCountriesList from "./EUCountries";
 import StarRatings from "react-star-ratings";
+import Autocomplete from "react-google-autocomplete";
 
 
 interface Navbar {
@@ -34,6 +35,7 @@ interface Navbar {
   onSearch?: (arg0: string) => void
   onServiceSearch?: (arg0: string) => void
   onCitySearch?: (arg0: string) => void
+  onCityMapSearch?:(arg0:google.maps.places.PlaceResult)=>void
   onNameSearch?: (arg0: string) => void
   onGenderFilter?: (arg0: string) => void
   onEthnicityFilters?: (arg0: string[]) => void
@@ -47,7 +49,7 @@ interface Navbar {
   onNewSalonFilter?: (arg0: boolean) => void
 }
 
-const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideSearchBar, onTypeSelect, onSearch, onServiceSearch, onGenderFilter, onEthnicityFilters, onLengthFilters, onMobileFilters, onCitySearch, onNameSearch, onRangeFilters, onRatingFilter, onCountryFilter, onAvailabilityFilter, onNewSalonFilter }: Navbar) => {
+const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideSearchBar, onTypeSelect, onSearch, onServiceSearch, onGenderFilter, onEthnicityFilters, onLengthFilters, onMobileFilters, onCitySearch, onCityMapSearch, onNameSearch, onRangeFilters, onRatingFilter, onCountryFilter, onAvailabilityFilter, onNewSalonFilter }: Navbar) => {
   const [isDropdown, setIsDropdown] = useState(false);
   const [showDesktopGender, setShowDesktopGender] = useState(false);
   const [showDesktopLength, setShowDesktopLength] = useState(false);
@@ -227,10 +229,17 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
     }
   }
   const onAvailabilityCheckbox = (value: string) => {
-    if (availabilityFilter.includes(value)) {
+    // console.log(availabilityFilter)
+    if (availabilityFilter?.includes(value)) {
       setAvailabilityFilter(availabilityFilter.filter((item) => item !== value));
     } else {
       setAvailabilityFilter((prev) => [...prev, value]);
+    }
+  }
+
+  const handleSearch = () => {
+    if(onSearch){
+      onSearch('')
     }
   }
 
@@ -244,7 +253,8 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
     onMobileFilters && onMobileFilters(mobileFilters)
   }, [mobileFilters])
   useEffect(() => {
-    onRangeFilters && onRangeFilters(rangeFilters.map(String))
+    console.log('rangeFilters',rangeFilters)
+      onRangeFilters && onRangeFilters(rangeFilters.map(String))
   }, [rangeFilters]);
   useEffect(() => {
     onRatingFilter && onRatingFilter(ratingFilter)
@@ -268,7 +278,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
     const user = getLocalStorage("user");
     const hairstyle_trend = user ? (JSON.parse(user).user_preferences ? String(JSON.parse(user).user_preferences.hairstyle_trend) : "") : "";
     const length_sought = user ? (JSON.parse(user).user_preferences ? String(JSON.parse(user).user_preferences.length_sought) : "") : "";
-    const budget = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.budget : [10, 100]) : [10, 100];
+    const budget = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.budget?JSON.parse(user).user_preferences.budget:[10,100] : [10, 100]) : [10, 100];
     const hairdressing_at_home = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.hairdressing_at_home : "all") : "all";
     const minRating = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.ratings : 1) :  1;
     const maxRating = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.max_ratings : 5) :  5;
@@ -518,7 +528,25 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     onServiceSearch && isServicesPage ? (e) => onServiceSearch(e.target.value) : () => { }}
                 />
               </div>}
-            {(isSalonPage) &&
+            {(isSalonPage && !isWelcomePage) &&
+              <Autocomplete
+                  className="text-black lg:w-40 px-4 py-2 text-base transition ml-2 duration-500 ease-in-out transform border-transparent rounded-lg bg-white-100 ring-gray-400"
+                  apiKey='AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E'
+                  onPlaceSelected={(place) => {
+                    console.log('map search place',place)
+                    onCityMapSearch&&onCityMapSearch(place)
+                  }}
+                  options={{
+                      types: ["locality"],
+                      fields: [
+                          'address_components',
+                          'geometry.location'
+                      ]
+                  }}
+                  placeholder="Ville"
+              />
+            }
+            {/* {(isSalonPage) &&
               <div className={`border-r border-grey px-2 xl:px-6 last:border-r-0 cursor-pointer `}>
                 <input
                   type="text"
@@ -528,7 +556,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     (e) => onSearch(e.target.value) :
                     onCitySearch && isSalonPage ? (e) => onCitySearch(e.target.value) : () => { }}
                 />
-              </div>}
+              </div>} */}
             {(isSalonPage) &&
               <div className={`md:border-r border-grey px-2 xl:px-6 last:border-r-0 cursor-pointer`}>
                 <input
@@ -796,7 +824,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                           onClick={() => onAvailabilityCheckbox(item)}
                         >
                           <div
-                            className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105 ${availabilityFilter.includes(item)
+                            className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105 ${availabilityFilter?.includes(item)
                               ? ColorsThemeA.ohcVerticalGradient_A
                               : "bg-[#D6D6D6]"
                               }`}>
@@ -814,7 +842,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
             }
           </div>
 
-          <div className="hidden md:block cursor-pointer p-3 rounded-full hover:scale-90 transform transition-transform duration-300 bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
+          <div onClick={handleSearch} className="hidden md:block cursor-pointer p-3 rounded-full hover:scale-90 transform transition-transform duration-300 bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
             <SearcIcon />
           </div>
 

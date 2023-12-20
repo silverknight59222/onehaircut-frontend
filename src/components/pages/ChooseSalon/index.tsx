@@ -20,6 +20,7 @@ import { MapIconRed } from '@/components/utilis/Icons';
 import { HomeIcon } from '@/components/utilis/Icons';
 import ReactDOMServer from 'react-dom/server';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
+import { salonApi } from '@/api/salonSide';
 
 // TODO IMPORT TO USE ADRESSES 
 //import axios from 'axios'; 
@@ -46,7 +47,7 @@ const SalonChoice = () => {
     const [location, setLocation] = useState({ lat: 47.18052966583263, lng: 7.358082527907601 });
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [wishlist, setWishlist] = useState<string[]>([])
-    const [citySearch, setCitySearch] = useState<string>('');
+    const [citySearch, setCitySearch] = useState<any>(null);
     const [nameSearch, setNameSearch] = useState<string>('');
     const [filteredMobile, setFilteredMobile] = useState<string[]>([]);
     const [filtereRange, setRangeFilter] = useState([2, 100]);
@@ -56,6 +57,14 @@ const SalonChoice = () => {
     const [newSalonFilter, setNewSalonFilter] = useState(true);
     const [positions, setPositions] = useState<Position[]>([])
     const [center, setCenter] = useState<Position>()
+    const [map,setMap] = useState<google.maps.Map>();
+
+    
+    const [mapBound,setMapBound] = useState<any>();
+    const [allowScroll,setAllowScroll] = useState(false)
+    const [showMarker,setShowMarker] = useState(true)
+    
+
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: 'AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E',
         libraries,
@@ -82,7 +91,16 @@ const SalonChoice = () => {
 
     };
 
-
+    const recalculateMap = (positionArray) => {
+        if(map){
+            const bounds = new google.maps.LatLngBounds();
+            positionArray.forEach(pos => {
+                bounds.extend( new google.maps.LatLng({ lat: pos.lat, lng: pos.lng }))
+            })
+            setMapBound(bounds)
+            map.fitBounds(bounds);
+        }
+    }
     // const { isLoaded } = useJsApiLoader({
     //     googleMapsApiKey: 'AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E',
     //     libraries: ['places'],
@@ -156,13 +174,26 @@ const SalonChoice = () => {
                 positionArray.push({ lat: Number(fsalon.address.lat), lng: Number(fsalon.address.long) })
             }
         })
-        //console.log('position array', positionArray)
+        
+        console.log('position array', positionArray)
+        
+        recalculateMap(positionArray)
         if(positionArray.length > 0)
         {
+            
             setPositions(positionArray)
             const tempCenter: Position = getMapCenter(positionArray)
             setCenter(tempCenter);
+            setAllowScroll(true)
         }
+        else{
+            const userPos:Position = {lat : parseFloat(userData?.lat),lng : parseFloat(userData?.long)}
+            console.log('userPos',userData);
+            setPositions([userPos])
+            setCenter(userPos)
+            setAllowScroll(false)
+        }
+        
     }
     // Fonction pour récupérer tous les salons
     const getAllSalons = async () => {
@@ -185,8 +216,10 @@ const SalonChoice = () => {
         if (haircut) {
             data['haircut_id'] = haircut.id
         }
+        console.log('salon data',data)
         await dashboard.getSalonsByHaircut(data)
             .then((res) => {
+                console.log('all salon',res.data.data)
                 setSalons(res.data.data);
                 setFilteredSalons(res.data.data);
                 getCoordinates(res.data.data)
@@ -194,7 +227,7 @@ const SalonChoice = () => {
             })
             .catch(error => {
                 setIsLoading(false);
-                //console.log(error)
+                //console.log('salon error',error)
             })
     }
     // Fonction pour obtenir la liste de souhaits des salons
@@ -280,7 +313,7 @@ const SalonChoice = () => {
         // await timeout(100)
         // timeout(500)
         console.log('filtering')
-        filteredCityHandler()
+        // filteredCityHandler()
         getCoordinates(filteredSalons)
         // const delayTime = 1000;
         // const timeoutId = setTimeout(delayedFunction, delayTime);
@@ -293,16 +326,16 @@ const SalonChoice = () => {
     //     return () => clearTimeout(delay)
     // }, [filtereRange])
 
-    useEffect(() => {
-        // const delay = setTimeout(()=>{
-        //     // doFilter()
-        // },1000)
+    // useEffect(() => {
+    //     // const delay = setTimeout(()=>{
+    //     //     // doFilter()
+    //     // },1000)
 
-        filteredCityHandler()
-        getCoordinates(filteredSalons)
+    //     // filteredCityHandler()
+    //     getCoordinates(filteredSalons)
 
-        // return () => clearTimeout(delay)
-    }, [citySearch, nameSearch, filteredMobile, filtereRange, ratingFilter, countryFilter, availabilityFilter, newSalonFilter, salons])
+    //     // return () => clearTimeout(delay)
+    // }, [citySearch, nameSearch, filteredMobile, filtereRange, ratingFilter, countryFilter, availabilityFilter, newSalonFilter, salons])
 
     if (!isLoaded) {
         return loadingView()
@@ -335,9 +368,13 @@ const SalonChoice = () => {
     const handleOnLoad = (map) => {
         const bounds = new google.maps.LatLngBounds();
         positions.forEach(pos => {
-            bounds.extend({ lat: pos.lat, lng: pos.lng })
+            bounds.extend( new google.maps.LatLng({ lat: pos.lat, lng: pos.lng }))
         })
+
+        // setMapBound(bounds)
         map.fitBounds(bounds);
+        map.setCenter(bounds.getCenter())
+        setMap(map)
     };
     type Salon = {
         name: string;
@@ -354,6 +391,98 @@ const SalonChoice = () => {
 
     console.log(userData?.lat!, userData?.long!);
 
+    const dayDict:{ [key: string]: string } = {
+        'Lundi':'MONDAY', 
+        'Mardi':'TUESDAY', 
+        'Mercredi':'WEDNESDAY', 
+        'Jeudi':'THURSDAY', 
+        'Vendredi':'FRIDAY', 
+        'Samedi':'SATURDAY', 
+        'Dimanche':'SUNDAY'
+    }
+
+    const getAvailEnglish = ():String[] => {
+        const result :string[] = []
+        availabilityFilter.forEach((each)=>{
+            result.push(dayDict[each])
+        })
+
+        console.log('avail english',result)
+        return result
+    }
+
+    const handleAllFilter = async() => {
+
+        setIsLoading(true)
+
+        console.log('citySearch',citySearch)
+        console.log('nameSearch',nameSearch)
+        console.log('filteredMobile',filteredMobile)
+        console.log('filtereRange',filtereRange)
+        console.log('ratingFilter',ratingFilter)
+        console.log('countryFilter',countryFilter)
+        console.log('availabilityFilter',availabilityFilter)
+        console.log('newSalonFilter',newSalonFilter)
+
+        const services = getLocalStorage('ServiceIds')
+        const servicesData = services ? JSON.parse(services) : []
+        const serviceIds: number[] = []
+        servicesData.forEach((service: { name: string, id: number }) => {
+            serviceIds.push(service.id)
+        })
+
+        const param = {
+            client_id : userData.id,
+            haircut_id : haircut.id,
+            services : serviceIds,
+            citySearch,
+            nameSearch,
+            filteredMobile,
+            filtereRange,
+            ratingFilter,
+            countryFilter : (countryFilter&&countryFilter!=='null')?countryFilter:'',
+            availabilityFilter:getAvailEnglish(),
+            newSalonFilter
+        }
+
+        console.log('result iss parma',JSON.stringify(param))
+
+        const result = await salonApi.filterSalon(param)
+
+        console.log('result iss',result)
+
+        if(result.data.status === 200){
+            setSalons(result.data.data);
+            setFilteredSalons(result.data.data);
+            getCoordinates(result.data.data)
+        }
+
+        setIsLoading(false)
+
+    }
+
+    const handleZoomChange = () => {
+        const ZOOM_THRESHOLD = 5
+        if(map){
+            const zoom = map.getZoom() ?? 10
+            if(ZOOM_THRESHOLD<5){
+                setShowMarker(false)
+            }
+            else{
+                setShowMarker(true)
+            }
+        }
+    }
+
+    const handleMapChange = () => {
+        if(map){
+            console.log('mapchange',map.getBounds()?.getNorthEast().lat())
+            console.log('mapchange',map.getBounds()?.getSouthWest().lat())
+            console.log('mapchange',map.getBounds()?.getNorthEast().lng())
+            console.log('mapchange',map.getBounds()?.getSouthWest().lng())
+        }
+    }
+
     // Rendu du composant
     return (
         <div className='w-full'>
@@ -361,13 +490,20 @@ const SalonChoice = () => {
             {/* <Navbar isSalonPage={true} /> */}
             <Navbar
                 isSalonPage={true}
-                onCitySearch={(value: string) => {
-                    setCitySearch((pre) => {
-                        if (value != pre) {
-                            return value
-                        }
-                        return pre
-                    })
+                onSearch={handleAllFilter}
+                onCityMapSearch={(value: any) => {
+                    console.log('map search',value.geometry.location.lat())
+                    const cityParam = {
+                        lat:value.geometry.location.lat(),
+                        long:value.geometry.location.lng()
+                    }
+                    setCitySearch(cityParam)
+                    // setCitySearch((pre) => {
+                    //     if (value != pre) {
+                    //         return value
+                    //     }
+                    //     return pre
+                    // })
                 }}
                 onNameSearch={(value: string) => {
                     setNameSearch((pre) => {
@@ -430,27 +566,30 @@ const SalonChoice = () => {
                 {/***************************************************************************************************************************************************************************************************************** */}
 
                 {/* Conteneur principal pour les salons et la carte */}
-                {isLoaded && positions.length > 0 &&
+                {isLoaded && positions.length>0 &&
                     <div className='w-full mt-4 mb-2 relative '>
                         {/* Carte Google affichée uniquement si des salons sont disponibles */}
                         {
-                            positions.length > 0 && (
+                            positions.length>0&&
                                 <div className={`lg:absolute lg:top-0 lg:left-0 w-full h-[400px] lg:w-[400px] lg:h-[880px] 2xl:w-[880px] 4xl:w-[920px] rounded-lg overflow-hidden lg:z-10`}>
 
                                     {/*TODO USE salon.position when data are available  */}
                                     <GoogleMap
                                         onLoad={handleOnLoad}
-                                        center={{ lat: userData?.lat!, lng: userData?.long! }}
-                                        zoom={13}
+                                        center={center}
+                                        //zoom={8}
+                                        onBoundsChanged={handleMapChange}
                                         mapContainerStyle={{ width: '100%', height: '100%' }}
+                                        onZoomChanged={handleZoomChange}
                                         options={{
                                             minZoom: 2,  // ici, définissez votre zoom minimum
-                                            maxZoom: 18   // et ici, votre zoom maximumyy
+                                            maxZoom: 18,   // et ici, votre zoom maximumyy
+                                            scrollwheel : allowScroll,
                                         }}
                                     >
-                                        {userData?.lat! && userData?.long && (
+                                        {(userData?.lat! && userData?.long && showMarker) && (
                                             <MarkerF
-                                                position={{ lat: userData?.lat!, lng: userData?.long! }}
+                                                position={{ lat: parseFloat(userData?.lat), lng: parseFloat(userData?.long) }}
                                                 options={{
                                                     icon: {
                                                         url: HomeIconUrl,
@@ -462,14 +601,16 @@ const SalonChoice = () => {
                                             />
                                         )}
 
-                                        {filteredSalons.length > 0 && positions.map((position, index) => (
+                                        {(filteredSalons.length > 0 && showMarker) && positions.map((position, index) => {
+                                            console.log('filtered salon pos',position)
+                                            return(
                                             <React.Fragment key={index}>
 
                                                 <MarkerF
                                                     key={index}
                                                     // lat={positions[index].lat}
                                                     // lng={positions[index].lng}
-                                                    position={position} // Utiliser la position du salon
+                                                    position={{ lat : position.lat, lng : position.lng}} // Utiliser la position du salon
                                                     onClick={() => setSelectedSalon(filteredSalons[index] != null ? filteredSalons[index] : { "name": "Null", "id": 0 })}
                                                     options={
                                                         {
@@ -503,10 +644,9 @@ const SalonChoice = () => {
                                                     </div>
                                                 </OverlayViewF>
                                             </React.Fragment>
-                                        ))}
+                                        )})}
                                     </GoogleMap>
                                 </div>
-                            )
                         }
 
                         {/* Section affichant les vignettes des salons */}
