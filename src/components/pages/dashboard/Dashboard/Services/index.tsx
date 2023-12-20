@@ -21,7 +21,8 @@ export interface SalonService {
 const Services = () => {
   const { loadingView } = userLoader();
   const [allServices, setAllServices] = useState<SalonService[]>([]);
-  const [isDropdown, setIsDropdown] = useState(false);
+  const [isDropdownGroup, setIsDropdownGroup] = useState(false);
+  const [isDropdownSort, setIsDropdownSort] = useState(false);
   const [filteredServices, setFilteredServices] = useState<SalonService[]>([]);
   const [sortingFilter, setSortingFilter] = useState<string>('');
   const [groupFilter, setGroupFilter] = useState<string>('');
@@ -70,42 +71,22 @@ const Services = () => {
     },
   ];
 
-  const getActiveFilters = (filter: string) => {
-    let list: SalonService[] = [];
-    if (filter === 'Nom ( A à Z )') {
-      list = allServices?.sort((a, b) => (a.service.name.toLowerCase() > b.service.name.toLowerCase() ? 1 : -1))
+  const onSortingFilter = (filter: string) => {
+    console.log('Sort : ' + filter)
+    if (sortingFilter === filter) {
+      setSortingFilter(''); 
     }
-    if (filter === 'Nom ( Z à A )') {
-      list = allServices?.sort((a, b) => (a.service.name.toLowerCase() > b.service.name.toLowerCase() ? -1 : 1))
-    }
-
-    if (filter === 'Prix ( Croissant )') {
-      list = allServices?.sort((a, b) => (Number(a.price) > Number(b.price) ? 1 : -1))
-    }
-    if (filter === 'Prix ( Décroissant )') {
-      list = allServices?.sort((a, b) => (Number(a.price) > Number(b.price) ? -1 : 1))
-    }
-
-    if (filter === 'Durée ( Croissante )') {
-      list = allServices?.sort((a, b) => (Number(a.price) > Number(b.price) ? 1 : -1))
-    }
-    if (filter === 'Durée ( Décroissante )') {
-      list = allServices?.sort((a, b) => (Number(a.price) > Number(b.price) ? -1 : 1))
-    }
-    if (filter) {
-      setFilteredServices(list);
-    } else {
-      setSortingFilter('');
-      fetchAllServices();
+    else {
+      setSortingFilter(filter);
     }
   }
 
   const onServiceGroupFitler = (filter: string) => {
     if (groupFilter === filter) {
-      setGroupFilter('');  // Reset or clear the filter if it's already selected
+      setGroupFilter(''); 
     }
     else {
-      setGroupFilter(filter);  // Otherwise, set the filter to the selected mobile value
+      setGroupFilter(filter);
     }
   }
 
@@ -116,21 +97,48 @@ const Services = () => {
       .getAllSalonServices(salon_id)
       .then((res) => {
         setAllServices(res.data.data);
+        setFilteredServices(res.data.data);
       })
       .finally(() => {
         setIsLoading(false);
       });
   };
-  const getServices = () => {
-    if (groupFilter || sortingFilter) {
-      return filteredServices;
-    } else {
-      return allServices;
-    }
-  }
 
   useEffect(() => {
+    console.log('State sort ' + sortingFilter)
+    const copyArray = JSON.parse(JSON.stringify(allServices)) as typeof allServices;
+    if (sortingFilter === 'Nom ( A à Z )') {
+      copyArray?.sort((a, b) => (a.service.name.toLowerCase() > b.service.name.toLowerCase() ? 1 : -1))
+      console.log('here 0');
+    }
+    if (sortingFilter === 'Nom ( Z à A )') {
+      copyArray?.sort((a, b) => (a.service.name.toLowerCase() > b.service.name.toLowerCase() ? -1 : 1))
+    }
 
+    if (sortingFilter === 'Prix ( Croissant )') {
+      copyArray?.sort((a, b) => (Number(a.price) > Number(b.price) ? 1 : -1))
+    }
+    if (sortingFilter === 'Prix ( Décroissant )') {
+      copyArray?.sort((a, b) => (Number(a.price) > Number(b.price) ? -1 : 1))
+    }
+
+    if (sortingFilter === 'Durée ( Croissante )') {
+      copyArray?.sort((a, b) => (Number(a.duration) > Number(b.duration) ? 1 : -1))
+    }
+    if (sortingFilter === 'Durée ( Décroissante )') {
+      copyArray?.sort((a, b) => (Number(a.duration) > Number(b.duration) ? -1 : 1))
+    }
+
+    if (sortingFilter !== '') {
+      setFilteredServices(copyArray);
+      console.log(allServices);
+      console.log('here 1');
+    } else {
+      fetchAllServices();
+    }
+  }, [sortingFilter])
+
+  useEffect(() => {
     let list: SalonService[] = [];
     if (groupFilter === 'Coloration') {
       list = allServices?.filter(service => service.service.type === 'coloration')
@@ -152,15 +160,17 @@ const Services = () => {
     if (groupFilter === 'Styling') {
       list = allServices?.filter(service => service.service.type === 'styling')
     }
-    if (groupFilter.length) {
+    if (groupFilter !== '') {
       setFilteredServices(list);
     } else {
-      fetchAllServices();
+      setFilteredServices(allServices);
     }
   }, [groupFilter])
 
+
+
   useEffect(() => {
-    fetchAllServices();
+    fetchAllServices();        
   }, []);
 
   return (
@@ -178,16 +188,36 @@ const Services = () => {
       <div className="flex flex-col md:flex-row w-full justify-center gap-3 md:gap-4 my-3 md:my-7 z-0 ">
         {/* Section des filtres de tri pour les services */}
         <div className="flex flex-col sm:flex-row gap-3 items-center">
-          {/* Composant de liste déroulante pour le tri par nom */}
-          <BaseMultiSelectbox dropdownItems={sortDropdown} dropdownTitle='Trier par nom' getActiveFilters={getActiveFilters} />
-          {/* Composant de liste déroulante pour le tri par groupe/type */}
-          {/* TODO Group filter not working */}
+          {/* Composant de liste déroulante pour le tri par nom */}          
           <div className="relative w-52">
-            <button onClick={() => setIsDropdown(!isDropdown)} className={groupFilter !== '' ? "flex items-center justify-center gap-8 font-medium rounded-xl h-[52px] pl-3 pr-4 bg-stone-800 text-white shadow-[0px_15px_18px_0px_rgba(0, 0, 0, 0.14)]" : "flex items-center justify-center gap-8 bg-[#F7F7F7] font-medium rounded-xl h-[52px] pl-3 pr-4 shadow-[0px_15px_18px_0px_rgba(0, 0, 0, 0.14)]"}>
+            <button onClick={() => setIsDropdownSort(!isDropdownSort)} className={sortingFilter !== '' ? "flex items-center justify-center gap-8 font-medium rounded-xl h-[52px] pl-3 pr-4 bg-stone-800 text-white shadow-[0px_15px_18px_0px_rgba(0, 0, 0, 0.14)]" : "flex items-center justify-center gap-8 bg-[#F7F7F7] font-medium rounded-xl h-[52px] pl-3 pr-4 shadow-[0px_15px_18px_0px_rgba(0, 0, 0, 0.14)]"}>
+                Trier par nom
+                <DownArrow color={sortingFilter !== '' ? 'white' : '#000'} />
+            </button>
+            {isDropdownSort && (
+                <div className="mt-2 absolute rounded-xl border border-checkbox bg-white p-6">
+                    {sortDropdown.map((item, index) => {
+                        return (
+                            <div key={index} onClick={() => onSortingFilter(item.name)} className="flex cursor-pointer mb-[19px]">
+                                <div className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${sortingFilter === item.name ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}>
+                                    <CheckedIcon />
+                                </div>
+                                <p className="ml-2">
+                                    {item.name}
+                                </p>
+                            </div>)
+                    })}
+
+                </div>
+            )}
+        </div>
+          {/* Composant de liste déroulante pour le tri par groupe/type */}
+          <div className="relative w-52">
+            <button onClick={() => setIsDropdownGroup(!isDropdownGroup)} className={groupFilter !== '' ? "flex items-center justify-center gap-8 font-medium rounded-xl h-[52px] pl-3 pr-4 bg-stone-800 text-white shadow-[0px_15px_18px_0px_rgba(0, 0, 0, 0.14)]" : "flex items-center justify-center gap-8 bg-[#F7F7F7] font-medium rounded-xl h-[52px] pl-3 pr-4 shadow-[0px_15px_18px_0px_rgba(0, 0, 0, 0.14)]"}>
                 Filtrer par group
                 <DownArrow color={groupFilter !== '' ? 'white' : '#000'} />
             </button>
-            {isDropdown && (
+            {isDropdownGroup && (
                 <div className="mt-2 absolute rounded-xl border border-checkbox bg-white p-6">
                     {typeDropdown.map((item, index) => {
                         return (
@@ -226,7 +256,7 @@ const Services = () => {
         {/* Grille pour afficher les services */}
         <div className="gap-9 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 mb-20">
           {/* Boucle pour cartographier et afficher chaque service */}
-          {getServices().map((item, index) => {
+          {filteredServices.map((item, index) => {
             return (
               <div key={index} className="flex items-center gap-9">
                 <div className="w-64 bg-white border border-grey rounded-xl py-6 px-5 shadow-md">
