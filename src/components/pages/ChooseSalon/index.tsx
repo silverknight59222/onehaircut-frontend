@@ -47,7 +47,7 @@ const SalonChoice = () => {
     const [location, setLocation] = useState({ lat: 47.18052966583263, lng: 7.358082527907601 });
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [wishlist, setWishlist] = useState<string[]>([])
-    const [citySearch, setCitySearch] = useState<string>('');
+    const [citySearch, setCitySearch] = useState<any>(null);
     const [nameSearch, setNameSearch] = useState<string>('');
     const [filteredMobile, setFilteredMobile] = useState<string[]>([]);
     const [filtereRange, setRangeFilter] = useState([2, 100]);
@@ -57,8 +57,13 @@ const SalonChoice = () => {
     const [newSalonFilter, setNewSalonFilter] = useState(true);
     const [positions, setPositions] = useState<Position[]>([])
     const [center, setCenter] = useState<Position>()
+    const [map,setMap] = useState<google.maps.Map>();
 
+    
+    const [mapBound,setMapBound] = useState<any>();
     const [allowScroll,setAllowScroll] = useState(false)
+    const [showMarker,setShowMarker] = useState(true)
+    
 
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: 'AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E',
@@ -86,7 +91,20 @@ const SalonChoice = () => {
 
     };
 
+    useEffect(()=>{
+        console.log('mapBound',mapBound)
+    },[mapBound])
 
+    const recalculateMap = (positionArray) => {
+        if(map){
+            const bounds = new google.maps.LatLngBounds();
+            positionArray.forEach(pos => {
+                bounds.extend( new google.maps.LatLng({ lat: pos.lat, lng: pos.lng }))
+            })
+            setMapBound(bounds)
+            map.fitBounds(bounds);
+        }
+    }
     // const { isLoaded } = useJsApiLoader({
     //     googleMapsApiKey: 'AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E',
     //     libraries: ['places'],
@@ -170,6 +188,8 @@ const SalonChoice = () => {
         })
         
         console.log('position array', positionArray)
+        
+        recalculateMap(positionArray)
         if(positionArray.length > 0)
         {
             
@@ -360,9 +380,13 @@ const SalonChoice = () => {
     const handleOnLoad = (map) => {
         const bounds = new google.maps.LatLngBounds();
         positions.forEach(pos => {
-            bounds.extend({ lat: pos.lat, lng: pos.lng })
+            bounds.extend( new google.maps.LatLng({ lat: pos.lat, lng: pos.lng }))
         })
+
+        // setMapBound(bounds)
         map.fitBounds(bounds);
+        map.setCenter(bounds.getCenter())
+        setMap(map)
     };
     type Salon = {
         name: string;
@@ -379,7 +403,7 @@ const SalonChoice = () => {
 
     console.log(userData?.lat!, userData?.long!);
 
-    const dayDict:{String:String} = {
+    const dayDict:{ [key: string]: string } = {
         'Lundi':'MONDAY', 
         'Mardi':'TUESDAY', 
         'Mercredi':'WEDNESDAY', 
@@ -390,8 +414,8 @@ const SalonChoice = () => {
     }
 
     const getAvailEnglish = ():String[] => {
-        const result = []
-        availabilityFilter.forEach((each:String)=>{
+        const result :string[] = []
+        availabilityFilter.forEach((each)=>{
             result.push(dayDict[each])
         })
 
@@ -449,6 +473,26 @@ const SalonChoice = () => {
 
     }
 
+    const handleZoomChange = () => {
+        if(map){
+            const zoom = map.getZoom() ?? 10
+            if(zoom<5){
+                setShowMarker(false)
+            }
+            else{
+                setShowMarker(true)
+            }
+        }
+    }
+
+    const handleMapChange = () => {
+        if(map){
+            console.log('mapchange',map.getBounds()?.getNorthEast().lat())
+            console.log('mapchange',map.getBounds()?.getSouthWest().lat())
+            console.log('mapchange',map.getBounds()?.getNorthEast().lng())
+            console.log('mapchange',map.getBounds()?.getSouthWest().lng())
+        }
+    }
 
     // Rendu du composant
     return (
@@ -458,13 +502,19 @@ const SalonChoice = () => {
             <Navbar
                 isSalonPage={true}
                 onSearch={handleAllFilter}
-                onCitySearch={(value: string) => {
-                    setCitySearch((pre) => {
-                        if (value != pre) {
-                            return value
-                        }
-                        return pre
-                    })
+                onCityMapSearch={(value: any) => {
+                    console.log('map search',value.geometry.location.lat())
+                    const cityParam = {
+                        lat:value.geometry.location.lat(),
+                        long:value.geometry.location.lng()
+                    }
+                    setCitySearch(cityParam)
+                    // setCitySearch((pre) => {
+                    //     if (value != pre) {
+                    //         return value
+                    //     }
+                    //     return pre
+                    // })
                 }}
                 onNameSearch={(value: string) => {
                     setNameSearch((pre) => {
@@ -537,16 +587,18 @@ const SalonChoice = () => {
                                     {/*TODO USE salon.position when data are available  */}
                                     <GoogleMap
                                         onLoad={handleOnLoad}
-                                        center={{lat: parseFloat(userData?.lat),lng: parseFloat(userData?.long)}}
-                                        zoom={10}
+                                        center={center}
+                                        //zoom={8}
+                                        onBoundsChanged={handleMapChange}
                                         mapContainerStyle={{ width: '100%', height: '100%' }}
+                                        onZoomChanged={handleZoomChange}
                                         options={{
                                             minZoom: 2,  // ici, définissez votre zoom minimum
                                             maxZoom: 18,   // et ici, votre zoom maximumyy
-                                            scrollwheel : allowScroll
+                                            scrollwheel : allowScroll,
                                         }}
                                     >
-                                        {userData?.lat! && userData?.long && (
+                                        {(userData?.lat! && userData?.long && showMarker) && (
                                             <MarkerF
                                                 position={{ lat: parseFloat(userData?.lat), lng: parseFloat(userData?.long) }}
                                                 options={{
@@ -560,7 +612,7 @@ const SalonChoice = () => {
                                             />
                                         )}
 
-                                        {filteredSalons.length > 0 && positions.map((position, index) => {
+                                        {(filteredSalons.length > 0 && showMarker) && positions.map((position, index) => {
                                             console.log('filtered salon pos',position)
                                             return(
                                             <React.Fragment key={index}>

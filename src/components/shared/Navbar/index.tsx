@@ -23,6 +23,7 @@ import ComponentTheme from "@/components/UI/ComponentTheme";
 import { Button } from "@material-ui/core";
 import EUCountriesList from "./EUCountries";
 import StarRatings from "react-star-ratings";
+import Autocomplete from "react-google-autocomplete";
 
 
 interface Navbar {
@@ -34,6 +35,7 @@ interface Navbar {
   onSearch?: (arg0: string) => void
   onServiceSearch?: (arg0: string) => void
   onCitySearch?: (arg0: string) => void
+  onCityMapSearch?:(arg0:google.maps.places.PlaceResult)=>void
   onNameSearch?: (arg0: string) => void
   onGenderFilter?: (arg0: string) => void
   onEthnicityFilters?: (arg0: string[]) => void
@@ -47,7 +49,7 @@ interface Navbar {
   onNewSalonFilter?: (arg0: boolean) => void
 }
 
-const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideSearchBar, onTypeSelect, onSearch, onServiceSearch, onGenderFilter, onEthnicityFilters, onLengthFilters, onMobileFilters, onCitySearch, onNameSearch, onRangeFilters, onRatingFilter, onCountryFilter, onAvailabilityFilter, onNewSalonFilter }: Navbar) => {
+const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideSearchBar, onTypeSelect, onSearch, onServiceSearch, onGenderFilter, onEthnicityFilters, onLengthFilters, onMobileFilters, onCitySearch, onCityMapSearch, onNameSearch, onRangeFilters, onRatingFilter, onCountryFilter, onAvailabilityFilter, onNewSalonFilter }: Navbar) => {
   const [isDropdown, setIsDropdown] = useState(false);
   const [showDesktopGender, setShowDesktopGender] = useState(false);
   const [showDesktopLength, setShowDesktopLength] = useState(false);
@@ -518,7 +520,25 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     onServiceSearch && isServicesPage ? (e) => onServiceSearch(e.target.value) : () => { }}
                 />
               </div>}
-            {(isSalonPage) &&
+            {(isSalonPage && !isWelcomePage) &&
+              <Autocomplete
+                  className="text-black lg:w-40 px-4 py-2 text-base transition ml-2 duration-500 ease-in-out transform border-transparent rounded-lg bg-white-100 ring-gray-400"
+                  apiKey='AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E'
+                  onPlaceSelected={(place) => {
+                    console.log('map search place',place)
+                    onCityMapSearch&&onCityMapSearch(place)
+                  }}
+                  options={{
+                      types: ["locality"],
+                      fields: [
+                          'address_components',
+                          'geometry.location'
+                      ]
+                  }}
+                  placeholder="Ville"
+              />
+            }
+            {/* {(isSalonPage) &&
               <div className={`border-r border-grey px-2 xl:px-6 last:border-r-0 cursor-pointer `}>
                 <input
                   type="text"
@@ -528,7 +548,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     (e) => onSearch(e.target.value) :
                     onCitySearch && isSalonPage ? (e) => onCitySearch(e.target.value) : () => { }}
                 />
-              </div>}
+              </div>} */}
             {(isSalonPage) &&
               <div className={`md:border-r border-grey px-2 xl:px-6 last:border-r-0 cursor-pointer`}>
                 <input
