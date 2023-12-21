@@ -35,7 +35,7 @@ interface Navbar {
   onSearch?: (arg0: string) => void
   onServiceSearch?: (arg0: string) => void
   onCitySearch?: (arg0: string) => void
-  onCityMapSearch?:(arg0:google.maps.places.PlaceResult)=>void
+  onCityMapSearch?: (arg0: google.maps.places.PlaceResult) => void
   onNameSearch?: (arg0: string) => void
   onGenderFilter?: (arg0: string) => void
   onEthnicityFilters?: (arg0: string[]) => void
@@ -68,7 +68,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
   const [ethnicityFilters, setEthnicityFilters] = useState<string[]>([]);
   const [lengthFilters, setLengthFilters] = useState<string[]>([]);
   const [mobileFilters, setMobileFilters] = useState<string>("");
-  const [ratingFilter, setRatingFilter] = useState<number[]>([1,2,3,4,5]);
+  const [ratingFilter, setRatingFilter] = useState<number[]>([1, 2, 3, 4, 5]);
   const [countryFilter, setCountryFilter] = useState<string>("");
   const [availabilityFilter, setAvailabilityFilter] = useState<string[]>([]);
   const [newSalonFilter, setNewSalonFilter] = useState(true);
@@ -238,7 +238,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
   }
 
   const handleSearch = () => {
-    if(onSearch){
+    if (onSearch) {
       onSearch('')
     }
   }
@@ -253,8 +253,8 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
     onMobileFilters && onMobileFilters(mobileFilters)
   }, [mobileFilters])
   useEffect(() => {
-    console.log('rangeFilters',rangeFilters)
-      onRangeFilters && onRangeFilters(rangeFilters.map(String))
+    console.log('rangeFilters', rangeFilters)
+    onRangeFilters && onRangeFilters(rangeFilters.map(String))
   }, [rangeFilters]);
   useEffect(() => {
     onRatingFilter && onRatingFilter(ratingFilter)
@@ -278,10 +278,10 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
     const user = getLocalStorage("user");
     const hairstyle_trend = user ? (JSON.parse(user).user_preferences ? String(JSON.parse(user).user_preferences.hairstyle_trend) : "") : "";
     const length_sought = user ? (JSON.parse(user).user_preferences ? String(JSON.parse(user).user_preferences.length_sought) : "") : "";
-    const budget = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.budget?JSON.parse(user).user_preferences.budget:[10,100] : [10, 100]) : [10, 100];
+    const budget = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.budget ? JSON.parse(user).user_preferences.budget : [10, 100] : [10, 100]) : [10, 100];
     const hairdressing_at_home = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.hairdressing_at_home : "all") : "all";
-    const minRating = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.ratings : 1) :  1;
-    const maxRating = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.max_ratings : 5) :  5;
+    const minRating = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.ratings : 1) : 1;
+    const maxRating = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.max_ratings : 5) : 5;
     let country = user ? (JSON.parse(user).user_preferences ? String(JSON.parse(user).user_preferences.country) : "") : "";
     const availability = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.availability : ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]) : ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
     console.log(availability);
@@ -291,18 +291,17 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
 
       let gender = hairstyle_trend === 'Masculine' ? 'Homme' : hairstyle_trend === 'Feminine' ? 'Femme' : 'Mix';
       let length = length_sought === 'Long' ? ['Long'] : length_sought === 'Moyen' ? ['Medium'] : length_sought === 'Court' ? ['Short'] : [];
-      let mobile = hairdressing_at_home != null ?  hairdressing_at_home === 0 ? '' : 'yes' : '';
+      let mobile = hairdressing_at_home != null ? hairdressing_at_home === 0 ? '' : 'yes' : '';
       country = country == "null" ? "" : country;
-      
+
       let rating = [] as number[];
-      for(let i=(minRating ?? 1); i<=(maxRating ?? 5);i++)
-      {
+      for (let i = (minRating ?? 1); i <= (maxRating ?? 5); i++) {
         rating.push(Number(i));
       }
 
       setGenderFilters(gender);
       setLengthFilters(length);
-      setRangeFilter(budget ?? [10,100]);
+      setRangeFilter(budget ?? [10, 100]);
       setMobileFilters(mobile);
       setRatingFilter(rating);
       setCountryFilter(country);
@@ -530,20 +529,20 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
               </div>}
             {(isSalonPage && !isWelcomePage) &&
               <Autocomplete
-                  className="text-black lg:w-40 px-4 py-2 text-base transition ml-2 duration-500 ease-in-out transform border-transparent rounded-lg bg-white-100 ring-gray-400"
-                  apiKey='AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E'
-                  onPlaceSelected={(place) => {
-                    console.log('map search place',place)
-                    onCityMapSearch&&onCityMapSearch(place)
-                  }}
-                  options={{
-                      types: ["locality"],
-                      fields: [
-                          'address_components',
-                          'geometry.location'
-                      ]
-                  }}
-                  placeholder="Ville"
+                className="text-black lg:w-40 px-4 py-2 text-base transition ml-2 duration-500 ease-in-out transform border-transparent rounded-lg bg-white-100 ring-gray-400"
+                apiKey='AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E'
+                onPlaceSelected={(place) => {
+                  console.log('map search place', place)
+                  onCityMapSearch && onCityMapSearch(place)
+                }}
+                options={{
+                  types: ["locality"],
+                  fields: [
+                    'address_components',
+                    'geometry.location'
+                  ]
+                }}
+                placeholder="Ville"
               />
             }
             {/* {(isSalonPage) &&
@@ -753,22 +752,22 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                 </p>
                 {showDesktopRating && isSalonPage && (
                   <div className="absolute top-[75px] -ml-3 z-20 flex flex-col items-center justify-center w-42 pt-5 px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
-                    
+
                     <div
-                          key={0}
-                          className="flex w-full cursor-pointer mb-[10px] items-center transform hover:scale-110"
-                          onClick={() => onNewSalonCheckbox(!newSalonFilter)}
-                        >
-                          <div
-                            className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105  mr-2
+                      key={0}
+                      className="flex w-full cursor-pointer mb-[10px] items-center transform hover:scale-110"
+                      onClick={() => onNewSalonCheckbox(!newSalonFilter)}
+                    >
+                      <div
+                        className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105  mr-2
               ${newSalonFilter ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}
-                          >
-                            <CheckedIcon />
-                          </div>
-                          <p className="ml-1 mr-2">Nouveau salon</p>
-    
-                          
-                        </div>
+                      >
+                        <CheckedIcon />
+                      </div>
+                      <p className="ml-1 mr-2">Nouveau salon</p>
+
+
+                    </div>
                     {Ratings.map((item, index) => {
                       return (
                         <div

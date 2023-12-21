@@ -13,7 +13,7 @@ const Verification = () => {
       <div className="md:max-w-[1022px] w-full px-4 md:mx-16">
         <div className="mt-28 2xl:mt-40 mb-10 2xl:mb-16 text-center ">
           <h1 className="text-black font-bold text-5xl md:text-7xl">
-            Merci pour votre adhésion ! Une email vous a été envoyé.
+            Merci pour votre adhésion ! Un email vous a été envoyé.
           </h1>
           <p className="text-black text-xl md:text-3xl pt-14 md:mt-3">
             Pour pouvoir utiliser notre plateforme, il vous faut confirmer votre adresse email.

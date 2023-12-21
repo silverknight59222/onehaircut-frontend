@@ -78,6 +78,13 @@ export type ImageSalon = {
 	is_cover: number;
 };
 
+type SalonHaircutRating = {
+	id: number,
+	rating : number,
+	rating_counts : number,
+	hair_salon_id : number,
+
+};
 export type Haircut = {
 	id: number;
 	image: string;
@@ -86,6 +93,7 @@ export type Haircut = {
 	group?: EthnicGroup;
 	length: string;
 	is_added_to_wishlist: boolean
+	salon_haircuts?: HaircutDetails[]
 };
 
 export type WishlistHaircuts={
@@ -103,7 +111,7 @@ export type SalonHaircut = {
 	type: string;
 	group: EthnicGroup;
 	length: string;
-	is_added_to_wishlist: boolean
+	is_added_to_wishlist: boolean;
 	salon_haircuts : HaircutDetails[];
 }
 

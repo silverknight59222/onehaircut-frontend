@@ -51,19 +51,19 @@ const SalonChoice = () => {
     const [nameSearch, setNameSearch] = useState<string>('');
     const [filteredMobile, setFilteredMobile] = useState<string[]>([]);
     const [filtereRange, setRangeFilter] = useState([2, 100]);
-    const [ratingFilter, setRatingFilter] = useState<number[]>([1,2,3,4,5]);
+    const [ratingFilter, setRatingFilter] = useState<number[]>([1, 2, 3, 4, 5]);
     const [countryFilter, setCountryFilter] = useState<string>("");
     const [availabilityFilter, setAvailabilityFilter] = useState<string[]>([]);
     const [newSalonFilter, setNewSalonFilter] = useState(true);
     const [positions, setPositions] = useState<Position[]>([])
     const [center, setCenter] = useState<Position>()
-    const [map,setMap] = useState<google.maps.Map>();
+    const [map, setMap] = useState<google.maps.Map>();
 
-    
-    const [mapBound,setMapBound] = useState<any>();
-    const [allowScroll,setAllowScroll] = useState(false)
-    const [showMarker,setShowMarker] = useState(true)
-    
+
+    const [mapBound, setMapBound] = useState<any>();
+    const [allowScroll, setAllowScroll] = useState(false)
+    const [showMarker, setShowMarker] = useState(true)
+
 
     const { isLoaded } = useLoadScript({
         googleMapsApiKey: 'AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E',
@@ -130,22 +130,20 @@ const SalonChoice = () => {
             const salonInRating = (ratingFilter.length === 0) || ((ratingFilter.length > 0) && (ratingFilter.includes(salon.rating))) || (newSalonFilter && salon.rating === 0);
             const salonInCountry = (countryFilter === '') || (salon.address.country === countryFilter);
             const frenchToEnglishMapping = {
-                'Lundi' : 1,
-                'Mardi' : 2,
-                'Mercredi' : 3,
-                'Jeudi' : 4,
-                'Vendredi' : 5,
-                'Samedi' : 6,
-                'Dimanche' : 0
+                'Lundi': 1,
+                'Mardi': 2,
+                'Mercredi': 3,
+                'Jeudi': 4,
+                'Vendredi': 5,
+                'Samedi': 6,
+                'Dimanche': 0
             };
             let salonAvailable = true;
-            
 
-            for(const day of availabilityFilter)
-            {
+
+            for (const day of availabilityFilter) {
                 salonAvailable = salon.openTimes[frenchToEnglishMapping[day]].available;
-                if(salonAvailable)
-                {
+                if (salonAvailable) {
                     break;
                 }
             }
@@ -180,7 +178,7 @@ const SalonChoice = () => {
                 positionArray.push({ lat: Number(fsalon.address.lat), lng: Number(fsalon.address.long) })
             }
         })
-        
+
         console.log('position array', positionArray)
         
         // recalculateMap(positionArray)
@@ -192,14 +190,14 @@ const SalonChoice = () => {
             setCenter(tempCenter);
             setAllowScroll(true)
         }
-        else{
-            const userPos:Position = {lat : parseFloat(userData?.lat),lng : parseFloat(userData?.long)}
-            console.log('userPos',userData);
+        else {
+            const userPos: Position = { lat: parseFloat(userData?.lat), lng: parseFloat(userData?.long) }
+            console.log('userPos', userData);
             setPositions([userPos])
             setCenter(userPos)
             setAllowScroll(false)
         }
-        
+
     }
     // Fonction pour récupérer tous les salons
     const getAllSalons = async () => {
@@ -223,10 +221,10 @@ const SalonChoice = () => {
         if (haircut) {
             data['haircut_id'] = haircut.id
         }
-        console.log('salon data',data)
+        console.log('salon data', data)
         await dashboard.getSalonsByHaircut(data)
             .then((res) => {
-                console.log('all salon',res.data.data)
+                console.log('all salon', res.data.data)
                 setSalons(res.data.data);
                 setFilteredSalons(res.data.data);
                 getCoordinates(res.data.data)
@@ -375,7 +373,7 @@ const SalonChoice = () => {
     const handleOnLoad = (map) => {
         const bounds = new google.maps.LatLngBounds();
         positions.forEach(pos => {
-            bounds.extend( new google.maps.LatLng({ lat: pos.lat, lng: pos.lng }))
+            bounds.extend(new google.maps.LatLng({ lat: pos.lat, lng: pos.lng }))
         })
 
         // setMapBound(bounds)
@@ -398,38 +396,38 @@ const SalonChoice = () => {
 
     console.log(userData?.lat!, userData?.long!);
 
-    const dayDict:{ [key: string]: string } = {
-        'Lundi':'MONDAY', 
-        'Mardi':'TUESDAY', 
-        'Mercredi':'WEDNESDAY', 
-        'Jeudi':'THURSDAY', 
-        'Vendredi':'FRIDAY', 
-        'Samedi':'SATURDAY', 
-        'Dimanche':'SUNDAY'
+    const dayDict: { [key: string]: string } = {
+        'Lundi': 'MONDAY',
+        'Mardi': 'TUESDAY',
+        'Mercredi': 'WEDNESDAY',
+        'Jeudi': 'THURSDAY',
+        'Vendredi': 'FRIDAY',
+        'Samedi': 'SATURDAY',
+        'Dimanche': 'SUNDAY'
     }
 
-    const getAvailEnglish = ():String[] => {
-        const result :string[] = []
-        availabilityFilter.forEach((each)=>{
+    const getAvailEnglish = (): String[] => {
+        const result: string[] = []
+        availabilityFilter.forEach((each) => {
             result.push(dayDict[each])
         })
 
-        console.log('avail english',result)
+        console.log('avail english', result)
         return result
     }
 
-    const handleAllFilter = async() => {
+    const handleAllFilter = async () => {
 
         setIsLoading(true)
 
-        console.log('citySearch',citySearch)
-        console.log('nameSearch',nameSearch)
-        console.log('filteredMobile',filteredMobile)
-        console.log('filtereRange',filtereRange)
-        console.log('ratingFilter',ratingFilter)
-        console.log('countryFilter',countryFilter)
-        console.log('availabilityFilter',availabilityFilter)
-        console.log('newSalonFilter',newSalonFilter)
+        console.log('citySearch', citySearch)
+        console.log('nameSearch', nameSearch)
+        console.log('filteredMobile', filteredMobile)
+        console.log('filtereRange', filtereRange)
+        console.log('ratingFilter', ratingFilter)
+        console.log('countryFilter', countryFilter)
+        console.log('availabilityFilter', availabilityFilter)
+        console.log('newSalonFilter', newSalonFilter)
 
         const services = getLocalStorage('ServiceIds')
         const servicesData = services ? JSON.parse(services) : []
@@ -439,26 +437,26 @@ const SalonChoice = () => {
         })
 
         const param = {
-            client_id : userData.id,
-            haircut_id : haircut.id,
-            services : serviceIds,
+            client_id: userData.id,
+            haircut_id: haircut.id,
+            services: serviceIds,
             citySearch,
             nameSearch,
             filteredMobile,
             filtereRange,
             ratingFilter,
-            countryFilter : (countryFilter&&countryFilter!=='null')?countryFilter:'',
-            availabilityFilter:getAvailEnglish(),
+            countryFilter: (countryFilter && countryFilter !== 'null') ? countryFilter : '',
+            availabilityFilter: getAvailEnglish(),
             newSalonFilter
         }
 
-        console.log('result iss parma',JSON.stringify(param))
+        console.log('result iss parma', JSON.stringify(param))
 
         const result = await salonApi.filterSalon(param)
 
-        console.log('result iss',result)
+        console.log('result iss', result)
 
-        if(result.data.status === 200){
+        if (result.data.status === 200) {
             setSalons(result.data.data);
             setFilteredSalons(result.data.data);
             getCoordinates(result.data.data)
@@ -470,13 +468,13 @@ const SalonChoice = () => {
 
     const handleZoomChange = () => {
         const ZOOM_THRESHOLD = 5
-        if(map){
+        if (map) {
             const zoom = map.getZoom() ?? 10
             console.log('zoom',zoom)
             if(zoom<ZOOM_THRESHOLD){
                 setShowMarker(false)
             }
-            else{
+            else {
                 setShowMarker(true)
             }
         }
@@ -491,10 +489,10 @@ const SalonChoice = () => {
                 isSalonPage={true}
                 onSearch={handleAllFilter}
                 onCityMapSearch={(value: any) => {
-                    console.log('map search',value.geometry.location.lat())
+                    console.log('map search', value.geometry.location.lat())
                     const cityParam = {
-                        lat:value.geometry.location.lat(),
-                        long:value.geometry.location.lng()
+                        lat: value.geometry.location.lat(),
+                        long: value.geometry.location.lng()
                     }
                     setCitySearch(cityParam)
                     // setCitySearch((pre) => {
@@ -608,7 +606,7 @@ const SalonChoice = () => {
                                                     key={index}
                                                     // lat={positions[index].lat}
                                                     // lng={positions[index].lng}
-                                                    position={{ lat : position.lat, lng : position.lng}} // Utiliser la position du salon
+                                                    position={{ lat: position.lat, lng: position.lng }} // Utiliser la position du salon
                                                     onClick={() => setSelectedSalon(filteredSalons[index] != null ? filteredSalons[index] : { "name": "Null", "id": 0 })}
                                                     options={
                                                         {
@@ -642,9 +640,10 @@ const SalonChoice = () => {
                                                     </div>
                                                 </OverlayViewF>
                                             </React.Fragment>
-                                        )})}
-                                    </GoogleMap>
-                                </div>
+                                        )
+                                    })}
+                                </GoogleMap>
+                            </div>
                         }
 
                         {/* Section affichant les vignettes des salons */}
@@ -695,12 +694,12 @@ const SalonChoice = () => {
                                                     }
                                                 </div>
 
-                                            {/* Nom et prix du salon */}
-                                            <div className="flex items-start justify-between text-black text-lg font-semibold px-3 pt-2 ">
-                                                <p className='w-36'>{fsalon.name}</p>
-                                                {/* TODO PRICE SHOULD BE IN EUROS HERE */}
-                                                <p className={`p-2 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white`}>{fsalon.final_price}</p>
-                                            </div>
+                                                {/* Nom et prix du salon */}
+                                                <div className="flex items-start justify-between text-black text-lg font-semibold px-3 pt-2 ">
+                                                    <p className='w-36'>{fsalon.name}</p>
+                                                    {/* TODO PRICE SHOULD BE IN EUROS HERE */}
+                                                    <p className={`p-2 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white`}>{fsalon.final_price} €</p>
+                                                </div>
 
                                                 {/* Évaluation et nombre d'avis */}
                                                 <div className='flex items-center text-xs text-[#7B7B7B] px-3 pt-1'>

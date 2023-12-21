@@ -17,7 +17,6 @@ let hairStyleParams = {}
 // For update commit
 
 const HairStyleList = React.memo(({ activeMenu, setISD, hairStyleSelectEvent, resetStyleForm, onFilterSelect, onReloadListener, selectAllListener, listCountShowEvent, setFinal }: any) => {
-    // //console.log("in HairStyleList", hairStyleSelectEvent)
 
     const [haircutList, setHaircutList] = useState<Haircut[]>([]);
     const [isLoading, setIsLoading] = useState(false);
