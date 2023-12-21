@@ -293,7 +293,7 @@ const Step3 = () => {
       {isLoading && loadingView()}
       <div className="flex flex-col md:flex-row items-center justify-center border-b border-[#EBF0F2] pb-4">
         <div className="absolute top-1 flex items-center justify-start sm:justify-center w-full gap-5 px-4 sm:px-14 py-5">
-          <div onClick={() => route.push('/')} className='relative z-30 cursor-pointer'><LogoIcon className={''} /></div>
+          <div onClick={() => router.push('/')} className='relative z-30 cursor-pointer'><LogoIcon className={''} /></div>
         </div>
         {/* <div className="relative z-20 w-full flex items-center justify-end gap-4 px-4 sm:px-14 mt-6">
           <UserProfile />
@@ -377,7 +377,7 @@ const Step3 = () => {
         </div>
         <div className="w-full flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-7 mb-5">
           <button
-            onClick={() => route.push("/registration/steps/2")}
+            onClick={() => router.push("/registration/steps/2")}
             className={`${Theme_A.button.bigWhiteColoredButton}`}
           >
             Etape précédente
