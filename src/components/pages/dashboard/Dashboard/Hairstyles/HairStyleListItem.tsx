@@ -69,8 +69,7 @@ const HairStyleListItem = React.memo(({ item, activeMenu, hairStyleSelectEvent, 
     }, [activeMenu])
 
     useEffect(() => {
-        if(getLocalStorage('salon_id'))
-        {
+        if (getLocalStorage('salon_id')) {
             setSalonId(Number(getLocalStorage('salon_id')));
         }
     }, [])
@@ -96,17 +95,19 @@ const HairStyleListItem = React.memo(({ item, activeMenu, hairStyleSelectEvent, 
                 <p className={`${Theme_A.hairstyleCards.cardText}`}>
                     {item.name}
                 </p>
-                <p className={`${Theme_A.hairstyleCards.cardText}`}>
+                <p className={`${Theme_A.hairstyleCards.cardText} justify-evenly`}>
                     {activeMenu === "added" ?
-                    <StarRatings
+                        <StarRatings
                             rating={item.salon_haircuts.findIndex(el => el.hair_salon_id == salon_id) !== -1 ? item.salon_haircuts[item.salon_haircuts.findIndex(el => el.hair_salon_id == salon_id)].rating : 0}
                             starRatedColor="#FEDF10"
                             starSpacing="1px"
                             starDimension="12px"
                             numberOfStars={5}
                             name={`rating-${item.salon_haircuts.findIndex(el => el.hair_salon_id == salon_id) !== -1 ? item.salon_haircuts[item.salon_haircuts.findIndex(el => el.hair_salon_id == salon_id)].rating : 0}`}
-                          /> : ''}
+                        /> : ''}
+                    <p className='text-xs justify-end items-center text-stone-600'>( {item.salon_haircuts[item.salon_haircuts.findIndex(el => el.hair_salon_id == salon_id)]?.rating_counts} avis)</p>
                 </p>
+
             </div>
         </div>
 

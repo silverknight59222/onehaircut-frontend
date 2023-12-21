@@ -290,7 +290,7 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
                 return { ...prev, select_haircut: "" };
             });
         }
-        
+
         let data: any = form;
         const selectedHaircuts: number[] = [];
         selectedHaircutsMapping.map((item) => {
@@ -387,7 +387,7 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
             <div className="flex items-center justify-center gap-2">
 
                 <h2 className={`${Theme_A.textFont.headerH3}`}>
-                    Configurations de vos prix
+                    Configuration de vos prix
                 </h2>
                 {(selectedHaircutsMapping.length > 0) && <div className={`${Theme_A.indicators.counterIndicator}`}>{selectedHaircutsMapping.length}</div>}
             </div>
