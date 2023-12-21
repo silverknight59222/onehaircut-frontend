@@ -566,11 +566,11 @@ const SalonChoice = () => {
 
                 {/* Conteneur principal pour les salons et la carte */}
                 {isLoaded && positions.length>0 &&
-                    <div className='w-full mt-4 mb-2 relative 2xl:h-[450px] 2xl:max-h-[450px] overflow-hidden'>
+                    <div className='w-full mt-4 mb-2 relative '>
                         {/* Carte Google affichée uniquement si des salons sont disponibles */}
                         {
                             positions.length>0&&
-                                <div className={`lg:absolute lg:top-0 lg:left-0 w-full h-[450px] lg:w-[300px] lg:h-[450px] 2xl:w-[780px] 4xl:w-[920px] rounded-lg overflow-hidden lg:z-10`}>
+                                <div className={`lg:absolute lg:top-0 lg:left-0 w-full h-[400px] lg:w-[400px] lg:h-[880px] 2xl:w-[880px] 4xl:w-[920px] rounded-lg overflow-hidden lg:z-10`}>
 
                                     {/*TODO USE salon.position when data are available  */}
                                     <GoogleMap
@@ -648,7 +648,7 @@ const SalonChoice = () => {
                         }
 
                         {/* Section affichant les vignettes des salons */}
-                        <div className='flex-1 pr-4 pb-4 overflow-y-auto h-[calc(100vh - 160px)] lg:relative lg:mt-0 mt-3 lg:ml-[300px] 2xl:ml-[800px] 4xl:ml-[930px] 2xl:max-h-[450px] 2xl:overflow-y-scroll'>
+                        <div className='flex-1 pr-4 pb-4 overflow-y-auto h-[calc(100vh - 160px)] lg:relative lg:mt-0 mt-3 lg:ml-[410px] 2xl:ml-[890px] 4xl:ml-[930px]'>
 
                             {/* Grid contenant les vignettes */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6 pb-10">
