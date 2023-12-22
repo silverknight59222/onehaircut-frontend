@@ -508,7 +508,7 @@ const SalonChoice = () => {
         }
         else{
             if(isMaxHeight){
-                result = 'none'
+                result = 'none' 
             }
         }
 
