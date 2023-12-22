@@ -28,6 +28,7 @@ import { salonApi } from '@/api/salonSide';
 const libraries: LoadScriptProps["libraries"] = ["places"]
 // Composant principal SalonChoice
 const SalonChoice = () => {
+
     // Déclaration des états locaux
     const [selectedSalon, setSelectedSalon] = useState<{ name: string, id: number | null }>({ name: '', id: null })
     const [salonImage, setSalonImage] = useState<string[]>([])
@@ -63,6 +64,26 @@ const SalonChoice = () => {
     const [mapBound, setMapBound] = useState<any>();
     const [allowScroll, setAllowScroll] = useState(false)
     const [showMarker, setShowMarker] = useState(true)
+
+    const getCurrentDimension = () => {
+        return {
+            width: window.innerWidth,
+            height: window.innerHeight
+        }
+    }
+
+    const [screenSize,setScreenSize] = useState(getCurrentDimension());
+
+    useEffect(()=>{
+        const updateDimension = () => {
+            setScreenSize(getCurrentDimension())
+        }
+        window.addEventListener('resize', updateDimension);
+    
+        return(() => {
+            window.removeEventListener('resize', updateDimension);
+        })
+    },[screenSize])
 
 
     const { isLoaded } = useLoadScript({
@@ -480,6 +501,31 @@ const SalonChoice = () => {
         }
     }
 
+    const getFilteredHeight = (isMaxHeight:boolean) => {
+        let result:number|string = 450
+        if(screen.width>500){
+            result = screenSize.height - (326+(0.3*(screenSize.height-766)))
+        }
+        else{
+            if(isMaxHeight){
+                result = 'none'
+            }
+        }
+
+        console.log('result',result)
+        return result
+    }
+
+    const getFontSize = (price:number) => {
+        const text = price.toString();
+        if(text.length>=3){
+            return `${(3/text.length) + 0.2}rem`
+        }
+        else{
+            return '1.125rem'
+        }
+    }
+
     // Rendu du composant
     return (
         <div className='w-full'>
@@ -564,11 +610,11 @@ const SalonChoice = () => {
 
                 {/* Conteneur principal pour les salons et la carte */}
                 {isLoaded && positions.length>0 &&
-                    <div className='w-full mt-4 mb-2 relative 2xl:h-[450px] 2xl:max-h-[450px] overflow-hidden'>
+                    <div style={{height:getFilteredHeight(false), maxHeight:getFilteredHeight(true)}} className='w-full mt-4 mb-2 relative  overflow-hidden'>
                         {/* Carte Google affichée uniquement si des salons sont disponibles */}
                         {
                             positions.length>0&&
-                                <div className={`lg:absolute lg:top-0 lg:left-0 w-full h-[450px] lg:w-[300px] lg:h-[450px] 2xl:w-[780px] 4xl:w-[920px] rounded-lg overflow-hidden lg:z-10`}>
+                                <div  style={{height:'100%'}} className={`lg:absolute lg:top-0 lg:left-0 w-full lg:w-[300px] 2xl:h-[780px] 2xl:w-[780px] 4xl:w-[920px] rounded-lg overflow-hidden lg:z-10`}>
 
                                     {/*TODO USE salon.position when data are available  */}
                                     <GoogleMap
@@ -647,7 +693,7 @@ const SalonChoice = () => {
                         }
 
                         {/* Section affichant les vignettes des salons */}
-                        <div className='flex-1 pr-4 pb-4 overflow-y-auto h-[calc(100vh - 160px)] lg:relative lg:mt-0 mt-3 lg:ml-[300px] 2xl:ml-[800px] 4xl:ml-[930px] 2xl:max-h-[450px] 2xl:overflow-y-scroll'>
+                        <div style={{height:getFilteredHeight(false), maxHeight:getFilteredHeight(true)}} className='flex-1 pr-4 pb-4 overflow-y-auto h-[calc(100vh - 160px)] lg:relative lg:mt-0 mt-3 lg:ml-[300px] 2xl:ml-[800px] 4xl:ml-[930px] 2xl:overflow-y-scroll'>
 
                             {/* Grid contenant les vignettes */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6 pb-10">
@@ -696,9 +742,9 @@ const SalonChoice = () => {
 
                                                 {/* Nom et prix du salon */}
                                                 <div className="flex items-start justify-between text-black text-lg font-semibold px-3 pt-2 ">
-                                                    <p className='w-36'>{fsalon.name}</p>
+                                                    <p className='flex-1'>{fsalon.name}</p>
                                                     {/* TODO PRICE SHOULD BE IN EUROS HERE */}
-                                                    <p className={`p-2 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white`}>{fsalon.final_price} €</p>
+                                                    <p style={{fontSize:getFontSize(fsalon.final_price)}} className={`p-2 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white`}>{fsalon.final_price} €</p>
                                                 </div>
 
                                                 {/* Évaluation et nombre d'avis */}
