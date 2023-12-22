@@ -78,7 +78,7 @@ const Services = () => {
 
   const onSortingFilter = (filter: string) => {
     if (sortingFilter === filter) {
-      setSortingFilter(''); 
+      setSortingFilter('');
     }
     else {
       setSortingFilter(filter);
@@ -87,7 +87,7 @@ const Services = () => {
 
   const onServiceGroupFitler = (filter: string) => {
     if (groupFilter === filter) {
-      setGroupFilter(''); 
+      setGroupFilter('');
     }
     else {
       setGroupFilter(filter);
@@ -179,12 +179,12 @@ const Services = () => {
   };
 
   useEffect(() => {
-    fetchAllServices();  
+    fetchAllServices();
     document.addEventListener("click", closeSelectBox);
 
     return () => {
       document.removeEventListener("click", closeSelectBox);
-    };      
+    };
   }, []);
 
   return (
@@ -199,63 +199,62 @@ const Services = () => {
       </p>
 
 
-      <div className="flex flex-col md:flex-row w-full justify-center gap-3 md:gap-4 my-3 md:my-7 z-0 ">
+      <div className="flex flex-col md:flex-row w-full  gap-3 my-3 md:my-7 z-0 items-center md:justify-around">
         {/* Section des filtres de tri pour les services */}
-        <div className="flex flex-col sm:flex-row gap-3 items-center">
-          {/* Composant de liste déroulante pour le tri par nom */}          
+        <div className="flex flex-col sm:flex-row gap-3 items-center justify-start">
+          {/* Composant de liste déroulante pour le tri par nom */}
           <div ref={sortingRef} className="relative w-52">
             <button onClick={() => setIsDropdownSort(!isDropdownSort)} className={sortingFilter !== '' ? "flex items-center justify-center gap-8 font-medium rounded-xl h-[52px] pl-3 pr-4 bg-stone-800 text-white shadow-[0px_15px_18px_0px_rgba(0, 0, 0, 0.14)]" : "flex items-center justify-center gap-8 bg-[#F7F7F7] font-medium rounded-xl h-[52px] pl-3 pr-4 shadow-[0px_15px_18px_0px_rgba(0, 0, 0, 0.14)]"}>
-                Trier par nom
-                <DownArrow color={sortingFilter !== '' ? 'white' : '#000'} />
+              Trier par nom
+              <DownArrow color={sortingFilter !== '' ? 'white' : '#000'} />
             </button>
             {isDropdownSort && (
-                <div className="mt-2 absolute rounded-xl border border-checkbox bg-white p-6">
-                    {sortDropdown.map((item, index) => {
-                        return (
-                            <div key={index} onClick={() => onSortingFilter(item.name)} className="flex cursor-pointer mb-[19px]">
-                                <div className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${sortingFilter === item.name ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}>
-                                    <CheckedIcon />
-                                </div>
-                                <p className="ml-2">
-                                    {item.name}
-                                </p>
-                            </div>)
-                    })}
+              <div className="mt-2 absolute rounded-xl border border-checkbox bg-white p-6 z-20">
+                {sortDropdown.map((item, index) => {
+                  return (
+                    <div key={index} onClick={() => onSortingFilter(item.name)} className="flex cursor-pointer mb-[19px]">
+                      <div className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${sortingFilter === item.name ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}>
+                        <CheckedIcon />
+                      </div>
+                      <p className="ml-2">
+                        {item.name}
+                      </p>
+                    </div>)
+                })}
 
-                </div>
+              </div>
             )}
-        </div>
+          </div>
           {/* Composant de liste déroulante pour le tri par groupe/type */}
           <div ref={groupRef} className="relative w-52">
             <button onClick={() => setIsDropdownGroup(!isDropdownGroup)} className={groupFilter !== '' ? "flex items-center justify-center gap-8 font-medium rounded-xl h-[52px] pl-3 pr-4 bg-stone-800 text-white shadow-[0px_15px_18px_0px_rgba(0, 0, 0, 0.14)]" : "flex items-center justify-center gap-8 bg-[#F7F7F7] font-medium rounded-xl h-[52px] pl-3 pr-4 shadow-[0px_15px_18px_0px_rgba(0, 0, 0, 0.14)]"}>
-                Filtrer par group
-                <DownArrow color={groupFilter !== '' ? 'white' : '#000'} />
+              Filtrer par group
+              <DownArrow color={groupFilter !== '' ? 'white' : '#000'} />
             </button>
             {isDropdownGroup && (
-                <div className="mt-2 absolute rounded-xl border border-checkbox bg-white p-6">
-                    {typeDropdown.map((item, index) => {
-                        return (
-                            <div key={index} onClick={() => onServiceGroupFitler(item.name)} className="flex cursor-pointer mb-[19px]">
-                                <div className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${groupFilter === item.name ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}>
-                                    <CheckedIcon />
-                                </div>
-                                <p className="ml-2">
-                                    {item.name}
-                                </p>
-                            </div>)
-                    })}
+              <div className="mt-2 absolute rounded-xl border border-checkbox bg-white p-6 z-20">
+                {typeDropdown.map((item, index) => {
+                  return (
+                    <div key={index} onClick={() => onServiceGroupFitler(item.name)} className="flex cursor-pointer mb-[19px]">
+                      <div className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  ${groupFilter === item.name ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}>
+                        <CheckedIcon />
+                      </div>
+                      <p className="ml-2">
+                        {item.name}
+                      </p>
+                    </div>)
+                })}
 
-                </div>
+              </div>
             )}
-        </div>
-
-          {/* Bouton pour ouvrir le modal d'ajout d'un nouveau service */}
-          <div
-            className={`${Theme_A.button.bigGradientButton} cursor-pointer`}
-            onClick={() => setShowAddServiceModal(true)}
-          >
-            Ajouter un service
           </div>
+        </div>
+        {/* Bouton pour ouvrir le modal d'ajout d'un nouveau service */}
+        <div
+          className={`${Theme_A.button.bigGradientButton} cursor-pointer w-max`}
+          onClick={() => setShowAddServiceModal(true)}
+        >
+          Ajouter un service
         </div>
       </div>
 
