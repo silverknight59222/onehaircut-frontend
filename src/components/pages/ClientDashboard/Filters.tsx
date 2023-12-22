@@ -18,6 +18,7 @@ import { dashboard } from '@/api/dashboard';
 import { getLocalStorage, setLocalStorage } from '@/api/storage';
 import { Snackbar } from '@mui/material';
 import BaseModal from '@/components/UI/BaseModal';
+import InfoButton from '@/components/UI/InfoButton';
 
 
 const Filters = () => {
@@ -282,10 +283,16 @@ const Filters = () => {
                 </BaseModal>
             }
             <ClientDashboardLayout notifications={notifications}>
-                <div className="mt-14 mb-15 px-5 sm:px-10">
-                    <p className="text-black font-medium text-3xl text-center">
-                        Paramétrage des filtres
-                    </p>
+                <div className="mt-14 mb-15 px-5 sm:px-10 ">
+                    <div className='flex flex-row items-center justify-center'>
+                        {/* Info icon  */}
+                        <div className="pr-4">
+                            <p className="text-black font-medium text-3xl text-center">
+                                Paramétrage des filtres
+                            </p>
+                        </div>
+                        <InfoButton title_1={"Filtres"} content_1={"Cette page contient vos filtres, qui seront utilisés lors de vos recherches de coiffure."} onOpenModal={undefined} />
+                    </div>
                     <div className="flex flex-col lg:flex-row items-start justify-center gap-10 2xl:gap-20 mt-10">
                         <div className="w-full lg:w-auto flex flex-col items-center justify-center gap-6">
                             {items.map((item, index) => {
