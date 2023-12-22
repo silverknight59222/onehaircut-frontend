@@ -488,7 +488,7 @@ const SalonChoice = () => {
     }
 
     const handleZoomChange = () => {
-        const ZOOM_THRESHOLD = 5
+        const ZOOM_THRESHOLD = 8
         if (map) {
             const zoom = map.getZoom() ?? 10
             console.log('zoom',zoom)
@@ -503,7 +503,7 @@ const SalonChoice = () => {
 
     const getFilteredHeight = (isMaxHeight:boolean) => {
         let result:number|string = 450
-        if(screen.width>500){
+        if(screen.width>500 && (screen.width < screen.height)){
             result = screenSize.height - (326+(0.3*(screenSize.height-766)))
         }
         else{
@@ -610,11 +610,11 @@ const SalonChoice = () => {
 
                 {/* Conteneur principal pour les salons et la carte */}
                 {isLoaded && positions.length>0 &&
-                    <div style={{height:getFilteredHeight(false), maxHeight:getFilteredHeight(true)}} className='w-full mt-4 mb-2 relative  overflow-hidden'>
+                    <div style={{height:screenSize.width<=500 ? '':getFilteredHeight(false), maxHeight:getFilteredHeight(true)}} className='w-full mt-4 mb-2 relative  overflow-hidden'>
                         {/* Carte Google affichée uniquement si des salons sont disponibles */}
                         {
                             positions.length>0&&
-                                <div  style={{height:'100%'}} className={`lg:absolute lg:top-0 lg:left-0 w-full lg:w-[300px] 2xl:h-[780px] 2xl:w-[780px] 4xl:w-[920px] rounded-lg overflow-hidden lg:z-10`}>
+                                <div  style={{height: screenSize.width<=500 ? getFilteredHeight(false) : '100%'}} className={`lg:absolute lg:top-0 lg:left-0 w-full lg:w-[300px] 2xl:h-[780px] 2xl:w-[780px] 4xl:w-[920px] rounded-lg overflow-hidden lg:z-10`}>
 
                                     {/*TODO USE salon.position when data are available  */}
                                     <GoogleMap
@@ -693,7 +693,7 @@ const SalonChoice = () => {
                         }
 
                         {/* Section affichant les vignettes des salons */}
-                        <div style={{height:getFilteredHeight(false), maxHeight:getFilteredHeight(true)}} className='flex-1 pr-4 pb-4 overflow-y-auto h-[calc(100vh - 160px)] lg:relative lg:mt-0 mt-3 lg:ml-[300px] 2xl:ml-[800px] 4xl:ml-[930px] 2xl:overflow-y-scroll'>
+                        <div style={{height:screenSize.width<=500 ? '' : getFilteredHeight(false), maxHeight:screenSize.width<=500 ? '' : getFilteredHeight(true)}} className='flex-1 pr-4 pb-4 overflow-y-auto h-[calc(100vh - 160px)] lg:relative lg:mt-0 mt-3 lg:ml-[300px] 2xl:ml-[800px] 4xl:ml-[930px] 2xl:overflow-y-scroll'>
 
                             {/* Grid contenant les vignettes */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6 pb-10">
