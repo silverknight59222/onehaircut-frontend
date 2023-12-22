@@ -290,7 +290,7 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
                 return { ...prev, select_haircut: "" };
             });
         }
-        
+
         let data: any = form;
         const selectedHaircuts: number[] = [];
         selectedHaircutsMapping.map((item) => {
@@ -387,7 +387,7 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
             <div className="flex items-center justify-center gap-2">
 
                 <h2 className={`${Theme_A.textFont.headerH3}`}>
-                    Configurations de vos prix
+                    Configuration de vos prix
                 </h2>
                 {(selectedHaircutsMapping.length > 0) && <div className={`${Theme_A.indicators.counterIndicator}`}>{selectedHaircutsMapping.length}</div>}
             </div>
@@ -408,7 +408,7 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
                 )}
             </div>
             <div className="flex flex-col items-center w-max gap-y-2 mt-4">
-                <div className="flex gap-3 flex-col md:flex-row items-baseline justify-begin">
+                <div className="flex gap-3 flex-col md:flex-row items-baseline justify-begin bg-stone-100 px-2 py-1 rounded-xl border-2 border-red-400 shadow-inner shadow-stone-300">
                     <div className="flex flex-col items-start gap-2 w-max">
                         <label htmlFor="prix" className="text-sm font-medium">
                             Prix de base
@@ -452,8 +452,11 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
                         <p className="text-medium text-sm text-grey italic text-center">
                             Ajustement selon la longueur initiale de cheveux
                         </p>
+                        <p className="text-medium text-xs text-grey italic text-center">
+                            (Optionnel)
+                        </p>
                     </div>
-                    <div className="flex items-center gap-x-4 mt-4">
+                    <div className="flex items-center gap-x-4 mt-4 text-stone-00">
                         <p className="text-sm min-w-[50px]">Court</p>
                         <div>
                             <input
