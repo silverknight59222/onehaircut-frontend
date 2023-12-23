@@ -72,18 +72,18 @@ const SalonChoice = () => {
         }
     }
 
-    const [screenSize,setScreenSize] = useState(getCurrentDimension());
+    const [screenSize, setScreenSize] = useState(getCurrentDimension());
 
-    useEffect(()=>{
+    useEffect(() => {
         const updateDimension = () => {
             setScreenSize(getCurrentDimension())
         }
         window.addEventListener('resize', updateDimension);
-    
-        return(() => {
+
+        return (() => {
             window.removeEventListener('resize', updateDimension);
         })
-    },[screenSize])
+    }, [screenSize])
 
 
     const { isLoaded } = useLoadScript({
@@ -112,17 +112,17 @@ const SalonChoice = () => {
 
     };
 
-    useEffect(()=>{
-        if(positions.length>0){
+    useEffect(() => {
+        if (positions.length > 0) {
             recalculateMap();
         }
-    },[positions])
+    }, [positions])
 
     const recalculateMap = () => {
-        if(map){
+        if (map) {
             const bounds = new google.maps.LatLngBounds();
             positions.forEach(pos => {
-                bounds.extend( new google.maps.LatLng({ lat: pos.lat, lng: pos.lng }))
+                bounds.extend(new google.maps.LatLng({ lat: pos.lat, lng: pos.lng }))
             })
             //setMapBound(areaBounds)
             map.fitBounds(bounds);
@@ -201,11 +201,10 @@ const SalonChoice = () => {
         })
 
         console.log('position array', positionArray)
-        
+
         // recalculateMap(positionArray)
-        if(positionArray.length > 0)
-        {
-            
+        if (positionArray.length > 0) {
+
             setPositions(positionArray)
             const tempCenter: Position = getMapCenter(positionArray)
             setCenter(tempCenter);
@@ -237,7 +236,7 @@ const SalonChoice = () => {
             servicesIds: serviceIds,
             haircut_id: 0,
             hair_length: hair_length,
-            client_id : user?JSON.parse(user).id:0,
+            client_id: user ? JSON.parse(user).id : 0,
         }
         if (haircut) {
             data['haircut_id'] = haircut.id
@@ -491,8 +490,8 @@ const SalonChoice = () => {
         const ZOOM_THRESHOLD = 8
         if (map) {
             const zoom = map.getZoom() ?? 10
-            console.log('zoom',zoom)
-            if(zoom<ZOOM_THRESHOLD){
+            console.log('zoom', zoom)
+            if (zoom < ZOOM_THRESHOLD) {
                 setShowMarker(false)
             }
             else {
@@ -501,34 +500,40 @@ const SalonChoice = () => {
         }
     }
 
-    const getFilteredHeight = (isMaxHeight:boolean) => {
-        let result:number|string = 450
-        if(screen.width>500 && (screen.width < screen.height)){
-            result = screenSize.height - (326+(0.3*(screenSize.height-766)))
-        }
-        else{
-            if(isMaxHeight){
-                result = 'none' 
-            }
-        }
+    const getFilteredHeight = (isMaxHeight: boolean) => {
+        let result: number | string = 450
 
-        console.log('result',result)
+        ///// FROM OLD DEV
+        // if (screen.width > 500 && (screen.width < screen.height)) {
+        //     // result = screenSize.height - (326 + (0.3 * (screenSize.height - 766))) 
+
+        // }
+        // else {
+        //     if (isMaxHeight) {
+        //         result = 'none'
+        //     }
+        // }
+
+        // console.log('result', result)
+        // return result
+
+        result = screenSize.height / 4 // from florian
         return result
     }
 
-    const getFontSize = (price:number) => {
+    const getFontSize = (price: number) => {
         const text = price.toString();
-        if(text.length>=3){
-            return `${(3/text.length) + 0.2}rem`
+        if (text.length >= 3) {
+            return `${(3 / text.length) + 0.2}rem`
         }
-        else{
+        else {
             return '1.125rem'
         }
     }
 
     // Rendu du composant
     return (
-        <div className='w-full'>
+        <div className='w-full h-full'>
             {/* Entête du composant */}
             {/* <Navbar isSalonPage={true} /> */}
             <Navbar
@@ -587,7 +592,7 @@ const SalonChoice = () => {
                 {isLoading && loadingView()}
 
                 {/* Texte indiquant le nombre de salons */}
-                <p className='text-4xl font-medium text-black text-center mt-6'>
+                <p className='text-xl lg:text-4xl font-medium text-black text-center mt-6'>
                     {filteredSalons.length} <span className='font-bold text-gradient'>{salons.length === 1 ? 'Salon' : 'Salons'}</span> {salons.length === 1 ? 'correspond' : 'correspondent'} à vos critères
                 </p>
 
@@ -609,43 +614,48 @@ const SalonChoice = () => {
                 {/***************************************************************************************************************************************************************************************************************** */}
 
                 {/* Conteneur principal pour les salons et la carte */}
-                {isLoaded && positions.length>0 &&
-                    <div style={{height:screenSize.width<=500 ? '':getFilteredHeight(false), maxHeight:getFilteredHeight(true)}} className='w-full mt-4 mb-2 relative  overflow-hidden'>
+                {isLoaded && positions.length > 0 &&
+                    <div
+                        // style={{ height: screenSize.width <= 500 ? '' : getFilteredHeight(false), maxHeight: getFilteredHeight(true) }} 
+                        className='w-full h-full mt-4  grid grid-rows-2 lg:grid-cols-2 gap-0 lg:gap-3'>
                         {/* Carte Google affichée uniquement si des salons sont disponibles */}
                         {
-                            positions.length>0&&
-                                <div  style={{height: screenSize.width<=500 ? getFilteredHeight(false) : '100%'}} className={`lg:absolute lg:top-0 lg:left-0 w-full lg:w-[300px] 2xl:h-[780px] 2xl:w-[780px] 4xl:w-[920px] rounded-lg overflow-hidden lg:z-10`}>
+                            positions.length > 0 &&
+                            <div
+                                // style={{ height: screenSize.width <= 500 ? getFilteredHeight(false) : '80%' }} 
+                                style={{ maxHeight: getFilteredHeight(false) }}
+                                className={` lg:top-0 lg:left-0 w-full rounded-lg overflow-hidden lg:z-10`}>
 
-                                    {/*TODO USE salon.position when data are available  */}
-                                    <GoogleMap
-                                        onLoad={handleOnLoad}
-                                        center={center}
-                                        //zoom={8}
-                                        mapContainerStyle={{ width: '100%', height: '100%' }}
-                                        onZoomChanged={handleZoomChange}
-                                        options={{
-                                            minZoom: 2,  // ici, définissez votre zoom minimum
-                                            maxZoom: 18,   // et ici, votre zoom maximumyy
-                                            scrollwheel : allowScroll
-                                        }}
-                                    >
-                                        {(userData?.lat! && userData?.long && showMarker) && (
-                                            <MarkerF
-                                                position={{ lat: parseFloat(userData?.lat), lng: parseFloat(userData?.long) }}
-                                                options={{
-                                                    icon: {
-                                                        url: HomeIconUrl,
-                                                        scaledSize: new window.google.maps.Size(50, 50),
-                                                        anchor: new window.google.maps.Point(25, 25),
-                                                    }
-                                                }}
+                                {/*TODO USE salon.position when data are available  */}
+                                <GoogleMap
+                                    onLoad={handleOnLoad}
+                                    center={center}
+                                    //zoom={8}
+                                    mapContainerStyle={{ width: '100%', height: '100%' }}
+                                    onZoomChanged={handleZoomChange}
+                                    options={{
+                                        minZoom: 2,  // ici, définissez votre zoom minimum
+                                        maxZoom: 18,   // et ici, votre zoom maximumyy
+                                        scrollwheel: allowScroll
+                                    }}
+                                >
+                                    {(userData?.lat! && userData?.long && showMarker) && (
+                                        <MarkerF
+                                            position={{ lat: parseFloat(userData?.lat), lng: parseFloat(userData?.long) }}
+                                            options={{
+                                                icon: {
+                                                    url: HomeIconUrl,
+                                                    scaledSize: new window.google.maps.Size(50, 50),
+                                                    anchor: new window.google.maps.Point(25, 25),
+                                                }
+                                            }}
 
-                                            />
-                                        )}
+                                        />
+                                    )}
 
-                                        {(filteredSalons.length > 0 && showMarker) && positions.map((position, index) => {
-                                            console.log('filtered salon pos',position)
-                                            return(
+                                    {(filteredSalons.length > 0 && showMarker) && positions.map((position, index) => {
+                                        console.log('filtered salon pos', position)
+                                        return (
                                             <React.Fragment key={index}>
 
                                                 <MarkerF
@@ -693,81 +703,85 @@ const SalonChoice = () => {
                         }
 
                         {/* Section affichant les vignettes des salons */}
-                        <div style={{height:screenSize.width<=500 ? '' : getFilteredHeight(false), maxHeight:screenSize.width<=500 ? '' : getFilteredHeight(true)}} className='flex-1 pr-4 pb-4 overflow-y-auto h-[calc(100vh - 160px)] lg:relative lg:mt-0 mt-3 lg:ml-[300px] 2xl:ml-[800px] 4xl:ml-[930px] 2xl:overflow-y-scroll'>
+                        {/* <div className='flex flex-row  gap-3 overflow-scroll'> */}
 
-                            {/* Grid contenant les vignettes */}
-                            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6 pb-10">
+                        {/* Grid containing thumbnails */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6 pb-20">
+                            {/* VIGNETTES (ITERATIONS) */}
+                            {filteredSalons.length > 0 && filteredSalons.map((fsalon, index) => {
+                                console.log('fsalon', fsalon)
+                                return (
+                                    <div
+                                        key={index}
+                                        onClick={() => setSelectedSalon(fsalon)}
+                                        className={`flex w-full  h-52 h-max[300px] bg-stone-100 rounded-2xl border hover:border-stone-400 cursor-pointer ${selectedSalon.id === fsalon.id && 'border-4 border-red-400 shadow-xl'}`}
+                                    // style={{ width: '100%', aspectRatio: '1/1', display: 'flex', flexDirection: 'column', minWidth: '200px', maxWidth: '450px', minHeight: '200px', maxHeight: '420px' }}
+                                    >
+                                        {selectedSalon.id === fsalon.id && (
+                                            <div className="absolute bottom-0 translate-y-1/2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
+                                                <span className="text-white font-bold justify-center items-center">
+                                                    <CheckOutlinedIcon style={{ width: '15px', height: '15px' }} />
+                                                </span>
+                                            </div>
+                                        )}
 
-                                {/* VIGNETTES (ITERATIONS) */}
-                                {filteredSalons.length > 0 && filteredSalons.map((fsalon, index) => {
-                                    console.log('fsalon', fsalon)
-                                    return (
-                                        <div
-                                            key={index}
-                                            onClick={() => setSelectedSalon(fsalon)}
-                                            className={`relative bg-stone-100 rounded-2xl border hover:border-stone-400 cursor-pointer ${selectedSalon.id === fsalon.id && 'border-4 border-red-400 shadow-xl'}`}
-                                            style={{ width: '100%', aspectRatio: '1/1', display: 'flex', flexDirection: 'column', minWidth: '200px', maxWidth: '450px', minHeight: '200px', maxHeight: '420px' }}
-                                        >
-                                            {selectedSalon.id === fsalon.id && (
-                                                <div className="absolute bottom-0 translate-y-1/2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
-                                                    <span className="text-white font-bold justify-center items-center">
-                                                        <CheckOutlinedIcon style={{ width: '15px', height: '15px' }} />
-                                                    </span>
-                                                </div>
-                                            )}
 
+                                        {/* Contenu de la vignette */}
+                                        <div className="flex flex-col p-1 md:p-4 shadow-md rounded-2xl " style={{ flexGrow: 1 }}>
 
-                                            {/* Contenu de la vignette */}
-                                            <div className="flex flex-col p-4 shadow-md rounded-2xl " style={{ flexGrow: 1 }}>
+                                            <div className='relative mb-4 hover:scale-105 transition duration-1000 m-2' style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                                {!isLoggedIn &&
+                                                    <div onClick={(e) => onWishlist(e, fsalon.id)} className="absolute right-6 top-6 z-20 cursor-pointer">
+                                                        <StarIcon width='35' height='35'
+                                                            color={wishlist.includes(String(fsalon.id)) ? "#FF5B5B" : ""}
+                                                            stroke={wishlist.includes(String(fsalon.id)) ? "#FFFFFF" : ""} />
+                                                    </div>}
 
-                                                <div className='relative mb-4 hover:scale-105 transition duration-1000 m-2' style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                                    {!isLoggedIn &&
-                                                        <div onClick={(e) => onWishlist(e, fsalon.id)} className="absolute right-6 top-6 z-20 cursor-pointer">
-                                                            <StarIcon width='35' height='35'
-                                                                color={wishlist.includes(String(fsalon.id)) ? "#FF5B5B" : ""}
-                                                                stroke={wishlist.includes(String(fsalon.id)) ? "#FFFFFF" : ""} />
-                                                        </div>}
-
-                                                    {fsalon && fsalon.salon_cover_image &&
-                                                        <Image
-                                                            src={fsalon && fsalon.salon_cover_image ? fsalon.salon_cover_image?.image?.includes('api') ? fsalon.salon_cover_image.image : `https://api.onehaircut.com${fsalon.salon_cover_image.image}` : fsalon.logo.includes('api') ? fsalon.logo : `https://api.onehaircut.com${fsalon.logo}`}
-                                                            sizes="640w"
-                                                            fill={true}
-                                                            alt="image"
-                                                            style={{ objectFit: 'cover', height: '100%', width: '100%', display: 'block' }}
-                                                            className="rounded-2xl "
-                                                        />
-                                                    }
-                                                </div>
-
-                                                {/* Nom et prix du salon */}
-                                                <div className="flex items-start justify-between text-black text-lg font-semibold px-3 pt-2 ">
-                                                    <p className='flex-1'>{fsalon.name}</p>
-                                                    {/* TODO PRICE SHOULD BE IN EUROS HERE */}
-                                                    <p style={{fontSize:getFontSize(fsalon.final_price)}} className={`p-2 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white`}>{fsalon.final_price} €</p>
-                                                </div>
-
-                                                {/* Évaluation et nombre d'avis */}
-                                                <div className='flex items-center text-xs text-[#7B7B7B] px-3 pt-1'>
-                                                    <StarRatings
-                                                        rating={fsalon.haircut ? fsalon.haircut.rating : fsalon.rating}
-                                                        starRatedColor="#FEDF10"
-                                                        starSpacing="4px"
-                                                        starDimension="12px"
-                                                        numberOfStars={5}
-                                                        name="rating"
+                                                {fsalon && fsalon.salon_cover_image &&
+                                                    <Image
+                                                        src={fsalon && fsalon.salon_cover_image ? fsalon.salon_cover_image?.image?.includes('api') ? fsalon.salon_cover_image.image : `https://api.onehaircut.com${fsalon.salon_cover_image.image}` : fsalon.logo.includes('api') ? fsalon.logo : `https://api.onehaircut.com${fsalon.logo}`}
+                                                        sizes="640w"
+                                                        fill={true}
+                                                        alt="image"
+                                                        style={{ objectFit: 'cover', height: '100%', width: '100%', display: 'block' }}
+                                                        className="rounded-2xl "
                                                     />
-                                                    <p>{fsalon.haircut ? fsalon.haircut.rating_counts : fsalon.rating_counts} d'avis</p>
-                                                </div>
+                                                }
+                                            </div>
+
+                                            {/* Nom et prix du salon */}
+                                            {/* <div className="flex items-start justify-between  "> */}
+                                            <p className='text-black text-lg font-semibold px-3 pt-2'>{fsalon.name}</p>
+                                            <div className='flex justify-end'>
+                                                <p style={{ fontSize: getFontSize(fsalon.final_price) }}
+                                                    className={`p-2 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white font-semibold w-max`}>
+                                                    {fsalon.final_price} €
+                                                </p>
+                                            </div>
+                                            {/* </div> */}
+
+                                            {/* Évaluation et nombre d'avis */}
+                                            <div className='flex items-center text-xs text-[#7B7B7B] px-3 pt-1 gap-1'>
+                                                <StarRatings
+                                                    rating={fsalon.haircut ? fsalon.haircut.rating : fsalon.rating}
+                                                    starRatedColor="#FEDF10"
+                                                    starSpacing="4px"
+                                                    starDimension="12px"
+                                                    numberOfStars={5}
+                                                    name="rating"
+                                                />
+                                                <p>{fsalon.haircut ? fsalon.haircut.rating_counts : fsalon.rating_counts} d'avis</p>
                                             </div>
                                         </div>
-                                    )
-                                })}
+                                    </div>
+                                )
+                            })}
 
 
 
-                            </div>
                         </div>
+                        {/* </div> */}
+                        {/* <div className='text-xl'>Coucou</div> */}
                     </div>
                 }
             </div>
