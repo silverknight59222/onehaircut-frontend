@@ -15,6 +15,7 @@ import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 import BaseModal from "@/components/UI/BaseModal";
 import InfoModal from "@/components/UI/InfoModal";
 import InfoButton from "@/components/UI/InfoButton";
+import { user_api } from "@/api/clientSide";
 //import StarRatings from "react-star-ratings";
 
 // to avoid modifying the theme
@@ -266,6 +267,11 @@ const Welcome = () => {
     router.push(`/services`)
   }
 
+  const checkPreview = async () => {
+    let resp = await user_api.getPreviewImage(selectedHaircut.id);
+    console.log(resp.data)
+  }
+
   const onServiceOnlyClick = () => {
     // Définir le nom de la coiffure à "aucune" et appeler onClickHaircut
     onClickHaircut(-1, "Aucune coiffure sélectionnée");
@@ -421,7 +427,7 @@ const Welcome = () => {
               <div className="flex flex-col items-center">
                 <button onClick={onContinue} className={`flex items-center justify-center font-medium w-full md:w-52 h-14 mb-4 ${Theme_A.button.smallGradientButton}`}>Choisir cette coiffure</button>
                 <button
-                  onClick={() => setIsPreview(!isPreview)}
+                  onClick={checkPreview}
                   className={`flex items-center justify-center font-medium w-full md:w-52 h-14 ${isPreview ? Theme_A.button.medGreydButton : Theme_A.button.medWhiteColoredButton}`}
                 >
                   {isPreview ? 'Image de référence' : 'Prévisualiser sur moi'}
