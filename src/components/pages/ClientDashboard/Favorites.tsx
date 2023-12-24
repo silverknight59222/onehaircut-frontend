@@ -173,7 +173,7 @@ const Favorites = () => {
                                 {salons.length} favorites
                             </div>
                         </div>
-                        <div className="lg:absolute -top-10 md:ml-72  w-9/12 overflow-auto mt-3 md:mr-48 h-screen">
+                        <div className="lg:absolute -top-10 md:ml-72  w-9/12 overflow-auto mt-3 md:mr-48">
                             <table>
                                 <tbody className="flex items-center justify-center  gap-8 pb-2">
                                     {salons.map((item, index) => {

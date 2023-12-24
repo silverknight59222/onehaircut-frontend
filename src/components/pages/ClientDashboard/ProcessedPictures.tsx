@@ -8,6 +8,7 @@ import ClientDashboardLayout from '@/layout/ClientDashboardLayout'; // Assurez-v
 import CustomCard from '@/components/UI/CustomCard';
 import Image from "next/image";
 import { dashboard } from '@/api/dashboard';
+import InfoButton from '@/components/UI/InfoButton';
 
 // IMAGE PAR DEFAUT SI PAS DE COIFFURE SELECTIONNEE
 const DefaultProfilFace = '/assets/DefaultPictures/Profil.png'; // L'URL de l'image
@@ -32,6 +33,15 @@ const ProcessedPictures = () => {
             </div>
             <ClientDashboardLayout notifications={notifications}>
                 <div className="mt-14 mb-5 px-6 w-full">
+                    <div className='flex flex-row items-center justify-center pb-10'>
+                        <div className="pr-4">
+                            <p className="text-black font-medium text-3xl text-center">
+                                Cabine d'essayage
+                            </p>
+                        </div>
+                        {/* Info icon  */}
+                        <InfoButton title_1={"Cabine"} content_1={"Cette page contient les photos comportant votre portrait et une coiffure demandée. Une fois la génération finie, elle sera visible sur cette page."} content_2="Un maximum de 5 photos peut être générer. Une fois les 5 photos atteintes, il vous faudra supprimer une image sur cette page, avant de pouvoir en régénérer une nouvelle." onOpenModal={undefined} />
+                    </div>
                     {/* Première ligne de cartes */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4  justify-center">
                         <div className="flex-1">

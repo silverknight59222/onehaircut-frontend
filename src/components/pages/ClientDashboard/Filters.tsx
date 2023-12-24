@@ -16,12 +16,16 @@ import useSnackbar from '@/hooks/useSnackbar';
 import CustomInput from '@/components/UI/CustomInput';
 import { dashboard } from '@/api/dashboard';
 import { getLocalStorage, setLocalStorage } from '@/api/storage';
+import { Snackbar } from '@mui/material';
+import BaseModal from '@/components/UI/BaseModal';
+import InfoButton from '@/components/UI/InfoButton';
 
 
 const Filters = () => {
     const [selectedTab, setSelectedTab] = useState(0);
     const [selectedItems, SetAtHome] = useState<String[]>([])
     const daysOfWeek = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
+    const [modalLengthErr, SetmodalLengthErr] = useState(false);
 
     const items = [
         "Recherche Coiffure",
@@ -163,34 +167,44 @@ const Filters = () => {
     };
 
     const updateHairStyleSearch = async () => {
-        setIsLoading(true)
-        await client.storeHairstylePreferences({
-            current_hair: currentLength,
-            length_sought: desiredLength,
-            hairstyle_trend: hairstyleTrend,
-            budget: budgetSliderRange,
-        })
-            .then(resp => {
-                //console.log(resp.data);
-                showSnackbar("succès", "Les préférences ont été réinitialisées avec succès");
-                /* Update user preference in local storage */
-                const user = JSON.parse(getLocalStorage("user") as string);
-                user.user_preferences.current_hair = currentLength;
-                user.user_preferences.length_sought = desiredLength;
-                user.user_preferences.hairstyle_trend = hairstyleTrend;
-                user.user_preferences.budget = budgetSliderRange;
-                setLocalStorage("user", JSON.stringify(user));
+        // check the current hair length
+        if ((currentLength == "Court" && desiredLength == "Court") ||
+            ((currentLength == "Moyen" && (desiredLength == "Court" || desiredLength == "Moyen")))) {
+            // hair length is fitting desired length
+            setIsLoading(true)
+            await client.storeHairstylePreferences({
+                current_hair: currentLength,
+                length_sought: desiredLength,
+                hairstyle_trend: hairstyleTrend,
+                budget: budgetSliderRange,
             })
-            .catch(err => {
-                //console.log(err)
-            })
-            .finally(() => {
-                setIsLoading(false)
-            })
-        fetchFilterPrefrences();
+                .then(resp => {
+                    //console.log(resp.data);
+                    showSnackbar("succès", "Les préférences ont été réinitialisées avec succès");
+                    /* Update user preference in local storage */
+                    const user = JSON.parse(getLocalStorage("user") as string);
+                    user.user_preferences.current_hair = currentLength;
+                    user.user_preferences.length_sought = desiredLength;
+                    user.user_preferences.hairstyle_trend = hairstyleTrend;
+                    user.user_preferences.budget = budgetSliderRange;
+                    setLocalStorage("user", JSON.stringify(user));
+                })
+                .catch(err => {
+                    //console.log(err)
+                })
+                .finally(() => {
+                    setIsLoading(false)
+                })
+            fetchFilterPrefrences();
+        }
+        else[
+            // show modal for explanation
+            SetmodalLengthErr(true)
+        ]
     }
 
     const updateSearchSalon = async () => {
+
         setIsLoading(true)
         await client.storeSalonPreferences({
             country: CountryDefault,
@@ -257,11 +271,28 @@ const Filters = () => {
             <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
                 <LogoCircleFixRight />
             </div>
+            {modalLengthErr &&
+                <BaseModal close={() => { SetmodalLengthErr(false) }}>
+                    <div className='text-center'>
+                        <div className="text-xl py-10">
+                            <strong className='pb-10'>La longueur de vos cheveux et la longueur recherchée ne sont pas compatibles</strong>
+                        </div>
+                        <p className='text-xl'>Veuillez re-paramétrer vos filtres correctement.</p>
+                        <p className='text-xl'> Exemple: si vous avez des cheveux courts, vous ne pouvez qu'entrer une longueur recherchée courtes</p>
+                    </div>
+                </BaseModal>
+            }
             <ClientDashboardLayout notifications={notifications}>
-                <div className="mt-14 mb-15 px-5 sm:px-10">
-                    <p className="text-black font-medium text-3xl text-center">
-                        Paramétrage des filtres
-                    </p>
+                <div className="mt-14 mb-15 px-5 sm:px-10 ">
+                    <div className='flex flex-row items-center justify-center'>
+                        {/* Info icon  */}
+                        <div className="pr-4">
+                            <p className="text-black font-medium text-3xl text-center">
+                                Paramétrage des filtres
+                            </p>
+                        </div>
+                        <InfoButton title_1={"Filtres"} content_1={"Cette page contient vos filtres, qui seront utilisés lors de vos recherches de coiffure."} onOpenModal={undefined} />
+                    </div>
                     <div className="flex flex-col lg:flex-row items-start justify-center gap-10 2xl:gap-20 mt-10">
                         <div className="w-full lg:w-auto flex flex-col items-center justify-center gap-6">
                             {items.map((item, index) => {

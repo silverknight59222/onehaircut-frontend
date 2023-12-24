@@ -97,6 +97,7 @@ const Currentreservation = () => {
     const [itemToCancel, setItemToCancel] = useState<any>({});
     const [currentTime, setCurrentTime] = useState<Date | null>(null);
     const [cancelAccepted, setCancelAccepted] = useState(false);
+    const [isModalCancelConfirm, setIsModalCancelConfirm] = useState(false);
 
     // function to update the time every seconds
     useEffect(() => {
@@ -151,6 +152,7 @@ const Currentreservation = () => {
         let resp = await dashboard.cancelBooking(itemToCancel.id);
         if (resp.data.status == 200) {
             showSnackbar("success", resp.data.message)
+            setIsModalCancelConfirm(true)
         }
         else {
             showSnackbar("error", resp.data.message)
@@ -191,20 +193,18 @@ const Currentreservation = () => {
     const modifReservation: React.JSX.Element =
         <div>
             <div className="flex flex-col items-center justify-center gap-4">
-                <p className="text-2xl font-semibold text-black text-center mb-6">Annulation de la réservation</p>
+
                 {/* check if cancellation was accepted */}
                 {cancelAccepted &&
-                    <div>
-                        <p className="text-sm font-medium text-red-600 text-center">
-                            Êtes-vous sûr de vouloir annuler la reservation du </p>
-                        <p className="text-sm font-medium text-red-600 text-center">
-                            {formaterDate(itemToCancel.redable_date)} ?
-                        </p>
-                    </div>
+                    <p className="text-2xl font-semibold text-black text-center mb-6">Voulez-vous vraiment annuler cette réservation?</p>
+                    // <div>
+                    //     <p className="text-sm font-medium text-red-600 text-center">
+                    //         Êtes-vous sûr de vouloir annuler la reservation ?</p>
+                    // </div>
                 }
                 {!cancelAccepted &&
                     // Cancellation denied
-                    <div className="text-stone-800 font-normal italic text-sm text-center my-2">
+                    <div className="text-stone-800 font-normal italic text-lg text-center my-2">
                         <p >
                             Une reservation ne peut être annuler si elle ne se situe pas dans les 24 heures suivant l'annulation. Veuillez vous référez à nos
                         </p>
@@ -230,6 +230,24 @@ const Currentreservation = () => {
                 >
                     Confirmer l'annulation
                 </button>}
+            </div>
+        </div >
+
+    // function to confirm the cancellation
+    const ConfirmCancellation: React.JSX.Element =
+        <div>
+            <div className="text-stone-800 font-normal italic text-lg text-center my-2">
+                <p >
+                    La réservation a bien été annulé!
+                </p>
+            </div>
+            <div className="mt-12 flex gap-4 items-center justify-center w-full ">
+                <button
+                    className={`${Theme_A.button.medWhiteColoredButton}`}
+                    onClick={() => setIsModalCancelConfirm(false)}
+                >
+                    Fermer cette fenêtre
+                </button>
             </div>
         </div >
 
@@ -268,6 +286,12 @@ const Currentreservation = () => {
                         <BaseModal close={() => setIsModalCancel(false)}>
                             <div>
                                 {modifReservation}
+                            </div>
+                        </BaseModal>)}
+                    {isModalCancelConfirm && (
+                        <BaseModal close={() => setIsModalCancelConfirm(false)}>
+                            <div>
+                                {ConfirmCancellation}
                             </div>
                         </BaseModal>)}
                     {/* REST OF THE PAGE */}
