@@ -1,5 +1,5 @@
 "use client";
-import { registration } from "@/api/registration";
+import { SalonRegisterParams, registration } from "@/api/registration";
 import { AddIcon, EyeClosedIcon, EyeIcon, LogoIcon, UserIcon } from "@/components/utilis/Icons";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -20,7 +20,7 @@ const inputFieldsDesignNoW = `border-2 border-red-500 p-1 placeholder:text-[#959
 const Step3 = () => {
   const showSnackbar = useSnackbar();
   const { loadingView } = userLoader();
-  const route = useRouter();
+  const router = useRouter();
   const [userDetails, setUserDetails] = useState({
     name: '',
     email: '',
@@ -205,7 +205,7 @@ const Step3 = () => {
       return;
     }
     setIsLoading(true);
-    await registration.createIntent(userDetails).then(res => {
+    await registration.createIntent(userDetails).then(async (res) => {
       let data: any = userDetails;
       data.id = res.data.user.id;
       data.token = res.data.token;
@@ -216,9 +216,60 @@ const Step3 = () => {
       }
       const planType = JSON.parse(getLocalStorage('plan_type') as string);
       if (planType && planType.name === 'OneHaircut Regular') {
-        route.push("/registration/steps/5");
+        let salonData: SalonRegisterParams = {
+          user_id: "",
+          salon_name: "",
+          salon_description: "",
+          country: '',
+          city: '',
+          state: '',
+          zone_radius: 0,
+          lat: 0,
+          long: 0,
+          salon_type: "",
+          payment_method: "",
+          plan_id: "",
+          plan_name: "",
+          plan_slug: "",
+          street: "",
+          postalCode: "",
+          isMobile: false,
+        }
+        const userInfo = JSON.parse(getLocalStorage("user_Info") as string);
+        const salonName = getLocalStorage("salon_name") as string;
+        const salonAddress = JSON.parse(getLocalStorage("salon_address") as string);
+        const salonType = getLocalStorage("salon_type") as string;
+        const planType = JSON.parse(getLocalStorage("plan_type") as string);
+        salonData.user_id = userInfo?.id;
+        salonData.salon_name = salonName;
+        salonData.salon_description = 'Description text here';
+        salonData.country = salonAddress.country
+        salonData.state = salonAddress.state
+        salonData.city = salonAddress.city
+        salonData.lat = salonAddress.lat
+        salonData.long = salonAddress.long
+        salonData.zone_radius = salonAddress.zone
+        salonData.salon_type = salonType;
+        salonData.payment_method = "NA";
+        salonData.plan_id = planType.plan_id;
+        salonData.plan_name = planType.name;
+        salonData.plan_slug = planType.slug;
+        salonData.street = salonAddress.street;
+        salonData.postalCode = salonAddress.postalCode;
+        salonData.isMobile = salonAddress.isMobile;
+        await registration
+        .registerSalon(salonData)
+        .then((res) => {
+          showSnackbar("success", "Salon successfully created");
+          router.push("/verification");
+        })
+        .catch((err) => {
+          showSnackbar("error", "Error Occured!");
+        }).finally(() => {
+          setIsLoading(false);
+        });
       } else {
-        route.push("/registration/steps/4");
+        router.push("/registration/steps/4");
       }
     }).catch(err => {
       showSnackbar("erreur", "Email déjà utilisé");
@@ -242,7 +293,7 @@ const Step3 = () => {
       {isLoading && loadingView()}
       <div className="flex flex-col md:flex-row items-center justify-center border-b border-[#EBF0F2] pb-4">
         <div className="absolute top-1 flex items-center justify-start sm:justify-center w-full gap-5 px-4 sm:px-14 py-5">
-          <div onClick={() => route.push('/')} className='relative z-30 cursor-pointer'><LogoIcon className={''} /></div>
+          <div onClick={() => router.push('/')} className='relative z-30 cursor-pointer'><LogoIcon className={''} /></div>
         </div>
         {/* <div className="relative z-20 w-full flex items-center justify-end gap-4 px-4 sm:px-14 mt-6">
           <UserProfile />
@@ -326,7 +377,7 @@ const Step3 = () => {
         </div>
         <div className="w-full flex flex-col sm:flex-row items-center justify-center gap-4 md:gap-7 mb-5">
           <button
-            onClick={() => route.push("/registration/steps/2")}
+            onClick={() => router.push("/registration/steps/2")}
             className={`${Theme_A.button.bigWhiteColoredButton}`}
           >
             Etape précédente

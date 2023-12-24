@@ -382,7 +382,7 @@ const Welcome = () => {
                 </div>
 
               </div>
-              <div className="rounded-b-xl bg-gradient-to-r from-white via-stone-50 to-zinc-200">
+              <div className=" w-40 md:w-60 rounded-b-xl bg-gradient-to-r from-white via-stone-50 to-zinc-200">
                 <p className="rounded-b-xl flex items-center justify-center py-2 text-black font-medium">
                   {item.name}
                 </p>

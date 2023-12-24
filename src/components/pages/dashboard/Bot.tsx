@@ -9,6 +9,7 @@ import Switch from "@material-ui/core/Switch";
 import BaseModal from '@/components/UI/BaseModal';
 import { TailSpin } from 'react-loader-spinner'
 import { dashboard } from "@/api/dashboard";
+import InfoButton from "@/components/UI/InfoButton";
 
 const Bot = () => {
 
@@ -283,7 +284,7 @@ const Bot = () => {
     setNotifications(data)
   }
 
-  useEffect(()=>{fetchSalonNotifications();},[]);
+  useEffect(() => { fetchSalonNotifications(); }, []);
 
   return (
     <div>
@@ -296,7 +297,7 @@ const Bot = () => {
               {optimizationCopy.map((item, index) => {
                 return (
                   // renderCheckboxWithLabel(item.title, item.checked, () => toggleSwitch(index))
-                  <div key={item.title + '_' +index} className="mt-4 flex items-center justify-between">
+                  <div key={item.title + '_' + index} className="mt-4 flex items-center justify-between">
                     <div className="flex items-center">
                       <Switch key="BotList"
                         color="primary"
@@ -380,9 +381,17 @@ const Bot = () => {
             </div>
           </div>
           <div>
-            <p className="text-xl text-[#434343] font-bold text-center mt-16 md:mt-16 mb-6 md:mb-6">
-              Opportunités d&apos;optimisation
-            </p>
+            <div className="flex flex-row  mt-16 md:mt-16 mb-6 md:mb-6">
+              <p className="text-xl text-[#434343] text-center font-bold ">
+                Opportunités d&apos;optimisation
+              </p>
+
+              {/* Info icon  */}
+              <div className="pr-4">
+                <InfoButton title_1={"OneHaitBot, votre assistant personnel"} content_1={"Nous avons développer pour vous une intelligence artificielle, capable d'analyser les améliorations possibles pour vous et votre business. Celles-ci vous sont proposer une à une par catégorie."} onOpenModal={undefined} />
+              </div>
+            </div>
+
             {showItem.map((item, index) => {
               return (
                 <div
