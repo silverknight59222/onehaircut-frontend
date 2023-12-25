@@ -49,19 +49,23 @@ const Welcome = () => {
   const [selectedHaircut, setSelectedHaircut] = useState({ id: 0, name: '', image: '' }) // Store the selected haircut
   const [wishlist, setWishlist] = useState<string[]>([]) // Store user’s wishlist of haircuts
   const [page, setPage] = useState(1);
+  const [maxPage, setMaxPage] = useState(5);
 
 
   const getAllHaircuts = async () => {
     // Fetch all available haircuts from the API
-    setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    await dashboard.getAllHaircuts(page)
-      .then((res) => {
-        setSalonHaircut([...salonHaircut, ...res.data.data]);
-        setPage(prevPage => prevPage + 1);
-        setIsLoading(false)
-      })
-      .catch(error => setIsLoading(false))
+    if(!(page >= maxPage)) {
+      setIsLoading(true);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await dashboard.getAllHaircuts(page)
+        .then((res) => {
+          setSalonHaircut([...salonHaircut, ...res.data.data]);
+          setPage(prevPage => prevPage + 1);
+          setMaxPage(res.data.max_page)
+          setIsLoading(false)
+        })
+        .catch(error => setIsLoading(false))
+    }
   }
 
   const handleScroll = () => {
