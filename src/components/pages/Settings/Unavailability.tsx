@@ -119,9 +119,11 @@ const Unavailability = () => {
 
     const getHairDresserInfo = async () => {
         let obj = hairDresserList.find(o => o.name == selectedHD);
-        let resp = await salonApi.getHairDresserAvailability(obj!.id);
-        setUnavailList(resp.data.data)
-        setUnavailabilities(resp.data.data)
+        if(obj != null){
+            let resp = await salonApi.getHairDresserAvailability(obj!.id);
+            setUnavailList(resp.data.data)
+            setUnavailabilities(resp.data.data)
+        }
     }
     const getSalonInfo = async () => {
         let resp = await salonApi.getSalonUnavailability(salon.id);
