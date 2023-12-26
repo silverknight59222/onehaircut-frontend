@@ -78,11 +78,13 @@ const SalonChoice = () => {
         const updateDimension = () => {
             setScreenSize(getCurrentDimension())
         }
-        window.addEventListener('resize', updateDimension);
+        if(typeof window !== 'undefined'){
+            window.addEventListener('resize', updateDimension);
+            return(() => {
+                window.removeEventListener('resize', updateDimension);
+            })
+        }
     
-        return(() => {
-            window.removeEventListener('resize', updateDimension);
-        })
     },[screenSize])
 
 
@@ -151,20 +153,22 @@ const SalonChoice = () => {
             const salonInRating = (ratingFilter.length === 0) || ((ratingFilter.length > 0) && (ratingFilter.includes(salon.rating))) || (newSalonFilter && salon.rating === 0);
             const salonInCountry = (countryFilter === '') || (salon.address.country === countryFilter);
             const frenchToEnglishMapping = {
-                'Lundi': 1,
-                'Mardi': 2,
-                'Mercredi': 3,
-                'Jeudi': 4,
-                'Vendredi': 5,
-                'Samedi': 6,
-                'Dimanche': 0
+                'Lundi' : 1,
+                'Mardi' : 2,
+                'Mercredi' : 3,
+                'Jeudi' : 4,
+                'Vendredi' : 5,
+                'Samedi' : 6,
+                'Dimanche' : 0
             };
             let salonAvailable = true;
+            
 
-
-            for (const day of availabilityFilter) {
+            for(const day of availabilityFilter)
+            {
                 salonAvailable = salon.openTimes[frenchToEnglishMapping[day]].available;
-                if (salonAvailable) {
+                if(salonAvailable)
+                {
                     break;
                 }
             }
@@ -199,7 +203,7 @@ const SalonChoice = () => {
                 positionArray.push({ lat: Number(fsalon.address.lat), lng: Number(fsalon.address.long) })
             }
         })
-
+        
         console.log('position array', positionArray)
         
         // recalculateMap(positionArray)
