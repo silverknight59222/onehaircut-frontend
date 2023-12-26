@@ -105,7 +105,10 @@ const HairStyleListItem = React.memo(({ item, activeMenu, hairStyleSelectEvent, 
                             numberOfStars={5}
                             name={`rating-${item.salon_haircuts.findIndex(el => el.hair_salon_id == salon_id) !== -1 ? item.salon_haircuts[item.salon_haircuts.findIndex(el => el.hair_salon_id == salon_id)].rating : 0}`}
                         /> : ''}
-                    <p className='text-xs justify-end items-center text-stone-600'>( {item.salon_haircuts[item.salon_haircuts.findIndex(el => el.hair_salon_id == salon_id)]?.rating_counts} avis)</p>
+                    {activeMenu === "added" ?
+                        <p className='text-xs justify-end items-center text-stone-600'>( {item.salon_haircuts[item.salon_haircuts.findIndex(el => el.hair_salon_id == salon_id)]?.rating_counts} avis)</p>
+                        : ""
+                    }
                 </p>
 
             </div>
