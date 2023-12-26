@@ -140,6 +140,7 @@ const BookSalon = () => {
     const month = selectedDate ? String(selectedDate?.getMonth() + 1).padStart(2, '0') : '';  // Month is zero-indexed
     const day = selectedDate ? String(selectedDate?.getDate()).padStart(2, '0') : '';
     setLocalStorage('selectDate', `${year}-${month}-${day}`)
+    setLocalStorage("go_home", locationType)
 
     route.push('/payment')
   }

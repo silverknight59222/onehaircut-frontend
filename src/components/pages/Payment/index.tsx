@@ -134,50 +134,6 @@ const Index = () => {
       setIsModal(true)
     } else {
       setIsLoading(true)
-
-      const targetDayOfWeek = slotData.slot[0].day;
-
-      const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-      const number = daysOfWeek.indexOf(targetDayOfWeek);
-      const today = new Date();
-      const currentDayOfWeek = today.getDay();
-      let difference = number - currentDayOfWeek;
-      if (difference < 0) {
-        difference += 7;
-      }
-      const targetDate = new Date(today);
-      targetDate.setDate(today.getDate() + difference);
-
-      const formattedDate = targetDate.toISOString().split('T')[0];
-      const bookingDate = getLocalStorage('selectDate');
-      const data = {
-        user_id: user ? user.id : null,
-        hair_salon_id: Number(salonData.id),
-        slot_ids: slotData.slot.map((prevSlot: any) => prevSlot.id),
-        hair_dresser_id: slotData.hairDresser.id,
-        amount: salonData.final_price,
-        salon_haircut_id: salonData.haircut ? salonData.haircut.id : null,
-        services: salonData.services || [],
-        date: bookingDate,
-        clientId: user.id,
-        salonId: salonData.user_id
-      }
-
-      await client.createBooking(data)
-        .then(resp => {
-          // removeFromLocalStorage('haircut')
-          // removeFromLocalStorage('slotData')
-          // removeFromLocalStorage('ServiceIds')
-          // removeFromLocalStorage('selectedSalon')
-          setLocalStorage("plan_type", haircutPrize)
-          showSnackbar("success", 'Booking Created Successfully');
-          //window.open("https://api.whatsapp.com/send?phone=" + userInfo.phone + "&text=Booking Success!", '_blank');
-          router.push('/confirm-payment')
-        })
-        .catch(err => console.log(err))
-        .finally(() => {
-          setIsLoading(false)
-        })
     }
   }
 

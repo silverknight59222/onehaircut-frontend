@@ -24,7 +24,7 @@ const Images = () => {
 	const [salonImages, setSalonImages] = useState<ImageSalon[]>([]);
 	useEffect(() => {
 		// window.location.reload()
-	},[salonImages])
+	}, [salonImages])
 	const getAllSalonImages = async () => {
 		let temp = getLocalStorage("hair_salon");
 		const hairSalon = temp ? JSON.parse(temp) : null;
@@ -65,7 +65,7 @@ const Images = () => {
 									animation: 'pulse 3s infinite',
 								}}
 							>
-								Vous devez ajouter un ou plusieurs images pour être visible par les clients
+								Vous devez ajouter une ou plusieurs images pour être visible par les clients
 							</div>
 						</div>
 					)}
