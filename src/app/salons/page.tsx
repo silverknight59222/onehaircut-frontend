@@ -1,20 +1,11 @@
-// import ChooseSalon from '@/components/pages/ChooseSalon'
-// import React from 'react'
-// const page = () => {
-//     return (
-//       <div><ChooseSalon/></div>
-//     )
-// }
+import dynamic from 'next/dynamic';
 
-// export default page
-
-import ChooseSalon from '@/components/pages/ChooseSalon'
-import React from 'react'
-
-const isSSREnabled = () => typeof window === 'undefined';
+// Importez ChooseSalon dynamiquement sans SSR
+const ChooseSalon = dynamic(() => import('@/components/pages/ChooseSalon'), {
+  ssr: false, // Désactive le rendu côté serveur pour ce composant
+});
 
 export default function Home() {
-  return (
-    !isSSREnabled() && <ChooseSalon />
-  );
+  // Le composant ChooseSalon sera maintenant rendu côté client uniquement
+  return <ChooseSalon />;
 }
