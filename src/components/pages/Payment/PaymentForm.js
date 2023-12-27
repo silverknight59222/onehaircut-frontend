@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useRouter } from "next/navigation";
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 import axios from 'axios';
 import { client } from "@/api/clientSide";
@@ -21,6 +22,7 @@ const PaymentForm = ({onSuccess}) => {
   const haircut = getLocalStorage("haircut")
   const [haircutPrize, setHaircutPrize] = useState(0)
   const showSnackbar = useSnackbar()
+  const router = useRouter();
   const getHaircutPrize = async () => {
     if (haircut) {
       setIsLoading(true)
