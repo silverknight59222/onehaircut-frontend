@@ -51,7 +51,7 @@ interface Navbar {
   onNewSalonFilter?: (arg0: boolean) => void
 }
 
-const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideSearchBar,onHairNameFilters , onTypeSelect, onSearch, onServiceSearch, onGenderFilter, onEthnicityFilters, onLengthFilters, onMobileFilters, onCitySearch, onCityMapSearch, onNameSearch, onRangeFilters, onRatingFilter, onCountryFilter, onAvailabilityFilter, onNewSalonFilter }: Navbar) => {
+const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideSearchBar, onHairNameFilters, onTypeSelect, onSearch, onServiceSearch, onGenderFilter, onEthnicityFilters, onLengthFilters, onMobileFilters, onCitySearch, onCityMapSearch, onNameSearch, onRangeFilters, onRatingFilter, onCountryFilter, onAvailabilityFilter, onNewSalonFilter }: Navbar) => {
   const [isDropdown, setIsDropdown] = useState(false);
   const [showDesktopGender, setShowDesktopGender] = useState(false);
   const [showDesktopLength, setShowDesktopLength] = useState(false);
@@ -255,8 +255,10 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
   const getHaircutsByName = async () => {
     let resp = await user_api.getHaircutsByName();
     console.log(resp.data.data)
-    setHaircuts(resp.data.data);
+    const sortedData = resp.data.data.sort((a, b) => a.name.localeCompare(b.name));
+    setHaircuts(sortedData);
   }
+
 
   const handleSearch = () => {
     if (onSearch) {
@@ -385,6 +387,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
   const [minBudget, setMinBudget] = useState(0);
   const [maxBudget, setMaxBudget] = useState(1000);
 
+
   return (
     <div className=" flex flex-col md:items-center justify-between border-b border-[#EBF0F2] pb-2 xl:pb-0">
       <div className={` flex justify-between px-4 lg:px-14 flex-col lg:flex-row gap-3 ${!isLoggedIn ? 'flex-col' : 'flex-row'}`}>
@@ -427,7 +430,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     Ethnicité
                   </p>
                   {showDesktopEthnicity && (
-                    <div className="absolute -ml-2 z-20 flex flex-col items-center justify-center w-45 pt-5 px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
+                    <div className="absolute mt-2 ml-2 z-20 flex flex-col items-center justify-center w-45 pt-5 px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
                       {Ethnicity.map((item, index) => {
                         return (
                           <div
@@ -462,7 +465,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     Genre
                   </p>
                   {showDesktopGender && (
-                    <div className="absolute  -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
+                    <div className="absolute mt-2 ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
                       {Gender.map((item, index) => {
                         return (
                           <div
@@ -500,7 +503,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     Longueur
                   </p>
                   {showDesktopLength && (
-                    <div className="absolute  -ml-3 z-20 flex flex-col items-center justify-center w-40 pt-5 px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
+                    <div className="absolute mt-2 ml-3 z-20 flex flex-col items-center justify-center w-40 pt-5 px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
                       {Length.map((item, index) => {
                         return (
                           <div
@@ -533,29 +536,29 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                       setShowDesktopHaircut(!showDesktopHaircut);
                     }}
                   >
-                    Coiffure
+                    Coiffures
                   </p>
                   {showDesktopHaircut && (
-                    <div className="absolute  -ml-1 z-20 flex flex-col items-center justify-center w-40 pt-5 px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
+                    <div id="CountryList" className="absolute top-[75px] -ml-3 z-50  items-center justify-center w-42 pt-[2px] px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300 " style={{ maxHeight: '700px', overflowY: 'auto', marginTop: '10px' }}>
                       {haircuts.map((item, index) => {
                         return (
                           <div
                             key={index}
-                            className="flex w-full cursor-pointer mb-[19px]  transform hover:scale-110 text-sm "
-                            onClick={() => onClickHairNameCheckbox(item['name'])} // Conservez 'item.name' pour la logique interne
+                            className="flex w-full cursor-pointer mt-[19px]  transform hover:scale-110 text-sm"
+                            onClick={() => onClickHairNameCheckbox(item['name'])}
                           >
                             <div
-                              className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  transform hover:scale-105 ${haircutFilters.includes(item['name']) ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}
+                              className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105 ${haircutFilters.includes(item['name']) ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}
                             >
                               <CheckedIcon />
                             </div>
-                            <p className="ml-2">{item['name']}</p> {/* Utilisez 'item.nameFr' pour l'affichage */}
+                            <p className="ml-2">{item['name']}</p>
                           </div>
                         );
                       })}
                     </div>
-
                   )}
+
                 </div>
               </>
               :
