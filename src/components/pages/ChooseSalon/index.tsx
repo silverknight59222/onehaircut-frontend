@@ -730,7 +730,13 @@ const SalonChoice = () => {
 
                                                     {fsalon && fsalon.salon_cover_image &&
                                                         <Image
-                                                            src={fsalon && fsalon.salon_cover_image ? fsalon.salon_cover_image?.image?.includes('api') ? fsalon.salon_cover_image.image : `https://api.onehaircut.com${fsalon.salon_cover_image.image}` : fsalon.logo.includes('api') ? fsalon.logo : `https://api.onehaircut.com${fsalon.logo}`}
+                                                            src={fsalon && fsalon.salon_cover_image ? 
+                                                                    fsalon.salon_cover_image?.image?.includes('api') ? 
+                                                                    fsalon.salon_cover_image.image : 
+                                                                    `https://api.onehaircut.com${fsalon.salon_cover_image.image}` : 
+                                                                    fsalon.logo.includes('api') ? 
+                                                                    fsalon.logo : 
+                                                                     `https://api.onehaircut.com${fsalon.logo}`}
                                                             sizes="640w"
                                                             fill={true}
                                                             alt="image"

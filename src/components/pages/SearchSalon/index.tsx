@@ -71,6 +71,7 @@ const SearchSalon = () => {
 
   const services = getLocalStorage('ServiceIds')
   const servicesData = services ? JSON.parse(services) : null
+  const defaultPicture = 'https://api.onehaircut.com/favicon.ico';
 
   //TODO Import salon availability times
   const [hours, setHours] = useState([] as any[])
@@ -88,6 +89,8 @@ const SearchSalon = () => {
     let tempSalon = getLocalStorage('selectedSalon')
     const salon = tempSalon ? JSON.parse(tempSalon) : null
     setSalonProfile(salon)
+    console.log(selectedImage)
+    console.log(salonProfile)
   }, [])
 
   useEffect(() => {
@@ -247,7 +250,7 @@ const SearchSalon = () => {
                 {/* Image principale */}
                 {salonProfile && <div className="w-full h-full relative rounded-4xl ">
                   <Image
-                    src={selectedImage.includes('http') ? selectedImage : `https://api.onehaircut.com${selectedImage}`}
+                    src={selectedImage ? (selectedImage.includes('http') ? selectedImage : `https://api.onehaircut.com${selectedImage}`) : defaultPicture}
                     alt="Image principale du salon"
                     layout="fill"
                     objectFit="fill"
@@ -268,8 +271,12 @@ const SearchSalon = () => {
                     className="relative w-24 lg:w-32 2xl:w-36 h-24 lg:h-32 2xl:h-36 cursor-pointer overflow-hidden rounded-lg transform transition-all duration-300 group hover:scale-105 shadow-sm shadow-stone-600"
                   >
                     {/* TODO charger les images vitrines ici */}
-                    {salonProfile && salonProfile.salon_images && <Image
-                      src={salonProfile.salon_images.filter((image) => image.type == "showcase")[0]?.image.includes('http') ? salonProfile.salon_images.filter((image) => image.type == "showcase")[0]?.image : `https://api.onehaircut.com${salonProfile.salon_images.filter((image) => image.type == "showcase")[0]?.image}`}
+                    {salonProfile && salonProfile.salon_images && 
+                    <Image
+                      src={salonProfile.salon_images.length > 0 ? (salonProfile.salon_images.filter((image) => image.type == "showcase")[0]?.image.includes('http') ? 
+                          salonProfile.salon_images.filter((image) => image.type == "showcase")[0]?.image : 
+                          `https://api.onehaircut.com${salonProfile.salon_images.filter((image) => image.type == "showcase")[0]?.image}`) : 
+                          defaultPicture}
                       alt="Image miniature gauche"
                       layout="fill"
                       objectFit="cover"
@@ -290,7 +297,9 @@ const SearchSalon = () => {
                   >
                     {/* TODO charger les images vitrines ici */}
                     {salonProfile && salonProfile.salon_images && <Image
-                      src={salonProfile.salon_images.filter((image) => image.type == "hairstyle")[0]?.image.includes('http') ? salonProfile.salon_images.filter((image) => image.type == "hairstyle")[0]?.image : `https://api.onehaircut.com${salonProfile.salon_images.filter((image) => image.type == "hairstyle")[0]?.image}`}
+                      src={salonProfile.salon_images.length > 0 ? (salonProfile.salon_images.filter((image) => image.type == "hairstyle")[0]?.image.includes('http') ? 
+                            salonProfile.salon_images.filter((image) => image.type == "hairstyle")[0]?.image : 
+                            `https://api.onehaircut.com${salonProfile.salon_images.filter((image) => image.type == "hairstyle")[0]?.image}`) : defaultPicture}
                       alt="Image miniature gauche"
                       layout="fill"
                       objectFit="cover"
@@ -436,7 +445,9 @@ const SearchSalon = () => {
                     {/* Image du coiffeur */}
                     <div className="relative w-40 lg:w-52 h-40 lg:h-52 rounded-[20px] ">
                       <Image
-                        src={hairdresser.profile_image ? (hairdresser.profile_image.includes('http') ? hairdresser.profile_image : 'https://api.onehaircut.com/' + hairdresser.profile_image) : 'https://api.onehaircut.com/' + hairdresser.avatar.image}
+                        src={hairdresser.profile_image ? (hairdresser.profile_image ? (hairdresser.profile_image.includes('http') 
+                              ? hairdresser.profile_image : 'https://api.onehaircut.com/' + hairdresser.profile_image) 
+                              : 'https://api.onehaircut.com/' + hairdresser.avatar.image) : defaultPicture}
                         alt=""
                         layout="fill"
                         className="rounded-[20px]"
