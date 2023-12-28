@@ -167,8 +167,8 @@ const BookSalon = () => {
           currentIndex -= travelTime / 30 - 1
         }
         else {
-          maxValue += Math.floor(travelTime / 30)
-          currentIndex -= Math.floor(travelTime / 30)
+          maxValue += Math.ceil(travelTime / 30)
+          currentIndex -= Math.ceil(travelTime / 30)
         }
       }
 
