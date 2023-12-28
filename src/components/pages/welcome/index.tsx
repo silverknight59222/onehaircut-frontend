@@ -250,6 +250,7 @@ const Welcome = () => {
     setIsLoading(true)
     let resp = await user_api.getHaircutFilteredByName(hairNameFilters);
     setFilteredHaircuts(resp.data.data)
+    setSalonHaircut(resp.data.data)
     setIsLoading(false)
   }
 
