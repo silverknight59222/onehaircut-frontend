@@ -40,6 +40,7 @@ const Welcome = () => {
   const [ethnicityFilters, setEthnicityFilters] = useState<string[]>([]);
   const [lengthFilters, setLengthFilters] = useState<string[]>([]);
   const [genderFilters, setGenderFilters] = useState<string>("");
+  const [hairNameFilters, setHairNameFilters] = useState<string[]>([]);
   // Store filtered haircuts based on user’s filters
   const [filteredHaircuts, setFilteredHaircuts] = useState<Haircut[]>([]);
   // Search state variable for filtering haircuts by name
@@ -51,7 +52,6 @@ const Welcome = () => {
   const [wishlist, setWishlist] = useState<string[]>([]) // Store user’s wishlist of haircuts
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(5);
-
 
   const getAllHaircuts = async () => {
     // Fetch all available haircuts from the API
@@ -246,6 +246,17 @@ const Welcome = () => {
 
   };
 
+  const getFilteredHaircuts = async () => {
+    setIsLoading(true)
+    let resp = await user_api.getHaircutFilteredByName(hairNameFilters);
+    setFilteredHaircuts(resp.data.data)
+    setIsLoading(false)
+  }
+
+  useEffect(()=>{
+    getFilteredHaircuts();
+  },[hairNameFilters])
+
   const haircuts = () => {
     if (
       ethnicityFilters.length > 0 ||
@@ -332,7 +343,7 @@ const Welcome = () => {
 
   return (
     <>
-      <Navbar isWelcomePage={true} onSearch={(value: string) => setSearch(value)} onGenderFilter={(gender) => setGenderFilters(gender)} onEthnicityFilters={(groups) => setEthnicityFilters(groups)} onLengthFilters={(length) => setLengthFilters(length)} />
+      <Navbar isWelcomePage={true} onSearch={(value: string) => setSearch(value)} onGenderFilter={(gender) => setGenderFilters(gender)} onEthnicityFilters={(groups) => setEthnicityFilters(groups)} onLengthFilters={(length) => setLengthFilters(length)} onHairNameFilters={(hairname) => setHairNameFilters(hairname)} />
       <div className="flex flex-col items-center justify-center w-full overflow-hidden">
 
         {isLoading && loadingView()}
