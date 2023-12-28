@@ -35,10 +35,10 @@ const StyledTableRow = styled(TableRow)<TableRowProps>(({ theme }) => ({
 interface CustomizedTableProps {
   columns: string[];
   data: Record<string, any>[];
-  cB : any
+  cB: any
 }
 
-const CustomizedTable: React.FC<CustomizedTableProps> = ({ columns, data, cB}) => {
+const CustomizedTable: React.FC<CustomizedTableProps> = ({ columns, data, cB }) => {
   const [newData, setData] = useState(data);
   const showSnackbar = useSnackbar();
   const { loadingView } = userLoader();
@@ -50,15 +50,15 @@ const CustomizedTable: React.FC<CustomizedTableProps> = ({ columns, data, cB}) =
     let list_after_del = newData.filter((row) => row !== rowToDelete);
     setData(list_after_del)
   };
-  const handleButtonClick = async (row,index,len) => {
+  const handleButtonClick = async (row, index, len) => {
     // Handle button click for the specific row data
     console.log('Button clicked for row:', row);
     setIsLoading(true)
-    if(len === 6){
+    if (len === 6) {
       let uv_id = newData[index].uv_id;
       let resp = await salonApi.delHairDresserUnavailability(uv_id);
       // console.log(resp);
-      if(resp.data.status == 200){
+      if (resp.data.status == 200) {
         showSnackbar("success", "Hair Dresser Unavailability removed.");
       }
       else {
@@ -69,7 +69,7 @@ const CustomizedTable: React.FC<CustomizedTableProps> = ({ columns, data, cB}) =
       let uv_id = newData[index].uv_id;
       let resp = await salonApi.delSalonUnavailability(uv_id);
       // console.log(resp);
-      if(resp.data.status == 200){
+      if (resp.data.status == 200) {
         showSnackbar("success", "Hair Dresser Unavailability removed.");
       }
       else {
@@ -81,21 +81,21 @@ const CustomizedTable: React.FC<CustomizedTableProps> = ({ columns, data, cB}) =
   };
 
   const delay = async (ms) => {
-    return new Promise((resolve) => 
-        setTimeout(resolve, ms));
+    return new Promise((resolve) =>
+      setTimeout(resolve, ms));
   };
 
   useEffect(() => {
     cB(newData)
-  },[newData]);
+  }, [newData]);
 
   useEffect(() => {
     console.log("Salon Part Table")
     console.log(newData)
-  },[])
+  }, [])
 
   const visibleColumns = columns.slice(1);
-  
+
   return (
     <TableContainer component={Paper}>
       {isLoading && loadingView()}
@@ -103,23 +103,23 @@ const CustomizedTable: React.FC<CustomizedTableProps> = ({ columns, data, cB}) =
         <TableHead>
           <TableRow>
             {visibleColumns.map((column) => (
-                <StyledTableCell key={column}>{column === 'Actions' ? 'Actions' : column}</StyledTableCell>
+              <StyledTableCell key={column}>{column === 'Actions' ? 'Actions' : column}</StyledTableCell>
             ))}
           </TableRow>
         </TableHead>
         <TableBody>
-          
+
           {newData.map((row, index) => (
             <StyledTableRow key={index}>
               {visibleColumns.map((column) => (
-                <StyledTableCell key={column} align="right">
-                  
+                <StyledTableCell key={column} align="left">
+
                   {column === 'Actions' ? (
-                    <Button onClick={() => handleButtonClick(row,index,visibleColumns.length)} variant="contained" color="error">
-                      Delete
+                    <Button onClick={() => handleButtonClick(row, index, visibleColumns.length)} variant="contained" color="error">
+                      Supprimer
                     </Button>
                   ) : row[column]}
-                  
+
                 </StyledTableCell>
               ))}
             </StyledTableRow>
