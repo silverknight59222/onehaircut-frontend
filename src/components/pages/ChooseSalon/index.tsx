@@ -714,7 +714,7 @@ const SalonChoice = () => {
                                     <div
                                         key={index}
                                         onClick={() => setSelectedSalon(fsalon)}
-                                        className={`flex w-full  h-52 h-max[300px] bg-stone-100 rounded-2xl border hover:border-stone-400 cursor-pointer ${selectedSalon.id === fsalon.id && 'border-4 border-red-400 shadow-xl'}`}
+                                        className={`flex w-full w-max[450px]  h-56 h-max[300px] bg-stone-100 rounded-2xl border hover:border-stone-400 cursor-pointer ${selectedSalon.id === fsalon.id && 'border-4 border-red-400 shadow-xl'}`}
                                     // style={{ width: '100%', aspectRatio: '1/1', display: 'flex', flexDirection: 'column', minWidth: '200px', maxWidth: '450px', minHeight: '200px', maxHeight: '420px' }}
                                     >
                                         {selectedSalon.id === fsalon.id && (
@@ -731,7 +731,7 @@ const SalonChoice = () => {
 
                                             <div className='relative mb-4 hover:scale-105 transition duration-1000 m-2' style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                                 {!isLoggedIn &&
-                                                    <div onClick={(e) => onWishlist(e, fsalon.id)} className="absolute right-6 top-6 z-20 cursor-pointer">
+                                                    <div onClick={(e) => onWishlist(e, fsalon.id)} className="absolute right-6 sm:right-2 top-6 sm:top-2 z-20 cursor-pointer">
                                                         <StarIcon width='35' height='35'
                                                             color={wishlist.includes(String(fsalon.id)) ? "#FF5B5B" : ""}
                                                             stroke={wishlist.includes(String(fsalon.id)) ? "#FFFFFF" : ""} />
@@ -751,7 +751,7 @@ const SalonChoice = () => {
 
                                             {/* Nom et prix du salon */}
                                             {/* <div className="flex items-start justify-between  "> */}
-                                            <p className='text-black text-lg font-semibold px-3 pt-2'>{fsalon.name}</p>
+                                            <p className='text-black text-lg font-semibold pt-2 overflow-auto'>{fsalon.name}</p>
                                             <div className='flex justify-end'>
                                                 <p style={{ fontSize: getFontSize(fsalon.final_price) }}
                                                     className={`p-2 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white font-semibold w-max`}>
@@ -761,7 +761,7 @@ const SalonChoice = () => {
                                             {/* </div> */}
 
                                             {/* Évaluation et nombre d'avis */}
-                                            <div className='flex items-center text-xs text-[#7B7B7B] px-3 pt-1 gap-1'>
+                                            <div className='flex items-center text-xs text-[#7B7B7B] pr-1 pt-1 gap-1'>
                                                 <StarRatings
                                                     rating={fsalon.haircut ? fsalon.haircut.rating : fsalon.rating}
                                                     starRatedColor="#FEDF10"
