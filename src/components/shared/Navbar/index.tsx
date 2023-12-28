@@ -24,6 +24,7 @@ import { Button } from "@material-ui/core";
 import EUCountriesList from "./EUCountries";
 import StarRatings from "react-star-ratings";
 import Autocomplete from "react-google-autocomplete";
+import { user_api } from "@/api/clientSide";
 
 
 interface Navbar {
@@ -40,6 +41,7 @@ interface Navbar {
   onGenderFilter?: (arg0: string) => void
   onEthnicityFilters?: (arg0: string[]) => void
   onLengthFilters?: (arg0: string[]) => void
+  onHairNameFilters?: (arg0: string[]) => void
   onMobileFilters?: (arg0: string) => void
   onRangeFilters?: (arg0: string[]) => void
   onTypeSelect?: (arg0: string[]) => void,
@@ -49,10 +51,11 @@ interface Navbar {
   onNewSalonFilter?: (arg0: boolean) => void
 }
 
-const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideSearchBar, onTypeSelect, onSearch, onServiceSearch, onGenderFilter, onEthnicityFilters, onLengthFilters, onMobileFilters, onCitySearch, onCityMapSearch, onNameSearch, onRangeFilters, onRatingFilter, onCountryFilter, onAvailabilityFilter, onNewSalonFilter }: Navbar) => {
+const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideSearchBar, onHairNameFilters, onTypeSelect, onSearch, onServiceSearch, onGenderFilter, onEthnicityFilters, onLengthFilters, onMobileFilters, onCitySearch, onCityMapSearch, onNameSearch, onRangeFilters, onRatingFilter, onCountryFilter, onAvailabilityFilter, onNewSalonFilter }: Navbar) => {
   const [isDropdown, setIsDropdown] = useState(false);
   const [showDesktopGender, setShowDesktopGender] = useState(false);
   const [showDesktopLength, setShowDesktopLength] = useState(false);
+  const [showDesktopHaircut, setShowDesktopHaircut] = useState(false);
   const [showDesktopBudget, setShowDesktopBudget] = useState(false);
   const [showDesktopEthnicity, setShowDesktopEthnicity] = useState(false);
   const [showDesktopRating, setShowDesktopRating] = useState(false);
@@ -67,14 +70,17 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
   const [genderFilters, setGenderFilters] = useState<string>('');
   const [ethnicityFilters, setEthnicityFilters] = useState<string[]>([]);
   const [lengthFilters, setLengthFilters] = useState<string[]>([]);
+  const [haircutFilters, setHaircutFilters] = useState<string[]>([]);
   const [mobileFilters, setMobileFilters] = useState<string>("");
   const [ratingFilter, setRatingFilter] = useState<number[]>([1, 2, 3, 4, 5]);
   const [countryFilter, setCountryFilter] = useState<string>("");
   const [availabilityFilter, setAvailabilityFilter] = useState<string[]>([]);
   const [newSalonFilter, setNewSalonFilter] = useState(true);
+  const [haircuts, setHaircuts] = useState([]);
 
   const [tmpRange, setTmpRange] = useState<number[]>([10, 100]);
   const [rangeFilters, setRangeFilter] = useState<number[]>([10, 100]);
+  const [hairNameFilters, setHairNameFilters] = useState<string>("");
 
   const router = useRouter()
   const EthnicityDesktopRef =
@@ -201,6 +207,15 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
       setLengthFilters((prev) => [...prev, length]);
     }
   };
+
+  const onClickHairNameCheckbox = (length: string) => {
+    if (haircutFilters.includes(length)) {
+      setHaircutFilters(haircutFilters.filter((item) => item !== length));
+    } else {
+      setHaircutFilters((prev) => [...prev, length]);
+    }
+  };
+
   const onClickMobileCheckbox = (value: string) => {
     if (value === "all") {
       setMobileFilters('');
@@ -237,6 +252,14 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
     }
   }
 
+  const getHaircutsByName = async () => {
+    let resp = await user_api.getHaircutsByName();
+    console.log(resp.data.data)
+    const sortedData = resp.data.data.sort((a, b) => a.name.localeCompare(b.name));
+    setHaircuts(sortedData);
+  }
+
+
   const handleSearch = () => {
     if (onSearch) {
       onSearch('')
@@ -249,6 +272,9 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
   useEffect(() => {
     onLengthFilters && onLengthFilters(lengthFilters)
   }, [lengthFilters])
+  useEffect(() => {
+    onHairNameFilters && onHairNameFilters(haircutFilters)
+  }, [haircutFilters])
   useEffect(() => {
     onMobileFilters && onMobileFilters(mobileFilters)
   }, [mobileFilters])
@@ -307,6 +333,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
       setCountryFilter(country);
       setAvailabilityFilter(availability ?? ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]);
       setNewSalonFilter(true);
+      getHaircutsByName();
     }
     document.addEventListener("click", closeSelectBox);
 
@@ -360,6 +387,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
   const [minBudget, setMinBudget] = useState(0);
   const [maxBudget, setMaxBudget] = useState(1000);
 
+
   return (
     <div className=" flex flex-col md:items-center justify-between border-b border-[#EBF0F2] pb-2 xl:pb-0">
       <div className={` flex justify-between px-4 lg:px-14 flex-col lg:flex-row gap-3 ${!isLoggedIn ? 'flex-col' : 'flex-row'}`}>
@@ -395,13 +423,14 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     onClick={() => {
                       setShowDesktopGender(false);
                       setShowDesktopLength(false);
+                      setShowDesktopHaircut(false);
                       setShowDesktopEthnicity(!showDesktopEthnicity);
                     }}
                   >
                     Ethnicité
                   </p>
                   {showDesktopEthnicity && (
-                    <div className="absolute -ml-2 z-20 flex flex-col items-center justify-center w-45 pt-5 px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
+                    <div className="absolute mt-2 ml-2 z-20 flex flex-col items-center justify-center w-45 pt-5 px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
                       {Ethnicity.map((item, index) => {
                         return (
                           <div
@@ -429,13 +458,14 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     onClick={() => {
                       setShowDesktopEthnicity(false);
                       setShowDesktopLength(false);
+                      setShowDesktopHaircut(false);
                       setShowDesktopGender(!showDesktopGender);
                     }}
                   >
                     Genre
                   </p>
                   {showDesktopGender && (
-                    <div className="absolute  -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
+                    <div className="absolute mt-2 ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
                       {Gender.map((item, index) => {
                         return (
                           <div
@@ -466,13 +496,14 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     onClick={() => {
                       setShowDesktopEthnicity(false);
                       setShowDesktopGender(false);
+                      setShowDesktopHaircut(false);
                       setShowDesktopLength(!showDesktopLength);
                     }}
                   >
                     Longueur
                   </p>
                   {showDesktopLength && (
-                    <div className="absolute  -ml-3 z-20 flex flex-col items-center justify-center w-40 pt-5 px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
+                    <div className="absolute mt-2 ml-3 z-20 flex flex-col items-center justify-center w-40 pt-5 px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
                       {Length.map((item, index) => {
                         return (
                           <div
@@ -492,6 +523,42 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     </div>
 
                   )}
+                </div>
+                <div className="sm:border-r border-grey px-0 lg:px-2 2xl:px-6 last:border-r-0 cursor-pointer text-black">
+                  <p
+                    className={haircutFilters.length > 0
+                      ? `rounded-xl py-2 px-7 ${ColorsThemeA.filterSelected} text-white font-semibold`
+                      : (showDesktopHaircut ? "rounded-xl py-2 px-7 bg-white text-black font-semibold" : "hover:bg-stone-200 rounded-xl py-2 px-7")}
+                    onClick={() => {
+                      setShowDesktopEthnicity(false);
+                      setShowDesktopGender(false);
+                      setShowDesktopLength(false);
+                      setShowDesktopHaircut(!showDesktopHaircut);
+                    }}
+                  >
+                    Coiffures
+                  </p>
+                  {showDesktopHaircut && (
+                    <div id="CountryList" className="absolute top-[75px] -ml-3 z-50  items-center justify-center w-42 pt-[2px] px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300 " style={{ maxHeight: '700px', overflowY: 'auto', marginTop: '10px' }}>
+                      {haircuts.map((item, index) => {
+                        return (
+                          <div
+                            key={index}
+                            className="flex w-full cursor-pointer mt-[19px]  transform hover:scale-110 text-sm"
+                            onClick={() => onClickHairNameCheckbox(item['name'])}
+                          >
+                            <div
+                              className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105 ${haircutFilters.includes(item['name']) ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}
+                            >
+                              <CheckedIcon />
+                            </div>
+                            <p className="ml-2">{item['name']}</p>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  )}
+
                 </div>
               </>
               :
