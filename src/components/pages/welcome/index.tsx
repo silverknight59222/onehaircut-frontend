@@ -52,10 +52,11 @@ const Welcome = () => {
   const [wishlist, setWishlist] = useState<string[]>([]) // Store user’s wishlist of haircuts
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(5);
+  const [previewImage, setPreviewImage] = useState<string>('');
 
   const getAllHaircuts = async () => {
     // Fetch all available haircuts from the API
-    if(!(page >= maxPage)) {
+    if (!(page >= maxPage)) {
       setIsLoading(true);
       await new Promise((resolve) => setTimeout(resolve, 1000));
       await dashboard.getAllHaircuts(page)
@@ -254,9 +255,9 @@ const Welcome = () => {
     setIsLoading(false)
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     getFilteredHaircuts();
-  },[hairNameFilters])
+  }, [hairNameFilters])
 
   const haircuts = () => {
     if (
@@ -284,7 +285,9 @@ const Welcome = () => {
   }
 
   const checkPreview = async () => {
+    console.log("Fetching Image")
     let resp = await user_api.getPreviewImage(selectedHaircut.id);
+    setPreviewImage(resp.data.data)
     console.log(resp.data)
   }
 
@@ -428,9 +431,12 @@ const Welcome = () => {
             <div className="flex flex-col items-center justify-center my-4 relative">
               <div className="relative w-52 h-52 sm:w-72 sm:h-72 md:w-96 md:h-96 mb-5">
                 {isPreview ? (
-                  <div className="flex items-center justify-center rounded-xl w-full h-full object-cover">
-                    <LogoIcon className={''} />
-                  </div>
+                  <Image
+                    src={previewImage !== '' ? previewImage : `https://api.onehaircut.com/base_null_img.jpg`}
+                    fill={true}
+                    alt=""
+                    className="rounded-xl w-full h-full object-cover"
+                  />
                 ) : (
                   <Image
                     src={selectedHaircut.image.includes('http') ? selectedHaircut.image : `https://api.onehaircut.com${selectedHaircut.image}`}
