@@ -436,7 +436,7 @@ const BookSalon = () => {
               </div>
 
               {/* INFO ABOUT HAIRDRESSER SELECTION */}
-              <p className="text-sm text-stone-400 italic mb-8 text-center">
+              <p className="text-sm text-stone-400 italic mb-8 p-2 text-center">
                 Les disponibilités dépendent du coiffeur sélectionné
               </p>
 
@@ -533,7 +533,9 @@ const BookSalon = () => {
         </>
       )
       }
-      <LogoCircleFixRight />
+      <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-0">
+        <LogoCircleFixRight />
+      </div>
       <Footer />
     </div>
 

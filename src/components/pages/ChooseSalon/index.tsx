@@ -72,18 +72,18 @@ const SalonChoice = () => {
         }
     }
 
-    const [screenSize,setScreenSize] = useState(getCurrentDimension());
+    const [screenSize, setScreenSize] = useState(getCurrentDimension());
 
-    useEffect(()=>{
+    useEffect(() => {
         const updateDimension = () => {
             setScreenSize(getCurrentDimension())
         }
         window.addEventListener('resize', updateDimension);
-    
-        return(() => {
+
+        return (() => {
             window.removeEventListener('resize', updateDimension);
         })
-    },[screenSize])
+    }, [screenSize])
 
 
     const { isLoaded } = useLoadScript({
@@ -112,17 +112,17 @@ const SalonChoice = () => {
 
     };
 
-    useEffect(()=>{
-        if(positions.length>0){
+    useEffect(() => {
+        if (positions.length > 0) {
             recalculateMap();
         }
-    },[positions])
+    }, [positions])
 
     const recalculateMap = () => {
-        if(map){
+        if (map) {
             const bounds = new google.maps.LatLngBounds();
             positions.forEach(pos => {
-                bounds.extend( new google.maps.LatLng({ lat: pos.lat, lng: pos.lng }))
+                bounds.extend(new google.maps.LatLng({ lat: pos.lat, lng: pos.lng }))
             })
             //setMapBound(areaBounds)
             map.fitBounds(bounds);
@@ -201,11 +201,10 @@ const SalonChoice = () => {
         })
 
         console.log('position array', positionArray)
-        
+
         // recalculateMap(positionArray)
-        if(positionArray.length > 0)
-        {
-            
+        if (positionArray.length > 0) {
+
             setPositions(positionArray)
             const tempCenter: Position = getMapCenter(positionArray)
             setCenter(tempCenter);
@@ -237,7 +236,7 @@ const SalonChoice = () => {
             servicesIds: serviceIds,
             haircut_id: 0,
             hair_length: hair_length,
-            client_id : user?JSON.parse(user).id:0,
+            client_id: user ? JSON.parse(user).id : 0,
         }
         if (haircut) {
             data['haircut_id'] = haircut.id
@@ -491,8 +490,8 @@ const SalonChoice = () => {
         const ZOOM_THRESHOLD = 8
         if (map) {
             const zoom = map.getZoom() ?? 10
-            console.log('zoom',zoom)
-            if(zoom<ZOOM_THRESHOLD){
+            console.log('zoom', zoom)
+            if (zoom < ZOOM_THRESHOLD) {
                 setShowMarker(false)
             }
             else {
@@ -501,27 +500,27 @@ const SalonChoice = () => {
         }
     }
 
-    const getFilteredHeight = (isMaxHeight:boolean) => {
-        let result:number|string = 450
-        if(screen.width>500 && (screen.width < screen.height)){
-            result = screenSize.height - (326+(0.3*(screenSize.height-766)))
+    const getFilteredHeight = (isMaxHeight: boolean) => {
+        let result: number | string = 450
+        if (screen.width > 500 && (screen.width < screen.height)) {
+            result = screenSize.height - (326 + (0.3 * (screenSize.height - 766)))
         }
-        else{
-            if(isMaxHeight){
-                result = 'none' 
+        else {
+            if (isMaxHeight) {
+                result = 'none'
             }
         }
 
-        console.log('result',result)
+        console.log('result', result)
         return result
     }
 
-    const getFontSize = (price:number) => {
+    const getFontSize = (price: number) => {
         const text = price.toString();
-        if(text.length>=3){
-            return `${(3/text.length) + 0.2}rem`
+        if (text.length >= 3) {
+            return `${(3 / text.length) + 0.2}rem`
         }
-        else{
+        else {
             return '1.125rem'
         }
     }
@@ -609,43 +608,43 @@ const SalonChoice = () => {
                 {/***************************************************************************************************************************************************************************************************************** */}
 
                 {/* Conteneur principal pour les salons et la carte */}
-                {isLoaded && positions.length>0 &&
-                    <div style={{height:screenSize.width<=500 ? '':getFilteredHeight(false), maxHeight:getFilteredHeight(true)}} className='w-full mt-4 mb-2 relative  overflow-hidden'>
+                {isLoaded && positions.length > 0 &&
+                    <div style={{ height: screenSize.width <= 500 ? '' : getFilteredHeight(false), maxHeight: getFilteredHeight(true) }} className='w-full mt-4 mb-2 relative  overflow-hidden'>
                         {/* Carte Google affichée uniquement si des salons sont disponibles */}
                         {
-                            positions.length>0&&
-                                <div  style={{height: screenSize.width<=500 ? getFilteredHeight(false) : '100%'}} className={`lg:absolute lg:top-0 lg:left-0 w-full lg:w-[300px] 2xl:h-[780px] 2xl:w-[780px] 4xl:w-[920px] rounded-lg overflow-hidden lg:z-10`}>
+                            positions.length > 0 &&
+                            <div style={{ height: screenSize.width <= 500 ? getFilteredHeight(false) : '100%' }} className={`lg:absolute lg:top-0 lg:left-0 w-full lg:w-[300px] 2xl:h-[780px] 2xl:w-[780px] 4xl:w-[920px] rounded-lg overflow-hidden lg:z-10`}>
 
-                                    {/*TODO USE salon.position when data are available  */}
-                                    <GoogleMap
-                                        onLoad={handleOnLoad}
-                                        center={center}
-                                        //zoom={8}
-                                        mapContainerStyle={{ width: '100%', height: '100%' }}
-                                        onZoomChanged={handleZoomChange}
-                                        options={{
-                                            minZoom: 2,  // ici, définissez votre zoom minimum
-                                            maxZoom: 18,   // et ici, votre zoom maximumyy
-                                            scrollwheel : allowScroll
-                                        }}
-                                    >
-                                        {(userData?.lat! && userData?.long && showMarker) && (
-                                            <MarkerF
-                                                position={{ lat: parseFloat(userData?.lat), lng: parseFloat(userData?.long) }}
-                                                options={{
-                                                    icon: {
-                                                        url: HomeIconUrl,
-                                                        scaledSize: new window.google.maps.Size(50, 50),
-                                                        anchor: new window.google.maps.Point(25, 25),
-                                                    }
-                                                }}
+                                {/*TODO USE salon.position when data are available  */}
+                                <GoogleMap
+                                    onLoad={handleOnLoad}
+                                    center={center}
+                                    //zoom={8}
+                                    mapContainerStyle={{ width: '100%', height: '100%' }}
+                                    onZoomChanged={handleZoomChange}
+                                    options={{
+                                        minZoom: 2,  // ici, définissez votre zoom minimum
+                                        maxZoom: 18,   // et ici, votre zoom maximumyy
+                                        scrollwheel: allowScroll
+                                    }}
+                                >
+                                    {(userData?.lat! && userData?.long && showMarker) && (
+                                        <MarkerF
+                                            position={{ lat: parseFloat(userData?.lat), lng: parseFloat(userData?.long) }}
+                                            options={{
+                                                icon: {
+                                                    url: HomeIconUrl,
+                                                    scaledSize: new window.google.maps.Size(50, 50),
+                                                    anchor: new window.google.maps.Point(25, 25),
+                                                }
+                                            }}
 
-                                            />
-                                        )}
+                                        />
+                                    )}
 
-                                        {(filteredSalons.length > 0 && showMarker) && positions.map((position, index) => {
-                                            console.log('filtered salon pos',position)
-                                            return(
+                                    {(filteredSalons.length > 0 && showMarker) && positions.map((position, index) => {
+                                        console.log('filtered salon pos', position)
+                                        return (
                                             <React.Fragment key={index}>
 
                                                 <MarkerF
@@ -693,7 +692,7 @@ const SalonChoice = () => {
                         }
 
                         {/* Section affichant les vignettes des salons */}
-                        <div style={{height:screenSize.width<=500 ? '' : getFilteredHeight(false), maxHeight:screenSize.width<=500 ? '' : getFilteredHeight(true)}} className='flex-1 pr-4 pb-4 overflow-y-auto h-[calc(100vh - 160px)] lg:relative lg:mt-0 mt-3 lg:ml-[300px] 2xl:ml-[800px] 4xl:ml-[930px] 2xl:overflow-y-scroll'>
+                        <div style={{ height: screenSize.width <= 500 ? '' : getFilteredHeight(false), maxHeight: screenSize.width <= 500 ? '' : getFilteredHeight(true) }} className='flex-1 pr-4 pb-4 overflow-y-auto h-[calc(100vh - 160px)] lg:relative lg:mt-0 mt-3 lg:ml-[300px] 2xl:ml-[800px] 4xl:ml-[930px] 2xl:overflow-y-scroll'>
 
                             {/* Grid contenant les vignettes */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6 pb-10">
@@ -730,13 +729,13 @@ const SalonChoice = () => {
 
                                                     {fsalon && fsalon.salon_cover_image &&
                                                         <Image
-                                                            src={fsalon && fsalon.salon_cover_image ? 
-                                                                    fsalon.salon_cover_image?.image?.includes('api') ? 
-                                                                    fsalon.salon_cover_image.image : 
-                                                                    `https://api.onehaircut.com${fsalon.salon_cover_image.image}` : 
-                                                                    fsalon.logo.includes('api') ? 
-                                                                    fsalon.logo : 
-                                                                     `https://api.onehaircut.com${fsalon.logo}`}
+                                                            src={fsalon && fsalon.salon_cover_image ?
+                                                                fsalon.salon_cover_image?.image?.includes('api') ?
+                                                                    fsalon.salon_cover_image.image :
+                                                                    `https://api.onehaircut.com${fsalon.salon_cover_image.image}` :
+                                                                fsalon.logo.includes('api') ?
+                                                                    fsalon.logo :
+                                                                    `https://api.onehaircut.com${fsalon.logo}`}
                                                             sizes="640w"
                                                             fill={true}
                                                             alt="image"
@@ -750,7 +749,7 @@ const SalonChoice = () => {
                                                 <div className="flex items-start justify-between text-black text-lg font-semibold px-3 pt-2 ">
                                                     <p className='flex-1'>{fsalon.name}</p>
                                                     {/* TODO PRICE SHOULD BE IN EUROS HERE */}
-                                                    <p style={{fontSize:getFontSize(fsalon.final_price)}} className={`p-2 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white`}>{fsalon.final_price} €</p>
+                                                    <p style={{ fontSize: getFontSize(fsalon.final_price) }} className={`p-2 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white`}>{fsalon.final_price} €</p>
                                                 </div>
 
                                                 {/* Évaluation et nombre d'avis */}
