@@ -71,7 +71,7 @@ const SearchSalon = () => {
 
   const services = getLocalStorage('ServiceIds')
   const servicesData = services ? JSON.parse(services) : null
-  const defaultPicture = 'https://api.onehaircut.com/favicon.ico';
+  const defaultPicture = 'https://api.onehaircut.com/base_null_img.jpg';
 
   //TODO Import salon availability times
   const [hours, setHours] = useState([] as any[])
