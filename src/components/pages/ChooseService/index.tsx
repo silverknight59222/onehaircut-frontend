@@ -64,7 +64,9 @@ const ServiceChoose = () => {
         if (serviceIds) {
             const serviceIdsList: string[] = [];
             JSON.parse(serviceIds).forEach(service => {
-                serviceIdsList.push(String(service.id))
+                if(service.type !== 'discount'){
+                    serviceIdsList.push(String(service.id))
+                }
             });
             setSelectedService(serviceIdsList)
         }
@@ -72,7 +74,8 @@ const ServiceChoose = () => {
         dashboard.getServicesByHaircut()
             .then((res) => {
                 if (res.data.data.length > 0) {
-                    setServices(res.data.data);
+                    let services_new = res.data.data.filter((item) => item.type !== 'discount');
+                    setServices(services_new);
                 }
                 setIsLoading(false);
             })

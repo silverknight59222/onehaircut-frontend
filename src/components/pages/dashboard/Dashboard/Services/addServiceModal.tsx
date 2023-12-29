@@ -245,8 +245,10 @@ const AddServiceModal = (props: AddServiceModalType) => {
       });
     }
     if (search && !(typeFilters.length > 0)) {
+      list = list.filter((item) => item.type !== 'discount');
       setFilteredServices(list);
     } else {
+      filteredServices = filteredServices.filter((item) => item.type !== 'discount');
       setFilteredServices(filteredServices);
     }
   };
@@ -338,7 +340,7 @@ const AddServiceModal = (props: AddServiceModalType) => {
               <div key={index} className="flex items-center">
                 <div
                   className={`flex flex-col justify-start gap-2 w-48 h-[170px] border border-stone-200 rounded-[21px] py-3 px-3 shadow-lg cursor-pointer ${Theme_A.behaviour.cardBehaviour}`}
-                  onClick={(item.type === 'coloration' || item.type === 'discount') ? () => { } : () => selectService(item.id)}
+                  onClick={() => selectService(item.id)}
                 >
                   <div className="flex items-center justify-between">
                     <p className="text-black font-medium whitespace-nowrap overflow-hidden text-ellipsis max-w-[140px]">

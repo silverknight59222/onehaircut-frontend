@@ -186,19 +186,19 @@ const EditServiceModal = (props: EditServiceModalType) => {
               // setShowColors(-1);
             }}
           >
-            Available Soon
             {props.service.service.colors?.length && (
               <div className="relative pl-2">
                 <div className=" relative flex justify-start w-full flex-col">
                   <p className="text-xs font-semibold text-black">Color</p>
                   <div
-                    className="text-xs mt-1 py-1 px-2 border-2 border-gray-400 rounded-lg"
+                    className="text-xs mt-1 py-1 px-2 border-2 border-gray-400 rounded-lg bg-[#D6D6D6]"
                     onMouseEnter={(e) => {
                       e.stopPropagation();
                       // setShowColors(props.service.service.id);
                     }}
                   >
-                    {props.service.service.colors[0].color}
+                  <>Available Soon</>
+                    {/* {props.service.service.colors[0].color} */}
                   </div>
                 </div>
                 {showColors === props.service.service.id && (
