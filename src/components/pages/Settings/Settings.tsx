@@ -18,16 +18,17 @@ import Unavailability from "./Unavailability";
 import PasswordSettings from "./PasswordSettings";
 export interface settingsStruct {
   name: string;
+  permission: string,
   display: () => React.JSX.Element;
 }
 
 const settingsMenu: settingsStruct[] = [
-  { name: "Générales", display: SalonInfos },
-  { name: "Horaires", display: OpenningHours },
-  { name: "Indisponibilités", display: Unavailability },
-  { name: "Accès des rôles", display: RolesSettings },
-  { name: "Paiements", display: PayementSettings },
-  { name: "Mot de passe", display: PasswordSettings },
+  { name: "Générales", permission: "Générales", display: SalonInfos },
+  { name: "Horaires", permission: "Horaires",display: OpenningHours },
+  { name: "Indisponibilités", permission: "Indisponibilités",display: Unavailability },
+  { name: "Réglage des roles", permission: "Réglage des roles",display: RolesSettings },
+  { name: "Paiements", permission: "Paiements",display: PayementSettings },
+  { name: "Mot de passe", permission: "",display: PasswordSettings },
   //{ name: "Taxes", display: TaxesSettings },
   // { name: "Notifications", display: NotificationsSettings }, // not needed for the salon
   //{ name: "OnehairBot", display: BotSettings },
@@ -39,7 +40,8 @@ const Settings = () => {
   const { loadingView } = userLoader();
   // const showSnackbar = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
-  const [activeMenu, setActiveMenu] = useState(settingsMenu[0].name);
+  const [activeMenu, setActiveMenu] = useState(settingsMenu[Object.keys(settingsMenu)[0]].name);
+  const [currentMenu, setCurrentMenu] = useState<settingsStruct[]>([]);
 
 
 
@@ -48,7 +50,22 @@ const Settings = () => {
     const { data } = await dashboard.salonNotification()
     setNotifications(data)
   }
+  const applyPermissions = (menus: any) => {
+    const temp = getLocalStorage("user");
+    const user = temp ? JSON.parse(temp) : null;
+    let currentMenuCopy: settingsStruct[] = [];
+    if (user.role != 'salon_professional' && user.permissions.length > 0) {
+      menus.forEach((m: any, k: number) => {
+        if ((user.permissions.indexOf(m.permission || m.name) != -1) || (m.name == "Mot de passe")) {
+          currentMenuCopy.push(m)
+        }
+      });
+    }
+    setCurrentMenu(currentMenuCopy)
+    setActiveMenu(currentMenuCopy[0].name)
+  }
   useEffect(() => {
+    applyPermissions(settingsMenu)
     fetchSalonNotifications()
   }, []);
 
@@ -63,7 +80,7 @@ const Settings = () => {
           {/* DISPLAY SETTINGS MENU */}
           {!isLoading && (
             <div className="max-w-[300px] h-max flex flex-col items-left justify-center text-center px-1 md:px-2 py-6 gap-8 rounded-2xl bg-white text-sm md:text-lg font-medium text-[#909090] shadow-md">
-              {settingsMenu.map((item, index) => {
+              {currentMenu.map((item, index) => {
                 return (
                   <p
                     key={index}
@@ -80,7 +97,7 @@ const Settings = () => {
           )}
 
           {/*  DISPLAY SUB MENU */}
-          {settingsMenu.map((item, index) => {
+          {currentMenu.map((item, index) => {
             return (
               <>
                 {activeMenu === item.name && !isLoading && (
