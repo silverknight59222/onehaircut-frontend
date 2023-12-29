@@ -26,9 +26,12 @@ import HairdresserRevenueBarChart from "./ModalComponent/HairdresserRevenueBarCh
 import { Auth } from "@/api/auth";
 import { client } from "@/api/clientSide";
 import InfoButton from "@/components/UI/InfoButton";
+import { getLocalStorage } from "@/api/storage";
 
 
 const Dashboard = () => {
+    const temp = getLocalStorage("user");
+    const user = temp ? JSON.parse(temp) : null;
     type ModalName = 'TransactionfullTable' | 'Incomes' | 'clientActivity' | 'staff' | 'topClient' | 'goals'; // Add more modal keys as needed    
     const [modals, setModals] = useState<{ [key in ModalName]?: boolean }>({
         TransactionfullTable: false,
@@ -248,118 +251,208 @@ const Dashboard = () => {
             </div>
 
 
+            {user && user.permissions && user.permissions.indexOf("Revenue") != -1 ?
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch mt-10">
+                    {/*REVENU JOURNALIER */}
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch mt-10">
-                {/*REVENU JOURNALIER */}
-                <div className="flex items-center justify-between mb-8 lg:mb-0">
-                    <button onClick={() => toggleModal('Incomes')} className={`${Theme_A.button.medBlackColoredButton} hover:bg-stone-600`}>
-                        Revenu journalier
-                    </button>
-                    {/* DROPDOWN AFFICHAGE REVENU JOURNALIER */}
-                    <span className="mr-0 mt-4 ">
-                        <DropdownMenu dropdownItems={DisplayedMonths} backgroundColor="bg-white" selectId={selectedMonthRevenu} menuName="Période d'observation"
-                            fctToCallOnClick={handleNewMonthRevenu} />
-                    </span>
-                </div>
+                    <div className="flex items-center justify-between mb-8 lg:mb-0">
+                        <button onClick={() => toggleModal('Incomes')} className={`${Theme_A.button.medBlackColoredButton} hover:bg-stone-600`}>
+                            Revenu journalier
+                        </button>
+                        {/* DROPDOWN AFFICHAGE REVENU JOURNALIER */}
+                        <span className="mr-0 mt-4 ">
+                            <DropdownMenu dropdownItems={DisplayedMonths} backgroundColor="bg-white" selectId={selectedMonthRevenu} menuName="Période d'observation"
+                                fctToCallOnClick={handleNewMonthRevenu} />
+                        </span>
+                    </div>
 
-
-                {/*Objectifs */}
-                <div className="hidden lg:flex items-center justify-between gap-3 ">
-                    <button onClick={() => toggleModal('goals')} className={`${Theme_A.button.medBlackColoredButton} hover:bg-stone-600`}>
-                        Objectifs du mois
-                    </button>
-                </div>
-            </div>
-
-
-            <div className="mb-12 lg:mb-0">
-                <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-3">
-                    {/* REVENU CHART */}
-                    <Card className="h-full rounded-xl mb-16 lg:mb-0">
-                        <div>
-                            <RevenueChart period={selectedMonthRevenu} />
-                        </div>
-                    </Card>
 
                     {/*Objectifs */}
-                    <div className="lg:hidden flex items-center justify-between mb-3">
+                    <div className="hidden lg:flex items-center justify-between gap-3 ">
                         <button onClick={() => toggleModal('goals')} className={`${Theme_A.button.medBlackColoredButton} hover:bg-stone-600`}>
                             Objectifs du mois
                         </button>
                     </div>
-                    {/* OBJECTIFS CHART */}
-                    <Card className="h-full flex flex-col justify-start rounded-xl text-sm">
-                        <div>
-                            {/* Ligne du haut */}
-                            <Grid container justifyContent="center" alignItems="start" spacing={2}>
-                                <Grid item xs={false} sm={false} md={3} lg={2} /> {/* Espace vide pour le décalage IMPORTANT*/}
-                                <Grid item xs={12} sm={6} md={5} lg={5} style={{ marginTop: '1rem' }}>
-                                    {/* Contenu pour Nouveaux Clients */}
-                                    <ProgressBar
-                                        value={61}
-                                        name="Nouveaux Clients"
-                                        number={27}
-                                        rotation={0.25}
-                                        color='rgba(255, 70, 70, 1)'
-                                    />
-                                </Grid>
-                                <Grid item xs={12} sm={5} md={4} lg={3} style={{ marginTop: '1rem' }}>
-                                    {/* Contenu pour Nombre de visite */}
-                                    <ProgressBar
-                                        value={73}
-                                        name="Nombre de visite"
-                                        number={47}
-                                        rotation={0.25}
-                                        color="rgba(16, 161, 216, 1)"
-                                    />
-                                </Grid>
-                            </Grid>
-
-                            {/* Ligne du bas */}
-                            <Grid container justifyContent="center" alignItems="end" spacing={2}>
-                                <Grid item xs={12} sm={6} md={5} lg={5} style={{ marginBottom: '1rem' }} >
-                                    {/* Contenu pour Revenu mensuel */}
-                                    < ProgressBar
-                                        value={50}
-                                        name="Revenus mensuel"
-                                        number={50}
-                                        rotation={0.25}
-                                        color="rgba(122, 191, 80, 1)"
-                                    />
-                                </Grid>
-                                {/* Supprimez cet espace vide si vous voulez rapprocher le dernier ProgressBar vers la gauche */}
-                                {/* <Grid item xs={false} sm={1} lg={2} /> */}
-                                <Grid item xs={12} sm={5} md={6} lg={6} style={{ marginBottom: '1rem' }}>
-                                    {/* Contenu pour Commandes d'habitués */}
-                                    <ProgressBar
-                                        value={15}
-                                        name="Commandes d'habitués"
-                                        number={15}
-                                        rotation={0.25}
-                                        color="rgba(255, 200, 102, 1)"
-                                    />
-                                </Grid>
-                            </Grid>
-
-                        </div>
-                    </Card>
                 </div>
+                :
+                <div className="grid grid-cols-1 lg:grid-cols-1 gap-8 items-stretch mt-10">
+
+
+
+                    {/*Objectifs */}
+                    <div className="hidden lg:flex items-center justify-between gap-3 ">
+                        <button onClick={() => toggleModal('goals')} className={`${Theme_A.button.medBlackColoredButton} hover:bg-stone-600`}>
+                            Objectifs du mois
+                        </button>
+                    </div>
+                </div>
+            }
+
+
+            <div className="mb-12 lg:mb-0">
+                {user && user.permissions && user.permissions.indexOf("Revenue") != -1 ?
+                    <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-3">
+                        {/* REVENU CHART */}
+
+                        <Card className="h-full rounded-xl mb-16 lg:mb-0">
+                            <div>
+                                <RevenueChart period={selectedMonthRevenu} />
+                            </div>
+                        </Card>
+
+                        {/*Objectifs */}
+                        <div className="lg:hidden flex items-center justify-between mb-3">
+                            <button onClick={() => toggleModal('goals')} className={`${Theme_A.button.medBlackColoredButton} hover:bg-stone-600`}>
+                                Objectifs du mois
+                            </button>
+                        </div>
+                        {/* OBJECTIFS CHART */}
+                        <Card className="h-full flex flex-col justify-start rounded-xl text-sm">
+                            <div>
+                                {/* Ligne du haut */}
+                                <Grid container justifyContent="center" alignItems="start" spacing={2}>
+                                    <Grid item xs={false} sm={false} md={3} lg={2} /> {/* Espace vide pour le décalage IMPORTANT*/}
+                                    <Grid item xs={12} sm={6} md={5} lg={5} style={{ marginTop: '1rem' }}>
+                                        {/* Contenu pour Nouveaux Clients */}
+                                        <ProgressBar
+                                            value={61}
+                                            name="Nouveaux Clients"
+                                            number={27}
+                                            rotation={0.25}
+                                            color='rgba(255, 70, 70, 1)'
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={5} md={4} lg={3} style={{ marginTop: '1rem' }}>
+                                        {/* Contenu pour Nombre de visite */}
+                                        <ProgressBar
+                                            value={73}
+                                            name="Nombre de visite"
+                                            number={47}
+                                            rotation={0.25}
+                                            color="rgba(16, 161, 216, 1)"
+                                        />
+                                    </Grid>
+                                </Grid>
+
+                                {/* Ligne du bas */}
+                                <Grid container justifyContent="center" alignItems="end" spacing={2}>
+                                    <Grid item xs={12} sm={6} md={5} lg={5} style={{ marginBottom: '1rem' }} >
+                                        {/* Contenu pour Revenu mensuel */}
+                                        < ProgressBar
+                                            value={50}
+                                            name="Revenus mensuel"
+                                            number={50}
+                                            rotation={0.25}
+                                            color="rgba(122, 191, 80, 1)"
+                                        />
+                                    </Grid>
+                                    {/* Supprimez cet espace vide si vous voulez rapprocher le dernier ProgressBar vers la gauche */}
+                                    {/* <Grid item xs={false} sm={1} lg={2} /> */}
+                                    <Grid item xs={12} sm={5} md={6} lg={6} style={{ marginBottom: '1rem' }}>
+                                        {/* Contenu pour Commandes d'habitués */}
+                                        <ProgressBar
+                                            value={15}
+                                            name="Commandes d'habitués"
+                                            number={15}
+                                            rotation={0.25}
+                                            color="rgba(255, 200, 102, 1)"
+                                        />
+                                    </Grid>
+                                </Grid>
+
+                            </div>
+                        </Card>
+                    </div>
+                    :
+                    <div className="grid grid-cols-1 lg:grid-cols-1 items-center gap-3">
+
+                        {/*Objectifs */}
+                        <div className="lg:hidden flex items-center justify-between mb-3">
+                            <button onClick={() => toggleModal('goals')} className={`${Theme_A.button.medBlackColoredButton} hover:bg-stone-600`}>
+                                Objectifs du mois
+                            </button>
+                        </div>
+                        {/* OBJECTIFS CHART */}
+                        <Card className="h-full flex flex-col justify-start rounded-xl text-sm">
+                            <div>
+                                {/* Ligne du haut */}
+                                <Grid container justifyContent="center" alignItems="start" spacing={2}>
+                                    <Grid item xs={false} sm={false} md={3} lg={2} /> {/* Espace vide pour le décalage IMPORTANT*/}
+                                    <Grid item xs={12} sm={6} md={5} lg={5} style={{ marginTop: '1rem' }}>
+                                        {/* Contenu pour Nouveaux Clients */}
+                                        <ProgressBar
+                                            value={61}
+                                            name="Nouveaux Clients"
+                                            number={27}
+                                            rotation={0.25}
+                                            color='rgba(255, 70, 70, 1)'
+                                        />
+                                    </Grid>
+                                    <Grid item xs={12} sm={5} md={4} lg={3} style={{ marginTop: '1rem' }}>
+                                        {/* Contenu pour Nombre de visite */}
+                                        <ProgressBar
+                                            value={73}
+                                            name="Nombre de visite"
+                                            number={47}
+                                            rotation={0.25}
+                                            color="rgba(16, 161, 216, 1)"
+                                        />
+                                    </Grid>
+                                </Grid>
+
+                                {/* Ligne du bas */}
+                                <Grid container justifyContent="center" alignItems="end" spacing={2}>
+                                    <Grid item xs={12} sm={6} md={5} lg={5} style={{ marginBottom: '1rem' }} >
+                                        {/* Contenu pour Revenu mensuel */}
+                                        < ProgressBar
+                                            value={50}
+                                            name="Revenus mensuel"
+                                            number={50}
+                                            rotation={0.25}
+                                            color="rgba(122, 191, 80, 1)"
+                                        />
+                                    </Grid>
+                                    {/* Supprimez cet espace vide si vous voulez rapprocher le dernier ProgressBar vers la gauche */}
+                                    {/* <Grid item xs={false} sm={1} lg={2} /> */}
+                                    <Grid item xs={12} sm={5} md={6} lg={6} style={{ marginBottom: '1rem' }}>
+                                        {/* Contenu pour Commandes d'habitués */}
+                                        <ProgressBar
+                                            value={15}
+                                            name="Commandes d'habitués"
+                                            number={15}
+                                            rotation={0.25}
+                                            color="rgba(255, 200, 102, 1)"
+                                        />
+                                    </Grid>
+                                </Grid>
+
+                            </div>
+                        </Card>
+                    </div>
+                }
             </div >
 
 
 
 
+
             {/* TRANSACTIONS */}
-            < div className="flex items-center justify-between mt-10" >
-                <button onClick={() => toggleModal('TransactionfullTable')} className={`${Theme_A.button.medBlackColoredButton} hover:bg-stone-600`}>
-                    Transactions
-                </button>
+            {user && user.permissions && user.permissions.indexOf("Revenue") != -1 ?
+                < div className="flex items-center justify-between mt-10" >
+                    <button onClick={() => toggleModal('TransactionfullTable')} className={`${Theme_A.button.medBlackColoredButton} hover:bg-stone-600`}>
+                        Transactions
+                    </button>
 
-                <DropdownMenu dropdownItems={DisplayedMonths} backgroundColor="bg-white" selectId={selectedMonthTransactions} menuName="Période d'observation"
-                    fctToCallOnClick={setSelectedMonthTransactions} />
-            </div>
-            <TransactionList period={selectedMonthTransactions} />
-
+                    <DropdownMenu dropdownItems={DisplayedMonths} backgroundColor="bg-white" selectId={selectedMonthTransactions} menuName="Période d'observation"
+                        fctToCallOnClick={setSelectedMonthTransactions} />
+                </div>
+                : <div></div>
+            }
+            {user && user.permissions && user.permissions.indexOf("Revenue") != -1 ?
+                <TransactionList period={selectedMonthTransactions} />
+                :
+                <div></div>
+            }
 
 
             <Grid container spacing={2} style={{ marginTop: "20px" }}>
@@ -522,23 +615,31 @@ const Dashboard = () => {
             </div>
 
 
+            {user && user.permissions && user.permissions.indexOf("Revenue") != -1 ?
+                <div className="flex items-center justify-between gap-3 mt-10 ">
+                    {/* TITRE OCCUPATION DU PERSONNEL */}
+                    <button onClick={() => toggleModal('staff')} className={`${Theme_A.button.medBlackColoredButton} hover:bg-stone-600`}>
+                        Répartition de la charge du personnel
+                    </button>
 
-            <div className="flex items-center justify-between gap-3 mt-10 ">
-                {/* TITRE OCCUPATION DU PERSONNEL */}
-                <button onClick={() => toggleModal('staff')} className={`${Theme_A.button.medBlackColoredButton} hover:bg-stone-600`}>
-                    Répartition de la charge du personnel
-                </button>
-
-                <span className="mr-4 mt-4">
-                    <DropdownMenu dropdownItems={DisplayedMonths} backgroundColor="bg-white" selectId={selectedMonthPayload} menuName="Période d'observation"
-                        fctToCallOnClick={handleNewMonthPayload} />
-                </span>
-            </div>
+                    <span className="mr-4 mt-4">
+                        <DropdownMenu dropdownItems={DisplayedMonths} backgroundColor="bg-white" selectId={selectedMonthPayload} menuName="Période d'observation"
+                            fctToCallOnClick={handleNewMonthPayload} />
+                    </span>
+                </div>
+                :
+                <div></div>
+            }
 
             {/* <Pagination from={1} to={10} perPage={10} total={123} currentPage={6} lastPage={13} onPageChangeEvent={onPageChangeEvent}></Pagination> */}
 
             {/* BAR CHART STAFF PAYLOAD */}
-            <HairdresserRevenueBarChart period={selectedMonthPayload}></HairdresserRevenueBarChart>
+            {user && user.permissions && user.permissions.indexOf("Revenue") != -1 ?
+                <HairdresserRevenueBarChart period={selectedMonthPayload}></HairdresserRevenueBarChart>
+                :
+                <div></div>
+            }
+
 
 
         </div >
