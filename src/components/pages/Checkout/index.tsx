@@ -11,16 +11,30 @@ import { loadStripe } from "@stripe/stripe-js";
 import { getLocalStorage } from "@/api/storage";
 import StripePayment from "@/components/pages/StripePayment";
 import UserProfile from "@/components/UI/UserProfile";
+import { salonApi } from "@/api/salonSide";
+import userLoader from "@/hooks/useLoader";
 
 const Step5 = () => {
   const router = useRouter();
-  const [stripePromise, setStripePromise] = useState<string>("pk_test_51OBGjoAHQOXKizcuQiaNTSGNA6lftEd3lekpQDN7DGGpx4lQGttBHwI62qzZiq85lelN91uyppVeLUsnC5WfmSZQ00LuhmW4QA");
+  const [promiseKey, setPromisKey] = useState<string[]>([]);
+  const [stripePromise, setStripePromise] = useState<string>("");
   const [mounted, setMounted] = useState(false);
   const salonAddress = getLocalStorage("salon_address") ? JSON.parse(getLocalStorage("salon_address") as string) : null
   const planType = getLocalStorage("plan_type") ? JSON.parse(getLocalStorage("plan_type") as string) : null;
   const salonInfo = getLocalStorage("salon_name") as string;
+  const [isLoading, setIsLoading] = useState(false);
+
+  const getStripeKey = async () => {
+    setIsLoading(true)
+    let resp = await salonApi.getStripeKey();
+    setPromisKey(resp.data);
+    setStripePromise(resp.data.pk)
+    setIsLoading(false)
+  }
+
   useEffect(() => {
     setMounted(true)
+    getStripeKey()
   }, [])
 
   const options = {

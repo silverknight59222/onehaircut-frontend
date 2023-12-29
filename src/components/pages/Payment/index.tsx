@@ -46,11 +46,12 @@ const Index = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [serviceIds, setServiceIds] = useState<number[]>([])
+  const [stripeKey, setStripeKey] = useState("");
   const [KmPrice, setPrice] = useState(0);
   const OnehaircutFees = 0.09;
   const PaymentGatewayVariableFees = 0.008; //TODO LINK WITH ACTUAL FEES
   const PaymentGatewayFixFees = 0.11;
-  const stripePromise = loadStripe('pk_test_51OBGjoAHQOXKizcuQiaNTSGNA6lftEd3lekpQDN7DGGpx4lQGttBHwI62qzZiq85lelN91uyppVeLUsnC5WfmSZQ00LuhmW4QA');  // public key for stripe
+  let stripePromise = loadStripe(stripeKey);  // public key for stripe
   const items = [
     { name: "Salon", desc: "Le Bon Coiffeur" },
     { name: "Type de coiffure", desc: "Curly" },
@@ -58,8 +59,8 @@ const Index = () => {
     { name: "Temps", desc: "2 heures " },
     { name: "Lieu", desc: "à domicile" },
   ];
-  const options = {
-    clientSecret: "sk_test_51OBGjoAHQOXKizcuykusB8Rqsycb4BemHfQrmbEyjG4zD6adMYGHXrcz3AY0yykBjaTbJ2kcR2GXwIq0hDBBxu2m00KimXnuTu"
+  let options = {
+    clientSecret: ""
   };
 
   const getHaircutPrize = async () => {
@@ -160,6 +161,15 @@ const Index = () => {
     console.log('Price', KmPrice);
   }, [KmPrice])
 
+  const getStripeKey = async () => {
+    setIsLoading(true)
+    let resp = await salonApi.getStripeKey();
+    stripePromise = loadStripe(resp.data.pk)
+    options.clientSecret = resp.data.sk
+    setStripeKey(resp.data.pk)
+    setIsLoading(false)
+  }
+
   useEffect(() => {
     //const user = getLocalStorage("user");
     const userId = user ? user.id : null;
@@ -196,6 +206,7 @@ const Index = () => {
       // const newTime = calculateTimeAfterSeparatingMinutes(slotData.slot[0].end, value);
       // setDuration(newTime)
     }
+    getStripeKey()
   }, [])
 
   function calculateTimeAfterSeparatingMinutes(timeString: any, minutesToSeparate: any) {

@@ -111,6 +111,9 @@ const salonApi = {
   },
   removeHaircuts: async(params: any) => {
     return await request.post(`remove_haircuts_from_salon`,params);
+  },
+  getStripeKey: async() => {
+    return await request.get('stripe/stripe_key');
   }
 
 }
