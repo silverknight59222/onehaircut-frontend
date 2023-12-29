@@ -203,12 +203,14 @@ const AddServiceModal = (props: AddServiceModalType) => {
     dashboard
       .getAllServices(salon_id)
       .then((res) => {
-        setAllServices(res.data.data.all_services_without_salon_services);
-        setDiscountedServices(
-          res.data.data.all_services_without_salon_services.filter(
-            (item: Service) => item.type === "discount"
-          )
-        );
+        let list = res.data.data.all_services_without_salon_services
+        list.filter((item) => item.type !== 'discount')
+        setAllServices(list);
+        // setDiscountedServices(
+        //   res.data.data.all_services_without_salon_services.filter(
+        //     (item: Service) => item.type === "discount"
+        //   )
+        // );
       })
       .finally(() => {
         setIsLoading(false);
@@ -231,17 +233,19 @@ const AddServiceModal = (props: AddServiceModalType) => {
     let filteredServices: Service[] = [];
     if (search) {
       list = allServices.filter((service) =>
-        service.name.toLowerCase().includes(search.toLowerCase())
+        service.name.toLowerCase().includes(search.toLowerCase()) && service.type !== 'discount'
       );
     }
 
     if (typeFilters.length > 0) {
       list.forEach((service) => {
-        typeFilters.forEach((filter) => {
-          if (service.type === filter) {
-            filteredServices.push(service);
-          }
-        });
+        if(service.type !== 'discount'){
+          typeFilters.forEach((filter) => {
+            if (service.type === filter) {
+              filteredServices.push(service);
+            }
+          });
+        }
       });
     }
     if (search && !(typeFilters.length > 0)) {

@@ -100,8 +100,9 @@ const Services = () => {
     dashboard
       .getAllSalonServices(salon_id)
       .then((res) => {
-        setAllServices(res.data.data);
-        setFilteredServices(res.data.data);
+        let list = res.data.data.filter((item) => item.type !== 'discount')
+        setAllServices(list);
+        setFilteredServices(list);
       })
       .finally(() => {
         setIsLoading(false);
