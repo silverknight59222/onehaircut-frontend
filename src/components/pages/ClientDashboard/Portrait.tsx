@@ -9,6 +9,7 @@ import React, { useEffect, useState } from "react";
 import Footer from '@/components/UI/Footer';
 import { client } from "@/api/clientSide";
 import useSnackbar from "@/hooks/useSnackbar";
+import InfoButton from "@/components/UI/InfoButton";
 
 // default text if no picture to display
 const TextToDsplayifNoPic =
@@ -362,11 +363,18 @@ const Portrait = () => {
             />
             <ClientDashboardLayout notifications={notifications}>
                 <div className="relative mt-10 mb-5 px-4 sm:px-6 md:px-20">
-                    <p className="text-black font-medium text-3xl text-center mb-8">
-                        Modifiez vos photos de profils
-                    </p>
+                    <div className='flex flex-row items-center justify-center pb-10 w-full'>
+                        <div className="pr-4">
+                            <p className="text-black font-medium text-3xl text-center">
+                                Modifiez vos photos de profils
+                            </p>
+                        </div>
+                        {/* Info icon  */}
+                        <InfoButton title_1={"Photos de profil"} content_1={"Vous pouvez  disposer ici vos photos de profil."} content_2="Celles-ci seront utilisées lors de la génération de votre photos avec une coiffure voulue." onOpenModal={undefined} />
+                    </div>
+
                     <p className="text-stone-400 font-normal italic text-sm text-center my-10">
-                        Pour modifiez une photo, cliquer sur celle-ci et selectionner la remplacente
+                        Pour modifiez une photo, cliquer sur celle-ci et sélectionner la remplaçante
                     </p>
                     <div className="flex flex-col sm:flex-row  items-center justify-center gap-x-4 gap-y-8 lg:gap-14">
                         {/* Left side of the head placed left */}

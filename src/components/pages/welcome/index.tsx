@@ -15,6 +15,7 @@ import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 import BaseModal from "@/components/UI/BaseModal";
 import InfoModal from "@/components/UI/InfoModal";
 import InfoButton from "@/components/UI/InfoButton";
+import { user_api } from "@/api/clientSide";
 //import StarRatings from "react-star-ratings";
 
 // to avoid modifying the theme
@@ -39,6 +40,7 @@ const Welcome = () => {
   const [ethnicityFilters, setEthnicityFilters] = useState<string[]>([]);
   const [lengthFilters, setLengthFilters] = useState<string[]>([]);
   const [genderFilters, setGenderFilters] = useState<string>("");
+  const [hairNameFilters, setHairNameFilters] = useState<string[]>([]);
   // Store filtered haircuts based on user’s filters
   const [filteredHaircuts, setFilteredHaircuts] = useState<Haircut[]>([]);
   // Search state variable for filtering haircuts by name
@@ -49,19 +51,22 @@ const Welcome = () => {
   const [selectedHaircut, setSelectedHaircut] = useState({ id: 0, name: '', image: '' }) // Store the selected haircut
   const [wishlist, setWishlist] = useState<string[]>([]) // Store user’s wishlist of haircuts
   const [page, setPage] = useState(1);
-
+  const [maxPage, setMaxPage] = useState(5);
 
   const getAllHaircuts = async () => {
     // Fetch all available haircuts from the API
-    setIsLoading(true);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-    await dashboard.getAllHaircuts(page)
-      .then((res) => {
-        setSalonHaircut([...salonHaircut, ...res.data.data]);
-        setPage(prevPage => prevPage + 1);
-        setIsLoading(false)
-      })
-      .catch(error => setIsLoading(false))
+    if(!(page >= maxPage)) {
+      setIsLoading(true);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await dashboard.getAllHaircuts(page)
+        .then((res) => {
+          setSalonHaircut([...salonHaircut, ...res.data.data]);
+          setPage(prevPage => prevPage + 1);
+          setMaxPage(res.data.max_page)
+          setIsLoading(false)
+        })
+        .catch(error => setIsLoading(false))
+    }
   }
 
   const handleScroll = () => {
@@ -241,6 +246,18 @@ const Welcome = () => {
 
   };
 
+  const getFilteredHaircuts = async () => {
+    setIsLoading(true)
+    let resp = await user_api.getHaircutFilteredByName(hairNameFilters);
+    setFilteredHaircuts(resp.data.data)
+    setSalonHaircut(resp.data.data)
+    setIsLoading(false)
+  }
+
+  useEffect(()=>{
+    getFilteredHaircuts();
+  },[hairNameFilters])
+
   const haircuts = () => {
     if (
       ethnicityFilters.length > 0 ||
@@ -264,6 +281,11 @@ const Welcome = () => {
   const onContinue = () => {
     setLocalStorage("haircut", JSON.stringify({ id: selectedHaircut.id, name: selectedHaircut.name, image: selectedHaircut.image }))
     router.push(`/services`)
+  }
+
+  const checkPreview = async () => {
+    let resp = await user_api.getPreviewImage(selectedHaircut.id);
+    console.log(resp.data)
   }
 
   const onServiceOnlyClick = () => {
@@ -322,7 +344,7 @@ const Welcome = () => {
 
   return (
     <>
-      <Navbar isWelcomePage={true} onSearch={(value: string) => setSearch(value)} onGenderFilter={(gender) => setGenderFilters(gender)} onEthnicityFilters={(groups) => setEthnicityFilters(groups)} onLengthFilters={(length) => setLengthFilters(length)} />
+      <Navbar isWelcomePage={true} onSearch={(value: string) => setSearch(value)} onGenderFilter={(gender) => setGenderFilters(gender)} onEthnicityFilters={(groups) => setEthnicityFilters(groups)} onLengthFilters={(length) => setLengthFilters(length)} onHairNameFilters={(hairname) => setHairNameFilters(hairname)} />
       <div className="flex flex-col items-center justify-center w-full overflow-hidden">
 
         {isLoading && loadingView()}
@@ -372,7 +394,7 @@ const Welcome = () => {
                 </div>
 
               </div>
-              <div className="rounded-b-xl bg-gradient-to-r from-white via-stone-50 to-zinc-200">
+              <div className=" w-40 md:w-60 rounded-b-xl bg-gradient-to-r from-white via-stone-50 to-zinc-200">
                 <p className="rounded-b-xl flex items-center justify-center py-2 text-black font-medium">
                   {item.name}
                 </p>
@@ -421,7 +443,7 @@ const Welcome = () => {
               <div className="flex flex-col items-center">
                 <button onClick={onContinue} className={`flex items-center justify-center font-medium w-full md:w-52 h-14 mb-4 ${Theme_A.button.smallGradientButton}`}>Choisir cette coiffure</button>
                 <button
-                  onClick={() => setIsPreview(!isPreview)}
+                  onClick={checkPreview}
                   className={`flex items-center justify-center font-medium w-full md:w-52 h-14 ${isPreview ? Theme_A.button.medGreydButton : Theme_A.button.medWhiteColoredButton}`}
                 >
                   {isPreview ? 'Image de référence' : 'Prévisualiser sur moi'}

@@ -119,9 +119,11 @@ const Unavailability = () => {
 
     const getHairDresserInfo = async () => {
         let obj = hairDresserList.find(o => o.name == selectedHD);
-        let resp = await salonApi.getHairDresserAvailability(obj!.id);
-        setUnavailList(resp.data.data)
-        setUnavailabilities(resp.data.data)
+        if (obj != null) {
+            let resp = await salonApi.getHairDresserAvailability(obj!.id);
+            setUnavailList(resp.data.data)
+            setUnavailabilities(resp.data.data)
+        }
     }
     const getSalonInfo = async () => {
         let resp = await salonApi.getSalonUnavailability(salon.id);
@@ -243,6 +245,7 @@ const Unavailability = () => {
     const HairdresserColumns = ['uv_id', 'Start Date', 'End Date', 'Start Time', 'End Time', 'Reason', 'Actions'];
     const [unavailabilities, setUnavailabilities] = useState<UnavailabilityData[]>([]); // Déclaration de la variable unavailabilities
 
+
     // useEffect(() => {
     //     console.log(unavailabilities)
     // }, [unavailabilities])
@@ -255,7 +258,6 @@ const Unavailability = () => {
     <CustomizedTable columns={columnsToDisplay} data={unavailabilities} cB={setUnavailList} />
 
     const [reason, setReason] = useState(""); // État local pour la raison
-
     const handleSubmitClick = async () => {
         let obj = hairDresserList.find(o => o.name == selectedHD);
         if (obj != undefined) {

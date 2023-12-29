@@ -108,5 +108,14 @@ const user_api = {
     getSaloonInformation: async () => {
         return await request.get(`/user_profile`);
     },
+    getHaircutsByName : async () => {
+        return await request.get('/haircuts_by_name');
+    },
+    getHaircutFilteredByName : async (data : any) => {
+        return await request.post('/get_haircuts_by_name', data);
+    },
+    getPreviewImage: async(haircut_id : number) => {
+        return await request.get(`/user_preview/${haircut_id}`);
+    }
 }
 export { client, user_api };

@@ -338,7 +338,7 @@ const AddServiceModal = (props: AddServiceModalType) => {
               <div key={index} className="flex items-center">
                 <div
                   className={`flex flex-col justify-start gap-2 w-48 h-[170px] border border-stone-200 rounded-[21px] py-3 px-3 shadow-lg cursor-pointer ${Theme_A.behaviour.cardBehaviour}`}
-                  onClick={() => selectService(item.id)}
+                  onClick={(item.type === 'coloration' || item.type === 'discount') ? () => { } : () => selectService(item.id)}
                 >
                   <div className="flex items-center justify-between">
                     <p className="text-black font-medium whitespace-nowrap overflow-hidden text-ellipsis max-w-[140px]">
@@ -361,7 +361,7 @@ const AddServiceModal = (props: AddServiceModalType) => {
                   <div className="flex items-center  gap-2 mt-2">
                     <div
                       onMouseLeave={() => {
-                        setShowColors(-1);
+                        // setShowColors(-1);
                       }}
                     >
                       {item.type === "coloration" && item.colors?.length && (
@@ -371,13 +371,14 @@ const AddServiceModal = (props: AddServiceModalType) => {
                               Color
                             </p>
                             <div
-                              className="text-xs mt-1 py-1 px-2 border-2 border-gray-400 rounded-lg"
+                              className="text-xs mt-1 py-1 px-2 border-2 border-gray-400 rounded-lg bg-[#D6D6D6]"
                               onMouseEnter={(e) => {
                                 e.stopPropagation();
-                                setShowColors(item.id);
+                                // setShowColors(item.id);
                               }}
                             >
-                              {item.colors[0].color}
+                              <>Available Soon</>
+                              {/* {item.colors[0].color} */}
                             </div>
                           </div>
                           {showColors === item.id && (

@@ -3,6 +3,7 @@ import BaseModal from "@/components/UI/BaseModal";
 import { Theme_A } from '@/components/utilis/Themes';
 import { useRouter } from "next/navigation";
 import { LeftArrowIcon, RightArrowIcon } from "@/components/utilis/Icons";
+const defaultPicture = 'https://api.onehaircut.com/base_null_img.jpg';
 
 
 interface SalonPicModalProps {

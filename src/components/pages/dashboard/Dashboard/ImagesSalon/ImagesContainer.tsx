@@ -251,7 +251,7 @@ const ImagesContainer = ({
                           className={`cursor-pointer h-8 mt-2 text-sm flex items-center justify-center text-white px-4 py-1 gap-4 rounded-md ${Theme_A.button.mediumGradientButton} shadow-md`}
                           onClick={() => makeCover(item.id)}
                         >
-                          Make Cover
+                          Image de couverture
                         </div>
                       )}
                     </div>

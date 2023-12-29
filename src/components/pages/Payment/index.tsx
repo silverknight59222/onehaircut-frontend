@@ -46,11 +46,12 @@ const Index = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [serviceIds, setServiceIds] = useState<number[]>([])
+  const [stripeKey, setStripeKey] = useState("");
   const [KmPrice, setPrice] = useState(0);
   const OnehaircutFees = 0.09;
   const PaymentGatewayVariableFees = 0.008; //TODO LINK WITH ACTUAL FEES
   const PaymentGatewayFixFees = 0.11;
-  const stripePromise = loadStripe('pk_test_51OBGjoAHQOXKizcuQiaNTSGNA6lftEd3lekpQDN7DGGpx4lQGttBHwI62qzZiq85lelN91uyppVeLUsnC5WfmSZQ00LuhmW4QA');  // public key for stripe
+  let stripePromise = loadStripe(stripeKey);  // public key for stripe
   const items = [
     { name: "Salon", desc: "Le Bon Coiffeur" },
     { name: "Type de coiffure", desc: "Curly" },
@@ -58,8 +59,8 @@ const Index = () => {
     { name: "Temps", desc: "2 heures " },
     { name: "Lieu", desc: "à domicile" },
   ];
-  const options = {
-    clientSecret: "sk_test_51OBGjoAHQOXKizcuykusB8Rqsycb4BemHfQrmbEyjG4zD6adMYGHXrcz3AY0yykBjaTbJ2kcR2GXwIq0hDBBxu2m00KimXnuTu"
+  let options = {
+    clientSecret: ""
   };
 
   const getHaircutPrize = async () => {
@@ -134,50 +135,6 @@ const Index = () => {
       setIsModal(true)
     } else {
       setIsLoading(true)
-
-      const targetDayOfWeek = slotData.slot[0].day;
-
-      const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-      const number = daysOfWeek.indexOf(targetDayOfWeek);
-      const today = new Date();
-      const currentDayOfWeek = today.getDay();
-      let difference = number - currentDayOfWeek;
-      if (difference < 0) {
-        difference += 7;
-      }
-      const targetDate = new Date(today);
-      targetDate.setDate(today.getDate() + difference);
-
-      const formattedDate = targetDate.toISOString().split('T')[0];
-      const bookingDate = getLocalStorage('selectDate');
-      const data = {
-        user_id: user ? user.id : null,
-        hair_salon_id: Number(salonData.id),
-        slot_ids: slotData.slot.map((prevSlot: any) => prevSlot.id),
-        hair_dresser_id: slotData.hairDresser.id,
-        amount: salonData.final_price,
-        salon_haircut_id: salonData.haircut ? salonData.haircut.id : null,
-        services: salonData.services || [],
-        date: bookingDate,
-        clientId: user.id,
-        salonId: salonData.user_id
-      }
-
-      await client.createBooking(data)
-        .then(resp => {
-          // removeFromLocalStorage('haircut')
-          // removeFromLocalStorage('slotData')
-          // removeFromLocalStorage('ServiceIds')
-          // removeFromLocalStorage('selectedSalon')
-          setLocalStorage("plan_type", haircutPrize)
-          showSnackbar("success", 'Booking Created Successfully');
-          //window.open("https://api.whatsapp.com/send?phone=" + userInfo.phone + "&text=Booking Success!", '_blank');
-          router.push('/confirm-payment')
-        })
-        .catch(err => console.log(err))
-        .finally(() => {
-          setIsLoading(false)
-        })
     }
   }
 
@@ -203,6 +160,15 @@ const Index = () => {
   useEffect(() => {
     console.log('Price', KmPrice);
   }, [KmPrice])
+
+  const getStripeKey = async () => {
+    setIsLoading(true)
+    let resp = await salonApi.getStripeKey();
+    stripePromise = loadStripe(resp.data.pk)
+    options.clientSecret = resp.data.sk
+    setStripeKey(resp.data.pk)
+    setIsLoading(false)
+  }
 
   useEffect(() => {
     //const user = getLocalStorage("user");
@@ -240,6 +206,7 @@ const Index = () => {
       // const newTime = calculateTimeAfterSeparatingMinutes(slotData.slot[0].end, value);
       // setDuration(newTime)
     }
+    getStripeKey()
   }, [])
 
   function calculateTimeAfterSeparatingMinutes(timeString: any, minutesToSeparate: any) {

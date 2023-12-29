@@ -79,7 +79,7 @@ const confidentialityPage = () => {
         </p>
 
         <p className='pt-24'>
-          Cette politique de confidentialité a été mise à jour le [date de la dernière révision].
+          Cette politique de confidentialité a été mise à jour le 15/12/2023.
         </p>
 
       </div>
