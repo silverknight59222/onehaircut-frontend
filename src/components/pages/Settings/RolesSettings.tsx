@@ -105,6 +105,7 @@ const RolesSettings = () => {
     // Mise à jour les états des commutateurs en fonction du rôle sélectionné
     const toggleSwitch = async (id: number) => {
         const updatedRoleSwitches = { ...roleSwitches[selectedRole] };
+        const updatedModalRoleSwitches = { ...modalSwitchesByRole[selectedRole] }; 
         updatedRoleSwitches[id] = !updatedRoleSwitches[id];
 
         // Prepare an array of permissions to update
@@ -113,6 +114,12 @@ const RolesSettings = () => {
         // Loop through updatedRoleSwitches to find permissions with the updated state
         for (const permissionId in updatedRoleSwitches) {
             if (updatedRoleSwitches[permissionId]) {
+                permissionsToUpdate.push(Number(permissionId));
+            }
+        }
+
+        for (const permissionId in updatedModalRoleSwitches) {
+            if (updatedModalRoleSwitches[permissionId]) {
                 permissionsToUpdate.push(Number(permissionId));
             }
         }
@@ -139,7 +146,6 @@ const RolesSettings = () => {
     const handleModalSwitch = async (id: number) => {
         const updatedRoleSwitches = { ...roleSwitches[selectedRole] };
         const updatedModalRoleSwitches = { ...modalSwitchesByRole[selectedRole] };
-        updatedRoleSwitches[id] = !updatedRoleSwitches[id];
         updatedModalRoleSwitches[id] = !updatedModalRoleSwitches[id];
         // Prepare an array of permissions to update
         const permissionsToUpdate: any = [];
@@ -147,6 +153,12 @@ const RolesSettings = () => {
         // Loop through updatedRoleSwitches to find permissions with the updated state
         for (const permissionId in updatedRoleSwitches) {
             if (updatedRoleSwitches[permissionId]) {
+                permissionsToUpdate.push(Number(permissionId));
+            }
+        }
+
+        for (const permissionId in updatedModalRoleSwitches) {
+            if (updatedModalRoleSwitches[permissionId]) {
                 permissionsToUpdate.push(Number(permissionId));
             }
         }
@@ -256,12 +268,6 @@ const RolesSettings = () => {
             setOtherSwitches(permissions.data.data.other);
             setSettingSwitches(permissions.data.data.setting_permissions);
             const response = await user_api.getPermission(role);
-
-            console.log("Other")
-            console.log(permissions.data.data.other)
-
-            console.log("setting_permissions")
-            console.log(permissions.data.data.setting_permissions)
 
             const permissionsForRole = rolePermissions[role];
             const modalPermissionsForRole = rolePermissionsModal[role];
