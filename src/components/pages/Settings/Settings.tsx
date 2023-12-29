@@ -61,6 +61,15 @@ const Settings = () => {
         }
       });
     }
+    else if(user.role == 'salon_professional')
+    {
+      currentMenuCopy = [...settingsMenu];
+    }
+    else
+    {
+      currentMenuCopy.push(settingsMenu[5]);
+    }
+
     setCurrentMenu(currentMenuCopy)
     setActiveMenu(currentMenuCopy[0].name)
   }
