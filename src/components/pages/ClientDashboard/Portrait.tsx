@@ -10,6 +10,7 @@ import Footer from '@/components/UI/Footer';
 import { client } from "@/api/clientSide";
 import useSnackbar from "@/hooks/useSnackbar";
 import InfoButton from "@/components/UI/InfoButton";
+import { getLocalStorage, setLocalStorage } from "@/api/storage";
 
 // default text if no picture to display
 const TextToDsplayifNoPic =
@@ -27,7 +28,8 @@ const DefaultProfilLeft = <Image src='/assets/PortraitClient/ProfilLeft.png' alt
 const DefaultProfilLeft2 = <Image src='/assets/PortraitClient/ProfilLeft2.png' alt='' fill={true} className='rounded-3xl ' />
 const DefaultProfilRight = <Image src='/assets/PortraitClient/ProfilRight.png' alt='' fill={true} className='rounded-3xl ' />
 const DefaultProfilRight2 = <Image src='/assets/PortraitClient/ProfilRight2.png' alt='' fill={true} className='rounded-3xl ' />
-
+const user = getLocalStorage('user');
+const userData = JSON.parse(user!);
 const SubTextToDisplay =
     ["Profil légèrement gauche",
         "Profil gauche",
@@ -288,6 +290,10 @@ const Portrait = () => {
             if (image)
                 formData.append(image.type, image.file);
         });
+        userData.ethnic_group = ethnicGroup
+        userData.hair_length = hairLength
+        userData.gender = gender
+        setLocalStorage('user',JSON.stringify(userData))
         await client.storeUserPotrait(formData)
             .then(resp => {
                 //console.log(resp.data);
