@@ -304,6 +304,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
     const user = getLocalStorage("user");
     const hairstyle_trend = user ? (JSON.parse(user).user_preferences ? String(JSON.parse(user).user_preferences.hairstyle_trend) : "") : "";
     const length_sought = user ? (JSON.parse(user).user_preferences ? String(JSON.parse(user).user_preferences.length_sought) : "") : "";
+    const user_ethnic = user ? (JSON.parse(user).ethnic_group ? String(JSON.parse(user).ethnic_group) : "") : "";
     const budget = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.budget ? JSON.parse(user).user_preferences.budget : [10, 100] : [10, 100]) : [10, 100];
     const hairdressing_at_home = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.hairdressing_at_home : "all") : "all";
     const minRating = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.ratings : 1) : 1;
@@ -327,6 +328,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
 
       setGenderFilters(gender);
       setLengthFilters(length);
+      setEthnicityFilters([user_ethnic]);
       setRangeFilter(budget ?? [10, 100]);
       setMobileFilters(mobile);
       setRatingFilter(rating);
