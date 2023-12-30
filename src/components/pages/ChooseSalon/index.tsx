@@ -501,7 +501,7 @@ const SalonChoice = () => {
     }
 
     const getFilteredHeight = (isMaxHeight: boolean) => {
-        let result: number | string = 450
+        let result: number | string = 750
         if (screen.width > 500 && (screen.width < screen.height)) {
             result = screenSize.height - (326 + (0.3 * (screenSize.height - 766)))
         }
@@ -511,7 +511,7 @@ const SalonChoice = () => {
             }
         }
 
-        console.log('result', result)
+        //console.log('result', result)
         return result
     }
 
@@ -609,7 +609,7 @@ const SalonChoice = () => {
 
                 {/* Conteneur principal pour les salons et la carte */}
                 {isLoaded && positions.length > 0 &&
-                    <div style={{ height: screenSize.width <= 500 ? '' : getFilteredHeight(false), maxHeight: getFilteredHeight(true) }} className='w-full mt-4 mb-2 relative  overflow-hidden'>
+                    <div style={{ height: screenSize.width <= 500 ? '' : getFilteredHeight(false), maxHeight: getFilteredHeight(true) }} className='w-full  mt-4 mb-2 relative overflow-hidden'>
                         {/* Carte Google affichée uniquement si des salons sont disponibles */}
                         {
                             positions.length > 0 &&
