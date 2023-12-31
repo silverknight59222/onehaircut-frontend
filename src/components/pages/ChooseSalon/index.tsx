@@ -727,7 +727,7 @@ const SalonChoice = () => {
 
 
                                         {/* Contenu de la vignette */}
-                                        <div className="flex flex-col p-1 md:p-4 shadow-md rounded-2xl " style={{ flexGrow: 1 }}>
+                                        <div className="flex flex-col p-1 md:p-2 shadow-md rounded-2xl " style={{ flexGrow: 1 }}>
 
                                             <div className='relative mb-4 hover:scale-105 transition duration-1000 m-2' style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                                 {!isLoggedIn &&
@@ -753,8 +753,9 @@ const SalonChoice = () => {
                                             {/* <div className="flex items-start justify-between  "> */}
                                             <p className='text-black text-lg font-semibold pt-2 overflow-auto'>{fsalon.name}</p>
                                             <div className='flex justify-end'>
-                                                <p style={{ fontSize: getFontSize(fsalon.final_price) }}
-                                                    className={`p-2 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white font-semibold w-max`}>
+                                                <p
+                                                    style={{ fontSize: getFontSize(fsalon.final_price) }}
+                                                    className={`px-2 py-1 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white font-semibold text-sm w-max`}>
                                                     {fsalon.final_price} €
                                                 </p>
                                             </div>
@@ -781,7 +782,6 @@ const SalonChoice = () => {
 
                         </div>
                         {/* </div> */}
-                        {/* <div className='text-xl'>Coucou</div> */}
                     </div>
                 }
             </div>
