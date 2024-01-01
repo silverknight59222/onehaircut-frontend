@@ -410,7 +410,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
         </div>
         {!hideSearchBar && <div className="flex items-center justify-evenly w-full sm:w-min rounded-2xl bg-[#F7F7F7] h-[42px] lg:h-[52px] lg:mt-3 shadow-sm shadow-stone-300 border border-stone-200">
           <div
-            className="flex items-center  text-sm lg:text-lg "
+            className="flex items-center  text-sm xl:text-lg "
           >
             {isWelcomePage ?
               <>
@@ -576,11 +576,11 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
             }
 
             {(isWelcomePage) &&
-              <div className={`hidden sm:block w-min lg:w-max border-r border-grey px-1 lg:px-6 last:border-r-0 cursor-pointer`}>
+              <div className={`hidden sm:block w-min lg:w-max border-r border-grey px-1 xl:px-6 last:border-r-0 cursor-pointer`}>
                 <input
                   type="text"
                   placeholder="Rechercher"
-                  className={`text-sm md:text-base px-2 lg:px-4 p-2 rounded-full outline-none ${Theme_A.behaviour.fieldFocused_B}`}
+                  className={`text-sm md:text-base px-2 xl:px-4 p-2 rounded-full outline-none ${Theme_A.behaviour.fieldFocused_B}`}
                   onChange={onSearch && isWelcomePage ?
                     (e) => onSearch(e.target.value) :
                     onServiceSearch && isServicesPage ? (e) => onServiceSearch(e.target.value) : () => { }}
