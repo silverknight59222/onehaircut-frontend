@@ -516,8 +516,32 @@ const SalonChoice = () => {
 
         // console.log('result', result)
         // return result
+        if (screen.width >= 1024) {
+            result = screen.height / 2
+        }
+        else {
+            result = screenSize.height / 4
+        }
+        console.log('screen width', screen.width)
+        console.log('result', result)
+        return result
+    }
 
-        result = screenSize.height / 4 // from florian
+    // give back the height of the thumbnails 
+    const getHeightThumbnails = () => {
+        let result: number | string
+
+        if (screen.width < 640) {
+            result = screen.height / 2
+        }
+        else if (screen.width < 1024) {
+            result = screen.height / 1, 5
+        }
+        else {
+            result = screenSize.height
+        }
+        console.log('screen width', screen.width)
+        console.log('result', result)
         return result
     }
 
@@ -588,7 +612,7 @@ const SalonChoice = () => {
             />
 
             {/* Corps du composant */}
-            <div className='w-full flex flex-col items-center justify-center px-6'>
+            <div className='w-full h-full flex flex-col items-center justify-center px-6'>
                 {isLoading && loadingView()}
 
                 {/* Texte indiquant le nombre de salons */}
@@ -617,13 +641,14 @@ const SalonChoice = () => {
                 {isLoaded && positions.length > 0 &&
                     <div
                         // style={{ height: screenSize.width <= 500 ? '' : getFilteredHeight(false), maxHeight: getFilteredHeight(true) }} 
-                        className='w-full h-full mt-4  grid grid-rows-2 lg:grid-cols-2 gap-0 lg:gap-3'>
+                        className='w-full h-max mt-4  grid grid-rows-1 lg:grid-cols-2 gap-0 lg:gap-3 '>
+
                         {/* Carte Google affichée uniquement si des salons sont disponibles */}
                         {
                             positions.length > 0 &&
                             <div
                                 // style={{ height: screenSize.width <= 500 ? getFilteredHeight(false) : '80%' }} 
-                                style={{ maxHeight: getFilteredHeight(false) }}
+                                style={{ height: getFilteredHeight(false) }}
                                 className={` lg:top-0 lg:left-0 w-full rounded-lg overflow-hidden lg:z-10`}>
 
                                 {/*TODO USE salon.position when data are available  */}
@@ -706,10 +731,10 @@ const SalonChoice = () => {
                         {/* <div className='flex flex-row  gap-3 overflow-scroll'> */}
 
                         {/* Grid containing thumbnails */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6 pb-20">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6 pb-20 overflow-scroll"
+                            style={{ maxHeight: getHeightThumbnails() }}>
                             {/* VIGNETTES (ITERATIONS) */}
                             {filteredSalons.length > 0 && filteredSalons.map((fsalon, index) => {
-                                console.log('fsalon', fsalon)
                                 return (
                                     <div
                                         key={index}
@@ -777,11 +802,7 @@ const SalonChoice = () => {
                                     </div>
                                 )
                             })}
-
-
-
                         </div>
-                        {/* </div> */}
                     </div>
                 }
             </div>
