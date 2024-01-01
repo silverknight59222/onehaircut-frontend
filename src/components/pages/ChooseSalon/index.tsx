@@ -731,7 +731,7 @@ const SalonChoice = () => {
                         {/* <div className='flex flex-row  gap-3 overflow-scroll'> */}
 
                         {/* Grid containing thumbnails */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6 pb-20 overflow-scroll"
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6 pb-20 overflow-scroll content-start"
                             style={{ maxHeight: getHeightThumbnails() }}>
                             {/* VIGNETTES (ITERATIONS) */}
                             {filteredSalons.length > 0 && filteredSalons.map((fsalon, index) => {
