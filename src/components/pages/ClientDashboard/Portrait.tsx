@@ -29,7 +29,7 @@ const DefaultProfilLeft2 = <Image src='/assets/PortraitClient/ProfilLeft2.png' a
 const DefaultProfilRight = <Image src='/assets/PortraitClient/ProfilRight.png' alt='' fill={true} className='rounded-3xl ' />
 const DefaultProfilRight2 = <Image src='/assets/PortraitClient/ProfilRight2.png' alt='' fill={true} className='rounded-3xl ' />
 const user = getLocalStorage('user');
-const userData = JSON.parse(user!);
+const userData = user ? JSON.parse(user) : null;
 const SubTextToDisplay =
     ["Profil légèrement gauche",
         "Profil gauche",
