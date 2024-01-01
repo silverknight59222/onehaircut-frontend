@@ -293,7 +293,7 @@ const Portrait = () => {
         userData.ethnic_group = ethnicGroup
         userData.hair_length = hairLength
         userData.gender = gender
-        setLocalStorage('user',JSON.stringify(userData))
+        setLocalStorage('user', JSON.stringify(userData))
         await client.storeUserPotrait(formData)
             .then(resp => {
                 //console.log(resp.data);
@@ -409,7 +409,7 @@ const Portrait = () => {
                     <p className="text-stone-400 font-normal italic text-sm text-center my-10">
                         Indiquer votre genre et groupe ethnique. Ceux-ci serviront lors de la presentation des coiffures à la page d'accueil
                     </p>
-                    <div className="flex flex-col sm:flex-row  sm:items-start justify-center gap-2 lg:gap-14">
+                    <div className="flex flex-col sm:flex-row items-center sm:items-start justify-center gap-2 lg:gap-14">
                         <div className="flex flex-col gap-2">
 
                             <DropdownMenu
