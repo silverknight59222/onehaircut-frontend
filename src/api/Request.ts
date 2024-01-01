@@ -26,21 +26,23 @@ request.interceptors.request.use(
 request.interceptors.response.use(
   (response) => response,
   async (error) => {
-    const { response } = error;
+    if (error) {
+      const { response } = error;
 
-    console.error({ error });
-    if (response.status === 401) {
-      localStorage.clear();
-      window.location.replace(`/login`);
-      return;
+      console.error({ error });
+      if (response.status === 401) {
+        localStorage.clear();
+        window.location.replace(`/login`);
+        return;
+      }
+      if (response.status >= 400 || response.status === 401) {
+        toast.error(error.message);
+      }
+      if (response.status == 422) {
+        throw error;
+      }
+      throw error.response.data.status;
     }
-    if (response.status >= 400 || response.status === 401) {
-      toast.error(error.message);
-    }
-    if (response.status == 422) {
-      throw error;
-    }
-    throw error.response.data.status;
   }
 );
 
