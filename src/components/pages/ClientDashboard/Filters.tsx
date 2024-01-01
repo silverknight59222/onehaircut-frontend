@@ -169,7 +169,9 @@ const Filters = () => {
     const updateHairStyleSearch = async () => {
         // check the current hair length
         if ((currentLength == "Court" && desiredLength == "Court") ||
-            ((currentLength == "Moyen" && (desiredLength == "Court" || desiredLength == "Moyen")))) {
+            ((currentLength == "Moyen" && (desiredLength == "Court" || desiredLength == "Moyen"))) ||
+            (currentLength == "Long")
+        ) {
             // hair length is fitting desired length
             setIsLoading(true)
             await client.storeHairstylePreferences({
