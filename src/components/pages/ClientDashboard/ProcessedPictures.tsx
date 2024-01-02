@@ -55,7 +55,7 @@ const ProcessedPictures = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4  justify-center">
                         {fetchedImages.map((fetched_image, index) => {
                             return (
-                                <div className="flex-1">
+                                <div key={index} className="flex-1">
                                     <CustomCard
                                         title={fetched_image.name}
                                         imageUrl={fetched_image.url} // Utilisez l'URL de l'image ici
