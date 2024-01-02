@@ -116,6 +116,9 @@ const user_api = {
     },
     getPreviewImage: async(haircut_id : number) => {
         return await request.get(`/user_preview/${haircut_id}`);
-    }
+    },
+    getLatestPreviewImage: async()=>  {
+        return await request.get('/user_fetched_image');
+    },
 }
 export { client, user_api };
