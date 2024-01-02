@@ -599,7 +599,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
               </div>}
             {(isSalonPage && !isWelcomePage) &&
               <Autocomplete
-                className="text-black w-28 sm:w-40 px-4 py-2 text-base transition ml-2 duration-500 ease-in-out transform border-transparent rounded-lg bg-white-100 ring-gray-400"
+                className="text-black w-40 sm:w-40 px-4 py-2 text-base transition ml-2 duration-500 ease-in-out transform border-transparent rounded-lg bg-white-100 ring-gray-400"
                 apiKey='AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E'
                 onPlaceSelected={(place) => {
                   console.log('map search place', place)
@@ -631,14 +631,14 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                 <input
                   type="text"
                   placeholder="Nom Salon"
-                  className={`text-base w-32 sm:w-40 px-4 p-2 rounded-xl outline-none ${Theme_A.behaviour.fieldFocused_B}`}
+                  className={`text-base w-40 sm:w-40 px-4 p-2 rounded-xl outline-none ${Theme_A.behaviour.fieldFocused_B}`}
                   onChange={onNameSearch && isWelcomePage ?
                     () => { } :
                     onNameSearch && isSalonPage ? (e) => onNameSearch(e.target.value) : () => { }}
                 />
               </div>}
             {(isSalonPage) &&
-              <div className="border-x border-grey px-2 sm:px-6 md:px-2 2xl:px-6 last:border-r-0 cursor-pointer">
+              <div className="hidden md:block border-x border-grey px-2 sm:px-6 md:px-2 2xl:px-6 last:border-r-0 cursor-pointer">
                 <p
                   className={showDesktopCountry ? "rounded-xl py-2 px-2 2xl:px-7 bg-white text-black font-semibold" : "hover:bg-stone-200 rounded-xl py-2 px-2 2xl:px-7"}
                   onClick={() => {
@@ -805,7 +805,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
               </div>
             }
             {(isSalonPage) &&
-              <div className="border-r border-grey px-2 sm:pr-8 md:pr-0 2xl:px-6 last:border-r-0 cursor-pointer">
+              <div className="hidden md:block border-r border-grey px-2 sm:pr-8 md:pr-0 2xl:px-6 last:border-r-0 cursor-pointer">
                 <p
                   className={showDesktopRating ? "rounded-xl py-2 px-2 2xl:px-7 bg-white  text-black font-semibold" : " hover:bg-stone-200 rounded-xl py-2 px-2 2xl:px-7 "}
                   onClick={() => {
@@ -914,6 +914,10 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
           <div onClick={handleSearch} className="hidden sm:block cursor-pointer p-3 rounded-full hover:scale-90 transform transition-transform duration-300 bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
             <SearcIcon />
           </div>
+          {isSalonPage &&
+            <div onClick={handleSearch} className="sm:hidden cursor-pointer p-3 rounded-full hover:scale-90 transform transition-transform duration-300 bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
+              <SearcIcon />
+            </div>}
 
         </div>}
 
@@ -924,6 +928,108 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
             className="flex w-full items-center justify-evenly text-sm lg:text-lg"
           >
 
+            <div className="border-r border-grey px-2 sm:px-6 md:px-2 2xl:px-6 last:border-r-0 cursor-pointer">
+              <p
+                className={showDesktopCountry ? "rounded-xl py-2 px-2 2xl:px-7 bg-white text-black font-semibold" : "hover:bg-stone-200 rounded-xl py-2 px-2 2xl:px-7"}
+                onClick={() => {
+                  setShowDesktopEthnicity(false);
+                  setShowDesktopGender(false);
+                  setShowDesktopLength(false);
+                  setShowDesktopBudget(false);
+                  setShowDesktopRating(false);
+                  setShowDesktopCountry(!showDesktopCountry);
+                  setShowDesktopAvailability(false);
+                }}
+              >
+                Pays
+              </p>
+              {showDesktopCountry && isSalonPage && (
+                <div id="CountryList" className="absolute -ml-3 z-50  items-center justify-center w-42 pt-[2px] px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300 " style={{ maxHeight: '800px', overflowY: 'auto', marginTop: '10px' }}>
+                  {Countries.map((item, index) => {
+                    return (
+                      <div
+                        key={index}
+                        className="flex w-full cursor-pointer mb-4 transform hover:scale-110 text-sm"
+                        onClick={() => onClickCountryCheckbox(item)}
+                      >
+                        <div
+                          className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105 
+                            ${countryFilter === item ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}
+                        >
+                          <CheckedIcon />
+                        </div>
+                        <p className="ml-2">{item}</p>
+                      </div>
+                    );
+                  })}
+
+
+
+                </div>
+              )}
+            </div>
+
+            <div className="border-r border-grey px-2 sm:pr-8 md:pr-0 2xl:px-6 last:border-r-0 cursor-pointer">
+              <p
+                className={showDesktopRating ? "rounded-xl py-2 px-2 2xl:px-7 bg-white  text-black font-semibold" : " hover:bg-stone-200 rounded-xl py-2 px-2 2xl:px-7 "}
+                onClick={() => {
+                  setShowDesktopEthnicity(false);
+                  setShowDesktopGender(false);
+                  setShowDesktopLength(false);
+                  setShowDesktopBudget(false);
+                  setShowDesktopRating(!showDesktopRating);
+                  setShowDesktopCountry(false);
+                  setShowDesktopAvailability(false);
+                }}
+              >
+                Note
+              </p>
+              {showDesktopRating && isSalonPage && (
+                <div className="absolute -ml-3 z-20 flex flex-col items-center justify-center w-42 pt-5 px-2 2xl:px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
+
+                  <div
+                    key={0}
+                    className="flex w-full cursor-pointer mb-[10px] items-center transform hover:scale-110"
+                    onClick={() => onNewSalonCheckbox(!newSalonFilter)}
+                  >
+                    <div
+                      className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105  mr-2
+                                    ${newSalonFilter ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}
+                    >
+                      <CheckedIcon />
+                    </div>
+                    <p className="ml-1 mr-2">Nouveau salon</p>
+
+
+                  </div>
+                  {Ratings.map((item, index) => {
+                    return (
+                      <div
+                        key={index}
+                        className="flex w-full cursor-pointer mb-[10px] items-center transform hover:scale-110"
+                        onClick={() => onClickRatingCheckbox(item)}
+                      >
+                        <div
+                          className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105  mr-2
+                            ${ratingFilter.includes(item) ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}
+                        >
+                          <CheckedIcon />
+                        </div>
+                        {/* <p className="ml-1 mr-2">{`${item}`}</p> */}
+                        <StarRatings
+                          rating={item}
+                          starRatedColor="#FEDF10"
+                          starSpacing="1px"
+                          starDimension="12px"
+                          numberOfStars={5}
+                          name={`rating-${item}`}
+                        />
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
 
             <div className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
               <p
