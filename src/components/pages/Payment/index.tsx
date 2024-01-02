@@ -258,7 +258,7 @@ const Index = () => {
                     return <p key={index} className="text-base">{++index}. {item.name}</p>
                   })}
                 </p> : ''}
-                {salonData && <p className="text-base"><span className="font-bold text-sm ">Etablissement: </span>{salonData.name}</p>}
+                {salonData && <p className="text-base"><span className="font-bold text-sm ">Établissement: </span>{salonData.name}</p>}
                 {slotData && <p className="text-base"><span className="font-bold text-sm ">Coiffeur: </span>{slotData.hairDresser.name}</p>}
                 {slotData && (<p className="text-base"><span className="font-bold text-sm ">Date du rendez-vous: </span>{formattedBookingDate}</p>)}
                 {slotData && <p className="text-base"><span className="font-bold text-sm ">Heure de début: </span>{slotData.slot[0].start}</p>}

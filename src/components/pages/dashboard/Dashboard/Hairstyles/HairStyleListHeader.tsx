@@ -63,7 +63,7 @@ const HairStyleListHeader = React.memo(({ setActiveMenu, isd_value, activeMenu, 
 
     useEffect(() => {
         // setGenderFilters(baseSelectedGender)
-    },[])
+    }, [])
 
     const onClickEthnicityCheckbox = (ethnicity: string) => {
         if (ethnicityFilters.includes(ethnicity)) {
@@ -259,7 +259,7 @@ const HairStyleListHeader = React.memo(({ setActiveMenu, isd_value, activeMenu, 
         getFilteredCuts()
         console.log("Params")
         console.log(params)
-        console.log("Base Selected Gender : "+params.genderFilters)
+        console.log("Base Selected Gender : " + params.genderFilters)
         console.log(genderFilters)
         console.log(genderFilters.includes("Men"))
     }, [ethnicityFilters, genderFilters, lengthFilters, search]);
@@ -267,7 +267,7 @@ const HairStyleListHeader = React.memo(({ setActiveMenu, isd_value, activeMenu, 
     // This component will re-render only if the `data` prop changes
     return (
         <div className="flex justify-center items-center">
-            <div className="flex flex-col-reverse lg:flex-row items-center gap-4 w-max p-1 mb-4">
+            <div className="flex flex-wrap lg:flex-row items-center gap-4 w-max p-1 mb-4">
                 <div className="flex items-center justify-center gap-2">
                     <div className="relative group">
                         <div

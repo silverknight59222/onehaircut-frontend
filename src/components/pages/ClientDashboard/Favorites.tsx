@@ -134,7 +134,7 @@ const Favorites = () => {
                         </div>
                         <div className="lg:absolute -top-10 md:ml-72  w-9/12 overflow-auto mt-3 md:mr-48">
                             <table>
-                                <tbody className="flex items-center flex-wrap md:flex-nowrap justify-center  gap-8 pb-2">
+                                <tbody className="flex items-center md:flex-nowrap justify-center  gap-8 pb-2">
                                     {haircuts.map((item, index) => {
                                         return (
                                             <tr key={index} className="flex flex-col items-center justify-center">
