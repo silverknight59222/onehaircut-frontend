@@ -4,6 +4,7 @@ import { LinearProgress } from '@mui/material';
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import Image from "next/image";
+import { useState } from 'react';
 
 
 
@@ -12,6 +13,7 @@ type CustomCardProps = {
   title: string;
   imageUrl: string;
   initialProgress: number;
+  passed_interval: number,
 };
 
 
@@ -21,9 +23,15 @@ const CustomCard: React.FC<CustomCardProps> = ({
   title,
   imageUrl,
   initialProgress,
+  passed_interval,
 }) => {
   // État local pour stocker la valeur de la progression de la barre
-  const [progress, setProgress] = React.useState(initialProgress);
+  const [progress, setProgress] = useState(0);
+
+  const getProgress = async () => {
+      let progress = (passed_interval / 5) * 100;
+      setProgress(progress)
+  }
 
 
   // Effet secondaire qui met à jour la progression de la barre
@@ -31,30 +39,29 @@ const CustomCard: React.FC<CustomCardProps> = ({
   //TODO METTRE A JOUR AVEC LA VALEUR REELLE DE PROGRESSION
   React.useEffect(() => {
     // Crée un intervalle qui met à jour la progression toutes les 500 millisecondes
-    const timer = setInterval(() => {
-      setProgress((oldProgress) => {
-        // Réinitialise la progression à 0 une fois qu'elle atteint 100
-        if (oldProgress === 100) {
-          return 0;
-        }
-        // Incrémente la progression d'une valeur aléatoire entre 0 et 10
-        const diff = Math.random() * 10;
-        return Math.min(oldProgress + diff, 100);
-      });
-    }, 500);
-
-    // Nettoie l'intervalle lorsque le composant est démonté
-    return () => {
-      clearInterval(timer);
-    };
+    getProgress()
+    if(progress < 100) {
+      const timer = setInterval(() => {
+        setProgress((oldProgress) => {
+          // Réinitialise la progression à 0 une fois qu'elle atteint 100
+          if (oldProgress === 100) {
+            return 100.00;
+          }
+          // Incrémente la progression d'une valeur aléatoire entre 0 et 10
+          const diff = Math.random() * 10;
+          return Math.min((oldProgress + diff / 600), 100);
+        });
+      }, 500);
+  
+      // Nettoie l'intervalle lorsque le composant est démonté
+      return () => {
+        clearInterval(timer);
+      };
+    }
   }, []);
 
   // Formate le taux de progression pour qu'il n'y ait pas de chiffres après la virgule
-  const formattedProgress = Math.round(progress);
-
-
-
-
+  const formattedProgress = Math.round(progress + 0.1);
 
   return (
     <div className="flex justify-center items-center">
@@ -76,7 +83,7 @@ const CustomCard: React.FC<CustomCardProps> = ({
             </div>
           ) : (
             <div className="h-full w-full flex items-center justify-center">
-              Image non disponible
+              Image non disponible / Image on process
             </div>
           )}
 
