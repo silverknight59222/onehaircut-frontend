@@ -557,7 +557,7 @@ const SalonChoice = () => {
 
     // Rendu du composant
     return (
-        <div className='w-full h-full'>
+        <div className='w-full h-full overflow-hidden'>
             {/* Entête du composant */}
             {/* <Navbar isSalonPage={true} /> */}
             <Navbar
@@ -641,14 +641,14 @@ const SalonChoice = () => {
                 {isLoaded && positions.length > 0 &&
                     <div
                         // style={{ height: screenSize.width <= 500 ? '' : getFilteredHeight(false), maxHeight: getFilteredHeight(true) }} 
-                        className='w-full h-max mt-4  grid grid-rows-1 lg:grid-cols-2 gap-0 lg:gap-3 '>
+                        className='w-full lg:h-full h-[450px] mt-4  grid grid-rows-2 lg:grid-cols-2 gap-0 lg:gap-3 '>
 
                         {/* Carte Google affichée uniquement si des salons sont disponibles */}
                         {
                             positions.length > 0 &&
                             <div
                                 // style={{ height: screenSize.width <= 500 ? getFilteredHeight(false) : '80%' }} 
-                                style={{ height: getFilteredHeight(false) }}
+                                //style={{ height: getFilteredHeight(false) }}
                                 className={` lg:top-0 lg:left-0 w-full rounded-lg overflow-hidden lg:z-10`}>
 
                                 {/*TODO USE salon.position when data are available  */}
@@ -731,7 +731,7 @@ const SalonChoice = () => {
                         {/* <div className='flex flex-row  gap-3 overflow-scroll'> */}
 
                         {/* Grid containing thumbnails */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6 pb-20 overflow-scroll content-start"
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6 pb-20 overflow-scroll content-start h-[950px]"
                             style={{ maxHeight: getHeightThumbnails() }}>
                             {/* VIGNETTES (ITERATIONS) */}
                             {filteredSalons.length > 0 && filteredSalons.map((fsalon, index) => {
@@ -739,16 +739,15 @@ const SalonChoice = () => {
                                     <div
                                         key={index}
                                         onClick={() => setSelectedSalon(fsalon)}
-                                        className={`flex w-full w-max[450px]  h-56 h-max[300px] bg-stone-100 rounded-2xl border hover:border-stone-400 cursor-pointer ${selectedSalon.id === fsalon.id && 'border-4 border-red-400 shadow-xl'}`}
-                                    // style={{ width: '100%', aspectRatio: '1/1', display: 'flex', flexDirection: 'column', minWidth: '200px', maxWidth: '450px', minHeight: '200px', maxHeight: '420px' }}
+                                        className={`relative flex w-full w-max[450px] h-56 h-max[300px] bg-stone-100 rounded-2xl border hover:border-stone-400 cursor-pointer ${selectedSalon.id === fsalon.id && 'border-4 border-red-400 shadow-xl'}`}
                                     >
                                         {selectedSalon.id === fsalon.id && (
-                                            <div className="absolute bottom-0 translate-y-1/2 left-1/2 transform -translate-x-1/2 w-4 h-4 bg-red-500 rounded-full flex items-center justify-center">
-                                                <span className="text-white font-bold justify-center items-center">
-                                                    <CheckOutlinedIcon style={{ width: '15px', height: '15px' }} />
-                                                </span>
+                                            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 bg-white border-2 border-red-400 rounded-full mx-10 px-1">
+                                                {/* Mettez ici le style pour l'icône, vous pourriez avoir besoin d'ajuster le translate-y pour la centrer comme vous le souhaitez */}
+                                                <CheckOutlinedIcon style={{ color: 'red', width: '15px', height: '15px' }} />
                                             </div>
                                         )}
+
 
 
                                         {/* Contenu de la vignette */}
