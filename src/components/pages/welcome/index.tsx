@@ -287,7 +287,7 @@ const Welcome = () => {
   const checkPreview = async () => {
     console.log("Fetching Image")
     let resp = await user_api.getPreviewImage(selectedHaircut.id);
-    setPreviewImage(resp.data.data)
+    setPreviewImage(resp.data.data.url)
     if(resp.data.message == "Haircuts has been fetched before"){
       if(resp.data.data.status == 'Done'){
         setIsPreview(!isPreview)
