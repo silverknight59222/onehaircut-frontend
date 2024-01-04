@@ -3,15 +3,19 @@ import React, { useState, useEffect } from "react";
 import { ColorsThemeA } from "@/components/utilis/Themes";
 
 interface ServicesFilterProps {
-  onTypeSelect: (arg0: string[]) => void
+  onTypeSelect: (arg0: string[]) => void,
+  onLengthSelect: (arg0: string[]) => void
 }
 
-const ServicesFilter = ({ onTypeSelect }: ServicesFilterProps) => {
+const ServicesFilter = ({ onTypeSelect, onLengthSelect }: ServicesFilterProps) => {
   const [showDesktopType, setShowDesktopType] = useState(false);
+  const [showDesktopLength, setShowDesktopLength] = useState(false);
   const [typeFilters, setTypeFilters] = useState<string[]>([]);
+  const [lengthFilters, setLengthFilters] = useState<string[]>([]);
   const servicesDesktopRef =
     React.useRef() as React.MutableRefObject<HTMLInputElement>;
-
+  const LengthDesktopRef =
+    React.useRef() as React.MutableRefObject<HTMLInputElement>;
   // Ajout d'une propriété 'nameFr' pour le nom en français
   const types = [
     {
@@ -48,6 +52,21 @@ const ServicesFilter = ({ onTypeSelect }: ServicesFilterProps) => {
     },
   ];
 
+  const Length = [
+    {
+      name: "Short",
+      nameFr: "Court",
+    },
+    {
+      name: "Medium",
+      nameFr: "Moyen",
+    },
+    {
+      name: "Long",
+      nameFr: "Long",
+    },
+  ];
+
   const onClickTypeCheckbox = (item: string) => {
     // Utilisez 'value' pour la gestion des états, pas 'nameFr'
     if (typeFilters.includes(item)) {
@@ -56,10 +75,21 @@ const ServicesFilter = ({ onTypeSelect }: ServicesFilterProps) => {
       setTypeFilters((prev) => [...prev, item]);
     }
   };
+  const onClickLengthCheckbox = (length: string) => {
+    if (lengthFilters.includes(length)) {
+      setLengthFilters(lengthFilters.filter((item) => item !== length));
+    } else {
+      setLengthFilters((prev) => [...prev, length]);
+    }
+  };
 
   useEffect(() => {
     onTypeSelect && onTypeSelect(typeFilters)
   }, [typeFilters])
+
+  useEffect(() => {
+    onLengthSelect && onLengthSelect(lengthFilters)
+  }, [lengthFilters])
 
   const closeSelectBox = ({ target }: MouseEvent): void => {
     if (!servicesDesktopRef.current?.contains(target as Node)) {
@@ -82,7 +112,10 @@ const ServicesFilter = ({ onTypeSelect }: ServicesFilterProps) => {
           : (servicesDesktopRef ? "rounded-xl py-1 px-6 ml-2 hover:bg-stone-200 text-black font-semibold cursor-pointer" : "hover:bg-white rounded-xl px-6 ml-2")}
       >
         <p
-          onClick={() => setShowDesktopType(!showDesktopType)}
+          onClick={() => {
+            setShowDesktopLength(false)
+            setShowDesktopType(!showDesktopType)
+          }}
         >
           Type
         </p>
@@ -109,6 +142,41 @@ const ServicesFilter = ({ onTypeSelect }: ServicesFilterProps) => {
             })}
           </div>
         }
+      </div>
+      <div ref={LengthDesktopRef}
+        className={lengthFilters.length > 0
+          ? `rounded-xl py-2 cursor-pointer px-6 ml-2 ${ColorsThemeA.filterSelected} text-white font-semibold`
+          : (LengthDesktopRef ? "rounded-xl py-1 px-6 ml-2 hover:bg-stone-200 text-black font-semibold cursor-pointer" : "hover:bg-white rounded-xl px-6 ml-2")}
+      >
+        <p
+          onClick={() => {
+            setShowDesktopType(false)
+            setShowDesktopLength(!showDesktopLength)
+          }}
+        >
+          Length
+        </p>
+        {showDesktopLength && (
+          <div className="absolute  z-20 flex flex-col items-center justify-center w-40 pt-5 px-2 lg:px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
+            {Length.map((item, index) => {
+              return (
+                <div
+                  key={index}
+                  className="flex w-full cursor-pointer mb-[19px]  transform hover:scale-110 text-sm "
+                  onClick={() => onClickLengthCheckbox(item.nameFr)} // Conservez 'item.name' pour la logique interne
+                >
+                  <div
+                    className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  transform hover:scale-105 ${lengthFilters.includes(item.nameFr) ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}
+                  >
+                    <CheckedIcon />
+                  </div>
+                  <p className="ml-2">{item.nameFr}</p> {/* Utilisez 'item.nameFr' pour l'affichage */}
+                </div>
+              );
+            })}
+          </div>
+
+        )}
       </div>
     </>
   );

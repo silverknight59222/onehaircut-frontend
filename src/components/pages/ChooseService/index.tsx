@@ -33,7 +33,8 @@ export interface Service {
     percent: string;
     colors: Color[];
     type: string;
-    requirements: []
+    requirements: [];
+    length: string;
 }
 
 // Composant principal
@@ -52,6 +53,7 @@ const ServiceChoose = () => {
     const [filteredType, setFilteredType] = useState<string[]>([]);
     const [filteredService, setFilteredServices] = useState<Services[]>([]);
     const { loadingView } = userLoader();
+    const [lengthSelect, setLengthFilters] = useState<string[]>([]);
     const router = useRouter()
     // useRef est utilisé pour créer une référence mutable qui conserve la même .current entre les renders
     const dropdownRef = React.useRef() as React.MutableRefObject<HTMLInputElement>
@@ -64,7 +66,7 @@ const ServiceChoose = () => {
         if (serviceIds) {
             const serviceIdsList: string[] = [];
             JSON.parse(serviceIds).forEach(service => {
-                if(service.type !== 'discount'){
+                if (service.type !== 'discount') {
                     serviceIdsList.push(String(service.id))
                 }
             });
@@ -159,7 +161,20 @@ const ServiceChoose = () => {
                 service.name.toLowerCase().includes(search.toLowerCase())
             );
         }
-        if (filteredType.length > 0) {
+        if(filteredType.length > 0 && lengthSelect.length > 0) {
+            list.forEach((service) => {
+                filteredType.forEach((filter) => {
+                    if(service.type === filter.toLowerCase()){
+                        lengthSelect.forEach((filter) => {
+                            if (service.length === filter.toLowerCase()) {
+                                filteredServices.push(service);
+                            }
+                        });
+                    }
+                });
+            });
+        }
+        else if (filteredType.length > 0) {
             list.forEach((service) => {
                 filteredType.forEach((filter) => {
                     if (service.type === filter.toLowerCase()) {
@@ -168,8 +183,17 @@ const ServiceChoose = () => {
                 });
             });
         }
+        else if(lengthSelect.length > 0) {
+            list.forEach((service) => {
+                lengthSelect.forEach((filter) => {
+                    if (service.length === filter.toLowerCase()) {
+                        filteredServices.push(service);
+                    }
+                });
+            });
+        }
 
-        if (search && !(filteredType.length > 0)) {
+        if (search && !(filteredType.length > 0) && !(lengthSelect.length > 0)) {
             setFilteredServices(list);
         } else {
             setFilteredServices(filteredServices);
@@ -178,7 +202,7 @@ const ServiceChoose = () => {
 
     // Affichage des services.
     const showServices = () => {
-        if (filteredType.length > 0 || search !== "") {
+        if (filteredType.length > 0 || lengthSelect.length > 0 || search !== "") {
             return filteredService;
         } else {
             return services;
@@ -218,7 +242,7 @@ const ServiceChoose = () => {
     // Filtrage des services lors de la modification de la recherche ou du type filtré.
     useEffect(() => {
         filteredServicesHandler()
-    }, [search, filteredType])
+    }, [search, filteredType, lengthSelect])
 
     //InfoModal
     const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
@@ -236,6 +260,7 @@ const ServiceChoose = () => {
         <div>
             <Navbar
                 isServicesPage={true}
+                onLengthSelect={(length) => setLengthFilters(length)}
                 onTypeSelect={(type) => setFilteredType(type)}
                 onServiceSearch={(value: string) => setSearch(value)} />
             <div className='flex items-center cursor-pointer mt-10 mb-8 sm:mx-10 2xl:mx-14 text-stone-800' onClick={() => router.push('/')}>
