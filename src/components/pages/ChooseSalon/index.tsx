@@ -500,31 +500,13 @@ const SalonChoice = () => {
         }
     }
 
-    const getFilteredHeight = (isMaxHeight: boolean) => {
-        let result: number | string = 450
-
-        ///// FROM OLD DEV
-        // if (screen.width > 500 && (screen.width < screen.height)) {
-        //     // result = screenSize.height - (326 + (0.3 * (screenSize.height - 766))) 
-
-        // }
-        // else {
-        //     if (isMaxHeight) {
-        //         result = 'none'
-        //     }
-        // }
-
-        // console.log('result', result)
-        // return result
+    // function giving the height of the google map depending on the size of the screen
+    const getFilteredHeight = () => {
         if (screen.width >= 1024) {
-            result = screen.height / 2
+            return '70vh';  // 70% of the screen
+        } else {
+            return '35vh';  // 35% of the screen
         }
-        else {
-            result = screenSize.height / 4
-        }
-        console.log('screen width', screen.width)
-        console.log('result', result)
-        return result
     }
 
     // give back the height of the thumbnails 
@@ -535,10 +517,10 @@ const SalonChoice = () => {
             result = screen.height / 2
         }
         else if (screen.width < 1024) {
-            result = screen.height / 1, 5
+            result = '35vh' // 35% of the screen
         }
         else {
-            result = screenSize.height
+            result = '70vh' // 70% of the screen
         }
         console.log('screen width', screen.width)
         console.log('result', result)
@@ -557,7 +539,7 @@ const SalonChoice = () => {
 
     // Rendu du composant
     return (
-        <div className='w-full h-full overflow-hidden'>
+        <div className='w-full h-screen  overflow-hidden'>
             {/* Entête du composant */}
             {/* <Navbar isSalonPage={true} /> */}
             <Navbar
@@ -612,7 +594,7 @@ const SalonChoice = () => {
             />
 
             {/* Corps du composant */}
-            <div className='w-full h-full flex flex-col items-center justify-center px-6'>
+            <div className='w-full flex-col items-center justify-center px-6'>
                 {isLoading && loadingView()}
 
                 {/* Texte indiquant le nombre de salons */}
@@ -640,15 +622,13 @@ const SalonChoice = () => {
                 {/* Conteneur principal pour les salons et la carte */}
                 {isLoaded && positions.length > 0 &&
                     <div
-                        // style={{ height: screenSize.width <= 500 ? '' : getFilteredHeight(false), maxHeight: getFilteredHeight(true) }} 
-                        className='w-full lg:h-full h-[450px] mt-4  grid grid-rows-2 lg:grid-cols-2 gap-0 lg:gap-3 '>
+                        className='w-full lg:h-screen mt-4  grid grid-rows-1 lg:grid-cols-2 gap-0 lg:gap-3 content-start '>
 
                         {/* Carte Google affichée uniquement si des salons sont disponibles */}
                         {
                             positions.length > 0 &&
                             <div
-                                // style={{ height: screenSize.width <= 500 ? getFilteredHeight(false) : '80%' }} 
-                                //style={{ height: getFilteredHeight(false) }}
+                                style={{ height: getFilteredHeight() }}
                                 className={` lg:top-0 lg:left-0 w-full rounded-lg overflow-hidden lg:z-10`}>
 
                                 {/*TODO USE salon.position when data are available  */}
@@ -727,12 +707,10 @@ const SalonChoice = () => {
                             </div>
                         }
 
-                        {/* Section affichant les vignettes des salons */}
-                        {/* <div className='flex flex-row  gap-3 overflow-scroll'> */}
-
                         {/* Grid containing thumbnails */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6 pb-20 overflow-scroll content-start h-[950px]"
-                            style={{ maxHeight: getHeightThumbnails() }}>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6 pb-20 overflow-scroll content-start ]"
+                            style={{ maxHeight: getHeightThumbnails() }}
+                        >
                             {/* VIGNETTES (ITERATIONS) */}
                             {filteredSalons.length > 0 && filteredSalons.map((fsalon, index) => {
                                 return (
