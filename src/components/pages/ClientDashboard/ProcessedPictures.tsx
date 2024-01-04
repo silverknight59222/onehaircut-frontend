@@ -45,7 +45,7 @@ const ProcessedPictures = () => {
                     <div className='flex flex-row items-center justify-center pb-10'>
                         <div className="pr-4">
                             <p className="text-black font-medium text-3xl text-center">
-                                Cabine d'essayage
+                                Cabines d'essayages
                             </p>
                         </div>
                         {/* Info icon  */}
