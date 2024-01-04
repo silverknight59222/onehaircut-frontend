@@ -5,6 +5,7 @@ import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import Image from "next/image";
 import { useState } from 'react';
+import { LogoIcon } from '../utilis/Icons';
 
 
 
@@ -29,8 +30,8 @@ const CustomCard: React.FC<CustomCardProps> = ({
   const [progress, setProgress] = useState(0);
 
   const getProgress = async () => {
-      let progress = (passed_interval / 5) * 100;
-      setProgress(progress)
+    let progress = (passed_interval / 5) * 100;
+    setProgress(progress)
   }
 
 
@@ -40,7 +41,7 @@ const CustomCard: React.FC<CustomCardProps> = ({
   React.useEffect(() => {
     // Crée un intervalle qui met à jour la progression toutes les 500 millisecondes
     getProgress()
-    if(progress < 100) {
+    if (progress < 100) {
       const timer = setInterval(() => {
         setProgress((oldProgress) => {
           // Réinitialise la progression à 0 une fois qu'elle atteint 100
@@ -52,7 +53,7 @@ const CustomCard: React.FC<CustomCardProps> = ({
           return Math.min((oldProgress + diff / 600), 100);
         });
       }, 500);
-  
+
       // Nettoie l'intervalle lorsque le composant est démonté
       return () => {
         clearInterval(timer);
@@ -82,8 +83,10 @@ const CustomCard: React.FC<CustomCardProps> = ({
               />
             </div>
           ) : (
-            <div className="h-full w-full flex items-center justify-center">
-              Image non disponible / Image on process
+            <div className="p-4 max-w-sm w-full mx-auto justify-center items-center">
+              <div className="animate-pulse flex space-x-4">
+                <LogoIcon />
+              </div>
             </div>
           )}
 
@@ -91,15 +94,15 @@ const CustomCard: React.FC<CustomCardProps> = ({
 
 
 
-        {/* PROGRESS BAR */}
+        {/*PROGRESS BAR*/}
         <div className="p-1 w-62"> {/* Ajustez la largeur en conséquence */}
           <div className="flex justify-center">
-            {/* Ajoutez une classe spécifique à la barre de progression */}
+            {/* Appliquez une condition pour changer la couleur en fonction de la progression */}
             <LinearProgress
               variant="determinate"
               value={progress}
-              color="warning"
-              className="rounded-full h-1 w-full mr-4 ml-4"
+              color={progress >= 100 ? 'success' : 'warning'} // Changez 'warning' par 'success' lorsque progress est >= 100
+              className={`rounded-full h-1 w-full mr-4 ml-4 ${progress >= 100 ? 'bg-green-300' : ''}`} // Vous pouvez également appliquer des classes conditionnelles pour le style
             />
           </div>
           {/* Label affichant le taux de progression sans chiffres après la virgule et centré */}
