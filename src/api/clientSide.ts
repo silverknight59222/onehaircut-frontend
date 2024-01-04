@@ -108,17 +108,20 @@ const user_api = {
     getSaloonInformation: async () => {
         return await request.get(`/user_profile`);
     },
-    getHaircutsByName : async () => {
+    getHaircutsByName: async () => {
         return await request.get('/haircuts_by_name');
     },
-    getHaircutFilteredByName : async (data : any) => {
+    getHaircutFilteredByName: async (data: any) => {
         return await request.post('/get_haircuts_by_name', data);
     },
-    getPreviewImage: async(haircut_id : number) => {
+    getPreviewImage: async (haircut_id: number) => {
         return await request.get(`/user_preview/${haircut_id}`);
     },
-    getLatestPreviewImage: async()=>  {
+    getLatestPreviewImage: async () => {
         return await request.get('/user_fetched_image');
+    },
+    deletePreviewImage: async (generated_id: number) => {
+        return await request.get(`/del_preview/${generated_id}`);
     },
 }
 export { client, user_api };
