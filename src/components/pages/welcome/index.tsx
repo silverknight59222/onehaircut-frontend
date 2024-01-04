@@ -48,7 +48,7 @@ const Welcome = () => {
   const showSnackbar = useSnackbar(); // Custom hook to show snackbars
   const [isModal, setIsModal] = useState(false) // State to control the visibility of the modal
   const [isPreview, setIsPreview] = useState(false); // Initialiser à false pour afficher la coiffure par défaut
-  const [isOnProgress, setIsOnProgress] = useState(true);
+  const [isOnProgress, setIsOnProgress] = useState('');
   const [isOnPreview, setIsOnPreview] = useState(false);
   const [selectedHaircut, setSelectedHaircut] = useState({ id: 0, name: '', image: '' }) // Store the selected haircut
   const [wishlist, setWishlist] = useState<string[]>([]) // Store user’s wishlist of haircuts
@@ -287,30 +287,35 @@ const Welcome = () => {
   }
 
   const checkPreview = async () => {
-    setIsOnPreview(!isOnPreview)
-    setIsOnProgress(false)
-    console.log("Fetching Image")
-  }
-
-  const getPreview = async () => {
-    let resp = await user_api.getPreviewImage(selectedHaircut.id);
-    setPreviewImage(resp.data.data.url)
-    if (resp.data.message == "Haircuts has been fetched before") {
-      if (resp.data.data.status == 'Done') {
-        setIsPreview(!isPreview)
-        setIsOnProgress(false);
+    if (isPreview == false) {
+      setIsPreview(!isPreview)
+      setIsOnPreview(true)
+      console.log("Fetching Image")
+      let resp = await user_api.getPreviewImage(selectedHaircut.id);
+      setIsOnProgress(resp.data.data.status)
+      if (resp.data.data.message == 'There is problem on fetching data') {
+        showSnackbar("error", "Error on fetching data, please make sure it's open times")
       }
       else {
-        setIsOnProgress(true)
+        setPreviewImage(resp.data.data.url)
+        if (resp.data.message == "Haircuts has been fetched before") {
+          if (resp.data.data.status == 'Done') {
+
+          }
+        }
+        console.log("Preview Image")
       }
+    }
+    else {
+      setIsOnPreview(false)
+      setIsPreview(!isPreview)
     }
   }
 
   useEffect(() => {
-    if (isOnPreview == true) {
-      getPreview()
-    }
-  }, [isOnPreview])
+    console.log('Is On Preview' + isOnPreview)
+    console.log('is Preview' + isPreview)
+  }, [isOnPreview, isPreview])
 
   const onServiceOnlyClick = () => {
     // Définir le nom de la coiffure à "aucune" et appeler onClickHaircut
@@ -352,7 +357,7 @@ const Welcome = () => {
   useEffect(() => {
     if (isModal) {
       setIsPreview(false);
-      setIsOnProgress(false);
+      // setIsOnProgress(false);
     }
   }, [isModal]);
 
@@ -452,18 +457,19 @@ const Welcome = () => {
           <BaseModal close={() => setIsModal(false)}>
             <div className="flex flex-col items-center justify-center my-4 relative">
               <div className="relative w-52 h-52 sm:w-72 sm:h-72 md:w-96 md:h-96 mb-5">
-                {isPreview ?
-                  <Image
+                {isPreview ? isOnPreview == true ? (
+                  <>
+                    <p>Picture is on progress</p>
+                  </>
+                ) :
+                  previewImage && <Image
+                    // loader={ () => previewImage }
                     src={previewImage !== '' ? previewImage : `https://api.onehaircut.com/base_null_img.jpg`}
                     fill={true}
                     alt=""
                     className="rounded-xl w-full h-full object-cover"
                   />
-                  : isOnProgress ? (
-                    <>
-                      <p>Picture is on progress</p>
-                    </>
-                  ) : (
+                  : (
                     <Image
                       src={selectedHaircut.image.includes('http') ? selectedHaircut.image : `https://api.onehaircut.com${selectedHaircut.image}`}
                       fill={true}
@@ -478,7 +484,7 @@ const Welcome = () => {
                   onClick={checkPreview}
                   className={`flex items-center justify-center font-medium w-full md:w-52 h-14 ${isPreview ? Theme_A.button.medGreydButton : Theme_A.button.medWhiteColoredButton}`}
                 >
-                  {isPreview || isOnProgress ? 'Image de référence' : 'Prévisualiser sur moi'}
+                  {isPreview ? 'Image de référence' : 'Prévisualiser sur moi'}
                 </button>
               </div>
             </div>
