@@ -39,6 +39,18 @@ const nextConfig = {
             port: '8000',
             // pathname: '/public/api/web/**',
           },
+          {
+            protocol: 'http',
+            hostname: '13.43.175.47',
+            // port: '8000',
+            // pathname: '/public/api/web/**',
+          },
+          {
+            protocol: 'https',
+            hostname: '13.43.175.47',
+            // port: '8000',
+            // pathname: '/public/api/web/**',
+          },
         ],
         domains : ['localhost'],
       },
