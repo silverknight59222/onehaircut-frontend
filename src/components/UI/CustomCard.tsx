@@ -15,6 +15,8 @@ type CustomCardProps = {
   imageUrl: string;
   initialProgress: number;
   passed_interval: number,
+  deleteCB: Function,
+  selectCB: Function,
 };
 
 
@@ -25,6 +27,8 @@ const CustomCard: React.FC<CustomCardProps> = ({
   imageUrl,
   initialProgress,
   passed_interval,
+  deleteCB,
+  selectCB
 }) => {
   // État local pour stocker la valeur de la progression de la barre
   const [progress, setProgress] = useState(0);
@@ -115,11 +119,11 @@ const CustomCard: React.FC<CustomCardProps> = ({
         {/* BOUTONS */}
         <div className="flex justify-center space-x-4 p-1"> {/* Ajoutez la classe "justify-center" ici */}
           {/* Bouton de suppression */}
-          <button className={`${Theme_A.button.medBlackColoredButton}`}>
+          <button className={`${Theme_A.button.medBlackColoredButton}`} onClick={(index) => deleteCB(index)}>
             Supprimer
           </button>
           {/* Bouton de sélection */}
-          <button className={`${Theme_A.button.mediumGradientButton}`}>
+          <button className={`${Theme_A.button.mediumGradientButton}`} onClick={(index) => selectCB(index)}>
             Sélectionner
           </button>
         </div>

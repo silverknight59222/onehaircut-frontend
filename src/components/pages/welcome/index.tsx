@@ -312,10 +312,6 @@ const Welcome = () => {
     }
   }
 
-  useEffect(() => {
-    console.log('Is On Preview' + isOnPreview)
-    console.log('is Preview' + isPreview)
-  }, [isOnPreview, isPreview])
 
   const onServiceOnlyClick = () => {
     // Définir le nom de la coiffure à "aucune" et appeler onClickHaircut

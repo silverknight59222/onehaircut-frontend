@@ -454,7 +454,4 @@ const Portrait = () => {
 };
 
 export default Portrait;
-function showSnackbar(arg0: string, arg1: string) {
-    throw new Error("Function not implemented.");
-}
 
