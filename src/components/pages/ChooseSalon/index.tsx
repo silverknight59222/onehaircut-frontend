@@ -128,10 +128,7 @@ const SalonChoice = () => {
             map.fitBounds(bounds);
         }
     }
-    // const { isLoaded } = useJsApiLoader({
-    //     googleMapsApiKey: 'AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E',
-    //     libraries: ['places'],
-    // })
+
     const filteredCityHandler = async () => {
         //const filteredSalons = salons
         let filteredSalonsFunc = salons.filter((salon) => {
