@@ -45,13 +45,14 @@ interface Navbar {
   onMobileFilters?: (arg0: string) => void
   onRangeFilters?: (arg0: string[]) => void
   onTypeSelect?: (arg0: string[]) => void,
+  onLengthSelect?: (arg0: string[]) => void,
   onRatingFilter?: (arg0: number[]) => void,
   onCountryFilter?: (arg0: string) => void,
   onAvailabilityFilter?: (arg0: string[]) => void,
   onNewSalonFilter?: (arg0: boolean) => void
 }
 
-const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideSearchBar, onHairNameFilters, onTypeSelect, onSearch, onServiceSearch, onGenderFilter, onEthnicityFilters, onLengthFilters, onMobileFilters, onCitySearch, onCityMapSearch, onNameSearch, onRangeFilters, onRatingFilter, onCountryFilter, onAvailabilityFilter, onNewSalonFilter }: Navbar) => {
+const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideSearchBar, onHairNameFilters, onTypeSelect, onLengthSelect, onSearch, onServiceSearch, onGenderFilter, onEthnicityFilters, onLengthFilters, onMobileFilters, onCitySearch, onCityMapSearch, onNameSearch, onRangeFilters, onRatingFilter, onCountryFilter, onAvailabilityFilter, onNewSalonFilter }: Navbar) => {
   const [isDropdown, setIsDropdown] = useState(false);
   const [showDesktopGender, setShowDesktopGender] = useState(false);
   const [showDesktopLength, setShowDesktopLength] = useState(false);
@@ -566,7 +567,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
               </>
               :
               isServicesPage ?
-                <ServicesFilter onTypeSelect={onTypeSelect ? onTypeSelect : () => { }} />
+                <ServicesFilter onTypeSelect={onTypeSelect ? onTypeSelect : () => { }} onLengthSelect={onLengthSelect ? onLengthSelect : () => { }} />
                 :
                 isSalonPage ?
                   <HairsalonFilter />

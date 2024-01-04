@@ -37,7 +37,7 @@ const confidentialityPage = () => {
         <h1 className={`my-3 ${Theme_A.textFont.headerH4}`}>
           Politique de Confidentialité</h1>
         <p className='pb-6'>
-          La protection de vos données personnelles est une priorité pour [Nom de l'entreprise]. Nous nous engageons à respecter votre vie privée et à assurer la confidentialité de toutes les informations que vous nous confiez. Cette politique de confidentialité explique comment nous collectons, utilisons, partageons et protégeons vos données personnelles lorsque vous visitez notre site web.
+          La protection de vos données personnelles est une priorité pour Onehaircut. Nous nous engageons à respecter votre vie privée et à assurer la confidentialité de toutes les informations que vous nous confiez. Cette politique de confidentialité explique comment nous collectons, utilisons, partageons et protégeons vos données personnelles lorsque vous visitez notre site web.
         </p>
         <h1 className={`my-3 ${Theme_A.textFont.headerH4}`}>
           Collecte de données personnelles</h1>
@@ -62,7 +62,7 @@ const confidentialityPage = () => {
         <h1 className={`my-3 ${Theme_A.textFont.headerH4}`}>
           Droits des utilisateurs</h1>
         <p className='pb-6'>
-          Vous avez le droit d'accéder à vos données personnelles, de les rectifier, de les supprimer, de vous opposer au traitement ou de demander leur portabilité. Pour exercer ces droits, veuillez nous contacter à l'adresse [adresse e-mail de contact]. Nous répondrons à votre demande dans les meilleurs délais.
+          Vous avez le droit d'accéder à vos données personnelles, de les rectifier, de les supprimer, de vous opposer au traitement ou de demander leur portabilité. Pour exercer ces droits, veuillez nous contacter à l'adresse contact@onehaircut.com. Nous répondrons à votre demande dans les meilleurs délais.
         </p>
 
 

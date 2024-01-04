@@ -126,6 +126,7 @@ interface Color{
 }
 
 export type Services={
+    length: string;
 	id: number
 	name: string,
 	description: string,
