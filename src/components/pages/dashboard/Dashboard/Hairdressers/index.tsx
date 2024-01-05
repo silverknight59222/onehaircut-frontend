@@ -297,7 +297,7 @@ const Hairdressers = () => {
         .then((resp) => {
           if (resp.data.data.length) {
             setHairDressers(resp.data.data);
-            if(resp.data.data.length > 0){
+            if (resp.data.data.length > 0) {
               setHasHairDresser(true)
             }
           }
@@ -321,15 +321,26 @@ const Hairdressers = () => {
     }
   };
   const onDeleteHairDresser = async () => {
-    await dashboard.deleteHairDresser(hairDresser.id).then((res) => {
-      getAllHairDresser();
-      showSnackbar("Coiffeur supprimé", res.data.message);
-      setHairDresser({ ...defaultHairDresser });
-      setProfileImage(() => "");
-      setProfileImageBinary(() => "");
-      setAvatarIndex(1);
-      setIsEdit(false);
-    });
+    // check if this hairdresser is owning the salon
+    const temp = getLocalStorage("user");
+    const user = temp ? JSON.parse(temp) : null;
+    if (user.role == 'salon_professional') { // TODO add the email of the salon instead of ''
+      // deleting prohibited
+
+      showSnackbar("error", "Cet email est lié au salon");
+    }
+    else {
+      //
+      await dashboard.deleteHairDresser(hairDresser.id).then((res) => {
+        getAllHairDresser();
+        showSnackbar("Coiffeur supprimé", res.data.message);
+        setHairDresser({ ...defaultHairDresser });
+        setProfileImage(() => "");
+        setProfileImageBinary(() => "");
+        setAvatarIndex(1);
+        setIsEdit(false);
+      });
+    }
   };
   const selectHairDresser = (hairDresser: Hairdresser) => {
     setIsEdit(true);
