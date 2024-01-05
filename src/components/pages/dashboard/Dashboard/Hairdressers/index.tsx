@@ -322,10 +322,12 @@ const Hairdressers = () => {
   };
   const onDeleteHairDresser = async () => {
     // check if this hairdresser is owning the salon
-    if (hairDresser.email == '') { // TODO add the email of the salon instead of ''
+    const temp = getLocalStorage("user");
+    const user = temp ? JSON.parse(temp) : null;
+    if (user.role == 'salon_professional') { // TODO add the email of the salon instead of ''
       // deleting prohibited
 
-      showSnackbar("Suppression interdite", "Cet email est lié au salon");
+      showSnackbar("error", "Cet email est lié au salon");
     }
     else {
       //
