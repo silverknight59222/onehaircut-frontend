@@ -219,7 +219,7 @@ const Unavailability = () => {
     };
 
 
-    // ACTION SLORS DU CHOIX ENTRE ETABLISSEMENT ET Coiffeurs
+    // ACTIONS LORS DU CHOIX ENTRE ETABLISSEMENT ET Coiffeurs
     const handleEntityClick = (role: string) => {
         setUnavailabilities([]);
         setTimeState(false);
@@ -246,21 +246,23 @@ const Unavailability = () => {
     const [unavailabilities, setUnavailabilities] = useState<UnavailabilityData[]>([]); // Déclaration de la variable unavailabilities
 
 
-    // useEffect(() => {
-    //     console.log(unavailabilities)
-    // }, [unavailabilities])
+
     useEffect(() => {
         console.log(unavailabilities)
     }, [unavailabilities]);
+
     const columnsToDisplay = selectedEntity === "Coiffeurs" ? HairdresserColumns : SalonColumns;
 
     // Dans le rendu JSX, utilisez columnsToDisplay comme colonnes à afficher dans le composant CustomizedTable
     <CustomizedTable columns={columnsToDisplay} data={unavailabilities} cB={setUnavailList} />
 
     const [reason, setReason] = useState(""); // État local pour la raison
+
     const handleSubmitClick = async () => {
         let obj = hairDresserList.find(o => o.name == selectedHD);
+        // CHeck if it is for just a hairdresser or for the salon
         if (obj != undefined) {
+            // only for hairdresser
             if (selectedDates.length > 0) {
                 // Utilisez l'état local pour la raison
                 const newUnavailability = {
@@ -275,10 +277,10 @@ const Unavailability = () => {
                 // Ajoutez la nouvelle donnée d'indisponibilité à votre tableau de données
                 let resp = await salonApi.addHairDresserUnavailability(newUnavailability);
                 if (resp.data.status == 200) {
-                    showSnackbar("success", "Hair Dresser Unavailability added.");
+                    showSnackbar("success", "Indisponibilités ajoutées");
                 }
                 else {
-                    showSnackbar("error", "Hair Dresser Unavailability process cannot be proceed.");
+                    showSnackbar("error", "Erreur lors de l'enregistrement des indisponibilités");
                 }
                 if (resp.data.data.length > 1) {
                     setUnavailabilities(unavailabilities.concat(resp.data.data));
@@ -289,6 +291,7 @@ const Unavailability = () => {
             }
         }
         else {
+            // for the complete salon
             console.log(salon)
             if (selectedDates.length > 0) {
                 const newSalonUnavailability = {
@@ -300,10 +303,10 @@ const Unavailability = () => {
                 };
                 let resp = await salonApi.addSalonUnavailability(newSalonUnavailability);
                 if (resp.data.status == 200) {
-                    showSnackbar("success", "Hair Dresser Unavailability added.");
+                    showSnackbar("success", "Indisponibilités ajoutées");
                 }
                 else {
-                    showSnackbar("error", "Hair Dresser Unavailability process cannot be proceed.");
+                    showSnackbar("error", "Erreur lors de l'enregistrement des indisponibilités");
                 }
                 if (resp.data.data.length > 1) {
                     setUnavailabilities(unavailabilities.concat(resp.data.data));
