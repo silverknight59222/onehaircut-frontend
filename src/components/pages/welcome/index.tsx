@@ -473,13 +473,13 @@ const Welcome = () => {
                     </div>
 
                     <p className='flex space-x-2 justify-center items-center bg-white h-96'>
-                      <p className='h-3 w-3 bg-red-600 rounded-full animate-bounce [animation-delay:-0.9s]'></p>
-                      <p className='h-3 w-3 bg-red-600 rounded-full animate-bounce [animation-delay:-0.75s]'></p>
-                      <p className='h-3 w-3 bg-red-500 rounded-full animate-bounce [animation-delay:-0.6s]'></p>
-                      <p className='h-3 w-3 bg-red-500 rounded-full animate-bounce [animation-delay:-0.35s]'></p>
-                      <p className='h-3 w-3 bg-orange-500 rounded-full animate-bounce [animation-delay:-0.3s]'></p>
-                      <p className='h-3 w-3 bg-orange-500 rounded-full animate-bounce [animation-delay:-0.15s]'></p>
-                      <p className='h-3 w-3 bg-orange-400 rounded-full animate-bounce'></p>
+                      <p className='h-5 w-5 bg-red-600 rounded-full animate-bounce [animation-delay:-0.9s]'></p>
+                      <p className='h-5 w-5 bg-red-600 rounded-full animate-bounce [animation-delay:-0.75s]'></p>
+                      <p className='h-5 w-5 bg-red-500 rounded-full animate-bounce [animation-delay:-0.6s]'></p>
+                      <p className='h-5 w-5 bg-red-500 rounded-full animate-bounce [animation-delay:-0.35s]'></p>
+                      <p className='h-5 w-5 bg-orange-500 rounded-full animate-bounce [animation-delay:-0.3s]'></p>
+                      <p className='h-5 w-5 bg-orange-500 rounded-full animate-bounce [animation-delay:-0.15s]'></p>
+                      <p className='h-5 w-5 bg-orange-400 rounded-full animate-bounce'></p>
                     </p>
                   </>
                 ) :
