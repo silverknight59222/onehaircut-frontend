@@ -154,10 +154,10 @@ const ServicesFilter = ({ onTypeSelect, onLengthSelect }: ServicesFilterProps) =
             setShowDesktopLength(!showDesktopLength)
           }}
         >
-          Length
+          Longueur
         </p>
         {showDesktopLength && (
-          <div className="absolute  z-20 flex flex-col items-center justify-center w-40 pt-5 px-2 lg:px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
+          <div className="absolute  z-20 flex flex-col items-center justify-center w-32 mt-4 pt-5 px-2 lg:px-7 text-black rounded-2xl bg-white shadow-md shadow-stone-300">
             {Length.map((item, index) => {
               return (
                 <div

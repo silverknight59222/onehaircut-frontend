@@ -297,11 +297,16 @@ const Welcome = () => {
         showSnackbar("error", "Error on fetching data, please make sure it's open times")
       }
       else {
-        setPreviewImage(resp.data.data.url)
         if (resp.data.message == "Haircuts has been fetched before") {
           if (resp.data.data.status == 'Done') {
-
+            setPreviewImage(resp.data.data.url)
           }
+          else {
+            setPreviewImage('')
+          }
+        }
+        else {
+          setPreviewImage('')
         }
         console.log("Preview Image")
       }
@@ -453,13 +458,13 @@ const Welcome = () => {
           <BaseModal close={() => setIsModal(false)}>
             <div className="flex flex-col items-center justify-center my-4 relative">
               <div className="relative w-52 h-52 sm:w-72 sm:h-72 md:w-96 md:h-96 mb-5">
-                {isPreview ? isOnPreview == true ? (
+                {isPreview ? isOnPreview == true && previewImage.length == 0 ? (
                   <>
                     <p>Picture is on progress</p>
                   </>
                 ) :
                   previewImage && <Image
-                    // loader={ () => previewImage }
+                    loader={ () => previewImage }
                     src={previewImage !== '' ? previewImage : `https://api.onehaircut.com/base_null_img.jpg`}
                     fill={true}
                     alt=""

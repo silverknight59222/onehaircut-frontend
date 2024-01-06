@@ -71,10 +71,12 @@ const ProcessedPictures = () => {
                                 Cabines d'essayages
                             </p>
                         </div>
+                        {/* {Fetched Today / Limit} TODO */}
+                        <p className='text-black font-medium text-2xl mr-4'>{fetchToday} / 5</p>
+
                         {/* Info icon  */}
-                        <InfoButton title_1={"Cabine"} content_1={"Cette page contient les photos comportant votre portrait et une coiffure demandée. Une fois la génération finie, elle sera visible sur cette page."} content_2="Un maximum de 5 photos peut être générer. Une fois les 5 photos atteintes, il vous faudra supprimer une image sur cette page, avant de pouvoir en régénérer une nouvelle." onOpenModal={undefined} />
-                        {/* {Fetched Today / Limit} */}
-                        <p>{fetchToday} / 5</p>
+                        <InfoButton title_1={"Cabine"} content_1={"Cette page contient les photos comportant votre portrait et une coiffure demandée. Une fois la génération finie, elle sera visible sur cette page. \n Un maximum de 5 photos peut être générer par jour."} content_2={"Il vous pouvez sélectionner ensuite cette coiffure directement. \n si l'image générée ne vous plaît pas ou bien que vous avez changé vos images de profil, \n vous pouvez supprimer et faire une nouvelle tentative."} onOpenModal={undefined} />
+
                     </div>
                     {/* Première ligne de cartes */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4  justify-center">
