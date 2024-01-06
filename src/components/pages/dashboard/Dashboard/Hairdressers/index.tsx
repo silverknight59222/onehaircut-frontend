@@ -258,10 +258,10 @@ const Hairdressers = () => {
           setProfileImageBinary(() => "");
           setIsEdit(false);
           setAvatarIndex(1);
-          showSnackbar("Données mises à jour", res.data.message);
+          showSnackbar("success", "Données mises à jour");
         })
         .catch((err) => {
-          showSnackbar("error", "Error Occured!");
+          showSnackbar("error", "Une erreur est apparue");
         })
         .finally(() => {
           setIsLoading(false);
@@ -274,10 +274,10 @@ const Hairdressers = () => {
           setHairDresser(() => defaultHairDresser);
           setProfileImage(() => "");
           setProfileImageBinary(() => "");
-          showSnackbar("Coiffeur ajouté", res.data.message);
+          showSnackbar("success", "Coiffeur ajouté");
         })
         .catch((err) => {
-          showSnackbar("error", "Error Occured!");
+          showSnackbar("error", "Erreur, verifier que l'email n'est pas déjà utilisé");
         })
         .finally(() => {
           setIsLoading(false);
