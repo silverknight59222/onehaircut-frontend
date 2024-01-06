@@ -301,6 +301,12 @@ const Welcome = () => {
           if (resp.data.data.status == 'Done') {
             setPreviewImage(resp.data.data.url)
           }
+          else {
+            setPreviewImage('')
+          }
+        }
+        else {
+          setPreviewImage('')
         }
         console.log("Preview Image")
       }
