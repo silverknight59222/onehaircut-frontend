@@ -152,8 +152,8 @@ const History = () => {
   };
   const [notifications, setNotifications] = useState({} as any);
   const fetchUserNotifications = async () => {
-      const { data } = await dashboard.userNotification();
-      setNotifications(data);
+    const { data } = await dashboard.userNotification();
+    setNotifications(data);
   }
   useEffect(() => {
     fetchUserNotifications();
@@ -260,10 +260,11 @@ const History = () => {
                           onClick={() => downloadBill(item)}
                           className={`${Theme_A.button.medWhiteColoredButton} mx-1`}>
                           Télecharger la facture</button>
-                        <button
+                        {/* TODO : re-enable once this functionality works */}
+                        {/* <button
                           onClick={() => rebook(item)}
                           className={`${Theme_A.button.mediumGradientButton} mx-1`}>
-                          Reserver à nouveau</button>
+                          Reserver à nouveau</button> */}
                       </div>
                       {/* <p className='absolute bottom-8 right-4 text-xs text-[#666]'>23/24</p> */}
                     </div>
