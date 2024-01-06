@@ -373,6 +373,14 @@ const Welcome = () => {
   const InfoContent_2 = `● Le choix d'une coiffure n'est pas obligatoire,<br /> Vous pouvez continuer et sélectionner une prestation.<br /> ● Il n'est pas possible de réserver un coiffeur sans avoir sélection soit une coiffure, soit une prestation. <br /> ● Si vous ne trouvez pas la coiffure qu'il vous faut, vous pouvez toujours opter pour une coiffure générique <br /> et expliquer vos attente au salon de coiffure.`;
   const VideoUrl = "";
 
+
+  const InfoTitle_3 = "Visualisation";
+  const InfoContent_3 = "Vous pouvez patienter pour observer la coiffure sur vous <br /> Vous pouvez également continuer de parcourir les coiffures <br /> et vous rendre dans la cabine d'essayage pour observer le résultat";
+  const InfoTitle_4 = "Résultat";
+  const InfoContent_4 = "Le résultat peut être plus ou moins précis et convainquant. <br /> Il ne s'agit que d'un apperçu vous permettant de mieux vous projeter. <br /> Une image de profil de qualité vous permettra d'obtenir de meilleurs résultats. <br /> Nous travaillons pour améliorer notre système continuellement";
+
+
+
   return (
     <>
       <Navbar isWelcomePage={true} onSearch={(value: string) => setSearch(value)} onGenderFilter={(gender) => setGenderFilters(gender)} onEthnicityFilters={(groups) => setEthnicityFilters(groups)} onLengthFilters={(length) => setLengthFilters(length)} onHairNameFilters={(hairname) => setHairNameFilters(hairname)} />
@@ -460,11 +468,23 @@ const Welcome = () => {
               <div className="relative w-52 h-52 sm:w-72 sm:h-72 md:w-96 md:h-96 mb-5">
                 {isPreview ? isOnPreview == true && previewImage.length == 0 ? (
                   <>
-                    <p>Picture is on progress</p>
+                    <div className='flex space-x-2 justify-center items-center text-xl text-black font-semibold'>Chargement
+                      <InfoButton title_1={InfoTitle_3} content_1={InfoContent_3} title_2={InfoTitle_4} content_2={InfoContent_4} onOpenModal={openInfoModal} />
+                    </div>
+
+                    <p className='flex space-x-2 justify-center items-center bg-white h-96'>
+                      <p className='h-3 w-3 bg-red-600 rounded-full animate-bounce [animation-delay:-0.9s]'></p>
+                      <p className='h-3 w-3 bg-red-600 rounded-full animate-bounce [animation-delay:-0.75s]'></p>
+                      <p className='h-3 w-3 bg-red-500 rounded-full animate-bounce [animation-delay:-0.6s]'></p>
+                      <p className='h-3 w-3 bg-red-500 rounded-full animate-bounce [animation-delay:-0.35s]'></p>
+                      <p className='h-3 w-3 bg-orange-500 rounded-full animate-bounce [animation-delay:-0.3s]'></p>
+                      <p className='h-3 w-3 bg-orange-500 rounded-full animate-bounce [animation-delay:-0.15s]'></p>
+                      <p className='h-3 w-3 bg-orange-400 rounded-full animate-bounce'></p>
+                    </p>
                   </>
                 ) :
                   previewImage && <Image
-                    loader={ () => previewImage }
+                    loader={() => previewImage}
                     src={previewImage !== '' ? previewImage : `https://api.onehaircut.com/base_null_img.jpg`}
                     fill={true}
                     alt=""
