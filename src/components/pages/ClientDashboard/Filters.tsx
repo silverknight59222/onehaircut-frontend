@@ -154,7 +154,7 @@ const Filters = () => {
         })
             .then(resp => {
                 //console.log(resp.data);
-                showSnackbar("succès", "Les préférences ont été réinitialisées avec succès");
+                showSnackbar("success", "Les préférences ont été réinitialisées avec succès");
             })
             .catch(err => {
                 //console.log(err)
@@ -182,7 +182,7 @@ const Filters = () => {
             })
                 .then(resp => {
                     //console.log(resp.data);
-                    showSnackbar("succès", "Les préférences ont été réinitialisées avec succès");
+                    showSnackbar("success", "Les préférences ont été actualisées avec succès");
                     /* Update user preference in local storage */
                     const user = JSON.parse(getLocalStorage("user") as string);
                     user.user_preferences.current_hair = currentLength;
@@ -218,7 +218,7 @@ const Filters = () => {
             availability: selectedItems,
         })
             .then(resp => {
-                showSnackbar("succès", "Préférences mises à jour avec succès");
+                showSnackbar("success", "Préférences mises à jour avec succès");
                 /* Update user preference in local storage */
                 const user = JSON.parse(getLocalStorage("user") as string);
                 user.user_preferences.country = CountryDefault;
@@ -470,7 +470,7 @@ const Filters = () => {
                                         />
                                     </div>
 
-                                    {/* Slider for Arround Address Searching circle */}
+                                    {/* Slider for Around Address Searching circle */}
                                     <div className="relative z-20 w-full pl-4 pr-2">
                                         <CustomSlider
                                             theme={ComponentTheme}
@@ -485,7 +485,7 @@ const Filters = () => {
                                     </div>
                                 </div>
 
-                                {/* TODO ADD GEOLOCALISATION FUNCTIONNALITY
+                                {/* TODO ADD GEOLOCALISATION FUNCTIONALITY
                                     <div>
                                         <p className="text-black text-sm mb-2">Utiliser la Geolocalisation</p>
                                         <div onClick={() => checkboxClickHandler('Geolocalisation')} className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded ${selectedItems.includes('Geolocalisation')
@@ -565,7 +565,7 @@ const Filters = () => {
                                         ))}
                                     </div>
 
-                                    {/* TODO ADD PRODUIT WHEN SHOP FUNCTIONNALITY IS RELEASED
+                                    {/* TODO ADD PRODUIT WHEN SHOP FUNCTIONALITY IS RELEASED
                                 <div>  
                                     <p className='text-black text-lg mb-4 border-t mt-5 border-[#D8D8D8] pt-4'>Produits</p>
                                     <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-5 sm:gap-24 lg:flex-col xl:flex-row lg:items-start xl:items-center lg:gap-5 xl:gap-24'>

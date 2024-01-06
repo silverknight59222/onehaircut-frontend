@@ -297,7 +297,7 @@ const Portrait = () => {
         await client.storeUserPotrait(formData)
             .then(resp => {
                 //console.log(resp.data);
-                showSnackbar("succès", "Portrait enregistrés avec succès");
+                showSnackbar("success", "Portraits enregistrés avec succès");
             })
             .catch(err => {
                 //console.log(err)

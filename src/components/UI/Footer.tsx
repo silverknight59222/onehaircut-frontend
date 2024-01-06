@@ -27,12 +27,12 @@ const Footer: React.FC = () => {
             rel="noopener noreferrer"
             className="font-semibold hover:scale-110 transition duration-200">
             <InstagramGray className="w-4 h-4 md:w-6 md:h-6" />  </a>
-          <a href="https://www.instagram.com/onehaircut/"
+          <a href="https://www.facebook.com/profile.php?id=100092227996443"
             target="_blank"
             rel="noopener noreferrer"
             className="font-semibold hover:scale-110 transition duration-200">
             <FacebookGray className="w-4 h-4 md:w-6 md:h-6" /></a>
-          <a href="https://www.instagram.com/onehaircut/"
+          <a href="https://www.youtube.com/channel/UClpeM8tztXkxHf2DiRoKpRA"
             target="_blank"
             rel="noopener noreferrer"
             className="font-semibold hover:scale-110 transition duration-200">

@@ -11,6 +11,7 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: theme.spacing(2),
         border: '2px solid ' + theme.palette.grey[500],
         textAlign: 'center',
+        background: "#FFFFFF",
         borderRadius: '10px',
         '& .MuiInput-underline:before': {
             display: 'none',
