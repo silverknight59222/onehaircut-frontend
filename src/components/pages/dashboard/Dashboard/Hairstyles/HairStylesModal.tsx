@@ -218,7 +218,7 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
     const updateSalonHaircuts = async () => {
         if (!form.base_price) {
             setError((prev) => {
-                return { ...prev, base_price: "Price is required" };
+                return { ...prev, base_price: "Prix incorrect" };
             });
             return;
         } else {
@@ -228,7 +228,7 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
         }
         if (!form.base_duration) {
             setError((prev) => {
-                return { ...prev, base_duration: "Duration is required" };
+                return { ...prev, base_duration: "Duration incorrect" };
             });
             return;
         } else {
@@ -259,7 +259,7 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
     const addSalonHaircuts = async () => {
         if (!form.base_price) {
             setError((prev) => {
-                return { ...prev, base_price: "Price is required" };
+                return { ...prev, base_price: "Prix incorrect" };
             });
             return;
         } else {
@@ -269,7 +269,7 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
         }
         if (!form.base_duration) {
             setError((prev) => {
-                return { ...prev, base_duration: "Duration is required" };
+                return { ...prev, base_duration: "Duration incorrect" };
             });
             return;
         } else {
