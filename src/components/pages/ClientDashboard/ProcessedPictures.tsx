@@ -87,9 +87,11 @@ const ProcessedPictures = () => {
                                         title={fetched_image.name}
                                         imageUrl={fetched_image.url} // Utilisez l'URL de l'image ici
                                         initialProgress={50}
+                                        haircutUrl={fetched_image.image}
                                         passed_interval={fetched_image.passed_interval}
                                         deleteCB={() => deleteFetchedImage(index)}
                                         selectCB={() => selectHairstyle(index)}
+
                                     />
                                 </div>
                             )
