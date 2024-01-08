@@ -326,7 +326,6 @@ const Hairdressers = () => {
     const user = temp ? JSON.parse(temp) : null;
     if (user.role == 'salon_professional') { // TODO add the email of the salon instead of ''
       // deleting prohibited
-
       showSnackbar("error", "Cet email est lié au salon");
     }
     else {
