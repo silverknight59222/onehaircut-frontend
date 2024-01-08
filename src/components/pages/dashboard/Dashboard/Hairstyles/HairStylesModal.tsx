@@ -12,6 +12,7 @@ import {
 } from "@/components/utilis/Icons";
 import { Haircut, SalonHaircut } from "@/types";
 import { salonApi } from '@/api/salonSide';
+import InfoButton from '@/components/UI/InfoButton';
 
 export interface HaircutDetails {
     id: number;
@@ -384,12 +385,24 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
             )}
 
 
-            <div className="flex items-center justify-center gap-2">
+            <div className="flex items-center justify-center gap-1">
 
-                <h2 className={`${Theme_A.textFont.headerH3}`}>
+                <h2 className={`${Theme_A.textFont.headerH4}`}>
                     Configuration de vos prix
                 </h2>
                 {(selectedHaircutsMapping.length > 0) && <div className={`${Theme_A.indicators.counterIndicator}`}>{selectedHaircutsMapping.length}</div>}
+                {/* Info icon  */}
+                <div className="pr-4">
+                    <InfoButton
+                        title_1={"Configuration des coiffures"}
+                        content_1={"Vous pouvez ici paramétrer les coiffures que vous avez sélectionner, afin de préciser le prix de base et la durée nécessaire en minute pour effectuer la coupe."}
+                        title_2='Ajustements'
+                        content_2={'Les ajustements sont optionnels et prévu si le prix ou la durée de l\'exécution doit être augmenter. \n' +
+                            'Exemple, prenons une coiffure X avec un prix de base à 30 euro et une durée de 20 minutes. ' +
+                            'Si une coiffure sur des cheveux longs demande plus de temps que sur des cheveux courts, il est possible de rentrer dans la dernière ligne (Long) du tableau des ajustements à gauche 5 et à droite 10. ' +
+                            'La personne ayant des cheveux long, payera alors 5+30 = 35€ et la durée de la coiffure sera 20 + 10 = 30 minutes.'}
+                        onOpenModal={undefined} />
+                </div>
             </div>
             <div className="flex items-center justify-center">
                 {getSelectedImage() ? (

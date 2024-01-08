@@ -79,12 +79,12 @@ const HairStyleListItem = React.memo(({ item, activeMenu, hairStyleSelectEvent, 
 
         <div
             key={item.id}
-            className={`${Theme_A.behaviour.cardBehaviour}`}
+            className={`${Theme_A.behaviour.cardBehaviour} -z-10`}
             onClick={() => selectHaircut(item)}
         >
             {/* TODO change class name based on parent card component */}
             <div className={`${activeMenu === "new" ? Theme_A.hairstyleCards.cardgradientTop : Theme_A.hairstyleCards.selectedCardGradientTop}`}>
-                <div className={`${Theme_A.hairstyleCards.cardSize.med}`}>
+                <div className={`${Theme_A.hairstyleCards.cardSize.med} z-0`}>
                     <Image src={item.image.includes('http') ? item.image : `https://api.onehaircut.com/${item.image}`} fill={true} alt="" />
                 </div>
                 <div className={`${Theme_A.hairstyleCards.checkbubbleOFF}`}>
@@ -95,7 +95,7 @@ const HairStyleListItem = React.memo(({ item, activeMenu, hairStyleSelectEvent, 
                 <p className={`${Theme_A.hairstyleCards.cardText}`}>
                     {item.name}
                 </p>
-                <p className={`${Theme_A.hairstyleCards.cardText} justify-evenly`}>
+                <p className={`${Theme_A.hairstyleCards.cardText} justify-evenly z-0`}>
                     {activeMenu === "added" ?
                         <StarRatings
                             rating={item.salon_haircuts.findIndex(el => el.hair_salon_id == salon_id) !== -1 ? item.salon_haircuts[item.salon_haircuts.findIndex(el => el.hair_salon_id == salon_id)].rating : 0}
