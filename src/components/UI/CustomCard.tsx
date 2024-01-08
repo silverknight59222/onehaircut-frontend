@@ -13,6 +13,7 @@ import { LogoIcon } from '../utilis/Icons';
 type CustomCardProps = {
   title: string;
   imageUrl: string;
+  haircutUrl: string;
   initialProgress: number;
   passed_interval: number,
   deleteCB: Function,
@@ -26,18 +27,27 @@ const CustomCard: React.FC<CustomCardProps> = ({
   title,
   imageUrl,
   initialProgress,
+  haircutUrl,
   passed_interval,
   deleteCB,
   selectCB
 }) => {
   // État local pour stocker la valeur de la progression de la barre
   const [progress, setProgress] = useState(0);
+  const [isHaircutShow, setIsHaircutShow] = useState(false);
 
   const getProgress = async () => {
     let progress = (passed_interval / 5) * 100;
     setProgress(progress)
   }
 
+  const changeCardImage = () => {
+    setIsHaircutShow(!isHaircutShow)
+  }
+
+  React.useEffect(() => {
+    setIsHaircutShow(false)
+  },[])
 
   // Effet secondaire qui met à jour la progression de la barre
 
@@ -77,19 +87,31 @@ const CustomCard: React.FC<CustomCardProps> = ({
         </p>
 
         {/* IMAGE */}
-        <div className="mb-2 justify-center items-center border-2 border-stone-200 rounded-xl min-h-[16rem] min-w-[8rem] max-w-[16rem] max-h-[16rem]">
+        <div 
+          className="mb-2 justify-center items-center border-2 border-stone-200 rounded-xl min-h-[16rem] min-w-[8rem] max-w-[16rem] max-h-[16rem]"
+          onClick={changeCardImage}    
+        >
           {imageUrl ? (
             <div className=" flex items-center justify-center overflow-hidden rounded-xl m-1 ">
               <img
-                src={imageUrl}
+                src={(isHaircutShow) ? haircutUrl.includes('http') ? haircutUrl : `https://api.onehaircut.com${haircutUrl}` : imageUrl}
                 alt=""
                 className="h-auto w-full object-contain" // Assurez-vous que cette classe est présente
               />
             </div>
           ) : (
             <div className="p-4 max-w-sm w-full mx-auto justify-center items-center">
-              <div className="animate-pulse flex space-x-4">
-                <LogoIcon />
+              <div className={`${isHaircutShow ? 'animate-pulse' : ''} flex space-x-4`}>
+                {
+                  isHaircutShow ? 
+                  <LogoIcon />
+                  :
+                  <img
+                    src={haircutUrl.includes('http') ? haircutUrl : `https://api.onehaircut.com${haircutUrl}`}
+                    alt=""
+                    className="h-auto w-full object-contain" // Assurez-vous que cette classe est présente
+                  />
+                }
               </div>
             </div>
           )}

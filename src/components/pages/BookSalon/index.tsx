@@ -54,7 +54,13 @@ const BookSalon = () => {
     { name: "Durée", desc: "2 heures " },
     { name: "Lieu", desc: "à domicile" },
   ];
-
+  const timeOption = {
+    timeZone: 'Europe/London',
+    hour12: false,
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  };
   useEffect(() => {
     salon?.salon_images.forEach((img) => {
       if (img.is_cover) {
@@ -110,7 +116,24 @@ const BookSalon = () => {
       }
       await client.getSlots(selectedHairdresser.id, data)
         .then((resp) => {
-          setSlots(resp.data.data);
+          const today = new Date()
+          if (selectedDate.getDate() == today.getDate() && selectedDate.getMonth() == today.getMonth()) {
+            const formatter = new Intl.DateTimeFormat('en-US', timeOption as Intl.DateTimeFormatOptions);
+            let currentTime = formatter.format(selectedDate);
+            let slots = resp.data.data;
+            let filteredSlots : any[] = [];
+            slots.forEach((filter) => {
+              if (filter.start > currentTime) {
+                filteredSlots.push(filter);
+              }
+            });
+            filteredSlots = filteredSlots === undefined ? [] : filteredSlots;
+            setSlots(filteredSlots)
+          }
+          else {
+            setSlots(resp.data.data);
+          }
+
         })
         .catch(err => console.log(err))
         .finally(() => {
@@ -491,7 +514,7 @@ const BookSalon = () => {
 
               {/* SLOTS */}
               <div className="flex items-center justify-center mt-6 mb-4 px-4">
-                {slots.length ?
+                {slots.length > 0 ?
                   <div className="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-4 lg:grid-cols-6 gap-x-6 gap-y-7">
                     {slots.map((slot: any, index) => {
                       return (
