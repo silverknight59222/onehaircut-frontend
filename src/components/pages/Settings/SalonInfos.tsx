@@ -33,7 +33,7 @@ const SalonInfos = () => {
     const [billingState, setBillingState] = useState("");
     const [billingCountry, setBillingCountry] = useState("");
     const [isBillingAddressSame, setIsBillingAddressSame] = useState(false);
-    const [SelectedSalonType, setSelectedSalonType] = useState<string>('');
+    const [SelectedSalonType, setSelectedSalonType] = useState<string | undefined>('');
     const [SalonType, setSalonType] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const showSnackbar = useSnackbar();
@@ -69,18 +69,40 @@ const SalonInfos = () => {
     const [errorBilling, setErrorBilling] = useState({
         text: "",
     })
+    const typesSalon = [
+        {
+            name: "barber_shop",
+            nameFr: "Barber-shop",
+        },
+        {
+            name: "women_hair_salon",
+            nameFr: "Salon pour femmes",
+        },
+        {
+            name: "men_hair_salon",
+            nameFr: "Salon pour hommes"
+        },
+        {
+            name: "independent_man_mobile_hairdresser",
+            nameFr: "Coiffeur/euse mobile homme"
+        },
+        {
+            name: "independent_woman_mobile_hairdresser",
+            nameFr: "Coiffeur/euse mobile femme"
+        },
+        {
+            name: "unisex_hair_salon",
+            nameFr: "Salon mixte"
+        }
+    ]
 
 
     // Utilisez useEffect pour déclencher la recherche de la ville lorsque le code postal change
     useEffect(() => {
         fetchAdress();
         if (salonInfo) {
-            if (salonInfo.type == 'barber_shop') {
-                setSelectedSalonType('Barber-shop')
-            } else {
-                setSelectedSalonType(salonInfo.type)
-            }
-            setTypeImage(salonInfo.type)
+            setSelectedSalonType(typesSalon.find(type => type.name === salonInfo.type)?.nameFr)
+            setTypeImage(typesSalon.find(type => type.name === salonInfo.type)?.nameFr)
             setIsMobilityAllowed(salonInfo.is_mobile)
         }
     }, []);
