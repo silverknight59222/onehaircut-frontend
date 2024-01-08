@@ -1,10 +1,9 @@
 import 'tailwindcss/tailwind.css';
 import { Theme_A } from '@/components/utilis/Themes';
 import { LinearProgress } from '@mui/material';
-import * as React from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Typography from '@mui/material/Typography';
 import Image from "next/image";
-import { useState } from 'react';
 import { LogoIcon } from '../utilis/Icons';
 
 
@@ -36,6 +35,9 @@ const CustomCard: React.FC<CustomCardProps> = ({
   const [progress, setProgress] = useState(0);
   const [isHaircutShow, setIsHaircutShow] = useState(false);
 
+  // Ajouter les états pour la gestion de l'animation de flip
+  const [isFlipped, setIsFlipped] = useState(false);
+
   const getProgress = async () => {
     let progress = (passed_interval / 5) * 100;
     setProgress(progress)
@@ -47,7 +49,7 @@ const CustomCard: React.FC<CustomCardProps> = ({
 
   React.useEffect(() => {
     setIsHaircutShow(false)
-  },[])
+  }, [])
 
   // Effet secondaire qui met à jour la progression de la barre
 
@@ -78,6 +80,63 @@ const CustomCard: React.FC<CustomCardProps> = ({
   // Formate le taux de progression pour qu'il n'y ait pas de chiffres après la virgule
   const formattedProgress = Math.round(progress + 0.1);
 
+  const cardRef = useRef<HTMLDivElement>(null); // Spécifiez le type d'élément ici pour TypeScript
+  const flipCard = () => {
+    setIsFlipped(!isFlipped);
+    setIsHaircutShow(!isHaircutShow)
+    // Ajoutez ici la logique supplémentaire si nécessaire
+  };
+
+  useEffect(() => {
+    // Vérifiez si l'élément n'est pas null avant d'ajouter l'écouteur
+    if (cardRef.current) {
+      const cardElement = cardRef.current;
+
+      const handleTransitionEnd = () => {
+        if (isFlipped) {
+          setIsHaircutShow(!isHaircutShow);
+        }
+      };
+
+      cardElement.addEventListener('transitionend', handleTransitionEnd);
+
+      return () => {
+        cardElement.removeEventListener('transitionend', handleTransitionEnd);
+      };
+    }
+  }, [isFlipped]); // Dépendance à isFlipped pour ré-exécuter l'effet lorsque isFlipped change
+
+
+  // Styles pour la face avant et la face arrière de la carte
+  const cardStyles: React.CSSProperties = {
+    transform: isFlipped ? 'rotateY(180deg)' : 'rotateY(0deg)',
+    transition: 'transform 0.4s',
+    transformStyle: 'preserve-3d' as 'preserve-3d', // Assurez-vous que la valeur est une valeur valide pour le typage
+  };
+
+  const frontCardStyles: React.CSSProperties = {
+    position: 'relative',
+    width: '100%',
+    height: '100%',
+    backfaceVisibility: 'hidden',
+  };
+
+  const backCardStyles: React.CSSProperties = {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    backfaceVisibility: 'hidden',
+    transform: 'rotateY(180deg)',
+    top: 0,
+    left: 0,
+  };
+  const backImageStyles: React.CSSProperties = {
+    // Pas besoin de 'transform' ici, car c'est le conteneur qui tourne
+    width: '100%',
+    height: '100%',
+    objectFit: 'contain', // ou 'cover', selon vos besoins
+  };
+
   return (
     <div className="flex justify-center items-center">
       <div className="shadow-sm shadow-stone-600 p-2 border-2 border-stone-300 rounded-xl bg-white">
@@ -87,30 +146,34 @@ const CustomCard: React.FC<CustomCardProps> = ({
         </p>
 
         {/* IMAGE */}
-        <div 
-          className="mb-2 justify-center items-center border-2 border-stone-200 rounded-xl min-h-[16rem] min-w-[8rem] max-w-[16rem] max-h-[16rem]"
-          onClick={changeCardImage}    
+        <div
+          className="mb-2 justify-center items-center border-2 border-stone-200 rounded-xl min-h-[16rem] min-w-[8rem] max-w-[16rem] max-h-[16rem] hover:cursor-pointer"
+          style={cardStyles} // Appliquer les styles de flip ici
+          onClick={flipCard} // Ajouter l'action de flip ici
         >
           {imageUrl ? (
-            <div className=" flex items-center justify-center overflow-hidden rounded-xl m-1 ">
-              <img
-                src={(isHaircutShow) ? haircutUrl.includes('http') ? haircutUrl : `https://api.onehaircut.com${haircutUrl}` : imageUrl}
-                alt=""
-                className="h-auto w-full object-contain" // Assurez-vous que cette classe est présente
-              />
+            <div style={isHaircutShow ? backCardStyles : frontCardStyles}>
+              <div className="p-4 max-w-sm w-full mx-auto justify-center items-center ">
+                <img
+                  src={isHaircutShow ? (haircutUrl.includes('http') ? haircutUrl : `https://api.onehaircut.com${haircutUrl}`) : imageUrl}
+                  alt=""
+                  className="h-auto w-full object-contain rounded-xl"
+                  style={isHaircutShow ? backImageStyles : {}}
+                />
+              </div>
             </div>
           ) : (
-            <div className="p-4 max-w-sm w-full mx-auto justify-center items-center">
-              <div className={`${isHaircutShow ? 'animate-pulse' : ''} flex space-x-4`}>
+            <div className="p-4 max-w-sm w-full mx-auto justify-center items-center " style={isHaircutShow ? backCardStyles : frontCardStyles}>
+              <div className={`${isHaircutShow ? 'animate-pulse' : ''} flex space-x-4`} >
                 {
-                  isHaircutShow ? 
-                  <LogoIcon />
-                  :
-                  <img
-                    src={haircutUrl.includes('http') ? haircutUrl : `https://api.onehaircut.com${haircutUrl}`}
-                    alt=""
-                    className="h-auto w-full object-contain" // Assurez-vous que cette classe est présente
-                  />
+                  isHaircutShow ?
+                    <LogoIcon />
+                    :
+                    <img
+                      src={haircutUrl.includes('http') ? haircutUrl : `https://api.onehaircut.com${haircutUrl}`}
+                      alt=""
+                      className="h-auto w-full object-contain" // Assurez-vous que cette classe est présente
+                    />
                 }
               </div>
             </div>
