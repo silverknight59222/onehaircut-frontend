@@ -68,7 +68,7 @@ const ProcessedPictures = () => {
                     <div className='flex flex-row items-center justify-center pb-10'>
                         <div className="pr-4">
                             <p className="text-black font-medium text-3xl text-center">
-                                Cabines d'essayages
+                                Cabines d'essayage
                             </p>
                         </div>
                         {/* {Fetched Today / Limit} TODO */}

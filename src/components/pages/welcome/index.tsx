@@ -379,7 +379,9 @@ const Welcome = () => {
   const InfoTitle_4 = "Résultat";
   const InfoContent_4 = "Le résultat peut être plus ou moins précis et convainquant. <br /> Il ne s'agit que d'un apperçu vous permettant de mieux vous projeter. <br /> Une image de profil de qualité vous permettra d'obtenir de meilleurs résultats. <br /> Nous travaillons pour améliorer notre système continuellement";
 
-
+  // TODO Delete picture in S3
+  const DeleteS3Picture = () => {
+  };
 
   return (
     <>
@@ -503,10 +505,20 @@ const Welcome = () => {
                 <button onClick={onContinue} className={`flex items-center justify-center font-medium w-full md:w-52 h-14 mb-4 ${Theme_A.button.smallGradientButton}`}>Choisir cette coiffure</button>
                 <button
                   onClick={checkPreview}
-                  className={`flex items-center justify-center font-medium w-full md:w-52 h-14 ${isPreview ? Theme_A.button.medGreydButton : Theme_A.button.medWhiteColoredButton}`}
+                  className={`flex items-center justify-center font-medium w-full md:w-52 h-14 mb-4 ${isPreview ? Theme_A.button.medGreydButton : Theme_A.button.medWhiteColoredButton}`}
                 >
                   {isPreview ? 'Image de référence' : 'Prévisualiser sur moi'}
                 </button>
+                {/* Affichez le bouton "Supprimer" uniquement lorsque isPreview est vrai */}
+                {isPreview && (
+                  <button
+                    onClick={DeleteS3Picture}
+                    className={`flex items-center justify-center font-medium w-full md:w-52 h-14 mb-4 ${Theme_A.button.medBlackColoredButton} text-sm`}
+                  >
+                    Supprimer
+                  </button>
+                )}
+
               </div>
             </div>
           </BaseModal>
