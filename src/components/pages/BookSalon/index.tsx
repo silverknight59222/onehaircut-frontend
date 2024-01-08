@@ -55,7 +55,7 @@ const BookSalon = () => {
     { name: "Lieu", desc: "à domicile" },
   ];
   const timeOption = {
-    timeZone: 'Europe/London',
+    timeZone: 'Europe/Paris',
     hour12: false,
     hour: '2-digit',
     minute: '2-digit',
@@ -117,12 +117,16 @@ const BookSalon = () => {
       await client.getSlots(selectedHairdresser.id, data)
         .then((resp) => {
           const today = new Date()
+          // check if the selected dat is today
           if (selectedDate.getDate() == today.getDate() && selectedDate.getMonth() == today.getMonth()) {
-            const formatter = new Intl.DateTimeFormat('en-US', timeOption as Intl.DateTimeFormatOptions);
-            let currentTime = formatter.format(selectedDate);
+            // special handling here, because the hours in the past cannot be selected
+            const formatter = new Intl.DateTimeFormat('en-FR', timeOption as Intl.DateTimeFormatOptions);
+            // let currentTime = formatter.format(selectedDate);
+            let currentTime = formatter.format(today.getTime());
             let slots = resp.data.data;
-            let filteredSlots : any[] = [];
+            let filteredSlots: any[] = [];
             slots.forEach((filter) => {
+              // select on the slots in the future
               if (filter.start > currentTime) {
                 filteredSlots.push(filter);
               }
@@ -131,6 +135,7 @@ const BookSalon = () => {
             setSlots(filteredSlots)
           }
           else {
+            // day not for today, all slots can be taken
             setSlots(resp.data.data);
           }
 
