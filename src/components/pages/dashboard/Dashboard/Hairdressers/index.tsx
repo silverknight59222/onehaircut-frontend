@@ -295,11 +295,18 @@ const Hairdressers = () => {
       await dashboard
         .getAllHairDressers(salonId)
         .then((resp) => {
-          if (resp.data.data.length) {
+          console.log(resp.data.data.length)
+          if (resp.data.data.length > 0) {
             setHairDressers(resp.data.data);
             if (resp.data.data.length > 0) {
               setHasHairDresser(true)
             }
+            else {
+              setHasHairDresser(false)
+            }
+          }
+          else {
+            setHairDressers([]);
           }
           setIsLoading(false);
         });
@@ -324,7 +331,7 @@ const Hairdressers = () => {
     // check if this hairdresser is owning the salon
     const temp = getLocalStorage("user");
     const user = temp ? JSON.parse(temp) : null;
-    if (user.role == 'salon_professional') { // TODO add the email of the salon instead of ''
+    if (hairDresser.role == 'salon_professional') { // TODO add the email of the salon instead of ''
       // deleting prohibited
       showSnackbar("error", "Cet email est lié au salon");
     }

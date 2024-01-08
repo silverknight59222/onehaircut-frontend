@@ -22,6 +22,7 @@ export type UserType = {
   phone: string;
   role: string;
   hair_salon: any | null;
+  hair_salon2: any | null;
 };
 
 export type LoginResponse = {
