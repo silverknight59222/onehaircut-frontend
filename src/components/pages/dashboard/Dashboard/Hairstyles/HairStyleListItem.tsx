@@ -79,7 +79,7 @@ const HairStyleListItem = React.memo(({ item, activeMenu, hairStyleSelectEvent, 
 
         <div
             key={item.id}
-            className={`${Theme_A.behaviour.cardBehaviour} -z-10`}
+            className={`${Theme_A.behaviour.cardBehaviour} z-0`}
             onClick={() => selectHaircut(item)}
         >
             {/* TODO change class name based on parent card component */}
