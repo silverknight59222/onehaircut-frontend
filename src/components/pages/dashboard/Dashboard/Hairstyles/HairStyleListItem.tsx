@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Theme_A } from "@/components/utilis/Themes";
+import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 import Image from "next/image";
 import {
     CheckedIcon,
@@ -91,35 +91,44 @@ const HairStyleListItem = React.memo(({ item, activeMenu, hairStyleSelectEvent, 
                     {(isSelected || isAllSelected) && <SelectedIcon />}
                 </div>
             </div>
-            <div className={`${activeMenu === "new" ? Theme_A.hairstyleCards.cardGradientBott : Theme_A.hairstyleCards.selectedCardGradientBott}`}>
-                <p className={`${Theme_A.hairstyleCards.cardText}`}>
+            <div className={` ${activeMenu === "new" ? Theme_A.hairstyleCards.cardGradientBott : Theme_A.hairstyleCards.selectedCardGradientBott}`}>
+                <p className={`${Theme_A.hairstyleCards.cardText} `}>
                     {item.name}
                 </p>
-                <p className={`${Theme_A.hairstyleCards.cardText} justify-evenly z-0`}>
-                    {activeMenu === "added" ?
-                        <StarRatings
-                            rating={item.salon_haircuts.findIndex(el => el.hair_salon_id == salon_id) !== -1 ? item.salon_haircuts[item.salon_haircuts.findIndex(el => el.hair_salon_id == salon_id)].rating : 0}
-                            starRatedColor="#FEDF10"
-                            starSpacing="1px"
-                            starDimension="12px"
-                            numberOfStars={5}
-                            name={`rating-${item.salon_haircuts.findIndex(el => el.hair_salon_id == salon_id) !== -1 ? item.salon_haircuts[item.salon_haircuts.findIndex(el => el.hair_salon_id == salon_id)].rating : 0}`}
-                        /> : ''}
-                    {activeMenu === "added" ?
-                        <p className='text-xs justify-end items-center text-stone-600'>( {item.salon_haircuts[item.salon_haircuts.findIndex(el => el.hair_salon_id == salon_id)]?.rating_counts} avis)</p>
-                        : ""
-                    }
-                </p>
                 {activeMenu !== "new" ?
-                <div>
-                    <p className={`${Theme_A.hairstyleCards.cardText}`}>
-                        Price : {item.salon_haircuts.length == 0 ? 0 : item.salon_haircuts[0].base_price}
-                    </p>
-                    <p className={`${Theme_A.hairstyleCards.cardText}`}>
-                        Duration : {item.salon_haircuts.length == 0 ? 0 : item.salon_haircuts[0].base_duration} mins
-                    </p> 
-                </div>
-                : ""
+                    <div>
+                        {/* Price and Duration */}
+                        <p className={`${Theme_A.hairstyleCards.cardText} flex mx-8 justify-evenly items-center ${ColorsThemeA.OhcGradient_E} text-xs text-stone-400 border-2 border-stone-300 rounded-xl shadow-inner shadow-stone-300`}>
+                            {activeMenu === "added" && (
+                                <>
+                                    <span className="">
+                                        {item.salon_haircuts.length === 0 ? 0 : item.salon_haircuts[0].base_price}€
+                                    </span>
+                                    <span className="">
+                                        {item.salon_haircuts.length === 0 ? 0 : item.salon_haircuts[0].base_duration} mins
+                                    </span>
+                                </>
+                            )}
+                        </p>
+
+                        {/* Rating */}
+                        <p className={`${Theme_A.hairstyleCards.cardText} justify-evenly z-0`}>
+                            {activeMenu === "added" ?
+                                <StarRatings
+                                    rating={item.salon_haircuts.findIndex(el => el.hair_salon_id == salon_id) !== -1 ? item.salon_haircuts[item.salon_haircuts.findIndex(el => el.hair_salon_id == salon_id)].rating : 0}
+                                    starRatedColor="#FEDF10"
+                                    starSpacing="1px"
+                                    starDimension="12px"
+                                    numberOfStars={5}
+                                    name={`rating-${item.salon_haircuts.findIndex(el => el.hair_salon_id == salon_id) !== -1 ? item.salon_haircuts[item.salon_haircuts.findIndex(el => el.hair_salon_id == salon_id)].rating : 0}`}
+                                /> : ''}
+                            {activeMenu === "added" ?
+                                <p className='text-xs justify-end items-center text-stone-600'>( {item.salon_haircuts[item.salon_haircuts.findIndex(el => el.hair_salon_id == salon_id)]?.rating_counts} avis)</p>
+                                : ""
+                            }
+                        </p>
+                    </div>
+                    : ""
                 }
             </div>
         </div>

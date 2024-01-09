@@ -105,7 +105,7 @@ export const Theme_A = {
       med: "relative  w-52 h-52",
       small: "relative w-32 h-32",
     },
-    cardText: "rounded-b-xl flex items-center justify-center py-2 text-sm text-black font-medium",
+    cardText: "rounded-b-xl flex items-center justify-center py-2 text-sm text-black font-semibold",
     cardgradientTop: "relative w-max px-4 pt-4 rounded-t-xl bg-gradient-to-r from-white via-stone-50 to-zinc-300",
     checkbubbleOFF: "absolute top-5 right-5 w-6 h-6 shadow-inner rounded-full bg-stone-100 transform hover:scale-125 transition-transform ",
     selectedCardGradientBott: "rounded-b-xl bg-gradient-to-r from-white via-stone-50 to-red-100",
