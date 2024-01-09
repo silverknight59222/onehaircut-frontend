@@ -51,8 +51,8 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
 
     const defaultFormDetails = {
         id: -1,
-        base_price: selectedHaircutsMapping.length > 0 ? selectedHaircutsMapping![0].salon_haircuts![0].base_price : "",
-        base_duration: selectedHaircutsMapping.length > 0 ? selectedHaircutsMapping![0].salon_haircuts![0].base_duration : "" ,
+        base_price: "",
+        base_duration: "" ,
         court_price_length: "0",
         court_duration_length: "0",
         moyen_price_length: "0",
