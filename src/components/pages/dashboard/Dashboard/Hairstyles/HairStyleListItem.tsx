@@ -110,7 +110,17 @@ const HairStyleListItem = React.memo(({ item, activeMenu, hairStyleSelectEvent, 
                         : ""
                     }
                 </p>
-
+                {activeMenu !== "new" ?
+                <div>
+                    <p className={`${Theme_A.hairstyleCards.cardText}`}>
+                        Price : {item.salon_haircuts.length == 0 ? 0 : item.salon_haircuts[0].base_price}
+                    </p>
+                    <p className={`${Theme_A.hairstyleCards.cardText}`}>
+                        Duration : {item.salon_haircuts.length == 0 ? 0 : item.salon_haircuts[0].base_duration} mins
+                    </p> 
+                </div>
+                : ""
+                }
             </div>
         </div>
 

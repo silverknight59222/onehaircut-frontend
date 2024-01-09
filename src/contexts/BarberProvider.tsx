@@ -15,7 +15,8 @@ const BarberProvider = ({ children }: any) => {
       name: '',
       phone: '',
       role: '',
-      hair_salon: null
+      hair_salon: null,
+      hair_salon2: null,
   }
   const [user, setUser] = useState<UserType>(defaultUser);
   

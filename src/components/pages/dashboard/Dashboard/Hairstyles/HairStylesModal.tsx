@@ -38,6 +38,7 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
     // //console.log("in HairStylesModal")
 
     const showSnackbar = useSnackbar();
+    const [selectedHaircutsMapping, setSelectedHaircutsMapping] = useState<Haircut[]>([]);
 
     const defaultHaircut = {
         id: -1,
@@ -50,8 +51,8 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
 
     const defaultFormDetails = {
         id: -1,
-        base_price: "",
-        base_duration: "",
+        base_price: selectedHaircutsMapping.length > 0 ? selectedHaircutsMapping![0].salon_haircuts![0].base_price : "",
+        base_duration: selectedHaircutsMapping.length > 0 ? selectedHaircutsMapping![0].salon_haircuts![0].base_duration : "" ,
         court_price_length: "0",
         court_duration_length: "0",
         moyen_price_length: "0",
@@ -83,8 +84,9 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
     const [form, setForm] = useState<HaircutDetails>(defaultFormDetails);
     const [selectedHaircut, setSelectedHaircut] = useState<Haircut>();
     const [noHaircut, setNoHaircut] = useState(true)
+    const [startPrice, setStartPrice] = useState(0)
+    const [baseDuration, setBaseDuration] = useState(0)
 
-    const [selectedHaircutsMapping, setSelectedHaircutsMapping] = useState<Haircut[]>([]);
 
     const onHairStyleSelect = async (payload) => {
         if (payload.type == "add") {
@@ -429,7 +431,7 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
                         <input
                             type="number"
                             name="prix"
-                            placeholder="40"
+                            placeholder={selectedHaircutsMapping.length > 0 ? selectedHaircutsMapping![0].salon_haircuts![0].base_price + " eur" : "40 eur"}
                             className={`${Theme_A.fields.configurationField2}`}
                             value={form.base_price}
                             onChange={(e) => onChangeInput(e.target.value, "base_price")}
@@ -446,7 +448,7 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
                         </label>
                         <input
                             type="number"
-                            placeholder="35 min"
+                            placeholder={selectedHaircutsMapping.length > 0 ? selectedHaircutsMapping![0].salon_haircuts![0].base_duration + " min" : "35 min"}
                             className={`${Theme_A.fields.configurationField2}`}
                             value={form.base_duration}
                             onChange={(e) =>
