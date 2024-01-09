@@ -431,7 +431,7 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
                         <input
                             type="number"
                             name="prix"
-                            placeholder={selectedHaircutsMapping.length > 0 ? selectedHaircutsMapping![0].salon_haircuts![0].base_price + " eur" : "40 eur"}
+                            placeholder={"40 eur"}
                             className={`${Theme_A.fields.configurationField2}`}
                             value={form.base_price}
                             onChange={(e) => onChangeInput(e.target.value, "base_price")}
@@ -448,7 +448,7 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
                         </label>
                         <input
                             type="number"
-                            placeholder={selectedHaircutsMapping.length > 0 ? selectedHaircutsMapping![0].salon_haircuts![0].base_duration + " min" : "35 min"}
+                            placeholder={"35 min"}
                             className={`${Theme_A.fields.configurationField2}`}
                             value={form.base_duration}
                             onChange={(e) =>
