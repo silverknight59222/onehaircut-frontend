@@ -52,7 +52,7 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
     const defaultFormDetails = {
         id: -1,
         base_price: "",
-        base_duration: "" ,
+        base_duration: "",
         court_price_length: "0",
         court_duration_length: "0",
         moyen_price_length: "0",
@@ -231,7 +231,7 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
         }
         if (!form.base_duration) {
             setError((prev) => {
-                return { ...prev, base_duration: "Duration incorrect" };
+                return { ...prev, base_duration: "Durée incorrect" };
             });
             return;
         } else {
@@ -252,10 +252,10 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
                 setSelectedHaircutsMapping([]);
                 setForm(defaultFormDetails);
                 reloadListEvent.on()
-                showSnackbar("success", "Haircut updated successfully");
+                showSnackbar("success", "Coupe(s) actualisée(s)");
             })
             .catch((err) => {
-                showSnackbar("error", "Failed to update haircut");
+                showSnackbar("error", "Erreur lors de l'actualisation");
             });
     };
 
@@ -284,7 +284,7 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
             setError((prev) => {
                 return {
                     ...prev,
-                    select_haircut: "Selection of atleast one haircut is required",
+                    select_haircut: "Sélectionner au moins une coupe",
                 };
             });
             return;
@@ -309,11 +309,11 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
                 setForm(defaultFormDetails);
                 reloadListEvent.on()
                 setNoHaircut(false)
-                showSnackbar("success", "Haircuts added successfully");
+                showSnackbar("success", "Coupe(s) ajoutée(s)");
                 // TODO refresh list
             })
             .catch((err) => {
-                showSnackbar("error", "Failed to add new haircuts");
+                showSnackbar("error", "Erreur lors de l'ajout");
             });
     };
 
