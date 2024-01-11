@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useState, CSSProperties } from "react";
 import Image from "next/image";
-import { Like, LogoIcon, StarIcon, InfoNodalIcon } from "@/components/utilis/Icons";
+import { Like, LogoIcon, StarIcon, InfoNodalIcon, AiOhcIcon } from "@/components/utilis/Icons";
 import { dashboard } from "@/api/dashboard";
 import userLoader from "@/hooks/useLoader";
 import { Haircut } from "@/types";
@@ -80,7 +80,7 @@ const Welcome = () => {
       getAllHaircuts();
     }
   };
-  
+
   const getHasPreviewList = () => {
     // Fetch the user’s wishlist of haircuts
     if (userId) {
@@ -448,35 +448,42 @@ const Welcome = () => {
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 md:gap-12 ">
           {haircuts().map((item, index) => {
-            return <div key={index} onClick={() => onClickHaircut(item.id, item.name, item.image)} className={`shadow-md rounded-xl cursor-pointer border hover:outline outline-1 outline-stone-400 ${item.id === haircut?.id}`}>
-              {!isLoggedIn && 
-                <p>
-                  {hasPreview.includes(String(item.id)) ? "Has Preview" : "No Preview"}
-                </p>
-              }
-              <div className="relative w-max px-4 pt-4 bg-gradient-to-r from-white via-stone-50 to-zinc-200 rounded-t-xl ">
-                <div className={`relative w-32 h-32 md:w-52 md:h-52`}>
-                  <Image src={item.image.includes('http') ? item.image : `https://api.onehaircut.com${item.image}`} fill={true} alt="" className="rounded-t-xl"
-                  />
-                  {!isLoggedIn &&
-                    <div onClick={(e) => onWishlist(e, item.id)} className="absolute right-2 top-2 cursor-pointer">
-                      <StarIcon
-                        color={wishlist.includes(String(item.id)) ? "#FF5B5B" : ""}
-                        stroke={wishlist.includes(String(item.id)) ? "#FFFFFF" : ""}
-                      />
-                    </div>
-                  }
+            return (
+              <div key={index} onClick={() => onClickHaircut(item.id, item.name, item.image)}
+                className={`shadow-md rounded-xl cursor-pointer border hover:outline outline-1 outline-stone-400 mb-2 ${item.id === haircut?.id}`}>
 
+                <div className="relative w-max px-4 pt-4 bg-gradient-to-r from-white via-stone-50 to-zinc-200 rounded-t-xl">
+
+                  <div className={`relative w-32 h-32 md:w-52 md:h-52`}>
+                    <Image src={item.image.includes('http') ? item.image : `https://api.onehaircut.com${item.image}`}
+                      fill={true} alt="" className="rounded-t-xl"
+                    />
+                    {!isLoggedIn &&
+                      <div className="absolute top-2 left-2 pb-2 pr-2 z-10"> {/* Positionne l'icône en bas à droite */}
+                        {hasPreview.includes(String(item.id)) ? <AiOhcIcon /> : ""}
+                      </div>
+                    }
+                    {!isLoggedIn &&
+                      <div onClick={(e) => onWishlist(e, item.id)} className="absolute right-2 top-2 cursor-pointer">
+                        <StarIcon
+                          color={wishlist.includes(String(item.id)) ? "#FF5B5B" : ""}
+                          stroke={wishlist.includes(String(item.id)) ? "#FFFFFF" : ""}
+                        />
+                      </div>
+                    }
+                  </div>
                 </div>
 
+                <div className="w-40 md:w-60 rounded-b-xl bg-gradient-to-r from-white via-stone-50 to-zinc-200">
+                  <p className="rounded-b-xl flex items-center justify-center py-2 text-black font-medium">
+                    {item.name}
+                  </p>
+
+                </div>
               </div>
-              <div className=" w-40 md:w-60 rounded-b-xl bg-gradient-to-r from-white via-stone-50 to-zinc-200">
-                <p className="rounded-b-xl flex items-center justify-center py-2 text-black font-medium">
-                  {item.name}
-                </p>
-              </div>
-            </div>
+            );
           })}
+
         </div>
 
         {isLoggedIn && (
