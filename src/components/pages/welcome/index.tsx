@@ -52,6 +52,7 @@ const Welcome = () => {
   const [isOnPreview, setIsOnPreview] = useState(false);
   const [selectedHaircut, setSelectedHaircut] = useState({ id: 0, name: '', image: '' }) // Store the selected haircut
   const [wishlist, setWishlist] = useState<string[]>([]) // Store user’s wishlist of haircuts
+  const [hasPreview, setHasPreview] = useState<string[]>([])
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(5);
   const [previewImage, setPreviewImage] = useState<string>('');
@@ -79,6 +80,34 @@ const Welcome = () => {
       getAllHaircuts();
     }
   };
+  
+  const getHasPreviewList = () => {
+    // Fetch the user’s wishlist of haircuts
+    if (userId) {
+      setIsLoading(true);
+      dashboard.getHasPreviewHaircuts(userId)
+        .then((res) => {
+          if (res.data.data.length > 0) {
+            if (salonHaircut.length) {
+              const arr: string[] = []
+              res.data.data.forEach((item: any) => {
+                salonHaircut.forEach((haircut) => {
+                  if (item.haircut.id === haircut.id) {
+                    arr.push(String(haircut.id))
+                  }
+                })
+              });
+              setHasPreview(arr)
+            }
+          }
+          setIsLoading(false);
+        })
+        .catch(error => {
+          setIsLoading(false);
+          //console.log(error)
+        })
+    }
+  }
 
   const getHaircutsWishlist = () => {
     // Fetch the user’s wishlist of haircuts
@@ -351,6 +380,7 @@ const Welcome = () => {
   useEffect(() => {
     if (!isLoggedIn) {
       getHaircutsWishlist()
+      getHasPreviewList()
     }
   }, [salonHaircut])
 
@@ -419,6 +449,11 @@ const Welcome = () => {
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 md:gap-12 ">
           {haircuts().map((item, index) => {
             return <div key={index} onClick={() => onClickHaircut(item.id, item.name, item.image)} className={`shadow-md rounded-xl cursor-pointer border hover:outline outline-1 outline-stone-400 ${item.id === haircut?.id}`}>
+              {!isLoggedIn && 
+                <p>
+                  {hasPreview.includes(String(item.id)) ? "Has Preview" : "No Preview"}
+                </p>
+              }
               <div className="relative w-max px-4 pt-4 bg-gradient-to-r from-white via-stone-50 to-zinc-200 rounded-t-xl ">
                 <div className={`relative w-32 h-32 md:w-52 md:h-52`}>
                   <Image src={item.image.includes('http') ? item.image : `https://api.onehaircut.com${item.image}`} fill={true} alt="" className="rounded-t-xl"

@@ -93,6 +93,7 @@ export type Haircut = {
 	group?: EthnicGroup;
 	length: string;
 	is_added_to_wishlist: boolean
+	is_ever_generated: boolean
 	salon_haircuts?: HaircutDetails[]
 };
 

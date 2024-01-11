@@ -119,6 +119,9 @@ const dashboard = {
   getWishlistHaircuts: async (id: number) => {
     return await request.get<any>(`/wishlist/${id}`);
   },
+  getHasPreviewHaircuts: async(id : number) => {
+    return await request.get<any>(`/preview_list/${id}`);
+  },
   getSalonsWishlist: async (id: number) => {
     return await request.get<any>(`/salon_wishlist/${id}`);
   },
