@@ -11,12 +11,12 @@ import Autocomplete from "react-google-autocomplete";
 import { client } from "@/api/clientSide";
 import { salonApi } from '@/api/salonSide';
 import useSnackbar from "@/hooks/useSnackbar";
-import { getLocalStorage, setLocalStorage } from "@/api/storage";
+import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/storage";
 import { ErrorBar } from "recharts";
 import InfoButton from "@/components/UI/InfoButton";
 
 const tempSalon = getLocalStorage('hair_salon');
-const salonInfo = tempSalon ? JSON.parse(tempSalon) : null;
+let salonInfo = tempSalon ? JSON.parse(tempSalon) : null;
 
 const SalonInfos = () => {
     const [isModal, setIsModal] = useState(false);
@@ -97,10 +97,21 @@ const SalonInfos = () => {
     ]
 
 
+    const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
     // Utilisez useEffect pour déclencher la recherche de la ville lorsque le code postal change
     useEffect(() => {
         fetchAdress();
         if (salonInfo) {
+            console.log("Salon Type Real : " + salonInfo.type)
+            typesSalon.find(type => {
+                // if(type.name === salonInfo.type){
+                //     console.log("Type Name :" + type.name)
+                //     console.log("Salon Info :" + salonInfo.type)
+                // }
+                return type.name === salonInfo.type
+            })
+            console.log(typesSalon.find(type => type.name === salonInfo.type)?.nameFr)
+            console.log(typesSalon.find(type => type.name === salonInfo.type)?.nameFr)
             setSelectedSalonType(typesSalon.find(type => type.name === salonInfo.type)?.nameFr)
             setTypeImage(typesSalon.find(type => type.name === salonInfo.type)?.nameFr)
             setIsMobilityAllowed(salonInfo.is_mobile)
@@ -110,7 +121,12 @@ const SalonInfos = () => {
     const saveSalonType = async (item) => {
         await salonApi.saveSalonType({ type: item })
             .then((resp) => {
+                removeFromLocalStorage("hair_salon");
                 setLocalStorage("hair_salon", JSON.stringify(resp.data));
+                let user_info :any = getLocalStorage("user")
+                user_info = user_info ? JSON.parse(user_info) : null;
+                user_info.hair_salon = resp.data;
+                setLocalStorage("user",JSON.stringify(user_info))
                 showSnackbar("success", "Salon Type Saved Successfully.");
             })
             .catch(err => {
@@ -119,6 +135,7 @@ const SalonInfos = () => {
             .finally(() => {
                 setIsLoading(false);
             })
+            
     }
 
     const saveSalonMobility = async (isMobilityAllowed) => {
@@ -370,6 +387,7 @@ const SalonInfos = () => {
     }
 
     const fetchAdress = async () => {
+        setIsLoading(true)
         const resp = await salonApi.getAddresses()
         console.log(resp)
         setAddressResponse(resp.data);
@@ -390,6 +408,8 @@ const SalonInfos = () => {
         setZoneDuration(resp.data.dur_per_km)
         setZoneSliderRange([resp.data.min_km, resp.data.max_km]);
         setIsMobilityAllowed(resp.data.is_mobile);
+        await wait(1000)
+        setIsLoading(false)
     }
 
 
