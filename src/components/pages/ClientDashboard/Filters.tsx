@@ -95,6 +95,8 @@ const Filters = () => {
     const [ZipCodeValue, setZipCodeValue] = useState('');
     const [MinRating, setMinRating] = useState(1); // Initialize with the default rating value
     const [MaxRating, setMaxRating] = useState(5); // Initialize with the default rating value
+    const [areFiltersActive, setAreFiltersActive] = useState(false); // État pour contrôler si les filtres sont actifs
+
     const handleMinRatingChange = (newRating: number) => {
         if (newRating <= MaxRating) {
             setMinRating(newRating); // Update the MinRating state with the new rating value
@@ -268,6 +270,17 @@ const Filters = () => {
         }
     }
 
+    // Gère le clic sur l'icône pour activer/désactiver les filtres
+    const toggleHaircutFilters = () => {
+        setAreFiltersActive(!areFiltersActive);
+        // Ajoutez ici la logique pour activer/désactiver les filtres
+    };
+    // Gère le clic sur l'icône pour activer/désactiver les filtres
+    const toggleSalonFilters = () => {
+        setAreFiltersActive(!areFiltersActive);
+        // Ajoutez ici la logique pour activer/désactiver les filtres
+    };
+
     return (
         <div>
             <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
@@ -313,8 +326,24 @@ const Filters = () => {
                         {selectedTab === 0 ?
                             <div className="relative z-10 w-full lg:w-[630px] mt-5 md:mt-0 rounded-3xl bg-white py-6 px-2 lg:px-10 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)] h-auto min-height-[500px]">
 
-                                {/* Title of the Section "Coiffure" */}
-                                <p className="text-black text-lg ml-6 mb-4 font-semibold pl-2 pr-2">Coiffure</p>
+                                {/* Header with title and toggle icon */}
+                                <div className="flex items-center justify-between ml-6 mb-8 pl-2 pr-2 ">
+                                    <p className="text-black text-xl font-semibold mr-4">Coiffure</p>
+                                    <div onClick={toggleHaircutFilters} className="flex items-center cursor-pointer">
+                                        <div className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${areFiltersActive ?
+                                            ColorsThemeA.ohcVerticalGradient_A
+                                            : "border-[#767676]"
+                                            }`}
+                                        >
+                                            {areFiltersActive && <CheckedIcon />}
+                                        </div>
+                                        <p className="text-sm font-semibold ml-2">Activer les filtres de coiffure</p>
+                                    </div>
+                                </div>
+
+                                {/* Line separator */}
+                                <hr className="border-t border-gray-300 my-4 mb-12" />
+
 
                                 {/* Column organization */}
                                 <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-2 lg:gap-6 justify-around">
@@ -412,6 +441,23 @@ const Filters = () => {
                             :
                             <div className="relative z-10 w-full lg:w-[630px] mt-5 md:mt-0 rounded-3xl bg-white py-6 px- sm:px-10 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)] h-auto min-height-[500px]">
 
+                                {/* Header with title and toggle icon */}
+                                <div className="flex items-center justify-between ml-6 mb-8 pl-2 pr-2 ">
+                                    <p className="text-black text-xl font-semibold mr-4">Recherche de Salon</p>
+                                    <div onClick={toggleHaircutFilters} className="flex items-center cursor-pointer">
+                                        <div className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${areFiltersActive ?
+                                            ColorsThemeA.ohcVerticalGradient_A
+                                            : "border-[#767676]"
+                                            }`}
+                                        >
+                                            {areFiltersActive && <CheckedIcon />}
+                                        </div>
+                                        <p className="text-sm font-semibold ml-2">Activer les filtres de salon</p>
+                                    </div>
+                                </div>
+
+                                {/* Line separator */}
+                                <hr className="border-t border-gray-300 my-4 mb-8" />
 
                                 {/* Title of the Section "Localisation" */}
                                 <p className="text-black text-lg mb-8 font-semibold pl-2 pr-2">Localisation</p>
