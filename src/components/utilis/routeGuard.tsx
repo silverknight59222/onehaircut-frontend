@@ -29,7 +29,7 @@ export const RouteGuard = ({ children }: any) => {
 	} else if (user && user.role === 'salon_professional' && !user.subscription) {
 		index = freeSubscriptionRoutes.indexOf(pathname)
 	}
-
+	
 	if (user && index === -1) {
 		router.push('/login');
 	}
