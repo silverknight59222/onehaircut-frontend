@@ -335,7 +335,12 @@ const Welcome = () => {
         }
         else {
           setPreviewImage('')
-          showSnackbar('error', resp.data.message)
+          if(resp.data.status == 200){
+            showSnackbar('success', resp.data.message)
+          }
+          else {
+            showSnackbar('error', resp.data.message)
+          }
         }
         console.log("Preview Image")
       }
