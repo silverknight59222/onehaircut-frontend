@@ -356,7 +356,7 @@ const Currentreservation = () => {
                                                 <p className='text-[#666] text-sm text-start'>{item.salon_info.name}</p>
                                             </div>
                                             <div>
-                                                <p className='text-[#494949] font-bold text-start'>Addresse du salon</p>
+                                                <p className='text-[#494949] font-bold text-start'>Adresse du salon</p>
                                                 <p className='text-[#666] text-sm text-start'>{item.hair_salon.address.street} {item.hair_salon.address.city} {item.hair_salon.address.state} {item.hair_salon.address.country}</p>
                                             </div>
                                             <div>
