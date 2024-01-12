@@ -483,6 +483,7 @@ const Welcome = () => {
               </div>
             );
           })}
+
         </div>
 
         {isLoggedIn && (
