@@ -95,7 +95,8 @@ const Filters = () => {
     const [ZipCodeValue, setZipCodeValue] = useState('');
     const [MinRating, setMinRating] = useState(1); // Initialize with the default rating value
     const [MaxRating, setMaxRating] = useState(5); // Initialize with the default rating value
-    const [areFiltersActive, setAreFiltersActive] = useState(false); // État pour contrôler si les filtres sont actifs
+    const [areHaircutFiltersActive, setAreHaircutFiltersActive] = useState(false); // État pour contrôler si les filtres sont actifs
+    const [areSalonFiltersActive, setAreSalonFiltersActive] = useState(false); // État pour contrôler si les filtres sont actifs
 
     const handleMinRatingChange = (newRating: number) => {
         if (newRating <= MaxRating) {
@@ -272,12 +273,12 @@ const Filters = () => {
 
     // Gère le clic sur l'icône pour activer/désactiver les filtres
     const toggleHaircutFilters = () => {
-        setAreFiltersActive(!areFiltersActive);
+        setAreHaircutFiltersActive(!areHaircutFiltersActive);
         // Ajoutez ici la logique pour activer/désactiver les filtres
     };
     // Gère le clic sur l'icône pour activer/désactiver les filtres
     const toggleSalonFilters = () => {
-        setAreFiltersActive(!areFiltersActive);
+        setAreSalonFiltersActive(!areSalonFiltersActive);
         // Ajoutez ici la logique pour activer/désactiver les filtres
     };
 
@@ -323,6 +324,7 @@ const Filters = () => {
                                 );
                             })}
                         </div>
+
                         {selectedTab === 0 ?
                             <div className="relative z-10 w-full lg:w-[630px] mt-5 md:mt-0 rounded-3xl bg-white py-6 px-2 lg:px-10 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)] h-auto min-height-[500px]">
 
@@ -330,75 +332,79 @@ const Filters = () => {
                                 <div className="flex items-center justify-between ml-6 mb-8 pl-2 pr-2 ">
                                     <p className="text-black text-xl font-semibold mr-4">Coiffure</p>
                                     <div onClick={toggleHaircutFilters} className="flex items-center cursor-pointer">
-                                        <div className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${areFiltersActive ?
+                                        <div className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${areHaircutFiltersActive ?
                                             ColorsThemeA.ohcVerticalGradient_A
                                             : "border-[#767676]"
                                             }`}
                                         >
-                                            {areFiltersActive && <CheckedIcon />}
+                                            {areHaircutFiltersActive && <CheckedIcon />}
                                         </div>
                                         <p className="text-sm font-semibold ml-2">Activer les filtres de coiffure</p>
                                     </div>
                                 </div>
 
-                                {/* Line separator */}
-                                <hr className="border-t border-gray-300 my-4 mb-12" />
+                                {/* Content below is only visible if areHaircutFiltersActive is true */}
+                                {areHaircutFiltersActive && (
+                                    <div>
+
+                                        {/* Line separator */}
+                                        < hr className="border-t border-gray-300 my-4 mb-12" />
 
 
-                                {/* Column organization */}
-                                <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-2 lg:gap-6 justify-around">
+                                        {/* Column organization */}
+                                        <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-2 lg:gap-6 justify-around">
 
-                                    {/* First Column */}
-                                    <div className="flex flex-col items-center">
-                                        {/* Dropdown for "cheveux actuelle" */}
-                                        <div className="flex items-center justify-center mb-2 mr-10 w-full"> {/* Increased horizontal spacing */}
-                                            <p className="text-black text-sm mb-2 mr-10"></p>
-                                            <DropdownMenu dropdownItems={WishLength.map((item) => item)} fctToCallOnClick={handleCurrentLength} selectId={currentLength} menuName="cheveux actuelle"
-                                                parentClass="w-full" backgroundColor="w-full" />
+                                            {/* First Column */}
+                                            <div className="flex flex-col items-center">
+                                                {/* Dropdown for "cheveux actuelle" */}
+                                                <div className="flex items-center justify-center mb-2 mr-10 w-full"> {/* Increased horizontal spacing */}
+                                                    <p className="text-black text-sm mb-2 mr-10"></p>
+                                                    <DropdownMenu dropdownItems={WishLength.map((item) => item)} fctToCallOnClick={handleCurrentLength} selectId={currentLength} menuName="cheveux actuelle"
+                                                        parentClass="w-full" backgroundColor="w-full" />
+                                                </div>
+
+                                                {/* Dropdown for "Longueur recherchée" */}
+                                                <div className="flex items-center justify-center mb-2 mr-10 w-full"> {/* Increased horizontal spacing */}
+                                                    <p className="text-black text-sm mb-2 mr-10"></p>
+                                                    <DropdownMenu parentClass="w-full" backgroundColor="w-full" dropdownItems={WishLength.map((item) => item)} fctToCallOnClick={handleLengthSought} selectId={desiredLength} menuName="Longueur recherchée" />
+                                                </div>
+                                            </div>
+
+                                            {/* Second Column */}
+                                            <div className="flex flex-col items-center">
+                                                {/* Dropdown for "Tendance de la coiffure" */}
+                                                <div className="flex items-center justify-center mb-2 mr-10 w-full"> {/* Increased horizontal spacing */}
+                                                    <p className="text-black text-sm mb-2 mr-10"></p>
+                                                    <DropdownMenu parentClass="w-full" backgroundColor="w-full" dropdownItems={WishGender.map((item) => item)} fctToCallOnClick={handleWishGender} selectId={hairstyleTrend} menuName="Tendance de la coiffure" />
+                                                </div>
+
+                                                {/* Slider for budget */}
+                                                <div className="relative z-20 w-full pl-4 pr-3">
+                                                    <CustomSlider
+                                                        theme={ComponentTheme}
+                                                        value={budgetSliderRange}
+                                                        onChange={handleBudgetSliderChange}
+                                                        min={0}
+                                                        max={1000}
+                                                        unit="€"
+                                                        label="Budget" // Provide a label prop if your CustomSlider component expects it
+                                                        valueLabelDisplay="auto"
+                                                    />
+                                                </div>
+                                            </div>
                                         </div>
 
-                                        {/* Dropdown for "Longueur recherchée" */}
-                                        <div className="flex items-center justify-center mb-2 mr-10 w-full"> {/* Increased horizontal spacing */}
-                                            <p className="text-black text-sm mb-2 mr-10"></p>
-                                            <DropdownMenu parentClass="w-full" backgroundColor="w-full" dropdownItems={WishLength.map((item) => item)} fctToCallOnClick={handleLengthSought} selectId={desiredLength} menuName="Longueur recherchée" />
-                                        </div>
-                                    </div>
-
-                                    {/* Second Column */}
-                                    <div className="flex flex-col items-center">
-                                        {/* Dropdown for "Tendance de la coiffure" */}
-                                        <div className="flex items-center justify-center mb-2 mr-10 w-full"> {/* Increased horizontal spacing */}
-                                            <p className="text-black text-sm mb-2 mr-10"></p>
-                                            <DropdownMenu parentClass="w-full" backgroundColor="w-full" dropdownItems={WishGender.map((item) => item)} fctToCallOnClick={handleWishGender} selectId={hairstyleTrend} menuName="Tendance de la coiffure" />
+                                        {/* Centered "Réinitialiser" button */}
+                                        <div className="flex justify-center mt-12">
+                                            <button onClick={resetAllValues_1} className={`${Theme_A.button.medBlackColoredButton}`}>Réinitialiser</button>
+                                            <button
+                                                onClick={updateHairStyleSearch}
+                                                className={`${Theme_A.button.mediumGradientButton} ml-3`}>
+                                                Mise à jour
+                                            </button>
                                         </div>
 
-                                        {/* Slider for budget */}
-                                        <div className="relative z-20 w-full pl-4 pr-3">
-                                            <CustomSlider
-                                                theme={ComponentTheme}
-                                                value={budgetSliderRange}
-                                                onChange={handleBudgetSliderChange}
-                                                min={0}
-                                                max={1000}
-                                                unit="€"
-                                                label="Budget" // Provide a label prop if your CustomSlider component expects it
-                                                valueLabelDisplay="auto"
-                                            />
-                                        </div>
-                                    </div>
-                                </div>
-
-                                {/* Centered "Réinitialiser" button */}
-                                <div className="flex justify-center mt-12">
-                                    <button onClick={resetAllValues_1} className={`${Theme_A.button.medBlackColoredButton}`}>Réinitialiser</button>
-                                    <button
-                                        onClick={updateHairStyleSearch}
-                                        className={`${Theme_A.button.mediumGradientButton} ml-3`}>
-                                        Mise à jour
-                                    </button>
-                                </div>
-
-                                {/* TODO ADD POPULARITY FOR NEXT RELEASE 
+                                        {/* TODO ADD POPULARITY FOR NEXT RELEASE 
                                     <p className='text-black text-lg mb-4 font-semibold mt-4'>Popularit&eacute;</p>
                                     <div className='flex flex-col sm:flex-row lg:flex-col xl:flex-row items-start sm:items-center lg:items-start xl:items-center justify-between'>
                                         <div>
@@ -431,6 +437,8 @@ const Filters = () => {
                                         </div>
                                     </div>
                                     */}
+                                    </div>
+                                )}
                             </div>
 
 
@@ -444,94 +452,98 @@ const Filters = () => {
                                 {/* Header with title and toggle icon */}
                                 <div className="flex items-center justify-between ml-6 mb-8 pl-2 pr-2 ">
                                     <p className="text-black text-xl font-semibold mr-4">Recherche de Salon</p>
-                                    <div onClick={toggleHaircutFilters} className="flex items-center cursor-pointer">
-                                        <div className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${areFiltersActive ?
+                                    <div onClick={toggleSalonFilters} className="flex items-center cursor-pointer">
+                                        <div className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${areSalonFiltersActive ?
                                             ColorsThemeA.ohcVerticalGradient_A
                                             : "border-[#767676]"
                                             }`}
                                         >
-                                            {areFiltersActive && <CheckedIcon />}
+                                            {areSalonFiltersActive && <CheckedIcon />}
                                         </div>
                                         <p className="text-sm font-semibold ml-2">Activer les filtres de salon</p>
                                     </div>
                                 </div>
 
-                                {/* Line separator */}
-                                <hr className="border-t border-gray-300 my-4 mb-8" />
-
-                                {/* Title of the Section "Localisation" */}
-                                <p className="text-black text-lg mb-8 font-semibold pl-2 pr-2">Localisation</p>
-
-                                {/* Column organization */}
-                                <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-6 md:gap-10 lg:gap-6 xl:gap-10">
-
-
-                                    {/* Dropdown for "Country */}
-                                    <div className="flex items-center justify-center md:mb-2 md:mr-12 pl-2 pr-2 ">
-                                        <p className="text-black text-sm"></p>
-                                        <DropdownMenu
-                                            parentClass="w-full text-center"
-                                            backgroundColor="w-full"
-                                            dropdownItems={EUCountriesList()}
-                                            menuName="Pays"
-                                            fctToCallOnClick={handleNewSetCountry}
-                                            labelId='Pays top-2'
-                                            selectId={CountryDefault}
-                                            defaultSelected={CountryDefault} // Pass the default value as a prop
-                                        />
-                                    </div>
+                                {/* Content below is only visible if areHaircutFiltersActive is true */}
+                                {areSalonFiltersActive && (
                                     <div>
-                                        <p className="text-black text-sm mb-2 pl-2 pr-2">Coiffure à domicile </p>
-                                        <div
-                                            onClick={() => setHairdressingAtHome(!HairdressingAtHome)}
-                                            className="flex items-center justify-center gap-3 mt-4 cursor-pointer"
-                                        >
-                                            <div className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${HairdressingAtHome
-                                                ? ColorsThemeA.ohcVerticalGradient_A
-                                                : "border-[#767676]"
-                                                }`}
-                                            >
-                                                {HairdressingAtHome && (
-                                                    <CheckedIcon width="15" height="10" />)}
+
+                                        {/* Line separator */}
+                                        < hr className="border-t border-gray-300 my-4 mb-8" />
+
+                                        {/* Title of the Section "Localisation" */}
+                                        <p className="text-black text-lg mb-8 font-semibold pl-2 pr-2">Localisation</p>
+
+                                        {/* Column organization */}
+                                        <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row gap-6 md:gap-10 lg:gap-6 xl:gap-10">
+
+
+                                            {/* Dropdown for "Country */}
+                                            <div className="flex items-center justify-center md:mb-2 md:mr-12 pl-2 pr-2 ">
+                                                <p className="text-black text-sm"></p>
+                                                <DropdownMenu
+                                                    parentClass="w-full text-center"
+                                                    backgroundColor="w-full"
+                                                    dropdownItems={EUCountriesList()}
+                                                    menuName="Pays"
+                                                    fctToCallOnClick={handleNewSetCountry}
+                                                    labelId='Pays top-2'
+                                                    selectId={CountryDefault}
+                                                    defaultSelected={CountryDefault} // Pass the default value as a prop
+                                                />
+                                            </div>
+                                            <div>
+                                                <p className="text-black text-sm mb-2 pl-2 pr-2">Coiffure à domicile </p>
+                                                <div
+                                                    onClick={() => setHairdressingAtHome(!HairdressingAtHome)}
+                                                    className="flex items-center justify-center gap-3 mt-4 cursor-pointer"
+                                                >
+                                                    <div className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${HairdressingAtHome
+                                                        ? ColorsThemeA.ohcVerticalGradient_A
+                                                        : "border-[#767676]"
+                                                        }`}
+                                                    >
+                                                        {HairdressingAtHome && (
+                                                            <CheckedIcon width="15" height="10" />)}
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
 
 
-                                <div className='flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-24 lg:flex-col xl:flex-row lg:items-start xl:items-center lg:gap-5 xl:gap-24 mt-6 sm:mt-3'>
-                                    <div className="w-46 pl-2 pr-2">
-                                        <CustomInput
-                                            id="PostCode"
-                                            label="Code postal"
-                                            value={ZipCodeValue}
-                                            onChange={(e) => {
-                                                const inputValue = e.target.value;
-                                                // Use regular expression to allow only up to 5 numeric characters
-                                                const numericValue = inputValue.replace(/[^0-9]/g, '').slice(0, 5);
-                                                setZipCodeValue(numericValue);
-                                            }}
-                                            type="number"
-                                            isZipCode={true}
-                                        />
-                                    </div>
+                                        <div className='flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-24 lg:flex-col xl:flex-row lg:items-start xl:items-center lg:gap-5 xl:gap-24 mt-6 sm:mt-3'>
+                                            <div className="w-46 pl-2 pr-2">
+                                                <CustomInput
+                                                    id="PostCode"
+                                                    label="Code postal"
+                                                    value={ZipCodeValue}
+                                                    onChange={(e) => {
+                                                        const inputValue = e.target.value;
+                                                        // Use regular expression to allow only up to 5 numeric characters
+                                                        const numericValue = inputValue.replace(/[^0-9]/g, '').slice(0, 5);
+                                                        setZipCodeValue(numericValue);
+                                                    }}
+                                                    type="number"
+                                                    isZipCode={true}
+                                                />
+                                            </div>
 
-                                    {/* Slider for Around Address Searching circle */}
-                                    <div className="relative z-20 w-full pl-4 pr-2">
-                                        <CustomSlider
-                                            theme={ComponentTheme}
-                                            value={zoneSliderRange}
-                                            onChange={handleZoneSliderChange}
-                                            min={0}
-                                            max={30}
-                                            unit="km"
-                                            label="Zone de recherche" // Provide a label prop if your CustomSlider component expects it
-                                            valueLabelDisplay="auto"
-                                        />
-                                    </div>
-                                </div>
+                                            {/* Slider for Around Address Searching circle */}
+                                            <div className="relative z-20 w-full pl-4 pr-2">
+                                                <CustomSlider
+                                                    theme={ComponentTheme}
+                                                    value={zoneSliderRange}
+                                                    onChange={handleZoneSliderChange}
+                                                    min={0}
+                                                    max={30}
+                                                    unit="km"
+                                                    label="Zone de recherche" // Provide a label prop if your CustomSlider component expects it
+                                                    valueLabelDisplay="auto"
+                                                />
+                                            </div>
+                                        </div>
 
-                                {/* TODO ADD GEOLOCALISATION FUNCTIONALITY
+                                        {/* TODO ADD GEOLOCALISATION FUNCTIONALITY
                                     <div>
                                         <p className="text-black text-sm mb-2">Utiliser la Geolocalisation</p>
                                         <div onClick={() => checkboxClickHandler('Geolocalisation')} className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded ${selectedItems.includes('Geolocalisation')
@@ -544,74 +556,74 @@ const Filters = () => {
                                         */}
 
 
-                                <div className='border-y border-[#D8D8D8] py-4 mt-6'>
+                                        <div className='border-y border-[#D8D8D8] py-4 mt-6'>
 
 
-                                    {/* Title of the Section "Classement" */}
-                                    <div>
-                                        <p className="text-black text-lg mt-4 mb-8 font-semibold pr-2 pl-2">Note du salon</p>
-                                        <div className='flex flex-col sm:flex-row lg:flex-col xl:flex-row items-start sm:items-center lg:items-start xl:items-center justify-between'>
+                                            {/* Title of the Section "Classement" */}
                                             <div>
-                                                <p className='text-black text-sm pl-2 pr-2'>Minimum</p>
-                                                <div className='flex items-center gap-4 pl-2 pr-2'>
-                                                    <StarRatings
-                                                        rating={MinRating}
-                                                        starRatedColor="#FEDF10"
-                                                        starSpacing="4px"
-                                                        starDimension="15px"
-                                                        numberOfStars={5}
-                                                        name="MinRating"
-                                                        changeRating={handleMinRatingChange} // Pass the function to update the rating value
-                                                    />
-                                                    <p className='text-black text-sm'>{MinRating} / 5</p>
+                                                <p className="text-black text-lg mt-4 mb-8 font-semibold pr-2 pl-2">Note du salon</p>
+                                                <div className='flex flex-col sm:flex-row lg:flex-col xl:flex-row items-start sm:items-center lg:items-start xl:items-center justify-between'>
+                                                    <div>
+                                                        <p className='text-black text-sm pl-2 pr-2'>Minimum</p>
+                                                        <div className='flex items-center gap-4 pl-2 pr-2'>
+                                                            <StarRatings
+                                                                rating={MinRating}
+                                                                starRatedColor="#FEDF10"
+                                                                starSpacing="4px"
+                                                                starDimension="15px"
+                                                                numberOfStars={5}
+                                                                name="MinRating"
+                                                                changeRating={handleMinRatingChange} // Pass the function to update the rating value
+                                                            />
+                                                            <p className='text-black text-sm'>{MinRating} / 5</p>
+                                                        </div>
+
+
+
+                                                    </div>
+                                                    <div className='mt-5 sm:mt-0 lg:mt-5 xl:mt-0'>
+                                                        <p className='text-black text-sm pl-2 pr-2'>Maximum</p>
+                                                        <div className='flex items-center gap-4 pl-2 pr-2'>
+                                                            <StarRatings
+                                                                rating={MaxRating}
+                                                                starRatedColor="#FEDF10"
+                                                                starSpacing="4px"
+                                                                starDimension="15px"
+                                                                numberOfStars={5}
+                                                                name="MinRating"
+                                                                changeRating={handleMaxRatingChange} // Pass the function to update the rating value
+                                                            />
+                                                            <p className='text-black text-sm'>{MaxRating} / 5</p>
+                                                        </div>
+                                                    </div>
                                                 </div>
-
-
-
                                             </div>
-                                            <div className='mt-5 sm:mt-0 lg:mt-5 xl:mt-0'>
-                                                <p className='text-black text-sm pl-2 pr-2'>Maximum</p>
-                                                <div className='flex items-center gap-4 pl-2 pr-2'>
-                                                    <StarRatings
-                                                        rating={MaxRating}
-                                                        starRatedColor="#FEDF10"
-                                                        starSpacing="4px"
-                                                        starDimension="15px"
-                                                        numberOfStars={5}
-                                                        name="MinRating"
-                                                        changeRating={handleMaxRatingChange} // Pass the function to update the rating value
-                                                    />
-                                                    <p className='text-black text-sm'>{MaxRating} / 5</p>
-                                                </div>
-                                            </div>
+
                                         </div>
-                                    </div>
 
-                                </div>
+                                        {/* Title of the Section "Disponibilite" */}
+                                        <div>
+                                            <p className="text-black text-lg mb-8 mt-6 font-semibold pl-2 pr-2">Disponibilit&eacute;</p>
 
-                                {/* Title of the Section "Disponibilite" */}
-                                <div>
-                                    <p className="text-black text-lg mb-8 mt-6 font-semibold pl-2 pr-2">Disponibilit&eacute;</p>
-
-                                    {/* Check box pour choisir les jours de préférences */}
-                                    <div className="flex justify-between pl-2 pr-2">
-                                        {daysOfWeek.map((day) => (
-                                            <div key={day} className="flex flex-col items-center justify-center">
-                                                <p className="text-black text-sm mb-2">{day}</p>
-                                                <div
-                                                    onClick={() => checkboxClickHandler(day)}
-                                                    className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded hover:scale-125 transition duration-300 ${selectedItems && selectedItems.includes(day)
-                                                        ? ColorsThemeA.ohcVerticalGradient_A
-                                                        : "bg-[#D6D6D6]"
-                                                        }`}
-                                                >
-                                                    <CheckedIcon />
-                                                </div>
+                                            {/* Check box pour choisir les jours de préférences */}
+                                            <div className="flex justify-between pl-2 pr-2">
+                                                {daysOfWeek.map((day) => (
+                                                    <div key={day} className="flex flex-col items-center justify-center">
+                                                        <p className="text-black text-sm mb-2">{day}</p>
+                                                        <div
+                                                            onClick={() => checkboxClickHandler(day)}
+                                                            className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded hover:scale-125 transition duration-300 ${selectedItems && selectedItems.includes(day)
+                                                                ? ColorsThemeA.ohcVerticalGradient_A
+                                                                : "bg-[#D6D6D6]"
+                                                                }`}
+                                                        >
+                                                            <CheckedIcon />
+                                                        </div>
+                                                    </div>
+                                                ))}
                                             </div>
-                                        ))}
-                                    </div>
 
-                                    {/* TODO ADD PRODUIT WHEN SHOP FUNCTIONALITY IS RELEASED
+                                            {/* TODO ADD PRODUIT WHEN SHOP FUNCTIONALITY IS RELEASED
                                 <div>  
                                     <p className='text-black text-lg mb-4 border-t mt-5 border-[#D8D8D8] pt-4'>Produits</p>
                                     <div className='flex flex-col sm:flex-row sm:items-center justify-between gap-5 sm:gap-24 lg:flex-col xl:flex-row lg:items-start xl:items-center lg:gap-5 xl:gap-24'>
@@ -635,17 +647,21 @@ const Filters = () => {
                                     </div>
                                 </div>
                                 */}
-                                </div>
-                                <div>
-                                    <div className="flex justify-center mt-12">
-                                        <button onClick={resetAllValues_2} className={`${Theme_A.button.medBlackColoredButton}`}>Réinitialiser</button>
-                                        <button
-                                            onClick={updateSearchSalon}
-                                            className={`${Theme_A.button.mediumGradientButton} ml-3`}>
-                                            Mise à jour
-                                        </button>
+                                        </div>
+                                        <div>
+                                            <div className="flex justify-center mt-12">
+                                                <button onClick={resetAllValues_2} className={`${Theme_A.button.medBlackColoredButton}`}>Réinitialiser</button>
+                                                <button
+                                                    onClick={updateSearchSalon}
+                                                    className={`${Theme_A.button.mediumGradientButton} ml-3`}>
+                                                    Mise à jour
+                                                </button>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+
+
+                                )}
                             </div>
                         }
                     </div>
