@@ -410,7 +410,24 @@ const Welcome = () => {
   const InfoContent_4 = "Le résultat peut être plus ou moins précis et convainquant. <br /> Il ne s'agit que d'un apperçu vous permettant de mieux vous projeter. <br /> Une image de profil de qualité vous permettra d'obtenir de meilleurs résultats. <br /> Nous travaillons pour améliorer notre système continuellement";
 
   // TODO Delete picture in S3
-  const DeleteS3Picture = () => {
+  const DeleteS3Picture = async () => {
+    let resp = await user_api.deletePreviewImageByHaircutUser(selectedHaircut.id, userId!);
+    if (resp.data.status == 200) {
+      showSnackbar("success", "Generated Image Deleted")
+    }
+    else {
+      showSnackbar("error", "There is problem when deleting image")
+    }
+    console.log(hasPreview)
+    hasPreview.filter((preview_image) => {
+      if(preview_image === String(selectedHaircut.id)){
+        console.log("ID PREVIEW : " + preview_image);
+        console.log("ID SELECTED : " + selectedHaircut.id);
+      }
+      preview_image !== String(selectedHaircut.id)
+    });
+    console.log(hasPreview)
+    // getHasPreviewList()
   };
 
   return (

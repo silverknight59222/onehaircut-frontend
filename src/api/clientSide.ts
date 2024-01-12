@@ -123,5 +123,8 @@ const user_api = {
     deletePreviewImage: async (generated_id: number) => {
         return await request.get(`/del_preview/${generated_id}`);
     },
+    deletePreviewImageByHaircutUser: async (haircut_id: number, userId: number) => {
+        return await request.get(`/del_preview/${userId}/${haircut_id}`);
+    },
 }
 export { client, user_api };
