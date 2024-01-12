@@ -6,27 +6,27 @@ import HairStyleListHeader from "./HairStyleListHeader";
 import { getLocalStorage } from "@/api/storage";
 // For update commit
 const hairStyleSelectEvent = {
-  on: () => {}
+  on: () => { }
 }
 
 const onFilterSelect = {
-  on: () => {}
+  on: () => { }
 }
 
 const resetStyleForm = {
-  on: () => {}
+  on: () => { }
 }
 
 const reloadList = {
-  on: () => {}
+  on: () => { }
 }
 
 const selectAll = {
-  on: () => {}
+  on: () => { }
 }
 
 const listCountShow = {
-  on: () => {}
+  on: () => { }
 }
 
 const params = {
@@ -46,20 +46,20 @@ const Hairstyles = () => {
 
   useEffect(() => {
     params.genderFilters = "";
-    if(salonData.type.includes("men")){
+    if (salonData.type.includes("men") || salonData.type.includes("man")) {
       params.genderFilters = "Men";
     }
-    if(salonData.type.includes("women")){
+    if (salonData.type.includes("women") || salonData.type.includes("woman")) {
       params.genderFilters = "Women";
     }
-  },[])
-  
+  }, [])
+
   return (
     <div>
       <HairStyleListHeader onListCountShow={listCountShow} isd={isSelectedDelete} selectAllEvent={selectAll} params={params} onFilterSelect={onFilterSelect} setActiveMenu={setActiveMenu} activeMenu={activeMenu} ></HairStyleListHeader>
       <div className="flex flex-col md:flex-row gap-8">
         <HairStylesModal hairStyleSelectEvent={hairStyleSelectEvent} setISD={setIsSelectedDelete} selectAllListener={selectAll} setFinalItems={setFinalSelectedItems} finalItems={finalSelectedItems} params={params} reloadListEvent={reloadList} onResetStyleForm={resetStyleForm} activeMenu={activeMenu}></HairStylesModal>
-        <HairStyleList listCountShowEvent={listCountShow} setISD={setIsSelectedDelete} selectAllListener={selectAll} onReloadListener={reloadList} resetStyleForm={resetStyleForm} onFilterSelect={onFilterSelect} hairStyleSelectEvent={hairStyleSelectEvent} activeMenu={activeMenu}  setFinal={setFinalSelectedItems}></HairStyleList>
+        <HairStyleList listCountShowEvent={listCountShow} setISD={setIsSelectedDelete} selectAllListener={selectAll} onReloadListener={reloadList} resetStyleForm={resetStyleForm} onFilterSelect={onFilterSelect} hairStyleSelectEvent={hairStyleSelectEvent} activeMenu={activeMenu} setFinal={setFinalSelectedItems}></HairStyleList>
       </div>
       <Footer />
     </div>
