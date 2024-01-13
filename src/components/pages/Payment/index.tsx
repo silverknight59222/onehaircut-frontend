@@ -242,7 +242,7 @@ const Index = () => {
     <div>
       {isLoading && haircutData && loadingView()}
       <Navbar hideSearchBar={true} />
-      <div className="flex flex-col items-center justify-center mt-16 mb-5 ">
+      <div className="flex flex-col items-center justify-center mt-16 mb-12 ">
         <div className="w-full flex  flex-col items-center justify-center ">
 
 
@@ -282,7 +282,7 @@ const Index = () => {
               <button onClick={() => router.push('/book-salon')} className={`${Theme_A.button.bigWhiteColoredButton}`}>
                 Modifier
               </button>
-              <p className="text-3xl xl:text-4xl text-black font-semibold">
+              <p className="text-3xl xl:text-4xl text-black font-semibold ml-8">
                 Prix total : {totalUpdatedCost}€
               </p>
             </div>
