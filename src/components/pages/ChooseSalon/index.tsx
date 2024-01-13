@@ -454,7 +454,7 @@ const SalonChoice = () => {
         })
 
         const param = {
-            client_id: userData.id,
+            client_id: userData !== null ? userData.id : null,
             haircut_id: haircut.id,
             services: serviceIds,
             citySearch,

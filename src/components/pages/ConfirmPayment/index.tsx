@@ -106,7 +106,15 @@ const Index = () => {
               </div>
             </div>
             <div className="w-full flex justify-center mt-4"> {/* Ajouter un conteneur avec flex et justify-center */}
-              <button onClick={() => router.push('/client/currentreservation')} className={`${Theme_A.button.bigGradientButton}`}>
+              <button onClick={() => {
+                if(userInfo){
+                  router.push('/client/currentreservation')
+                }
+                else {
+                  router.push('/');
+                }
+              }
+              } className={`${Theme_A.button.bigGradientButton}`}>
                 Retour à votre compte
               </button>
             </div>
