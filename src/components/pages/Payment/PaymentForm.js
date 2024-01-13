@@ -6,6 +6,7 @@ import { client } from "@/api/clientSide";
 import { Theme_A } from "@/components/utilis/Themes";
 import { getLocalStorage, setLocalStorage } from '@/api/storage';
 import useSnackbar from "@/hooks/useSnackbar";
+import { dashboard } from '@/api/dashboard';
 
 const PaymentForm = ({ onSuccess }) => {
   const stripe = useStripe();
@@ -48,7 +49,7 @@ const PaymentForm = ({ onSuccess }) => {
     getHaircutPrize()
   }, [])
 
-  const customerEmail = userData ? userData.email : ''
+  const customerEmail = userData ? userData.email : 'guest@onehaircut.com'
   const serviceDescription = salonData ? 'Payment for Services at ' + salonData.name : 'Payment for Services';
 
   const handleSubmit = async (event) => {
@@ -84,7 +85,7 @@ const PaymentForm = ({ onSuccess }) => {
       salon_haircut_id: salonData.haircut ? salonData.haircut.id : null,
       services: salonData.services || [],
       date: bookingDate,
-      clientId: userData.id,
+      clientId: userData == null ? null : userData.id,
       salonId: salonData.id,
       go_home: getLocalStorage("go_home") == "salon" ? false : true
     }
@@ -109,7 +110,7 @@ const PaymentForm = ({ onSuccess }) => {
         token: token.id,
         email: customerEmail,
         description: serviceDescription,
-        clientId: userData.id,
+        clientId: userData ? userData.id : '0',
         salonId: salonData.id,
         go_home: getLocalStorage("go_home") == "salon" ? false : true
       }
