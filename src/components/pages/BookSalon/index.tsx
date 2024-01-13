@@ -190,12 +190,13 @@ const BookSalon = () => {
         maxValue = currentIndex + Math.floor(time / 30)
       }
       if (travelTime > 0) {
+        let restTime = 30 - (time % 30);
         if (Number.isInteger(travelTime / 30)) {
-          maxValue += travelTime / 30 - 1
+          maxValue += (travelTime - restTime) / 30 - 1
           currentIndex -= travelTime / 30 - 1
         }
         else {
-          maxValue += Math.ceil(travelTime / 30)
+          maxValue += Math.ceil((travelTime - restTime) / 30)
           currentIndex -= Math.ceil(travelTime / 30)
         }
       }
