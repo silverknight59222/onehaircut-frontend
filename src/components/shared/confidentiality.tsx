@@ -32,7 +32,7 @@ const confidentialityPage = () => {
 
         </div>
       </div>
-      <div className='mx-48 mb-16'>
+      <div className='mx-32 mb-16 min-w-[300px] justify-start'>
         <h1 className={`my-12 ${Theme_A.textFont.headerH1}`}>Confidentialités</h1>
         <h1 className={`my-3 ${Theme_A.textFont.headerH4}`}>
           Politique de Confidentialité</h1>

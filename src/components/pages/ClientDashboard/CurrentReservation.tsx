@@ -280,7 +280,7 @@ const Currentreservation = () => {
                 />
             )}
             <ClientDashboardLayout notifications={notifications}>
-                <div className="flex flex-col items-center justify-center mt-10 mb-5 px-6 sm:px-10 md:px-20">
+                <div className="flex flex-col items-center justify-center mt-10 mb-12 px-6 sm:px-10 md:px-20">
                     {/* MODAL FOR CANCELLATION */}
                     {isModalCancel && (
                         <BaseModal close={() => setIsModalCancel(false)}>
