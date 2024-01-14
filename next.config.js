@@ -13,6 +13,7 @@ module.exports = withTM({
   // your custom config goes here
 });
 const nextConfig = {
+      reactStrictMode: false,
       images: {
         remotePatterns: [
           {

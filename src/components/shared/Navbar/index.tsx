@@ -316,7 +316,6 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
     const userId = user ? Number(JSON.parse(user).id) : null;
     if (userId) {
       setIsLoggedIn(true);
-
       let gender = hairstyle_trend === 'Masculine' ? 'Homme' : hairstyle_trend === 'Feminine' ? 'Femme' : 'Mix';
       let length = length_sought === 'Long' ? ['Long'] : length_sought === 'Moyen' ? ['Medium'] : length_sought === 'Court' ? ['Short'] : [];
       let mobile = hairdressing_at_home != null ? hairdressing_at_home === 0 ? '' : 'yes' : '';
