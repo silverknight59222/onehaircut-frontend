@@ -481,7 +481,7 @@ const Welcome = () => {
               <div key={index} onClick={() => onClickHaircut(item.id, item.name, item.image)}
                 className={`shadow-md rounded-xl cursor-pointer border hover:outline outline-1 outline-stone-400 mb-2 ${item.id === haircut?.id}`}>
 
-                <div className="relative w-max px-4 pt-4 bg-gradient-to-r from-white via-stone-50 to-zinc-200 rounded-t-xl">
+                <div id="hairstyleCard" className="relative w-max px-4 pt-4 bg-gradient-to-r from-white via-stone-50 to-zinc-200 rounded-t-xl">
 
                   <div className={`relative w-32 h-32 md:w-52 md:h-52`}>
                     <Image src={item.image.includes('http') ? item.image : `https://api.onehaircut.com${item.image}`}

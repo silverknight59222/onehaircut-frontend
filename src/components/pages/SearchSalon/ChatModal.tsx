@@ -107,7 +107,7 @@ const ChatModal: FC<ChatModalProps> = ({
                             />
                              */}
                             </div>
-                            <button type="button" onClick={onSendMessage} className="transform hover:scale-105">
+                            <button type="button" onClick={onSendMessage} id="ChatSendIcon" className="transform hover:scale-105">
                                 <ChatSendIcon />
                             </button>
                         </div>

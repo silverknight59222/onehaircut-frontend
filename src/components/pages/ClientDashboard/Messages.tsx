@@ -48,8 +48,8 @@ const Messages = () => {
                 .then(resp => {
                     setChats(resp.data.data)
                     let data = {
-                      client_id: userId,
-                      professional_id: salon.user_id
+                        client_id: userId,
+                        professional_id: salon.user_id
                     }
                     clientDashboard.setChatRead(data);
                     salon.chat_status = 1;
@@ -76,7 +76,7 @@ const Messages = () => {
                     setMessage('')
 
                     await dashboard.getChat(userId, selectedChat.user_id).then(resp => {
-                      setChats(resp.data.data);
+                        setChats(resp.data.data);
                     });
                 })
                 .catch(err => {
@@ -105,11 +105,11 @@ const Messages = () => {
         getSalonsByUser()
     }, [])
 
-    
-      const fetchUserNotifications = async () => {
+
+    const fetchUserNotifications = async () => {
         const { data } = await dashboard.userNotification()
         setNotifications(data)
-      }
+    }
 
 
     // For automatic scrolling down
@@ -158,6 +158,7 @@ const Messages = () => {
                                     <div
                                         key={index}
                                         onClick={() => getChat(salon)}
+                                        id="MessagerieSalontoSelect"
                                         className={`flex items-center justify-between py-4 px-5 hover:bg-[#F5F5F5] mb-5 rounded-3xl cursor-pointer ${selectedChat.user_id === salon.id && 'bg-[#F5F5F5] outline outline-1 outline-red-200'}`}
                                     >
                                         <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row sm:items-center lg:items-start xl:items-center justify-center gap-2 sm:gap-4">
@@ -177,13 +178,13 @@ const Messages = () => {
                                             {/* Nom du Salon */}
                                             <p className="text-black">{salon.name}</p>
                                         </div>
-                                    {salon.chat_status === 0 ?
-                                        <div className="ml-auto w-4 h-4 rounded-full bg-red-500"></div>
-                                        :
-                                        <div></div>
-                                      }
-                                    </div>  
-                                    
+                                        {salon.chat_status === 0 ?
+                                            <div className="ml-auto w-4 h-4 rounded-full bg-red-500"></div>
+                                            :
+                                            <div></div>
+                                        }
+                                    </div>
+
                                 );
                             })}
                         </div>
@@ -242,7 +243,7 @@ const Messages = () => {
                                 </div>
 
                                 {/* Bouton d'envoi de message */}
-                                <div className="ml-4 mt-4 hover:scale-125 transform transition-transform duration-300" onClick={onSendMessage}>
+                                <div id="ChatSendIcon" className="ml-4 mt-4 hover:scale-125 transform transition-transform duration-300" onClick={onSendMessage}>
                                     <ChatSendIcon />
                                 </div>
                             </div>
