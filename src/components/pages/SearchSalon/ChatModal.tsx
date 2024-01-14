@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect, useState, useRef } from "react";
 import BaseModal from "@/components/UI/BaseModal";
 import { ChatSendIcon } from "@/components/utilis/Icons";
 import { Theme_A, ColorsThemeA } from '@/components/utilis/Themes';
@@ -31,15 +31,19 @@ const ChatModal: FC<ChatModalProps> = ({
     const [chats, setChats] = useState<Chat[]>([])
     const [message, setMessage] = useState("");
 
+    const [initialLoadComplete, setInitialLoadComplete] = useState(false);
+    const messagesEndRef = useRef<HTMLDivElement>(null);
+
     const getChat = async () => {
         if (userData) {
             await dashboard.getChat(userData.id, professionalData.user_id)
                 .then(resp => {
-                    setChats(resp.data.data)
+                    setChats(resp.data.data);
+                    setInitialLoadComplete(true); // Indiquer que le chargement initial est terminé
                 })
-                .catch(err => console.log(err))
+                .catch(err => console.log(err));
         }
-    }
+    };
 
     const onSendMessage = async () => {
         if (message) {
@@ -63,6 +67,24 @@ const ChatModal: FC<ChatModalProps> = ({
     useEffect(() => {
         getChat()
     }, [])
+
+    const scrollToBottom = () => {
+        if (messagesEndRef.current) {
+            messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
+        }
+    };
+
+    useEffect(() => {
+        getChat();
+    }, []);
+
+    // Défilement après le chargement initial
+    useEffect(() => {
+        if (initialLoadComplete) {
+            scrollToBottom();
+        }
+    }, [initialLoadComplete]);
+
     return (
         <>
             {isModalOpen && (
@@ -77,6 +99,8 @@ const ChatModal: FC<ChatModalProps> = ({
                         >
                             Vers la messagerie
                         </button>
+
+
                         <div className="border border-gray-300 rounded-xl p-2 rounded-bl-lg overflow-auto h-40 bg-stone-100 shadow-inner mb-2">
                             {chats.map((msg, index) => (
                                 <div key={`msg-${index}`} className={`${msg.by === 'client' ? 'text-left' : 'text-right'} mb-2`}>
@@ -87,7 +111,10 @@ const ChatModal: FC<ChatModalProps> = ({
                                     </div>
                                 </div>
                             ))}
+                            <div ref={messagesEndRef} />
                         </div>
+
+
                         <div className="flex gap-2 w-auto mt-4">
                             <div className="flex-grow">
                                 <CustomInput
