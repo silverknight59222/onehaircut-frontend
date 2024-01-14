@@ -255,7 +255,7 @@ const EventDetailsModal = (props: EventDetailsModalProps) => {
               />
             </div>
 
-            <button type="button" onClick={sendMessage} className="hover:scale-125 transition duration-300 " > <ChatSendIcon /> </button>
+            <button type="button" onClick={sendMessage} id="ChatSendIcon" className="hover:scale-125 transition duration-300 " > <ChatSendIcon /> </button>
           </div>
         </div>
       </div>
