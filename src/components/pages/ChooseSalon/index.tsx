@@ -713,6 +713,7 @@ const SalonChoice = () => {
                                 return (
                                     <div
                                         key={index}
+                                        id={`Vignette-${index}`}
                                         onClick={() => setSelectedSalon(fsalon)}
                                         className={`relative flex w-full w-max[450px] h-56 h-max[300px] bg-stone-100 rounded-2xl border hover:border-stone-400 cursor-pointer ${selectedSalon.id === fsalon.id && 'border-4 border-red-400 shadow-xl'}`}
                                     >

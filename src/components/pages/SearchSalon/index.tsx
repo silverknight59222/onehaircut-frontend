@@ -281,7 +281,7 @@ const SearchSalon = () => {
                         layout="fill"
                         objectFit="cover"
                       />}
-                    <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-50 transition-opacity duration-300" />
+                    <div id="miniature_Image_Salon" className="absolute inset-0 bg-black opacity-0 group-hover:opacity-50 transition-opacity duration-300" />
                   </div>
                   {/* Titre pour la miniature gauche */}
                   <p className="text-sm whitespace-nowrap mt-1"><strong> Voir images du salon</strong></p>
@@ -300,11 +300,11 @@ const SearchSalon = () => {
                       src={salonProfile.salon_images.length > 0 ? (salonProfile.salon_images.filter((image) => image.type == "hairstyle")[0]?.image.includes('http') ?
                         salonProfile.salon_images.filter((image) => image.type == "hairstyle")[0]?.image :
                         `https://api.onehaircut.com${salonProfile.salon_images.filter((image) => image.type == "hairstyle")[0]?.image}`) : defaultPicture}
-                      alt="Image miniature gauche"
+                      alt="Image miniature droite"
                       layout="fill"
                       objectFit="cover"
                     />}
-                    <div className="absolute inset-0 bg-black opacity-0 group-hover:opacity-50 transition-opacity duration-300" />
+                    <div id="prestation_Image_Salon" className="absolute inset-0 bg-black opacity-0 group-hover:opacity-50 transition-opacity duration-300" />
                   </div>
                   {/* Titre pour la miniature droite */}
                   <p className="text-sm whitespace-nowrap mt-1"><strong>Voir prestations du salon</strong></p>
@@ -336,8 +336,8 @@ const SearchSalon = () => {
               </div>
 
               {/* Bouton de réservation */}
-              <button onClick={() => router.push('/book-salon')} className={`w-full md:w-64 2xl:w-72 h-14 flex items-center justify-center mt-7 text-white font-semibold text-xl rounded-xl ${Theme_A.button.mediumGradientButton} shadow-md`}>
-                R&eacute;server un créneau
+              <button onClick={() => router.push('/book-salon')} id="Reserver_Un_Creneau" className={`w-full md:w-64 2xl:w-72 h-14 flex items-center justify-center mt-7 text-white font-semibold text-xl rounded-xl ${Theme_A.button.mediumGradientButton} shadow-md`}>
+                Réserver un créneau
               </button>
               {/* Ajoutez le bouton pour ouvrir le modal ici */}
               <button
