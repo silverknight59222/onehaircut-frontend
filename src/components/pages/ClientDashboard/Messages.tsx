@@ -158,12 +158,12 @@ const Messages = () => {
                                     <div
                                         key={index}
                                         onClick={() => getChat(salon)}
-                                        id="MessagerieSalontoSelect"
                                         className={`flex items-center justify-between py-4 px-5 hover:bg-[#F5F5F5] mb-5 rounded-3xl cursor-pointer ${selectedChat.user_id === salon.id && 'bg-[#F5F5F5] outline outline-1 outline-red-200'}`}
                                     >
                                         <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row sm:items-center lg:items-start xl:items-center justify-center gap-2 sm:gap-4">
                                             {/* Image du Salon */}
                                             <img
+                                                id={`MessagerieSalon-${index}`}
                                                 src={`${salon.logo}`}
                                                 alt={salon.name}
                                                 style={{
