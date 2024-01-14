@@ -182,7 +182,7 @@ const Welcome = () => {
         haircut.name.toLowerCase().includes(search.toLowerCase())
       );
     }
-    if(hairNameFilters.length > 0){
+    if (hairNameFilters.length > 0) {
       list = list.filter((item) => hairNameFilters.includes(item.name));
     }
     if (
@@ -342,7 +342,7 @@ const Welcome = () => {
         }
         else {
           setPreviewImage('')
-          if(resp.data.status == 200){
+          if (resp.data.status == 200) {
             showSnackbar('success', resp.data.message)
           }
           else {
@@ -432,7 +432,7 @@ const Welcome = () => {
     }
     console.log(hasPreview)
     hasPreview.filter((preview_image) => {
-      if(preview_image === String(selectedHaircut.id)){
+      if (preview_image === String(selectedHaircut.id)) {
         console.log("ID PREVIEW : " + preview_image);
         console.log("ID SELECTED : " + selectedHaircut.id);
       }
@@ -523,7 +523,7 @@ const Welcome = () => {
             <div onClick={() => router.push('/login')}
               id="Connexion - Inscription"
               className={`p-2 sm:p-4 md:p-5 text-center cursor-pointer ${LogInButton}`}>
-              Connexion / Inscription
+              Connexion - Inscription
             </div>
             {/*
             <div className="p-2 sm:p-4 md:p-5 text-center border-[#FE3462] border-2 rounded-2xl cursor-pointer mr-3">
