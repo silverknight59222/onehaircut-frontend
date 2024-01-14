@@ -521,6 +521,7 @@ const Welcome = () => {
               Démonstration d’utilisation
             </div>
             <div onClick={() => router.push('/login')}
+              id="Connexion - Inscription"
               className={`p-2 sm:p-4 md:p-5 text-center cursor-pointer ${LogInButton}`}>
               Connexion - Inscription
             </div>

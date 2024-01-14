@@ -13,13 +13,13 @@ import {
   LogoutIcon,
 } from "@/components/utilis/Icons";
 import { request } from "../api/Request";
-import { getLocalStorage,removeFromLocalStorage } from "@/api/storage";
+import { getLocalStorage, removeFromLocalStorage } from "@/api/storage";
 import { Auth } from "@/api/auth";
 import userLoader from '@/hooks/useLoader';
 import { dashboard } from "@/api/dashboard";
 
-interface NotificationsParams{
-  chat_count : number, reservation_count : number
+interface NotificationsParams {
+  chat_count: number, reservation_count: number
 }
 
 interface DashboardLayout {
@@ -107,7 +107,9 @@ const ClientDashboardLayout = ({ children, notifications }: DashboardLayout) => 
             </div>
             <div className="flex items-center justify-end gap-4">
 
-              <div className="w-14 h-14 flex items-center justify-center pb-1 border-2 border-secondary rounded-full cursor-pointer transform hover:scale-110 transition-transform"
+              <div
+                id="profil_menu_icon"
+                className="w-14 h-14 flex items-center justify-center pb-1 border-2 border-secondary rounded-full cursor-pointer transform hover:scale-110 transition-transform"
                 onClick={() => setIsUserDropDwn(!isUserDropDwn)}>
                 <UserIcon />
               </div>
