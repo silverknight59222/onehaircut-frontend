@@ -445,7 +445,7 @@ const SearchSalon = () => {
                     {/* Image du coiffeur */}
                     <div className="relative w-40 lg:w-52 h-40 lg:h-52 rounded-[20px] ">
                       <Image
-                        src={hairdresser.profile_image ? (hairdresser.profile_image ? (hairdresser.profile_image.includes('http')
+                        src={hairdresser.profile_image || hairdresser.avatar ? (hairdresser.profile_image ? (hairdresser.profile_image.includes('http')
                           ? hairdresser.profile_image : 'https://api.onehaircut.com/' + hairdresser.profile_image)
                           : 'https://api.onehaircut.com/' + hairdresser.avatar.image) : defaultPicture}
                         alt=""
