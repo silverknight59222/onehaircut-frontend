@@ -81,6 +81,7 @@ const Welcome = () => {
   };
 
   const getHasPreviewList = () => {
+    console.log("Get Preview")
     // Fetch the user’s wishlist of haircuts
     if (userId) {
       setIsLoading(true);
@@ -109,6 +110,7 @@ const Welcome = () => {
   }
 
   const getHaircutsWishlist = () => {
+    console.log("Get Wishlist")
     // Fetch the user’s wishlist of haircuts
     if (userId) {
       setIsLoading(true);
@@ -169,6 +171,7 @@ const Welcome = () => {
   }
 
   const getFilteredCuts = () => {
+    console.log("Get Filtered")
     // Filter haircuts based on user-selected filters
     const haircuts: Haircut[] = [];
     let list = salonHaircut
@@ -178,6 +181,9 @@ const Welcome = () => {
       list = list.filter((haircut) =>
         haircut.name.toLowerCase().includes(search.toLowerCase())
       );
+    }
+    if(hairNameFilters.length > 0){
+      list = list.filter((item) => hairNameFilters.includes(item.name));
     }
     if (
       ethnicityFilters.length > 0 &&
@@ -277,17 +283,18 @@ const Welcome = () => {
 
   };
 
-  const getFilteredHaircuts = async () => {
-    setIsLoading(true)
-    let resp = await user_api.getHaircutFilteredByName(hairNameFilters);
-    setFilteredHaircuts(resp.data.data)
-    setSalonHaircut(resp.data.data)
-    setIsLoading(false)
-  }
+  // const getFilteredHaircuts = async () => {
+  //   console.log("Get Filetered Haircut")
+  //   setIsLoading(true)
+  //   let resp = await user_api.getHaircutFilteredByName(hairNameFilters);
+  //   setFilteredHaircuts(resp.data.data)
+  //   setSalonHaircut(resp.data.data)
+  //   setIsLoading(false)
+  // }
 
-  useEffect(() => {
-    getFilteredHaircuts();
-  }, [hairNameFilters])
+  // useEffect(() => {
+  //   getFilteredHaircuts();
+  // }, [hairNameFilters])
 
   const haircuts = () => {
     if (
@@ -371,7 +378,7 @@ const Welcome = () => {
 
   useEffect(() => {
     getFilteredCuts();
-  }, [ethnicityFilters, genderFilters, lengthFilters, search, salonHaircut]);
+  }, [ethnicityFilters, genderFilters, lengthFilters, search, salonHaircut, hairNameFilters]);
 
   useEffect(() => {
     getAllHaircuts();
