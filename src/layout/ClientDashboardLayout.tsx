@@ -123,6 +123,7 @@ const ClientDashboardLayout = ({ children, notifications }: DashboardLayout) => 
                     <div
                       key={index}
                       onClick={() => onLogout()}
+                      id="Deconnexion"
                       className="flex flex-row gap-x-5 px-6 py-3 w-full hover:bg-[#F5F5F5] cursor-pointer"
                     >
                       {item.icon}

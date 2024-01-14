@@ -47,7 +47,7 @@ const InfoModal = ({ title_1, content_1, title_2, content_2, title_3, content_3,
 
                 <div className="fixed top-0 left-0 h-full w-screen bg-black bg-opacity-60 cursor-pointer" onClick={close} />
                 <div className="relative">
-                    <div className={`absolute -top-5 right-0 sm:-right-2 z-50 flex items-center justify-center w-12 h-12 text-darkBlue font-semibold cursor-pointer rounded-xl shadow-md ${ColorsThemeA.ohcVerticalGradient_A} transform transition-transform duration-300 hover:scale-75`} onClick={close}>
+                    <div id="CrossIcon" className={`absolute -top-5 right-0 sm:-right-2 z-50 flex items-center justify-center w-12 h-12 text-darkBlue font-semibold cursor-pointer rounded-xl shadow-md ${ColorsThemeA.ohcVerticalGradient_A} transform transition-transform duration-300 hover:scale-75`} onClick={close}>
                         <CrossIcon />
                     </div>
                     <div className={`bg-black border-2 border-stone-500 text-white rounded-xl max-h-full overflow-y-auto no-scrollbar px-6 mx-4 md:px-8 py-6 ${width ? width : 'md:min-w-[200px]'}`}>
