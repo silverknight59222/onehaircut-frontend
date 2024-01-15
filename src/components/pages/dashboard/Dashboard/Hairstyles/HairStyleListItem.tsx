@@ -41,6 +41,10 @@ const HairStyleListItem = React.memo(({ item, activeMenu, hairStyleSelectEvent, 
     };
 
     // useEffect(() => {
+    //     console.log(itemSelected)
+    // },[itemSelected])
+
+    // useEffect(() => {
     //     console.log(isSelected)
     //     console.log(itemSelected)
     //     if(isSelected){

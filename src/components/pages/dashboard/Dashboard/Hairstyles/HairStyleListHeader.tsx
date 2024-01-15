@@ -12,7 +12,7 @@ import { ColorsThemeA } from "@/components/utilis/Themes";
 
 // For update commit
 
-const HairStyleListHeader = React.memo(({ setActiveMenu, isd_value, activeMenu, onFilterSelect, params, selectAllEvent, onListCountShow }: any) => {
+const HairStyleListHeader = React.memo(({ setActiveMenu, isd_value, activeMenu, onFilterSelect, params, selectAllEvent, onListCountShow, setFinalItems}: any) => {
     // //console.log("in HairStyleListHeader")
 
 
@@ -226,11 +226,13 @@ const HairStyleListHeader = React.memo(({ setActiveMenu, isd_value, activeMenu, 
     const toAddTab = () => {
         setIsAllSelected(false)
         setActiveMenu("added")
+        setFinalItems([])
     }
 
     const toNewTab = () => {
         setIsAllSelected(false)
         setActiveMenu("new")
+        setFinalItems([])
     }
 
     const resetSelectALl = () => {

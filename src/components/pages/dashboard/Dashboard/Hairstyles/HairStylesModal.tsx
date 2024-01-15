@@ -339,8 +339,12 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
 
     // TODO REMOVE HAIRCUT FUNCTION
     const onRemove = async () => {
-        let finalItemsIDs = finalItems.map(item => item.id);
-        let resp = await salonApi.removeHaircuts({ data: finalItemsIDs });
+        const selectedHaircuts: number[] = [];
+        selectedHaircutsMapping.map((item) => {
+            selectedHaircuts.push(item.id);
+        });
+        // let finalItemsIDs = finalItems.map(item => item.id);
+        let resp = await salonApi.removeHaircuts({ data: selectedHaircuts});
         if (resp.data.status == 200) {
             showSnackbar('success', resp.data.message)
         }
