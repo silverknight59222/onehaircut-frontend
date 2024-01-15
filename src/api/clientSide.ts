@@ -78,7 +78,7 @@ const client = {
     },
     paymentIntent: async (data: paymentIntent) => {
         return await request.post(`/stripe/payment`, data)
-    }
+    },
 }
 const user_api = {
     getUsers: async () => {
@@ -125,6 +125,12 @@ const user_api = {
     },
     deletePreviewImageByHaircutUser: async (haircut_id: number, userId: number) => {
         return await request.get(`/del_preview/${userId}/${haircut_id}`);
+    },
+    setHairStyleFilter: async(params : any) => {
+        return await request.post('/user_hairstyle_filter', params);
+    },
+    setSalonFilter: async(params : any) => {
+        return await request.post('/user_salon_filter', params);
     },
 }
 export { client, user_api };
