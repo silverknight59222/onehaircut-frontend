@@ -396,14 +396,14 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
 
   return (
     <div className=" flex flex-col sm:items-center justify-between border-b border-[#EBF0F2] pb-2 xl:pb-0">
-      <div className={` flex justify-between px-4 lg:px-14 flex-col lg:flex-row gap-3 ${!isLoggedIn ? 'flex-col' : 'flex-row'}`}>
+      <div className={` flex justify-between px-2 md:px-4 lg:px-14 flex-col lg:flex-row gap-1 md:gap-3 ${!isLoggedIn ? 'flex-col' : 'flex-row'}`}>
 
         <div className="flex flex-row gap-2">
           <div onClick={() => router.push('/')} className="py-2 lg:py-5 cursor-pointer">
             <LogoIcon className={'medium'} />
           </div>
           {isLoggedIn &&
-            <div className="lg:hidden mt-3 ml-auto">
+            <div className="lg:hidden mt-1 ml-auto">
               <UserProfile />
             </div>}
           {!isLoggedIn &&
@@ -412,7 +412,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
               Enregistrer mon salon
             </button>}
         </div>
-        {!hideSearchBar && <div className="flex items-center justify-evenly w-full sm:w-min rounded-2xl bg-[#F7F7F7] h-[42px] lg:h-[52px] lg:mt-3 shadow-sm shadow-stone-300 border border-stone-200">
+        {!hideSearchBar && <div className="flex items-center justify-evenly w-full sm:w-min rounded-2xl bg-[#F7F7F7] h-[30px] md:h-[42px] lg:h-[52px] lg:mt-3 shadow-sm shadow-stone-300 border border-stone-200">
           <div
             className="flex items-center  text-sm xl:text-lg "
           >
@@ -603,7 +603,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
               </div>}
             {(isSalonPage && !isWelcomePage) &&
               <Autocomplete
-                className="text-black w-40 sm:w-40 px-4 py-2 text-base transition ml-2 duration-500 ease-in-out transform border-transparent rounded-lg bg-white-100 ring-gray-400"
+                className="text-black w-40 sm:w-40 h-[26px] md:h-max px-4 py-2 text-xs md:text-base transition ml-2 duration-500 ease-in-out transform border-transparent rounded-lg bg-white-100 ring-gray-400"
                 apiKey='AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E'
                 onPlaceSelected={(place) => {
                   console.log('map search place', place)
@@ -619,23 +619,13 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                 placeholder="Ville"
               />
             }
-            {/* {(isSalonPage) &&
-              <div className={`border-r border-grey px-2 xl:px-6 last:border-r-0 cursor-pointer `}>
-                <input
-                  type="text"
-                  placeholder="Ville"
-                  className={`text-base lg:w-40 px-4 p-2 rounded-xl outline-none ${Theme_A.behaviour.fieldFocused_B}`}
-                  onChange={onSearch && isWelcomePage ?
-                    (e) => onSearch(e.target.value) :
-                    onCitySearch && isSalonPage ? (e) => onCitySearch(e.target.value) : () => { }}
-                />
-              </div>} */}
+
             {(isSalonPage) &&
               <div className={`md:border-r border-grey px-2 xl:px-6 last:border-r-0 cursor-pointer`}>
                 <input
                   type="text"
                   placeholder="Nom Salon"
-                  className={`text-base w-40 sm:w-40 px-4 p-2 rounded-xl outline-none ${Theme_A.behaviour.fieldFocused_B}`}
+                  className={`text-xs md:text-base w-40 sm:w-40 h-[26px] md:h-max px-4 p-2 rounded-xl outline-none ${Theme_A.behaviour.fieldFocused_B}`}
                   onChange={onNameSearch && isWelcomePage ?
                     () => { } :
                     onNameSearch && isSalonPage ? (e) => onNameSearch(e.target.value) : () => { }}
@@ -915,11 +905,11 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
             }
           </div>
 
-          <div onClick={handleSearch} className="hidden sm:block cursor-pointer p-3 rounded-full hover:scale-90 transform transition-transform duration-300 bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
+          <div onClick={handleSearch} className="hidden sm:block cursor-pointer p-1 md:p-3 rounded-full hover:scale-90 transform transition-transform duration-300 bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
             <SearcIcon />
           </div>
           {isSalonPage &&
-            <div onClick={handleSearch} className="sm:hidden cursor-pointer p-3 rounded-full hover:scale-90 transform transition-transform duration-300 bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
+            <div onClick={handleSearch} className="sm:hidden cursor-pointer mr-5 p-1 rounded-full hover:scale-90 transform transition-transform duration-300 bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
               <SearcIcon />
             </div>}
 
@@ -927,14 +917,14 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
 
         {/* For salons' page and for small screens
         */}
-        {!hideSearchBar && isSalonPage && <div className="md:hidden flex pr-2 rounded-2xl bg-[#F7F7F7] h-[42px] shadow-sm shadow-stone-300 border border-stone-200">
+        {!hideSearchBar && isSalonPage && <div className="md:hidden flex pr-2 rounded-2xl bg-[#F7F7F7] h-[30px] shadow-sm shadow-stone-300 border border-stone-200">
           <div
             className="flex w-full items-center justify-evenly text-sm lg:text-lg"
           >
 
             <div className="border-r border-grey px-2 sm:px-6 md:px-2 2xl:px-6 last:border-r-0 cursor-pointer">
               <p
-                className={showDesktopCountry ? "rounded-xl py-2 px-2 2xl:px-7 bg-white text-black font-semibold" : "hover:bg-stone-200 rounded-xl py-2 px-2 2xl:px-7"}
+                className={showDesktopCountry ? "rounded-xl py-2 px-2 2xl:px-7 bg-white text-xs text-black font-semibold" : " text-xs hover:bg-stone-200 rounded-xl py-2 px-2 2xl:px-7"}
                 onClick={() => {
                   setShowDesktopEthnicity(false);
                   setShowDesktopGender(false);
@@ -947,13 +937,13 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
               >
                 Pays
               </p>
-              {showDesktopCountry && isSalonPage && (
-                <div id="CountryList" className="absolute -ml-3 z-50  items-center justify-center w-42 pt-[2px] px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300 " style={{ maxHeight: '800px', overflowY: 'auto', marginTop: '10px' }}>
+              {showDesktopCountry && (
+                <div id="CountryList" className="absolute -ml-3 z-50  items-center justify-center w-42 pt-[2px] px-7 text-xs text-black rounded-3xl bg-white shadow-md shadow-stone-300 " style={{ maxHeight: '800px', overflowY: 'auto', marginTop: '10px' }}>
                   {Countries.map((item, index) => {
                     return (
                       <div
                         key={index}
-                        className="flex w-full cursor-pointer mb-4 transform hover:scale-110 text-sm"
+                        className="flex w-full cursor-pointer mb-4 transform hover:scale-110 text-xs"
                         onClick={() => onClickCountryCheckbox(item)}
                       >
                         <div
@@ -975,7 +965,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
 
             <div className="border-r border-grey px-2 sm:pr-8 md:pr-0 2xl:px-6 last:border-r-0 cursor-pointer">
               <p
-                className={showDesktopRating ? "rounded-xl py-2 px-2 2xl:px-7 bg-white  text-black font-semibold" : " hover:bg-stone-200 rounded-xl py-2 px-2 2xl:px-7 "}
+                className={showDesktopRating ? "rounded-xl py-2 px-2 2xl:px-7 bg-white text-xs text-black font-semibold" : " text-xs hover:bg-stone-200 rounded-xl py-2 px-2 2xl:px-7 "}
                 onClick={() => {
                   setShowDesktopEthnicity(false);
                   setShowDesktopGender(false);
@@ -988,8 +978,8 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
               >
                 Note
               </p>
-              {showDesktopRating && isSalonPage && (
-                <div className="absolute -ml-3 z-20 flex flex-col items-center justify-center w-42 pt-5 px-2 2xl:px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
+              {showDesktopRating  && (
+                <div className="absolute -ml-3 z-20 flex flex-col items-center justify-center w-42 pt-5 px-2 2xl:px-7 text-xs text-black rounded-3xl bg-white shadow-md shadow-stone-300">
 
                   <div
                     key={0}
@@ -1037,7 +1027,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
 
             <div className="border-r border-grey px-2 2xl:px-6 last:border-r-0 cursor-pointer">
               <p
-                className={showDesktopAvailability ? "rounded-xl py-2 px-2 2xl:px-7 bg-white  text-black font-semibold" : " hover:bg-stone-200 rounded-xl py-2 px-2 2xl:px-7 "}
+                className={showDesktopAvailability ? "rounded-xl py-2 px-2 2xl:px-7 bg-white text-xs text-black font-semibold" : " text-xs hover:bg-stone-200 rounded-xl py-2 px-2 2xl:px-7 "}
                 onClick={() => {
                   setShowDesktopEthnicity(false);
                   setShowDesktopGender(false);
@@ -1051,7 +1041,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                 Disponibilité
               </p>
               {showDesktopAvailability && (
-                <div className="absolute text-sm -ml-2 z-50 items-center justify-center w-45 pt-5 px-7 text-black rounded-3xl bg-white shadow-md shadow-stone-300">
+                <div className="absolute text-sm -ml-2 z-50 items-center justify-center w-45 pt-5 px-7 text-xs text-black rounded-3xl bg-white shadow-md shadow-stone-300">
                   {WeekDays.map((item, index) => {
                     return (
                       <div
@@ -1077,7 +1067,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
 
             <div className="cursor-pointer ">
               <p
-                className={showDesktopLength ? "rounded-xl py-2 px-2 2xl:px-7 bg-white  text-black font-semibold " : " hover:bg-stone-200 rounded-xl py-2 px-2 2xl:px-7 "}
+                className={showDesktopLength ? "rounded-xl py-2 px-2 2xl:px-7 bg-white text-xs text-black font-semibold " : " text-xs hover:bg-stone-200 rounded-xl py-2 px-2 2xl:px-7 "}
                 onClick={() => {
                   setShowDesktopEthnicity(false);
                   setShowDesktopGender(false);
@@ -1091,12 +1081,12 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                 Mobilité
               </p>
               {showDesktopLength && (
-                <div className="absolute -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-black rounded-3xl bg-white shadow-md shadow-300">
+                <div className="absolute -ml-3 z-20 flex flex-col items-center justify-center w-36 pt-5 px-7 text-xs text-black rounded-3xl bg-white shadow-md shadow-300">
                   {Mobile.map((item, index) => {
                     return (
                       <div
                         key={index}
-                        className="flex w-full cursor-pointer mb-[19px]  transform hover:scale-110 text-sm"
+                        className="flex w-full cursor-pointer mb-[19px]  transform hover:scale-110 "
                         onClick={() => onClickMobileCheckbox(item.value)}
                       >
                         <div
@@ -1119,7 +1109,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
 
             <div className="border-l border-grey px-2 2xl:px-6  cursor-pointer relative"> {/* Retain relative positioning for this div */}
               <p
-                className={showDesktopBudget ? "rounded-xl py-2 px-2 2xl:px-7 bg-white text-black font-semibold" : "hover:bg-stone-200 rounded-xl py-2 px-2 2xl:px-7"}
+                className={showDesktopBudget ? "rounded-xl py-2 px-2 2xl:px-7 bg-white text-xs text-black font-semibold" : "text-xs hover:bg-stone-200 rounded-xl py-2 px-2 2xl:px-7"}
                 onClick={() => {
                   setShowDesktopEthnicity(false);
                   setShowDesktopGender(false);
@@ -1134,7 +1124,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
               </p>
               {showDesktopBudget && (
                 <ThemeProvider theme={theme}>
-                  <div className="absolute top-[100%] left-1/2 transform -translate-x-1/2 mt-2 z-20 w-64 pt-3 px-4 text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]"> {/* Adjusted modal positioning */}
+                  <div className="absolute top-[100%] left-1/2 transform -translate-x-1/2 mt-2 z-20 w-64 pt-3 px-4 text-xs text-black rounded-3xl bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)]"> {/* Adjusted modal positioning */}
                     <div className="flex flex-col items-center justify-center w-full"> {/* Use flex properties to center children */}
                       <Typography id="range-slider" gutterBottom>
                       </Typography>

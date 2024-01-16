@@ -648,21 +648,21 @@ const SalonChoice = () => {
                 {isLoading && loadingView()}
 
                 {/* Texte indiquant le nombre de salons */}
-                <p className='text-xl lg:text-4xl font-medium text-black text-center mt-6'>
+                <p className='text-md lg:text-4xl font-medium text-black text-center md:mt-6'>
                     {filteredSalons.length} <span className='font-bold text-gradient'>{salons.length === 1 ? 'Salon' : 'Salons'}</span> {salons.length === 1 ? 'correspond' : 'correspondent'} à vos critères
                 </p>
 
                 {/* Bouton retour et continuer */}
-                <div className='w-full flex items-end justify-between mt-4 px-4'>
+                <div className='w-full flex items-end justify-between mt-2 md:mt-4 px-4'>
                     {/* Bouton pour retourner aux services */}
-                    <div className='flex items-center cursor-pointer mt-4 mb-2 sm:mx-10 2xl:mx-14 text-stone-800' onClick={() => router.push('/services')}>
+                    <div className='flex items-center cursor-pointer md:mt-4 mb-2 sm:mx-10 2xl:mx-14 text-stone-800' onClick={() => router.push('/services')}>
                         <BackArrow />
-                        <p className={`${Theme_A.textFont.navigationGreyFont}`}>Retour aux services</p>
+                        <p className={`text-xs md:text-xl text-stone-600 justify-center font-medium`}>Retour aux services</p>
                     </div>
 
                     {/* Bouton pour continuer */}
                     <button disabled={!selectedSalon.id} onClick={onContinue}
-                        className={`flex items-center justify-center text-lg text-white font-medium w-full md:w-52 h-14 rounded-xl px-4 ${selectedSalon.id ? Theme_A.button.medLargeGradientButton : 'bg-[#D9D9D9]'}`}>
+                        className={`flex items-center justify-center text-lg text-white font-medium w-full md:w-52 h-10 md:h-14 rounded-xl px-4 ${selectedSalon.id ? Theme_A.button.medLargeGradientButton : 'bg-[#D9D9D9]'}`}>
                         Continuer
                     </button>
                 </div>
@@ -758,7 +758,7 @@ const SalonChoice = () => {
                         }
 
                         {/* Grid containing thumbnails */}
-                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6 pb-20 overflow-y-scroll content-start overflow-x-hidden"
+                        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6 pb-20 overflow-y-scroll content-start overflow-x-hidden"
                             style={{ maxHeight: getHeightThumbnails() }}
                         >
                             {/* VIGNETTES (ITERATIONS) */}
@@ -782,7 +782,7 @@ const SalonChoice = () => {
                                         {/* Contenu de la vignette */}
                                         <div className="flex flex-col p-1 md:p-2 shadow-md rounded-2xl " style={{ flexGrow: 1 }}>
 
-                                            <div className='relative mb-4 hover:scale-105 transition duration-1000 m-2' style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                            <div className='relative mb-1 md:mb-4 hover:scale-105 transition duration-1000 m-2' style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                                 {!isLoggedIn &&
                                                     <div onClick={(e) => onWishlist(e, fsalon.id)} className="absolute right-6 sm:right-2 top-6 sm:top-2 z-10 cursor-pointer">
                                                         <StarIcon width='35' height='35'
@@ -804,11 +804,11 @@ const SalonChoice = () => {
 
                                             {/* Nom et prix du salon */}
                                             {/* <div className="flex items-start justify-between  "> */}
-                                            <p className='text-black text-lg font-semibold pt-2 overflow-auto'>{fsalon.name}</p>
+                                            <p className='text-black text-md md:text-lg font-semibold md:pt-2 overflow-auto'>{fsalon.name}</p>
                                             <div className='flex justify-end'>
                                                 <p
                                                     style={{ fontSize: getFontSize(fsalon.final_price) }}
-                                                    className={`px-2 py-1 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white font-semibold text-sm w-max`}>
+                                                    className={`px-2 py-1 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white font-semibold text-xs md:text-sm w-max`}>
                                                     {fsalon.final_price} €
                                                 </p>
                                             </div>
