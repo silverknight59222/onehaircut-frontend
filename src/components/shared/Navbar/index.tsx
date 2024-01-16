@@ -312,8 +312,9 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
     const maxRating = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.max_ratings : 5) : 5;
     let country = user ? (JSON.parse(user).user_preferences ? String(JSON.parse(user).user_preferences.country) : "") : "";
     const availability = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.availability : ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]) : ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
-    console.log(availability);
     const userId = user ? Number(JSON.parse(user).id) : null;
+    const isEnableHaircutFilter = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.haircut_filter : 0) : 0;
+    const isEnableSalonFilter = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.salon_filter : 0) : 0;
     if (userId) {
       setIsLoggedIn(true);
       let gender = hairstyle_trend === 'Masculine' ? 'Homme' : hairstyle_trend === 'Feminine' ? 'Femme' : 'Mix';
@@ -325,16 +326,19 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
       for (let i = (minRating ?? 1); i <= (maxRating ?? 5); i++) {
         rating.push(Number(i));
       }
-
-      setGenderFilters(gender);
-      setLengthFilters(length);
-      setEthnicityFilters([user_ethnic]);
-      setRangeFilter(budget ?? [10, 100]);
-      setMobileFilters(mobile);
-      setRatingFilter(rating);
-      setCountryFilter(country);
-      setAvailabilityFilter(availability ?? ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]);
-      setNewSalonFilter(true);
+      if(isEnableHaircutFilter){
+        setGenderFilters(gender);
+        setLengthFilters(length);
+        setEthnicityFilters([user_ethnic]);
+      }
+      if(isEnableSalonFilter){
+        setRangeFilter(budget ?? [10, 100]);
+        setMobileFilters(mobile);
+        setRatingFilter(rating);
+        setCountryFilter(country);
+        setAvailabilityFilter(availability ?? ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]);
+        setNewSalonFilter(true);
+      }
       getHaircutsByName();
     }
     document.addEventListener("click", closeSelectBox);

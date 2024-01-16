@@ -11,7 +11,7 @@ import Footer from '@/components/UI/Footer';
 import EUCountriesList from '@/components/shared/Navbar/EUCountries';
 import ComponentTheme from '@/components/UI/ComponentTheme';
 import CustomSlider from '@/components/UI/OHC_Slider';
-import { client } from '@/api/clientSide';
+import { client, user_api } from '@/api/clientSide';
 import useSnackbar from '@/hooks/useSnackbar';
 import CustomInput from '@/components/UI/CustomInput';
 import { dashboard } from '@/api/dashboard';
@@ -26,7 +26,8 @@ const Filters = () => {
     const [selectedItems, SetAtHome] = useState<String[]>([])
     const daysOfWeek = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
     const [modalLengthErr, SetmodalLengthErr] = useState(false);
-
+    const user = getLocalStorage("user")
+    const userData = user ? JSON.parse(user) : null;
     const items = [
         "Recherche Coiffure",
         "Recherche Salon ",
@@ -244,7 +245,7 @@ const Filters = () => {
 
     const fetchFilterPrefrences = async () => {
         const resp = await client.getUserFilterPrefrences();
-
+        
         if (resp && resp.data) {
             if (resp.data.current_hair)
                 setCurrentLength(resp.data.current_hair);
@@ -268,17 +269,33 @@ const Filters = () => {
                 setMaxRating(resp.data.max_ratings);
             if (resp.data.current_hair)
                 SetAtHome(resp.data.availability || [])
+            if (resp.data.haircut_filter == 1)
+                setAreHaircutFiltersActive(true)
+            if (resp.data.salon_filter == 1)
+                setAreSalonFiltersActive(true)
         }
     }
 
     // Gère le clic sur l'icône pour activer/désactiver les filtres
-    const toggleHaircutFilters = () => {
+    const toggleHaircutFilters = async () => {
+        setIsLoading(true)
+        await user_api.setHairStyleFilter({ is_enable: !areHaircutFiltersActive });
+        let tempUserData = userData;
+        tempUserData.user_preferences.haircut_filter = !areHaircutFiltersActive == true ? 1 : 0;
+        setLocalStorage("user",JSON.stringify(tempUserData))
         setAreHaircutFiltersActive(!areHaircutFiltersActive);
+        setIsLoading(false)
         // Ajoutez ici la logique pour activer/désactiver les filtres
     };
     // Gère le clic sur l'icône pour activer/désactiver les filtres
-    const toggleSalonFilters = () => {
+    const toggleSalonFilters = async () => {
+        setIsLoading(true)
+        await user_api.setSalonFilter({ is_enable: !areSalonFiltersActive });
+        let tempUserData = userData;
+        tempUserData.user_preferences.salon_filter = !areSalonFiltersActive == true ? 1 : 0;
+        setLocalStorage("user",JSON.stringify(tempUserData))
         setAreSalonFiltersActive(!areSalonFiltersActive);
+        setIsLoading(false)
         // Ajoutez ici la logique pour activer/désactiver les filtres
     };
 

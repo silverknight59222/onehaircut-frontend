@@ -171,7 +171,6 @@ const Welcome = () => {
   }
 
   const getFilteredCuts = () => {
-    console.log("Get Filtered")
     // Filter haircuts based on user-selected filters
     const haircuts: Haircut[] = [];
     let list = salonHaircut

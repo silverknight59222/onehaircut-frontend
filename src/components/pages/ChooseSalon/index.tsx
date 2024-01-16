@@ -188,6 +188,34 @@ const SalonChoice = () => {
         return new Promise(res => setTimeout(res, delay));
     }
 
+    const dayDict: { [key: string]: string } = {
+        'Lundi': 'MONDAY',
+        'Mardi': 'TUESDAY',
+        'Mercredi': 'WEDNESDAY',
+        'Jeudi': 'THURSDAY',
+        'Vendredi': 'FRIDAY',
+        'Samedi': 'SATURDAY',
+        'Dimanche': 'SUNDAY'
+    }
+
+    const getAvailEnglish = (): String[] => {
+        const result: string[] = []
+        availabilityFilter.forEach((each) => {
+            result.push(dayDict[each])
+        })
+
+        console.log('avail english', result)
+        return result
+    }
+
+    const getAvailEnglishUP = (user_preferences_availability): String[] => {
+        const result: string[] = []
+        user_preferences_availability.forEach((each) => {
+            result.push(dayDict[each])
+        })
+        return result
+    }
+
     const getCoordinates = (salons) => {
         //console.log('filtered salons', filteredSalons)
         const positionArray: Position[] = []
@@ -239,11 +267,13 @@ const SalonChoice = () => {
             data['haircut_id'] = haircut.id
         }
         console.log('salon data', data)
+        let allSalon;
         await dashboard.getSalonsByHaircut(data)
             .then((res) => {
                 console.log('all salon', res.data.data)
                 setSalons(res.data.data);
                 setFilteredSalons(res.data.data);
+                allSalon = res.data.data;
                 getCoordinates(res.data.data)
                 setIsLoading(false);
             })
@@ -251,6 +281,41 @@ const SalonChoice = () => {
                 setIsLoading(false);
                 //console.log('salon error',error)
             })
+        if (userData.user_preferences.salon_filter) {
+            console.log("USER PREF SALON FILTER YES")
+            console.log(allSalon)
+            const user_preferences = userData.user_preferences;
+            let translated = getAvailEnglishUP(user_preferences.availability)
+            let filteredSalon = allSalon.filter((item) => {
+
+                console.log("Country Checking")
+                console.log((user_preferences.country != null && (item.address.country == user_preferences.country)))
+                console.log("Availability Checkign")
+                console.log((user_preferences.availability != null && translated.every(day => item.openTimes.some(item => item.day.toUpperCase() === day.toUpperCase()))))
+                console.log("Budget Filter")
+                console.log((user_preferences.budget != null && (item.final_price >= user_preferences.budget[0] && item.final_price <= user_preferences.budget[1])))
+                console.log("Is Mobile Filter")
+                console.log((user_preferences.hairdressing_at_home != null && (item.is_mobile == ((user_preferences.hairdressing_at_home == 1) ? "yes" : "no"))))
+                console.log(item.is_mobile == ((user_preferences.hairdressing_at_home == 1) ? "yes" : "no"))
+                console.log("Postal Code Filter")
+                console.log((user_preferences.postal_code != null && (item.postal_code == user_preferences.postal_code)))
+                console.log("Ratings Filter")
+                console.log((user_preferences.ratings != null && (item.rating >= user_preferences.ratings && item.rating <= user_preferences.max_ratings)))
+                if (
+                    (user_preferences.country != null && (item.address.country == user_preferences.country)) &&
+                    (user_preferences.budget != null && (item.final_price >= user_preferences.budget[0] && item.final_price <= user_preferences.budget[1])) &&
+                    (user_preferences.hairdressing_at_home != null && (item.is_mobile == ((user_preferences.hairdressing_at_home == 1) ? "yes" : "no"))) &&
+                    (user_preferences.postal_code == null || user_preferences.postal_code && (item.postal_code == user_preferences.postal_code)) &&
+                    (user_preferences.ratings && (item.rating >= user_preferences.ratings && item.rating <= user_preferences.max_ratings)) &&
+                    (user_preferences.availability != null && translated.every(day => item.openTimes.some(item => item.day.toUpperCase() === day.toUpperCase())))
+                ){
+                    return item;
+                }
+            })
+            console.log("FILTERED SALON")
+            console.log(filteredSalon)
+            setFilteredSalons(filteredSalon)
+        }
     }
     // Fonction pour obtenir la liste de souhaits des salons
     const getSalonsWishlist = () => {
@@ -277,6 +342,56 @@ const SalonChoice = () => {
                     setIsLoading(false);
                 })
         }
+    }
+
+    const handleAllFilter = async () => {
+
+        setIsLoading(true)
+
+        console.log('citySearch', citySearch)
+        console.log('nameSearch', nameSearch)
+        console.log('filteredMobile', filteredMobile)
+        console.log('filtereRange', filtereRange)
+        console.log('ratingFilter', ratingFilter)
+        console.log('countryFilter', countryFilter)
+        console.log('availabilityFilter', availabilityFilter)
+        console.log('newSalonFilter', newSalonFilter)
+
+        const services = getLocalStorage('ServiceIds')
+        const servicesData = services ? JSON.parse(services) : []
+        const serviceIds: number[] = []
+        servicesData.forEach((service: { name: string, id: number }) => {
+            serviceIds.push(service.id)
+        })
+
+        const param = {
+            client_id: userData !== null ? userData.id : null,
+            haircut_id: haircut.id,
+            services: serviceIds,
+            citySearch,
+            nameSearch,
+            filteredMobile,
+            filtereRange,
+            ratingFilter,
+            countryFilter: (countryFilter && countryFilter !== 'null') ? countryFilter : '',
+            availabilityFilter: getAvailEnglish(),
+            newSalonFilter
+        }
+
+        console.log('result iss parma', JSON.stringify(param))
+
+        const result = await salonApi.filterSalon(param)
+
+        console.log('result iss', result)
+
+        if (result.data.status === 200) {
+            setSalons(result.data.data);
+            setFilteredSalons(result.data.data);
+            getCoordinates(result.data.data)
+        }
+
+        setIsLoading(false)
+
     }
 
     // Fonction pour ajouter/supprimer des salons à la liste de souhaits
@@ -314,10 +429,18 @@ const SalonChoice = () => {
         router.push(`salon/profile`)
     }
 
+    const getFilteredSalon = () => {
+        handleAllFilter()
+    }
+
     // Utilisation de useEffect pour récupérer les données lors du montage du composant
     useEffect(() => {
         getAllSalons()
-
+        // if(userData.user_preferences.salon_filter){
+        //     getFilteredSalon()
+        // }
+        // else {
+        // }
         const user = getLocalStorage("user");
         const userId = user ? Number(JSON.parse(user).id) : null;
         if (!userId) {
@@ -412,76 +535,6 @@ const SalonChoice = () => {
     const HomeIconUrl = getMarkerIconUrl();
 
     console.log(userData?.lat!, userData?.long!);
-
-    const dayDict: { [key: string]: string } = {
-        'Lundi': 'MONDAY',
-        'Mardi': 'TUESDAY',
-        'Mercredi': 'WEDNESDAY',
-        'Jeudi': 'THURSDAY',
-        'Vendredi': 'FRIDAY',
-        'Samedi': 'SATURDAY',
-        'Dimanche': 'SUNDAY'
-    }
-
-    const getAvailEnglish = (): String[] => {
-        const result: string[] = []
-        availabilityFilter.forEach((each) => {
-            result.push(dayDict[each])
-        })
-
-        console.log('avail english', result)
-        return result
-    }
-
-    const handleAllFilter = async () => {
-
-        setIsLoading(true)
-
-        console.log('citySearch', citySearch)
-        console.log('nameSearch', nameSearch)
-        console.log('filteredMobile', filteredMobile)
-        console.log('filtereRange', filtereRange)
-        console.log('ratingFilter', ratingFilter)
-        console.log('countryFilter', countryFilter)
-        console.log('availabilityFilter', availabilityFilter)
-        console.log('newSalonFilter', newSalonFilter)
-
-        const services = getLocalStorage('ServiceIds')
-        const servicesData = services ? JSON.parse(services) : []
-        const serviceIds: number[] = []
-        servicesData.forEach((service: { name: string, id: number }) => {
-            serviceIds.push(service.id)
-        })
-
-        const param = {
-            client_id: userData !== null ? userData.id : null,
-            haircut_id: haircut.id,
-            services: serviceIds,
-            citySearch,
-            nameSearch,
-            filteredMobile,
-            filtereRange,
-            ratingFilter,
-            countryFilter: (countryFilter && countryFilter !== 'null') ? countryFilter : '',
-            availabilityFilter: getAvailEnglish(),
-            newSalonFilter
-        }
-
-        console.log('result iss parma', JSON.stringify(param))
-
-        const result = await salonApi.filterSalon(param)
-
-        console.log('result iss', result)
-
-        if (result.data.status === 200) {
-            setSalons(result.data.data);
-            setFilteredSalons(result.data.data);
-            getCoordinates(result.data.data)
-        }
-
-        setIsLoading(false)
-
-    }
 
     const handleZoomChange = () => {
         const ZOOM_THRESHOLD = 8
