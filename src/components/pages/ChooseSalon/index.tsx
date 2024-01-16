@@ -356,6 +356,7 @@ const SalonChoice = () => {
         console.log('countryFilter', countryFilter)
         console.log('availabilityFilter', availabilityFilter)
         console.log('newSalonFilter', newSalonFilter)
+        console.log('haircutID', haircut.id)
 
         const services = getLocalStorage('ServiceIds')
         const servicesData = services ? JSON.parse(services) : []
@@ -363,19 +364,18 @@ const SalonChoice = () => {
         servicesData.forEach((service: { name: string, id: number }) => {
             serviceIds.push(service.id)
         })
-
         const param = {
             client_id: userData !== null ? userData.id : null,
             haircut_id: haircut.id,
             services: serviceIds,
-            citySearch,
-            nameSearch,
-            filteredMobile,
-            filtereRange,
-            ratingFilter,
+            citySearch : citySearch,
+            nameSearch : nameSearch,
+            filteredMobile : filteredMobile,
+            filtereRange : filtereRange,
+            ratingFilter : ratingFilter,
             countryFilter: (countryFilter && countryFilter !== 'null') ? countryFilter : '',
             availabilityFilter: getAvailEnglish(),
-            newSalonFilter
+            newSalonFilter : newSalonFilter
         }
 
         console.log('result iss parma', JSON.stringify(param))
@@ -383,7 +383,7 @@ const SalonChoice = () => {
         const result = await salonApi.filterSalon(param)
 
         console.log('result iss', result)
-
+        
         if (result.data.status === 200) {
             setSalons(result.data.data);
             setFilteredSalons(result.data.data);
