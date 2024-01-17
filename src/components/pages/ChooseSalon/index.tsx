@@ -356,7 +356,7 @@ const SalonChoice = () => {
         console.log('countryFilter', countryFilter)
         console.log('availabilityFilter', availabilityFilter)
         console.log('newSalonFilter', newSalonFilter)
-        console.log('haircutID', haircut.id)
+        // console.log('haircutID', haircut.id)
 
         const services = getLocalStorage('ServiceIds')
         const servicesData = services ? JSON.parse(services) : []
@@ -366,7 +366,7 @@ const SalonChoice = () => {
         })
         const param = {
             client_id: userData !== null ? userData.id : null,
-            haircut_id: haircut.id,
+            haircut_id: haircut !== null ? haircut.id : null,
             services: serviceIds,
             citySearch : citySearch,
             nameSearch : nameSearch,
