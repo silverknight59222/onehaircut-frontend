@@ -117,24 +117,24 @@ const Currentreservation = () => {
 
     // function to calculate if cancelation is acceptable
     const compareDates = () => {
-        //calculate the time remaining until reservation
-        const currentDateTimeString = currentTime?.toDateString(); // Change this if you want a different format
-        const currentDateTime = new Date(currentDateTimeString!);
-
+        // Make sure itemToCancel.date is in the correct format (e.g., ISO string)
         const reservationDateTime = new Date(itemToCancel.date);
-
+      
+        // Get the current date and time
+        const currentDateTime = new Date();
+      
+        // Calculate the time difference in milliseconds
         const timeDifference = reservationDateTime.getTime() - currentDateTime.getTime();
+      
+        // Calculate the time difference in hours
         const hoursDifference = timeDifference / (1000 * 3600);
-
-        // console.log(currentDateTime)
-        // console.log(reservationDateTime)
-        // console.log(hoursDifference)
-
+      
         if (hoursDifference >= 24) {
-            // Current time is 24 hours or more before the reservation time.
-            // cancellation is accepted
-            setCancelAccepted(true)
-        } else {
+          // Current time is 24 hours or more before the reservation time.
+          // Cancellation is accepted.
+          setCancelAccepted(true);
+        }
+       else {
             // Current time is less than 24 hours before the reservation time.
             // cancellation is rejected
             setCancelAccepted(false)
