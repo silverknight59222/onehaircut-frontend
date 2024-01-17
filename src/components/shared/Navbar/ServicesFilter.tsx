@@ -1,6 +1,7 @@
 import { CheckedIcon } from "@/components/utilis/Icons";
 import React, { useState, useEffect } from "react";
 import { ColorsThemeA } from "@/components/utilis/Themes";
+import { getLocalStorage } from "@/api/storage";
 
 interface ServicesFilterProps {
   onTypeSelect: (arg0: string[]) => void,
@@ -97,7 +98,23 @@ const ServicesFilter = ({ onTypeSelect, onLengthSelect }: ServicesFilterProps) =
     }
   };
 
+  const getBasedFilter = () => {
+    const user = getLocalStorage("user");
+    const isEnableHaircutFilter = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.haircut_filter : 0) : 0;
+    const length_sought = user ? (JSON.parse(user).user_preferences ? String(JSON.parse(user).user_preferences.length_sought) : "") : "";
+    if(user){
+        let length = length_sought === 'Long' ? ['Long'] : length_sought === 'Moyen' ? ['Medium'] : length_sought === 'Court' ? ['Short'] : [];
+        if(isEnableHaircutFilter){
+          setLengthFilters(length)
+        }
+        else {
+          setLengthFilters([]);
+        }
+    }
+  }
+
   useEffect(() => {
+    getBasedFilter()
     document.addEventListener("click", closeSelectBox);
     return () => {
       document.removeEventListener("click", closeSelectBox);

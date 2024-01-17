@@ -272,6 +272,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
   }, [ethnicityFilters])
   useEffect(() => {
     onLengthFilters && onLengthFilters(lengthFilters)
+    onLengthSelect && onLengthSelect(lengthFilters)
   }, [lengthFilters])
   useEffect(() => {
     onHairNameFilters && onHairNameFilters(haircutFilters)
