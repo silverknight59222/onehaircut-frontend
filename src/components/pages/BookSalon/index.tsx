@@ -509,6 +509,7 @@ const BookSalon = () => {
 
                   {/* Flèche Droite */}
                   <button
+                    id="bookingCalendarRightArrow"
                     className="cursor-pointer hover:scale-110 transition duration-300 ml-4"
                     onClick={() => handleChangeDate(1)}>
                     <RightArrowIcon />
@@ -525,6 +526,7 @@ const BookSalon = () => {
                     {slots.map((slot: any, index) => {
                       return (
                         <div
+                          id={`bookingTimeSlot-${index}`}
                           key={index}
                           onClick={() => { slot.is_booked ? "" : onSelectSlot(slot) }}
                           className={`w-24 h-14 flex items-center justify-center text-xl font-semibold border rounded-2xl  ${slot.is_booked ? "curson-not-allowed" : "cursor-pointer"}  text-black ${selectedSlot.some((item: any) => item.id === slot.id)
@@ -547,11 +549,12 @@ const BookSalon = () => {
               {/* Bouton de réservation */}
               <div className="flex justify-center mt-6 mb-4 ">
                 <button
+                  id="Reserver_ce_creneau"
                   disabled={!selectedSlot.length}
                   onClick={onContinue}
                   className={`w-72 h-14 rounded-xl text-xl font-semibold text-white ${selectedSlot.length ? Theme_A.button.medBlackColoredButton : 'bg-[#bcbcbc] cursor-not-allowed'}`}
                 >
-                  Réservez ce créneau
+                  Réserver ce créneau
                 </button>
               </div>
 

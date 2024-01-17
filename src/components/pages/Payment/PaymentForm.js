@@ -139,7 +139,9 @@ const PaymentForm = ({ onSuccess }) => {
   return (
     <form onSubmit={handleSubmit}>
       <CardElement />
-      <div className="w-full flex items-center justify-center">
+      <div
+        id='button_versLePaiement'
+        className="w-full flex items-center justify-center">
         <button type="submit" disabled={!stripe || loading}
           className={`${Theme_A.button.bigGradientButton}`}
         >
