@@ -62,7 +62,10 @@ const ServiceChoose = () => {
 
     // Obtention de tous les services.
     const getAllServices = () => {
+        const user = getLocalStorage("user");
+        const length_sought = user ? (JSON.parse(user).user_preferences ? String(JSON.parse(user).user_preferences.length_sought) : "") : "";
         const serviceIds = getLocalStorage('ServiceIds')
+        const isEnableHaircutFilter = user ? (JSON.parse(user).user_preferences ? JSON.parse(user).user_preferences.haircut_filter : 0) : 0;
         if (serviceIds) {
             const serviceIdsList: string[] = [];
             JSON.parse(serviceIds).forEach(service => {
@@ -77,11 +80,23 @@ const ServiceChoose = () => {
             .then((res) => {
                 if (res.data.data.length > 0) {
                     let services_new = res.data.data.filter((item) => item.type !== 'discount');
+                    console.log("Fetch Services : " + length_sought)
                     setServices(services_new);
+                    console.log("SERVICES GET")
+                    console.log(services_new)
+                    if(isEnableHaircutFilter){
+                        let filtered = services_new.filter((item) => {
+                            return length_sought.toLowerCase() == item.length
+                        })
+                        console.log("FILTERED")
+                        console.log(filtered)
+                        setFilteredServices(filtered)
+                    }
+                    // filteredServicesHandler()
+                    setIsLoading(false);
                 }
-                setIsLoading(false);
             })
-            .catch(error => console.log(error))
+            .catch(error => {console.log(error); setIsLoading(false)})
     }
 
     // Gestion du clic sur un service.
@@ -221,27 +236,44 @@ const ServiceChoose = () => {
         }
     };
 
+    const getBasedFilter = () => {
+        const user = getLocalStorage("user");
+        const length_sought = user ? (JSON.parse(user).user_preferences ? String(JSON.parse(user).user_preferences.length_sought) : "") : "";
+        if(user){
+            let length = length_sought === 'Long' ? ['Long'] : length_sought === 'Moyen' ? ['Medium'] : length_sought === 'Court' ? ['Short'] : [];
+            console.log("Called");
+            setLengthFilters(length)
+        }
+    }
+
     // Les useEffect sont utilisés pour gérer les effets de bord dans les fonctionnalités de composants.
     useEffect(() => {
+        getAllServices()
+        // getBasedFilter()
         document.addEventListener('click', closeSelectBox);
         return () => {
             document.removeEventListener('click', closeSelectBox);
         };
     }, []);
 
-    // Charger tous les services au montage du composant.
     useEffect(() => {
-        getAllServices()
+        console.log("Services")
+        console.log(services);
+    },[services])
+
+    // Charger tous les services au montage du composant.
+    // useEffect(() => {
         // if(servicesData){
         //     servicesData.forEach((item: {name: string, id: string}) => {
         //         setSelectedService((prevState) => [...prevState, String(item.id)]);
         //     });
         // }
-    }, [])
+    // }, [])
 
     // Filtrage des services lors de la modification de la recherche ou du type filtré.
     useEffect(() => {
         filteredServicesHandler()
+        console.log(lengthSelect)
     }, [search, filteredType, lengthSelect])
 
     //InfoModal
