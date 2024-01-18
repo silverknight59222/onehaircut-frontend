@@ -383,13 +383,13 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
               {!isClientDashboard && <p className="text-xl font-bold mb-5">{activeSalon?.name ? activeSalon.name : '-'}</p>}
 
 
-              {/* Conteneur de l'image et de l'icône */}
+              {/* Conteneur de l'image et de l'icone */}
               <div
                 className="relative cursor-pointer group"
                 onClick={openModal}
                 style={{ width: '160px', height: '160px' }}
               >
-                {/* Icôn around the logo*/}
+                {/* Icone around the logo*/}
                 <div className="absolute inset-0 flex items-center justify-center transition-transform duration-500 group-hover:rotate-90"
                   style={{
                     left: '-15px',
@@ -400,7 +400,6 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
                 </div>
 
                 {/* Salon Logo*/}
-                {/* TODO Add and save Logo fron salon there */}
                 <img
                   src={imageUrl}
                   alt="profile"
@@ -418,7 +417,6 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
                       <h2 className="text-center text-lg font-bold mb-4">
                         Modifiez votre logo
                       </h2>
-                      {/*TODO save Logo */}
                       {/* Zone de chargement d'image */}
                       <div className="flex justify-center item-center mb-4">
                         <input
@@ -451,7 +449,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
                       <h2 className="text-center text-lg font-bold mb-4 mt-12">
                         Modifiez votre description
                       </h2>
-                      {/*TODO save Description */}
+                      {/* Description */}
                       <div className="relative ">
                         <textarea
                           className="focus:outline-red-400 text-stone-700 w-full p-2 mb-2 rounded-xl border shadow-inner min-h-[120px]"
@@ -470,7 +468,6 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
                     {/* Bouton Enregistrer */}
                     <div className="flex justify-center pb-2">
                       <button className={`${Theme_A.button.smallGradientButton}`}
-                        /* TODO Save the logo and set it on the Sidebar zone */
                         onClick={handleClick}
                       >
                         Enregistrer
