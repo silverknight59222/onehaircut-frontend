@@ -19,6 +19,7 @@ const History = () => {
     hair_salon: any;
     hair_dresser: any;
     rating: any;
+    haircut: any;
     salon_haircut: {
       haircut: any
     };
@@ -239,9 +240,12 @@ const History = () => {
                           {item.salon_haircut && <Image src={item.salon_haircut.haircut.image.includes('http') ? 
                           item.salon_haircut.haircut.image : 
                           `https://api.onehaircut.com${item.salon_haircut.haircut.image}`} alt='' width={150} height={150} className='rounded-3xl' />}
-                          {!item.salon_haircut && <Image src={item.hair_salon ? (item.hair_salon.logo.includes ? item.hair_salon.logo : 
-                          `https://api.onehaircut.com${item.hair_salon.logo}`) : item.hair_salon.logo.includes('http') ? item.hair_salon.logo : 
-                          `https://api.onehaircut.com${item.hair_salon.logo}`} alt='' width={150} height={150} className='rounded-3xl' />}
+                          {!item.salon_haircut && 
+                          <Image src={item.haircut ? 
+                            (item.haircut.image.includes('http') ? 
+                            item.haircut.image : 
+                          `https://api.onehaircut.com${item.haircut.image}`) : 
+                          `https://api.onehaircut.com/favicon.ico`} alt='' width={150} height={150} className='rounded-3xl' />}
                           <div className='justify-center items-center mt-3 bg-zinc-100 rounded-2xl p-1'>
                             <StarRatings
                               rating={item.rating ? item.rating.rating : 0}
