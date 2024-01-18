@@ -69,7 +69,7 @@ const ClientDashboardLayout = ({ children, notifications }: DashboardLayout) => 
       .then((response) => {
         removeFromLocalStorage("auth-token");
         removeFromLocalStorage("user");
-        router.push("/login");
+        router.push("/");
       })
       .catch((error) => console.log(error))
       .finally(() => {
