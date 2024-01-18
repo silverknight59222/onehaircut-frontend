@@ -420,7 +420,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
                       </h2>
                       {/*TODO save Logo */}
                       {/* Zone de chargement d'image */}
-                      <div className="flex justify-center item-center mb-4 ">
+                      <div className="flex justify-center item-center mb-4">
                         <input
                           type="file"
                           ref={fileInputRef}
@@ -428,24 +428,25 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
                           style={{ display: 'none' }}
                           accept="image/*"
                         />
-                        {image || imageUrl ? (
-                          <img
-                            src={image || imageUrl}
-                            alt="Logo"
-                            className="w-48 h-48 rounded-full shadow-md transform transition-transform duration-300 hover:scale-105 hover:shadow-lg cursor-pointer"
-                            onClick={handleLogoClick}
-                          />
-                        ) : (
-                          <div
-                            className="w-48 h-48 rounded-full shadow-md flex items-center justify-center border-2 border-stone-200 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg cursor-pointer"
-                            onClick={handleLogoClick}
-                          >
-                            <div className="flex items-center justify-center w-24 h- transition-transform duration-500 hover:rotate-90">
-                              <AddPlusIcon />
+                        <div className="w-48 h-48 rounded-full overflow-hidden shadow-md transform transition-transform duration-300 hover:scale-105 hover:shadow-lg cursor-pointer">
+                          {image || imageUrl ? (
+                            <img
+                              src={image || imageUrl}
+                              alt="Logo"
+                              className="w-full h-full object-cover object-center"
+                              onClick={handleLogoClick}
+                            />
+                          ) : (
+                            <div
+                              className="w-full h-full rounded-full flex items-center justify-center border-2 border-stone-200 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg cursor-pointer"
+                              onClick={handleLogoClick}
+                            >
+                              <div className="flex items-center justify-center w-24 h- transition-transform duration-500 hover:rotate-90">
+                                <AddPlusIcon />
+                              </div>
                             </div>
-                          </div>
-                        )}
-
+                          )}
+                        </div>
                       </div>
                       <h2 className="text-center text-lg font-bold mb-4 mt-12">
                         Modifiez votre description
