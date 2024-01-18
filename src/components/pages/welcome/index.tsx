@@ -423,7 +423,7 @@ const Welcome = () => {
   // TODO Delete picture in S3
   const DeleteS3Picture = async () => {
     let resp = await user_api.deletePreviewImageByHaircutUser(selectedHaircut.id, userId!);
-    if (resp.data.status == 200) {
+    if (resp.status == 200) {
       showSnackbar("success", "Generated Image Deleted")
     }
     else {
