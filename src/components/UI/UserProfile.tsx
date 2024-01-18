@@ -90,7 +90,7 @@ const UserProfile = ({ isDashboard }: UserProfileProfile) => {
     Auth.logout()
       .then((response) => {
         localStorage.clear();
-        router.push("/login");
+        router.push("/");
       })
       .catch((error) => console.log(error))
       .finally(() => {
