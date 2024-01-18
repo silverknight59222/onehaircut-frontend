@@ -205,6 +205,11 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
           <ContactIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="32" height="32" />
         );
         break;
+      case "ContactIcon_Client":
+        Icon = (
+          <ContactIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="32" height="32" />
+        );
+        break;
     }
 
     return Icon;
