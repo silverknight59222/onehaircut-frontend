@@ -186,7 +186,7 @@ const Subscription = () => {
           .then((response) => {
             showSnackbar('success', 'Account deactivated successfully')
             localStorage.clear();
-            router.push("/login");
+            router.push("/");
           })
           .catch((error) => console.log(error))
           .finally(() => {

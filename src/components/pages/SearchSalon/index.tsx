@@ -253,7 +253,7 @@ const SearchSalon = () => {
                     src={selectedImage ? (selectedImage.includes('http') ? selectedImage : `https://api.onehaircut.com${selectedImage}`) : defaultPicture}
                     alt="Image principale du salon"
                     layout="fill"
-                    objectFit="fill"
+                    objectFit="cover"
                     className="rounded-lg shadow-sm shadow-stone-600"
                   />
 

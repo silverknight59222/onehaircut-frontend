@@ -1,3 +1,4 @@
 On Linux:
 - npm
 - next (sudo apt-get install -y nodejs + npm install next@latest react@latest react-dom@latest)
+- 
