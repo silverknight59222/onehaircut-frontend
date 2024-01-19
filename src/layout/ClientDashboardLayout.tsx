@@ -30,7 +30,7 @@ interface DashboardLayout {
 
 const ClientDashboardLayout = ({ children, notifications }: DashboardLayout) => {
   const router = useRouter()
-  const [isSidebar, setIsSidebar] = useState(true);
+  const [isSidebar, setIsSidebar] = useState(false);
   const sidebarItems = [
     { icon: "DashboardIcon", title: "Compte", route: "/client/dashboard" },
     { icon: "MessageIcon", title: "Message", route: "/client/messages" },
@@ -69,7 +69,7 @@ const ClientDashboardLayout = ({ children, notifications }: DashboardLayout) => 
       .then((response) => {
         removeFromLocalStorage("auth-token");
         removeFromLocalStorage("user");
-        router.push("/login");
+        router.push("/");
       })
       .catch((error) => console.log(error))
       .finally(() => {

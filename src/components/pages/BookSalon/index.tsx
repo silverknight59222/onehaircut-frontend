@@ -203,10 +203,10 @@ const BookSalon = () => {
 
       let err_message = ""
       if (travelTime > 0) {
-        err_message = "Please choose another slot time Your Hairdresser need : " + travelTime + " min to travel"
+        err_message = "Choisissez un autre créneau car le coiffeur a besoin de " + travelTime + "min pour le déplacement"
       }
       else {
-        err_message = "Please choose another slot time. Because your salon is not available on this time"
+        err_message = "Veuillez choisir un autre créneau car le salon n'est pas disponible à ce moment"
       }
 
       for (let i = currentIndex; i <= maxValue; i++) {
