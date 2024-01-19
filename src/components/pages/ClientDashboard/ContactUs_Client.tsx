@@ -41,7 +41,7 @@ const ContactUs_Client = () => {
 
     const onSend = async () => {
       let data: any = {};
-      data.title = title;
+      data.title = 'Client - ' + title; //specify that it comes from client for email filtering
       data.message = multilineText;
       data.feedback_type = SelectedContactType;
       await dashboard.sendFeedback(data).then((res) => {alert(res)});

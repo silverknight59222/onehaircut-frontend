@@ -497,8 +497,8 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
                 Adresse email non vérifiée <button className={'underline hover:scale-105 transition duration-300 cursor-pointer'} onClick={() => resendVerification()}> Renvoyer le lien de vérification</button>
               </p>
             )}
-            {/* Sidebar items display - mb-8 added to be able to see the last element due to the bottom-bar */}
-            <div className="mt-8 mb-8">
+            {/* Sidebar items display - mb-10 added to be able to see the last element due to the bottom-bar */}
+            <div className="mt-8 mb-10">
               {sidebarItem.map((item, index) => {
                 return (
                   <div key={index}>
