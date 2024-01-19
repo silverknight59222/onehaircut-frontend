@@ -78,11 +78,13 @@ export const Agenda = () => {
               ...pre,
               {
                 id: event.id,
-                title: event.user.name + " par " + event.hair_dresser.name + " - " + "Durée : " + event.total_duration + " Min",
+                title: event.user != null ? 
+                        event.user.name + " par " + event.hair_dresser.name + " - " + "Durée : " + event.total_duration + " Min" :
+                        "Guest par " + event.hair_dresser.name + ' - ' + "Durée : " + event.total_duration + " Min",
                 hair_dresser_name: event.hair_dresser.name,
                 total_duration: event.total_duration,
                 booking: event,
-                clientId: event.user.id,
+                clientId: event.user != null ? event.user.id : null,
                 start: `${event.month_date}T${event.booking_slots[0].start}:00`,
                 end: `${event.month_date}T${event.booking_slots[event.booking_slots.length - 1].end}:00`,
                 coiffeur: hairDresserColor[event.hair_dresser_id],
