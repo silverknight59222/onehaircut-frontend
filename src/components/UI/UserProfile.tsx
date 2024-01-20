@@ -110,15 +110,35 @@ const UserProfile = ({ isDashboard }: UserProfileProfile) => {
     };
   }, []);
 
+  // for Icon size change:
+  const [screenSize, setScreenSize] = useState<number>(0);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenSize(window.innerWidth);
+    };
+
+    // Initial screen size check
+    handleResize();
+
+    // Event listener for window resize
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
     <div ref={dropdownRef} className="relative">
       {isLoading && loadingView()}
       <div
         id="UserIcon"
-        className={`w-12 h-12 flex items-center justify-center pb-1 ${ColorsThemeA.ohcBorder} hover:shadow-md rounded-full cursor-pointer transition-transform duration-300 transform hover:scale-110`}
+        className={`w-10 lg:w-12 h-10 lg:h-12 flex items-center justify-center pb-1 ${ColorsThemeA.ohcBorder} hover:shadow-md rounded-full cursor-pointer transition-transform duration-300 transform hover:scale-110`}
         onClick={() => setIsDropdown(!isDropdown)}
       >
-        <UserIcon />
+        <UserIcon size={screenSize}/>
       </div>
       {isDropdown && (
         <div
