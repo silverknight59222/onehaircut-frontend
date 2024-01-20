@@ -41,7 +41,7 @@ const ClientDashboardLayout = ({ children, notifications }: DashboardLayout) => 
     { icon: "ReservationIcon", title: "Réservations en cours", route: "/client/currentreservation" },
     { icon: "HistoryIcon", title: "Historique", route: "/client/history" },
     { icon: "HelpIcon", title: "Aide", route: "/client/help" },
-    // { icon: "ContactIcon", title: "Contactez-nous", route: "/client/contactUs" },
+    { icon: "ContactIcon_Client", title: "Contactez-nous", route: "/client/contactUs" },
   ];
   const SidebarHandler = () => {
     setIsSidebar(!isSidebar);
