@@ -125,8 +125,9 @@ const ServicesFilter = ({ onTypeSelect, onLengthSelect }: ServicesFilterProps) =
     <>
       <div ref={servicesDesktopRef}
         className={typeFilters.length > 0
-          ? `rounded-xl py-2 cursor-pointer px-6 ml-2 ${ColorsThemeA.filterSelected} text-white font-semibold`
-          : (servicesDesktopRef ? "rounded-xl py-1 px-6 ml-2 hover:bg-stone-200 text-black font-semibold cursor-pointer" : "hover:bg-white rounded-xl px-6 ml-2")}
+          ? `h-6 md:h-8 lg:h-10 rounded-xl py-0 md:py-1 lg:py-2 cursor-pointer px-6 ml-2 ${ColorsThemeA.filterSelected} text-white font-semibold`
+          : (servicesDesktopRef ? "h-6 md:h-8 lg:h-10 rounded-xl py-0 md:py-1 lg:py-2 px-6 ml-2 hover:bg-stone-200 text-black font-semibold cursor-pointer" 
+          : "h-6 md:h-8 lg:h-10 hover:bg-white rounded-xl px-6 py-0 md:py-1 lg:py-2 ml-2")}
       >
         <p
           onClick={() => {
@@ -162,8 +163,10 @@ const ServicesFilter = ({ onTypeSelect, onLengthSelect }: ServicesFilterProps) =
       </div>
       <div ref={LengthDesktopRef}
         className={lengthFilters.length > 0
-          ? `rounded-xl py-2 cursor-pointer px-6 ml-2 ${ColorsThemeA.filterSelected} text-white font-semibold`
-          : (LengthDesktopRef ? "rounded-xl py-1 px-6 ml-2 hover:bg-stone-200 text-black font-semibold cursor-pointer" : "hover:bg-white rounded-xl px-6 ml-2")}
+          ? `h-6 md:h-8 lg:h-10 rounded-xl cursor-pointer py-0 md:py-1 lg:py-2 px-6 ml-2 ${ColorsThemeA.filterSelected} text-white font-semibold`
+          : (LengthDesktopRef ? 
+              "h-6 md:h-8 lg:h-10 rounded-xl py-0 md:py-1 lg:py-2 px-6 ml-2 hover:bg-stone-200 text-black font-semibold cursor-pointer" 
+              : "h-6 md:h-8 lg:h-10 hover:bg-white rounded-xl py-0 md:py-1 lg:py-2 px-6 ml-2")}
       >
         <p
           onClick={() => {
