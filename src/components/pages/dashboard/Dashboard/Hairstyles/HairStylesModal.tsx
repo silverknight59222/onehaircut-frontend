@@ -345,6 +345,7 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
         });
         // let finalItemsIDs = finalItems.map(item => item.id);
         let resp = await salonApi.removeHaircuts({ data: selectedHaircuts});
+        console.log(resp.data)
         if (resp.data.status == 200) {
             showSnackbar('success', resp.data.message)
         }
