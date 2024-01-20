@@ -168,7 +168,9 @@ const ImagesContainer = ({
                   {updateMode || selectedImage ? (
                     <Image
                       src={updateMode ? (updateMode.image.includes('http') ? updateMode.image : `${updateMode.image}`) : selectedImage}
-                      fill={true}
+                      // fill={true}
+                      layout="fill"
+                      objectFit="cover"
                       alt={
                         type === "showcase"
                           ? "Showcase Image"
@@ -244,7 +246,12 @@ const ImagesContainer = ({
                         }`}
                     >
                       <div className="relative w-32 h-32">
-                        <Image fill={true} src={item.image.includes('http') ? item.image : `https://api.onehaircut.com${item.image}`} alt="image" />
+                        <Image 
+                        fill={true} 
+                        src={item.image.includes('http') ? item.image : `https://api.onehaircut.com${item.image}`} 
+                        alt="image"
+                        layout="fill"
+                        objectFit="cover" />
                       </div>
                       {!item.is_cover && type === "showcase" && (
                         <div
