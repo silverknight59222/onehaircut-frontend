@@ -14,7 +14,7 @@ interface DashboardLayout {
 }
 
 const DashboardLayout = ({ children, notifications }: DashboardLayout) => {
-  const [isSidebar, setIsSidebar] = useState(true);
+  const [isSidebar, setIsSidebar] = useState(false);
   const [tab, setTab] = useState("Dashboard");
   const sidebarItems = [
     { icon: "DashboardIcon", title: "Dashboard", route: "/dashboard" },
