@@ -1029,7 +1029,7 @@ const Account = () => {
                 <LogoCircleFixRight />
             </div>
             <ClientDashboardLayout notifications={globalNotifications}>
-                <div className="mt-14 mb-5 px-6">
+                <div className="mt-4 lg:mt-14 mb-5 px-6">
 
                     {/* PLACE FOR ALL MODALS */}
                     {/*  Address */}
@@ -1084,14 +1084,14 @@ const Account = () => {
                     <p className="text-black font-medium text-3xl text-center">
                         Gestion du compte
                     </p>
-                    <div className="flex flex-col md:flex-row items-start justify-center gap-10 xl:gap-20 mt-10">
-                        <div className="w-full md:w-auto flex flex-col items-center justify-center gap-6">
+                    <div className="flex flex-col md:flex-row items-start justify-center gap-2 lg:gap-10 xl:gap-20 mt-4 lg:mt-10">
+                        <div className="w-full md:w-auto flex flex-col items-center justify-center gap-2 lg:gap-6">
                             {items.map((item, index) => {
                                 return (
                                     <div
                                         key={index}
                                         onClick={() => onSelectTab(item, index)}
-                                        className={`flex items-center justify-center w-full md:w-80 xl:w-96 h-16 bg-white rounded-2xl text-black shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] border cursor-pointer ${selectedTab === index && "border-secondary"
+                                        className={`flex items-center justify-center w-full md:w-80 xl:w-96 h-10 md:h-16 bg-white rounded-2xl text-black shadow-[0px_4px_23px_0px_rgba(193,193,193,0.25)] border cursor-pointer ${selectedTab === index && "border-secondary"
                                             }`}
                                     >
                                         {item}
@@ -1099,7 +1099,7 @@ const Account = () => {
                                 );
                             })}
                         </div>
-                        <div className=" w-full md:w-6/12 h-max mt-5 md:mt-0 rounded-3xl bg-white pt-6 pb-10 px-14 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)]">
+                        <div className=" w-full md:w-6/12 h-max mt-5 md:mt-0 rounded-3xl bg-white pt-1 md:pt-6 pb-10 px-14 shadow-[0px_13px_37px_0px_rgba(176,176,176,0.28)]">
                             {showItem.map((item, index) => {
                                 return (
                                     <div
