@@ -5,7 +5,6 @@ import {
 	Hamburger,
 	HamburgerIcon,
 	LogoIcon,
-	UserIcon,
 } from "../utilis/Icons";
 import { SalonDetails } from "@/types";
 import { getLocalStorage, setLocalStorage } from "@/api/storage";

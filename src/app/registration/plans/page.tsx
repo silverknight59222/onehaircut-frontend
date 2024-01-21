@@ -7,7 +7,6 @@ import {
   LogoIcon,
   RegistrationCheckedIcon,
   RegistrationUnCheckedIcon,
-  UserIcon,
 } from "@/components/utilis/Icons";
 import ReactPlayer from "react-player";
 import userLoader from "@/hooks/useLoader";

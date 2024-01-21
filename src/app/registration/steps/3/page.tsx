@@ -1,6 +1,6 @@
 "use client";
 import { SalonRegisterParams, registration } from "@/api/registration";
-import { AddIcon, EyeClosedIcon, EyeIcon, LogoIcon, UserIcon } from "@/components/utilis/Icons";
+import { AddIcon, EyeClosedIcon, EyeIcon, LogoIcon } from "@/components/utilis/Icons";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import userLoader from "@/hooks/useLoader";

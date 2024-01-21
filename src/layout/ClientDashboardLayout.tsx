@@ -77,6 +77,26 @@ const ClientDashboardLayout = ({ children, notifications }: DashboardLayout) => 
       })
   };
 
+    // for Icon size change:
+    const [screenSize, setScreenSize] = useState<number>(0);
+
+    useEffect(() => {
+      const handleResize = () => {
+        setScreenSize(window.innerWidth);
+      };
+  
+      // Initial screen size check
+      handleResize();
+  
+      // Event listener for window resize
+      window.addEventListener('resize', handleResize);
+  
+      // Cleanup the event listener on component unmount
+      return () => {
+        window.removeEventListener('resize', handleResize);
+      };
+    }, []);
+
 
 
   return (
@@ -91,7 +111,7 @@ const ClientDashboardLayout = ({ children, notifications }: DashboardLayout) => 
       />
       <div className="ml-0 lg:ml-72">
         {/* topbar */}
-        <div className="px-8 py-5 border-b border-[#EBF0F2]">
+        <div className="px-8 py-2 lg:py-5 border-b border-[#EBF0F2]">
           <div className="flex items-center justify-between">
             <div className="w-full flex items-center gap-3">
               {!isSidebar &&
@@ -109,9 +129,9 @@ const ClientDashboardLayout = ({ children, notifications }: DashboardLayout) => 
 
               <div
                 id="profil_menu_icon"
-                className="w-14 h-14 flex items-center justify-center pb-1 border-2 border-secondary rounded-full cursor-pointer transform hover:scale-110 transition-transform"
+                className="w-10 lg:w-12 h-10 lg:h-12 flex items-center justify-center pb-1 border-2 border-secondary rounded-full cursor-pointer transform hover:scale-110 transition-transform"
                 onClick={() => setIsUserDropDwn(!isUserDropDwn)}>
-                <UserIcon />
+                <UserIcon size={screenSize}/>
               </div>
             </div>
           </div>

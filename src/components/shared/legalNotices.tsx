@@ -1,11 +1,31 @@
 "use client"
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { LogoIcon, UserIcon } from '../utilis/Icons';
 import Footer from "@/components/UI/Footer";
 import { LogoCircleFixRight } from "@/components/utilis/Icons";
 import { Theme_A } from '../utilis/Themes';
 
 const legalNoticesPage = () => {
+
+   // for Icon size change:
+   const [screenSize, setScreenSize] = useState<number>(0);
+
+   useEffect(() => {
+     const handleResize = () => {
+       setScreenSize(window.innerWidth);
+     };
+ 
+     // Initial screen size check
+     handleResize();
+ 
+     // Event listener for window resize
+     window.addEventListener('resize', handleResize);
+ 
+     // Cleanup the event listener on component unmount
+     return () => {
+       window.removeEventListener('resize', handleResize);
+     };
+   }, []);
 
   return (
     <div>
@@ -21,7 +41,7 @@ const legalNoticesPage = () => {
         <div className="flex items-center justify-end gap-4">
           <div className="w-14 h-14 flex items-center justify-center pb-1 border-2 border-secondary rounded-full cursor-pointer transform hover:scale-110 transition-transform"
           >
-            <UserIcon />
+            <UserIcon size={screenSize}/>
           </div>
         </div>
       </div>
