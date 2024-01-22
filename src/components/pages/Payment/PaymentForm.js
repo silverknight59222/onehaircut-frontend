@@ -89,48 +89,56 @@ const PaymentForm = ({ onSuccess }) => {
       salonId: salonData.id,
       go_home: getLocalStorage("go_home") == "salon" ? false : true
     }
-
-    let resp = await client.createBooking(data)
-    setLocalStorage("plan_type", haircutPrize)
-    showSnackbar("success", 'Booking Created Successfully');
-
-    const { token, error } = await stripe.createToken(elements.getElement(CardElement), {
-      email: customerEmail
-    });
-
-    if (error) {
-      console.error(error);
-      setLoading(false);
-      return;
-    }
-
-    const response = await client.paymentIntent(
-      {
-        amount: amount,
-        token: token.id,
-        email: customerEmail,
-        description: serviceDescription,
-        clientId: userData ? userData.id : '0',
-        salonId: salonData.id,
-        go_home: getLocalStorage("go_home") == "salon" ? false : true
+    let continue_payment = 0;
+    await client.createBooking(data).then((resp) => {
+      if (resp.data.status == 200) {
+        showSnackbar("success", resp.data.message);
+        continue_payment = 1;
       }
-    );
-    const clientSecret = response.data.clientSecret;
+      else {
+        showSnackbar("error", resp.data.message);
+      }
+    })
+    setLocalStorage("plan_type", haircutPrize)
+    if (continue_payment) {
+      const { token, error } = await stripe.createToken(elements.getElement(CardElement), {
+        email: customerEmail
+      });
 
-    const result = await stripe.confirmCardPayment(clientSecret, {
-      payment_method: {
-        card: elements.getElement(CardElement),
-      },
-      receipt_email: customerEmail, // Optional: Include customer email in the payment request            
-    });
-    console.log(result)
+      if (error) {
+        console.error(error);
+        setLoading(false);
+        return;
+      }
 
-    if (result.error) {
-      console.error(result.error.message);
-    } else {
-      //console.log(result)
-      router.push('/confirm-payment')
-      onSuccess()
+      const response = await client.paymentIntent(
+        {
+          amount: amount,
+          token: token.id,
+          email: customerEmail,
+          description: serviceDescription,
+          clientId: userData ? userData.id : '0',
+          salonId: salonData.id,
+          go_home: getLocalStorage("go_home") == "salon" ? false : true
+        }
+      );
+      const clientSecret = response.data.clientSecret;
+
+      const result = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: elements.getElement(CardElement),
+        },
+        receipt_email: customerEmail, // Optional: Include customer email in the payment request            
+      });
+      console.log(result)
+
+      if (result.error) {
+        console.error(result.error.message);
+      } else {
+        //console.log(result)
+        router.push('/confirm-payment')
+        onSuccess()
+      }
     }
 
     setLoading(false);
