@@ -295,7 +295,7 @@ const ServiceChoose = () => {
                 onLengthSelect={(length) => setLengthFilters(length)}
                 onTypeSelect={(type) => setFilteredType(type)}
                 onServiceSearch={(value: string) => setSearch(value)} />
-            <div className='flex items-center cursor-pointer mt-10 mb-8 sm:mx-10 2xl:mx-14 text-stone-800' onClick={() => router.push('/')}>
+            <div className='flex items-center cursor-pointer mt-2 md:mt-10 mb-8 sm:mx-10 2xl:mx-14 text-stone-800' onClick={() => router.push('/')}>
                 <BackArrow />
                 <p className={`${Theme_A.textFont.navigationGreyFont}`}>Retour aux coiffures</p>
             </div>
