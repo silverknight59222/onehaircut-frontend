@@ -399,7 +399,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
     <div className=" flex flex-col sm:items-center justify-between border-b border-[#EBF0F2] pb-2 xl:pb-0">
       <div className={` flex justify-between px-2 md:px-4 lg:px-14 flex-col lg:flex-row gap-1 md:gap-3 ${!isLoggedIn ? 'flex-col' : 'flex-row'}`}>
 
-        <div className="flex flex-row gap-2">
+        <div className="flex flex-row gap-2 justify-evenly">
           <div onClick={() => router.push('/')} className="py-2 lg:py-5 cursor-pointer">
             <LogoIcon className={'medium'} />
           </div>
@@ -409,7 +409,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
             </div>}
           {!isLoggedIn &&
             <button onClick={() => router.push('/registration')}
-              className={`lg:hidden mt-2 w-max md:w-40 h-11 lg:w-28 lg:h-14  text-center text-sm text-white font-medium rounded-md px-1 py-1 lg:my-3 ${ColorsThemeA.OhcGradient_A} transform hover:scale-105 transition-transform hover:shadow-[0px_3px_6px_0px_rgba(255,125,60,0.25)] rounded-xl shadow-sm shadow-stone-300`}>
+              className={`lg:hidden mt-2 w-max md:w-40 h-8 lg:w-28 lg:h-14  text-center text-sm text-white font-medium rounded-md px-1 py-1 lg:my-3 ${ColorsThemeA.OhcGradient_A} transform hover:scale-105 transition-transform hover:shadow-[0px_3px_6px_0px_rgba(255,125,60,0.25)] rounded-xl shadow-sm shadow-stone-300`}>
               Enregistrer mon salon
             </button>}
         </div>
@@ -587,7 +587,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                 <input
                   type="text"
                   placeholder="Rechercher"
-                  className={`text-sm md:text-base px-2 xl:px-4 p-2 rounded-full outline-none ${Theme_A.behaviour.fieldFocused_B}`}
+                  className={`h-6 md:h-8 text-sm md:text-base px-2 xl:px-4 p-2 rounded-full outline-none ${Theme_A.behaviour.fieldFocused_B}`}
                   onChange={onSearch && isWelcomePage ?
                     (e) => onSearch(e.target.value) :
                     onServiceSearch && isServicesPage ? (e) => onServiceSearch(e.target.value) : () => { }}
@@ -1153,7 +1153,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
 
         {/* For welcome page and small screen */}
         {!hideSearchBar && isWelcomePage &&
-          <div className="sm:hidden flex pr-2 rounded-2xl bg-[#F7F7F7] h-[42px] shadow-sm shadow-stone-300 border border-stone-200">
+          <div className="sm:hidden flex pr-2 rounded-2xl bg-[#F7F7F7] h-[35px] shadow-sm shadow-stone-300 border border-stone-200">
             <div
               className="flex w-full items-center justify-around text-sm lg:text-lg"
             >
@@ -1161,7 +1161,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                 <input
                   type="text"
                   placeholder="Rechercher"
-                  className={`text-sm md:text-base px-2 p-2 w-full rounded-full outline-none ${Theme_A.behaviour.fieldFocused_B}`}
+                  className={`h-6 md:h-8 text-sm md:text-base px-2 p-2 w-full rounded-full outline-none ${Theme_A.behaviour.fieldFocused_B}`}
                   onChange={onSearch && isWelcomePage ?
                     (e) => onSearch(e.target.value) :
                     onServiceSearch && isServicesPage ? (e) => onServiceSearch(e.target.value) : () => { }}
@@ -1169,7 +1169,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
               </div>
             </div>
             {/* Search icon */}
-            <div onClick={handleSearch} className="sm:hidden cursor-pointer p-3 rounded-full hover:scale-90 transform transition-transform duration-300 bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
+            <div onClick={handleSearch} className="sm:hidden cursor-pointer p-2 rounded-full hover:scale-90 transform transition-transform duration-300 bg-gradient-to-b from-[#E93C64] to-[#F6A52E]">
               <SearcIcon />
             </div>
 

@@ -20,7 +20,7 @@ import { user_api } from "@/api/clientSide";
 // to avoid modifying the theme
 const DemoButton = `text-white font-normal md:font-medium text-md md:text-lg ml-2 mr-2 mb-3 rounded-md w-[278px] py-2 bg-black border border-x-red-500 border-y-orange-500 transform hover:scale-105 transition-transform hover:shadow-md cursor-pointer`
 const LogInButton = `text-white font-normal md:font-medium text-md md:text-lg ml-2 mr-2 mb-3 rounded-md w-[278px] py-2 ${ColorsThemeA.OhcGradient_A} transform hover:scale-105 transition-transform hover:shadow-[0px_7px_12px_0px_rgba(255,125,60,0.25)]`
-const ServicesOnly_Classname = `flex items-center justify-center min-w-56 h-14 rounded-lg shadow-sm text-black font-medium text-md md:text-xl px-8 py-2 mt-2 bg-white border border-x-stone-200 border-y-stone-100 hover:scale-105 transform transition-transform duration-300 hover:shadow-md`
+const ServicesOnly_Classname = `flex items-center justify-center min-w-56 md:h-14 rounded-lg shadow-sm text-black font-medium text-sm md:text-xl px-1 md:px-8 py-1 md:py-2 mt-2 bg-white border border-x-stone-200 border-y-stone-100 hover:scale-105 transform transition-transform duration-300 hover:shadow-md`
 
 const Welcome = () => {
   // Define state variables
@@ -447,14 +447,14 @@ const Welcome = () => {
       <div className="flex flex-col items-center justify-center w-full overflow-hidden">
 
         {isLoading && loadingView()}
-        <p className="mt-10 sm:mt-14 mb-6 md:w-[700px] text-black text-center font-semibold text-3xl px-2 md:px-10">
+        <p className="mt-4 sm:mt-14 mb-2 md:w-[700px] text-black text-center font-semibold text-xl md:text-3xl px-2 md:px-10">
           Des doutes sur la finition ? pr&eacute;visualisez{" "}
         </p>
-        <p className="text-4xl font-medium text-center mb-12">
+        <p className="text-2xl md:text-4xl font-medium text-center mb-4 md:mb-12">
           <span className="font-bold text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-orange-30 to-yellow-300">votre style !</span>
         </p>
 
-        <div className="flex items-center justify-center w-full mb-10 sm:mb-10 px-2">
+        <div className="flex items-center justify-center w-full mb-4 md:mb-10 px-2">
           {/* Espace vide pour centrer le bouton */}
           <div style={{ width: '48px' }}></div>
 
@@ -515,13 +515,13 @@ const Welcome = () => {
         </div>
 
         {isLoggedIn && (
-          <div className="flex text-sm pt-2 pb-2 sm:pb-2 mx-2 gap-3 sm:gap-12 md:gap-20 items-center justify-center bg-white w-full fixed bottom-8 border-2 border-t-slate-300">
-            <div className={`p-2 sm:p-4 md:p-5 text-center ${DemoButton}`}>
+          <div className="flex text-sm p-1 sm:p-4 md:p-5 mx-2 gap-3 sm:gap-12 md:gap-20 items-center justify-center bg-white w-full fixed bottom-8 border-2 border-t-slate-300">
+            <div className={` text-center ${DemoButton}`}>
               Démonstration d’utilisation
             </div>
             <div onClick={() => router.push('/login')}
               id="Connexion - Inscription"
-              className={`p-2 sm:p-4 md:p-5 text-center cursor-pointer ${LogInButton}`}>
+              className={` text-center cursor-pointer ${LogInButton}`}>
               Connexion - Inscription
             </div>
             {/*
