@@ -13,7 +13,7 @@ export const RouteGuard = ({ children }: any) => {
 	let publicRoutes = ['/', '/login', '/signup', '/forgot-password', '/[id]', '/services', '/salons', '/registration', '/book-salon', '/salon', '/payment', '/confirm-payment', '/confidentiality', '/terms', '/legalNotices', '/email-verify', '/verification'];
 	let professionalRoutes = ['/dashboard', '/dashboard/client-activity', '/dashboard/visites', '/dashboard/revenue', '/dashboard/messages', '/dashboard/settings', '/dashboard/subscription', '/dashboard/bot', '/dashboard/contactUs', '/verification'];
 	let freeSubscriptionRoutes = ['/dashboard', '/dashboard/client-activity', '/dashboard/revenue', '/dashboard/messages', '/dashboard/settings', '/dashboard/subscription', '/dashboard/bot', '/dashboard/contactUs', '/verification'];
-	let clientRoutes = ['/client/dashboard', '/client/favorites', '/client/filters', '/client/history', '/client/messages', '/client/portrait', '/client/currentreservation', '/client/help', '/client/processed'];
+	let clientRoutes = ['/client/dashboard', '/client/favorites', '/client/filters', '/client/history', '/client/messages', '/client/portrait', '/client/currentreservation', '/client/help', '/client/processed', '/client/contactUs'];
 
 	const salonRoles = ['salon_professional', 'admin', 'staff'];
 

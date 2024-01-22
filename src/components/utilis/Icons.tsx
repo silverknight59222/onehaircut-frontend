@@ -954,12 +954,26 @@ export const Hamburger = () => {
   );
 };
 
-export const UserIcon = () => {
+interface UserIconProps {
+  size: number;
+}
+
+const UserIcon_getSizeValue = (size: number) => {
+  if (size < 1024) {
+      return 15;
+  }else{
+      return 20;
+  }
+};
+
+export const UserIcon: React.FC<UserIconProps> = ({ size }) => {
+  const iconSize = UserIcon_getSizeValue(size);
+
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="20"
-      height="20"
+      width={iconSize}
+      height={iconSize}
       viewBox="0 0 31 31"
       fill="none"
     >

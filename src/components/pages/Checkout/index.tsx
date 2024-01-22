@@ -2,7 +2,6 @@
 import {
   LogoCircleFixRight,
   LogoIcon,
-  UserIcon,
 } from "@/components/utilis/Icons";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";

@@ -110,27 +110,47 @@ const UserProfile = ({ isDashboard }: UserProfileProfile) => {
     };
   }, []);
 
+  // for Icon size change:
+  const [screenSize, setScreenSize] = useState<number>(0);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenSize(window.innerWidth);
+    };
+
+    // Initial screen size check
+    handleResize();
+
+    // Event listener for window resize
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
     <div ref={dropdownRef} className="relative">
       {isLoading && loadingView()}
       <div
         id="UserIcon"
-        className={`w-12 h-12 flex items-center justify-center pb-1 ${ColorsThemeA.ohcBorder} hover:shadow-md rounded-full cursor-pointer transition-transform duration-300 transform hover:scale-110`}
+        className={`w-10 lg:w-12 h-10 lg:h-12 flex items-center justify-center pb-1 ${ColorsThemeA.ohcBorder} hover:shadow-md rounded-full cursor-pointer transition-transform duration-300 transform hover:scale-110`}
         onClick={() => setIsDropdown(!isDropdown)}
       >
-        <UserIcon />
+        <UserIcon size={screenSize}/>
       </div>
       {isDropdown && (
         <div
-          className={`absolute z-50 top-[52px] right-0 pt-3 pb-2 flex flex-col items-center justify-center text-black border-2 border-stone-300 bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)] ${!isDashboard ? 'rounded-lg' : 'rounded-xl'}`}>
+          className={`absolute z-50 top-[52px] right-0 pt-3 pb-1 pl-2 flex flex-col items-center justify-center text-black border-2 border-stone-300 bg-white shadow-[6px_4px_25px_6px_rgba(176,176,176,0.25)] ${!isDashboard ? 'rounded-lg' : 'rounded-xl'}`}>
           {!isDashboard &&
-            <div className="flex flex-col gap-x-4 border-b w-48 border-[#D4CBCB] pb-3">
+            <div className="flex flex-col gap-x-4 border-b w-48 border-[#D4CBCB] pb-1">
               {dropdownItems.map((item, index) => {
                 return (
                   <div
                     key={index}
                     onClick={() => onDropdownItemClick(item.route)}
-                    className="flex gap-x-5 px-6 py-3 hover:bg-[#f5f5f5] cursor-pointer"
+                    className="flex gap-x-5 px-6 py-1 lg:py-3 hover:bg-[#f5f5f5] cursor-pointer items-center"
                   >
                     {item.icon}
                     <p>{item.name}</p>
@@ -142,9 +162,9 @@ const UserProfile = ({ isDashboard }: UserProfileProfile) => {
           <div
             onClick={onLogout}
             id="Deconnexion"
-            className={`w-full flex flex-row items-center justify-center hover:bg-[#F5F5F5] cursor-pointer gap-4  ${!isDashboard ? 'mt-2 px-6 py-3' : 'px-6 pt-1 pb-2'}`}
+            className={`w-full flex flex-row items-center hover:bg-[#F5F5F5] cursor-pointer gap-2  ${!isDashboard ? 'mt-0 lg:mt-2 px-6 py-1 lg:py-3' : 'px-6 pt-1 pb-2'}`}
           >
-            <LogoutIcon width='25' height='25' />
+            <LogoutIcon width='20' height='20' />
             <p>Déconnexion</p>
           </div>
         </div>
