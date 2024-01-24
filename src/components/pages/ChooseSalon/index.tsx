@@ -744,7 +744,7 @@ const SalonChoice = () => {
                         }
 
                         {/* Grid containing thumbnails */}
-                        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6 pb-20 overflow-y-scroll content-start overflow-x-hidden"
+                        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6 pb-52 lg:pb-36 overflow-y-scroll content-start overflow-x-hidden"
                             style={{ maxHeight: getHeightThumbnails() }}
                         >
                             {/* VIGNETTES (ITERATIONS) */}
