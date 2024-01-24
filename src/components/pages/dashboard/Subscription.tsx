@@ -144,6 +144,7 @@ const Subscription = () => {
 
   const upgradePlan = async () => {
     const resp = await salonApi.upgradeToProPlan()
+    console.log(resp.data)
     if (resp.data.data.subscription) {
       setCurrentPlan(resp.data.data.subscription)
     }
@@ -158,6 +159,7 @@ const Subscription = () => {
   const downgradePlan = async () => {
     console.log('downgrading plan')
     const resp = await salonApi.downgradeToFreePlan()
+    console.log(resp.data)
     if (resp.data.data.subscription) {
       setCurrentPlan(resp.data.data.subscription)
     }
