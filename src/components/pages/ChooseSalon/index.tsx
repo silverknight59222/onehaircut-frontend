@@ -287,20 +287,6 @@ const SalonChoice = () => {
             const user_preferences = userData.user_preferences;
             let translated = getAvailEnglishUP(user_preferences.availability)
             let filteredSalon = allSalon.filter((item) => {
-
-                console.log("Country Checking")
-                console.log((user_preferences.country != null && (item.address.country == user_preferences.country)))
-                console.log("Availability Checkign")
-                console.log((user_preferences.availability != null && translated.every(day => item.openTimes.some(item => item.day.toUpperCase() === day.toUpperCase()))))
-                console.log("Budget Filter")
-                console.log((user_preferences.budget != null && (item.final_price >= user_preferences.budget[0] && item.final_price <= user_preferences.budget[1])))
-                console.log("Is Mobile Filter")
-                console.log((user_preferences.hairdressing_at_home != null && (item.is_mobile == ((user_preferences.hairdressing_at_home == 1) ? "yes" : "no"))))
-                console.log(item.is_mobile == ((user_preferences.hairdressing_at_home == 1) ? "yes" : "no"))
-                console.log("Postal Code Filter")
-                console.log((user_preferences.postal_code != null && (item.postal_code == user_preferences.postal_code)))
-                console.log("Ratings Filter")
-                console.log((user_preferences.ratings != null && (item.rating >= user_preferences.ratings && item.rating <= user_preferences.max_ratings)))
                 if (
                     (user_preferences.country != null && (item.address.country == user_preferences.country)) &&
                     (user_preferences.budget != null && (item.final_price >= user_preferences.budget[0] && item.final_price <= user_preferences.budget[1])) &&
