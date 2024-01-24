@@ -119,22 +119,22 @@ const Currentreservation = () => {
     const compareDates = () => {
         // Make sure itemToCancel.date is in the correct format (e.g., ISO string)
         const reservationDateTime = new Date(itemToCancel.date);
-      
+
         // Get the current date and time
         const currentDateTime = new Date();
-      
+
         // Calculate the time difference in milliseconds
         const timeDifference = reservationDateTime.getTime() - currentDateTime.getTime();
-      
+
         // Calculate the time difference in hours
         const hoursDifference = timeDifference / (1000 * 3600);
-      
+
         if (hoursDifference >= 24) {
-          // Current time is 24 hours or more before the reservation time.
-          // Cancellation is accepted.
-          setCancelAccepted(true);
+            // Current time is 24 hours or more before the reservation time.
+            // Cancellation is accepted.
+            setCancelAccepted(true);
         }
-       else {
+        else {
             // Current time is less than 24 hours before the reservation time.
             // cancellation is rejected
             setCancelAccepted(false)
@@ -344,6 +344,10 @@ const Currentreservation = () => {
                                         <div>
                                             <p className='text-[#444343] font-bold text-start'>Coiffeur</p>
                                             <p className='text-[#666] text-sm text-start'>{item.hair_dresser_info.name}</p>
+                                        </div>
+                                        <div>
+                                            <p className='text-[#444343] font-bold text-start'>Numéro de réservation</p>
+                                            <p className='text-[#666] text-sm text-start'>{item.bookingNumber}</p> {/**TODO Add BOOKING NUMBER */}
                                         </div>
                                     </div>
                                     <div className="">
