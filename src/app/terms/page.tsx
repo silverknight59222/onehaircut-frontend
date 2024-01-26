@@ -1,5 +1,5 @@
 import React from 'react'
-import Terms from '@/components/shared/termsOfService'
+import Terms from '@/components/shared/TermsOfService'
 
 const page = () => {
   return (

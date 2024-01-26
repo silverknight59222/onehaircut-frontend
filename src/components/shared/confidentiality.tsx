@@ -7,27 +7,27 @@ import { Theme_A } from '../utilis/Themes';
 import { Link } from "react-router-dom";
 
 
-const confidentialityPage = () => {
-
+const ConfidentialityPage = () => {
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenSize(window.innerWidth);
+    };
+  
+    // Initial screen size check
+    handleResize();
+  
+    // Event listener for window resize
+    window.addEventListener('resize', handleResize);
+  
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+  
    // for Icon size change:
    const [screenSize, setScreenSize] = useState<number>(0);
 
-   useEffect(() => {
-     const handleResize = () => {
-       setScreenSize(window.innerWidth);
-     };
- 
-     // Initial screen size check
-     handleResize();
- 
-     // Event listener for window resize
-     window.addEventListener('resize', handleResize);
- 
-     // Cleanup the event listener on component unmount
-     return () => {
-       window.removeEventListener('resize', handleResize);
-     };
-   }, []);
 
   return (
     <div>
@@ -107,4 +107,4 @@ const confidentialityPage = () => {
   );
 };
 
-export default confidentialityPage;
+export default ConfidentialityPage;
