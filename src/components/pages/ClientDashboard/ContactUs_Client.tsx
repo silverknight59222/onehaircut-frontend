@@ -8,6 +8,7 @@ import DropdownMenu from "@/components/UI/DropDownMenu";
 import CustomInput from '@/components/UI/CustomInput';
 import { dashboard } from "@/api/dashboard";
 import { getLocalStorage } from "@/api/storage";
+import { client } from '@/api/clientSide';
 
 const ContactUs_Client = () => {
 
@@ -42,17 +43,30 @@ const ContactUs_Client = () => {
 
     // Pour le second Dropdown
     const [showSecondDropdown, setShowSecondDropdown] = useState(false);
-    const secondDropdownOptions = [
-        "Booking number 1",
-        "OHC25122024-0000001",
-        // Ajoutez d'autres options selon les besoins
-    ];
+    const [secondDropdownOptions, setSeconDropdownOptions] = useState<string[]>([])
+    // const secondDropdownOptions = [
+    //     "Booking number 1",
+    //     "OHC25122024-0000001",
+    //     // Ajoutez d'autres options selon les besoins
+    // ];
     const [selectedSecondOption, setSelectedSecondOption] = useState('');
 
+    const getBookingsList = async() => {
+        let resp = await client.getBookingList();
+        let list_booking = resp.data.map(item => item.booking_number)
+        console.log(list_booking)
+        if(list_booking.length > 0){
+            setSeconDropdownOptions(list_booking)
+        }
+        else {
+            setSeconDropdownOptions(['']);
+        }
+    }
     // Mettre à jour l'affichage du second dropdown en fonction de la sélection
     useEffect(() => {
         if (SelectedContactType === "Déclarer un litige") {
             setShowSecondDropdown(true);
+            getBookingsList()
         } else {
             setShowSecondDropdown(false);
             setSelectedSecondOption(''); // Réinitialiser la sélection du second dropdown
@@ -120,7 +134,7 @@ const ContactUs_Client = () => {
                                     {showSecondDropdown && (
                                         <DropdownMenu
                                             dropdownItems={secondDropdownOptions}
-                                            fctToCallOnClick={setSelectedSecondOption}
+                                            fctToCallOnClick={(selectedItem) => setSelectedSecondOption(selectedItem)}
                                             menuName="Numéro de réservation"
                                             selectId={selectedSecondOption}
                                         />
