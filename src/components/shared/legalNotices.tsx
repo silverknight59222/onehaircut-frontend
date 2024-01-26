@@ -5,7 +5,7 @@ import Footer from "@/components/UI/Footer";
 import { LogoCircleFixRight } from "@/components/utilis/Icons";
 import { Theme_A } from '../utilis/Themes';
 
-const legalNoticesPage = () => {
+const LegalNoticesPage = () => {
 
    // for Icon size change:
    const [screenSize, setScreenSize] = useState<number>(0);
@@ -112,4 +112,4 @@ const legalNoticesPage = () => {
   );
 };
 
-export default legalNoticesPage;
+export default LegalNoticesPage;
