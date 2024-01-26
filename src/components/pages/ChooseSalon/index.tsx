@@ -797,7 +797,7 @@ const SalonChoice = () => {
                                                     </p>
                                                     <p className="mb-8 font-semibold">Merci de votre patience et de votre soutien !</p>
 
-                                                    {/* Afficher uniquement si l'utilisateur n'est pas connecté */}
+                                                    {/* Afficher l'input uniquement si l'utilisateur n'est pas connecté */}
                                                     {isLoggedIn && (
                                                         <div className="flex-grow mb-4">
                                                             <CustomInput
@@ -811,7 +811,9 @@ const SalonChoice = () => {
                                                         </div>
                                                     )}
 
-                                                    <div className={`flex ${isLoggedIn ? 'justify-evenly' : 'justify-center'} items-center mt-8`}>
+                                                    {/* Conteneur flex pour les boutons */}
+                                                    <div className="flex justify-center items-center space-x-4 mt-8">
+                                                        {/* Bouton Fermer */}
                                                         <button
                                                             className={`${Theme_A.button.medBlackColoredButton}`}
                                                             onClick={closeModalCustomerInfo}
@@ -819,10 +821,11 @@ const SalonChoice = () => {
                                                             Fermer
                                                         </button>
 
-                                                        {/* Afficher uniquement si l'utilisateur n'est pas connecté */}
+                                                        {/* Afficher le bouton "Me tenir informé" uniquement si l'utilisateur n'est pas connecté */}
                                                         {isLoggedIn && (
                                                             <button
-                                                                className={`${Theme_A.button.mediumGradientButton}`}
+                                                                disabled={!guestEmail} // Désactiver le bouton si guestEmail est vide
+                                                                className={`${guestEmail ? Theme_A.button.mediumGradientButton : Theme_A.button.medGreyColoredButton} text-white font-bold py-2 px-4 rounded`} // Changer la classe en fonction de l'état du bouton
                                                                 onClick={saveToNewsLetters}
                                                             >
                                                                 Me tenir informé
@@ -832,6 +835,8 @@ const SalonChoice = () => {
                                                 </div>
                                             </BaseModal>
                                         )}
+
+
 
                                         {selectedSalon.id === fsalon.id && (
                                             <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 bg-white border-2 border-red-400 rounded-full mx-10 px-1">
