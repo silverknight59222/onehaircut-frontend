@@ -294,7 +294,7 @@ const SalonChoice = () => {
                     (user_preferences.postal_code == null || user_preferences.postal_code && (item.postal_code == user_preferences.postal_code)) &&
                     (user_preferences.ratings && (item.rating >= user_preferences.ratings && item.rating <= user_preferences.max_ratings)) &&
                     (user_preferences.availability != null && translated.every(day => item.openTimes.some(item => item.day.toUpperCase() === day.toUpperCase())))
-                ){
+                ) {
                     return item;
                 }
             })
@@ -354,14 +354,14 @@ const SalonChoice = () => {
             client_id: userData !== null ? userData.id : null,
             haircut_id: haircut !== null ? haircut.id : null,
             services: serviceIds,
-            citySearch : citySearch,
-            nameSearch : nameSearch,
-            filteredMobile : filteredMobile,
-            filtereRange : filtereRange,
-            ratingFilter : ratingFilter,
+            citySearch: citySearch,
+            nameSearch: nameSearch,
+            filteredMobile: filteredMobile,
+            filtereRange: filtereRange,
+            ratingFilter: ratingFilter,
             countryFilter: (countryFilter && countryFilter !== 'null') ? countryFilter : '',
             availabilityFilter: getAvailEnglish(),
-            newSalonFilter : newSalonFilter
+            newSalonFilter: newSalonFilter
         }
 
         console.log('result iss parma', JSON.stringify(param))
@@ -369,7 +369,7 @@ const SalonChoice = () => {
         const result = await salonApi.filterSalon(param)
 
         console.log('result iss', result)
-        
+
         if (result.data.status === 200) {
             setSalons(result.data.data);
             setFilteredSalons(result.data.data);
@@ -635,7 +635,7 @@ const SalonChoice = () => {
 
                 {/* Texte indiquant le nombre de salons */}
                 <p className='text-md lg:text-4xl font-medium text-black text-center md:mt-6'>
-                    {filteredSalons.length} <span className='font-bold text-gradient'>{salons.length === 1 ? 'Salon' : 'Salons'}</span> {salons.length === 1 ? 'correspond' : 'correspondent'} à vos critères
+                    {filteredSalons.length} <span className='font-bold text-gradient'>{filteredSalons.length === 1 ? 'Salon' : 'Salons'}</span> {filteredSalons.length === 1 ? 'correspond' : 'correspondent'} à vos critères
                 </p>
 
                 {/* Bouton retour et continuer */}
