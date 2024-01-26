@@ -1,5 +1,5 @@
 import React from 'react'
-import Legal from '@/components/shared/LegalNotices'
+import Legal from '@/components/shared/legalNotices'
 
 const page = () => {
     return (

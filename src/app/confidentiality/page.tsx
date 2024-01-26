@@ -1,5 +1,5 @@
 import React from 'react'
-import Confidentiality from '@/components/shared/Confidentiality'
+import Confidentiality from '@/components/shared/confidentiality'
 
 const page = () => {
   return (
