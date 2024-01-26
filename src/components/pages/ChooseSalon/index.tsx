@@ -353,7 +353,8 @@ const SalonChoice = () => {
     };
     const saveToNewsLetters = async () => {
         // TODO : Ici, vous pouvez implémenter la logique pour envoyer l'email à votre serveur
-        // ou à un service de newsletter, puis l'ajouter à la base de données. 
+        // ou à un service de newsletter, puis l'ajouter à la base de données.
+        closeModalCustomerInfo();
     }
 
     const handleAllFilter = async () => {
@@ -789,7 +790,7 @@ const SalonChoice = () => {
                                         {isCustomerInfoModalOpen && (
                                             <BaseModal close={closeModalCustomerInfo} opacity={20}>
                                                 <div className="text-center">
-                                                    <h2 className="text-3xl font-bold mb-4">Onehaircut en plein essor !</h2>
+                                                    <h2 className="text-3xl font-bold mb-4 text-gradient">Onehaircut en plein essor !</h2>
                                                     <p className="mb-8">
                                                         Il y a moins de 10 salons qui correspondent à vos critères.<br />
                                                         Nous travaillons activement pour ajouter plus de salons.<br />
