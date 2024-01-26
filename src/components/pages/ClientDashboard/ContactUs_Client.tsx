@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import DropdownMenu from "@/components/UI/DropDownMenu";
 import CustomInput from '@/components/UI/CustomInput';
 import { dashboard } from "@/api/dashboard";
-import {getLocalStorage} from "@/api/storage";
+import { getLocalStorage } from "@/api/storage";
 
 const ContactUs_Client = () => {
 
@@ -15,7 +15,8 @@ const ContactUs_Client = () => {
     const contactType = [
         "Signaler un problème",
         "Feedback",
-        "Suggestion d'amélioration"
+        "Suggestion d'amélioration",
+        "Déclarer un litige"
     ];
 
     const [SelectedContactType, setSelectedContactType] = useState<string>('');
@@ -39,20 +40,40 @@ const ContactUs_Client = () => {
         }
     };
 
+    // Pour le second Dropdown
+    const [showSecondDropdown, setShowSecondDropdown] = useState(false);
+    const secondDropdownOptions = [
+        "Booking number 1",
+        "OHC25122024-0000001",
+        // Ajoutez d'autres options selon les besoins
+    ];
+    const [selectedSecondOption, setSelectedSecondOption] = useState('');
+
+    // Mettre à jour l'affichage du second dropdown en fonction de la sélection
+    useEffect(() => {
+        if (SelectedContactType === "Déclarer un litige") {
+            setShowSecondDropdown(true);
+        } else {
+            setShowSecondDropdown(false);
+            setSelectedSecondOption(''); // Réinitialiser la sélection du second dropdown
+        }
+    }, [SelectedContactType]);
+
+
     const onSend = async () => {
-      let data: any = {};
-      data.title = 'Client - ' + title; //specify that it comes from client for email filtering
-      data.message = multilineText;
-      data.feedback_type = SelectedContactType;
-      await dashboard.sendFeedback(data).then((res) => {alert(res)});
+        let data: any = {};
+        data.title = 'Client - ' + title; //specify that it comes from client for email filtering
+        data.message = multilineText;
+        data.feedback_type = SelectedContactType;
+        await dashboard.sendFeedback(data).then((res) => { alert(res) });
     };
     const [notifications, setNotifications] = useState({} as any);
     const fetchSalonNotifications = async () => {
-      const { data } = await dashboard.salonNotification()
-      setNotifications(data)
+        const { data } = await dashboard.salonNotification()
+        setNotifications(data)
     }
-  
-    useEffect(()=>{fetchSalonNotifications();}, [])
+
+    useEffect(() => { fetchSalonNotifications(); }, [])
     return (
         <div>
             <ClientDashboardLayout notifications={notifications}>
@@ -94,7 +115,19 @@ const ContactUs_Client = () => {
                                 >
                                 </div>
 
-                                <div className="flex-grow mb-2 mt-10">
+                                <div className="flex flex-col items-center justify-center mt-8">
+                                    {/* Second Dropdown affiché conditionnellement */}
+                                    {showSecondDropdown && (
+                                        <DropdownMenu
+                                            dropdownItems={secondDropdownOptions}
+                                            fctToCallOnClick={setSelectedSecondOption}
+                                            menuName="Numéro de réservation"
+                                            selectId={selectedSecondOption}
+                                        />
+                                    )}
+                                </div>
+
+                                <div className="flex-grow mb-2 mt-4">
                                     <CustomInput
                                         id="Title"
                                         label="Donnez un titre à votre message"
@@ -102,7 +135,9 @@ const ContactUs_Client = () => {
                                         value={title}
                                         onChange={(e) => setTitle(e.target.value)}
                                     />
+
                                 </div>
+
 
                                 {/* ZONE DE TEXT */}
                                 <div className="flex flex-col items-center justify-center">
