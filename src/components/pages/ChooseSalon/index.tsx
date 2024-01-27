@@ -21,6 +21,8 @@ import { HomeIcon } from '@/components/utilis/Icons';
 import ReactDOMServer from 'react-dom/server';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import { salonApi } from '@/api/salonSide';
+import BaseModal from '@/components/UI/BaseModal';
+import CustomInput from '@/components/UI/CustomInput';
 
 // TODO IMPORT TO USE ADRESSES 
 //import axios from 'axios'; 
@@ -281,9 +283,9 @@ const SalonChoice = () => {
                 setIsLoading(false);
                 //console.log('salon error',error)
             })
-        if (userData.user_preferences.salon_filter) {
-            console.log("USER PREF SALON FILTER YES")
-            console.log(allSalon)
+        if (userData?.user_preferences?.salon_filter) {
+            console.log("USER PREF SALON FILTER YES");
+            console.log(allSalon);
             const user_preferences = userData.user_preferences;
             let translated = getAvailEnglishUP(user_preferences.availability)
             let filteredSalon = allSalon.filter((item) => {
@@ -328,6 +330,31 @@ const SalonChoice = () => {
                     setIsLoading(false);
                 })
         }
+    }
+
+    // Modal for customer to be patient for new salon to come
+    const [isCustomerInfoModalOpen, setIsCustomerInfoModalOpen] = useState(false);
+    // Logique pour ouvrir le modal si le nombre de salons est inférieur à 6
+    useEffect(() => {
+        if (!isLoading && filteredSalons.length > 0 && filteredSalons.length < 10) {
+            setIsCustomerInfoModalOpen(true);
+        }
+    }, [isLoading, filteredSalons.length]);
+
+    // Fonction pour fermer le modal
+    const closeModalCustomerInfo = () => {
+        setIsCustomerInfoModalOpen(false);
+    };
+    const [guestEmail, setGuestEmail] = useState(''); // État pour stocker l'email de l'invité
+    // Fonction pour gérer le changement de l'adresse email 
+    // TODO Save email address for newsletters
+    const handleGuestEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setGuestEmail(e.target.value);
+    };
+    const saveToNewsLetters = async () => {
+        // TODO : Ici, vous pouvez implémenter la logique pour envoyer l'email à votre serveur
+        // ou à un service de newsletter, puis l'ajouter à la base de données.
+        closeModalCustomerInfo();
     }
 
     const handleAllFilter = async () => {
@@ -573,6 +600,8 @@ const SalonChoice = () => {
         }
     }
 
+
+
     // Rendu du composant
     return (
         <div className='w-full h-screen  overflow-hidden'>
@@ -756,6 +785,59 @@ const SalonChoice = () => {
                                         onClick={() => setSelectedSalon(fsalon)}
                                         className={`relative flex w-full w-max[450px] h-56 h-max[300px] bg-stone-100 rounded-2xl border hover:border-stone-400 cursor-pointer ${selectedSalon.id === fsalon.id && 'border-4 border-red-400 shadow-xl'}`}
                                     >
+
+                                        {/* Modal qui s'affiche si moins de 10 salons */}
+                                        {isCustomerInfoModalOpen && (
+                                            <BaseModal close={closeModalCustomerInfo} opacity={20}>
+                                                <div className="text-center">
+                                                    <h2 className="text-3xl font-bold mb-4 text-gradient">Onehaircut est en plein essor !</h2>
+                                                    <p className="mb-8">
+                                                        Il y a moins de 10 salons qui correspondent à vos critères.<br />
+                                                        Nous travaillons activement pour ajouter plus de salons.<br />
+                                                    </p>
+                                                    <p className="mb-8 font-semibold">Merci de votre patience et de votre soutien !</p>
+
+                                                    {/* Afficher l'input uniquement si l'utilisateur n'est pas connecté */}
+                                                    {isLoggedIn && (
+                                                        <div className="flex-grow mb-4">
+                                                            <CustomInput
+                                                                id="email"
+                                                                label="Adresse e-mail"
+                                                                value={guestEmail}
+                                                                onChange={handleGuestEmail}
+                                                                type="text"
+                                                                isEmail={true}
+                                                            />
+                                                        </div>
+                                                    )}
+
+                                                    {/* Conteneur flex pour les boutons */}
+                                                    <div className="flex justify-center items-center space-x-4 mt-8">
+                                                        {/* Bouton Fermer */}
+                                                        <button
+                                                            className={`${Theme_A.button.medBlackColoredButton}`}
+                                                            onClick={closeModalCustomerInfo}
+                                                        >
+                                                            Fermer
+                                                        </button>
+
+                                                        {/* Afficher le bouton "Me tenir informé" uniquement si l'utilisateur n'est pas connecté */}
+                                                        {isLoggedIn && (
+                                                            <button
+                                                                disabled={!guestEmail} // Désactiver le bouton si guestEmail est vide
+                                                                className={`${guestEmail ? Theme_A.button.mediumGradientButton : Theme_A.button.medGreyColoredButton} text-white font-bold py-2 px-4 rounded`} // Changer la classe en fonction de l'état du bouton
+                                                                onClick={saveToNewsLetters}
+                                                            >
+                                                                Me tenir informé
+                                                            </button>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            </BaseModal>
+                                        )}
+
+
+
                                         {selectedSalon.id === fsalon.id && (
                                             <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 bg-white border-2 border-red-400 rounded-full mx-10 px-1">
                                                 {/* Mettez ici le style pour l'icône, vous pourriez avoir besoin d'ajuster le translate-y pour la centrer comme vous le souhaitez */}
@@ -763,11 +845,8 @@ const SalonChoice = () => {
                                             </div>
                                         )}
 
-
-
                                         {/* Contenu de la vignette */}
                                         <div className="flex flex-col p-1 md:p-2 shadow-md rounded-2xl " style={{ flexGrow: 1 }}>
-
                                             <div className='relative mb-1 md:mb-4 hover:scale-105 transition duration-1000 m-2' style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                                 {!isLoggedIn &&
                                                     <div onClick={(e) => onWishlist(e, fsalon.id)} className="absolute right-6 sm:right-2 top-6 sm:top-2 z-10 cursor-pointer">

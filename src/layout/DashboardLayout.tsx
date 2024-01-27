@@ -28,8 +28,8 @@ const DashboardLayout = ({ children, notifications }: DashboardLayout) => {
     { icon: "BotIcon", title: "OnehairBot", permission: "Onehairbot", route: "/dashboard/bot" },
     { icon: "ContactIcon", title: "Contactez-nous", route: "/dashboard/contactUs" },
   ];
-  const SidebarHandler = () => {
-    setIsSidebar(!isSidebar);
+  const SidebarHandler = (state: boolean) => {
+    setIsSidebar(state);
   };
   const tabHandler = (name: string) => {
     setTab(name);

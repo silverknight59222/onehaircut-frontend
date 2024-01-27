@@ -123,10 +123,10 @@ const SalonInfos = () => {
             .then((resp) => {
                 removeFromLocalStorage("hair_salon");
                 setLocalStorage("hair_salon", JSON.stringify(resp.data));
-                let user_info :any = getLocalStorage("user")
+                let user_info: any = getLocalStorage("user")
                 user_info = user_info ? JSON.parse(user_info) : null;
                 user_info.hair_salon = resp.data;
-                setLocalStorage("user",JSON.stringify(user_info))
+                setLocalStorage("user", JSON.stringify(user_info))
                 showSnackbar("success", "Salon Type Saved Successfully.");
             })
             .catch(err => {
@@ -135,7 +135,7 @@ const SalonInfos = () => {
             .finally(() => {
                 setIsLoading(false);
             })
-            
+
     }
 
     const saveSalonMobility = async (isMobilityAllowed) => {
@@ -767,8 +767,15 @@ const SalonInfos = () => {
                     />
                 </div>
             </div>
+            <h4 className="flex items-center justify- ml-6 mb-8 font-semibold text-sm">
+                Numero de SIRET
+            </h4>
+
+
             {/* Séparation */}
             <hr className=" mx-16 border-gray-300 h-4" />
+
+
 
 
             {/* ZONE DE MOBILITE */}

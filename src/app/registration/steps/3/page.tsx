@@ -258,16 +258,16 @@ const Step3 = () => {
         salonData.postalCode = salonAddress.postalCode;
         salonData.isMobile = salonAddress.isMobile;
         await registration
-        .registerSalon(salonData)
-        .then((res) => {
-          showSnackbar("success", "Salon successfully created");
-          router.push("/verification");
-        })
-        .catch((err) => {
-          showSnackbar("error", "Error Occured!");
-        }).finally(() => {
-          setIsLoading(false);
-        });
+          .registerSalon(salonData)
+          .then((res) => {
+            showSnackbar("success", "Salon successfully created");
+            router.push("/verification");
+          })
+          .catch((err) => {
+            showSnackbar("error", "Error Occured!");
+          }).finally(() => {
+            setIsLoading(false);
+          });
       } else {
         router.push("/registration/steps/4");
       }

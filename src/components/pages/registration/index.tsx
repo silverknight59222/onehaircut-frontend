@@ -118,7 +118,7 @@ const Registration = () => {
               </p>
               <p className="font-semibold text-2xl sm:text-3xl lg:text-5xl text-black text-center mt-1">
                 <span className="text-gradient">Onehaircut</span> devient votre
-                associer
+                associé
               </p>
             </div>
             <img
