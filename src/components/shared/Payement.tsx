@@ -39,7 +39,7 @@ const PaymentForm: React.FC = () => {
                                 <input
                                     className="text-black placeholder-gray-600 w-full px-4 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 
               focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-stone-400 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
-                                    placeholder="Jean Martin"
+                                    placeholder="Nom Prénom"
                                     type="text" />
                             </div>
                         </div>
