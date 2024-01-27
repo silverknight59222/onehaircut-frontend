@@ -43,8 +43,8 @@ const ClientDashboardLayout = ({ children, notifications }: DashboardLayout) => 
     { icon: "HelpIcon", title: "Aide", route: "/client/help" },
     { icon: "ContactIcon_Client", title: "Contactez-nous", route: "/client/contactUs" },
   ];
-  const SidebarHandler = () => {
-    setIsSidebar(!isSidebar);
+  const SidebarHandler = (state: boolean) => {
+    setIsSidebar(state);
   };
 
   const { loadingView } = userLoader();
@@ -77,25 +77,28 @@ const ClientDashboardLayout = ({ children, notifications }: DashboardLayout) => 
       })
   };
 
-    // for Icon size change:
-    const [screenSize, setScreenSize] = useState<number>(0);
+  // for Icon size change:
+  const [screenSize, setScreenSize] = useState<number>(0);
 
-    useEffect(() => {
-      const handleResize = () => {
-        setScreenSize(window.innerWidth);
-      };
-  
-      // Initial screen size check
-      handleResize();
-  
-      // Event listener for window resize
-      window.addEventListener('resize', handleResize);
-  
-      // Cleanup the event listener on component unmount
-      return () => {
-        window.removeEventListener('resize', handleResize);
-      };
-    }, []);
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenSize(window.innerWidth);
+      if (window.innerWidth > 1024) {
+        setIsSidebar(false)
+      }
+    };
+
+    // Initial screen size check
+    handleResize();
+
+    // Event listener for window resize
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
 
 
@@ -115,7 +118,8 @@ const ClientDashboardLayout = ({ children, notifications }: DashboardLayout) => 
           <div className="flex items-center justify-between">
             <div className="w-full flex items-center gap-3">
               {!isSidebar &&
-                <div className="" onClick={SidebarHandler}>
+                <div className={`${isSidebar ? 'hidden' : 'lg:hidden'}`}
+                  onClick={() => SidebarHandler(!isSidebar)}>
                   <HamburgerIcon />
                 </div>
               }
@@ -131,7 +135,7 @@ const ClientDashboardLayout = ({ children, notifications }: DashboardLayout) => 
                 id="profil_menu_icon"
                 className="w-10 lg:w-12 h-10 lg:h-12 flex items-center justify-center pb-1 border-2 border-secondary rounded-full cursor-pointer transform hover:scale-110 transition-transform"
                 onClick={() => setIsUserDropDwn(!isUserDropDwn)}>
-                <UserIcon size={screenSize}/>
+                <UserIcon size={screenSize} />
               </div>
             </div>
           </div>

@@ -49,7 +49,7 @@ type SidebarType = {
   isSidebar: Boolean;
   sidebarItems: SidebarItems[];
   isClientDashboard?: boolean;
-  SidebarHandler: () => void;
+  SidebarHandler: (state: boolean) => void;
   notifications: NotificationsParams;
 
 };
@@ -373,12 +373,12 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
         <div className={`${isSidebar ? 'fixed z-20' : 'hidden lg:flex lg:fixed z-20'}`}>
           <div
             className="lg:hidden fixed top-0 left-0 h-full w-screen bg-[#2E465C] bg-opacity-90 cursor-pointer"
-            onClick={SidebarHandler}
+            onClick={() => SidebarHandler(!isSidebar)}
           />
           <div className="w-72 h-screen fixed bg-white shadow-[0_1px_30px_0px_rgba(0,0,0,0.3)] pt-4 overflow-auto no-scrollbar">
             <div
               className="lg:hidden absolute top-2 right-3 text-2xl cursor-pointer"
-              onClick={SidebarHandler}
+              onClick={() => SidebarHandler(!isSidebar)}
             >
               &#10005;
             </div>
@@ -503,7 +503,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
                 return (
                   <div key={index}>
                     <div
-                      onClick={() => onSelectItem(item.route, index)}
+                      onClick={() => { SidebarHandler(false); onSelectItem(item.route, index) }}
                       className={
                         `flex items-center my-2 pl-8 py-4 gap-2 cursor-pointer transition ease-in-out duration-100 border-l-4 
                         ${path === item.route && "border-rose-600 bg-gradient-to-r from-zinc-800 via-zinc-600 to-zinc-400 font-bold"}`}
