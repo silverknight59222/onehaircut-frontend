@@ -43,7 +43,7 @@ const InfoModal = ({ title_1, content_1, title_2, content_2, title_3, content_3,
 
     return (
         <div className="relative z-1000 inset-0 z-50">
-            <div className="fixed top-0 left-0 h-full w-screen overflow-y-auto flex justify-center items-center">
+            <div className="fixed top-0 lg:left-72 left-0 right-0 h-full  overflow-y-auto flex justify-center items-center">
 
                 <div className="fixed top-0 left-0 h-full w-screen bg-black bg-opacity-60 cursor-pointer" onClick={close} />
                 <div className="relative">
