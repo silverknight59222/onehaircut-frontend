@@ -9,6 +9,7 @@ import PaymentForm from "@/components/shared/Payement";
 import CustomInput from "@/components/UI/CustomInput";
 import DropdownMenu from "@/components/UI/DropDownMenu";
 import EUBanksList from "@/components/shared/EUBanks";
+import { salonApi } from "@/api/salonSide";
 
 const PayementSettings = () => {
     const payementMethodStruct: string[] = [
@@ -170,6 +171,7 @@ const PayementSettings = () => {
 
     // État pour le solde du compte - TODO LINK ACCOUNT BALANCE
     const [accountBalance, setAccountBalance] = useState('100.00'); // Mettez à jour avec la logique appropriée
+    const [accountPendingBalance, setAccountPendingBalance] = useState('0.00'); // Mettez à jour avec la logique appropriée
 
     // État pour le popup de frais de transaction
     const [showTransactionFeePopup, setShowTransactionFeePopup] = useState(false);
@@ -200,6 +202,28 @@ const PayementSettings = () => {
         return amountAfterFees.toFixed(2); // Arrondi à deux décimales
     };
 
+    const getSalonStripeInformation = async() => {
+        let resp = await salonApi.getAllStripeInformation();
+        console.log(resp.data)
+        if(resp.data.status == 200){
+            let account_data = resp.data.account_data
+            let balance_data = resp.data.balance_data
+            let card_account_info = account_data.external_accounts.data[0]
+            setAccountName(card_account_info.account_holder_name)
+            setAccountOwner(account_data.individual.first_name + " " + account_data.individual.last_name)
+            setOwnerCountry(card_account_info.country)
+            setBank(card_account_info.bank_name)
+            setAccountType(card_account_info.account_holder_type == 'individual' ? bankAccountTypes[0] : bankAccountTypes[1])
+            setIban(card_account_info.country + '******' + card_account_info.last4)
+            setAccountBalance((balance_data.available[0].amount/100).toString())
+            setAccountPendingBalance((balance_data.pending[0].amount/100).toString())
+        }
+
+    }
+
+    useEffect(() => {
+        getSalonStripeInformation()
+    },[])
 
     return (
         <div className={`w-[400px] h-max bg-white rounded-2xl py-4 shadow-lg mb-4`}>
@@ -295,7 +319,7 @@ const PayementSettings = () => {
             </p>
             <div className="flex flex-row justify-around italic">
                 <p className="text-sm md:text-sm justify-center text-zinc-800  font-normal items-start my-1">
-                    Aucun compte paramétré
+                    {iban != null ? iban : "Aucun compte paramétré"}
                 </p>
                 {payMethod == payementMethodStruct[1] &&
                     <p className="text-sm md:text-sm justify-center text-zinc-600  font-normal items-start my-1">
