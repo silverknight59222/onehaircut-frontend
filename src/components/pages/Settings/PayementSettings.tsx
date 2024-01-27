@@ -168,7 +168,37 @@ const PayementSettings = () => {
     };
 
 
+    // État pour le solde du compte - TODO LINK ACCOUNT BALANCE
+    const [accountBalance, setAccountBalance] = useState('100.00'); // Mettez à jour avec la logique appropriée
 
+    // État pour le popup de frais de transaction
+    const [showTransactionFeePopup, setShowTransactionFeePopup] = useState(false);
+
+    // Fonction appelée lors du clic sur le bouton de paiement
+    const handlePayoutClick = () => {
+        // Afficher le popup de frais de transaction
+        setShowTransactionFeePopup(true);
+    };
+
+    // Fonction pour fermer le popup de frais de transaction
+    const closeTransactionFeePopup = () => {
+        setShowTransactionFeePopup(false);
+    };
+
+    // Fonction pour valider le paiement (incluant les frais de transaction)
+    const validatePayout = () => {
+        console.log("Paiement validé, frais de transaction inclus");
+        // Ici, vous pouvez intégrer la logique pour traiter le paiement
+        // N'oubliez pas de fermer le popup après le traitement
+        closeTransactionFeePopup();
+    };
+    // Fonction pour calculer le montant après les frais
+    const calculateReceivedAmount = (balance) => {
+        const feePercentage = 0.0025; // 0,25%
+        const fixedFee = 0.25; // 0,25€
+        const amountAfterFees = balance - (balance * feePercentage + fixedFee);
+        return amountAfterFees.toFixed(2); // Arrondi à deux décimales
+    };
 
 
 
@@ -179,6 +209,52 @@ const PayementSettings = () => {
                     {modifBankCard}
                 </BaseModal>
             }
+
+            {/* Nouvelle section pour le solde du compte */}
+            <div className="flex flex-col items-center mt-4">
+                <h3 className={`${Theme_A.textFont.headerH2} mb-2`}>Solde du compte</h3>
+                <p className="text-sm md:text-md justify-center text-zinc-800 font-bold mb-4">{`€${accountBalance}`}</p>
+                <button
+                    onClick={handlePayoutClick}
+                    className={`w-max justify-center py-2 px-3 text-sm mb-6 ${Theme_A.button.mediumGradientButton}`}
+                >
+                    Réceptionner le solde
+                </button>
+            </div>
+
+            {/* Popup de frais de transaction */}
+            {showTransactionFeePopup && (
+                <BaseModal close={closeTransactionFeePopup}>
+                    <div className="text-center p-4">
+                        <h2 className="text-xl font-bold mb-4">Frais de transaction</h2>
+                        <p>Des frais de transaction seront appliqués pour ce paiement par notre fournisseur de paiement :</p>
+                        <p>0,25% + 0.25€</p>
+                        <p className="text-md font-bold mb-8 mt-8">
+                            Montant réceptionné : {`€${calculateReceivedAmount(parseFloat(accountBalance))}`}
+                        </p>
+                        <div className="flex justify-around mt-4">
+                            <button
+                                className={`${Theme_A.button.medBlackColoredButton}`}
+                                onClick={closeTransactionFeePopup}
+                            >
+                                Retour
+                            </button>
+                            <button
+                                className={`${Theme_A.button.mediumGradientButton}`}
+                                onClick={validatePayout}
+                            >
+                                Réceptionner
+                            </button>
+                        </div>
+                    </div>
+                </BaseModal>
+            )}
+
+
+            {/* Séparation */}
+            <hr className=" mx-16 border-gray-300 h-4 mt-4" />
+
+
             {/* TODO LINKAGE WITH STRIPE */}
             {/* REGLAGE DU MOYEN DE PAIEMENT */}
             <p className={`${Theme_A.textFont.headerH2} my-5 justify-center`}>
@@ -207,6 +283,10 @@ const PayementSettings = () => {
                     Mettre à jour
                 </p>
             </div>
+
+            {/* Séparation */}
+            <hr className=" mx-16 border-gray-300 h-4 mt-4" />
+
 
             {/* TODO LINKAGE WITH STRIPE */}
             {/* RECEPTION DES PAIEMENTS*/}
