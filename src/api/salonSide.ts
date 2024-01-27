@@ -34,18 +34,18 @@ interface SalonUnavailability {
   status: String;
   salon_id: number
 }
-interface FilterSalon{
-  client_id : Number,
-  haircut_id : Number,
-  services : Number[],
-  citySearch : String,
-  nameSearch : String,
-  filteredMobile : String[],
-  filtereRange : Number[],
-  ratingFilter : Number[],
-  countryFilter : String,
-  availabilityFilter : String[],
-  newSalonFilter :Boolean
+interface FilterSalon {
+  client_id: Number,
+  haircut_id: Number,
+  services: Number[],
+  citySearch: String,
+  nameSearch: String,
+  filteredMobile: String[],
+  filtereRange: Number[],
+  ratingFilter: Number[],
+  countryFilter: String,
+  availabilityFilter: String[],
+  newSalonFilter: Boolean
 }
 
 const salonApi = {
@@ -103,17 +103,20 @@ const salonApi = {
   getSalonUnavailability: async (salonID: number) => {
     return await request.get(`salon_unavailability/${salonID}`);
   },
-  delSalonUnavailability: async(salonID : number) => {
+  delSalonUnavailability: async (salonID: number) => {
     return await request.delete(`salon_unavailability/${salonID}`);
   },
-  filterSalon:async(params : FilterSalon) => {
-    return await request.post(`salon_filter`,params);
+  filterSalon: async (params: FilterSalon) => {
+    return await request.post(`salon_filter`, params);
   },
-  removeHaircuts: async(params: any) => {
-    return await request.post(`remove_haircuts_from_salon`,params);
+  removeHaircuts: async (params: any) => {
+    return await request.post(`remove_haircuts_from_salon`, params);
   },
-  getStripeKey: async() => {
+  getStripeKey: async () => {
     return await request.get('stripe/stripe_key');
+  },
+  getAllStripeInformation: async() => {
+    return await request.get('stripe/accountInformation');
   }
 
 }

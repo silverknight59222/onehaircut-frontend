@@ -20,7 +20,9 @@ const EUBanksList = () => {
         'Santander UK', 'Sberbank Europe', 'Skandinaviska Enskilda Banken', 'Société Générale',
         'Sparebank 1', 'Standard Chartered', 'Svenska Handelsbanken', 'Swedbank', 'The Co-operative Bank',
         'The Royal Bank of Scotland', 'Triodos Bank', 'UBI Banca', 'UBS', 'UniCredit', 'Van Lanschot',
-        'Volksbank', 'Vontobel', 'Westpac Europe', 'Yorkshire Bank', 'Zürcher Kantonalbank', 'Autre'
+        'Volksbank', 'Vontobel', 'Westpac Europe', 'Yorkshire Bank', 'Zürcher Kantonalbank', 'Autre', 
+        //Part below to be deleted soon on release
+        "STRIPE TEST BANK"
     ];
     return banksEurope; // Retourner la liste triée des noms de pays
 };
