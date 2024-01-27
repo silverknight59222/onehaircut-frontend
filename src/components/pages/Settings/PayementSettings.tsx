@@ -229,6 +229,7 @@ const PayementSettings = () => {
                         <h2 className="text-xl font-bold mb-4">Frais de transaction</h2>
                         <p>Des frais de transaction seront appliqués pour ce paiement par notre fournisseur de paiement :</p>
                         <p>0,25% + 0.25€</p>
+                        <p>Onehaircut ne prend aucun frais sur cette transaction</p>
                         <p className="text-md font-bold mb-8 mt-8">
                             Montant réceptionné : {`€${calculateReceivedAmount(parseFloat(accountBalance))}`}
                         </p>
