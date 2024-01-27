@@ -16,7 +16,7 @@ import { Theme_A } from "../utilis/Themes";
 export type TopbarType = {
 	isDashboard: Boolean;
 	tabHandler: (tab: string) => void;
-	SidebarHandler: () => void;
+	SidebarHandler: (state: boolean) => void;
 	isSidebar: Boolean;
 	// cB: () => void
 };
@@ -92,11 +92,14 @@ const Topbar = ({ isDashboard, tabHandler, SidebarHandler, isSidebar }: TopbarTy
 		setLocalStorage("check_status", JSON.stringify(checkTopbar))
 	}, [checkTopbar]);
 
+
 	return (
 		<div>
 			<div className="flex items-center justify-center">
 				<div className="w-full flex items-center gap-5">
-					<div className={`${isSidebar ? 'hidden' : 'lg:hidden'}`} onClick={SidebarHandler}>
+					<div
+						className={`${isSidebar ? 'hidden' : 'lg:hidden'}`}
+						onClick={() => SidebarHandler(!isSidebar)}>
 						<HamburgerIcon />
 					</div>
 					{isDashboard && (
@@ -111,21 +114,12 @@ const Topbar = ({ isDashboard, tabHandler, SidebarHandler, isSidebar }: TopbarTy
 					</div>
 				)}
 				<div className="w-full flex items-center justify-end gap-4">
-					{/* <div className="cursor-pointer">
-						<BellIcon />
-					</div>
-					<div className="cursor-pointer">
-						<Hamburger />
-					</div> */}
 					<UserProfile isDashboard={true} />
 				</div>
 			</div>
 			{path === '/dashboard' &&
 				<div className="flex items-center justify-center gap-4 flex-wrap mt-12 mb-7">
 					{topbarItems.filter((item) => {
-						// if (user.permissions.length == 0) {
-						// 	return true
-						// }
 						if (user && user.permissions && user.permissions.indexOf(item.permission) != -1) {
 							return true
 						} else {
