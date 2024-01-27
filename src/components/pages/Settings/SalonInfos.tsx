@@ -381,6 +381,17 @@ const SalonInfos = () => {
                 //console.log(err);
             })
             .finally(() => {
+                let user_info: any = getLocalStorage("user")
+                removeFromLocalStorage("user");
+                user_info = user_info ? JSON.parse(user_info) : null;
+                user_info.name = name;
+                user_info.hair_salon.name = name;
+                setLocalStorage("user", JSON.stringify(user_info))
+                let salon_info: any = getLocalStorage("hair_salon")
+                removeFromLocalStorage("hair_salon");
+                salon_info = salon_info ? JSON.parse(salon_info) : null;
+                salon_info.name = name;
+                setLocalStorage("hair_salon", JSON.stringify(salon_info))
                 setIsLoading(false);
                 fetchAdress();
             })
