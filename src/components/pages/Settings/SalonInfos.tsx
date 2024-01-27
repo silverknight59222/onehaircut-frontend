@@ -457,11 +457,17 @@ const SalonInfos = () => {
         }
     };
 
+
+    const [siretNumber, setSiretNumber] = useState('');
+    // Gérez le changement du numéro de SIRET
+    const handleSiretNumberChange = (e) => {
+        setSiretNumber(e.target.value);
+    };
     /************************************************************************************************************************** */
 
     return (
         // ...
-        <div className={`w-[500px] h-max bg-white rounded-2xl py-4 shadow-lg mb-8`}>
+        <div className={`w-[500px] h-max bg-white rounded-2xl py-4 shadow-lg mb-12`}>
             {isModal && (
                 <BaseModal close={() => setIsModal(false)} width="w-[600px]">
                     <div className="relative z-100">
@@ -767,10 +773,21 @@ const SalonInfos = () => {
                     />
                 </div>
             </div>
-            <h4 className="flex items-center justify- ml-6 mb-8 font-semibold text-sm">
-                Numero de SIRET
-            </h4>
 
+
+            <h4 className="flex items-center justify-start ml-10 mt-6 mb-8 font-semibold text-sm">
+                Numéros d'identification d'entreprise (SIRET, UID, CIF etc)*
+            </h4>
+            <div className="flex-inputs flex justify-center mb-8">
+                <CustomInput
+                    id="siretNumber"
+                    label="Numéros d'identification *"
+                    value={siretNumber}
+                    onChange={handleSiretNumberChange}
+                    type="text"
+
+                />
+            </div>
 
             {/* Séparation */}
             <hr className=" mx-16 border-gray-300 h-4" />
