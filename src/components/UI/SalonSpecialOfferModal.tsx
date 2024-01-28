@@ -1,55 +1,73 @@
 // SpecialOfferModal.tsx
 import React from 'react';
 import BaseModal from './BaseModal'; // Assurez-vous que le chemin d'importation est correct
+import { ColorsThemeA, Theme_A } from '../utilis/Themes';
+import { useRouter } from "next/navigation";
 
 interface SpecialOfferModalProps {
     close: () => void;
+
 }
 
 const SpecialOfferModal: React.FC<SpecialOfferModalProps> = ({ close }) => {
+    const router = useRouter();
+
     return (
         <BaseModal close={close} width="w-full max-w-4xl" opacity={30} >
-            <div className="text-center p-6 rounded-lg bg-orange-50">
-                <h2 className="text-3xl font-bold text-orange-600 mb-4">Pourquoi compléter l'enregistrement maintenant ?</h2>
+            <div className="text-center p-6 rounded-lg bg-orange-100">
+                <h2 className={`text-3xl font-bold ${ColorsThemeA.OhcGradient_A} p-4 rounded-3xl text-white mb-12`}>
+                    Pourquoi compléter l'enregistrement maintenant ?</h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4 ">
-                    <div className="flex flex-col items-center justify-center p-4 rounded-lg shadow-md bg-orange-300">
-                        <h3 className="font-bold">Essai gratuit de 7 jours !</h3>
-                        <p className="text-white">7-Day Free Trial</p>
+                    <div className="flex flex-col items-center justify-center p-4 rounded-2xl shadow-md bg-orange-200">
+                        <h3 className="font-bold">Débutez, testez et perdurez sereinement avec notre version gratuite !</h3>
+                        <p className={`${ColorsThemeA.textGradient_Title} font-semibold text-7xl`}>Gratuit !</p>
                     </div>
 
-                    <div className="flex flex-col items-center justify-center p-4 rounded-lg shadow-md bg-orange-300">
-                        <h3 className="font-bold">Les 10 premières créations sont gratuites !</h3>
-                        <p className="text-white">10 free credits</p>
+                    <div className="flex flex-col items-center justify-center p-4 rounded-2xl shadow-md bg-orange-200">
+                        <h3 className="font-bold">Abonnement Pro offert pendant les prochains 1000 salons</h3>
+                        <p className="text-orange-500 font-semibold">
+                            <span className={`${ColorsThemeA.textGradient_Title} font-semibold text-7xl`}>6 mois</span>
+                            <p className={`${ColorsThemeA.textGradient_Title} font-semibold text-lg`}>  offert sur l'abonnement Pro!</p>
+                        </p>
+
+                        {/* TODO UPDATE WITH THE NUMBER OF SALON REGISTERED */}
+                        <p className={`text-black font-semibold ${ColorsThemeA.OhcGradient_E}  rounded-2xl p-2`}>
+                            <span className="text-sm">Vous êtes </span>
+                            <span className="text-sm">534/1000 !</span>
+
+                        </p>
                     </div>
 
-                    <div className="flex flex-col items-center justify-center p-4 rounded-lg shadow-md bg-orange-300">
-                        <h3 className="font-bold">50% de réduction</h3>
-                        <p className="text-white">Rare 50% discount on all yearly plans!</p>
+                    <div className="flex flex-col items-center justify-center p-4 rounded-2xl shadow-md bg-orange-200">
+                        <h3 className="font-bold">Un Dashboard, des data et des conseils de notre IA permettant une réelle progression !</h3>
                         <div className="mt-2">
-                            {/* Remplacez par un véritable compte à rebours */}
-                            <p className="text-white">05 Jours 23 Heures 03 Mins 45 Secs</p>
+                            <p className={`${ColorsThemeA.textGradient_Title} font-semibold text-3xl`}>Votre Business, Amplifié !</p>
                         </div>
                     </div>
 
-                    <div className="flex flex-col items-center justify-center p-4 rounded-lg shadow-md bg-orange-300">
-                        <h3 className="font-bold">Obtenez un meilleur ROI, ou soyez remboursé.</h3>
-                        <p className="text-white">Yes, we are that confident in our tech.</p>
+                    <div className="flex flex-col items-center justify-center p-4 rounded-2xl shadow-md bg-orange-200">
+                        <h3 className="font-bold">Connectez-vous à la Réussite, sans engagement !</h3>
+                        <p className={`${ColorsThemeA.textGradient_Title} font-semibold text-5xl`}>Maximisez</p>
+                        <span className={`${ColorsThemeA.textGradient_Title} font-semibold text-lg`}> votre Visibilité !</span>
                     </div>
+
+
                 </div>
 
-                <div className="flex justify-center mt-6">
+                <div className="flex justify-evenly mt-12">
                     <button
-                        className="text-white bg-purple-600 hover:bg-purple-700 font-bold py-2 px-4 rounded"
+                        className={`text-white ${Theme_A.button.medBlackColoredButton}`}
                         onClick={close}
                     >
-                        Upgrade to Paid
+                        Explorez les avantages
                     </button>
+
                     <button
-                        className="text-white bg-gray-400 hover:bg-gray-500 font-bold py-2 px-4 rounded ml-4"
-                        onClick={close}
+                        className={`text-white ${Theme_A.button.mediumGradientButton}`}
+                        onClick={() => router.push(`registration/plans`)}
                     >
-                        Cancel Account
+                        Rejoignez-nous maintenant
                     </button>
                 </div>
             </div>
