@@ -792,10 +792,10 @@ const SalonInfos = () => {
             <div className="flex-inputs flex justify-center mb-8">
                 <CustomInput
                     id="siretNumber"
-                    label="Numéros d'identification *"
+                    label="Numéro d'identification *"
                     value={siretNumber}
                     onChange={handleSiretNumberChange}
-                    type="text"
+                    type="number"
 
                 />
             </div>
