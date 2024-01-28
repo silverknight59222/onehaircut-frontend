@@ -24,25 +24,14 @@ const Step4 = () => {
   const { loadingView } = userLoader();
   const [selectedBox, setSelectedBox] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
-  const defaultPlan: PlanDetails[] = [
-    {
-      plan_id: "",
-      name: "",
-      price: "",
-      description: "",
-      plan_slug: ""
-    },
-  ];
+  const defaultPlan: PlanDetails[] = [{ plan_id: "", name: "", price: "", description: "", plan_slug: "" }];
   const [plans, setPlans] = useState<PlanDetails[]>(defaultPlan);
 
   const onClickNext = () => {
-    if (selectedBox === 0) {
-      setLocalStorage('plan_type', JSON.stringify(plans[1]));
-    } else {
-      setLocalStorage('plan_type', JSON.stringify(plans[2]));
-    }
+    const selectedPlan = selectedBox === 0 ? plans[1] : plans[2];
+    setLocalStorage('plan_type', JSON.stringify(selectedPlan));
     route.push("/registration/steps/5");
-  }
+  };
 
   useEffect(() => {
     setIsLoading(true);
@@ -53,6 +42,10 @@ const Step4 = () => {
       })
       .finally(() => setIsLoading(false));
   }, []);
+
+  if (isLoading) {
+    return loadingView();
+  }
 
 
   return (
