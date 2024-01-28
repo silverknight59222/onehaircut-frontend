@@ -10,6 +10,7 @@ import CustomInput from "@/components/UI/CustomInput";
 import DropdownMenu from "@/components/UI/DropDownMenu";
 import EUBanksList from "@/components/shared/EUBanks";
 import { salonApi } from "@/api/salonSide";
+import DatePicker from "@/components/UI/DatePicker";
 
 const PayementSettings = () => {
     const payementMethodStruct: string[] = [
@@ -202,13 +203,13 @@ const PayementSettings = () => {
         return amountAfterFees.toFixed(2); // Arrondi à deux décimales
     };
 
-    const getSalonStripeInformation = async() => {
+    const getSalonStripeInformation = async () => {
         let resp = await salonApi.getAllStripeInformation();
         console.log(resp.data)
-        if(resp.data.status == 200){
+        if (resp.data.status == 200) {
             let account_data = resp.data.account_data
             let balance_data = resp.data.balance_data
-            if(account_data.length != 0){
+            if (account_data.length != 0) {
                 let card_account_info = account_data.external_accounts.data[0]
                 setAccountName(card_account_info.account_holder_name)
                 setAccountOwner(account_data.individual.first_name + " " + account_data.individual.last_name)
@@ -216,8 +217,8 @@ const PayementSettings = () => {
                 setBank(card_account_info.bank_name)
                 setAccountType(card_account_info.account_holder_type == 'individual' ? bankAccountTypes[0] : bankAccountTypes[1])
                 setIban(card_account_info.country + '******' + card_account_info.last4)
-                setAccountBalance((balance_data.available[0].amount/100).toString())
-                setAccountPendingBalance((balance_data.pending[0].amount/100).toString())
+                setAccountBalance((balance_data.available[0].amount / 100).toString())
+                setAccountPendingBalance((balance_data.pending[0].amount / 100).toString())
             }
             else {
                 setAccountBalance("-1.00")
@@ -228,7 +229,9 @@ const PayementSettings = () => {
 
     useEffect(() => {
         getSalonStripeInformation()
-    },[])
+    }, [])
+
+    const [birthdate, setBirthdate] = useState(new Date());
 
     return (
         <div className={`w-[400px] h-max bg-white rounded-2xl py-4 shadow-lg mb-4`}>
@@ -391,6 +394,10 @@ const PayementSettings = () => {
                             onChange={handleIbanChange} // Utilisez handleIbanChange modifié
                             type="text"
                         />
+
+                        {/* Séparation */}
+                        <hr className="mt-8 mx-16 border-gray-300 h-4" />
+
 
                         <div className={`mt-8 flex justify-evenly`}>
                             {/* Bouton 'Retour' */}

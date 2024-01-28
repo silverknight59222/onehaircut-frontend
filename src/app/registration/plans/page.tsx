@@ -161,14 +161,15 @@ const Page = ({ params }: Params) => {
                 onClick={() => setSelectedPlan("pro")}
               >
                 <div>
+                  {/* Contenu de gauche */}
                   <p className="font-semibold text-2xl">{plans.length > 1 && plans[1].name}</p>
                   <p className="sm:w-96">
                     {plans.length > 1 && plans[1].description}
                   </p>
                 </div>
-                <div className="mt-3 ">
-                  {/* <p className="">à partir de</p> */}
-                  <p className="font-semibold text-3xl ">{plans.length > 1 && plans[1].price}€</p>
+                <div className="text-right">
+                  {/* Contenu de droite */}
+                  <p className="font-semibold text-3xl">{plans.length > 1 && `${plans[1].price}€`}</p>
                   <span className="font-semibold text-sm">(0€ pendant 6 mois)</span>
                 </div>
               </Link>

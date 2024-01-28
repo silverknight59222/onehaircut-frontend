@@ -25,7 +25,7 @@ const SpecialOfferModal: React.FC<SpecialOfferModalProps> = ({ close }) => {
                     </div>
 
                     <div className="flex flex-col items-center justify-center p-4 rounded-2xl shadow-md bg-orange-200">
-                        <h3 className="font-bold">Abonnement Pro offert pendant les prochains 1000 salons</h3>
+                        <h3 className="font-bold">Abonnement Pro offert pendant 6 mois pour les prochains 1000 salons</h3>
                         <p className="text-orange-500 font-semibold">
                             <span className={`${ColorsThemeA.textGradient_Title} font-semibold text-7xl`}>6 mois</span>
                             <p className={`${ColorsThemeA.textGradient_Title} font-semibold text-lg`}>  offert sur l'abonnement Pro!</p>

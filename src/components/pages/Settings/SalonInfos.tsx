@@ -681,9 +681,11 @@ const SalonInfos = () => {
                                 </div>
                             </div>
                         )}
-                        <hr className="mt-4" />
 
                         {/* Séparation */}
+                        <hr className="mt-4" />
+
+
                         <div className="flex flex-row-reverse p-3">
                             {/* Boutons */}
                             <div className="flex-initial pl-3">
