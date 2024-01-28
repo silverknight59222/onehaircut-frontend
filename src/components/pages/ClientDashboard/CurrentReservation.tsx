@@ -347,7 +347,7 @@ const Currentreservation = () => {
                                         </div>
                                         <div>
                                             <p className='text-[#444343] font-bold text-start'>Numéro de réservation</p>
-                                            <p className='text-[#666] text-sm text-start'>{item.bookingNumber}</p> {/**TODO Add BOOKING NUMBER */}
+                                            <p className='text-[#666] text-sm text-start'>{item.booking_number}</p> {/**TODO Add BOOKING NUMBER */}
                                         </div>
                                     </div>
                                     <div className="">
