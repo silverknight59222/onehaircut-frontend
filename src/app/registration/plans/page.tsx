@@ -125,8 +125,10 @@ const Page = ({ params }: Params) => {
                 <p className={`${Theme_A.textFont.navigationGreyFont}`}>Retour</p>
               </div>
               <button
-                onClick={() => onSubmit()}
-                className={`w-full sm:w-auto py-4 px-11 mt-5 mb-3 ${Theme_A.button.medLargeGradientButton}`}
+                onClick={() => selectedPlan && onSubmit()}
+                className={`w-full sm:w-auto py-4 px-11 mt-5 mb-3 ${selectedPlan ? Theme_A.button.medLargeGradientButton : `${Theme_A.button.medGreydButton} cursor-not-allowed`
+                  }`}
+                disabled={!selectedPlan} // Désactive le bouton si aucun plan n'est sélectionné
               >
                 Choisir cette offre
               </button>
@@ -164,9 +166,10 @@ const Page = ({ params }: Params) => {
                     {plans.length > 1 && plans[1].description}
                   </p>
                 </div>
-                <div className="mt-3">
+                <div className="mt-3 ">
                   {/* <p className="">à partir de</p> */}
-                  <p className="font-semibold text-3xl">{plans.length > 1 && plans[1].price}€</p>
+                  <p className="font-semibold text-3xl ">{plans.length > 1 && plans[1].price}€</p>
+                  <span className="font-semibold text-sm">(0€ pendant 6 mois)</span>
                 </div>
               </Link>
             </div>
