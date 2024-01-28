@@ -8,7 +8,9 @@ import DropdownMenu from "@/components/UI/DropDownMenu";
 import CustomInput from '@/components/UI/CustomInput';
 import { dashboard } from "@/api/dashboard";
 import { getLocalStorage } from "@/api/storage";
+import userLoader from "@/hooks/useLoader";
 import { client } from '@/api/clientSide';
+import useSnackbar from '@/hooks/useSnackbar';
 
 const ContactUs_Client = () => {
 
@@ -25,6 +27,9 @@ const ContactUs_Client = () => {
     const [multilineText, setMultilineText] = useState('');
     const [title, setTitle] = useState('');
     const [wordCount, setWordCount] = useState(0); // État pour suivre le nombre de mots
+    const showSnackbar = useSnackbar();
+    const [isLoading, setIsLoading] = useState(false);
+    const { loadingView } = userLoader();
 
     const handleMultilineChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => { // Spécifiez le type de l'événement
         const text = event.target.value;
@@ -79,7 +84,16 @@ const ContactUs_Client = () => {
         data.title = 'Client - ' + title; //specify that it comes from client for email filtering
         data.message = multilineText;
         data.feedback_type = SelectedContactType;
-        await dashboard.sendFeedback(data).then((res) => { alert(res) });
+        setIsLoading(true)
+        await dashboard.sendFeedback(data).then((res) => { 
+            if (res.data.status == 200) {
+                showSnackbar('success', res.data.message)
+            }
+         });
+         setTitle('');
+         setMultilineText('')
+         setSelectedContactType('')
+         setIsLoading(false)
     };
     const [notifications, setNotifications] = useState({} as any);
     const fetchSalonNotifications = async () => {
@@ -90,6 +104,7 @@ const ContactUs_Client = () => {
     useEffect(() => { fetchSalonNotifications(); }, [])
     return (
         <div>
+            {isLoading && loadingView()}
             <ClientDashboardLayout notifications={notifications}>
                 {/* Main card (la vignette) */}
                 <div className="mt-14 mb-5 px-6 bg-white w-full lg:w-auto lg:max-w-4xl mx-auto p-6 rounded-xl shadow-lg relative" style={{ zIndex: 1 }}>
@@ -197,3 +212,4 @@ const ContactUs_Client = () => {
     )
 }
 export default ContactUs_Client;
+
