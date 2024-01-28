@@ -7,7 +7,8 @@ import React, { useEffect, useState } from "react";
 import DropdownMenu from "@/components/UI/DropDownMenu";
 import CustomInput from '@/components/UI/CustomInput';
 import { dashboard } from "@/api/dashboard";
-import {getLocalStorage} from "@/api/storage";
+import { getLocalStorage } from "@/api/storage";
+import useSnackbar from '@/hooks/useSnackbar';
 
 const ContactUs = () => {
 
@@ -23,6 +24,7 @@ const ContactUs = () => {
     const [multilineText, setMultilineText] = useState('');
     const [title, setTitle] = useState('');
     const [wordCount, setWordCount] = useState(0); // État pour suivre le nombre de mots
+    const showSnackbar = useSnackbar();
 
     const handleMultilineChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => { // Spécifiez le type de l'événement
         const text = event.target.value;
@@ -40,19 +42,23 @@ const ContactUs = () => {
     };
 
     const onSend = async () => {
-      let data: any = {};
-      data.title = title;
-      data.message = multilineText;
-      data.feedback_type = SelectedContactType;
-      await dashboard.sendFeedback(data).then((res) => {alert(res)});
+        let data: any = {};
+        data.title = title;
+        data.message = multilineText;
+        data.feedback_type = SelectedContactType;
+        await dashboard.sendFeedback(data).then((res) => {
+            if (res.data.status == 200) {
+                showSnackbar('success', res.data.message)
+            }
+        });
     };
     const [notifications, setNotifications] = useState({} as any);
     const fetchSalonNotifications = async () => {
-      const { data } = await dashboard.salonNotification()
-      setNotifications(data)
+        const { data } = await dashboard.salonNotification()
+        setNotifications(data)
     }
-  
-    useEffect(()=>{fetchSalonNotifications();}, [])
+
+    useEffect(() => { fetchSalonNotifications(); }, [])
     return (
         <div>
             <DashboardLayout notifications={notifications}>

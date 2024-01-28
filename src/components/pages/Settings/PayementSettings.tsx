@@ -208,15 +208,20 @@ const PayementSettings = () => {
         if(resp.data.status == 200){
             let account_data = resp.data.account_data
             let balance_data = resp.data.balance_data
-            let card_account_info = account_data.external_accounts.data[0]
-            setAccountName(card_account_info.account_holder_name)
-            setAccountOwner(account_data.individual.first_name + " " + account_data.individual.last_name)
-            setOwnerCountry(card_account_info.country)
-            setBank(card_account_info.bank_name)
-            setAccountType(card_account_info.account_holder_type == 'individual' ? bankAccountTypes[0] : bankAccountTypes[1])
-            setIban(card_account_info.country + '******' + card_account_info.last4)
-            setAccountBalance((balance_data.available[0].amount/100).toString())
-            setAccountPendingBalance((balance_data.pending[0].amount/100).toString())
+            if(account_data.length != 0){
+                let card_account_info = account_data.external_accounts.data[0]
+                setAccountName(card_account_info.account_holder_name)
+                setAccountOwner(account_data.individual.first_name + " " + account_data.individual.last_name)
+                setOwnerCountry(card_account_info.country)
+                setBank(card_account_info.bank_name)
+                setAccountType(card_account_info.account_holder_type == 'individual' ? bankAccountTypes[0] : bankAccountTypes[1])
+                setIban(card_account_info.country + '******' + card_account_info.last4)
+                setAccountBalance((balance_data.available[0].amount/100).toString())
+                setAccountPendingBalance((balance_data.pending[0].amount/100).toString())
+            }
+            else {
+                setAccountBalance("-1.00")
+            }
         }
 
     }
@@ -319,7 +324,7 @@ const PayementSettings = () => {
             </p>
             <div className="flex flex-row justify-around italic">
                 <p className="text-sm md:text-sm justify-center text-zinc-800  font-normal items-start my-1">
-                    {iban != null ? iban : "Aucun compte paramétré"}
+                    {iban != '' ? iban : "Aucun compte paramétré"}
                 </p>
                 {payMethod == payementMethodStruct[1] &&
                     <p className="text-sm md:text-sm justify-center text-zinc-600  font-normal items-start my-1">

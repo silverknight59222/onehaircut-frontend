@@ -115,6 +115,7 @@ const SalonInfos = () => {
             setSelectedSalonType(typesSalon.find(type => type.name === salonInfo.type)?.nameFr)
             setTypeImage(typesSalon.find(type => type.name === salonInfo.type)?.nameFr)
             setIsMobilityAllowed(salonInfo.is_mobile)
+            setSiretNumber(salonInfo.company_id_number)
         }
     }, []);
 
@@ -474,6 +475,22 @@ const SalonInfos = () => {
     const handleSiretNumberChange = (e) => {
         setSiretNumber(e.target.value);
     };
+
+    const updateSiretNumber = async (siretNumber) => {
+        await salonApi.updateSiretNumber({ siretNumber: siretNumber }).then((res) => {
+            if (res.data.status == 200) {
+                removeFromLocalStorage("hair_salon");
+                setLocalStorage("hair_salon", JSON.stringify(res.data.data));
+                showSnackbar("success", res.data.message)
+            }
+            else {
+                showSnackbar("error", "Please check identification numbers format")
+            }
+        }).catch((reason) => {
+            showSnackbar("error", "Please check identification numbers format")
+        })
+    }
+
     /************************************************************************************************************************** */
 
     return (
@@ -798,6 +815,8 @@ const SalonInfos = () => {
                     type="number"
 
                 />
+                <button className={`ml-8 flex gap-4 items-center justify-center w-22 ${Theme_A.button.medBlackColoredButton}`}
+                    onClick={() => updateSiretNumber(siretNumber)}> Update</button>
             </div>
 
             {/* Séparation */}
