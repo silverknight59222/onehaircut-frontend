@@ -37,6 +37,21 @@ export interface Service {
     length: string;
 }
 
+const Length = [
+    {
+      name: "Short",
+      nameFr: "Court",
+    },
+    {
+      name: "Medium",
+      nameFr: "Moyen",
+    },
+    {
+      name: "Long",
+      nameFr: "Long",
+    },
+  ];
+
 // Composant principal
 const ServiceChoose = () => {
     // Déclaration des états locaux du composant avec useState.
@@ -181,7 +196,7 @@ const ServiceChoose = () => {
                 filteredType.forEach((filter) => {
                     if(service.type === filter.toLowerCase()){
                         lengthSelect.forEach((filter) => {
-                            if (service.length === filter.toLowerCase()) {
+                            if (service.length === Length.find((length) => length.name === filter)?.nameFr.toLowerCase()) {
                                 filteredServices.push(service);
                             }
                         });
@@ -201,7 +216,7 @@ const ServiceChoose = () => {
         else if(lengthSelect.length > 0) {
             list.forEach((service) => {
                 lengthSelect.forEach((filter) => {
-                    if (service.length === filter.toLowerCase()) {
+                    if (service.length === Length.find((length) => length.name === filter)?.nameFr.toLowerCase()) {
                         filteredServices.push(service);
                     }
                 });
