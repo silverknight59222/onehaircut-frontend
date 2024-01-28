@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./index.css";
 import {
   DropdownCloseArrow,
@@ -12,6 +12,7 @@ import {
 } from "@/components/utilis/Icons";
 import PricingTable from "./PricingTable";
 import MobilePricingTable from "./MobilePricingTable";
+import SpecialOfferModal from "@/components/UI/SalonSpecialOfferModal";
 
 const Registration = () => {
   const items = [
@@ -103,6 +104,30 @@ const Registration = () => {
       setOpenQuestion(index);
     }
   };
+
+  // État spécifique pour le modal de l'offre spéciale du salon
+  const [isSpecialOfferModalOpen, setIsSpecialOfferModalOpen] = useState(true);
+
+  // Fonction pour fermer le modal de l'offre spéciale du salon
+  useEffect(() => {
+    setIsSpecialOfferModalOpen(true);
+  }, []);
+  // Fonction pour fermer le modal de l'offre spéciale du salon
+  const closeSpecialOfferModal = () => {
+    console.log('Fermeture du modal');
+    setIsSpecialOfferModalOpen(false);
+  };
+  useEffect(() => {
+    console.log('Montage de la page, ouverture du modal');
+    setIsSpecialOfferModalOpen(true);
+
+    // Ajouter un nettoyage au cas où
+    return () => {
+      setIsSpecialOfferModalOpen(false);
+    };
+  }, []);
+
+
   return (
     <div className="relative">
       <div>
@@ -111,6 +136,12 @@ const Registration = () => {
           className="absolute top-0 w-full"
         />
         <div className="overflow-hidden px-8 sm:px-14 lg:px-20">
+
+          {/* Modal pour l'offre spéciale du salon */}
+          {isSpecialOfferModalOpen && (
+            <SpecialOfferModal close={closeSpecialOfferModal} />
+          )}
+
           <div className="flex flex-col items-center justify-center mt-14">
             <div className="relative z-10">
               <p className="font-semibold text-2xl sm:text-3xl lg:text-5xl text-black text-center">

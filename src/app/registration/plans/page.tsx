@@ -97,6 +97,8 @@ const Page = ({ params }: Params) => {
     }).finally(() => setIsLoading(false))
   }, [])
 
+  const videoPath = "https://www.youtube.com/watch?v=8uk651192Gw";
+
   return (
     <div>
       {isLoading && loadingView()}
@@ -113,7 +115,7 @@ const Page = ({ params }: Params) => {
           </div> */}
         </div>
         <div className="w-full text-center text-black font-medium text-3xl mt-5">
-          Abonnement
+          Abonnements
         </div>
         {plans.length > 1 && (<div className="flex flex-col items-center justify-center mt-12 px-6 w-full overflow-hidden">
           <div className="flex sm:flex-row flex-col gap-2 sm:gap-0 w-full items-center justify-center mb-6 max-w-[1300px] 2xl:max-w-[1340px]">
@@ -209,7 +211,7 @@ const Page = ({ params }: Params) => {
           <div className='my-12 p-6 rounded-2xl bg-stone-900 shadow-lg shadow-slate-700 w-[400px] h-[250px] md:w-[500px] md:h-[300px] lg:w-[600px] lg:h-[360px] xl:w-[800px] xl:h-[500px]'>
             <iframe
               className="w-full h-full"
-              src={`https://www.youtube.com/embed/TW-LgJUiMX0`}  // Embed the video using the video ID
+              src={`${videoPath}`}  // Embed the video using the video ID
               title="Comment faire une réservation sur OneHairCut"  // Provide a title for accessibility
               allowFullScreen  // Allow full-screen mode
             /></div>
