@@ -37,6 +37,7 @@ const SpecialOfferModal: React.FC<SpecialOfferModalProps> = ({ close }) => {
                             <span className="text-sm">534/1000 !</span>
 
                         </p>
+
                     </div>
 
                     <div className="flex flex-col items-center justify-center p-4 rounded-2xl shadow-md bg-orange-200">
