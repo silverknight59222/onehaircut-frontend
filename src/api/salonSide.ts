@@ -115,8 +115,11 @@ const salonApi = {
   getStripeKey: async () => {
     return await request.get('stripe/stripe_key');
   },
-  getAllStripeInformation: async() => {
+  getAllStripeInformation: async () => {
     return await request.get('stripe/accountInformation');
+  },
+  updateSiretNumber: async (params: any) => {
+    return await request.post('updateSiretNumber', params);
   }
 
 }
