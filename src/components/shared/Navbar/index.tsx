@@ -329,6 +329,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
       }
       if(isEnableHaircutFilter){
         setGenderFilters(gender);
+        console.log("BUILD : " + length);
         setLengthFilters(length);
         setEthnicityFilters([user_ethnic]);
       }

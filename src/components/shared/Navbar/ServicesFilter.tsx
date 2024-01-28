@@ -183,10 +183,10 @@ const ServicesFilter = ({ onTypeSelect, onLengthSelect }: ServicesFilterProps) =
                 <div
                   key={index}
                   className="flex w-full cursor-pointer mb-[19px]  transform hover:scale-110 text-sm "
-                  onClick={() => onClickLengthCheckbox(item.nameFr)} // Conservez 'item.name' pour la logique interne
+                  onClick={() => onClickLengthCheckbox(item.name)} // Conservez 'item.name' pour la logique interne
                 >
                   <div
-                    className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  transform hover:scale-105 ${lengthFilters.includes(item.nameFr) ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}
+                    className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5  transform hover:scale-105 ${lengthFilters.includes(item.name) ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}
                   >
                     <CheckedIcon />
                   </div>
