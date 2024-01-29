@@ -38,6 +38,7 @@ export type SalonDetails = {
 	final_price: number,
 	openTimes: any[],
 	chat_status: number,
+	wishlist : number,
 };
 
 export type FileDetails = {

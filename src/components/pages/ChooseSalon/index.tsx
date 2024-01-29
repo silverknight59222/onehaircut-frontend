@@ -272,9 +272,10 @@ const SalonChoice = () => {
         let allSalon;
         await dashboard.getSalonsByHaircut(data)
             .then((res) => {
+                const orderedSalons = res.data.data.slice().sort((a, b) => b.wishlist - a.wishlist);
                 console.log('all salon', res.data.data)
-                setSalons(res.data.data);
-                setFilteredSalons(res.data.data);
+                setSalons(orderedSalons);
+                setFilteredSalons(orderedSalons);
                 allSalon = res.data.data;
                 getCoordinates(res.data.data)
                 setIsLoading(false);
@@ -851,8 +852,8 @@ const SalonChoice = () => {
                                                 {!isLoggedIn &&
                                                     <div onClick={(e) => onWishlist(e, fsalon.id)} className="absolute right-6 sm:right-2 top-6 sm:top-2 z-10 cursor-pointer">
                                                         <StarIcon width='35' height='35'
-                                                            color={wishlist.includes(String(fsalon.id)) ? "#FF5B5B" : ""}
-                                                            stroke={wishlist.includes(String(fsalon.id)) ? "#FFFFFF" : ""} />
+                                                            color={wishlist.includes(String(fsalon.id)) || fsalon.wishlist == 1 ? "#FF5B5B" : ""}
+                                                            stroke={wishlist.includes(String(fsalon.id)) || fsalon.wishlist == 1 ? "#FFFFFF" : ""} />
                                                     </div>}
 
                                                 {fsalon && fsalon.salon_cover_image &&
