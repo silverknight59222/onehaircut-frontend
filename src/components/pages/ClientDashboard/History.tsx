@@ -35,6 +35,7 @@ const History = () => {
     image: string;
     note: number;
     items: any;
+    booking_number: any;
   }
 
   const [histories, setHistories] = useState<[BookingInfoStruct]>([] as unknown as [BookingInfoStruct]);
@@ -255,7 +256,7 @@ const History = () => {
                               numberOfStars={5}
                             />
                           </div>
-                          {/* <p className='text-[#666] text-sm text-start'>{item.booking_number}</p> *TODO Add BOOKING NUMBER */}
+                          <p className='text-[#666] text-sm text-start'>{item.booking_number}</p>
                         </div>
                       </div>
                       <div className='flex items-center justify-center  mt-10 sm:mt-5 -z-10'>
