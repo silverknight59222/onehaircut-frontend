@@ -341,8 +341,8 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
         setAvailabilityFilter(availability ?? ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"]);
         setNewSalonFilter(true);
       }
-      getHaircutsByName();
     }
+    getHaircutsByName();
     document.addEventListener("click", closeSelectBox);
 
     return () => {

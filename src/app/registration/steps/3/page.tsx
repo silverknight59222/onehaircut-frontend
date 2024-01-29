@@ -25,14 +25,16 @@ const Step3 = () => {
     name: '',
     email: '',
     password: '',
-    phone: ''
+    phone: '',
+    dob: '',
   });
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState({
     name: '',
     email: '',
     password: '',
-    phone: ''
+    phone: '',
+    dob: '',
   });
 
   const onChangeName = (value: string) => {
@@ -326,6 +328,22 @@ const Step3 = () => {
               <p className="text-xs text-red-700 ml-3 mt-1">{error.email}*</p>
             )}
           </div>
+          {/* <div className="w-full">
+            <label htmlFor="dob" className="block text-sm font-medium text-gray-700">
+              Date of Birth
+            </label>
+            <input
+              type="date"
+              id="dob"
+              name="dob"
+              value={userDetails.dob}
+              onChange={(e) => onChangeDob(e.target.value)}
+              className="mt-1 p-2 border rounded-md w-full"
+            />
+            {error.dob && (
+              <p className="text-xs text-red-700 ml-3 mt-1">{error.dob}*</p>
+            )}
+          </div> */}
           <div className="w-full">
             <div className="flex-col items-center justify-center gap-4 ">
 
