@@ -606,6 +606,55 @@ const SalonChoice = () => {
     // Rendu du composant
     return (
         <div className='w-full h-screen  overflow-hidden'>
+            {/* Modal qui s'affiche si moins de 10 salons */}
+            {isCustomerInfoModalOpen && (
+                <BaseModal close={closeModalCustomerInfo} opacity={20}>
+                    <div className="text-center">
+                        <h2 className="text-3xl font-bold mb-4 text-gradient">Onehaircut est en plein essor !</h2>
+                        <p className="mb-8">
+                            Il y a moins de 10 salons qui correspondent à vos critères.<br />
+                            Nous travaillons activement pour ajouter plus de salons.<br />
+                        </p>
+                        <p className="mb-8 font-semibold">Merci de votre patience et de votre soutien !</p>
+
+                        {/* Afficher l'input uniquement si l'utilisateur n'est pas connecté */}
+                        {isLoggedIn && (
+                            <div className="flex-grow mb-4">
+                                <CustomInput
+                                    id="email"
+                                    label="Adresse e-mail"
+                                    value={guestEmail}
+                                    onChange={handleGuestEmail}
+                                    type="text"
+                                    isEmail={true}
+                                />
+                            </div>
+                        )}
+
+                        {/* Conteneur flex pour les boutons */}
+                        <div className="flex justify-center items-center space-x-4 mt-8">
+                            {/* Bouton Fermer */}
+                            <button
+                                className={`${Theme_A.button.medBlackColoredButton}`}
+                                onClick={closeModalCustomerInfo}
+                            >
+                                Fermer
+                            </button>
+
+                            {/* Afficher le bouton "Me tenir informé" uniquement si l'utilisateur n'est pas connecté */}
+                            {isLoggedIn && (
+                                <button
+                                    disabled={!guestEmail} // Désactiver le bouton si guestEmail est vide
+                                    className={`${guestEmail ? Theme_A.button.mediumGradientButton : Theme_A.button.medGreyColoredButton} text-white font-bold py-2 px-4 rounded`} // Changer la classe en fonction de l'état du bouton
+                                    onClick={saveToNewsLetters}
+                                >
+                                    Me tenir informé
+                                </button>
+                            )}
+                        </div>
+                    </div>
+                </BaseModal>
+            )}
             {/* Entête du composant */}
             {/* <Navbar isSalonPage={true} /> */}
             <Navbar
@@ -773,6 +822,7 @@ const SalonChoice = () => {
                             </div>
                         }
 
+
                         {/* Grid containing thumbnails */}
                         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6 pb-52 lg:pb-36 overflow-y-scroll content-start overflow-x-hidden"
                             style={{ maxHeight: getHeightThumbnails() }}
@@ -787,55 +837,7 @@ const SalonChoice = () => {
                                         className={`relative flex w-full w-max[450px] h-56 h-max[300px] bg-stone-100 rounded-2xl border hover:border-stone-400 cursor-pointer ${selectedSalon.id === fsalon.id && 'border-4 border-red-400 shadow-xl'}`}
                                     >
 
-                                        {/* Modal qui s'affiche si moins de 10 salons */}
-                                        {isCustomerInfoModalOpen && (
-                                            <BaseModal close={closeModalCustomerInfo} opacity={20}>
-                                                <div className="text-center">
-                                                    <h2 className="text-3xl font-bold mb-4 text-gradient">Onehaircut est en plein essor !</h2>
-                                                    <p className="mb-8">
-                                                        Il y a moins de 10 salons qui correspondent à vos critères.<br />
-                                                        Nous travaillons activement pour ajouter plus de salons.<br />
-                                                    </p>
-                                                    <p className="mb-8 font-semibold">Merci de votre patience et de votre soutien !</p>
 
-                                                    {/* Afficher l'input uniquement si l'utilisateur n'est pas connecté */}
-                                                    {isLoggedIn && (
-                                                        <div className="flex-grow mb-4">
-                                                            <CustomInput
-                                                                id="email"
-                                                                label="Adresse e-mail"
-                                                                value={guestEmail}
-                                                                onChange={handleGuestEmail}
-                                                                type="text"
-                                                                isEmail={true}
-                                                            />
-                                                        </div>
-                                                    )}
-
-                                                    {/* Conteneur flex pour les boutons */}
-                                                    <div className="flex justify-center items-center space-x-4 mt-8">
-                                                        {/* Bouton Fermer */}
-                                                        <button
-                                                            className={`${Theme_A.button.medBlackColoredButton}`}
-                                                            onClick={closeModalCustomerInfo}
-                                                        >
-                                                            Fermer
-                                                        </button>
-
-                                                        {/* Afficher le bouton "Me tenir informé" uniquement si l'utilisateur n'est pas connecté */}
-                                                        {isLoggedIn && (
-                                                            <button
-                                                                disabled={!guestEmail} // Désactiver le bouton si guestEmail est vide
-                                                                className={`${guestEmail ? Theme_A.button.mediumGradientButton : Theme_A.button.medGreyColoredButton} text-white font-bold py-2 px-4 rounded`} // Changer la classe en fonction de l'état du bouton
-                                                                onClick={saveToNewsLetters}
-                                                            >
-                                                                Me tenir informé
-                                                            </button>
-                                                        )}
-                                                    </div>
-                                                </div>
-                                            </BaseModal>
-                                        )}
 
 
 
