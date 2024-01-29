@@ -16,8 +16,9 @@ import userLoader from "@/hooks/useLoader";
 const Step5 = () => {
   const router = useRouter();
   const [promiseKey, setPromisKey] = useState<string[]>([]);
-  const [stripePromise, setStripePromise] = useState<string>("");
+  const [stripePromise, setStripePromise] = useState<string | null>(null);;
   const [mounted, setMounted] = useState(false);
+  const { loadingView } = userLoader();
   const salonAddress = getLocalStorage("salon_address") ? JSON.parse(getLocalStorage("salon_address") as string) : null
   const planType = getLocalStorage("plan_type") ? JSON.parse(getLocalStorage("plan_type") as string) : null;
   const salonInfo = getLocalStorage("salon_name") as string;
@@ -25,11 +26,19 @@ const Step5 = () => {
 
   const getStripeKey = async () => {
     setIsLoading(true)
-    let resp = await salonApi.getStripeKey();
-    setPromisKey(resp.data);
-    setStripePromise(resp.data.pk)
-    setIsLoading(false)
-  }
+    try {
+        let resp = await salonApi.getStripeKey();
+        const publishableKey = resp.data.pk || null;
+        setPromisKey(resp.data);
+        setStripePromise(publishableKey);
+        console.log(publishableKey);
+    } catch (error) {
+        console.error('Error fetching Stripe key:', error);
+        // Handle error appropriately (e.g., show a message to the user)
+    } finally {
+        setIsLoading(false);
+    }
+}
 
   useEffect(() => {
     setMounted(true)
@@ -42,6 +51,7 @@ const Step5 = () => {
 
   return (
     <div>
+      {isLoading && loadingView()}
       <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 -z-10">
         <LogoCircleFixRight />
       </div>
@@ -72,8 +82,8 @@ const Step5 = () => {
                 </p>
                 {options.clientSecret && mounted && (
                   <Elements
-                    stripe={loadStripe(stripePromise)}
-                    options={options}
+                      stripe={stripePromise ? loadStripe(stripePromise) : null}
+                      options={options}
                   >
                     <StripePayment />
                   </Elements>

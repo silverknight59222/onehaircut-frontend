@@ -25,6 +25,7 @@ export interface SalonRegisterParams {
   street: string,
   postalCode: string,
   isMobile: boolean,
+  dob: string,
 }
 const registration = {
   getAllPlans: async () => {

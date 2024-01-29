@@ -109,6 +109,24 @@ const Step3 = () => {
     }));
   }
 
+  const onChangeDob = (dob) => {
+    if (!dob) {
+      setError((prevError) => ({
+        ...prevError,
+        dob: "Date of birth is required",
+      }));
+    } else {
+      setError((prevError) => ({
+        ...prevError,
+        dob: "", // Clear dob error if valid
+      }));
+    }
+    setUserDetails((prevUserDetails) => ({
+      ...prevUserDetails,
+      dob: dob,
+    }));
+  };
+
   const onPhoneCheck = () => {
     const phone = userDetails.phone
     let valid = false; // 
@@ -328,7 +346,7 @@ const Step3 = () => {
               <p className="text-xs text-red-700 ml-3 mt-1">{error.email}*</p>
             )}
           </div>
-          {/* <div className="w-full">
+          <div className="w-full">
             <label htmlFor="dob" className="block text-sm font-medium text-gray-700">
               Date of Birth
             </label>
@@ -343,7 +361,7 @@ const Step3 = () => {
             {error.dob && (
               <p className="text-xs text-red-700 ml-3 mt-1">{error.dob}*</p>
             )}
-          </div> */}
+          </div>
           <div className="w-full">
             <div className="flex-col items-center justify-center gap-4 ">
 
