@@ -426,7 +426,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                     className={
                       ethnicityFilters.length > 0
                         ? `h-6 md:h-8 lg:h-10 rounded-xl py-0 md:py-1 lg:py-2 px-2 lg:px-7 ${ColorsThemeA.filterSelected} text-white font-semibold`
-                        : (showDesktopEthnicity ? "h-6 md:h-8 lg:h-10 rounded-xl py-0 md:py-1 lg:py-2 px-2 lg:px-7 bg-white text-black font-semibold" 
+                        : (showDesktopEthnicity ? "h-6 md:h-8 lg:h-10 rounded-xl py-0 md:py-1 lg:py-2 px-2 lg:px-7 bg-white text-black font-semibold"
                         : "h-6 md:h-8 lg:h-10 hover:bg-stone-200 rounded-xl py-0 md:py-1 lg:py-2 px-2 lg:px-7")
                     }
                     onClick={() => {
@@ -613,6 +613,18 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                   console.log('map search place', place)
                   onCityMapSearch && onCityMapSearch(place)
                 }}
+                onChange={(e) => {
+                  if(e.target && !(e.target as HTMLInputElement).value) {
+                    onCityMapSearch && onCityMapSearch({
+                      geometry: {
+                        location: {
+                          lat: () => 0,
+                          lng: () => 0
+                        }
+                      }
+                    } as google.maps.places.PlaceResult)
+                  }
+                }}
                 options={{
                   types: ["locality"],
                   fields: [
@@ -661,7 +673,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                           onClick={() => onClickCountryCheckbox(item)}
                         >
                           <div
-                            className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105 
+                            className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105
                             ${countryFilter === item ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}
                           >
                             <CheckedIcon />
@@ -704,7 +716,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                           onClick={() => onClickMobileCheckbox(item.value)}
                         >
                           <div
-                            className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105 
+                            className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105
                             ${mobileFilters === item.value ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}
                           >
                             <CheckedIcon />
@@ -951,7 +963,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                         onClick={() => onClickCountryCheckbox(item)}
                       >
                         <div
-                          className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105 
+                          className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105
                             ${countryFilter === item ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}
                         >
                           <CheckedIcon />
@@ -1094,7 +1106,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                         onClick={() => onClickMobileCheckbox(item.value)}
                       >
                         <div
-                          className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105 
+                          className={`flex justify-center items-center bg-checkbox rounded-[4px] w-5 h-5 transform hover:scale-105
                             ${mobileFilters === item.value ? ColorsThemeA.OhcGradient_A : "bg-[#D6D6D6]"}`}
                         >
                           <CheckedIcon />
@@ -1189,4 +1201,4 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
   );
 };
 
-export default Navbar;  
+export default Navbar;
