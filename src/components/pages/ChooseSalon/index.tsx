@@ -24,8 +24,8 @@ import { salonApi } from '@/api/salonSide';
 import BaseModal from '@/components/UI/BaseModal';
 import CustomInput from '@/components/UI/CustomInput';
 
-// TODO IMPORT TO USE ADRESSES 
-//import axios from 'axios'; 
+// TODO IMPORT TO USE ADRESSES
+//import axios from 'axios';
 
 const libraries: LoadScriptProps["libraries"] = ["places"]
 // Composant principal SalonChoice
@@ -268,12 +268,10 @@ const SalonChoice = () => {
         if (haircut) {
             data['haircut_id'] = haircut.id
         }
-        console.log('salon data', data)
         let allSalon;
         await dashboard.getSalonsByHaircut(data)
             .then((res) => {
                 const orderedSalons = res.data.data.slice().sort((a, b) => b.wishlist - a.wishlist);
-                console.log('all salon', res.data.data)
                 setSalons(orderedSalons);
                 setFilteredSalons(orderedSalons);
                 allSalon = res.data.data;
@@ -285,8 +283,6 @@ const SalonChoice = () => {
                 //console.log('salon error',error)
             })
         if (userData?.user_preferences?.salon_filter) {
-            console.log("USER PREF SALON FILTER YES");
-            console.log(allSalon);
             const user_preferences = userData.user_preferences;
             let translated = getAvailEnglishUP(user_preferences.availability)
             let filteredSalon = allSalon.filter((item) => {
@@ -301,8 +297,6 @@ const SalonChoice = () => {
                     return item;
                 }
             })
-            console.log("FILTERED SALON")
-            console.log(filteredSalon)
             setFilteredSalons(filteredSalon)
         }
     }
@@ -347,7 +341,7 @@ const SalonChoice = () => {
         setIsCustomerInfoModalOpen(false);
     };
     const [guestEmail, setGuestEmail] = useState(''); // État pour stocker l'email de l'invité
-    // Fonction pour gérer le changement de l'adresse email 
+    // Fonction pour gérer le changement de l'adresse email
     // TODO Save email address for newsletters
     const handleGuestEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
         setGuestEmail(e.target.value);
@@ -362,14 +356,14 @@ const SalonChoice = () => {
 
         setIsLoading(true)
 
-        console.log('citySearch', citySearch)
-        console.log('nameSearch', nameSearch)
-        console.log('filteredMobile', filteredMobile)
-        console.log('filtereRange', filtereRange)
-        console.log('ratingFilter', ratingFilter)
-        console.log('countryFilter', countryFilter)
-        console.log('availabilityFilter', availabilityFilter)
-        console.log('newSalonFilter', newSalonFilter)
+        // console.log('citySearch', citySearch)
+        // console.log('nameSearch', nameSearch)
+        // console.log('filteredMobile', filteredMobile)
+        // console.log('filtereRange', filtereRange)
+        // console.log('ratingFilter', ratingFilter)
+        // console.log('countryFilter', countryFilter)
+        // console.log('availabilityFilter', availabilityFilter)
+        // console.log('newSalonFilter', newSalonFilter)
         // console.log('haircutID', haircut.id)
 
         const services = getLocalStorage('ServiceIds')
@@ -392,11 +386,11 @@ const SalonChoice = () => {
             newSalonFilter: newSalonFilter
         }
 
-        console.log('result iss parma', JSON.stringify(param))
+        // console.log('result iss parma', JSON.stringify(param))
 
         const result = await salonApi.filterSalon(param)
 
-        console.log('result iss', result)
+        // console.log('result iss', result)
 
         if (result.data.status === 200) {
             setSalons(result.data.data);
@@ -573,7 +567,7 @@ const SalonChoice = () => {
         }
     }
 
-    // give back the height of the thumbnails 
+    // give back the height of the thumbnails
     const getHeightThumbnails = () => {
         let result: number | string
 
@@ -661,7 +655,7 @@ const SalonChoice = () => {
                 isSalonPage={true}
                 onSearch={handleAllFilter}
                 onCityMapSearch={(value: any) => {
-                    console.log('map search', value.geometry.location.lat())
+                    // console.log('map search', value.geometry.location.lat())
                     const cityParam = {
                         lat: value.geometry.location.lat(),
                         long: value.geometry.location.lng()
@@ -774,7 +768,7 @@ const SalonChoice = () => {
                                     )}
 
                                     {(filteredSalons.length > 0 && showMarker) && positions.map((position, index) => {
-                                        console.log('filtered salon pos', position)
+                                        // console.log('filtered salon pos', position)
                                         return (
                                             <React.Fragment key={index}>
 
