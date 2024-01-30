@@ -57,6 +57,7 @@ function StripePayment() {
       street: "",
       postalCode: "",
       isMobile: false,
+      dob: "1991-01-01",
     };
     const userInfo = JSON.parse(getLocalStorage("user_Info") as string);
     const salonName = getLocalStorage("salon_name") as string;
@@ -64,6 +65,7 @@ function StripePayment() {
     const salonType = getLocalStorage("salon_type") as string;
     const planType = JSON.parse(getLocalStorage("plan_type") as string);
     data.user_id = userInfo?.id;
+    data.dob = userInfo?.dob;
     data.salon_name = salonName;
     data.salon_description = 'Description text here';
     data.country = salonAddress.country
