@@ -178,18 +178,45 @@ function StripePayment() {
       {isLoading && loadingView()}
       <form onSubmit={handleSubmit}>
         {/* <CardElement id="my-input" options={options} /> */}
-        <label>
-          Card number
-          <CardNumberElement options={options} />
-        </label>
-        <label>
-          Expiration date
-          <CardExpiryElement options={options} />
-        </label>
-        <label>
-          CVC / CVV
-          <CardCvcElement options={options} />
-        </label>
+        {/* <div className="card-element-container">
+          <label>
+            Card number
+            <div className="card-element">
+              <CardNumberElement options={options} />
+            </div>
+          </label>
+        </div>
+        <div className="card-element-container">
+          <label>
+            Expiration date
+            <div className="card-element">
+              <CardExpiryElement options={options} />
+            </div>
+          </label>
+        </div>
+        <div className="card-element-container">
+          <label>
+            CVC / CVV
+            <div className="card-element">
+              <CardCvcElement options={options} />
+            </div>
+          </label>
+        </div> */}
+        <div className="card-element">
+          <CardElement
+            options={{
+              style: {
+                base: {
+                  fontSize: '16px',
+                  color: '#424770',
+                  '::placeholder': {
+                    color: '#aab7c4',
+                  },
+                },
+              },
+            }}
+          />
+        </div>
         <button
           className={`w-full h-14 mt-8 text-white text-xl font-semibold rounded-xl bg-background-gradient shadow-md shadow-stone-300 hover:scale-95 transition duration-300`}
           type="submit"
