@@ -35,6 +35,7 @@ const History = () => {
     image: string;
     note: number;
     items: any;
+    booking_number: any;
   }
 
   const [histories, setHistories] = useState<[BookingInfoStruct]>([] as unknown as [BookingInfoStruct]);
@@ -237,15 +238,15 @@ const History = () => {
 
                         </div>
                         <div className='w-[150px] mr-3'>
-                          {item.salon_haircut && <Image src={item.salon_haircut.haircut.image.includes('http') ? 
-                          item.salon_haircut.haircut.image : 
-                          `https://api.onehaircut.com${item.salon_haircut.haircut.image}`} alt='' width={150} height={150} className='rounded-3xl' />}
-                          {!item.salon_haircut && 
-                          <Image src={item.haircut ? 
-                            (item.haircut.image.includes('http') ? 
-                            item.haircut.image : 
-                          `https://api.onehaircut.com${item.haircut.image}`) : 
-                          `https://api.onehaircut.com/favicon.ico`} alt='' width={150} height={150} className='rounded-3xl' />}
+                          {item.salon_haircut && <Image src={item.salon_haircut.haircut.image.includes('http') ?
+                            item.salon_haircut.haircut.image :
+                            `https://api.onehaircut.com${item.salon_haircut.haircut.image}`} alt='' width={150} height={150} className='rounded-3xl' />}
+                          {!item.salon_haircut &&
+                            <Image src={item.haircut ?
+                              (item.haircut.image.includes('http') ?
+                                item.haircut.image :
+                                `https://api.onehaircut.com${item.haircut.image}`) :
+                              `https://api.onehaircut.com/favicon.ico`} alt='' width={150} height={150} className='rounded-3xl' />}
                           <div className='justify-center items-center mt-3 bg-zinc-100 rounded-2xl p-1'>
                             <StarRatings
                               rating={item.rating ? item.rating.rating : 0}
@@ -255,6 +256,7 @@ const History = () => {
                               numberOfStars={5}
                             />
                           </div>
+                          <p className='text-[#666] text-sm text-start'>{item.booking_number}</p>
                         </div>
                       </div>
                       <div className='flex items-center justify-center  mt-10 sm:mt-5 -z-10'>

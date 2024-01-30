@@ -479,6 +479,7 @@ const SalonInfos = () => {
     const updateSiretNumber = async (siretNumber) => {
         await salonApi.updateSiretNumber({ siretNumber: siretNumber }).then((res) => {
             if (res.data.status == 200) {
+                setSiretNumber(siretNumber)
                 removeFromLocalStorage("hair_salon");
                 setLocalStorage("hair_salon", JSON.stringify(res.data.data));
                 showSnackbar("success", res.data.message)
