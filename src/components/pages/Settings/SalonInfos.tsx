@@ -479,16 +479,16 @@ const SalonInfos = () => {
     const updateSiretNumber = async (siretNumber) => {
         await salonApi.updateSiretNumber({ siretNumber: siretNumber }).then((res) => {
             if (res.data.status == 200) {
-                setSiretNumber(siretNumber)
+                setSiretNumber(siretNumber);
                 removeFromLocalStorage("hair_salon");
                 setLocalStorage("hair_salon", JSON.stringify(res.data.data));
                 showSnackbar("success", res.data.message)
             }
             else {
-                showSnackbar("error", "Please check identification numbers format")
+                showSnackbar("error", "Erreur lors de l'enregistrement du numéro de SIRET");
             }
         }).catch((reason) => {
-            showSnackbar("error", "Please check identification numbers format")
+            showSnackbar("error", "Erreur, verifier le format du numéro de SIRET");
         })
     }
 
