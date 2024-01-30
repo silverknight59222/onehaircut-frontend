@@ -238,6 +238,7 @@ const History = () => {
 
                         </div>
                         <div className='w-[150px] mr-3'>
+                          <p className='text-[#666] text-sm text-start pb-1'>{item.booking_number}</p>
                           {item.salon_haircut && <Image src={item.salon_haircut.haircut.image.includes('http') ?
                             item.salon_haircut.haircut.image :
                             `https://api.onehaircut.com${item.salon_haircut.haircut.image}`} alt='' width={150} height={150} className='rounded-3xl' />}
@@ -256,7 +257,6 @@ const History = () => {
                               numberOfStars={5}
                             />
                           </div>
-                          <p className='text-[#666] text-sm text-start'>{item.booking_number}</p>
                         </div>
                       </div>
                       <div className='flex items-center justify-center  mt-10 sm:mt-5 -z-10'>
