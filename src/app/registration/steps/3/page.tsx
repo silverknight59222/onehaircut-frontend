@@ -254,6 +254,7 @@ const Step3 = () => {
           street: "",
           postalCode: "",
           isMobile: false,
+          dob: ""
         }
         const userInfo = JSON.parse(getLocalStorage("user_Info") as string);
         const salonName = getLocalStorage("salon_name") as string;
