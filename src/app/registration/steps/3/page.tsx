@@ -278,6 +278,7 @@ const Step3 = () => {
         salonData.street = salonAddress.street;
         salonData.postalCode = salonAddress.postalCode;
         salonData.isMobile = salonAddress.isMobile;
+        salonData.dob = userInfo?.dob
         await registration
           .registerSalon(salonData)
           .then((res) => {
