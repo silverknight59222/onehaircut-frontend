@@ -273,6 +273,55 @@ export const BoostIcon = (IconStyle: IconType) => {
   );
 };
 
+export const QRCodeIcon = (IconStyle: IconType) => {
+  return (
+    <svg
+      width="32"
+      height="32"
+      viewBox="0 0 32 32"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect
+        x="2"
+        y="2"
+        width="14"
+        height="14"
+        fill="none"
+        stroke={IconStyle.color ? IconStyle.color : "#000"}
+        strokeWidth="2"
+      />
+      <rect
+        x="2"
+        y="18"
+        width="14"
+        height="14"
+        fill="none"
+        stroke={IconStyle.color ? IconStyle.color : "#000"}
+        strokeWidth="2"
+      />
+      <rect
+        x="18"
+        y="2"
+        width="14"
+        height="14"
+        fill="none"
+        stroke={IconStyle.color ? IconStyle.color : "#000"}
+        strokeWidth="2"
+      />
+      <rect
+        x="18"
+        y="18"
+        width="14"
+        height="14"
+        fill="none"
+        stroke={IconStyle.color ? IconStyle.color : "#000"}
+        strokeWidth="2"
+      />
+    </svg>
+  );
+};
+
 export const BotIcon = (IconStyle: IconType) => {
   return (
     <svg
