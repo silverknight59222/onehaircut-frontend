@@ -33,6 +33,7 @@ function StripePayment() {
   const showSnackbar = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
   const salonAddress = JSON.parse(getLocalStorage("salon_address") as string);
+  const planType = JSON.parse(getLocalStorage("plan_type") as string);
 
   const stripe = useStripe();
   // const elements = useElements();
@@ -95,7 +96,6 @@ function StripePayment() {
     const userInfo = JSON.parse(getLocalStorage("user_Info") as string);
     const salonName = getLocalStorage("salon_name") as string;
     const salonType = getLocalStorage("salon_type") as string;
-    const planType = JSON.parse(getLocalStorage("plan_type") as string);
     data.user_id = userInfo?.id;
     data.dob = userInfo?.dob;
     data.salon_name = salonName;
@@ -138,10 +138,9 @@ function StripePayment() {
       return;
     }
     setIsLoading(true);
-    // const cardElement = elements.getElement(CardElement);
-    const cardNumberElement = elements.getElement(CardNumberElement);
-    console.log(cardNumberElement)
-    if (clientSecret && cardNumberElement) {
+    const cardElement = elements.getElement(CardElement);
+    console.log(cardElement)
+    if (clientSecret && cardElement) {
       // await stripe
       //   .createPaymentMethod({
       //     card: cardElement,
@@ -154,22 +153,30 @@ function StripePayment() {
       //     //   return_url : 'https://onehaircut.com',
       //     // }
       //   })
-      await stripe.createPaymentMethod({
+      const { paymentMethod, error } = await stripe.createPaymentMethod({
         type: 'card',
-        card: cardNumberElement!,
-        billing_details: {
-          name: userInfo.name,
-        },
-      })
-        .then(function (result) {
-          console.log(result)
-          registerSalon(result.paymentMethod?.id);
-          // window.open("https://api.whatsapp.com/send?phone=" + userInfo.phone + "&text=Booking Success!", '_blank');
-        })
-        .catch(function (error) {
-          setIsLoading(false)
-          //console.log(error);
-        })
+        card: cardElement,
+      });
+      // const { token, error } = await stripe.createToken(cardElement);
+      console.log(paymentMethod)
+      registerSalon(paymentMethod?.id)
+      //Old Flow
+      // await stripe.createPaymentMethod({
+      //   type: 'card',
+      //   card: cardElement,
+      //   billing_details: {
+      //     name: userInfo.name,
+      //   },
+      // })
+      //   .then(function (result) {
+      //     console.log(result)
+      //     registerSalon(result.paymentMethod?.id);
+      //     // window.open("https://api.whatsapp.com/send?phone=" + userInfo.phone + "&text=Booking Success!", '_blank');
+      //   })
+      //   .catch(function (error) {
+      //     setIsLoading(false)
+      //     //console.log(error);
+      //   })
     }
   };
 
