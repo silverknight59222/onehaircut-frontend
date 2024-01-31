@@ -1,11 +1,12 @@
 import React, { useMemo, useState } from "react";
-import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
+import { useStripe, useElements, CardElement, PaymentElement, CardNumberElement, CardExpiryElement, CardCvcElement } from "@stripe/react-stripe-js";
 import userLoader from "@/hooks/useLoader";
 import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/storage";
 import { SalonRegisterParams, registration } from "@/api/registration";
 import useSnackbar from "@/hooks/useSnackbar";
 import { useRouter } from "next/navigation";
 import { Theme_A } from "@/components/utilis/Themes";
+import CardWrapper from "@/@core/styles/libs/react-credit-cards";
 
 const useOptions = () => {
   const options = useMemo(
@@ -31,11 +32,43 @@ function StripePayment() {
   const { loadingView } = userLoader();
   const showSnackbar = useSnackbar();
   const [isLoading, setIsLoading] = useState(false);
+  const salonAddress = JSON.parse(getLocalStorage("salon_address") as string);
 
   const stripe = useStripe();
-  const elements = useElements();
-  const options = useOptions();
+  // const elements = useElements();
+  // const options = useOptions();
   const router = useRouter();
+  const clientSecret = getLocalStorage("secret_key")?.toString();
+
+  const appearance = {
+    theme: 'flat',
+    variables: { colorPrimaryText: '#262626' }
+  };
+  const options = {
+    style: {
+      base: {
+        color: "#32325d",
+        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+        fontSmoothing: "antialiased",
+        fontSize: "16px",
+        focus: {
+          backgroundColor: "#F3D3E3",
+        },
+        "::placeholder": {
+          color: "#aab7c4",
+        },
+      },
+      invalid: {
+        color: "#fa755a",
+        iconColor: "#fa755a",
+      },
+    },
+    value: {
+      postalCode: salonAddress.postalCode,
+    },
+    // iconStyle : 'solid',
+  };
+  const elements = useElements();
 
   const registerSalon = async (paymentMethod?: string) => {
     setIsLoading(true);
@@ -61,7 +94,6 @@ function StripePayment() {
     };
     const userInfo = JSON.parse(getLocalStorage("user_Info") as string);
     const salonName = getLocalStorage("salon_name") as string;
-    const salonAddress = JSON.parse(getLocalStorage("salon_address") as string);
     const salonType = getLocalStorage("salon_type") as string;
     const planType = JSON.parse(getLocalStorage("plan_type") as string);
     data.user_id = userInfo?.id;
@@ -106,19 +138,31 @@ function StripePayment() {
       return;
     }
     setIsLoading(true);
-    const clientSecret = getLocalStorage("secret_key")?.toString();
-    const cardElement = elements.getElement(CardElement);
-    if (clientSecret && cardElement) {
-      await stripe
-        .createPaymentMethod({
-          type: "card",
-          card: cardElement,
-          billing_details: {
-            name: userInfo.name,
-          },
-        })
+    // const cardElement = elements.getElement(CardElement);
+    const cardNumberElement = elements.getElement(CardNumberElement);
+    console.log(cardNumberElement)
+    if (clientSecret && cardNumberElement) {
+      // await stripe
+      //   .createPaymentMethod({
+      //     card: cardElement,
+      //     billing_details: {
+      //       name: userInfo.name,
+      //     },
+      //     // clientSecret,
+      //     // elements,
+      //     // confirmParams : {
+      //     //   return_url : 'https://onehaircut.com',
+      //     // }
+      //   })
+      await stripe.createPaymentMethod({
+        type: 'card',
+        card: cardNumberElement!,
+        billing_details: {
+          name: userInfo.name,
+        },
+      })
         .then(function (result) {
-          //console.log(result)
+          console.log(result)
           registerSalon(result.paymentMethod?.id);
           // window.open("https://api.whatsapp.com/send?phone=" + userInfo.phone + "&text=Booking Success!", '_blank');
         })
@@ -133,10 +177,46 @@ function StripePayment() {
     <div>
       {isLoading && loadingView()}
       <form onSubmit={handleSubmit}>
-        <div className="text-sm font-semibold mb-8">
-          Enter your card details here:
+        {/* <CardElement id="my-input" options={options} /> */}
+        {/* <div className="card-element-container">
+          <label>
+            Card number
+            <div className="card-element">
+              <CardNumberElement options={options} />
+            </div>
+          </label>
         </div>
-        <CardElement options={options} />
+        <div className="card-element-container">
+          <label>
+            Expiration date
+            <div className="card-element">
+              <CardExpiryElement options={options} />
+            </div>
+          </label>
+        </div>
+        <div className="card-element-container">
+          <label>
+            CVC / CVV
+            <div className="card-element">
+              <CardCvcElement options={options} />
+            </div>
+          </label>
+        </div> */}
+        <div className="card-element">
+          <CardElement
+            options={{
+              style: {
+                base: {
+                  fontSize: '16px',
+                  color: '#424770',
+                  '::placeholder': {
+                    color: '#aab7c4',
+                  },
+                },
+              },
+            }}
+          />
+        </div>
         <button
           className={`w-full h-14 mt-8 text-white text-xl font-semibold rounded-xl bg-background-gradient shadow-md shadow-stone-300 hover:scale-95 transition duration-300`}
           type="submit"
@@ -146,6 +226,22 @@ function StripePayment() {
         </button>
       </form>
     </div>
+    // <div>
+    //   {isLoading && loadingView()}
+    //   <form onSubmit={handleSubmit}>
+    //     <div className="text-sm font-semibold mb-8">
+    //       Enter your card details here:
+    //     </div>
+    //     <CardElement />
+    //     <button
+    //       className={`w-full h-14 mt-8 text-white text-xl font-semibold rounded-xl bg-background-gradient shadow-md shadow-stone-300 hover:scale-95 transition duration-300`}
+    //       type="submit"
+    //       disabled={!stripe || !elements}
+    //     >
+    //       Confirmer
+    //     </button>
+    //   </form>
+    // </div>
   );
 }
 
