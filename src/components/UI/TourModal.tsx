@@ -1,18 +1,19 @@
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import dynamic from "next/dynamic";
-import {useState} from "react";
+import { useState } from "react";
 const Tour = dynamic(() => import("reactour"), { ssr: false });
-interface Steps {
+
+export interface Steps {
   selector: string,
   content: string,
 }
 
-type TourModalType = {
+export type TourModalType = {
   steps: Steps[],
-  onRequestClose?:() => void;
+  onRequestClose?: () => void;
 }
 
-const TourModal = ({steps, onRequestClose}:TourModalType) => {
+const TourModal = ({ steps, onRequestClose }: TourModalType) => {
   const disableBody = target => disableBodyScroll(target);
   const enableBody = target => enableBodyScroll(target);
   const [isTourOpen, setIsTourOpen] = useState(true);
@@ -25,17 +26,17 @@ const TourModal = ({steps, onRequestClose}:TourModalType) => {
       <Tour
         // @ts-ignore
         steps={steps}
-        showNavigation={false}
+        showNavigation={true}
         onRequestClose={closeTour}
         rounded={5}
-        styles={{dot:'disabled'}}
+        styles={{ dot: 'disabled' }}
         isOpen={isTourOpen}
         accentColor={'#ef4444'}
         onAfterOpen={disableBody}
         onBeforeClose={enableBody}
         prevButton={<button>Retour</button>}
         nextButton={<button>Suivant</button>}
-        lastStepNextButton={<button>End</button>}
+        lastStepNextButton={<button>C'est parti !</button>}
       />
     </>
   )

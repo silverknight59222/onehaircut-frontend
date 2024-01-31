@@ -27,6 +27,8 @@ import { Auth } from "@/api/auth";
 import { client } from "@/api/clientSide";
 import InfoButton from "@/components/UI/InfoButton";
 import { getLocalStorage } from "@/api/storage";
+import TourModal, { Steps, TourModalType } from "@/components/UI/TourModal";
+import { t } from "i18next";
 
 
 const Dashboard = () => {
@@ -111,9 +113,40 @@ const Dashboard = () => {
     // TODO EMAIL ADDRESS VEIRIFICATION DONE : 
 
 
+    // For Tour
+    const tourSteps: Steps[] = [
+        {
+            selector: '',
+            content: 'Bienvenue dans la présentation du dashboard',
+        },
+        {
+            selector: '',
+            content: 'Il regroupe toute les informations importantes concernant votre salon et vos clients.',
+        },
+        {
+            selector: '.button_revenu_journalier',
+            content: 'En cliquant sur ce type de bouton, vous pourrez afficher plus de détails sur le graphe qui suit.',
+        },
+        {
+            selector: '',
+            content: 'La navigation se fait avec le menu de gauche et du haut.',
+        },
+    ];
+
+    const [tourVisible, setTourVisible] = useState(true);
+
+    const closeTour = () => {
+        // You may want to store in local storage or state that the user has completed the tour
+    };
+
+
     return (
         <div className="px-4 lg:px-6">
             <Footer />
+
+            {/* For explaining the website */}
+            <TourModal steps={tourSteps} onRequestClose={closeTour} />
+
             <div>
                 <Grid container spacing={6} className='match-height  '>
                     <Grid item md={4} sm={6} xs={12}>
@@ -256,7 +289,10 @@ const Dashboard = () => {
                     {/*REVENU JOURNALIER */}
 
                     <div className="flex items-center justify-between mb-8 lg:mb-0">
-                        <button onClick={() => toggleModal('Incomes')} className={`${Theme_A.button.medBlackColoredButton} hover:bg-stone-600`}>
+                        <button
+                            onClick={() => toggleModal('Incomes')}
+                            className={`${Theme_A.button.medBlackColoredButton} hover:bg-stone-600 button_revenu_journalier`}
+                            id="button_revenu_journalier">
                             Revenu journalier
                         </button>
                         {/* DROPDOWN AFFICHAGE REVENU JOURNALIER */}
