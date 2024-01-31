@@ -32,6 +32,7 @@ import { client, user_api } from "@/api/clientSide";
 import { salonApi } from '@/api/salonSide'
 import { Auth } from "@/api/auth";
 import useSnackbar from "@/hooks/useSnackbar";
+import QRCodeGenerator from "@/@core/components/qrcode";
 
 interface SidebarItems {
   icon: string;
@@ -70,6 +71,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
   // Get routing functions and current path
   const router = useRouter()
   const path = usePathname()
+  const [QRWishlistURL, setQRWishlistURL] = useState('https://www.google.com');
   // Define routes that require a pro subscription
   const proRoutes = ['/dashboard/client-activity', '/dashboard/visites']
 
@@ -253,6 +255,12 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
 
     const salonInfo = tempSalon ? JSON.parse(tempSalon) : null;
 
+    const salonId = getLocalStorage('salon_id');
+
+    const wishlistURL = window.location.href.indexOf('127.0.0.1') > -1 ?
+      'http://127.0.0.1:8000/api/web/wishlist/' + salonId :
+      'https://api.onehaircut.com/api/web/wishlist/' + salonId;
+    setQRWishlistURL(wishlistURL);
     // Utilisation de l'opérateur chaînage optionnel pour éviter l'erreur
     if (!user?.subscription) {
       const filteredRoutes = sidebarItems.filter(route => {
@@ -451,6 +459,13 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
                           )}
                         </div>
                       </div>
+                      <div className="flex items-center justify-center mb-2">
+                        <QRCodeGenerator url={QRWishlistURL} />
+                      </div>
+                      <div className="flex items-center justify-center">
+                        <p>Alternative URL : {QRWishlistURL}</p>
+                      </div>
+
                       <h2 className="text-center text-lg font-bold mb-4 mt-12">
                         Modifiez votre description
                       </h2>
