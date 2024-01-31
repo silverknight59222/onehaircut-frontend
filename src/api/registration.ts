@@ -44,7 +44,7 @@ const registration = {
   registerSalon: async (params: SalonRegisterParams) => {
     return await request.post(`stripe/register-salon`, params);
   },
-  subscribeSubscription: async (params: {paymentMethod : paymentMethod, data : any}) => {
+  subscribeSubscription: async (params: any) => {
     return await request.post('stripe/subscribeSubscription', params);
   }
 };
