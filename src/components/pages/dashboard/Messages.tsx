@@ -12,6 +12,7 @@ import userLoader from "@/hooks/useLoader";
 import { Chat, ClientChat } from "@/types";
 import { Theme_A, ColorsThemeA } from "@/components/utilis/Themes";
 import CustomInput from "@/components/UI/CustomInput";
+import TourModal, { Steps } from "@/components/UI/TourModal";
 
 const Messages = () => {
   const [clients, setClients] = useState<ClientChat[]>([])
@@ -121,10 +122,39 @@ const Messages = () => {
   }, [chats]);
 
 
+  // ------------------------------------------------------------------
+  // For Tour
+  const tourSteps: Steps[] = [
+    {
+      selector: '.zone_contact',
+      content: 'Dans la partie de gauche, vous pouvez sélectionner un client.',
+    },
+    {
+      selector: '.champs_discussion',
+      content: 'Vous trouverez ici la discussion avec le client.',
+    },
+    {
+      selector: '.champs_envoi',
+      content: 'Entrer ici votre message.',
+    },
+    {
+      selector: '.bouton_envoi',
+      content: 'Puis cliquer ici pour envoyer votre message.',
+    },
+  ];
+
+  const closeTour = () => {
+    // You may want to store in local storage or state that the user has completed the tour
+  };
+  // ------------------------------------------------------------------
+
 
   return (
     <div>
       {isLoading && loadingView()}
+      {/* For explaining the website */}
+      <TourModal steps={tourSteps} onRequestClose={closeTour} />
+
       <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
         <LogoCircleFixRight />
       </div>
@@ -140,7 +170,7 @@ const Messages = () => {
           {/* Section de gauche : Liste des Clients */}
           <div className="flex flex-col md:flex-row items-start justify-center gap-5 2xl:gap-20 h-screen md:h-auto">
             {/* Section de gauche */}
-            <div className={`w-full md:max-w-sm xl:max-w-sm min-h-[500px] md:min-h-[300px] overflow-y-auto flex-shrink-0 rounded-3xl bg-white py-4 px-8 shadow-md`}>
+            <div className={`w-full md:max-w-sm xl:max-w-sm min-h-[500px] md:min-h-[300px] overflow-y-auto flex-shrink-0 rounded-3xl bg-white py-4 px-8 shadow-md zone_contact`}>
 
               {/* Titre */}
               <h2 className="text-xl font-semibold mb-4">
@@ -194,7 +224,7 @@ const Messages = () => {
             <div className="relative z-10 w-full md:w-8/12 xl:w-9/12 min-h-[500px] md:min-h-[300px] overflow-y-auto flex flex-col justify-between rounded-3xl bg-white py-4 px-8 shadow-xl">
 
               {/* Zone de Chat */}
-              <div className="flex-grow overflow-auto mb-4 p-2 border border-gray-300 rounded-xl bg-stone-100 shadow-inner flex flex-col max-h-[700px] min-w-[200px]">
+              <div className="flex-grow overflow-auto mb-4 p-2 border border-gray-300 rounded-xl bg-stone-100 shadow-inner flex flex-col max-h-[700px] min-w-[200px] champs_discussion">
                 {chats.length === 0 ? (
                   <p className="text-gray-500 text-center">Commencez à discuter maintenant</p>
                 ) : (
@@ -222,7 +252,7 @@ const Messages = () => {
 
               {/* Input et Bouton d'Envoi */}
               <div className="w-full flex items-center justify-center mb-2 mt-4">
-                <div className="relative w-9/12 ">
+                <div className="relative w-9/12 champs_envoi">
                   {/* Champ de texte pour entrer un message */}
                   <CustomInput
                     id="sendMessageInput"
@@ -238,7 +268,7 @@ const Messages = () => {
                 </div>
 
                 {/* Bouton d'envoi de message */}
-                <div className="ml-4 hover:scale-125 transform transition-transform duration-300" onClick={onSendMessage}>
+                <div className="ml-4 hover:scale-125 transform transition-transform duration-300 bouton_envoi" onClick={onSendMessage}>
                   <ChatSendIcon />
                 </div>
               </div>
