@@ -56,13 +56,15 @@ Give instructions or present a page. As argument buttons/elements can be highlig
 - define a tour variable to store the steps. Example
    const tourSteps: Steps[] = [
     {
-      selector: '',
+      selector: '.bienvenue_element',
       content: 'Bienvenue ',
     },
-    {
-      selector: '',
-      content: 'Il regroupe toute les informations importantes concernant votre salon et vos clients.',
-    },
+
+- If you want to highlight an element, its classname must be defined as so
+    <p classname='element1 ...'>
+
+    and the associated selector in the tourSteps:
+    selector: '.element1',
 
 -  define a closing function if you want to add extra functions, while the tour window is closed. Example:
     const closeTour = () => {
