@@ -11,6 +11,7 @@ import EventDetailsModal from "./EventDetails";
 import { Booking, Coiffeur } from "./types";
 import { getLocalStorage } from "@/api/storage";
 import frLocale from '@fullcalendar/core/locales/fr'; // Importez la locale française
+import TourModal, { Steps } from "@/components/UI/TourModal";
 
 
 export const Agenda = () => {
@@ -78,9 +79,9 @@ export const Agenda = () => {
               ...pre,
               {
                 id: event.id,
-                title: event.user != null ? 
-                        event.user.name + " par " + event.hair_dresser.name + " - " + "Durée : " + event.total_duration + " Min" :
-                        "Guest par " + event.hair_dresser.name + ' - ' + "Durée : " + event.total_duration + " Min",
+                title: event.user != null ?
+                  event.user.name + " par " + event.hair_dresser.name + " - " + "Durée : " + event.total_duration + " Min" :
+                  "Guest par " + event.hair_dresser.name + ' - ' + "Durée : " + event.total_duration + " Min",
                 hair_dresser_name: event.hair_dresser.name,
                 total_duration: event.total_duration,
                 booking: event,
@@ -190,63 +191,97 @@ export const Agenda = () => {
     );
   };
 
+  // ------------------------------------------------------------------
+  // For Tour
+  const tourSteps: Steps[] = [
+    {
+      selector: '',
+      content: 'Bienvenue dans votre agenda',
+    },
+    {
+      selector: '.calendar_container',
+      content: 'Il regroupe tous les rendez-vous de la semaine indiquée.',
+    },
+    {
+      selector: '.calendar_container',
+      content: 'En cliquant sur un rendez-vous, vous pouvez consulter les détails de la réservation.',
+    },
+    {
+      selector: '.legend',
+      content: 'Les couleurs sur l\'agenda correspondent au coiffeur qui est assigné au rendez-vous.',
+    },
+  ];
+
+  const closeTour = () => {
+    // You may want to store in local storage or state that the user has completed the tour
+  };
+  // ------------------------------------------------------------------
+
   // Rendu du composant
   return (
     <>
       {isLoading && loadingView()}
+
+      {/* For explaining the website */}
+      <TourModal steps={tourSteps} onRequestClose={closeTour} />
+
       <div className="calendar-header">
         <TotalEventsCounter totalEventsCount={totalEventsCount} />
         <UpcomingEventsCounter upcomingEventsCount={upcomingEventsCount} />
       </div>
 
-      <FullCalendar
-        ref={calendarRef}
-        events={events}
-        plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
-        headerToolbar={{
-          start: "prev,next today",
-          center: "title",
-          end: "dayGridMonth,timeGridWeek,timeGridDay",
-        }}
-        height={1200}
-        eventClick={(info) => {
-          setEventDetails(info.event.id);
-        }}
-        dayHeaderFormat={{
-          weekday: "short",
-          day: "numeric",
-        }}
-        editable
-        selectable
-        slotLabelFormat={{
-          hour: '2-digit',
-          minute: '2-digit',
-          hour12: false // Cela indique d'utiliser le format 24 heures
-        }}
-        slotLabelInterval={{ hours: 2 }} // Ajouter ceci pour changer l'intervalle des étiquettes de temps
-        locale={frLocale} // Définissez la locale sur "fr"
-        datesSet={() => {
-          const { total, upcoming } = countEventsInView();
-          setTotalEventsCount(total);
-          setUpcomingEventsCount(upcoming);
-        }}
+      <div className="calendar_container">
+        <FullCalendar
+          ref={calendarRef}
+          events={events}
+          plugins={[timeGridPlugin, dayGridPlugin, interactionPlugin]}
+          headerToolbar={{
+            start: "prev,next today",
+            center: "title",
+            end: "dayGridMonth,timeGridWeek,timeGridDay",
+          }}
+          height={1200}
+          eventClick={(info) => {
+            setEventDetails(info.event.id);
+          }}
+          dayHeaderFormat={{
+            weekday: "short",
+            day: "numeric",
+          }}
+          editable
+          selectable
+          slotLabelFormat={{
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false // Cela indique d'utiliser le format 24 heures
+          }}
+          slotLabelInterval={{ hours: 2 }} // Ajouter ceci pour changer l'intervalle des étiquettes de temps
+          locale={frLocale} // Définissez la locale sur "fr"
+          datesSet={() => {
+            const { total, upcoming } = countEventsInView();
+            setTotalEventsCount(total);
+            setUpcomingEventsCount(upcoming);
+          }}
 
 
-      />
+        />
+      </div>
 
-      <Legend listeCoiffeurs={hairDressers} />
-      {selectedEventDetails && (
-        <div className="fixed top-0 left-0 overflow-hidden bg-black bg-opacity-10 flex items-center justify-center w-full h-full z-50">
-          <EventDetailsModal
-            event={selectedEventDetails}
-            setModal={setSelectedEventDetails}
-            refresh={refresh}
-            coiffeurNom={selectedEventDetails.coiffeur.nom}
-            coiffeurCouleur={selectedEventDetails.coiffeur.couleur}
-          />
-        </div>
+      <div className="legend">
+        <Legend listeCoiffeurs={hairDressers} />
+        {selectedEventDetails && (
+          <div className="fixed top-0 left-0 overflow-hidden bg-black bg-opacity-10 flex items-center justify-center w-full h-full z-50">
+            <EventDetailsModal
+              event={selectedEventDetails}
+              setModal={setSelectedEventDetails}
+              refresh={refresh}
+              coiffeurNom={selectedEventDetails.coiffeur.nom}
+              coiffeurCouleur={selectedEventDetails.coiffeur.couleur}
+            />
+          </div>
 
-      )}
+        )}
+      </div>
     </>
   );
 };

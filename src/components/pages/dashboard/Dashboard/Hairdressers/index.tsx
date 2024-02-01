@@ -17,6 +17,7 @@ import Footer from "@/components/UI/Footer";
 import { ColorsThemeA } from "@/components/utilis/Themes";
 import CustomInput from "@/components/UI/CustomInput";
 import BaseModal from "@/components/UI/BaseModal";
+import TourModal, { Steps } from "@/components/UI/TourModal";
 
 
 interface AllAvatars {
@@ -473,6 +474,28 @@ const Hairdressers = () => {
   }
 `;
 
+  // ------------------------------------------------------------------
+  // For Tour
+  const tourSteps: Steps[] = [
+    {
+      selector: '.field_name',
+      content: 'Vous pouvez ajouter un coiffeur sur cette page en rentrant les informations requises',
+    },
+    {
+      selector: '.button_add_profil_picture',
+      content: 'Vous pouvez apporter sa photo de profil',
+    },
+    {
+      selector: '.avatar_select',
+      content: 'Ou lui assigner plutôt un avatar',
+    },
+  ];
+
+  const closeTour = () => {
+    // You may want to store in local storage or state that the user has completed the tour
+  };
+  // ------------------------------------------------------------------
+
   return (
     <>
       {isModalPswrd && (
@@ -526,6 +549,8 @@ const Hairdressers = () => {
       )}
 
 
+      {/* For explaining the website */}
+      <TourModal steps={tourSteps} onRequestClose={closeTour} />
 
 
       {isLoading && loadingView()}
@@ -559,7 +584,7 @@ const Hairdressers = () => {
           </div>
 
           {/* NOM */}
-          <div className="w-full max-w-[450px]">
+          <div className="w-full max-w-[450px] field_name">
             <CustomInput
               id="Name"
               label="Prénom"
@@ -651,14 +676,14 @@ const Hairdressers = () => {
             </div>
           </div>
           <button
-            className={`${Theme_A.button.medWhiteColoredButton}`}
+            className={`${Theme_A.button.medWhiteColoredButton} button_add_profil_picture`}
             onClick={handleClick}
           >
             Parcourir les fichiers
           </button>
           <p className={`${Theme_A.textFont.headerH3}`}>OU</p>
           <label className={`${Theme_A.textFont.headerH5}`} htmlFor="emailInput">Choisir un avatar</label>
-          <div className="flex items-center justify-center gap-4">
+          <div className="flex items-center justify-center gap-4 avatar_select">
             <div className="cursor-pointer" onClick={handleAvatarPrevious}>
               <LeftArrowIcon />
             </div>
@@ -754,7 +779,7 @@ const Hairdressers = () => {
                       <Image
                         fill={true}
                         src={
-                          item.profile_image ? (item.profile_image.includes("http") ? item.profile_image : "https://api.onehaircut.com"+item.profile_image) : (item.avatar && item.avatar.image) ? `https://api.onehaircut.com${item.avatar.image}` : ''
+                          item.profile_image ? (item.profile_image.includes("http") ? item.profile_image : "https://api.onehaircut.com" + item.profile_image) : (item.avatar && item.avatar.image) ? `https://api.onehaircut.com${item.avatar.image}` : ''
                         }
                         alt="image"
                       />
