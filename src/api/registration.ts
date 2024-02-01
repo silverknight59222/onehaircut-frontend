@@ -26,6 +26,7 @@ export interface SalonRegisterParams {
   postalCode: string,
   isMobile: boolean,
   dob: string,
+  country_code: string,
 }
 
 export interface paymentMethod {
