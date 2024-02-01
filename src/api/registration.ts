@@ -27,6 +27,13 @@ export interface SalonRegisterParams {
   isMobile: boolean,
   dob: string,
 }
+
+export interface paymentMethod {
+  card_number: string,
+  exp_month: string,
+  exp_year: string,
+  cvv: string
+}
 const registration = {
   getAllPlans: async () => {
     return await request.get<any>(`stripe/plans`);
@@ -37,6 +44,9 @@ const registration = {
   registerSalon: async (params: SalonRegisterParams) => {
     return await request.post(`stripe/register-salon`, params);
   },
+  subscribeSubscription: async (params: any) => {
+    return await request.post('stripe/subscribeSubscription', params);
+  }
 };
 
 export { registration };
