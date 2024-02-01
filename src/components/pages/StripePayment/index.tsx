@@ -92,6 +92,7 @@ function StripePayment() {
       postalCode: "",
       isMobile: false,
       dob: "1991-01-01",
+      country_code: ""
     };
     const userInfo = JSON.parse(getLocalStorage("user_Info") as string);
     const salonName = getLocalStorage("salon_name") as string;
@@ -113,6 +114,7 @@ function StripePayment() {
     data.plan_slug = planType.slug;
     data.street = salonAddress.street;
     data.postalCode = salonAddress.postalCode;
+    data.country_code = salonAddress.country_code;
     data.isMobile = salonAddress.isMobile;
     // if (planType.name === "OneHaircut Regular") {
     //   data.plan_name = "Standard";

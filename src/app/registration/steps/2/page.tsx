@@ -25,6 +25,7 @@ interface Address_int {
   zone: number,
   isMobile?: boolean
   postalCode: String,
+  country_code: string,
 }
 const Step2 = () => {
 
@@ -34,6 +35,7 @@ const Step2 = () => {
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
   const [country, setCountry] = useState("");
+  const [countryCode, setCountryCode] = useState("");
   const [isMobile, setIsMobile] = useState(false);
 
   const [location, setLocation] = useState({ lat: 48.8584, lng: 2.2945 });
@@ -78,6 +80,7 @@ const Step2 = () => {
       isMobile: isMobile,
       postalCode: postalCode,
       state: state,
+      country_code : countryCode,
     };
 
     setLocalStorage('salon_address', JSON.stringify(toSave));
@@ -116,6 +119,7 @@ const Step2 = () => {
     setState("")
     setCountry("")
     setPostalCode("")
+    setCountryCode("")
 
 
     //console.log(place.address_components)
@@ -126,13 +130,14 @@ const Step2 = () => {
       place.address_components.map((item, index) => {
         setAddressFields(address, item.types[0], item.long_name);
       });
-
+      const countryComponent = place.address_components.find(component => component.types.includes('country'));
+      const countryCode = countryComponent ? countryComponent.short_name : null;
       setCity(address.city || "")
       setState(address.administrative_area_level_1 || "")
       setCountry(address.country || "")
+      setCountryCode(countryCode)
       setPostalCode(address.postal_code || "")
       setStreetNb(address.street_number || "")
-
       setStreet(address.route || "")
       if (address.street_number && address.street_number != address.route) {
         setStreet((pre) => address.street_number + " " + pre)
