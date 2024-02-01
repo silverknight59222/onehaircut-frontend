@@ -43,3 +43,41 @@ const TourModal = ({ steps, onRequestClose }: TourModalType) => {
 }
 
 export default TourModal
+
+
+
+/* README
+Aim:
+Give instructions or present a page. As argument buttons/elements can be highlighted
+
+ how to use:
+- include Tour and Steps into the tsx file, that need a tour
+
+- define a tour variable to store the steps. Example
+   const tourSteps: Steps[] = [
+    {
+      selector: '',
+      content: 'Bienvenue ',
+    },
+    {
+      selector: '',
+      content: 'Il regroupe toute les informations importantes concernant votre salon et vos clients.',
+    },
+
+-  define a closing function if you want to add extra functions, while the tour window is closed. Example:
+    const closeTour = () => {
+    // You may want to store in local storage or state that the user has completed the tour
+  };
+
+- Place the TourModal component in the file where you want to display the tour. Example:
+  ...
+  return (
+    <>
+      {isLoading && loadingView()}
+
+      <TourModal steps={tourSteps} onRequestClose={closeTour} />
+  ... 
+
+
+
+ end README*/
