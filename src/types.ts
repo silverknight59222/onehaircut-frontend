@@ -19,6 +19,10 @@ export type SalonDetails = {
 		rating_counts: number,
 		rating: number
 	};
+  salon_haircut?: {
+    rating_counts: number,
+    rating: number
+  },
 	address: Address;
 	city_name: string;
 	id: number;

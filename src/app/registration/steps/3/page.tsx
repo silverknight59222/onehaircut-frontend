@@ -254,7 +254,8 @@ const Step3 = () => {
           street: "",
           postalCode: "",
           isMobile: false,
-          dob: ""
+          dob: "",
+          country_code: "",
         }
         const userInfo = JSON.parse(getLocalStorage("user_Info") as string);
         const salonName = getLocalStorage("salon_name") as string;
@@ -278,6 +279,7 @@ const Step3 = () => {
         salonData.street = salonAddress.street;
         salonData.postalCode = salonAddress.postalCode;
         salonData.isMobile = salonAddress.isMobile;
+        salonData.country_code = salonAddress.country_code;
         salonData.dob = userInfo?.dob
         await registration
           .registerSalon(salonData)
