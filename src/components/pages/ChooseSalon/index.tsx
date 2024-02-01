@@ -1,26 +1,29 @@
 "use client";
 import Navbar from '@/components/shared/Navbar'
-import React, { useEffect, useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import '../dashboard/Dashboard/Services/index.css'
-import { Like, StarGreyIcon, StarIcon } from '@/components/utilis/Icons';
+import {
+  BackArrow,
+  HomeIcon,
+  MapIconRed,
+  MapIconRedWithValue,
+  MapIconWithValue,
+  StarIcon
+} from '@/components/utilis/Icons';
 import Image from 'next/image';
 import StarRatings from 'react-star-ratings';
-import { useRouter } from 'next/navigation';
-import { dashboard } from '@/api/dashboard';
-import { getLocalStorage, setLocalStorage } from '@/api/storage';
-import { SalonDetails } from '@/types';
+import {useRouter} from 'next/navigation';
+import {dashboard} from '@/api/dashboard';
+import {getLocalStorage, setLocalStorage} from '@/api/storage';
+import {SalonDetails} from '@/types';
 import userLoader from "@/hooks/useLoader";
 import useSnackbar from '@/hooks/useSnackbar';
-import { GoogleMap, MarkerF, OverlayView, LoadScriptProps, useLoadScript, OverlayViewF } from '@react-google-maps/api';
-import { ColorsThemeA, Theme_A } from '@/components/utilis/Themes';
-import { BackArrow } from '@/components/utilis/Icons';
+import {GoogleMap, LoadScriptProps, MarkerF, useLoadScript} from '@react-google-maps/api';
+import {ColorsThemeA, Theme_A} from '@/components/utilis/Themes';
 import Footer from '@/components/UI/Footer';
-import MapIcon from "@/components/utilis/Icons";
-import { MapIconRed } from '@/components/utilis/Icons';
-import { HomeIcon } from '@/components/utilis/Icons';
 import ReactDOMServer from 'react-dom/server';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
-import { salonApi } from '@/api/salonSide';
+import {salonApi} from '@/api/salonSide';
 import BaseModal from '@/components/UI/BaseModal';
 import CustomInput from '@/components/UI/CustomInput';
 
@@ -43,8 +46,9 @@ const SalonChoice = () => {
     const userId = user ? Number(JSON.parse(user).id) : null;
     const getHaircut = getLocalStorage("haircut") as string;
     const haircut = getHaircut ? JSON.parse(getHaircut) : null;
+    const [markersZIndexArray, setMarkersZIndexArray] = useState<number[]>([]);
 
-    const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
     const { loadingView } = userLoader();
     const showSnackbar = useSnackbar();
     const [location, setLocation] = useState({ lat: 47.18052966583263, lng: 7.358082527907601 });
@@ -53,7 +57,7 @@ const SalonChoice = () => {
     const [citySearch, setCitySearch] = useState<any>(null);
     const [nameSearch, setNameSearch] = useState<string>('');
     const [filteredMobile, setFilteredMobile] = useState<string[]>([]);
-    const [filtereRange, setRangeFilter] = useState([2, 100]);
+    const [filtereRange, setRangeFilter] = useState([10, 100]);
     const [ratingFilter, setRatingFilter] = useState<number[]>([1, 2, 3, 4, 5]);
     const [countryFilter, setCountryFilter] = useState<string>("");
     const [availabilityFilter, setAvailabilityFilter] = useState<string[]>([]);
@@ -114,11 +118,11 @@ const SalonChoice = () => {
 
     };
 
-    useEffect(() => {
-        if (positions.length > 0) {
-            recalculateMap();
-        }
-    }, [positions])
+    // useEffect(() => {
+    //     if (positions.length > 0) {
+    //         recalculateMap();
+    //     }
+    // }, [positions])
 
     const recalculateMap = () => {
         if (map) {
@@ -229,22 +233,22 @@ const SalonChoice = () => {
 
         console.log('position array', positionArray)
 
-        // recalculateMap(positionArray)
-        if (positionArray.length > 0) {
+      // recalculateMap(positionArray)
+      if (positionArray.length > 0) {
 
-            setPositions(positionArray)
-            const tempCenter: Position = getMapCenter(positionArray)
-            setCenter(tempCenter);
-            setAllowScroll(true)
-        }
-        else {
-            const userPos: Position = { lat: parseFloat(userData?.lat), lng: parseFloat(userData?.long) }
-            console.log('userPos', userData);
-            setPositions([userPos])
-            setCenter(userPos)
-            setAllowScroll(false)
-        }
-
+        setPositions(positionArray)
+        recalculateMap();
+        const tempCenter: Position = getMapCenter(positionArray)
+        setCenter(tempCenter);
+        setAllowScroll(true)
+      } else {
+        const userPos: Position = {lat: parseFloat(userData?.lat), lng: parseFloat(userData?.long)}
+        console.log('userPos', userData);
+        setPositions([userPos])
+        recalculateMap();
+        setCenter(userPos)
+        setAllowScroll(false)
+      }
     }
     // Fonction pour récupérer tous les salons
     const getAllSalons = async () => {
@@ -441,9 +445,20 @@ const SalonChoice = () => {
         handleAllFilter()
     }
 
+    const getSVGWithValue = (value: string) => {
+     const element = ReactDOMServer.renderToStaticMarkup(<MapIconWithValue value={value} />);
+     return URL.createObjectURL(new Blob([element], {type: 'image/svg+xml'}))
+    }
+
+  const getRedSVGWithValue = (value: string) => {
+    const element = ReactDOMServer.renderToStaticMarkup(<MapIconRedWithValue value={value} />);
+    return URL.createObjectURL(new Blob([element], {type: 'image/svg+xml'}))
+  }
+
     // Utilisation de useEffect pour récupérer les données lors du montage du composant
     useEffect(() => {
-        getAllSalons()
+        // getAllSalons() // commented this method as this been called on initial load of page but later called filter method, so for data consistancy we have to use the same API call.
+        handleAllFilter()
         // if(userData.user_preferences.salon_filter){
         //     getFilteredSalon()
         // }
@@ -498,6 +513,7 @@ const SalonChoice = () => {
     type Position = {
         lat: number;
         lng: number;
+        zIndex?: number;
     };
 
     // Définir un type pour un tableau de positions
@@ -506,12 +522,6 @@ const SalonChoice = () => {
 
     // Utilisation
     // const center = getMapCenter(positions);
-
-    // MARQUEUR PERSONNALISE
-    const mapIconSvg = ReactDOMServer.renderToStaticMarkup(<MapIcon />);
-    const MapIconRedSvg = ReactDOMServer.renderToStaticMarkup(<MapIconRed />);
-    const mapIconUrl = `data:image/svg+xml;base64,${btoa(mapIconSvg)}`;
-    const MapIconRedUrl = `data:image/svg+xml;base64,${btoa(MapIconRedSvg)}`;
 
     // const mapIconUrl = `https://api.onehaircut.com/dummy-logo.png`;
     // const MapIconRedUrl = `https://api.onehaircut.com/dummy-logo.png`;
@@ -539,10 +549,11 @@ const SalonChoice = () => {
         return `data:image/svg+xml,${svgString}`;
     };
 
+
     // Dans votre composant de carte
     const HomeIconUrl = getMarkerIconUrl();
 
-    console.log(userData?.lat!, userData?.long!);
+    // console.log(userData?.lat!, userData?.long!);
 
     const handleZoomChange = () => {
         const ZOOM_THRESHOLD = 8
@@ -567,6 +578,24 @@ const SalonChoice = () => {
         }
     }
 
+  const onMouseOverOnMarker = (index:number) => {
+    const newArray = JSON.parse(JSON.stringify(positions));
+    for (const [indexElement, newArrayElement] of newArray.entries()) {
+      if(indexElement === index) {
+        newArrayElement.zIndex = +9999
+      } else {
+        newArrayElement.zIndex = 0
+      }
+    }
+    setPositions(newArray);
+  }
+
+  const onMouseOutOnMarker = (index: number) => {
+    const newArray = JSON.parse(JSON.stringify(positions));
+    newArray[index].zIndex = 0;
+    setPositions(newArray);
+  }
+
     // give back the height of the thumbnails
     const getHeightThumbnails = () => {
         let result: number | string
@@ -580,8 +609,8 @@ const SalonChoice = () => {
         else {
             result = '70vh' // 70% of the screen
         }
-        console.log('screen width', screen.width)
-        console.log('result', result)
+        // console.log('screen width', screen.width)
+        // console.log('result', result)
         return result
     }
 
@@ -768,7 +797,6 @@ const SalonChoice = () => {
                                     )}
 
                                     {(filteredSalons.length > 0 && showMarker) && positions.map((position, index) => {
-                                        // console.log('filtered salon pos', position)
                                         return (
                                             <React.Fragment key={index}>
 
@@ -778,37 +806,45 @@ const SalonChoice = () => {
                                                     // lng={positions[index].lng}
                                                     position={{ lat: position.lat, lng: position.lng }} // Utiliser la position du salon
                                                     onClick={() => setSelectedSalon(filteredSalons[index] != null ? filteredSalons[index] : { "name": "Null", "id": 0 })}
+                                                    onMouseOver={(e) => {
+                                                      onMouseOverOnMarker(index)
+                                                    }}
+                                                    onMouseOut={(e) => {
+                                                      onMouseOutOnMarker(index)
+                                                    }}
                                                     options={
                                                         {
                                                             icon: {
-                                                                url: filteredSalons[index]?.id === selectedSalon.id ? MapIconRedUrl : mapIconUrl,
-                                                                scaledSize: filteredSalons[index]?.id === selectedSalon.id ? new window.google.maps.Size(70, 90) : new window.google.maps.Size(60, 80),
+                                                                url: filteredSalons[index]?.id === selectedSalon.id ? getRedSVGWithValue(`${filteredSalons[index]?.final_price}€`) : getSVGWithValue(`${filteredSalons[index]?.final_price}€`),
+                                                                scaledSize: filteredSalons[index]?.id === selectedSalon.id ? new window.google.maps.Size(70, 110) : new window.google.maps.Size(60, 100),
                                                                 origin: new window.google.maps.Point(0, -10),
                                                                 anchor: filteredSalons[index]?.id === selectedSalon.id ? new window.google.maps.Point(25, 37) : new window.google.maps.Point(20, 35),
 
-                                                            }
+                                                            },
+                                                          zIndex:position.zIndex ? position.zIndex + 1 + index : 1 + index
                                                         }
                                                     }
-                                                    zIndex={filteredSalons[index]?.id === selectedSalon.id ? 4 : 3}
+                                                    zIndex={position.zIndex ? position.zIndex + 1 + index : 1 + index}
 
                                                 />
-                                                <OverlayViewF
-                                                    key={selectedSalon.id}
-                                                    position={position}
-                                                    mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}
-                                                    getPixelPositionOffset={(width, height) => ({ x: width - 20, y: height - 15 })}
-                                                >
-                                                    <div style={{
-                                                        color: filteredSalons[index]?.id === selectedSalon.id ? "#FFF" : "#000",
-                                                        whiteSpace: 'nowrap',
-                                                        fontSize: filteredSalons[index]?.id === selectedSalon.id ? '12px' : "12px",
-                                                        fontWeight: 'bold',
-                                                        zIndex: filteredSalons[index]?.id === selectedSalon.id ? 2 : 1,
-                                                    }}>
-                                                        {`${filteredSalons[index]?.final_price}€`}
+                                                {/*<OverlayViewF*/}
+                                                {/*    key={selectedSalon.id}*/}
+                                                {/*    position={position}*/}
+                                                {/*    mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}*/}
+                                                {/*    getPixelPositionOffset={(width, height) => ({ x: width - 20, y: height - 15 })}*/}
+                                                {/*>*/}
+                                                {/*    <div*/}
+                                                {/*      style={{*/}
+                                                {/*        color: filteredSalons[index]?.id === selectedSalon.id ? "#FFF" : "#000",*/}
+                                                {/*        whiteSpace: 'nowrap',*/}
+                                                {/*        fontSize: filteredSalons[index]?.id === selectedSalon.id ? '12px' : "12px",*/}
+                                                {/*        fontWeight: 'bold',*/}
+                                                {/*        zIndex:position.zIndex ? position.zIndex + index : index*/}
+                                                {/*    }}>*/}
+                                                {/*        {`${filteredSalons[index]?.final_price}€`}*/}
 
-                                                    </div>
-                                                </OverlayViewF>
+                                                {/*    </div>*/}
+                                                {/*</OverlayViewF>*/}
                                             </React.Fragment>
                                         )
                                     })}
@@ -830,11 +866,6 @@ const SalonChoice = () => {
                                         onClick={() => setSelectedSalon(fsalon)}
                                         className={`relative flex w-full w-max[450px] h-56 h-max[300px] bg-stone-100 rounded-2xl border hover:border-stone-400 cursor-pointer ${selectedSalon.id === fsalon.id && 'border-4 border-red-400 shadow-xl'}`}
                                     >
-
-
-
-
-
                                         {selectedSalon.id === fsalon.id && (
                                             <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 bg-white border-2 border-red-400 rounded-full mx-10 px-1">
                                                 {/* Mettez ici le style pour l'icône, vous pourriez avoir besoin d'ajuster le translate-y pour la centrer comme vous le souhaitez */}
@@ -879,14 +910,14 @@ const SalonChoice = () => {
                                             {/* Évaluation et nombre d'avis */}
                                             <div className='flex items-center text-xs text-[#7B7B7B] pr-1 pt-1 gap-1'>
                                                 <StarRatings
-                                                    rating={fsalon.haircut ? fsalon.haircut.rating : fsalon.rating}
+                                                    rating={fsalon.salon_haircut ? fsalon.salon_haircut.rating : fsalon.rating}
                                                     starRatedColor="#FEDF10"
                                                     starSpacing="4px"
                                                     starDimension="12px"
                                                     numberOfStars={5}
                                                     name="rating"
                                                 />
-                                                <p>{fsalon.haircut ? fsalon.haircut.rating_counts : fsalon.rating_counts} d'avis</p>
+                                                <p>{fsalon.salon_haircut ? fsalon.salon_haircut.rating_counts : fsalon.rating_counts} d'avis</p>
                                             </div>
                                         </div>
                                     </div>
