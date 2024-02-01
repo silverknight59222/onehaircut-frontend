@@ -159,6 +159,10 @@ const OpenningHours = () => {
             selector: '.dropbox_time',
             content: 'Vous rentrez ici les horaires d\'ouverture du jour correspondant.',
         },
+        {
+            selector: '.button_validate',
+            content: 'N\'oubliez pas de valider vos modifications.',
+        },
     ];
 
     const closeTour = () => {
@@ -239,7 +243,7 @@ const OpenningHours = () => {
                                     </tr>
                                     <tr>
                                         <td className="flex w-full items-center justify-end mt-14">
-                                            <div className="flex items-center justify-center rounded-xl text-lg">
+                                            <div className="flex items-center justify-center rounded-xl text-lg button_validate">
                                                 <p
                                                     onClick={updateSlots}
                                                     className={`py-2 px-3  text-sm ${!disableUpdate

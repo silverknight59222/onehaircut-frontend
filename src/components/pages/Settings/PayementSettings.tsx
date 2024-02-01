@@ -11,6 +11,7 @@ import DropdownMenu from "@/components/UI/DropDownMenu";
 import EUBanksList from "@/components/shared/EUBanks";
 import { salonApi } from "@/api/salonSide";
 import DatePicker from "@/components/UI/DatePicker";
+import TourModal, { Steps } from "@/components/UI/TourModal";
 
 const PayementSettings = () => {
     const payementMethodStruct: string[] = [
@@ -233,6 +234,35 @@ const PayementSettings = () => {
 
     const [birthdate, setBirthdate] = useState(new Date());
 
+
+    // ------------------------------------------------------------------
+    // For Tour
+    const tourSteps: Steps[] = [
+        {
+            selector: '.balance_display',
+            content: 'Vous trouverez ici le solde provenant de vos prestations.',
+        },
+        {
+            selector: '.button_withdraw',
+            content: 'En cliquant sur ce bouton, vous pouvez transferer cette somme vers votre compte bancaire.',
+        },
+        {
+            selector: '.button_add_bank_account',
+            content: 'Pour entrer ou modifier vos informations bancaires, vous pouvez cliquer ici.',
+        },
+        {
+            selector: '.button_add_bank_card',
+            content: 'Ce bouton vous permettra d\'ajouter ou modifier votre moyen de paiement pour l\'abonnement pro.',
+        },
+    ];
+
+    const closeTour = () => {
+        // You may want to store in local storage or state that the user has completed the tour
+    };
+    // ------------------------------------------------------------------
+
+    /************************************************************************************************************************** */
+
     return (
         <div className={`w-[400px] h-max bg-white rounded-2xl py-4 shadow-lg mb-4`}>
             {showPaymentModal &&
@@ -241,13 +271,18 @@ const PayementSettings = () => {
                 </BaseModal>
             }
 
+
+            {/* For explaining the website */}
+            <TourModal steps={tourSteps} onRequestClose={closeTour} />
+
+
             {/* Nouvelle section pour le solde du compte */}
-            <div className="flex flex-col items-center mt-4">
+            <div className="flex flex-col items-center mt-4 balance_display">
                 <h3 className={`${Theme_A.textFont.headerH2} mb-2`}>Solde du compte</h3>
-                <p className="text-sm md:text-md justify-center text-zinc-800 font-bold mb-4">{`€${accountBalance}`}</p>
+                <p className="text-sm md:text-md justify-center text-zinc-800 font-bold mb-4 ">{`€${accountBalance}`}</p>
                 <button
                     onClick={handlePayoutClick}
-                    className={`w-max justify-center py-2 px-3 text-sm mb-6 ${Theme_A.button.mediumGradientButton}`}
+                    className={`w-max justify-center py-2 px-3 text-sm mb-6 ${Theme_A.button.mediumGradientButton} button_withdraw`}
                 >
                     Réceptionner le solde
                 </button>
@@ -307,7 +342,7 @@ const PayementSettings = () => {
                     </p>
                 }
             </div>
-            <div className="flex flex-col items-center mt-4">
+            <div className="flex flex-col items-center mt-4 button_add_bank_card">
                 <p
                     className={`w-max justify-center py-2 px-3 text-sm mb-6 ${Theme_A.button.medBlackColoredButton}`}
                     onClick={() => setShowPaymentModal(true)}
@@ -335,7 +370,7 @@ const PayementSettings = () => {
                     </p>
                 }
             </div>
-            <div className="flex flex-col items-center mt-4">
+            <div className="flex flex-col items-center mt-4 button_add_bank_account">
                 <p
                     className={`w-max justify-center py-2 px-3 text-sm mb-6 ${Theme_A.button.medBlackColoredButton}`}
                     onClick={openAddBankAccountModal} // Utilisez ici la fonction pour ouvrir le modal

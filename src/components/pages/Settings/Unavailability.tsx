@@ -12,6 +12,7 @@ import { salonApi } from "@/api/salonSide";
 import useSnackbar from '@/hooks/useSnackbar';
 import OpenningHours from "./OpenningHours";
 import InfoButton from "@/components/UI/InfoButton";
+import TourModal, { Steps } from "@/components/UI/TourModal";
 
 // Définissez un type ou une interface pour les données d'indisponibilité
 interface UnavailabilityData {
@@ -330,11 +331,45 @@ const Unavailability = () => {
     const [showHairdresserDropdown, setShowHairdresserDropdown] = useState(false); // État local pour afficher ou masquer la dropdown
     const [mainContainerClass, setMainContainerClass] = useState("h-[800px]"); // Classe CSS par défaut
 
+    // ------------------------------------------------------------------
+    // For Tour
+    const tourSteps: Steps[] = [
+        {
+            selector: '.button_establishment_unavailability',
+            content: 'Ici, vous pouvez ajouter des indisponibilités à votre salon.',
+        },
+        {
+            selector: '.button_hairdresser_unavailability',
+            content: 'Et ici ceux de vos coiffeurs.',
+        },
+        {
+            selector: '.button_calender',
+            content: 'Sélectionner une date ou une plage de dates, où vous serez fermé.',
+        },
+        {
+            selector: '.button_validate',
+            content: 'Puis valider.',
+        },
+        {
+            selector: '.button_display_absences',
+            content: 'Pour voir les indisponibilités déjà programmées.',
+        },
+    ];
 
+    const closeTour = () => {
+        // You may want to store in local storage or state that the user has completed the tour
+    };
+    // ------------------------------------------------------------------
+
+    /************************************************************************************************************************** */
 
     return (
 
         <div className={`w-[500px] mb-2 bg-white rounded-2xl py-4 shadow-lg overflow-hidden z-50 ${mainContainerClass}`}>
+
+
+            {/* For explaining the website */}
+            <TourModal steps={tourSteps} onRequestClose={closeTour} />
 
             {/* MODAL POUR AFFICHER LES PERIODES D'INDISPONIBILITE ENREGISTREES */}
             {
@@ -352,7 +387,7 @@ const Unavailability = () => {
             {/* Etablissement / Coiffeurs  */}
             <div className="flex justify-center items-center">
                 <button
-                    className={`text-xl font-semibold focus:outline-none mr-32 p-2 rounded-md ${selectedEntity === "Etablissement"
+                    className={`text-xl font-semibold focus:outline-none mr-32 p-2 rounded-md button_establishment_unavailability ${selectedEntity === "Etablissement"
                         ? "bg-stone-800 text-white "
                         : "bg-white text-stone-800 hover:bg-stone-200"
                         }`}
@@ -361,7 +396,7 @@ const Unavailability = () => {
                     Etablissement
                 </button>
                 <button
-                    className={`text-xl font-semibold focus:outline-none p-2 rounded-md ${selectedEntity === "Coiffeurs"
+                    className={`text-xl font-semibold focus:outline-none p-2 rounded-md button_hairdresser_unavailability ${selectedEntity === "Coiffeurs"
                         ? "bg-stone-700 text-white "
                         : "bg-white text-stone-800 hover:bg-stone-200"
                         }`}
@@ -402,7 +437,7 @@ const Unavailability = () => {
 
 
             {/* BOUTON POUR AFFICHER LES PERIODES d'INDISPONIBILITE*/}
-            <div className="flex justify-center items-center mt-4 mb-4">
+            <div className="flex justify-center items-center mt-4 mb-4 button_display_absences">
                 <button className={`${Theme_A.button.medWhiteColoredButton}`}
                     onClick={() => setShowModal(true)}>
                     Afficher les absences programmées
@@ -417,7 +452,7 @@ const Unavailability = () => {
             {/* DATEPICKER TO SET UNAVAILABILITIES */}
             <div className="flex flex-col sm:flex-row items-center justify-evenly px-1 sm:px-10">
                 {/* DATEPICKER */}
-                <div className="relative">
+                <div className="relative button_calender">
                     <div className="cursor-pointer hover:scale-110 transition duration-300" onClick={() => setShowCalender(!showCalender)}>
                         <CalenderIcon />
                     </div>
@@ -486,7 +521,7 @@ const Unavailability = () => {
             {/* BOUTON POUR AFFICHER LES PÉRIODES D'INDISPONIBILITÉ */}
             <div className="flex justify-center items-center mt-10 mb-4">
                 <button
-                    className={`${selectedDates.length > 0 ? Theme_A.button.medBlackColoredButton : `bg-gray-200 text-zinc-400 rounded-md cursor-not-allowed py-2 px-3  text-sm `} ${selectedDates.length === 0 ? 'cursor-not-allowed' : ''}`}
+                    className={`button_validate ${selectedDates.length > 0 ? Theme_A.button.medBlackColoredButton : `bg-gray-200 text-zinc-400 rounded-md cursor-not-allowed py-2 px-3  text-sm `} ${selectedDates.length === 0 ? 'cursor-not-allowed' : ''}`}
                     onClick={selectedDates.length > 0 ? handleSubmitClick : undefined}
                     disabled={selectedDates.length === 0}
                 >

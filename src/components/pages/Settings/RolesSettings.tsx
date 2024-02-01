@@ -4,6 +4,7 @@ import { ThemeProvider } from "@material-ui/core";
 import ComponentTheme from "@/components/UI/ComponentTheme";
 import BaseModal from "@/components/UI/BaseModal";
 import { user_api } from "@/api/clientSide";
+import TourModal, { Steps } from "@/components/UI/TourModal";
 interface RolePermissions {
     [role: string]: number[]; // Définir une signature d'index
 }
@@ -36,7 +37,7 @@ const RolesSettings = () => {
 
 
     const rolePermissionsModal: RolePermissions = {
-        admin: [11,12,13,14,15],
+        admin: [11, 12, 13, 14, 15],
         staff: [],
     };
 
@@ -105,7 +106,7 @@ const RolesSettings = () => {
     // Mise à jour les états des commutateurs en fonction du rôle sélectionné
     const toggleSwitch = async (id: number) => {
         const updatedRoleSwitches = { ...roleSwitches[selectedRole] };
-        const updatedModalRoleSwitches = { ...modalSwitchesByRole[selectedRole] }; 
+        const updatedModalRoleSwitches = { ...modalSwitchesByRole[selectedRole] };
         updatedRoleSwitches[id] = !updatedRoleSwitches[id];
 
         // Prepare an array of permissions to update
@@ -239,10 +240,10 @@ const RolesSettings = () => {
                 </div>
                 {label === "Reglages" && checked && (
                     <button
-                        className="text-sm ml-6 shadow-sm text-white p-1 bg-stone-700  border-stone-300 rounded-lg cursor-pointer hover:scale-105 hover:shadow-md transition duration-300"
+                        className="text-sm ml-6 shadow-sm text-white p-1 bg-stone-700  border-stone-300 rounded-lg cursor-pointer hover:scale-105 hover:shadow-md transition duration-300 button_edit_access_settings"
                         onClick={openModal} // Ouvrir le modal lorsque le bouton "Edit" est cliqué
                     >
-                        Edit
+                        Éditer
                     </button>
                 )}
             </div>
@@ -280,7 +281,7 @@ const RolesSettings = () => {
                 roleSwitchesCopy[role][id] = updatedSwitches[id];
                 modalRoleSwitchesCopy[role][id] = response.data.data.setting_permissions.some((e: any) => e.id === id);
             });
-            
+
             modalPermissionsForRole.forEach((id) => {
                 modalRoleSwitchesCopy[role][id] = response.data.data.setting_permissions.some((e: any) => e.id === id);
             });
@@ -302,7 +303,7 @@ const RolesSettings = () => {
         return (
             // TO GET CUSTOMS COLORS ACCORDING TO COMPONENT THEM
             <ThemeProvider theme={ComponentTheme}>
-                <div className="relative flex flex-col items-start rounded-[20px] w-max-content max-w-[95%] mx-auto bg-white bg-clip-border shadow-3xl shadow-shadow-500 p-5 pb-8 transition duration-200 linear">
+                <div className="relative flex flex-col items-start rounded-[20px] w-max-content max-w-[95%] mx-auto bg-white bg-clip-border shadow-3xl shadow-shadow-500 p-5 pb-8 transition duration-200 linear toggleSwitch_access">
 
                     <p className="text-stone-400 italic font-normal text-md text-center my-1 px-1 md:px-14">
                         Le bouton sur la droite donne l'accès.
@@ -357,15 +358,46 @@ const RolesSettings = () => {
     };
 
 
+    // ------------------------------------------------------------------
+    // For Tour
+    const tourSteps: Steps[] = [
+        {
+            selector: '.button_admin_access',
+            content: 'Dans la partie admin, vous pouvez paramétrer les accès de l\'administrateur aux différentes pages du site.',
+        },
+        {
+            selector: '.toggleSwitch_access',
+            content: 'Un bouton sur la droite donne l\'accès à la page correspondante.',
+        },
+        {
+            selector: '.button_staff_access',
+            content: 'La même chose peut être fait pour les autres coiffeurs.',
+        },
+        {
+            selector: '.button_edit_access_settings',
+            content: 'Pour un paramétrage plus fin, vous pouvez cliquer ici.',
+        },
+    ];
+
+    const closeTour = () => {
+        // You may want to store in local storage or state that the user has completed the tour
+    };
+    // ------------------------------------------------------------------
+
+    /************************************************************************************************************************** */
+
     return (
 
 
         <div className={`w-[500px] h-max bg-white rounded-2xl py-4 shadow-lg mb-4`}>
 
+            {/* For explaining the website */}
+            <TourModal steps={tourSteps} onRequestClose={closeTour} />
+
             {/* ADMIN / STAFF TITRE  */}
             <div className="flex justify-center items-center">
                 <button
-                    className={`text-xl font-semibold focus:outline-none mr-32 p-2 rounded-md ${selectedRole === "admin"
+                    className={`text-xl font-semibold focus:outline-none mr-32 p-2 rounded-md button_admin_access ${selectedRole === "admin"
                         ? "bg-stone-700 text-white "
                         : "bg-white text-stone-800 hover:bg-stone-200"
                         }`}
@@ -374,7 +406,7 @@ const RolesSettings = () => {
                     Admin
                 </button>
                 <button
-                    className={`text-xl font-semibold focus:outline-none p-2 rounded-md ${selectedRole === "staff"
+                    className={`text-xl font-semibold focus:outline-none p-2 rounded-md button_staff_access ${selectedRole === "staff"
                         ? "bg-stone-700 text-white "
                         : "bg-white text-stone-800 hover:bg-stone-200"
                         }`}
