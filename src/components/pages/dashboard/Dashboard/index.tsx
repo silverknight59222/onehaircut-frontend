@@ -135,6 +135,10 @@ const Dashboard = () => {
             selector: '.info_button',
             content: 'Vous pouvez aussi consulter les aides reparties sur tout le site.',
         },
+        {
+            selector: '',
+            content: 'Et n\'oublier pas de mettre le logo de votre salon dans le round, en haut à droite.',
+        },
     ];
 
     const closeTour = () => {
