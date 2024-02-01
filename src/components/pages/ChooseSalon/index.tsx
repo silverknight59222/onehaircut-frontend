@@ -1,29 +1,29 @@
 "use client";
 import Navbar from '@/components/shared/Navbar'
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import '../dashboard/Dashboard/Services/index.css'
 import {
-  BackArrow,
-  HomeIcon,
-  MapIconRed,
-  MapIconRedWithValue,
-  MapIconWithValue,
-  StarIcon
+    BackArrow,
+    HomeIcon,
+    MapIconRed,
+    MapIconRedWithValue,
+    MapIconWithValue,
+    StarIcon
 } from '@/components/utilis/Icons';
 import Image from 'next/image';
 import StarRatings from 'react-star-ratings';
-import {useRouter} from 'next/navigation';
-import {dashboard} from '@/api/dashboard';
-import {getLocalStorage, setLocalStorage} from '@/api/storage';
-import {SalonDetails} from '@/types';
+import { useRouter } from 'next/navigation';
+import { dashboard } from '@/api/dashboard';
+import { getLocalStorage, setLocalStorage } from '@/api/storage';
+import { SalonDetails } from '@/types';
 import userLoader from "@/hooks/useLoader";
 import useSnackbar from '@/hooks/useSnackbar';
-import {GoogleMap, LoadScriptProps, MarkerF, useLoadScript} from '@react-google-maps/api';
-import {ColorsThemeA, Theme_A} from '@/components/utilis/Themes';
+import { GoogleMap, LoadScriptProps, MarkerF, useLoadScript } from '@react-google-maps/api';
+import { ColorsThemeA, Theme_A } from '@/components/utilis/Themes';
 import Footer from '@/components/UI/Footer';
 import ReactDOMServer from 'react-dom/server';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
-import {salonApi} from '@/api/salonSide';
+import { salonApi } from '@/api/salonSide';
 import BaseModal from '@/components/UI/BaseModal';
 import CustomInput from '@/components/UI/CustomInput';
 
@@ -48,7 +48,7 @@ const SalonChoice = () => {
     const haircut = getHaircut ? JSON.parse(getHaircut) : null;
     const [markersZIndexArray, setMarkersZIndexArray] = useState<number[]>([]);
 
-  const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
     const { loadingView } = userLoader();
     const showSnackbar = useSnackbar();
     const [location, setLocation] = useState({ lat: 47.18052966583263, lng: 7.358082527907601 });
@@ -233,22 +233,22 @@ const SalonChoice = () => {
 
         console.log('position array', positionArray)
 
-      // recalculateMap(positionArray)
-      if (positionArray.length > 0) {
+        // recalculateMap(positionArray)
+        if (positionArray.length > 0) {
 
-        setPositions(positionArray)
-        recalculateMap();
-        const tempCenter: Position = getMapCenter(positionArray)
-        setCenter(tempCenter);
-        setAllowScroll(true)
-      } else {
-        const userPos: Position = {lat: parseFloat(userData?.lat), lng: parseFloat(userData?.long)}
-        console.log('userPos', userData);
-        setPositions([userPos])
-        recalculateMap();
-        setCenter(userPos)
-        setAllowScroll(false)
-      }
+            setPositions(positionArray)
+            recalculateMap();
+            const tempCenter: Position = getMapCenter(positionArray)
+            setCenter(tempCenter);
+            setAllowScroll(true)
+        } else {
+            const userPos: Position = { lat: parseFloat(userData?.lat), lng: parseFloat(userData?.long) }
+            console.log('userPos', userData);
+            setPositions([userPos])
+            recalculateMap();
+            setCenter(userPos)
+            setAllowScroll(false)
+        }
     }
     // Fonction pour récupérer tous les salons
     const getAllSalons = async () => {
@@ -446,14 +446,14 @@ const SalonChoice = () => {
     }
 
     const getSVGWithValue = (value: string) => {
-     const element = ReactDOMServer.renderToStaticMarkup(<MapIconWithValue value={value} />);
-     return URL.createObjectURL(new Blob([element], {type: 'image/svg+xml'}))
+        const element = ReactDOMServer.renderToStaticMarkup(<MapIconWithValue value={value} />);
+        return URL.createObjectURL(new Blob([element], { type: 'image/svg+xml' }))
     }
 
-  const getRedSVGWithValue = (value: string) => {
-    const element = ReactDOMServer.renderToStaticMarkup(<MapIconRedWithValue value={value} />);
-    return URL.createObjectURL(new Blob([element], {type: 'image/svg+xml'}))
-  }
+    const getRedSVGWithValue = (value: string) => {
+        const element = ReactDOMServer.renderToStaticMarkup(<MapIconRedWithValue value={value} />);
+        return URL.createObjectURL(new Blob([element], { type: 'image/svg+xml' }))
+    }
 
     // Utilisation de useEffect pour récupérer les données lors du montage du composant
     useEffect(() => {
@@ -578,23 +578,23 @@ const SalonChoice = () => {
         }
     }
 
-  const onMouseOverOnMarker = (index:number) => {
-    const newArray = JSON.parse(JSON.stringify(positions));
-    for (const [indexElement, newArrayElement] of newArray.entries()) {
-      if(indexElement === index) {
-        newArrayElement.zIndex = +9999
-      } else {
-        newArrayElement.zIndex = 0
-      }
+    const onMouseOverOnMarker = (index: number) => {
+        const newArray = JSON.parse(JSON.stringify(positions));
+        for (const [indexElement, newArrayElement] of newArray.entries()) {
+            if (indexElement === index) {
+                newArrayElement.zIndex = +9999
+            } else {
+                newArrayElement.zIndex = 0
+            }
+        }
+        setPositions(newArray);
     }
-    setPositions(newArray);
-  }
 
-  const onMouseOutOnMarker = (index: number) => {
-    const newArray = JSON.parse(JSON.stringify(positions));
-    newArray[index].zIndex = 0;
-    setPositions(newArray);
-  }
+    const onMouseOutOnMarker = (index: number) => {
+        const newArray = JSON.parse(JSON.stringify(positions));
+        newArray[index].zIndex = 0;
+        setPositions(newArray);
+    }
 
     // give back the height of the thumbnails
     const getHeightThumbnails = () => {
@@ -807,10 +807,10 @@ const SalonChoice = () => {
                                                     position={{ lat: position.lat, lng: position.lng }} // Utiliser la position du salon
                                                     onClick={() => setSelectedSalon(filteredSalons[index] != null ? filteredSalons[index] : { "name": "Null", "id": 0 })}
                                                     onMouseOver={(e) => {
-                                                      onMouseOverOnMarker(index)
+                                                        onMouseOverOnMarker(index)
                                                     }}
                                                     onMouseOut={(e) => {
-                                                      onMouseOutOnMarker(index)
+                                                        onMouseOutOnMarker(index)
                                                     }}
                                                     options={
                                                         {
@@ -821,7 +821,7 @@ const SalonChoice = () => {
                                                                 anchor: filteredSalons[index]?.id === selectedSalon.id ? new window.google.maps.Point(25, 37) : new window.google.maps.Point(20, 35),
 
                                                             },
-                                                          zIndex:position.zIndex ? position.zIndex + 1 + index : 1 + index
+                                                            zIndex: position.zIndex ? position.zIndex + 1 + index : 1 + index
                                                         }
                                                     }
                                                     zIndex={position.zIndex ? position.zIndex + 1 + index : 1 + index}
@@ -877,7 +877,7 @@ const SalonChoice = () => {
                                         <div className="flex flex-col p-1 md:p-2 shadow-md rounded-2xl " style={{ flexGrow: 1 }}>
                                             <div className='relative mb-1 md:mb-4 hover:scale-105 transition duration-1000 m-2' style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                                 {!isLoggedIn &&
-                                                    <div onClick={(e) => onWishlist(e, fsalon.id)} className="absolute right-6 sm:right-2 top-6 sm:top-2 z-10 cursor-pointer">
+                                                    <div onClick={(e) => onWishlist(e, fsalon.id)} className="absolute right-6 sm:right-2 top-6 sm:top-2 z-10 cursor-pointer hover:scale-150 transition duration-300">
                                                         <StarIcon width='35' height='35'
                                                             color={wishlist.includes(String(fsalon.id)) || fsalon.wishlist == 1 ? "#FF5B5B" : ""}
                                                             stroke={wishlist.includes(String(fsalon.id)) || fsalon.wishlist == 1 ? "#FFFFFF" : ""} />

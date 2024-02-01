@@ -492,7 +492,7 @@ const Welcome = () => {
                       </div>
                     }
                     {!isLoggedIn &&
-                      <div onClick={(e) => onWishlist(e, item.id)} className="absolute right-2 top-2 cursor-pointer">
+                      <div onClick={(e) => onWishlist(e, item.id)} className="absolute right-2 top-2 cursor-pointer hover:scale-150 transition duration-300">
                         <StarIcon
                           color={wishlist.includes(String(item.id)) ? "#FF5B5B" : ""}
                           stroke={wishlist.includes(String(item.id)) ? "#FFFFFF" : ""}
