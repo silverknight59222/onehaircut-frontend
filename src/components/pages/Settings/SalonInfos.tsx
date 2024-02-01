@@ -14,6 +14,7 @@ import useSnackbar from "@/hooks/useSnackbar";
 import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/storage";
 import { ErrorBar } from "recharts";
 import InfoButton from "@/components/UI/InfoButton";
+import TourModal, { Steps } from "@/components/UI/TourModal";
 
 const tempSalon = getLocalStorage('hair_salon');
 let salonInfo = tempSalon ? JSON.parse(tempSalon) : null;
@@ -492,11 +493,42 @@ const SalonInfos = () => {
         })
     }
 
+
+    // ------------------------------------------------------------------
+    // For Tour
+    const tourSteps: Steps[] = [
+        {
+            selector: '.zone_address',
+            content: 'Vous pouvez changer l\'adresse de facturation ou de l’établissement.',
+        },
+        {
+            selector: '.button_type_salon',
+            content: 'L\'adaptation du type d\'établissement se fait là.',
+        },
+        {
+            selector: '.field_ID_salon',
+            content: 'Entrer ensuite votre numéro d\'identification.',
+        },
+        {
+            selector: '.field_mobility',
+            content: 'Vous pouvez paramétrer la mobilité de votre établissement.',
+        },
+    ];
+
+    const closeTour = () => {
+        // You may want to store in local storage or state that the user has completed the tour
+    };
+    // ------------------------------------------------------------------
+
     /************************************************************************************************************************** */
 
     return (
         // ...
         <div className={`w-[500px] h-max bg-white rounded-2xl py-4 shadow-lg mb-12`}>
+
+            {/* For explaining the website */}
+            <TourModal steps={tourSteps} onRequestClose={closeTour} />
+
             {isModal && (
                 <BaseModal close={() => setIsModal(false)} width="w-[600px]">
                     <div className="relative z-100">
@@ -721,7 +753,7 @@ const SalonInfos = () => {
             </div>
 
 
-            <div className="flex">
+            <div className="flex zone_address">
                 <div className="flex-1 py-5 pl-5 ml-8 ">
 
                     <ul>
@@ -788,7 +820,7 @@ const SalonInfos = () => {
             <h4 className="flex items-center justify- ml-6 mb-8 font-semibold text-lg">
                 Type d'établissement
             </h4>
-            <div className="flex items-center justify-center mb-2 "> {/* Increased horizontal spacing */}
+            <div className="flex items-center justify-center mb-2 button_type_salon"> {/* Increased horizontal spacing */}
                 {/* DropDown + Vignette avec image */}
                 <div className="flex items-center">
                     <DropdownMenu
@@ -809,7 +841,7 @@ const SalonInfos = () => {
             <h4 className="flex items-center justify-start ml-10 mt-6 mb-8 font-semibold text-sm">
                 Numéros d'identification d'entreprise (SIRET, UID, CIF etc)*
             </h4>
-            <div className="flex-inputs flex justify-center mb-8">
+            <div className="flex-inputs flex justify-center mb-8 field_ID_salon">
                 <CustomInput
                     id="siretNumber"
                     label="Numéro d'identification *"
@@ -829,7 +861,7 @@ const SalonInfos = () => {
 
 
             {/* ZONE DE MOBILITE */}
-            <div className="flex flex-col">
+            <div className="flex flex-col field_mobility">
                 <div className="flex flex-row">
 
                     {/* Titre "Zone de mobilité" */}

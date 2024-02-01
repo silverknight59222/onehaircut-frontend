@@ -13,6 +13,7 @@ import Footer from "@/components/UI/Footer";
 import { Theme_A } from "@/components/utilis/Themes";
 import { ColorsThemeA } from "@/components/utilis/Themes";
 import InfoButton from "@/components/UI/InfoButton";
+import TourModal, { Steps } from "@/components/UI/TourModal";
 export interface OpenTimes {
     available: boolean;
     day: string;
@@ -138,23 +139,56 @@ const OpenningHours = () => {
     useEffect(() => {
         getHairSalonSlot();
     }, []);
+
+    // ------------------------------------------------------------------
+    // For Tour
+    const tourSteps: Steps[] = [
+        {
+            selector: '.button_openings',
+            content: 'Dans cette partie, vous pouvez paramétrer les horaires de votre établissement.',
+        },
+        {
+            selector: '.button_hairdresser_available',
+            content: 'Ici les horaires des coiffeurs de votre salon.',
+        },
+        {
+            selector: '.checkbox_days',
+            content: 'En sélectionnant un jour, vous indiquerez que votre salon est ouvert pour ce jour.',
+        },
+        {
+            selector: '.dropbox_time',
+            content: 'Vous rentrez ici les horaires d\'ouverture du jour correspondant.',
+        },
+    ];
+
+    const closeTour = () => {
+        // You may want to store in local storage or state that the user has completed the tour
+    };
+    // ------------------------------------------------------------------
+
+    /************************************************************************************************************************** */
+
     return (
         <div>
             {isLoading && loadingView()}
+
+            {/* For explaining the website */}
+            <TourModal steps={tourSteps} onRequestClose={closeTour} />
+
             <div className="flex items-center flex-col justify-center w-max mb-4">
                 {!isLoading && (
                     <div className="w-[580px] flex   text-center  md:px-1 lg:justify-evenly py-6 mb-3 gap-8 rounded-2xl bg-white text-lg font-light shadow-lg">
                         <p
                             className={`cursor-pointer text-black  px-2 py-2 rounded-md hover:bg-stone-100 hover:text-black ${activeMenu === "salon-time" &&
-                                " bg-black text-white font-medium"
+                                " bg-black text-white font-medium button_openings"
                                 }`}
                             onClick={() => setActiveMenu("salon-time")}
                         >
                             Horaires d’ouverture
                         </p>
                         <p
-                            className={`cursor-pointer text-black px-2 py-2 rounded-md hover:bg-stone-100  hover:text-black ${activeMenu === "salon-dressers" &&
-                                " bg-black text-white font-medium"
+                            className={`cursor-pointer text-black px-2 py-2 rounded-md hover:bg-stone-100  hover:text-black button_hairdresser_available ${activeMenu === "salon-dressers" &&
+                                " bg-black text-white font-medium "
                                 }`}
                             onClick={() => setActiveMenu("salon-dressers")}
                         >
@@ -173,7 +207,7 @@ const OpenningHours = () => {
                             <table>
                                 <tbody>
                                     <tr className="flex items-center justify-center">
-                                        <td className="flex flex-col gap-12 pr-3 md:pr-5">
+                                        <td className="flex flex-col gap-12 pr-3 md:pr-5 checkbox_days">
                                             {updatedSlots.map((item, index) => {
                                                 return (
                                                     <div
@@ -196,7 +230,7 @@ const OpenningHours = () => {
                                                 );
                                             })}
                                         </td>
-                                        <td className="flex flex-col gap-8 border-l border-[rgba(171,171,171,0.20)] px-2 md:px-3">
+                                        <td className="flex flex-col gap-8 border-l border-[rgba(171,171,171,0.20)] px-2 md:px-3 dropbox_time">
                                             <SlotDropdown
                                                 selectedItem={updatedSlots}
                                                 getUpdatedSlots={getUpdatedSlots}

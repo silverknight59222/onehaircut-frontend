@@ -63,7 +63,7 @@ Give instructions or present a page. As argument buttons/elements can be highlig
 - If you want to highlight an element, its classname must be defined as so
     <p classname='element1 ...'>
 
-    and the associated selector in the tourSteps:
+    and the associated selector in the tourSteps with the same identifier and with a dot before
     selector: '.element1',
 
 -  define a closing function if you want to add extra functions, while the tour window is closed. Example:
