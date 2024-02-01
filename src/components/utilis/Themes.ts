@@ -12,6 +12,7 @@ export const ColorsThemeA = {
   OhcGradient_D: "bg-gradient-to-r from-orange-500 via-orange-400 to-orange-400",
   OhcGradient_E: "bg-gradient-to-r from-stone-200 via-stone-100 to-stone-300",
   OhcGradient_F: "bg-gradient-to-r from-stone-800 via-stone-800 to-stone-700",
+  OhcGradient_G: "bg-gradient-to-br from-orange-500 via-orange-200 to-yellow-100",
   ohcVerticalGradient_A: `bg-gradient-to-b from-rose-500 via-orange-600 to-orange-500`,
   ohcVerticalGradient_B: `bg-gradient-to-b from-pink-600 via-orange-600 to-orange-500`,
   ohcBigVerticalGradient_A: `bg-gradient-to-br from-rose-600 via-orange-600 to-yellow-400 opacity-90`,

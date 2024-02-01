@@ -27,6 +27,7 @@ import { salonApi } from '@/api/salonSide';
 import BaseModal from '@/components/UI/BaseModal';
 import CustomInput from '@/components/UI/CustomInput';
 
+
 // TODO IMPORT TO USE ADRESSES
 //import axios from 'axios';
 
@@ -864,7 +865,9 @@ const SalonChoice = () => {
                                         key={index}
                                         id={`Vignette-${index}`}
                                         onClick={() => setSelectedSalon(fsalon)}
-                                        className={`relative flex w-full w-max[450px] h-56 h-max[300px] bg-stone-100 rounded-2xl border hover:border-stone-400 cursor-pointer ${selectedSalon.id === fsalon.id && 'border-4 border-red-400 shadow-xl'}`}
+                                        className={`relative flex w-full w-max[450px] h-56 h-max[300px] rounded-2xl border hover:border-stone-400 cursor-pointer 
+                                        ${selectedSalon.id === fsalon.id ? 'border-4 border-red-400 shadow-xl' : ''}
+                                        ${wishlist.includes(String(fsalon.id)) ? ColorsThemeA.OhcGradient_G : 'bg-stone-100'}`} // bg-green-100 est un exemple, choisissez la couleur que vous voulez
                                     >
                                         {selectedSalon.id === fsalon.id && (
                                             <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 bg-white border-2 border-red-400 rounded-full mx-10 px-1">
