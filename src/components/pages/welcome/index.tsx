@@ -458,6 +458,14 @@ const Welcome = () => {
           {/* Espace vide pour centrer le bouton */}
           <div style={{ width: '48px' }}></div>
 
+          {/* Bouton Coiffure Simple */}
+          <div
+            className={`${Theme_A.button.bigWhiteColoredButton} cursor-pointer mr-4`}
+          // TODO : OPEN A MODAL HERE ON CLICK
+          >
+            Choix générique de coiffure
+          </div>
+
           {/* Bouton Recherche un soin centré */}
           <div
             className={`${ServicesOnly_Classname} cursor-pointer mr-4`}
