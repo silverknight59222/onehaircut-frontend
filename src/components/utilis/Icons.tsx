@@ -1009,9 +1009,9 @@ interface UserIconProps {
 
 const UserIcon_getSizeValue = (size: number) => {
   if (size < 1024) {
-      return 15;
-  }else{
-      return 20;
+    return 15;
+  } else {
+    return 20;
   }
 };
 
@@ -2199,7 +2199,7 @@ export const StarIcon = (IconStyle: IconType) => {
       <path
         d="M15.2502 15.2353L24.6857 14.418L16.4195 9.59751L18.2932 0.566492L11.3559 6.64466L3.08961 1.82412L7.02492 10.4387L0.0479687 16.5518L9.44591 15.7379L13.3656 24.3181L15.2502 15.2353Z"
         fill={IconStyle.color ? IconStyle.color : "#989898"}
-        stroke={IconStyle.stroke ? IconStyle.stroke : "none"}
+        stroke={IconStyle.stroke ? IconStyle.stroke : "#FEE2B1"}
         strokeWidth={IconStyle.strokeWidth ? IconStyle.strokeWidth : "1"}
       />
     </svg>
