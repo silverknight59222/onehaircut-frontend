@@ -7,6 +7,7 @@ import ImagesContainer from './ImagesContainer';
 import { EditIcon, LogoCircleFixLeft } from "@/components/utilis/Icons";
 import Footer from "@/components/UI/Footer";
 import { Theme_A } from '@/components/utilis/Themes';
+import TourModal, { Steps } from '@/components/UI/TourModal';
 
 
 const pulseAnimation = `
@@ -46,12 +47,32 @@ const Images = () => {
 		getAllSalonImages();
 	}, [])
 
+	// ------------------------------------------------------------------
+	// For Tour
+	const tourSteps: Steps[] = [
+		{
+			selector: '.pic_salon',
+			content: 'Cliquer sur le carré blanc pour ajouter une photo de votre salon \n puis ce le + pour l\'ajouter',
+		},
+		{
+			selector: '.pic_haircut',
+			content: 'Pareil pour tous vos exemples de coiffures',
+		},
+	];
+
+	const closeTour = () => {
+		// You may want to store in local storage or state that the user has completed the tour
+	};
+	// ------------------------------------------------------------------
+
 	return (
 		<>
 			{isLoading && loadingView()}
+			{/* For explaining the website */}
+			<TourModal steps={tourSteps} onRequestClose={closeTour} />
 			<div className="w-full flex flex-col xl:flex-row items-center justify-center gap-4 mt-8 mb-20">
 
-				<div className="h-[940px] w-full xl:w-1/2 2xl:w-2/5 overflow-auto flex flex-col items-center gap-8 bg-lightGrey rounded-3xl p-4 md:px-12 md:pt-12 md:pb-0 opacity-95">
+				<div className="h-[940px] w-full xl:w-1/2 2xl:w-2/5 overflow-auto flex flex-col items-center gap-8 bg-lightGrey rounded-3xl p-4 md:px-12 md:pt-12 md:pb-0 opacity-95 pic_salon">
 
 					{/* TODO MESSAGE NOTIFICATION WHEN NO HAIRDRESSER SET */}
 					{!(salonImages.length > 0) && (
@@ -72,7 +93,7 @@ const Images = () => {
 
 					<ImagesContainer title='Images vitrine' type='showcase' setIsLoading={(value) => setIsLoading(value)} salonImages={salonImages} getAllSalonImages={getAllSalonImages} />
 				</div>
-				<div className="h-[940px] w-full xl:w-1/2 2xl:w-2/5 overflow-auto flex flex-col items-center justify-start gap-8 bg-lightGrey rounded-3xl p-4 md:p-12">
+				<div className="h-[940px] w-full xl:w-1/2 2xl:w-2/5 overflow-auto flex flex-col items-center justify-start gap-8 bg-lightGrey rounded-3xl p-4 md:p-12 pic_haircut">
 					<ImagesContainer title='Exemples de coiffure' type='hairstyle' setIsLoading={(value) => setIsLoading(value)} salonImages={salonImages} getAllSalonImages={getAllSalonImages} />
 				</div>
 				<div className="bg-gradient-to-l  md:block fixed -left-32 md:-left-8 -bottom-32 md:-bottom-8 -z-10">

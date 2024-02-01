@@ -112,7 +112,7 @@ const Dashboard = () => {
 
     // TODO EMAIL ADDRESS VEIRIFICATION DONE : 
 
-
+    // ------------------------------------------------------------------
     // For Tour
     const tourSteps: Steps[] = [
         {
@@ -131,13 +131,16 @@ const Dashboard = () => {
             selector: '',
             content: 'La navigation se fait avec le menu de gauche et du haut.',
         },
+        {
+            selector: '.info_button',
+            content: 'Vous pouvez aussi consulter les aides reparties sur tout le site.',
+        },
     ];
-
-    const [tourVisible, setTourVisible] = useState(true);
 
     const closeTour = () => {
         // You may want to store in local storage or state that the user has completed the tour
     };
+    // ------------------------------------------------------------------
 
 
     return (
@@ -186,7 +189,7 @@ const Dashboard = () => {
                     </p>
 
                     {/* Info icon  */}
-                    <div className="pr-4">
+                    <div className="pr-4 info_button">
                         <InfoButton title_1={"Dashboard"} content_1={"Cette page contient les informations concernant votre salon. Les boutons au dessus des graphiques peuvent être cliqués pour afficher plus de détails."} onOpenModal={undefined} />
                     </div>
                 </div>
