@@ -390,7 +390,7 @@ const Step3 = () => {
         <div className="mt-20 ">
           <div className="flex items-center justify-center w-full font-medium text-xl md:text-2xl lg:text-3xl text-center ">Il faut maintenant renseigner tes information personnelles</div>
         </div>
-        <div className="flex flex-col gap-10 w-full sm:w-[500px] shadow-md shadow-stone-300 p-20 rounded-2xl ">
+        <div className="flex flex-col gap-8 w-full sm:w-[500px] shadow-md shadow-stone-300 p-20 rounded-2xl ">
           <div className="w-full">
             <CustomInput
               type="text"
