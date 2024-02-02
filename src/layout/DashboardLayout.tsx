@@ -16,7 +16,9 @@ interface DashboardLayout {
 const DashboardLayout = ({ children, notifications }: DashboardLayout) => {
   const [isSidebar, setIsSidebar] = useState(false);
   const [tab, setTab] = useState("Dashboard");
-  const sidebarItems = [
+  const user = getLocalStorage('user');
+  const user_data = user ? JSON.parse(user) : null;
+  const [sidebarItems, setSidebarItems] = useState([
     { icon: "DashboardIcon", title: "Dashboard", route: "/dashboard" },
     { icon: "ClientActivityIcon", title: "Client Activité", route: "/dashboard/client-activity" },
     { icon: "StatsIcon", title: "Visites / Stats", route: "/dashboard/visites" },
@@ -25,9 +27,22 @@ const DashboardLayout = ({ children, notifications }: DashboardLayout) => {
     { icon: "SettingsIcon", title: "Réglages", permission: "Reglages", route: "/dashboard/settings" },
     { icon: "PersonalizationIcon", title: "Abonnement", route: "/dashboard/subscription" },
     // { icon: "BoostIcon", title: "Boost", route: "" },
-    { icon: "BotIcon", title: "OnehairBot", permission: "Onehairbot", route: "/dashboard/bot" },
+    // { icon: "BotIcon", title: "OnehairBot", permission: "Onehairbot", route: "/dashboard/bot" },
     { icon: "ContactIcon", title: "Contactez-nous", route: "/dashboard/contactUs" },
-  ];
+  ]);
+
+  useEffect(() => {
+    // Update sidebarItems based on user subscription
+    const isProSubscription = user_data ? user_data.subscription.name.includes("Pro") : false;
+    const updatedSidebarItems = [...sidebarItems];
+
+    if (isProSubscription) {
+      updatedSidebarItems.push({ icon: "BotIcon", title: "OnehairBot", route: "/dashboard/bot" });
+    }
+
+    // Update the state with the new array
+    setSidebarItems(updatedSidebarItems);
+  }, []);
   const SidebarHandler = (state: boolean) => {
     setIsSidebar(state);
   };

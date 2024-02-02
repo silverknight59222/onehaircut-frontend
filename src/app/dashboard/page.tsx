@@ -15,10 +15,12 @@ import { dashboard } from "@/api/dashboard";
 import { getLocalStorage, setLocalStorage } from "@/api/storage";
 
 const Page = () => {
+	const user = getLocalStorage('user');
+	const user_data = user ? JSON.parse(user) : null;
 	const [notifications, setNotifications] = useState({} as any);
 	const [isSidebar, setIsSidebar] = useState(true);
 	const [tab, setTab] = useState("Dashboard");
-	const sidebarItems = [
+	const [sidebarItems, setSidebarItems] = useState([
 		{ icon: "DashboardIcon", title: "Dashboard", route: "/dashboard" },
 		{ icon: "ClientActivityIcon", title: "Client Activité", route: "/dashboard/client-activity" },
 		{ icon: "StatsIcon", title: "Visites / Stats", route: "/dashboard/visites" },
@@ -27,9 +29,9 @@ const Page = () => {
 		{ icon: "SettingsIcon", title: "Réglages", permission: "Reglages", route: "/dashboard/settings" },
 		{ icon: "PersonalizationIcon", title: "Abonnement", route: "/dashboard/subscription" },
 		// { icon: "BoostIcon", title: "Boost", route: "" },
-		{ icon: "BotIcon", title: "OnehairBot", permission: "Onehairbot", route: "/dashboard/bot" },
+		// { icon: "BotIcon", title: "OnehairBot", permission: "Onehairbot", route: "/dashboard/bot" },
 		{ icon: "ContactIcon", title: "Contactez-nous", route: "/dashboard/contactUs" },
-	];
+	]);
 	const SidebarHandler = () => {
 		setIsSidebar(!isSidebar);
 	};
@@ -43,35 +45,49 @@ const Page = () => {
 		setNotifications(data)
 	}
 
-	useEffect(() => {
-		fetchSalonNotifications()
-	}
-		, []
-	)
+	const getStatusSubscription = () => {
+		// Update sidebarItems based on user subscription
+		const isProSubscription = user_data ? user_data.subscription.name.includes("Pro") : false;
+		const updatedSidebarItems = [...sidebarItems];
 
-	return (
-		<>
-			{tab === "Dashboard" && (
-				<Sidebar notifications={notifications} sidebarItems={sidebarItems} isSidebar={isSidebar} SidebarHandler={SidebarHandler} />
-			)}
-			<div className={`h-screen px-4 lg:px-8 py-5 overflow-x-hidden ${tab === "Dashboard" && `${ColorsThemeA.pageBgColorLight} ml-0 lg:ml-72`}`}>
-				<Topbar
-					isDashboard={tab !== "Dashboard"}
-					SidebarHandler={SidebarHandler}
-					tabHandler={tabHandler}
-					isSidebar={isSidebar}
-				/>
-				{tab === 'Dashboard' && <Dashboard />}
-				{tab === 'Coiffeurs' && <Hairdressers />}
-				{tab === 'Images Salon' && <ImagesSalon />}
-				{tab === 'Coiffures' && <Hairstyles />}
-				{tab === 'Prestation' && <Services />}
-				{tab === 'Agenda' && <Agenda />}
-				{tab === 'Ajouter un salon partenaire' && <AddPartner />}
-				{tab === 'Users' && <UsersPage />}
-			</div>
-		</>
-	);
+		if (isProSubscription) {
+			updatedSidebarItems.push({ icon: "BotIcon", title: "OnehairBot", route: "/dashboard/bot" });
+		}
+
+		// Update the state with the new array
+		setSidebarItems(updatedSidebarItems);
+	}
+
+useEffect(() => {
+	fetchSalonNotifications()
+	getStatusSubscription()
+}
+	, []
+)
+
+return (
+	<>
+		{tab === "Dashboard" && (
+			<Sidebar notifications={notifications} sidebarItems={sidebarItems} isSidebar={isSidebar} SidebarHandler={SidebarHandler} />
+		)}
+		<div className={`h-screen px-4 lg:px-8 py-5 overflow-x-hidden ${tab === "Dashboard" && `${ColorsThemeA.pageBgColorLight} ml-0 lg:ml-72`}`}>
+			<Topbar
+				isDashboard={tab !== "Dashboard"}
+				SidebarHandler={SidebarHandler}
+				tabHandler={tabHandler}
+				isSidebar={isSidebar}
+			/>
+			{tab === 'Dashboard' && <Dashboard />}
+			{tab === 'Coiffeurs' && <Hairdressers />}
+			{tab === 'Images Salon' && <ImagesSalon />}
+			{tab === 'Coiffures' && <Hairstyles />}
+			{tab === 'Prestation' && <Services />}
+			{tab === 'Agenda' && <Agenda />}
+			{tab === 'Ajouter un salon partenaire' && <AddPartner />}
+			{tab === 'Users' && <UsersPage />}
+		</div>
+	</>
+);
 };
 
 export default Page;
