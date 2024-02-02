@@ -1,3 +1,4 @@
+import { BankAccountStripe } from "@/types";
 import { request } from "./Request";
 
 interface SlotParam {
@@ -120,6 +121,9 @@ const salonApi = {
   },
   updateSiretNumber: async (params: any) => {
     return await request.post('updateSiretNumber', params);
+  },
+  updateBankAccount: async (params: BankAccountStripe) => {
+    return await request.post('stripe/bankUpdate', params);
   }
 
 }

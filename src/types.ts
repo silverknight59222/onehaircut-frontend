@@ -183,3 +183,12 @@ export type Subscription={
 	user_id: number,
 	readable_trial_period:string
 }
+
+export type BankAccountStripe = {
+	name : string,
+	owner : string,
+	bank_name : string,
+	business_type : string,
+	iban : string,
+	currency : string,
+}
