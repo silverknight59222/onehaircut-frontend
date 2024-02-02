@@ -109,6 +109,7 @@ const Dashboard = () => {
     }
     useEffect(() => {
         fetchStats()
+        setProSubscription(user ? user.subscription.name.includes("Pro") : false);
     }, [])
 
     // TODO EMAIL ADDRESS VEIRIFICATION DONE : 
