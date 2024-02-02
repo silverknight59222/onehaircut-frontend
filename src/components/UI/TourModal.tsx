@@ -22,26 +22,22 @@ const TourModal = ({ steps, onRequestClose }: TourModalType) => {
     onRequestClose && onRequestClose();
   };
 
-  const HoverButton = ({ text, baseBgColor, hoverBgColor }) => {
+  // Composant de bouton avec effet de survol
+  const HoverButton = ({ text, baseBgColor, hoverBgColor, textColor = "white" }) => {
     const [isHovered, setIsHovered] = useState(false);
-
-    const baseStyle = {
-      padding: '10px',
-      backgroundColor: baseBgColor,
-      color: 'white',
-      border: 'none',
-      borderRadius: '4px',
-      cursor: 'pointer',
-    };
-
-    const hoverStyle = {
-      ...baseStyle,
-      backgroundColor: hoverBgColor,
-    };
 
     return (
       <button
-        style={isHovered ? hoverStyle : baseStyle}
+        style={{
+          padding: '10px',
+          backgroundColor: isHovered ? hoverBgColor : baseBgColor,
+          color: textColor,
+          border: `1px solid #CBCBCB`, // Ajout de la bordure avec la couleur conditionnelle
+          borderRadius: '4px',
+          cursor: 'pointer',
+          transition: 'background-color 0.3s ease, border-color 0.3s ease', // Ajout d'une transition pour l'effet de survol et la couleur de bordure
+
+        }}
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -49,7 +45,6 @@ const TourModal = ({ steps, onRequestClose }: TourModalType) => {
       </button>
     );
   };
-
 
   return (
     <>
@@ -64,9 +59,11 @@ const TourModal = ({ steps, onRequestClose }: TourModalType) => {
         accentColor={'#ef4444'}
         onAfterOpen={disableBody}
         onBeforeClose={enableBody}
-        prevButton={<button style={{ padding: '10px', backgroundColor: '#f0f0f0', color: '#333', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Retour</button>}
-        nextButton={<button style={{ padding: '10px', backgroundColor: '#FF7B20', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Suivant</button>}
-        lastStepNextButton={<button style={{ padding: '10px', backgroundColor: '#FF7B20', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}> C'est parti !</button>}
+        prevButton={<HoverButton text="Retour" baseBgColor="#f0f0f0" hoverBgColor="#DADADA" textColor="#333" />}
+        nextButton={<HoverButton text="Suivant" baseBgColor="#FF7B20" hoverBgColor="#FE5019" />}
+        lastStepNextButton={<HoverButton text="C'est parti !" baseBgColor="#FF7B20" hoverBgColor="#FE5019" />}
+
+
       />
     </>
   )
