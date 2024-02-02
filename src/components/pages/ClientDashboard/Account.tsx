@@ -25,6 +25,7 @@ import { DeactivateAccountParams } from "@/api/clientSide";
 import { getLocalStorage } from "@/api/storage";
 import { useRouter } from "next/navigation";
 import { dashboard } from "@/api/dashboard";
+import TourModal, { Steps } from "@/components/UI/TourModal";
 
 interface infoInterface {
     name: string;
@@ -1022,12 +1023,45 @@ const Account = () => {
     }, [])
 
 
+        // ------------------------------------------------------------------
+    // For Tour
+    const tourSteps: Steps[] = [
+        {
+            selector: '',
+            content: 'Bienvenue dans la présentation de Onehaircut',
+        },
+        {
+            selector: '',
+            content: 'Vous trouverez dans cette page les informations concernant votre compte.',
+        },
+        {
+            selector: '.button_modify',
+            content: 'Les éléments modifiables peuvent être édités en cliquant sur ce bouton',
+        },
+        {
+            selector: '',
+            content: 'La navigation se fait avec le menu de gauche.',
+        },
+        {
+            selector: '.info_button',
+            content: 'Vous pouvez aussi consulter les aides reparties sur tout le site.',
+        },
+    ];
+
+    const closeTour = () => {
+        // You may want to store in local storage or state that the user has completed the tour
+    };
+    // ------------------------------------------------------------------
 
     return (
         <div>
             <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 -z-10">
                 <LogoCircleFixRight />
             </div>
+
+            {/* For explaining the website */}
+            <TourModal steps={tourSteps} onRequestClose={closeTour} />
+
             <ClientDashboardLayout notifications={globalNotifications}>
                 <div className="mt-4 lg:mt-14 mb-5 px-6">
 
@@ -1121,7 +1155,7 @@ const Account = () => {
                                             }
                                         </div>
                                         {item.modif === true ?
-                                            <div className="cursor-pointer text-black underline text-xs"
+                                            <div className="cursor-pointer text-black underline text-xs button_modify"
                                                 onClick={() => handleModifierClick(item)}
                                             >modifier
                                             </div>
