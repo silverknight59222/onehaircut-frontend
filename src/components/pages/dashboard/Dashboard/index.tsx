@@ -58,6 +58,7 @@ const Dashboard = () => {
     const [selectedMonthRevenu, setSelectedMonthRevenu] = useState(DisplayedMonths[0]);
     const [selectedMonthTransactions, setSelectedMonthTransactions] = useState(DisplayedMonths[0]);
     const [selectedMonthPayload, setSelectedMonthPayload] = useState(DisplayedMonths[0]);
+    const [proSubscription, setProSubscription] = useState(false);
 
     const handleNewMonthRevenu = (item: string) => {
         // Mettez à jour l'état avec la nouvelle valeur sélectionnée
@@ -108,6 +109,7 @@ const Dashboard = () => {
     }
     useEffect(() => {
         fetchStats()
+        setProSubscription(user ? user.subscription.name.includes("Pro") : false);
     }, [])
 
     // TODO EMAIL ADDRESS VEIRIFICATION DONE : 
@@ -152,9 +154,9 @@ const Dashboard = () => {
             <Footer />
 
             {/* For explaining the website */}
-            <TourModal steps={tourSteps} onRequestClose={closeTour} />
+            {proSubscription && <TourModal steps={tourSteps} onRequestClose={closeTour} />}
 
-            <div>
+            {proSubscription && <div>
                 <Grid container spacing={6} className='match-height  '>
                     <Grid item md={4} sm={6} xs={12}>
                         <DialogShareProject show={modals.TransactionfullTable} setShow={() => toggleModal('TransactionfullTable')}>
@@ -288,10 +290,10 @@ const Dashboard = () => {
                     </div>
                     {/* -- */}
                 </div>
-            </div>
+            </div>}
 
 
-            {user && user.permissions && user.permissions.indexOf("Revenue") != -1 ?
+            {proSubscription && user && user.permissions && user.permissions.indexOf("Revenue") != -1 ?
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch mt-10">
                     {/*REVENU JOURNALIER */}
 
@@ -318,7 +320,7 @@ const Dashboard = () => {
                     </div>
                 </div>
                 :
-                <div className="grid grid-cols-1 lg:grid-cols-1 gap-8 items-stretch mt-10">
+                (proSubscription && <div className="grid grid-cols-1 lg:grid-cols-1 gap-8 items-stretch mt-10">
 
 
 
@@ -328,12 +330,12 @@ const Dashboard = () => {
                             Objectifs du mois
                         </button>
                     </div>
-                </div>
+                </div>)
             }
 
 
             <div className="mb-12 lg:mb-0">
-                {user && user.permissions && user.permissions.indexOf("Revenue") != -1 ?
+                {proSubscription && user && user.permissions && user.permissions.indexOf("Revenue") != -1 ?
                     <div className="grid grid-cols-1 lg:grid-cols-2 items-center gap-3">
                         {/* REVENU CHART */}
 
@@ -407,7 +409,7 @@ const Dashboard = () => {
                         </Card>
                     </div>
                     :
-                    <div className="grid grid-cols-1 lg:grid-cols-1 items-center gap-3">
+                    (proSubscription && <div className="grid grid-cols-1 lg:grid-cols-1 items-center gap-3">
 
                         {/*Objectifs */}
                         <div className="lg:hidden flex items-center justify-between mb-3">
@@ -471,7 +473,7 @@ const Dashboard = () => {
 
                             </div>
                         </Card>
-                    </div>
+                    </div>)
                 }
             </div >
 
@@ -498,7 +500,7 @@ const Dashboard = () => {
             }
 
 
-            <Grid container spacing={2} style={{ marginTop: "20px" }}>
+            {proSubscription && <Grid container spacing={2} style={{ marginTop: "20px" }}>
 
                 {/* TITRE ACTIVITE CLIENT */}
                 <Grid item xs={4}>
@@ -519,9 +521,9 @@ const Dashboard = () => {
                         Top Clients
                     </button>
                 </Grid>
-            </Grid>
+            </Grid>}
 
-            <div className="flex flex-col xl:flex-row -mx-3 mt-5 gap-4">
+            {proSubscription && <div className="flex flex-col xl:flex-row -mx-3 mt-5 gap-4">
                 {/* Client Activity */}
                 <div className="px-3 w-full xl:w-4/12 p-6 bg-[rgba(255,255,255,0.69)] rounded-xl shadow-sm shadow-stone-600">
                     <div className="relative ml-4">
@@ -655,10 +657,10 @@ const Dashboard = () => {
                 </div>
 
 
-            </div>
+            </div>}
 
 
-            {user && user.permissions && user.permissions.indexOf("Revenue") != -1 ?
+            {proSubscription && user && user.permissions && user.permissions.indexOf("Revenue") != -1 ?
                 <div className="flex items-center justify-between gap-3 mt-10 ">
                     {/* TITRE OCCUPATION DU PERSONNEL */}
                     <button onClick={() => toggleModal('staff')} className={`${Theme_A.button.medBlackColoredButton} hover:bg-stone-600`}>
@@ -677,7 +679,7 @@ const Dashboard = () => {
             {/* <Pagination from={1} to={10} perPage={10} total={123} currentPage={6} lastPage={13} onPageChangeEvent={onPageChangeEvent}></Pagination> */}
 
             {/* BAR CHART STAFF PAYLOAD */}
-            {user && user.permissions && user.permissions.indexOf("Revenue") != -1 ?
+            {proSubscription && user && user.permissions && user.permissions.indexOf("Revenue") != -1 ?
                 <HairdresserRevenueBarChart period={selectedMonthPayload}></HairdresserRevenueBarChart>
                 :
                 <div></div>

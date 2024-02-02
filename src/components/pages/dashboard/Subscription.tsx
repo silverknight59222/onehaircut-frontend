@@ -88,10 +88,11 @@ const Subscription = () => {
 
   const fetchSubscription = async () => {
     const resp = await salonApi.getSubscription()
-    if (resp.data.data.subscription) {
-      setCurrentPlan(resp.data.data.subscription)
+    console.log(resp.data.data)
+    if (resp.data.data) {
+      setCurrentPlan(resp.data.data)
     }
-    if (resp.data.data.subscription && resp.data.data.subscription.name == 'OneHaircut Pro') {
+    if (resp.data.data && resp.data.data.name == 'OneHaircut Pro') {
       setIsCurrSubscriptionPro(true)
     } else {
       setIsCurrSubscriptionPro(false)
@@ -321,12 +322,12 @@ const Subscription = () => {
             <div className="relative z-10 w-full sm:w-[450px] flex flex-col  sm:-mt-5 lg:mt-20 xl:mt-20">
 
               <div >
-                {currentPlan.current_period_end && (
+                {currentPlan.trial_ends_at && (
                   <div className="py-4 px-5 2xl:text-xl text-center text-black whitespace-nowrap bg-[#F4F4F6] font-medium border border-[#9B9B9B] rounded-xl">
                     <p>Votre contrat sera renouvelé le: </p>
-                    <p>{currentPlan.current_period_end}</p>
+                    <p>{currentPlan.trial_ends_at}</p>
                     {currentPlan.stripe_status && currentPlan.stripe_status === 'trialing' &&
-                      <p>L'essai se termine le : {currentPlan.readable_trial_period}</p>
+                      <p>L'essai se termine le : {currentPlan.trial_ends_at}</p>
                     }
                   </div>
                 )}
