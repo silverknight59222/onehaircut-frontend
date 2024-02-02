@@ -483,10 +483,10 @@ const Welcome = () => {
       {isGenericHaircutModalOpen && (
         <BaseModal close={closeGenericHaircutModal} opacity={60} width="md:w-[auto]">
           <div className="flex flex-col items-center justify-center">
-            <h2 className="text-2xl font-bold text-center mt-8">
+            <h2 className="text-2xl font-bold text-center mt-2">
               Choix générique
             </h2>
-            <p className="text-sm font-ligth italic text-center my-2 mb-8">
+            <p className="text-sm font-ligth italic text-center mb-8">
               Si vous ne trouvez pas précisément votre coiffure
             </p>
             {/* Dropdown pour le groupe ethnique */}
