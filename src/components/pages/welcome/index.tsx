@@ -16,6 +16,7 @@ import BaseModal from "@/components/UI/BaseModal";
 import InfoModal from "@/components/UI/InfoModal";
 import InfoButton from "@/components/UI/InfoButton";
 import { user_api } from "@/api/clientSide";
+import DropdownMenu from "@/components/UI/DropDownMenu";
 
 // to avoid modifying the theme
 const DemoButton = `text-white font-normal md:font-medium text-md md:text-lg ml-2 mr-2 mb-3 rounded-md w-[278px] py-2 bg-black border border-x-red-500 border-y-orange-500 transform hover:scale-105 transition-transform hover:shadow-md cursor-pointer`
@@ -441,8 +442,100 @@ const Welcome = () => {
     // getHasPreviewList()
   };
 
+  const [isGenericHaircutModalOpen, setIsGenericHaircutModalOpen] = useState(false);
+  // Fonction pour ouvrir le modal
+  const openGenericHaircutModal = () => {
+    setIsGenericHaircutModalOpen(true);
+  };
+
+  // Fonction pour fermer le modal
+  const closeGenericHaircutModal = () => {
+    setIsGenericHaircutModalOpen(false);
+  };
+
+  // Les options pour chaque liste déroulante
+  const ethnicGroups = ['Afro', 'Asiatique', 'Occidental', 'Orientale'];
+  const genders = ['Homme', 'Femme'];
+  const hairLengths = ['Court', 'Moyen', 'Long'];
+
+  // États pour les options sélectionnées
+  const [selectedEthnicGroup, setSelectedEthnicGroup] = useState('');
+  const [selectedGender, setSelectedGender] = useState('');
+  const [selectedHairLength, setSelectedHairLength] = useState('');
+
+  // Fonctions pour gérer la sélection des options
+  const handleEthnicGroupChange = (value) => {
+    setSelectedEthnicGroup(value);
+  };
+
+  const handleGenderChange = (value) => {
+    setSelectedGender(value);
+  };
+
+  const handleHairLengthChange = (value) => {
+    setSelectedHairLength(value);
+  };
+
   return (
     <>
+
+      {/* Modal pour choix générique de coiffure */}
+      {isGenericHaircutModalOpen && (
+        <BaseModal close={closeGenericHaircutModal} opacity={60} width="md:w-[auto]">
+          <div className="flex flex-col items-center justify-center">
+            <h2 className="text-2xl font-bold text-center mt-8">
+              Choix générique
+            </h2>
+            <p className="text-sm font-ligth italic text-center my-2 mb-8">
+              Si vous ne trouvez pas précisément votre coiffure
+            </p>
+            {/* Dropdown pour le groupe ethnique */}
+            <div className="w-full flex justify-center">
+              <DropdownMenu
+                dropdownItems={ethnicGroups}
+                menuName="Groupe Ethnique"
+                fctToCallOnClick={handleEthnicGroupChange}
+                labelId="ethnic-group-select-label"
+                selectId={selectedEthnicGroup}
+              />
+            </div>
+
+            {/* Dropdown pour le genre */}
+            <div className="w-full flex justify-center">
+              <DropdownMenu
+                dropdownItems={genders}
+                menuName="Genre"
+                fctToCallOnClick={handleGenderChange}
+                labelId="gender-select-label"
+                selectId={selectedGender}
+              />
+            </div>
+
+            {/* Dropdown pour la longueur de cheveux */}
+            <div className="w-full flex justify-center mb-4">
+              <DropdownMenu
+                dropdownItems={hairLengths}
+                menuName="Longueur de Cheveux"
+                fctToCallOnClick={handleHairLengthChange}
+                labelId="hair-length-select-label"
+                selectId={selectedHairLength}
+              />
+            </div>
+
+            {/* Bouton Valider */}
+            <button
+              className={`${Theme_A.button.mediumGradientButton}`}
+              type="button"
+              onClick={() => { closeGenericHaircutModal() }} //TODO : CONTINUE WITH THE SELECTED GENERIC HAIRCUT
+            >
+              Valider
+            </button>
+          </div>
+        </BaseModal>
+      )}
+
+
+
       <Navbar isWelcomePage={true} onSearch={(value: string) => setSearch(value)} onGenderFilter={(gender) => setGenderFilters(gender)} onEthnicityFilters={(groups) => setEthnicityFilters(groups)} onLengthFilters={(length) => setLengthFilters(length)} onHairNameFilters={(hairname) => setHairNameFilters(hairname)} />
       <div className="flex flex-col items-center justify-center w-full overflow-hidden">
 
@@ -461,7 +554,7 @@ const Welcome = () => {
           {/* Bouton Coiffure Simple */}
           <div
             className={`${Theme_A.button.bigWhiteColoredButton} cursor-pointer mr-4`}
-          // TODO : OPEN A MODAL HERE ON CLICK
+            onClick={openGenericHaircutModal}
           >
             Choix générique de coiffure
           </div>

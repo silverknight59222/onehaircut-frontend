@@ -679,6 +679,7 @@ const SalonChoice = () => {
                     </div>
                 </BaseModal>
             )}
+
             {/* Entête du composant */}
             {/* <Navbar isSalonPage={true} /> */}
             <Navbar
