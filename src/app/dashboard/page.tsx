@@ -48,46 +48,50 @@ const Page = () => {
 	const getStatusSubscription = () => {
 		// Update sidebarItems based on user subscription
 		const isProSubscription = user_data ? user_data.subscription.name.includes("Pro") : false;
-		const updatedSidebarItems = [...sidebarItems];
 
-		if (isProSubscription) {
-			updatedSidebarItems.push({ icon: "BotIcon", title: "OnehairBot", route: "/dashboard/bot" });
-		}
+		setSidebarItems((prevSidebarItems) => {
+			// Create a new array with the existing items
+			let updatedSidebarItems = [...prevSidebarItems];
 
-		// Update the state with the new array
-		setSidebarItems(updatedSidebarItems);
+			if (isProSubscription) {
+				updatedSidebarItems.splice(6, 0, { icon: "BotIcon", title: "OnehairBot", route: "/dashboard/bot" });
+			  }
+
+			// Return the updated array
+			return updatedSidebarItems;
+		});
+	};
+
+	useEffect(() => {
+		fetchSalonNotifications()
+		getStatusSubscription()
 	}
+		, []
+	)
 
-useEffect(() => {
-	fetchSalonNotifications()
-	getStatusSubscription()
-}
-	, []
-)
-
-return (
-	<>
-		{tab === "Dashboard" && (
-			<Sidebar notifications={notifications} sidebarItems={sidebarItems} isSidebar={isSidebar} SidebarHandler={SidebarHandler} />
-		)}
-		<div className={`h-screen px-4 lg:px-8 py-5 overflow-x-hidden ${tab === "Dashboard" && `${ColorsThemeA.pageBgColorLight} ml-0 lg:ml-72`}`}>
-			<Topbar
-				isDashboard={tab !== "Dashboard"}
-				SidebarHandler={SidebarHandler}
-				tabHandler={tabHandler}
-				isSidebar={isSidebar}
-			/>
-			{tab === 'Dashboard' && <Dashboard />}
-			{tab === 'Coiffeurs' && <Hairdressers />}
-			{tab === 'Images Salon' && <ImagesSalon />}
-			{tab === 'Coiffures' && <Hairstyles />}
-			{tab === 'Prestation' && <Services />}
-			{tab === 'Agenda' && <Agenda />}
-			{tab === 'Ajouter un salon partenaire' && <AddPartner />}
-			{tab === 'Users' && <UsersPage />}
-		</div>
-	</>
-);
+	return (
+		<>
+			{tab === "Dashboard" && (
+				<Sidebar notifications={notifications} sidebarItems={sidebarItems} isSidebar={isSidebar} SidebarHandler={SidebarHandler} />
+			)}
+			<div className={`h-screen px-4 lg:px-8 py-5 overflow-x-hidden ${tab === "Dashboard" && `${ColorsThemeA.pageBgColorLight} ml-0 lg:ml-72`}`}>
+				<Topbar
+					isDashboard={tab !== "Dashboard"}
+					SidebarHandler={SidebarHandler}
+					tabHandler={tabHandler}
+					isSidebar={isSidebar}
+				/>
+				{tab === 'Dashboard' && <Dashboard />}
+				{tab === 'Coiffeurs' && <Hairdressers />}
+				{tab === 'Images Salon' && <ImagesSalon />}
+				{tab === 'Coiffures' && <Hairstyles />}
+				{tab === 'Prestation' && <Services />}
+				{tab === 'Agenda' && <Agenda />}
+				{tab === 'Ajouter un salon partenaire' && <AddPartner />}
+				{tab === 'Users' && <UsersPage />}
+			</div>
+		</>
+	);
 };
 
 export default Page;
