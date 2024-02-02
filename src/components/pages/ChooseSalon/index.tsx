@@ -61,7 +61,7 @@ const SalonChoice = () => {
     const [filtereRange, setRangeFilter] = useState([10, 100]);
     const [ratingFilter, setRatingFilter] = useState<number[]>([1, 2, 3, 4, 5]);
     const [countryFilter, setCountryFilter] = useState<string>("");
-    const [availabilityFilter, setAvailabilityFilter] = useState<string[]>([]);
+    const [availabilityFilter, setAvailabilityFilter] = useState<string[]>(['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche']);
     const [newSalonFilter, setNewSalonFilter] = useState(true);
     const [positions, setPositions] = useState<Position[]>([])
     const [center, setCenter] = useState<Position>()
