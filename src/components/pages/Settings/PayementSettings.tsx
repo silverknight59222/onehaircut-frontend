@@ -12,6 +12,7 @@ import EUBanksList from "@/components/shared/EUBanks";
 import { salonApi } from "@/api/salonSide";
 import DatePicker from "@/components/UI/DatePicker";
 import TourModal, { Steps } from "@/components/UI/TourModal";
+import { BankAccountStripe } from "@/types";
 
 const PayementSettings = () => {
     const payementMethodStruct: string[] = [
@@ -34,8 +35,11 @@ const PayementSettings = () => {
 
 
     // Function to send the new settings values into backend
-    const updateBankingSettings = async () => {
+    const updateBankingSettings = async (data) => {
         // TODO add backend
+        console.log(data);
+        let resp = await salonApi.updateBankAccount(data);
+        console.log(resp);
     }
 
 
@@ -162,7 +166,15 @@ const PayementSettings = () => {
     const handleSaveBankAccountData = () => {
         // Ici, vous pourriez avoir votre logique pour enregistrer les données de l'IBAN dans la base de données ou ailleurs
         console.log("Données enregistrées (simulation)");
-
+        const bankData: BankAccountStripe = {
+            name: accountName,
+            owner: accountOwner,
+            bank_name: bank,
+            business_type: bankAccountType,
+            iban: iban,
+            currency: 'eur',
+        }
+        updateBankingSettings(bankData);
         // Mettre à jour l'affichage du compte bancaire avec l'IBAN
         setBankAccountDisplay(iban);
 
@@ -211,13 +223,17 @@ const PayementSettings = () => {
             let account_data = resp.data.account_data
             let balance_data = resp.data.balance_data
             if (account_data.length != 0) {
-                let card_account_info = account_data.external_accounts.data[0]
-                setAccountName(card_account_info.account_holder_name)
-                setAccountOwner(account_data.individual.first_name + " " + account_data.individual.last_name)
-                setOwnerCountry(card_account_info.country)
-                setBank(card_account_info.bank_name)
-                setAccountType(card_account_info.account_holder_type == 'individual' ? bankAccountTypes[0] : bankAccountTypes[1])
-                setIban(card_account_info.country + '******' + card_account_info.last4)
+                console.log(account_data.external_accounts)
+                console.log(account_data.external_accounts.data.length)
+                if (account_data.external_accounts.data.length > 0) {
+                    let card_account_info = account_data.external_accounts.data[0]
+                    setAccountOwner(card_account_info.account_holder_name)
+                    setAccountName(account_data.individual.first_name + " " + account_data.individual.last_name)
+                    setOwnerCountry(card_account_info.country)
+                    setBank(card_account_info.bank_name)
+                    setAccountType(card_account_info.account_holder_type == 'individual' ? bankAccountTypes[0] : bankAccountTypes[1])
+                    setIban(card_account_info.country + '******' + card_account_info.last4)
+                }
                 setAccountBalance((balance_data.available[0].amount / 100).toString())
                 setAccountPendingBalance((balance_data.pending[0].amount / 100).toString())
             }
@@ -388,7 +404,7 @@ const PayementSettings = () => {
                             {/* Champ pour le nom du compte */}
                             <CustomInput
                                 id="accountFirstName"
-                                label="Prénom"
+                                label="Nom"
                                 value={accountName} // Assurez-vous de gérer cet état dans votre composant
                                 onChange={handleAccountNameChange} // Implémentez cette fonction pour mettre à jour l'état
                             />
@@ -396,7 +412,7 @@ const PayementSettings = () => {
                             {/* Champ pour le propriétaire du compte */}
                             <CustomInput
                                 id="accountLastName"
-                                label="Nom"
+                                label="Nom du titulaire du compte"
                                 value={accountOwner} // Assurez-vous de gérer cet état dans votre composant
                                 onChange={handleAccountOwnerChange} // Implémentez cette fonction pour mettre à jour l'état
                             />
