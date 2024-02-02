@@ -126,7 +126,7 @@ const Dashboard = () => {
             content: 'Il regroupe toutes les informations importantes concernant votre salon et vos clients.',
         },
         {
-            selector: '.button_revenu_journalier',
+            selector: '.button_transaction',
             content: 'En cliquant sur ce type de bouton, vous pourrez afficher plus de détails sur le graphique qui suit.',
         },
         {
@@ -154,7 +154,7 @@ const Dashboard = () => {
             <Footer />
 
             {/* For explaining the website */}
-            {proSubscription && <TourModal steps={tourSteps} onRequestClose={closeTour} />}
+            <TourModal steps={tourSteps} onRequestClose={closeTour} />
 
             {proSubscription && <div>
                 <Grid container spacing={6} className='match-height  '>
@@ -484,15 +484,23 @@ const Dashboard = () => {
             {/* TRANSACTIONS */}
             {user && user.permissions && user.permissions.indexOf("Revenue") != -1 ?
                 < div className="flex items-center justify-between mt-10" >
-                    <button onClick={() => toggleModal('TransactionfullTable')} className={`${Theme_A.button.medBlackColoredButton} hover:bg-stone-600`}>
+                    <button onClick={() => toggleModal('TransactionfullTable')} className={`${Theme_A.button.medBlackColoredButton} hover:bg-stone-600 button_transaction`}>
                         Transactions
                     </button>
+
+                    {/* Info icon for free user  */}
+                    {(proSubscription == false) && <div className="pr-4 info_button">
+                        <InfoButton title_1={"Dashboard"} content_1={"Cette page contient les informations concernant votre salon. Les boutons au dessus des graphiques peuvent être cliqués pour afficher plus de détails."} 
+                        onOpenModal={undefined} />
+                    </div>}
 
                     <DropdownMenu dropdownItems={DisplayedMonths} backgroundColor="bg-white" selectId={selectedMonthTransactions} menuName="Période d'observation"
                         fctToCallOnClick={setSelectedMonthTransactions} />
                 </div>
                 : <div></div>
             }
+
+
             {user && user.permissions && user.permissions.indexOf("Revenue") != -1 ?
                 <TransactionList period={selectedMonthTransactions} />
                 :
