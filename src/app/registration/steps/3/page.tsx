@@ -25,6 +25,7 @@ const Step3 = () => {
     name: '',
     email: '',
     password: '',
+    password2: '',
     phone: '',
     dob: '',
   });
@@ -33,6 +34,7 @@ const Step3 = () => {
     name: '',
     email: '',
     password: '',
+    password2: '',
     phone: '',
     dob: '',
   });
@@ -91,7 +93,12 @@ const Step3 = () => {
   // const setFocus = () => {    
   //   document.querySelector<HTMLInputElement>(`div[id=phone-custom]`)?.focus()
   // }
+
+  //-----------------------------------------------------------------------------
+  //                            PASSWORD
+  //-----------------------------------------------------------------------------
   const [showPassword, setShowPassword] = useState(false);
+  const [showPassword2, setShowPassword2] = useState(false);
 
   const onChangePassword = (value: string) => {
     if (!value.length) {
@@ -109,6 +116,26 @@ const Step3 = () => {
     }));
   }
 
+  const onChangePassword2 = (value: string) => {
+    if (!value.length) {
+      setError((prev) => {
+        return { ...prev, password2: "Répéter le mot de passe" };
+      });
+    } else {
+      setError((prev) => {
+        return { ...prev, password2: "" };
+      });
+    }
+    setUserDetails((prevState) => ({
+      ...prevState,
+      password2: value,
+    }));
+  }
+
+
+  //-----------------------------------------------------------------------------
+  //                            Date of birth
+  //-----------------------------------------------------------------------------
   const onChangeDob = (dob) => {
     if (!dob) {
       setError((prevError) => ({
@@ -202,17 +229,53 @@ const Step3 = () => {
       });
     }
 
+    // Check date of birth
+    if (!userDetails.dob) {
+      setError((prevError) => ({
+        ...prevError,
+        dob: "Date de naissance est requise",
+      }));
+      isValidated = false;
+    } else {
+      // Parse user's date of birth and calculate the date 16 years ago
+      const userDob = new Date(userDetails.dob);
+      const sixteenYearsAgo = new Date();
+      sixteenYearsAgo.setFullYear(sixteenYearsAgo.getFullYear() - 16);
+
+      // Compare the user's date of birth with the date 16 years ago
+      if (userDob > sixteenYearsAgo) {
+        setError((prevError) => ({
+          ...prevError,
+          dob: "Date de naissance invalide (doit être au moins 16 ans)",
+        }));
+        isValidated = false;
+      } else {
+        setError((prevError) => ({
+          ...prevError,
+          dob: "", // Clear dob error if valid
+        }));
+      }
+    }
+
+
     //check phone
     // if (!onPhoneCheck()) {
     //   isValidated = false;
     // }
 
+    // Check password
     if (!userDetails.password) {
       setError((prev) => {
         return { ...prev, password: "Un password est requis" };
       });
       isValidated = false;
-    } else {
+    } else if (userDetails.password2 !== userDetails.password) {
+      setError((prev) => {
+        return { ...prev, password2: "Les mots de passe ne correspondent pas" };
+      });
+      isValidated = false;
+    }
+    else {
       setError((prev) => {
         return { ...prev, password: "" };
       });
@@ -407,6 +470,8 @@ const Step3 = () => {
               <p className="text-xs text-red-700 ml-3 mt-1">{error.phone}*</p>
             )}
           </div>
+
+          {/* PASSWORD */}
           <div className="w-full">
             <div className="w-full h-[58px] rounded-[11px] bg-white flex items-center">
               <div className="flex-grow">
@@ -425,6 +490,29 @@ const Step3 = () => {
                   className="p-2 flex-none outline-none focus:outline-none"
                 >
                   {showPassword ? <EyeClosedIcon /> : <EyeIcon />}
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="w-full">
+            <div className="w-full h-[58px] rounded-[11px] bg-white flex items-center">
+              <div className="flex-grow">
+                <CustomInput
+                  id="passwordInput2"
+                  label="Répéter le mot de passe"
+                  type={showPassword2 ? "text" : "password"}
+                  value={userDetails.password2}
+                  onChange={(e) => onChangePassword2(e.target.value)}
+                  error={error.password2}
+                />
+              </div>
+              <div className="flex items-center">
+                <button
+                  onClick={() => setShowPassword2(!showPassword2)}
+                  className="p-2 flex-none outline-none focus:outline-none"
+                >
+                  {showPassword2 ? <EyeClosedIcon /> : <EyeIcon />}
                 </button>
               </div>
             </div>
