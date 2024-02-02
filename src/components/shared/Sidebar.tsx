@@ -60,7 +60,7 @@ const colorIcon = "#FFFFFF"
 
 // Define the Sidebar component
 const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, notifications }: SidebarType) => {
-
+  console.log("Received Sidebar Items:", sidebarItems);
   const showSnackbar = useSnackbar();
   // State to store salon details
   const [salonDetail, setSalonDetails] = useState<SalonDetails[]>();
@@ -514,7 +514,9 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
             )}
             {/* Sidebar items display - mb-12 added to be able to see the last element due to the bottom-bar */}
             <div className="mt-8 mb-12">
-              {sidebarItem.map((item, index) => {
+              {sidebarItems.map((item, index) => {
+                console.log(item)
+                console.log(item.route)
                 return (
                   <div key={index}>
                     <div

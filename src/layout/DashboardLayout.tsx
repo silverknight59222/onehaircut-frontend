@@ -31,18 +31,26 @@ const DashboardLayout = ({ children, notifications }: DashboardLayout) => {
     { icon: "ContactIcon", title: "Contactez-nous", route: "/dashboard/contactUs" },
   ]);
 
-  useEffect(() => {
+  const getStatusSubscription = () => {
     // Update sidebarItems based on user subscription
     const isProSubscription = user_data ? user_data.subscription.name.includes("Pro") : false;
-    const updatedSidebarItems = [...sidebarItems];
 
-    if (isProSubscription) {
-      updatedSidebarItems.push({ icon: "BotIcon", title: "OnehairBot", route: "/dashboard/bot" });
-    }
+    setSidebarItems((prevSidebarItems) => {
+      // Create a new array with the existing items
+      let updatedSidebarItems = [...prevSidebarItems];
 
-    // Update the state with the new array
-    setSidebarItems(updatedSidebarItems);
+      if (isProSubscription) {
+        updatedSidebarItems.splice(6, 0, { icon: "BotIcon", title: "OnehairBot", route: "/dashboard/bot" });
+      }
+      // Return the updated array
+      return updatedSidebarItems;
+    });
+  };
+
+  useEffect(() => {
+    getStatusSubscription();
   }, []);
+
   const SidebarHandler = (state: boolean) => {
     setIsSidebar(state);
   };
