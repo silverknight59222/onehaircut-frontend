@@ -20,8 +20,8 @@ const DashboardLayout = ({ children, notifications }: DashboardLayout) => {
   const user_data = user ? JSON.parse(user) : null;
   const [sidebarItems, setSidebarItems] = useState([
     { icon: "DashboardIcon", title: "Dashboard", route: "/dashboard" },
-    { icon: "ClientActivityIcon", title: "Client Activité", route: "/dashboard/client-activity" },
-    { icon: "StatsIcon", title: "Visites / Stats", route: "/dashboard/visites" },
+    // { icon: "ClientActivityIcon", title: "Client Activité", route: "/dashboard/client-activity" },
+    // { icon: "StatsIcon", title: "Visites / Stats", route: "/dashboard/visites" },
     // { icon: "RevenueIcon", title: "Revenue", route:"/dashboard/revenue" },
     { icon: "MessageIcon", title: "Message", route: "/dashboard/messages" },
     { icon: "SettingsIcon", title: "Réglages", permission: "Reglages", route: "/dashboard/settings" },
@@ -40,7 +40,7 @@ const DashboardLayout = ({ children, notifications }: DashboardLayout) => {
       let updatedSidebarItems = [...prevSidebarItems];
 
       if (isProSubscription) {
-        updatedSidebarItems.splice(6, 0, { icon: "BotIcon", title: "OnehairBot", route: "/dashboard/bot" });
+        updatedSidebarItems.splice(4, 0, { icon: "BotIcon", title: "OnehairBot", route: "/dashboard/bot" });
       }
       // Return the updated array
       return updatedSidebarItems;
