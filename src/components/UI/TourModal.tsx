@@ -21,6 +21,36 @@ const TourModal = ({ steps, onRequestClose }: TourModalType) => {
     setIsTourOpen(false)
     onRequestClose && onRequestClose();
   };
+
+  const HoverButton = ({ text, baseBgColor, hoverBgColor }) => {
+    const [isHovered, setIsHovered] = useState(false);
+
+    const baseStyle = {
+      padding: '10px',
+      backgroundColor: baseBgColor,
+      color: 'white',
+      border: 'none',
+      borderRadius: '4px',
+      cursor: 'pointer',
+    };
+
+    const hoverStyle = {
+      ...baseStyle,
+      backgroundColor: hoverBgColor,
+    };
+
+    return (
+      <button
+        style={isHovered ? hoverStyle : baseStyle}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        {text}
+      </button>
+    );
+  };
+
+
   return (
     <>
       <Tour
@@ -34,9 +64,9 @@ const TourModal = ({ steps, onRequestClose }: TourModalType) => {
         accentColor={'#ef4444'}
         onAfterOpen={disableBody}
         onBeforeClose={enableBody}
-        prevButton={<button>Retour</button>}
-        nextButton={<button>Suivant</button>}
-        lastStepNextButton={<button>C'est parti !</button>}
+        prevButton={<button style={{ padding: '10px', backgroundColor: '#f0f0f0', color: '#333', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Retour</button>}
+        nextButton={<button style={{ padding: '10px', backgroundColor: '#FF7B20', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}>Suivant</button>}
+        lastStepNextButton={<button style={{ padding: '10px', backgroundColor: '#FF7B20', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer' }}> C'est parti !</button>}
       />
     </>
   )
