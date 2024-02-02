@@ -7,13 +7,12 @@ import userLoader from "@/hooks/useLoader";
 import useSnackbar from "@/hooks/useSnackbar";
 import { getLocalStorage, setLocalStorage } from "@/api/storage";
 import UserProfile from "@/components/UI/UserProfile";
-import PhoneInput from 'react-phone-number-input'
+//import PhoneInput from 'react-phone-number-input'
 import { Value } from 'react-phone-number-input'
-import 'react-phone-number-input/style.css'
 import { Theme_A } from "@/components/utilis/Themes";
 import CustomInput from "@/components/UI/CustomInput";
-import 'react-phone-number-input/style.css'
-
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/lib/material.css';
 
 
 const inputFieldsDesignNoW = `border-2 border-stone-200 p-1 placeholder:text-[#959595] placeholder:text-base ${Theme_A.behaviour.fieldFocused}${Theme_A.fields.inputField}`
@@ -373,24 +372,36 @@ const Step3 = () => {
           <div className="w-full">
             <div className="flex-col items-center justify-center gap-4 ">
 
-              <div className={`w-100 ${inputFieldsDesignNoW}`}>
-                <PhoneInput
-                  style={{ height: 42 }}
-                  // className={`${inputFieldsDesign}`}
-                  // inputComponent={{ phoneInput }}
-                  // containerClass={containerClass}
-                  defaultCountry={'FR'}
-                  value={userDetails.phone}
-                  placeholder={"+33 6 12 13 14 15"}
-                  onChange={(value) => {
-                    setNewPhone(value)
-                    setError((prev) => {
-                      return { ...prev, phone: "" };
-                    })
-                  }
-                  }
-                />
-              </div>
+
+              {/* This component come from : https://morioh.com/a/2d3761b299fd/highly-customizable-phone-input-component-with-auto-formatting*/}
+              <PhoneInput
+                value={userDetails.phone}
+                onChange={(value) => {
+                  setNewPhone(value)
+                  setError((prev) => {
+                    return { ...prev, phone: "" };
+                  })
+                }
+                }
+                placeholder="Tel"
+                country={'fr'}
+                inputProps={{
+                  name: 'Tel',
+                  required: true,
+                  autoFocus: true,
+                  placeholder: 'Tel: '
+                }}
+                inputStyle={{
+                  width: '100%', // prend toute la largeur de son conteneur
+                  height: '50px', // hauteur réduite
+                  borderColor: "#ccc",
+
+                }}
+
+              //regions={'europe'}
+              //onlyCountries={['de', 'es', 'fr', 'it']}
+              />
+
             </div>
             {error.phone && (
               <p className="text-xs text-red-700 ml-3 mt-1">{error.phone}*</p>
