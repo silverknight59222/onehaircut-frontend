@@ -866,7 +866,7 @@ const SalonChoice = () => {
                                         key={index}
                                         id={`Vignette-${index}`}
                                         onClick={() => setSelectedSalon(fsalon)}
-                                        className={`relative flex w-full w-max[450px] h-56 h-max[300px] rounded-2xl border hover:border-stone-400 cursor-pointer 
+                                        className={`relative flex w-full w-max[450px] h-56 h-max[300px] rounded-2xl border hover:border-stone-400 cursor-pointer
                                         ${selectedSalon.id === fsalon.id ? 'border-4 border-red-400 shadow-xl' : ''}
                                         ${wishlist.includes(String(fsalon.id)) ? ColorsThemeA.OhcGradient_G : 'bg-stone-100'}`} // bg-green-100 est un exemple, choisissez la couleur que vous voulez
                                     >
@@ -914,14 +914,14 @@ const SalonChoice = () => {
                                             {/* Évaluation et nombre d'avis */}
                                             <div className='flex items-center text-xs text-[#7B7B7B] pr-1 pt-1 gap-1'>
                                                 <StarRatings
-                                                    rating={fsalon.salon_haircut ? fsalon.salon_haircut.rating : fsalon.rating}
+                                                    rating={fsalon.salon_haircut ? fsalon.salon_haircut.rating : 0}
                                                     starRatedColor="#FEDF10"
                                                     starSpacing="4px"
                                                     starDimension="12px"
                                                     numberOfStars={5}
                                                     name="rating"
                                                 />
-                                                <p>{fsalon.salon_haircut ? fsalon.salon_haircut.rating_counts : fsalon.rating_counts} avis</p>
+                                                <p>{fsalon.salon_haircut ? fsalon.salon_haircut.rating_counts : 0} avis</p>
                                             </div>
                                         </div>
                                     </div>
