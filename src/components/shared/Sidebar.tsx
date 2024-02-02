@@ -60,7 +60,6 @@ const colorIcon = "#FFFFFF"
 
 // Define the Sidebar component
 const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, notifications }: SidebarType) => {
-  console.log("Received Sidebar Items:", sidebarItems);
   const showSnackbar = useSnackbar();
   // State to store salon details
   const [salonDetail, setSalonDetails] = useState<SalonDetails[]>();
