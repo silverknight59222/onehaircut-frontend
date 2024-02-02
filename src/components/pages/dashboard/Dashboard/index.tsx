@@ -127,7 +127,7 @@ const Dashboard = () => {
         },
         {
             selector: '.button_revenu_journalier',
-            content: 'En cliquant sur ce type de bouton, vous pourrez afficher plus de détails sur le graphe qui suit.',
+            content: 'En cliquant sur ce type de bouton, vous pourrez afficher plus de détails sur le graphique qui suit.',
         },
         {
             selector: '',

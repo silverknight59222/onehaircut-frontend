@@ -21,6 +21,31 @@ const TourModal = ({ steps, onRequestClose }: TourModalType) => {
     setIsTourOpen(false)
     onRequestClose && onRequestClose();
   };
+
+  // Composant de bouton avec effet de survol
+  const HoverButton = ({ text, baseBgColor, hoverBgColor, textColor = "white" }) => {
+    const [isHovered, setIsHovered] = useState(false);
+
+    return (
+      <button
+        style={{
+          padding: '10px',
+          backgroundColor: isHovered ? hoverBgColor : baseBgColor,
+          color: textColor,
+          border: `1px solid #CBCBCB`, // Ajout de la bordure avec la couleur conditionnelle
+          borderRadius: '4px',
+          cursor: 'pointer',
+          transition: 'background-color 0.3s ease, border-color 0.3s ease', // Ajout d'une transition pour l'effet de survol et la couleur de bordure
+
+        }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        {text}
+      </button>
+    );
+  };
+
   return (
     <>
       <Tour
@@ -34,9 +59,11 @@ const TourModal = ({ steps, onRequestClose }: TourModalType) => {
         accentColor={'#ef4444'}
         onAfterOpen={disableBody}
         onBeforeClose={enableBody}
-        prevButton={<button>Retour</button>}
-        nextButton={<button>Suivant</button>}
-        lastStepNextButton={<button>C'est parti !</button>}
+        prevButton={<HoverButton text="Retour" baseBgColor="#f0f0f0" hoverBgColor="#DADADA" textColor="#333" />}
+        nextButton={<HoverButton text="Suivant" baseBgColor="#FF7B20" hoverBgColor="#FE5019" />}
+        lastStepNextButton={<HoverButton text="C'est parti !" baseBgColor="#FF7B20" hoverBgColor="#FE5019" />}
+
+
       />
     </>
   )
