@@ -75,7 +75,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
   const [mobileFilters, setMobileFilters] = useState<string>("");
   const [ratingFilter, setRatingFilter] = useState<number[]>([1, 2, 3, 4, 5]);
   const [countryFilter, setCountryFilter] = useState<string>("");
-  const [availabilityFilter, setAvailabilityFilter] = useState<string[]>([]);
+  const [availabilityFilter, setAvailabilityFilter] = useState<string[]>(['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche']);
   const [newSalonFilter, setNewSalonFilter] = useState(true);
   const [haircuts, setHaircuts] = useState([]);
 
