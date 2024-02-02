@@ -15,7 +15,8 @@ import CustomInput from "@/components/UI/CustomInput";
 import 'react-phone-number-input/style.css'
 
 
-const inputFieldsDesignNoW = `border-2 border-red-500 p-1 placeholder:text-[#959595] placeholder:text-base ${Theme_A.behaviour.fieldFocused}${Theme_A.fields.inputField}`
+
+const inputFieldsDesignNoW = `border-2 border-stone-200 p-1 placeholder:text-[#959595] placeholder:text-base ${Theme_A.behaviour.fieldFocused}${Theme_A.fields.inputField}`
 
 const Step3 = () => {
   const showSnackbar = useSnackbar();
@@ -313,21 +314,21 @@ const Step3 = () => {
 
 
   return (
-    <div>
+    <div >
       {isLoading && loadingView()}
-      <div className="flex flex-col md:flex-row items-center justify-center border-b border-[#EBF0F2] pb-4">
-        <div className="absolute top-1 flex items-center justify-start sm:justify-center w-full gap-5 px-4 sm:px-14 py-5">
+      <div className="flex flex-col md:flex-row items-center justify-center border-b border-[#EBF0F2] pb-4 ">
+        <div className="absolute top-1 flex items-center justify-start sm:justify-center w-full gap-5 px-4 sm:px-14 py-5 ">
           <div onClick={() => router.push('/')} className='relative z-30 cursor-pointer'><LogoIcon className={''} /></div>
         </div>
         {/* <div className="relative z-20 w-full flex items-center justify-end gap-4 px-4 sm:px-14 mt-6">
           <UserProfile />
         </div> */}
       </div>
-      <div className="w-full flex-col gap-10 flex items-center justify-center px-3">
-        <div className="mt-20">
+      <div className="w-full flex-col gap-10 flex items-center justify-center px-3 ">
+        <div className="mt-20 ">
           <div className="flex items-center justify-center w-full font-medium text-xl md:text-2xl lg:text-3xl text-center ">Il faut maintenant renseigner tes information personnelles</div>
         </div>
-        <div className="flex flex-col gap-10 w-full sm:w-[400px]">
+        <div className="flex flex-col gap-10 w-full sm:w-[500px] shadow-md shadow-stone-300 p-20 rounded-2xl ">
           <div className="w-full">
             <CustomInput
               type="text"
@@ -345,14 +346,16 @@ const Step3 = () => {
               value={userDetails.email}
               onChange={(e) => onChangeEmail(e.target.value)}
               id={"Email"}
+
               label={"Email"} />
             {error.email && (
               <p className="text-xs text-red-700 ml-3 mt-1">{error.email}*</p>
             )}
           </div>
+
           <div className="w-full">
             <label htmlFor="dob" className="block text-sm font-medium text-gray-700">
-              Date of Birth
+              Date de naissance
             </label>
             <input
               type="date"
@@ -360,8 +363,9 @@ const Step3 = () => {
               name="dob"
               value={userDetails.dob}
               onChange={(e) => onChangeDob(e.target.value)}
-              className="mt-1 p-2 border rounded-md w-full"
+              className={`w-full h-[50px] mr-2 ${Theme_A.fields.configurationField2} text-sm peer`}
             />
+
             {error.dob && (
               <p className="text-xs text-red-700 ml-3 mt-1">{error.dob}*</p>
             )}

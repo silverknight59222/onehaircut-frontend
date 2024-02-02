@@ -8,7 +8,7 @@ interface CustomInputProps {
     onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
     error?: string | null;
     placeholder?: string;
-    type?: 'text' | 'password' | 'number';
+    type?: 'text' | 'password' | 'number' | 'date';
     isEmail?: boolean;
     isStreetNumber?: boolean; // Ajoutez une nouvelle prop pour spécifier que c'est un streetNumber
     isZipCode?: boolean; // Ajoutez une nouvelle prop pour spécifier que c'est un streetNumber
@@ -16,6 +16,7 @@ interface CustomInputProps {
     isPasswordMismatch?: boolean; // Nouvelle prop pour la vérification de mot de passe non identique
     disable?: boolean;
     onEnterPress?: () => void;
+    onFocus?: (e: React.FocusEvent<HTMLInputElement>) => void; // Ajoutez onFocus comme prop optionnelle
 }
 
 const CustomInput: React.FC<CustomInputProps> = ({
@@ -32,6 +33,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
     onBlur,
     disable = false,
     onEnterPress,
+    onFocus,
 }) => {
     const [isInputFocused, setIsInputFocused] = useState(false);
     const [isEmailError, setIsEmailError] = useState(false);
@@ -102,6 +104,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
     return (
         <div className="flex flex-col">
             <div className="relative group">
+
                 <input
                     id={id}
                     required
@@ -110,17 +113,25 @@ const CustomInput: React.FC<CustomInputProps> = ({
                     value={value}
                     onChange={handleInputChange}
                     onBlur={handleInputBlur}
-                    onFocus={() => setIsInputFocused(true)}
-                    placeholder={placeholder}
+                    placeholder={type === 'date' ? '' : placeholder} // Chaîne vide pour le type date
                     disabled={disable}
                     onKeyDown={handleKeyDown}
+                    onFocus={(e) => {
+                        setIsInputFocused(true);
+                        if (onFocus) { // Si une fonction onFocus a été passée, l'appeler avec l'événement
+                            onFocus(e);
+                        }
+                    }}
+
                 />
-                <label
-                    htmlFor={id}
-                    className={`transform transition-all absolute top-0 left-0 h-full flex items-center pl-4 text-sm text-gray-400 font-semibold group-focus-within:text-xs peer-valid:text-xs group-focus-within:h-1/2 peer-valid:h-1/2 group-focus-within:-translate-y-full peer-valid:-translate-y-full group-focus-within:pl-2 peer-valid:pl-2 ${(value || isInputFocused) ? 'text-gray-500' : 'text-gray-300'}`}
-                >
-                    {label}
-                </label>
+                {type !== 'date' && ( // Ne pas afficher le label pour le type 'date'
+                    <label
+                        htmlFor={id}
+                        className={`transform transition-all absolute top-0 left-0 h-full flex items-center pl-4 text-sm text-gray-400 font-semibold group-focus-within:text-xs peer-valid:text-xs group-focus-within:h-1/2 peer-valid:h-1/2 group-focus-within:-translate-y-full peer-valid:-translate-y-full group-focus-within:pl-2 peer-valid:pl-2 ${(value || isInputFocused) ? 'text-gray-500' : 'text-gray-300'}`}
+                    >
+                        {label}
+                    </label>
+                )}
             </div>
             {(!value && error === 'Un e-mail est requis') && (
                 <p className="text-xs text-red-700 ml-4 mt-2" role="alert">
