@@ -220,7 +220,7 @@ const Messages = () => {
               })}
             </div>
 
-            {/* Section de droite */}
+            {/* Section de droite : Fenêtre de chat */}
             <div className="relative z-10 w-full md:w-8/12 xl:w-9/12 min-h-[500px] md:min-h-[300px] overflow-y-auto flex flex-col justify-between rounded-3xl bg-white py-4 px-8 shadow-xl">
 
               {/* Zone de Chat */}
@@ -251,8 +251,8 @@ const Messages = () => {
 
 
               {/* Input et Bouton d'Envoi */}
-              <div className="w-full flex items-center justify-center mb-2 mt-4">
-                <div className="relative w-9/12 champs_envoi">
+              <div className="w-full flex items-center justify-center mt-auto mb-6">
+                <div className="relative w-9/12 mt-4 champs_envoi">
                   {/* Champ de texte pour entrer un message */}
                   <CustomInput
                     id="sendMessageInput"
@@ -268,7 +268,7 @@ const Messages = () => {
                 </div>
 
                 {/* Bouton d'envoi de message */}
-                <div className="ml-4 hover:scale-125 transform transition-transform duration-300 bouton_envoi" onClick={onSendMessage}>
+                <div id="ChatSendIcon" className="ml-4 mt-4 hover:scale-125 transform transition-transform duration-300 bouton_envoi" onClick={onSendMessage}>
                   <ChatSendIcon />
                 </div>
               </div>
