@@ -11,6 +11,7 @@ import { client } from "@/api/clientSide";
 import useSnackbar from "@/hooks/useSnackbar";
 import InfoButton from "@/components/UI/InfoButton";
 import { getLocalStorage, setLocalStorage } from "@/api/storage";
+import TourModal, { Steps } from "@/components/UI/TourModal";
 
 // default text if no picture to display
 const TextToDsplayifNoPic =
@@ -250,7 +251,7 @@ const Portrait = () => {
                 role="button"
                 tabIndex={0}>
                 <div
-                    className="relative p-4 rounded-2xl border-2 bg-white shadow-md hover:shadow-xl">
+                    className="relative p-4 rounded-2xl border-2 bg-white shadow-md hover:shadow-xl pic_left_profil">
                     <div className={`w-${picSize} h-${picSize} relative flex text-center items-center`}>
                         {img ? (
                             <Image src={img} fill={true} alt="Profile Image" />
@@ -331,9 +332,39 @@ const Portrait = () => {
         fetchUserNotifications();
     }, []);
 
+    // ------------------------------------------------------------------
+    // For Tour
+    const tourSteps: Steps[] = [
+        {
+            selector: '',
+            content: 'Vous pouvez ici entrer vos photos de profil qui seront utilisées lors de la génération d\'une coiffure sur votre tête',
+        },
+        {
+            selector: '.zone_left_profil',
+            content: 'La photo doit correspondre au titre placé dessous',
+        },
+        {
+            selector: '.pic_left_profil',
+            content: 'Cliquer ici pour selectionner une de vos photos.',
+        },
+        {
+            selector: '.zone_filters',
+            content: 'Indiquer vos préférences pour vos recherches de coiffures.',
+        },
+    ];
+
+    const closeTour = () => {
+        // You may want to store in local storage or state that the user has completed the tour
+    };
+    // ------------------------------------------------------------------
+
 
     return (
         <div>
+
+            {/* For explaining the website */}
+            <TourModal steps={tourSteps} onRequestClose={closeTour} />
+
             <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-0">
                 <LogoCircleFixRight />
             </div>
@@ -385,9 +416,11 @@ const Portrait = () => {
                     <div className="flex flex-col sm:flex-row  items-center justify-center gap-x-4 gap-y-8 lg:gap-14">
                         {/* Left side of the head placed left */}
                         <div className="flex sm:flex-col gap-6 md:gap-10 -mt-6 sm:-mt-0 ">
-                            {profilPicToDisplay(handleClickLeft2, profileSlightlyLeftImage, SubTextToDisplay[0], 32, DefaultProfilLeft2)}
 
-                            {profilPicToDisplay(handleClickLeft, profileLeftImage, SubTextToDisplay[1], 32, DefaultProfilLeft)}
+                            {profilPicToDisplay(handleClickLeft2, profileSlightlyLeftImage, SubTextToDisplay[0], 32, DefaultProfilLeft2)}
+                            <div className="zone_left_profil">
+                                {profilPicToDisplay(handleClickLeft, profileLeftImage, SubTextToDisplay[1], 32, DefaultProfilLeft)}
+                            </div>
                         </div>
 
                         {/* Straight side in the middle */}
@@ -409,7 +442,7 @@ const Portrait = () => {
                     <p className="text-stone-400 font-normal italic text-sm text-center my-10">
                         Indiquer votre genre et groupe ethnique. Ceux-ci serviront lors de la presentation des coiffures à la page d'accueil
                     </p>
-                    <div className="flex flex-col sm:flex-row items-center sm:items-start justify-center gap-2 lg:gap-14">
+                    <div className="flex flex-col sm:flex-row items-center sm:items-start justify-center gap-2 lg:gap-14 zone_filters">
                         <div className="flex flex-col gap-2">
 
                             <DropdownMenu
