@@ -238,7 +238,7 @@ const PayementSettings = () => {
                 setAccountPendingBalance((balance_data.pending[0].amount / 100).toString())
             }
             else {
-                setAccountBalance("-1.00")
+                setAccountBalance("0.00")
             }
         }
 
@@ -400,12 +400,12 @@ const PayementSettings = () => {
                     <div className="text-center mb-4">
                         <h2 className="text-3xl font-bold mb-10">Ajoutez vos informations bancaires</h2>
 
-                        <div className="flex-inputs flex justify-between mb-8">
+                        <div className="flex-inputs flex justify-between py-2 mb-8">
                             {/* Champ pour le nom du compte */}
                             <CustomInput
                                 id="accountFirstName"
-                                label="Nom"
-                                value={accountName} // Assurez-vous de gérer cet état dans votre composant
+                                label="Nom du salon"
+                                value={accountName}
                                 onChange={handleAccountNameChange} // Implémentez cette fonction pour mettre à jour l'état
                             />
 
@@ -413,12 +413,12 @@ const PayementSettings = () => {
                             <CustomInput
                                 id="accountLastName"
                                 label="Nom du titulaire du compte"
-                                value={accountOwner} // Assurez-vous de gérer cet état dans votre composant
+                                value={accountOwner}
                                 onChange={handleAccountOwnerChange} // Implémentez cette fonction pour mettre à jour l'état
                             />
                         </div>
 
-                        <div className="flex-inputs flex justify-between mb-4">
+                        <div className="flex-inputs flex justify-between mb-4 py-2 ">
                             {/* Ajout du menu déroulant pour la sélection de la banque */}
                             <DropdownMenu
                                 dropdownItems={banks}

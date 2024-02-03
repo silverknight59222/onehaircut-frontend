@@ -574,18 +574,23 @@ const Welcome = () => {
           </div>
         </div>
 
-
+        {/*Affichage des carte coiffure  */}
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 md:gap-12 mb-16 ">
           {haircuts().map((item, index) => {
             return (
               <div key={index} onClick={() => onClickHaircut(item.id, item.name, item.image)}
-                className={`shadow-md rounded-xl cursor-pointer border hover:outline outline-1 outline-stone-400 mb-2 ${item.id === haircut?.id}`}>
+                className={`shadow-md rounded-xl cursor-pointer border hover:outline outline-1 outline-stone-400 mb-2  ${item.id === haircut?.id}`}
+              >
 
-                <div id={`hairStyleCard-${index}`} className="relative w-max px-4 pt-4 bg-gradient-to-r from-white via-stone-50 to-zinc-200 rounded-t-xl">
+                <div id={`hairStyleCard-${index}`}
+                  className={`relative w-max px-4 pt-4 
+                ${wishlist.includes(String(item.id)) ? ` ${ColorsThemeA.OhcGradient_G} rounded-t-xl` :
+                      "bg-gradient-to-r from-white via-stone-50 to-zinc-200 rounded-t-xl"}`}
+                >
 
-                  <div className={`relative w-32 h-32 md:w-52 md:h-52`}>
+                  <div className={`relative w-32 h-32 md:w-52 md:h-52 `}>
                     <Image src={item.image.includes('http') ? item.image : `https://api.onehaircut.com${item.image}`}
-                      fill={true} alt="" className="rounded-t-xl"
+                      fill={true} alt="" className="rounded-t-xl "
                     />
                     {!isLoggedIn &&
                       <div className="absolute top-2 left-2 pb-2 pr-2 z-10"> {/* Positionne l'icône en bas à droite */}
@@ -603,7 +608,10 @@ const Welcome = () => {
                   </div>
                 </div>
 
-                <div className="w-40 md:w-60 rounded-b-xl bg-gradient-to-r from-white via-stone-50 to-zinc-200">
+                <div className={`w-40 md:w-60 rounded-b-xl 
+                ${wishlist.includes(String(item.id)) ? `bg-gradient-to-r from-orange-200 via-orange-100 to-yellow-100 `
+                    : "bg-gradient-to-r from-white via-stone-50 to-zinc-200"}`}
+                >
                   <p className="rounded-b-xl flex items-center justify-center py-2 text-black font-medium">
                     {item.name}
                   </p>

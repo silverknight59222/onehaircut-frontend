@@ -867,7 +867,7 @@ const SalonChoice = () => {
                                         id={`Vignette-${index}`}
                                         onClick={() => setSelectedSalon(fsalon)}
                                         className={`relative flex w-full w-max[450px] h-56 h-max[300px] rounded-2xl border hover:border-stone-400 cursor-pointer
-                                        ${selectedSalon.id === fsalon.id ? 'border-4 border-red-400 shadow-xl' : ''}
+                                        ${selectedSalon.id === fsalon.id ? 'border-4 border-red-400 shadow-xl' : ''} 
                                         ${wishlist.includes(String(fsalon.id)) ? ColorsThemeA.OhcGradient_G : 'bg-stone-100'}`} // bg-green-100 est un exemple, choisissez la couleur que vous voulez
                                     >
                                         {selectedSalon.id === fsalon.id && (

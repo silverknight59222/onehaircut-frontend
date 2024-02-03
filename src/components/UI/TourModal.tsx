@@ -33,7 +33,7 @@ const TourModal = ({ steps, onRequestClose }: TourModalType) => {
           backgroundColor: isHovered ? hoverBgColor : baseBgColor,
           color: textColor,
           border: `1px solid #CBCBCB`, // Ajout de la bordure avec la couleur conditionnelle
-          borderRadius: '4px',
+          borderRadius: '8px',
           cursor: 'pointer',
           transition: 'background-color 0.3s ease, border-color 0.3s ease', // Ajout d'une transition pour l'effet de survol et la couleur de bordure
 
@@ -54,15 +54,13 @@ const TourModal = ({ steps, onRequestClose }: TourModalType) => {
         showNavigation={true}
         onRequestClose={closeTour}
         rounded={5}
-        styles={{ dot: 'disabled' }}
         isOpen={isTourOpen}
         accentColor={'#ef4444'}
         onAfterOpen={disableBody}
         onBeforeClose={enableBody}
-        prevButton={<HoverButton text="Retour" baseBgColor="#f0f0f0" hoverBgColor="#DADADA" textColor="#333" />}
+        prevButton={<HoverButton text="Retour" baseBgColor="#000000" hoverBgColor="#4F4F4F" textColor="#ffffff" />}
         nextButton={<HoverButton text="Suivant" baseBgColor="#FF7B20" hoverBgColor="#FE5019" />}
         lastStepNextButton={<HoverButton text="C'est parti !" baseBgColor="#FF7B20" hoverBgColor="#FE5019" />}
-
 
       />
     </>
