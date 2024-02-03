@@ -238,7 +238,7 @@ const PayementSettings = () => {
                 setAccountPendingBalance((balance_data.pending[0].amount / 100).toString())
             }
             else {
-                setAccountBalance("-1.00")
+                setAccountBalance("0.00")
             }
         }
 
