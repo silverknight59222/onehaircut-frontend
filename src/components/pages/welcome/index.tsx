@@ -82,7 +82,6 @@ const Welcome = () => {
   };
 
   const getHasPreviewList = () => {
-    console.log("Get Preview")
     // Fetch the user’s wishlist of haircuts
     if (userId) {
       setIsLoading(true);
@@ -101,23 +100,22 @@ const Welcome = () => {
               setHasPreview(arr)
             }
           }
-          setIsLoading(false);
         })
         .catch(error => {
-          setIsLoading(false);
-          //console.log(error)
-        })
+          //
+        }).finally(() => {
+        setIsLoading(false);
+      })
     }
   }
 
   const getHaircutsWishlist = () => {
-    console.log("Get Wishlist")
     // Fetch the user’s wishlist of haircuts
     if (userId) {
       setIsLoading(true);
       dashboard.getWishlistHaircuts(userId)
         .then((res) => {
-          if (res.data.data.length > 0) {
+          if (res.data.data) {
             if (salonHaircut.length) {
               const arr: string[] = []
               res.data.data.forEach((item: any) => {
@@ -583,7 +581,7 @@ const Welcome = () => {
               >
 
                 <div id={`hairStyleCard-${index}`}
-                  className={`relative w-max px-4 pt-4 
+                  className={`relative w-max px-4 pt-4
                 ${wishlist.includes(String(item.id)) ? ` ${ColorsThemeA.OhcGradient_G} rounded-t-xl` :
                       "bg-gradient-to-r from-white via-stone-50 to-zinc-200 rounded-t-xl"}`}
                 >
@@ -608,7 +606,7 @@ const Welcome = () => {
                   </div>
                 </div>
 
-                <div className={`w-40 md:w-60 rounded-b-xl 
+                <div className={`w-40 md:w-60 rounded-b-xl
                 ${wishlist.includes(String(item.id)) ? `bg-gradient-to-r from-orange-200 via-orange-100 to-yellow-100 `
                     : "bg-gradient-to-r from-white via-stone-50 to-zinc-200"}`}
                 >

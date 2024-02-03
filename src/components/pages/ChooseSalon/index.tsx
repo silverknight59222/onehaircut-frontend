@@ -1,29 +1,22 @@
 "use client";
 import Navbar from '@/components/shared/Navbar'
-import React, { useEffect, useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import '../dashboard/Dashboard/Services/index.css'
-import {
-    BackArrow,
-    HomeIcon,
-    MapIconRed,
-    MapIconRedWithValue,
-    MapIconWithValue,
-    StarIcon
-} from '@/components/utilis/Icons';
+import {BackArrow, HomeIcon, MapIconRedWithValue, MapIconWithValue, StarIcon} from '@/components/utilis/Icons';
 import Image from 'next/image';
 import StarRatings from 'react-star-ratings';
-import { useRouter } from 'next/navigation';
-import { dashboard } from '@/api/dashboard';
-import { getLocalStorage, setLocalStorage } from '@/api/storage';
-import { SalonDetails } from '@/types';
+import {useRouter} from 'next/navigation';
+import {dashboard} from '@/api/dashboard';
+import {getLocalStorage, setLocalStorage} from '@/api/storage';
+import {SalonDetails} from '@/types';
 import userLoader from "@/hooks/useLoader";
 import useSnackbar from '@/hooks/useSnackbar';
-import { GoogleMap, LoadScriptProps, MarkerF, useLoadScript } from '@react-google-maps/api';
-import { ColorsThemeA, Theme_A } from '@/components/utilis/Themes';
+import {GoogleMap, LoadScriptProps, MarkerF, useLoadScript} from '@react-google-maps/api';
+import {ColorsThemeA, Theme_A} from '@/components/utilis/Themes';
 import Footer from '@/components/UI/Footer';
 import ReactDOMServer from 'react-dom/server';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
-import { salonApi } from '@/api/salonSide';
+import {salonApi} from '@/api/salonSide';
 import BaseModal from '@/components/UI/BaseModal';
 import CustomInput from '@/components/UI/CustomInput';
 
@@ -37,8 +30,8 @@ const SalonChoice = () => {
 
     // Déclaration des états locaux
     const [selectedSalon, setSelectedSalon] = useState<{ name: string, id: number | null }>({ name: '', id: null })
-    const [salonImage, setSalonImage] = useState<string[]>([])
-    const [salons, setSalons] = useState<SalonDetails[]>([])
+    // const [salonImage, setSalonImage] = useState<string[]>([])
+    // const [salons, setSalons] = useState<SalonDetails[]>([])
     const [filteredSalons, setFilteredSalons] = useState<SalonDetails[]>([]);
 
     const router = useRouter();
@@ -47,14 +40,14 @@ const SalonChoice = () => {
     const userId = user ? Number(JSON.parse(user).id) : null;
     const getHaircut = getLocalStorage("haircut") as string;
     const haircut = getHaircut ? JSON.parse(getHaircut) : null;
-    const [markersZIndexArray, setMarkersZIndexArray] = useState<number[]>([]);
+    // const [markersZIndexArray, setMarkersZIndexArray] = useState<number[]>([]);
 
     const [isLoading, setIsLoading] = useState(true);
     const { loadingView } = userLoader();
     const showSnackbar = useSnackbar();
-    const [location, setLocation] = useState({ lat: 47.18052966583263, lng: 7.358082527907601 });
+    // const [location, setLocation] = useState({ lat: 47.18052966583263, lng: 7.358082527907601 });
     const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [wishlist, setWishlist] = useState<string[]>([])
+    // const [wishlist, setWishlist] = useState<string[]>([])
     const [citySearch, setCitySearch] = useState<any>(null);
     const [nameSearch, setNameSearch] = useState<string>('');
     const [filteredMobile, setFilteredMobile] = useState<string[]>([]);
@@ -104,7 +97,6 @@ const SalonChoice = () => {
             totalLat += pos.lat;
             totalLng += pos.lng;
         });
-        //console.log('lenght ', positions.length)
         if (positions.length > 1) {
             return {
                 lat: totalLat / positions.length,
@@ -119,81 +111,74 @@ const SalonChoice = () => {
 
     };
 
-    // useEffect(() => {
-    //     if (positions.length > 0) {
-    //         recalculateMap();
-    //     }
-    // }, [positions])
-
     const recalculateMap = () => {
         if (map) {
             const bounds = new google.maps.LatLngBounds();
             positions.forEach(pos => {
                 bounds.extend(new google.maps.LatLng({ lat: pos.lat, lng: pos.lng }))
             })
-            //setMapBound(areaBounds)
             map.fitBounds(bounds);
         }
     }
 
-    const filteredCityHandler = async () => {
-        //const filteredSalons = salons
-        let filteredSalonsFunc = salons.filter((salon) => {
-            const cityNameMatches = citySearch
-                ? salon.address.city.toLowerCase().includes(citySearch.toLowerCase())
-                : true; // If citySearch is empty, consider it as a match
-
-            const salonNameMatches = nameSearch
-                ? salon.name.toLowerCase().includes(nameSearch.toLowerCase())
-                : true; // If nameSearch is empty, consider it as a match
-
-            const salonMobileMatches =
-                filteredMobile.length === 0 ||
-                filteredMobile.includes(salon.is_mobile.toLowerCase());
-
-            const salonInRange = filtereRange[0] <= salon.final_price && salon.final_price <= filtereRange[1];
-            const salonInRating = (ratingFilter.length === 0) || ((ratingFilter.length > 0) && (ratingFilter.includes(salon.rating))) || (newSalonFilter && salon.rating === 0);
-            const salonInCountry = (countryFilter === '') || (salon.address.country === countryFilter);
-            const frenchToEnglishMapping = {
-                'Lundi': 1,
-                'Mardi': 2,
-                'Mercredi': 3,
-                'Jeudi': 4,
-                'Vendredi': 5,
-                'Samedi': 6,
-                'Dimanche': 0
-            };
-            let salonAvailable = true;
-
-
-            for (const day of availabilityFilter) {
-                salonAvailable = salon.openTimes[frenchToEnglishMapping[day]].available;
-                if (salonAvailable) {
-                    break;
-                }
-            }
-
-            return (
-                cityNameMatches &&
-                salonNameMatches &&
-                salonMobileMatches &&
-                salonInRange &&
-                salonInRating &&
-                salonInCountry &&
-                salonAvailable
-            );
-        });
-        setFilteredSalons(filteredSalonsFunc);
-    };
+    // const filteredCityHandler = async () => {
+    //     //const filteredSalons = salons
+    //     let filteredSalonsFunc = salons.filter((salon) => {
+    //         const cityNameMatches = citySearch
+    //             ? salon.address.city.toLowerCase().includes(citySearch.toLowerCase())
+    //             : true; // If citySearch is empty, consider it as a match
+    //
+    //         const salonNameMatches = nameSearch
+    //             ? salon.name.toLowerCase().includes(nameSearch.toLowerCase())
+    //             : true; // If nameSearch is empty, consider it as a match
+    //
+    //         const salonMobileMatches =
+    //             filteredMobile.length === 0 ||
+    //             filteredMobile.includes(salon.is_mobile.toLowerCase());
+    //
+    //         const salonInRange = filtereRange[0] <= salon.final_price && salon.final_price <= filtereRange[1];
+    //         const salonInRating = (ratingFilter.length === 0) || ((ratingFilter.length > 0) && (ratingFilter.includes(salon.rating))) || (newSalonFilter && salon.rating === 0);
+    //         const salonInCountry = (countryFilter === '') || (salon.address.country === countryFilter);
+    //         const frenchToEnglishMapping = {
+    //             'Lundi': 1,
+    //             'Mardi': 2,
+    //             'Mercredi': 3,
+    //             'Jeudi': 4,
+    //             'Vendredi': 5,
+    //             'Samedi': 6,
+    //             'Dimanche': 0
+    //         };
+    //         let salonAvailable = true;
+    //
+    //
+    //         for (const day of availabilityFilter) {
+    //             salonAvailable = salon.openTimes[frenchToEnglishMapping[day]].available;
+    //             if (salonAvailable) {
+    //                 break;
+    //             }
+    //         }
+    //
+    //         return (
+    //             cityNameMatches &&
+    //             salonNameMatches &&
+    //             salonMobileMatches &&
+    //             salonInRange &&
+    //             salonInRating &&
+    //             salonInCountry &&
+    //             salonAvailable
+    //         );
+    //     });
+    //     setFilteredSalons(filteredSalonsFunc);
+    // };
 
     // useEffect(() => {
     //     console.log(filteredSalons)
     //     setFilteredSalons(filteredSalons)
     // }, [filteredSalons])
 
-    function timeout(delay: number) {
-        return new Promise(res => setTimeout(res, delay));
-    }
+    // function timeout(delay: number) {
+    //     return new Promise(res => setTimeout(res, delay));
+    // }
 
     const dayDict: { [key: string]: string } = {
         'Lundi': 'MONDAY',
@@ -224,15 +209,12 @@ const SalonChoice = () => {
     }
 
     const getCoordinates = (salons) => {
-        //console.log('filtered salons', filteredSalons)
         const positionArray: Position[] = []
         salons.forEach(fsalon => {
             if (fsalon.address.lat && fsalon.address.long) {
                 positionArray.push({ lat: Number(fsalon.address.lat), lng: Number(fsalon.address.long) })
             }
         })
-
-        console.log('position array', positionArray)
 
         // recalculateMap(positionArray)
         if (positionArray.length > 0) {
@@ -251,86 +233,91 @@ const SalonChoice = () => {
             setAllowScroll(false)
         }
     }
-    // Fonction pour récupérer tous les salons
-    const getAllSalons = async () => {
-        const services = getLocalStorage('ServiceIds')
-        const user = getLocalStorage("user");
-        const hair_length = user ? String(JSON.parse(user).hair_length) : "";
-        const servicesData = services ? JSON.parse(services) : []
-        const serviceIds: number[] = []
-        servicesData.forEach((service: { name: string, id: number }) => {
-            serviceIds.push(service.id)
-        })
-        // Code pour obtenir des informations sur les salons depuis l'API
-        setIsLoading(true);
 
-        let data = {
-            servicesIds: serviceIds,
-            haircut_id: 0,
-            hair_length: hair_length,
-            client_id: user ? JSON.parse(user).id : 0,
-        }
-        if (haircut) {
-            data['haircut_id'] = haircut.id
-        }
-        let allSalon;
-        await dashboard.getSalonsByHaircut(data)
-            .then((res) => {
-                const orderedSalons = res.data.data.slice().sort((a, b) => b.wishlist - a.wishlist);
-                setSalons(orderedSalons);
-                setFilteredSalons(orderedSalons);
-                allSalon = res.data.data;
-                getCoordinates(res.data.data)
-                setIsLoading(false);
-            })
-            .catch(error => {
-                setIsLoading(false);
-                //console.log('salon error',error)
-            })
-        if (userData?.user_preferences?.salon_filter) {
-            const user_preferences = userData.user_preferences;
-            let translated = getAvailEnglishUP(user_preferences.availability)
-            let filteredSalon = allSalon.filter((item) => {
-                if (
-                    (user_preferences.country != null && (item.address.country == user_preferences.country)) &&
-                    (user_preferences.budget != null && (item.final_price >= user_preferences.budget[0] && item.final_price <= user_preferences.budget[1])) &&
-                    (user_preferences.hairdressing_at_home != null && (item.is_mobile == ((user_preferences.hairdressing_at_home == 1) ? "yes" : "no"))) &&
-                    (user_preferences.postal_code == null || user_preferences.postal_code && (item.postal_code == user_preferences.postal_code)) &&
-                    (user_preferences.ratings && (item.rating >= user_preferences.ratings && item.rating <= user_preferences.max_ratings)) &&
-                    (user_preferences.availability != null && translated.every(day => item.openTimes.some(item => item.day.toUpperCase() === day.toUpperCase())))
-                ) {
-                    return item;
-                }
-            })
-            setFilteredSalons(filteredSalon)
-        }
+    const resetMapCenterToPositiong = (position: Position) => {
+      setCenter(position)
     }
+
+    // Fonction pour récupérer tous les salons
+    // const getAllSalons = async () => {
+    //     const services = getLocalStorage('ServiceIds')
+    //     const user = getLocalStorage("user");
+    //     const hair_length = user ? String(JSON.parse(user).hair_length) : "";
+    //     const servicesData = services ? JSON.parse(services) : []
+    //     const serviceIds: number[] = []
+    //     servicesData.forEach((service: { name: string, id: number }) => {
+    //         serviceIds.push(service.id)
+    //     })
+    //     // Code pour obtenir des informations sur les salons depuis l'API
+    //     setIsLoading(true);
+    //
+    //     let data = {
+    //         servicesIds: serviceIds,
+    //         haircut_id: 0,
+    //         hair_length: hair_length,
+    //         client_id: user ? JSON.parse(user).id : 0,
+    //     }
+    //     if (haircut) {
+    //         data['haircut_id'] = haircut.id
+    //     }
+    //     let allSalon;
+    //     await dashboard.getSalonsByHaircut(data)
+    //         .then((res) => {
+    //             const orderedSalons = res.data.data.slice().sort((a, b) => b.wishlist - a.wishlist);
+    //             setSalons(orderedSalons);
+    //             setFilteredSalons(orderedSalons);
+    //             allSalon = res.data.data;
+    //             getCoordinates(res.data.data)
+    //             setIsLoading(false);
+    //         })
+    //         .catch(error => {
+    //             setIsLoading(false);
+    //             //console.log('salon error',error)
+    //         })
+    //     if (userData?.user_preferences?.salon_filter) {
+    //         const user_preferences = userData.user_preferences;
+    //         let translated = getAvailEnglishUP(user_preferences.availability)
+    //         let filteredSalon = allSalon.filter((item) => {
+    //             if (
+    //                 (user_preferences.country != null && (item.address.country == user_preferences.country)) &&
+    //                 (user_preferences.budget != null && (item.final_price >= user_preferences.budget[0] && item.final_price <= user_preferences.budget[1])) &&
+    //                 (user_preferences.hairdressing_at_home != null && (item.is_mobile == ((user_preferences.hairdressing_at_home == 1) ? "yes" : "no"))) &&
+    //                 (user_preferences.postal_code == null || user_preferences.postal_code && (item.postal_code == user_preferences.postal_code)) &&
+    //                 (user_preferences.ratings && (item.rating >= user_preferences.ratings && item.rating <= user_preferences.max_ratings)) &&
+    //                 (user_preferences.availability != null && translated.every(day => item.openTimes.some(item => item.day.toUpperCase() === day.toUpperCase())))
+    //             ) {
+    //                 return item;
+    //             }
+    //         })
+    //         setFilteredSalons(filteredSalon)
+    //     }
+    // }
     // Fonction pour obtenir la liste de souhaits des salons
-    const getSalonsWishlist = () => {
-        if (userId) {
-            setIsLoading(true);
-            dashboard.getSalonsWishlist(userId)
-                .then((res) => {
-                    if (res.data.data) {
-                        if (salons.length) {
-                            const arr: string[] = []
-                            res.data.data.forEach((item: any) => {
-                                salons.forEach((salon) => {
-                                    if (item.hairsalon.id === salon.id) {
-                                        arr.push(String(salon.id))
-                                    }
-                                })
-                            });
-                            setWishlist(arr)
-                        }
-                    }
-                    setIsLoading(false);
-                })
-                .catch(error => {
-                    setIsLoading(false);
-                })
-        }
-    }
+    // const getSalonsWishlist = () => {
+    //     if (userId) {
+    //         setIsLoading(true);
+    //         dashboard.getSalonsWishlist(userId)
+    //             .then((res) => {
+    //                 if (res.data.data) {
+    //                     if (salons.length) {
+    //                         const arr: string[] = []
+    //                         res.data.data.forEach((item: any) => {
+    //                             salons.forEach((salon) => {
+    //                                 if (item.hairsalon.id === salon.id) {
+    //                                     arr.push(String(salon.id))
+    //                                 }
+    //                             })
+    //                         });
+    //                         setWishlist(arr)
+    //                     }
+    //                 }
+    //                 setIsLoading(false);
+    //             })
+    //             .catch(error => {
+    //                 setIsLoading(false);
+    //             })
+    //     }
+    // }
 
     // Modal for customer to be patient for new salon to come
     const [isCustomerInfoModalOpen, setIsCustomerInfoModalOpen] = useState(false);
@@ -398,7 +385,7 @@ const SalonChoice = () => {
         // console.log('result iss', result)
 
         if (result.data.status === 200) {
-            setSalons(result.data.data);
+            // setSalons(result.data.data);
             setFilteredSalons(result.data.data);
             getCoordinates(result.data.data)
         }
@@ -408,17 +395,17 @@ const SalonChoice = () => {
     }
 
     // Fonction pour ajouter/supprimer des salons à la liste de souhaits
-    const onWishlist = async (e: any, salonId: number) => {
+    const onWishlist = async (e: any, salon: SalonDetails) => {
         e.stopPropagation()
         if (userId) {
             let data = {
                 user_id: userId,
-                hair_salon_id: salonId
+                hair_salon_id: salon.id
             }
-            if (wishlist.includes(String(salonId))) {
-                await dashboard.removeFromSalonWishList(salonId, userId)
+            if (salon.wishlist) {
+                await dashboard.removeFromSalonWishList(salon.id, userId)
                     .then(() => {
-                        getSalonsWishlist()
+                        handleAllFilter()
                         showSnackbar('success', 'Remove From Wishlist Successfully!')
                     })
                     .catch(error => {
@@ -428,7 +415,7 @@ const SalonChoice = () => {
             else {
                 await dashboard.addSalonWishList(data)
                     .then(response => {
-                        getSalonsWishlist()
+                      handleAllFilter()
                         showSnackbar('success', 'Added To Wishlist Successfully!')
                     })
                     .catch(err => console.log(err))
@@ -440,10 +427,6 @@ const SalonChoice = () => {
     const onContinue = () => {
         setLocalStorage('selectedSalon', JSON.stringify(selectedSalon))
         router.push(`salon/profile`)
-    }
-
-    const getFilteredSalon = () => {
-        handleAllFilter()
     }
 
     const getSVGWithValue = (value: string) => {
@@ -459,7 +442,9 @@ const SalonChoice = () => {
     // Utilisation de useEffect pour récupérer les données lors du montage du composant
     useEffect(() => {
         // getAllSalons() // commented this method as this been called on initial load of page but later called filter method, so for data consistancy we have to use the same API call.
-        handleAllFilter()
+        handleAllFilter().then(() => {
+          // getSalonsWishlist()
+        })
         // if(userData.user_preferences.salon_filter){
         //     getFilteredSalon()
         // }
@@ -472,6 +457,13 @@ const SalonChoice = () => {
         }
     }, [])
 
+  const handleSolenSelected = (salon: SalonDetails) => {
+      setSelectedSalon(salon)
+    if(salon.address?.lat && salon.address?.long) {
+      setCenter({lat: salon.address.lat, lng: salon.address.long})
+    }
+  }
+
     // Autre appel useEffect basé sur l'état des salons
     // useEffect(() => {
     //     if (!isLoggedIn) {
@@ -481,9 +473,9 @@ const SalonChoice = () => {
     const doFilter = async () => {
         // await timeout(100)
         // timeout(500)
-        console.log('filtering')
+        // console.log('filtering')
         // filteredCityHandler()
-        getCoordinates(filteredSalons)
+        // getCoordinates(filteredSalons)
         // const delayTime = 1000;
         // const timeoutId = setTimeout(delayedFunction, delayTime);
         // return () => clearTimeout(timeoutId);
@@ -804,8 +796,6 @@ const SalonChoice = () => {
 
                                                 <MarkerF
                                                     key={index}
-                                                    // lat={positions[index].lat}
-                                                    // lng={positions[index].lng}
                                                     position={{ lat: position.lat, lng: position.lng }} // Utiliser la position du salon
                                                     onClick={() => setSelectedSalon(filteredSalons[index] != null ? filteredSalons[index] : { "name": "Null", "id": 0 })}
                                                     onMouseOver={(e) => {
@@ -865,10 +855,10 @@ const SalonChoice = () => {
                                     <div
                                         key={index}
                                         id={`Vignette-${index}`}
-                                        onClick={() => setSelectedSalon(fsalon)}
+                                        onClick={() => handleSolenSelected(fsalon)}
                                         className={`relative flex w-full w-max[450px] h-56 h-max[300px] rounded-2xl border hover:border-stone-400 cursor-pointer
-                                        ${selectedSalon.id === fsalon.id ? 'border-4 border-red-400 shadow-xl' : ''} 
-                                        ${wishlist.includes(String(fsalon.id)) ? ColorsThemeA.OhcGradient_G : 'bg-stone-100'}`} // bg-green-100 est un exemple, choisissez la couleur que vous voulez
+                                        ${selectedSalon.id === fsalon.id ? 'border-4 border-red-400 shadow-xl' : ''}
+                                        ${fsalon.wishlist ? ColorsThemeA.OhcGradient_G : 'bg-stone-100'}`} // bg-green-100 est un exemple, choisissez la couleur que vous voulez
                                     >
                                         {selectedSalon.id === fsalon.id && (
                                             <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 bg-white border-2 border-red-400 rounded-full mx-10 px-1">
@@ -881,10 +871,10 @@ const SalonChoice = () => {
                                         <div className="flex flex-col p-1 md:p-2 shadow-md rounded-2xl " style={{ flexGrow: 1 }}>
                                             <div className='relative mb-1 md:mb-4 hover:scale-105 transition duration-1000 m-2' style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                                 {!isLoggedIn &&
-                                                    <div onClick={(e) => onWishlist(e, fsalon.id)} className="absolute right-6 sm:right-2 top-6 sm:top-2 z-10 cursor-pointer hover:scale-150 transition duration-300">
+                                                    <div onClick={(e) => onWishlist(e, fsalon)} className="absolute right-6 sm:right-2 top-6 sm:top-2 z-10 cursor-pointer hover:scale-150 transition duration-300">
                                                         <StarIcon width='35' height='35'
-                                                            color={wishlist.includes(String(fsalon.id)) || fsalon.wishlist == 1 ? "#FF5B5B" : ""}
-                                                            stroke={wishlist.includes(String(fsalon.id)) || fsalon.wishlist == 1 ? "#FFFFFF" : ""} />
+                                                            color={fsalon.wishlist == 1 ? "#FF5B5B" : ""}
+                                                            stroke={fsalon.wishlist == 1 ? "#FFFFFF" : ""} />
                                                     </div>}
 
                                                 {fsalon && fsalon.salon_cover_image &&
