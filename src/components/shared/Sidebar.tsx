@@ -526,8 +526,6 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
             {/* Sidebar items display - mb-12 added to be able to see the last element due to the bottom-bar */}
             <div className="mt-8 mb-12">
               {sidebarItems.map((item, index) => {
-                console.log(item)
-                console.log(item.route)
                 return (
                   <div key={index}>
                     <div
