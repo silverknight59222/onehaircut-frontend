@@ -255,7 +255,7 @@ const BookSalon = () => {
     },
     {
       selector: '.pictures_hairdresser',
-      content: 'Tu peux choisir ici le coiffeur que tu aimerais en cliquant dessus. Le salon se laisse toutefois le droit d\assigner un autre coiffeur, si nécessaire.',
+      content: 'Tu peux choisir ici le coiffeur que tu aimerais en cliquant dessus. Le salon se laisse toutefois le droit d\'assigner un autre coiffeur, si nécessaire.',
     },
     {
       selector: '.choice_place',

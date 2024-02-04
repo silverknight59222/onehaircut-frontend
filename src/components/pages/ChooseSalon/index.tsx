@@ -629,7 +629,7 @@ const SalonChoice = () => {
         },
         {
             selector: '.thumbnails_salons',
-            content: 'Vous pouvez simplement cliquer sur le salon qui vous interesse',
+            content: 'Tu peux simplement cliquer sur le salon qui t\'interesse',
         },
         {
             selector: '.button_continue',
