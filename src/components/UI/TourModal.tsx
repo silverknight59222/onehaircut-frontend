@@ -91,7 +91,7 @@ export default TourModal
 
 
 
-/* README
+/* README 
 Aim:
 Give instructions or present a page. As argument buttons/elements can be highlighted
 
