@@ -24,6 +24,7 @@ import { Auth } from "@/api/auth";
 import { getLocalStorage } from "@/api/storage";
 import useSnackbar from "@/hooks/useSnackbar";
 import { dashboard } from "@/api/dashboard";
+import userLoader from "@/hooks/useLoader";
 
 const SubSelected_text = "text-white"
 const SubSelected_recommended = "bg-[rgba(255,255,255,0.53)] text-white"
@@ -37,6 +38,8 @@ const SubUnselected_BG = `bg-white`
 const Subscription = () => {
   const showSnackbar = useSnackbar();
   const router = useRouter();
+  const { loadingView } = userLoader();
+  const [isLoading, setIsLoading] = useState(false);
   const defaultSubscription = {
     created_at: '',
     current_period_end: '',
@@ -89,6 +92,7 @@ const Subscription = () => {
   }, []);
 
   const fetchSubscription = async () => {
+    setIsLoading(true)
     const resp = await salonApi.getSubscription()
     console.log(resp.data.data)
     if (resp.data.data) {
@@ -99,6 +103,7 @@ const Subscription = () => {
     } else {
       setIsCurrSubscriptionPro(false)
     }
+    setIsLoading(false)
   }
   // const modifBankCard: React.JSX.Element =
   //   <div>
@@ -124,6 +129,7 @@ const Subscription = () => {
   }
 
   const upgradePlan = async () => {
+    setIsLoading(true)
     const resp = await salonApi.upgradeToProPlan()
     console.log(resp.data)
     if (resp.data.data.subscription) {
@@ -135,9 +141,11 @@ const Subscription = () => {
     } else {
       setIsCurrSubscriptionPro(false)
     }
+    setIsLoading(false)
   }
 
   const downgradePlan = async () => {
+    setIsLoading(true)
     console.log('downgrading plan')
     const resp = await salonApi.downgradeToFreePlan()
     console.log(resp.data)
@@ -149,6 +157,7 @@ const Subscription = () => {
     } else {
       setIsCurrSubscriptionPro(false)
     }
+    setIsLoading(false)
   }
 
   const handleCloseAccount = async () => {
