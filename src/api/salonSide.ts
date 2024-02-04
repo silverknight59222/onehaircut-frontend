@@ -1,4 +1,4 @@
-import { BankAccountStripe } from "@/types";
+import { BankAccountStripe, PaymentMethodStripe } from "@/types";
 import { request } from "./Request";
 
 interface SlotParam {
@@ -124,6 +124,12 @@ const salonApi = {
   },
   updateBankAccount: async (params: BankAccountStripe) => {
     return await request.post('stripe/bankUpdate', params);
+  },
+  getSalonCustomerStripeInformation: async () => {
+    return await request.get('stripe/getCustomerInformation');
+  },
+  submitNewPaymentMethod: async(params: any) => {
+    return await request.post('stripe/updateNewPaymentMethod');
   }
 
 }

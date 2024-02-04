@@ -192,3 +192,10 @@ export type BankAccountStripe = {
 	iban : string,
 	currency : string,
 }
+
+export type  PaymentMethodStripe = {
+	number: string,
+	exp_month: string,
+	exp_year: string,
+	cvc: string,
+}
