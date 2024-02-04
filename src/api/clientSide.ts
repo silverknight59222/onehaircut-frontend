@@ -135,5 +135,8 @@ const user_api = {
     setSalonFilter: async (params: any) => {
         return await request.post('/user_salon_filter', params);
     },
+    assignStepDone: async(params : any) => {
+        return await request.post('assign_step', params);
+    }
 }
 export { client, user_api };

@@ -4,7 +4,7 @@ import ClientDashboardLayout from "@/layout/ClientDashboardLayout";
 import Image from "next/image";
 import React, { useEffect, useState, useRef } from "react";
 import Footer from "@/components/UI/Footer";
-import { getLocalStorage } from "@/api/storage";
+import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/storage";
 import { clientDashboard } from "@/api/clientDashboard";
 import { SalonDetails, Chat } from "@/types";
 import { dashboard } from "@/api/dashboard";
@@ -12,6 +12,7 @@ import userLoader from "@/hooks/useLoader";
 import { Theme_A, ColorsThemeA } from "@/components/utilis/Themes";
 import CustomInput from "@/components/UI/CustomInput";
 import TourModal, { Steps } from "@/components/UI/TourModal";
+import { user_api } from "@/api/clientSide";
 
 
 
@@ -25,6 +26,7 @@ const Messages = () => {
     const [chats, setChats] = useState<Chat[]>([])
     const { loadingView } = userLoader();
     const [isLoading, setIsLoading] = useState(false);
+    const [pageDone, setPageDone] = useState<String[]>([]);
 
     // Récupère les salons liés à l'utilisateur
     const getSalonsByUser = async () => {
@@ -104,6 +106,9 @@ const Messages = () => {
     // Appelle `getSalonsByUser` au chargement du composant    // Appelle `getSalonsByUser` au chargement du composant
     useEffect(() => {
         getSalonsByUser()
+        const pages_done = getLocalStorage('pages_done')
+        setPageDone(pages_done!.split(',').map((item) => item.trim()))
+        console.log(pages_done)
     }, [])
 
 
@@ -149,8 +154,16 @@ const Messages = () => {
         },
     ];
 
-    const closeTour = () => {
+    const closeTour = async () => {
         // You may want to store in local storage or state that the user has completed the tour
+        setIsLoading(true)
+        if(!pageDone.includes('message')){
+            let resp = await user_api.assignStepDone({ page: 'message' });
+            removeFromLocalStorage('pages_done');
+            setLocalStorage('pages_done', resp.data.pages_done);
+            setPageDone((prevArray) => [...prevArray, 'message'])
+        }
+        setIsLoading(false);
     };
     // ------------------------------------------------------------------
 
@@ -161,7 +174,9 @@ const Messages = () => {
             {isLoading && loadingView()}
 
             {/* For explaining the website */}
-            <TourModal steps={tourSteps} onRequestClose={closeTour} />
+            {!pageDone.includes('message') &&
+                <TourModal steps={tourSteps} onRequestClose={closeTour} />
+            }
 
             <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
                 <LogoCircleFixRight />
