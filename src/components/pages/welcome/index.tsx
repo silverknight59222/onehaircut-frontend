@@ -497,7 +497,11 @@ const Welcome = () => {
     },
     {
       selector: '.zone_filters',
-      content: 'Une fois selectionnée, tu peux aussi visualiser la coiffure sur ta tête, si tu as apporté tes photos de profil dans la section portrait.',
+      content: 'Une fois selectionnée, tu peux aussi visualiser la coiffure sur ta tête, si tu as apporté tes photos de profil dans la section portrait. Pour ce faire clique sur "Prévisualiser sur moi',
+    },
+    {
+      selector: '.bouton_generic_haircut',
+      content: 'Si tu n\'as pas trouvé ce que cherchais ou que tu veux une coiffure plus générique, clique là!',
     },
   ];
 
@@ -586,7 +590,7 @@ const Welcome = () => {
 
           {/* Bouton Coiffure Simple */}
           <div
-            className={`${Theme_A.button.bigWhiteColoredButton} cursor-pointer mr-4`}
+            className={`${Theme_A.button.bigWhiteColoredButton} cursor-pointer mr-4 bouton_generic_haircut`}
             onClick={openGenericHaircutModal}
           >
             Choix générique de coiffure

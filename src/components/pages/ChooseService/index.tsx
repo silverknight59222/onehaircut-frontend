@@ -13,6 +13,7 @@ import { Theme_A } from '@/components/utilis/Themes';
 import { ColorsThemeA } from '@/components/utilis/Themes';
 import Footer from "@/components/UI/Footer";
 import InfoButton from '@/components/UI/InfoButton';
+import TourModal, { Steps } from "@/components/UI/TourModal";
 
 // Définition des interfaces pour typer les données manipulées dans le composant.
 interface Requirements {
@@ -39,18 +40,18 @@ export interface Service {
 
 const Length = [
     {
-      name: "Short",
-      nameFr: "Court",
+        name: "Short",
+        nameFr: "Court",
     },
     {
-      name: "Medium",
-      nameFr: "Moyen",
+        name: "Medium",
+        nameFr: "Moyen",
     },
     {
-      name: "Long",
-      nameFr: "Long",
+        name: "Long",
+        nameFr: "Long",
     },
-  ];
+];
 
 // Composant principal
 const ServiceChoose = () => {
@@ -99,7 +100,7 @@ const ServiceChoose = () => {
                     setServices(services_new);
                     console.log("SERVICES GET")
                     console.log(services_new)
-                    if(isEnableHaircutFilter){
+                    if (isEnableHaircutFilter) {
                         let filtered = services_new.filter((item) => {
                             return length_sought.toLowerCase() == item.length
                         })
@@ -111,7 +112,7 @@ const ServiceChoose = () => {
                     setIsLoading(false);
                 }
             })
-            .catch(error => {console.log(error); setIsLoading(false)})
+            .catch(error => { console.log(error); setIsLoading(false) })
     }
 
     // Gestion du clic sur un service.
@@ -191,10 +192,10 @@ const ServiceChoose = () => {
                 service.name.toLowerCase().includes(search.toLowerCase())
             );
         }
-        if(filteredType.length > 0 && lengthSelect.length > 0) {
+        if (filteredType.length > 0 && lengthSelect.length > 0) {
             list.forEach((service) => {
                 filteredType.forEach((filter) => {
-                    if(service.type === filter.toLowerCase()){
+                    if (service.type === filter.toLowerCase()) {
                         lengthSelect.forEach((filter) => {
                             if (service.length === Length.find((length) => length.name === filter)?.nameFr.toLowerCase()) {
                                 filteredServices.push(service);
@@ -213,7 +214,7 @@ const ServiceChoose = () => {
                 });
             });
         }
-        else if(lengthSelect.length > 0) {
+        else if (lengthSelect.length > 0) {
             list.forEach((service) => {
                 lengthSelect.forEach((filter) => {
                     if (service.length === Length.find((length) => length.name === filter)?.nameFr.toLowerCase()) {
@@ -254,7 +255,7 @@ const ServiceChoose = () => {
     const getBasedFilter = () => {
         const user = getLocalStorage("user");
         const length_sought = user ? (JSON.parse(user).user_preferences ? String(JSON.parse(user).user_preferences.length_sought) : "") : "";
-        if(user){
+        if (user) {
             let length = length_sought === 'Long' ? ['Long'] : length_sought === 'Moyen' ? ['Medium'] : length_sought === 'Court' ? ['Short'] : [];
             console.log("Called");
             setLengthFilters(length)
@@ -274,15 +275,15 @@ const ServiceChoose = () => {
     useEffect(() => {
         console.log("Services")
         console.log(services);
-    },[services])
+    }, [services])
 
     // Charger tous les services au montage du composant.
     // useEffect(() => {
-        // if(servicesData){
-        //     servicesData.forEach((item: {name: string, id: string}) => {
-        //         setSelectedService((prevState) => [...prevState, String(item.id)]);
-        //     });
-        // }
+    // if(servicesData){
+    //     servicesData.forEach((item: {name: string, id: string}) => {
+    //         setSelectedService((prevState) => [...prevState, String(item.id)]);
+    //     });
+    // }
     // }, [])
 
     // Filtrage des services lors de la modification de la recherche ou du type filtré.
@@ -302,9 +303,35 @@ const ServiceChoose = () => {
     const InfoContent_2 = `● Le choix d'un service n'est pas obligatoire,<br /> Vous pouvez continuer si vous avez au moins sélectionnée une coiffure.<br /> ● Il n'est pas possible de réserver un coiffeur sans avoir sélection soit une coiffure, soit une prestation. <br />`;
     const VideoUrl = "";
 
+
+    // ------------------------------------------------------------------
+    // For Tour
+    const tourSteps: Steps[] = [
+        {
+            selector: '',
+            content: 'Ici tu peux rajouter un service à votre coiffure',
+        },
+        {
+            selector: '.thumbnails_services',
+            content: 'Les services sont optionels et peuvent être choisis en cliquant sur ceux qui t\'intéressent',
+        },
+        {
+            selector: '.button_continue',
+            content: 'Si tu veux seulement la coupe de cheveux, tu peux cliquer là',
+        },
+    ];
+
+    const closeTour = () => {
+        // You may want to store in local storage or state that the user has completed the tour
+    };
+    // ------------------------------------------------------------------
+
     // JSX retourné pour le rendu du composant.
     return (
         <div>
+            {/* For explaining the website */}
+            {<TourModal steps={tourSteps} onRequestClose={closeTour} />}
+
             <Navbar
                 isServicesPage={true}
                 onLengthSelect={(length) => setLengthFilters(length)}
@@ -339,11 +366,12 @@ const ServiceChoose = () => {
                             )}
                         </div>
 
-                        {(haircut || selectedService.length != 0) && <button onClick={onContinue} className={`flex items-center justify-center text-lg text-white font-medium w-full md:w-52 h-14 rounded-xl px-4 ${Theme_A.button.medLargeGradientButton}`}>Continue</button>}
+                        {(haircut || selectedService.length != 0) && <button onClick={onContinue}
+                            className={`flex items-center justify-center text-lg text-white font-medium w-full md:w-52 h-14 rounded-xl px-4 button_continue ${Theme_A.button.medLargeGradientButton}`}>Continue</button>}
                     </div>
 
 
-                    <div className='mt-8 mb-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-x-9 gap-y-5 '>
+                    <div className='mt-8 mb-16 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 2xl:grid-cols-5 gap-x-9 gap-y-5 thumbnails_services'>
                         {showServices().map((service, index) => {
                             return (
                                 <div key={index} onClick={() => onServiceclick(service.name, service.id, service.requirements)}
