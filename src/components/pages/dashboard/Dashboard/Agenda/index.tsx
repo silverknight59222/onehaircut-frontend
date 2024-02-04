@@ -5,7 +5,7 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import FullCalendar from "@fullcalendar/react";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import "./index.css";
+import "./style.css";
 import { dashboard } from "@/api/dashboard";
 import EventDetailsModal from "./EventDetails";
 import { Booking, Coiffeur } from "./types";
@@ -14,7 +14,7 @@ import frLocale from '@fullcalendar/core/locales/fr'; // Importez la locale fran
 import TourModal, { Steps } from "@/components/UI/TourModal";
 
 
-export const Agenda = () => {
+const Agenda = () => {
   // Initialisation des états et des références
   const { loadingView } = userLoader();
   const [isLoading, setIsLoading] = useState(false);
@@ -285,3 +285,6 @@ export const Agenda = () => {
     </>
   );
 };
+
+
+export default Agenda;

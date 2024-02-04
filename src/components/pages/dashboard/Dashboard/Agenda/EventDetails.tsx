@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { CrossIcon } from "@/components/utilis/Icons";
 import { ColorsThemeA } from "@/components/utilis/Themes";
 import { ChatSendIcon } from "@/components/utilis/Icons";
-import './index.css';
+import './style.css';
 import { Theme_A } from "@/components/utilis/Themes";
 import Image from "next/image";
 import { Booking, Coiffeur } from "./types";

@@ -1,14 +1,12 @@
 "use client";
-import Account from "@/components/pages/ClientDashboard/Account";
+import dynamic from "next/dynamic";
 import React from "react";
 
-const page = () => {
- 
-  return (
-    <div>
-        <Account/>
-    </div>
-  );
-};
+const Account = dynamic(() => import('@/components/pages/ClientDashboard/Account'), {
+  ssr: false, // Désactive le rendu côté serveur pour ce composant
+});
 
-export default page;
+export default function page() {
+  // Le composant ChooseSalon sera maintenant rendu côté client uniquement
+  return <Account />;
+}
