@@ -27,18 +27,18 @@ const Step5 = () => {
   const getStripeKey = async () => {
     setIsLoading(true)
     try {
-        let resp = await salonApi.getStripeKey();
-        const publishableKey = resp.data.pk || null;
-        setPromisKey(resp.data);
-        setStripePromise(publishableKey);
-        console.log(publishableKey);
+      let resp = await salonApi.getStripeKey();
+      const publishableKey = resp.data.pk || null;
+      setPromisKey(resp.data);
+      setStripePromise(publishableKey);
+      console.log(publishableKey);
     } catch (error) {
-        console.error('Error fetching Stripe key:', error);
-        // Handle error appropriately (e.g., show a message to the user)
+      console.error('Error fetching Stripe key:', error);
+      // Handle error appropriately (e.g., show a message to the user)
     } finally {
-        setIsLoading(false);
+      setIsLoading(false);
     }
-}
+  }
 
   useEffect(() => {
     setMounted(true)
@@ -77,13 +77,13 @@ const Step5 = () => {
                 </div>
               </div>
               <div className="bg-white px-4 py-8 mt-7 w-full rounded-lg">
-                <p className="text-lg font-semibold text-black">
+                <p className="text-lg font-semibold text-black mb-4">
                   Moyen de paiement
                 </p>
                 {options.clientSecret && mounted && (
                   <Elements
-                      stripe={stripePromise ? loadStripe(stripePromise) : null}
-                      options={options}
+                    stripe={stripePromise ? loadStripe(stripePromise) : null}
+                    options={options}
                   >
                     <StripePayment />
                   </Elements>
@@ -93,22 +93,24 @@ const Step5 = () => {
           </div>
           <div className="w-full lg:w-[480px] 2xl:w-[590px] bg-[#f3f2f2] rounded-3xl py-6 px-6 sm:px-8 shadow-sm shadow-stone-300">
             <p className="text-lg font-semibold text-black">Commande</p>
+
             <div className="text-black text-lg mt-5">
+              <div className="flex items-center justify-between gap-3 mb-2">
+                <p className="">• Nom de votre Salon</p>
+                <p>{salonInfo ? `${salonInfo}` : '-'}</p>
+              </div>
+
               <div className="flex items-center justify-between gap-3">
-                <p>{planType ? planType.name : '-'}</p>
+                <p>{planType ? '• ' + planType.name : '-'}</p>
                 <p className="whitespace-nowrap">{planType ? planType.price : '-'} €</p>
               </div>
             </div>
+
             <div className="flex items-center justify-between mt-5">
               <p className="text-black font-bold text-lg">Total</p>
               <p>{planType ? planType.price : '-'} €</p>
             </div>
-            <div className="mt-10">
-              <p className="text-lg font-semibold text-black">Salon</p>
-              <div className="text-black text-lg mt-5">
-                <p>{salonInfo ? `${salonInfo}` : '-'}</p>
-              </div>
-            </div>
+
           </div>
         </div>
       </div>

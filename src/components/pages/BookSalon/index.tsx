@@ -334,7 +334,7 @@ const BookSalon = () => {
                   name="rating"
                 />
                 {/* TODO use salon's rating of the selected haircut {salonProfile.rating}*/}
-                <p className="-mb-2"> {salon?.haircut == null ? 0 : salon?.haircut.rating}</p> <br /> <small><small>  ({salon?.haircut == null ? 0 : salon?.haircut.rating_counts} avis</small></small> <p className="font-normal"><small><small><small>* sur cette coiffure</small></small></small> <br /></p> <small><small> ) </small></small>
+                <p className="-mb-2"> {salon?.haircut == null ? 0 : salon?.haircut.rating.toFixed(1)}</p> <br /> <small><small>  ({salon?.haircut == null ? 0 : salon?.haircut.rating_counts} avis</small></small> <p className="font-normal"><small><small><small>* sur cette coiffure</small></small></small> <br /></p> <small><small> ) </small></small>
               </div>
             </div>
           )}

@@ -2,18 +2,23 @@ import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import dynamic from "next/dynamic";
 import { useState } from "react";
 const Tour = dynamic(() => import("reactour"), { ssr: false });
+import Player from "@/components/UI/PlayerForTour"
+
 
 export interface Steps {
   selector: string,
-  content: string,
+  content: string | JSX.Element,
+  audioPath?: string
 }
 
 export type TourModalType = {
   steps: Steps[],
   onRequestClose?: () => void;
+  children?: JSX.Element,
+  audioPath?: string
 }
 
-const TourModal = ({ steps, onRequestClose }: TourModalType) => {
+const TourModal = ({ steps, onRequestClose, children, audioPath }: TourModalType) => {
   const disableBody = target => disableBodyScroll(target);
   const enableBody = target => enableBodyScroll(target);
   const [isTourOpen, setIsTourOpen] = useState(true);
@@ -22,6 +27,18 @@ const TourModal = ({ steps, onRequestClose }: TourModalType) => {
     onRequestClose && onRequestClose();
   };
 
+  const modalContent = (
+    <div className='relative top-0 left-0 pr-1 pb-1'>
+      {audioPath && (
+        <Player
+          src={audioPath}
+        />
+      )}
+      {children}
+    </div>
+  );
+
+
   // Composant de bouton avec effet de survol
   const HoverButton = ({ text, baseBgColor, hoverBgColor, textColor = "white" }) => {
     const [isHovered, setIsHovered] = useState(false);
@@ -29,7 +46,7 @@ const TourModal = ({ steps, onRequestClose }: TourModalType) => {
     return (
       <button
         style={{
-          padding: '10px',
+          padding: '8px',
           backgroundColor: isHovered ? hoverBgColor : baseBgColor,
           color: textColor,
           border: `1px solid #CBCBCB`, // Ajout de la bordure avec la couleur conditionnelle
@@ -61,7 +78,10 @@ const TourModal = ({ steps, onRequestClose }: TourModalType) => {
         prevButton={<HoverButton text="Retour" baseBgColor="#000000" hoverBgColor="#4F4F4F" textColor="#ffffff" />}
         nextButton={<HoverButton text="Suivant" baseBgColor="#FF7B20" hoverBgColor="#FE5019" />}
         lastStepNextButton={<HoverButton text="C'est parti !" baseBgColor="#FF7B20" hoverBgColor="#FE5019" />}
-
+        children={modalContent}
+        showNumber={false}
+      // getCurrentStep={}
+      // highlightedBorder={ }
       />
     </>
   )

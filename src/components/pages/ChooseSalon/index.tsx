@@ -462,6 +462,7 @@ const SalonChoice = () => {
         setSelectedSalon(salon)
         if (salon.address?.lat && salon.address?.long) {
             setCenter({ lat: salon.address.lat, lng: salon.address.long })
+            map?.setZoom(8);
         }
     }
 
