@@ -129,7 +129,7 @@ const SalonInfos = () => {
                 user_info = user_info ? JSON.parse(user_info) : null;
                 user_info.hair_salon = resp.data;
                 setLocalStorage("user", JSON.stringify(user_info))
-                showSnackbar("success", "Salon Type Saved Successfully.");
+                showSnackbar("success", "Changement du type de salon effectué.");
             })
             .catch(err => {
                 //console.log(err);
@@ -190,8 +190,13 @@ const SalonInfos = () => {
     const [selectedImageUrl, setSelectedImageUrl] = useState('/assets/DefaultPictures/Profil.png');
     const HandleSelectedSalonType = (item: string) => {
         setSelectedSalonType(item);
-        setTypeImage(item)
-        saveSalonType(item)
+        setTypeImage(item);
+        saveSalonType(item);
+        // Utilisez setTimeout pour retarder le rechargement, permettant à l'UI de se mettre à jour.
+        setTimeout(() => {
+            window.location.reload();
+        }, 2000); // Rafraîchit la page après un délai de 1000 millisecondes (1 seconde)
+
     }
 
     const setTypeImage = (item) => {

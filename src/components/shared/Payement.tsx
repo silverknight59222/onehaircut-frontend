@@ -114,8 +114,8 @@ focus:border-gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-stone
                             </div>
                         </div>
                         <div>
-                            <button className={`${Theme_A.button.mediumGradientButton}`}>
-                                <i className="items-end justify-end"></i> Confirmer
+                            <button className={`${Theme_A.button.mediumGradientButton} `}>
+                                <i className="items-center justify-center"></i> Confirmer
                             </button>
                         </div>
                     </div>)
@@ -123,7 +123,7 @@ focus:border-gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-stone
                 {cardSide == false &&
                     <div className='my-8 justify-end items-center '>
                         <button className={`${Theme_A.button.mediumGradientButton}`}>
-                            <i className="mdi mdi-lock-outline mr-1"></i> Se connecter avec Paypal
+                            <i className="mdi mdi-lock-outline mr-1"></i> Se connecter avec Paypal ( bientôt disponible)
                         </button>
                     </div>
                 }

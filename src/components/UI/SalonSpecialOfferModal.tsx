@@ -56,6 +56,12 @@ const SpecialOfferModal: React.FC<SpecialOfferModalProps> = ({ close }) => {
 
                 </div>
 
+                <div className="flex flex-col items-center justify-center p-4 rounded-2xl shadow-md bg-orange-200 mt-4">
+                    <h3 className="font-bold">Une utilisation performante récompensée !</h3>
+                    <p className={`${ColorsThemeA.textGradient_Title} font-semibold text-5xl`}>1 mois Pro offert !</p>
+                    <span className={`${ColorsThemeA.textGradient_Title} font-semibold text-lg`}> toutes les 200 réservations obtenues!</span>
+                </div>
+
                 <div className="flex justify-evenly mt-12">
                     <button
                         className={`text-white ${Theme_A.button.medBlackColoredButton}`}
