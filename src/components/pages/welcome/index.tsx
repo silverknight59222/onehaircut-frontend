@@ -104,8 +104,8 @@ const Welcome = () => {
         .catch(error => {
           //
         }).finally(() => {
-        setIsLoading(false);
-      })
+          setIsLoading(false);
+        })
     }
   }
 
@@ -573,7 +573,7 @@ const Welcome = () => {
         </div>
 
         {/*Affichage des carte coiffure  */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 md:gap-12 mb-16 ">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 md:gap-12 mb-32 ">
           {haircuts().map((item, index) => {
             return (
               <div key={index} onClick={() => onClickHaircut(item.id, item.name, item.image)}
@@ -622,7 +622,7 @@ const Welcome = () => {
         </div>
 
         {isLoggedIn && (
-          <div className="flex text-sm p-1 sm:p-4 md:p-5 mx-2 gap-3 sm:gap-12 md:gap-20 items-center justify-center bg-white w-full fixed bottom-8 border-2 border-t-slate-300">
+          <div className="flex text-sm p-1 sm:p-4 md:p-5 mx-2 gap-3 sm:gap-12 md:gap-20 items-center justify-center bg-white w-full fixed bottom-8 border-2 border-t-slate-300 ">
             <div className={` text-center ${DemoButton}`}>
               Démonstration d’utilisation
             </div>

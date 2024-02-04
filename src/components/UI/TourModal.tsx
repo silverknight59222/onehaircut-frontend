@@ -29,7 +29,7 @@ const TourModal = ({ steps, onRequestClose }: TourModalType) => {
     return (
       <button
         style={{
-          padding: '10px',
+          padding: '8px',
           backgroundColor: isHovered ? hoverBgColor : baseBgColor,
           color: textColor,
           border: `1px solid #CBCBCB`, // Ajout de la bordure avec la couleur conditionnelle

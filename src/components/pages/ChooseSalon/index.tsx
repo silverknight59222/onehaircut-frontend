@@ -1,22 +1,22 @@
 "use client";
 import Navbar from '@/components/shared/Navbar'
-import React, {useEffect, useState} from 'react'
+import React, { useEffect, useState } from 'react'
 import '../dashboard/Dashboard/Services/index.css'
-import {BackArrow, HomeIcon, MapIconRedWithValue, MapIconWithValue, StarIcon} from '@/components/utilis/Icons';
+import { BackArrow, HomeIcon, MapIconRedWithValue, MapIconWithValue, StarIcon } from '@/components/utilis/Icons';
 import Image from 'next/image';
 import StarRatings from 'react-star-ratings';
-import {useRouter} from 'next/navigation';
-import {dashboard} from '@/api/dashboard';
-import {getLocalStorage, setLocalStorage} from '@/api/storage';
-import {SalonDetails} from '@/types';
+import { useRouter } from 'next/navigation';
+import { dashboard } from '@/api/dashboard';
+import { getLocalStorage, setLocalStorage } from '@/api/storage';
+import { SalonDetails } from '@/types';
 import userLoader from "@/hooks/useLoader";
 import useSnackbar from '@/hooks/useSnackbar';
-import {GoogleMap, LoadScriptProps, MarkerF, useLoadScript} from '@react-google-maps/api';
-import {ColorsThemeA, Theme_A} from '@/components/utilis/Themes';
+import { GoogleMap, LoadScriptProps, MarkerF, useLoadScript } from '@react-google-maps/api';
+import { ColorsThemeA, Theme_A } from '@/components/utilis/Themes';
 import Footer from '@/components/UI/Footer';
 import ReactDOMServer from 'react-dom/server';
 import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
-import {salonApi} from '@/api/salonSide';
+import { salonApi } from '@/api/salonSide';
 import BaseModal from '@/components/UI/BaseModal';
 import CustomInput from '@/components/UI/CustomInput';
 
@@ -235,7 +235,7 @@ const SalonChoice = () => {
     }
 
     const resetMapCenterToPositiong = (position: Position) => {
-      setCenter(position)
+        setCenter(position)
     }
 
     // Fonction pour récupérer tous les salons
@@ -415,7 +415,7 @@ const SalonChoice = () => {
             else {
                 await dashboard.addSalonWishList(data)
                     .then(response => {
-                      handleAllFilter()
+                        handleAllFilter()
                         showSnackbar('success', 'Added To Wishlist Successfully!')
                     })
                     .catch(err => console.log(err))
@@ -443,7 +443,7 @@ const SalonChoice = () => {
     useEffect(() => {
         // getAllSalons() // commented this method as this been called on initial load of page but later called filter method, so for data consistancy we have to use the same API call.
         handleAllFilter().then(() => {
-          // getSalonsWishlist()
+            // getSalonsWishlist()
         })
         // if(userData.user_preferences.salon_filter){
         //     getFilteredSalon()
@@ -457,12 +457,13 @@ const SalonChoice = () => {
         }
     }, [])
 
-  const handleSolenSelected = (salon: SalonDetails) => {
-      setSelectedSalon(salon)
-    if(salon.address?.lat && salon.address?.long) {
-      setCenter({lat: salon.address.lat, lng: salon.address.long})
+    const handleSolenSelected = (salon: SalonDetails) => {
+        setSelectedSalon(salon)
+        if (salon.address?.lat && salon.address?.long) {
+            setCenter({ lat: salon.address.lat, lng: salon.address.long })
+            map?.setZoom(8);
+        }
     }
-  }
 
     // Autre appel useEffect basé sur l'état des salons
     // useEffect(() => {

@@ -116,11 +116,7 @@ function StripePayment() {
     data.postalCode = salonAddress.postalCode;
     data.country_code = salonAddress.country_code;
     data.isMobile = salonAddress.isMobile;
-    // if (planType.name === "OneHaircut Regular") {
-    //   data.plan_name = "Standard";
-    // } else if (planType.name === "OneHaircut Pro") {
-    //   data.plan_name = "Pro";
-    // }
+
     await registration
       .registerSalon(data)
       .then((res) => {
@@ -143,18 +139,7 @@ function StripePayment() {
     const cardElement = elements.getElement(CardElement);
     console.log(cardElement)
     if (clientSecret && cardElement) {
-      // await stripe
-      //   .createPaymentMethod({
-      //     card: cardElement,
-      //     billing_details: {
-      //       name: userInfo.name,
-      //     },
-      //     // clientSecret,
-      //     // elements,
-      //     // confirmParams : {
-      //     //   return_url : 'https://onehaircut.com',
-      //     // }
-      //   })
+
       const { paymentMethod, error } = await stripe.createPaymentMethod({
         type: 'card',
         card: cardElement,
@@ -162,23 +147,6 @@ function StripePayment() {
       // const { token, error } = await stripe.createToken(cardElement);
       console.log(paymentMethod)
       registerSalon(paymentMethod?.id)
-      //Old Flow
-      // await stripe.createPaymentMethod({
-      //   type: 'card',
-      //   card: cardElement,
-      //   billing_details: {
-      //     name: userInfo.name,
-      //   },
-      // })
-      //   .then(function (result) {
-      //     console.log(result)
-      //     registerSalon(result.paymentMethod?.id);
-      //     // window.open("https://api.whatsapp.com/send?phone=" + userInfo.phone + "&text=Booking Success!", '_blank');
-      //   })
-      //   .catch(function (error) {
-      //     setIsLoading(false)
-      //     //console.log(error);
-      //   })
     }
   };
 
@@ -186,31 +154,7 @@ function StripePayment() {
     <div>
       {isLoading && loadingView()}
       <form onSubmit={handleSubmit}>
-        {/* <CardElement id="my-input" options={options} /> */}
-        {/* <div className="card-element-container">
-          <label>
-            Card number
-            <div className="card-element">
-              <CardNumberElement options={options} />
-            </div>
-          </label>
-        </div>
-        <div className="card-element-container">
-          <label>
-            Expiration date
-            <div className="card-element">
-              <CardExpiryElement options={options} />
-            </div>
-          </label>
-        </div>
-        <div className="card-element-container">
-          <label>
-            CVC / CVV
-            <div className="card-element">
-              <CardCvcElement options={options} />
-            </div>
-          </label>
-        </div> */}
+
         <div className="card-element">
           <CardElement
             options={{
@@ -235,22 +179,7 @@ function StripePayment() {
         </button>
       </form>
     </div>
-    // <div>
-    //   {isLoading && loadingView()}
-    //   <form onSubmit={handleSubmit}>
-    //     <div className="text-sm font-semibold mb-8">
-    //       Enter your card details here:
-    //     </div>
-    //     <CardElement />
-    //     <button
-    //       className={`w-full h-14 mt-8 text-white text-xl font-semibold rounded-xl bg-background-gradient shadow-md shadow-stone-300 hover:scale-95 transition duration-300`}
-    //       type="submit"
-    //       disabled={!stripe || !elements}
-    //     >
-    //       Confirmer
-    //     </button>
-    //   </form>
-    // </div>
+
   );
 }
 

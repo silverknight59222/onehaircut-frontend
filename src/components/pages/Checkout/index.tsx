@@ -27,18 +27,18 @@ const Step5 = () => {
   const getStripeKey = async () => {
     setIsLoading(true)
     try {
-        let resp = await salonApi.getStripeKey();
-        const publishableKey = resp.data.pk || null;
-        setPromisKey(resp.data);
-        setStripePromise(publishableKey);
-        console.log(publishableKey);
+      let resp = await salonApi.getStripeKey();
+      const publishableKey = resp.data.pk || null;
+      setPromisKey(resp.data);
+      setStripePromise(publishableKey);
+      console.log(publishableKey);
     } catch (error) {
-        console.error('Error fetching Stripe key:', error);
-        // Handle error appropriately (e.g., show a message to the user)
+      console.error('Error fetching Stripe key:', error);
+      // Handle error appropriately (e.g., show a message to the user)
     } finally {
-        setIsLoading(false);
+      setIsLoading(false);
     }
-}
+  }
 
   useEffect(() => {
     setMounted(true)
@@ -82,8 +82,8 @@ const Step5 = () => {
                 </p>
                 {options.clientSecret && mounted && (
                   <Elements
-                      stripe={stripePromise ? loadStripe(stripePromise) : null}
-                      options={options}
+                    stripe={stripePromise ? loadStripe(stripePromise) : null}
+                    options={options}
                   >
                     <StripePayment />
                   </Elements>
