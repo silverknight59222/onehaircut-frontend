@@ -22,7 +22,7 @@ import CustomInput from "@/components/UI/CustomInput";
 import { exists } from "i18next";
 import { user_api } from "@/api/clientSide";
 import { DeactivateAccountParams } from "@/api/clientSide";
-import { getLocalStorage } from "@/api/storage";
+import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/storage";
 import { useRouter } from "next/navigation";
 import { dashboard } from "@/api/dashboard";
 import TourModal, { Steps } from "@/components/UI/TourModal";
@@ -70,6 +70,7 @@ const Account = () => {
     // Modal for messages notification
     const [isModalNotifMsg, setIsModalNotifMsg] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
+    const [pageDone, setPageDone] = useState<String[]>([]);
 
 
     //Variables for address
@@ -938,6 +939,9 @@ const Account = () => {
         setShowItem(informations);
         setLocationLatitude(lat);
         setLocationLongitude(long);
+        setPageDone(resp.data.steps_done.split(',').map((item) => item.trim()))
+        removeFromLocalStorage('pages_done')
+        setLocalStorage('pages_done', resp.data.steps_done)
         if (resp.data.email_verified_at) {
             setIsEmailVerified(true)
         } else {
@@ -1023,7 +1027,7 @@ const Account = () => {
     }, [])
 
 
-        // ------------------------------------------------------------------
+    // ------------------------------------------------------------------
     // For Tour
     const tourSteps: Steps[] = [
         {
@@ -1048,8 +1052,17 @@ const Account = () => {
         },
     ];
 
-    const closeTour = () => {
-        // You may want to store in local storage or state that the user has completed the tour
+    const closeTour = async () => {
+        setIsLoading(true)
+        console.log("Page Done")
+        console.log(pageDone)
+        if(!pageDone.includes('account')){
+            let resp = await user_api.assignStepDone({ page: 'account' });
+            removeFromLocalStorage('pages_done');
+            setLocalStorage('pages_done', resp.data.pages_done);
+            setPageDone((prevArray) => [...prevArray, 'account'])
+        }
+        setIsLoading(false);
     };
     // ------------------------------------------------------------------
 
@@ -1060,7 +1073,10 @@ const Account = () => {
             </div>
 
             {/* For explaining the website */}
-            <TourModal steps={tourSteps} onRequestClose={closeTour} />
+            {
+                !pageDone.includes('account') &&
+                <TourModal steps={tourSteps} onRequestClose={closeTour} />
+            }
 
             <ClientDashboardLayout notifications={globalNotifications}>
                 <div className="mt-4 lg:mt-14 mb-5 px-6">
