@@ -5,10 +5,10 @@ const QRCodeGenerator = ({ url }) => {
     const [isQRCodeVisible, setQRCodeVisible] = useState(false);
 
     return (
-        <div className="items-center justify-center">
+        <div className="items-center justify-center mb-2">
             <button onClick={() => setQRCodeVisible(!isQRCodeVisible)}>
-                <p className="mb-2">
-                    Toggle QR Code
+                <p className="mb-6 ">
+                    Votre QRC
                 </p>
             </button>
 

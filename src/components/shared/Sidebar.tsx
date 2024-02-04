@@ -458,12 +458,24 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
                           )}
                         </div>
                       </div>
-                      <div className="flex items-center justify-center mb-2">
+
+
+                      {/* Line separator */}
+                      < hr className="border-t border-gray-300 my-12 mt-2 mb-4" />
+
+
+                      <div className="flex items-center justify-center mb-2 ">
                         <QRCodeGenerator url={QRWishlistURL} />
                       </div>
-                      <div className="flex items-center justify-center">
-                        <p>Alternative URL : {QRWishlistURL}</p>
+                      <div className="flex items-center justify-center mb-2">
+                        <p className="mb-2">Ou bien partagez ce lien : </p>
                       </div>
+                      <div className="flex items-center justify-center mb-2">
+                        <p className="mb-2">{QRWishlistURL}</p>
+                      </div>
+
+                      {/* Line separator */}
+                      < hr className="border-t border-gray-300 my-12 mt-2 mb-12" />
 
                       <h2 className="text-center text-lg font-bold mb-4 mt-12">
                         Modifiez votre description
