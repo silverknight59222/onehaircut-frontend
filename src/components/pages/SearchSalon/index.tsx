@@ -22,6 +22,7 @@ import ReactDOMServer from 'react-dom/server';
 import { dashboard } from '@/api/dashboard';
 import { elements } from "chart.js";
 import { Address } from "@/types"
+import TourModal, { Steps } from "@/components/UI/TourModal";
 
 
 const temp = getLocalStorage("haircut")
@@ -165,8 +166,39 @@ const SearchSalon = () => {
   const mapIconSvg = ReactDOMServer.renderToStaticMarkup(<MapIcon />);
   const mapIconUrl = `data:image/svg+xml;base64,${btoa(mapIconSvg)}`;
 
+  // ------------------------------------------------------------------
+  // For Tour
+  const tourSteps: Steps[] = [
+    {
+      selector: '',
+      content: 'Te voici sur la page de presentation du salon.',
+    },
+    {
+      selector: '.pictures_salon',
+      content: 'En cliquant ici, tu peux voir les autres photos de ce salon',
+    },
+    {
+      selector: '.pictures_hairstyles',
+      content: 'Et ici des exemples de coiffures que le salon sait faire',
+    },
+    {
+      selector: '.recap',
+      content: 'Voici le recapitulatif de ton choix',
+    },
+    {
+      selector: '.button_reservation',
+      content: 'Si tout est bon, tu peux passer à la suite.',
+    },
+    {
+      selector: '.button_contact',
+      content: 'Tu peux aussi envoyer un message au salon avant de réserver.',
+    },
+  ];
 
-
+  const closeTour = () => {
+    // You may want to store in local storage or state that the user has completed the tour
+  };
+  // ------------------------------------------------------------------
 
 
   return (
@@ -174,6 +206,9 @@ const SearchSalon = () => {
       {/* Affiche une vue de chargement pendant que les données sont récupérées */}
 
       {isLoading && loadingView()}
+
+      {/* For explaining the website */}
+      {<TourModal steps={tourSteps} onRequestClose={closeTour} />}
 
       {/* Barre de navigation */}
       <Navbar hideSearchBar={true} />
@@ -285,7 +320,7 @@ const SearchSalon = () => {
                   {/* Miniature gauche */}
                   <div
                     onClick={openSalonPicModal}
-                    className="relative w-24 lg:w-32 2xl:w-36 h-24 lg:h-32 2xl:h-36 cursor-pointer overflow-hidden rounded-lg transform transition-all duration-300 group hover:scale-105 shadow-sm shadow-stone-600"
+                    className="relative w-24 lg:w-32 2xl:w-36 h-24 lg:h-32 2xl:h-36 cursor-pointer overflow-hidden rounded-lg transform transition-all duration-300 group hover:scale-105 shadow-sm shadow-stone-600 pictures_salon"
                   >
                     {/* TODO charger les images vitrines ici */}
                     {salonProfile && salonProfile.salon_images &&
@@ -310,7 +345,7 @@ const SearchSalon = () => {
                   {/* Miniature droite */}
                   <div
                     onClick={openPerfSampleModal}
-                    className="relative w-24 lg:w-32 2xl:w-36 h-24 lg:h-32 2xl:h-36 cursor-pointer overflow-hidden rounded-lg transform transition-all duration-300 group hover:scale-105 shadow-sm shadow-stone-600"
+                    className="relative w-24 lg:w-32 2xl:w-36 h-24 lg:h-32 2xl:h-36 cursor-pointer overflow-hidden rounded-lg transform transition-all duration-300 group hover:scale-105 shadow-sm shadow-stone-600 pictures_hairstyles"
                   >
                     {/* TODO charger les images vitrines ici */}
                     {salonProfile && salonProfile.salon_images && <Image
@@ -353,13 +388,15 @@ const SearchSalon = () => {
               </div>
 
               {/* Bouton de réservation */}
-              <button onClick={() => router.push('/book-salon')} id="Reserver_Un_Creneau" className={`w-full md:w-64 2xl:w-72 h-14 flex items-center justify-center mt-7 text-white font-semibold text-xl rounded-xl ${Theme_A.button.mediumGradientButton} shadow-md`}>
+              <button onClick={() => router.push('/book-salon')}
+                id="Reserver_Un_Creneau"
+                className={`w-full md:w-64 2xl:w-72 h-14 flex items-center justify-center mt-7 text-white font-semibold text-xl rounded-xl ${Theme_A.button.mediumGradientButton} shadow-md button_reservation`}>
                 Réserver un créneau
               </button>
               {/* Ajoutez le bouton pour ouvrir le modal ici */}
               <button
                 onClick={openChatModal}
-                className={`mt-4 ${Theme_A.button.medBlackColoredButton}`}
+                className={`mt-4 ${Theme_A.button.medBlackColoredButton} button_contact`}
               >
                 Contacter le salon
               </button>
@@ -367,9 +404,8 @@ const SearchSalon = () => {
           </div>
         </div>
 
-        {/*TODO importer les details des prix et durées ici */}
         {/* Section des informations des prix */}
-        <div className="flex items-center justify-center bg-stone-50 p-8 rounded-lg shadow-sm opacity-90 mt-20 ">
+        <div className="flex items-center justify-center bg-stone-50 p-8 rounded-lg shadow-sm opacity-90 mt-20 recap">
           <div className="text-center">
             {/* Titre de la section */}
             <p className="text-3xl xl:text-4xl font-semibold text-black">
@@ -446,7 +482,7 @@ const SearchSalon = () => {
         </div>
 
         {/* Section des coiffeurs */}
-        <div className="mt-20 bg-stone-50 p-8 rounded-lg shadow-sm  opacity-90"> {/* Vignette générale ajoutée ici */}
+        <div className="mt-20 bg-stone-50 p-8 rounded-lg shadow-sm  opacity-90 zone_hairdressers"> {/* Vignette générale ajoutée ici */}
           <p className="text-3xl xl:text-4xl font-semibold text-black text-center">
             Coiffeurs
           </p>

@@ -19,6 +19,7 @@ import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import StarRatings from "react-star-ratings";
 import { salonApi } from "@/api/salonSide";
 import useSnackbar from "@/hooks/useSnackbar";
+import TourModal, { Steps } from "@/components/UI/TourModal";
 
 const BookSalon = () => {
   const [selectedImage, setSelectedImage] = useState("");
@@ -248,10 +249,47 @@ const BookSalon = () => {
     setSelectedSlot([])
   };
 
+  // ------------------------------------------------------------------
+  // For Tour
+  const tourSteps: Steps[] = [
+    {
+      selector: '',
+      content: 'Dernière étape avant le paiement: le choix de la date et de l\'heure.',
+    },
+    {
+      selector: '.pictures_hairdresser',
+      content: 'Tu peux choisir ici le coiffeur que tu aimerais en cliquant dessus. Le salon se laisse toutefois le droit d\'assigner un autre coiffeur, si nécessaire.',
+    },
+    {
+      selector: '.choice_place',
+      content: 'Si le salon est mobile, tu peux choisir d\'avoir la prestation à domicile',
+    },
+    {
+      selector: '.button_arrow_right',
+      content: 'Tu peux parcourir les dates avec la flêche.',
+    },
+    {
+      selector: '.button_calender',
+      content: 'Ou choisir un jour dans le mois.',
+    },
+    {
+      selector: '.button_reservation',
+      content: 'Une fois ton choix valider, clique là!',
+    },
+  ];
+
+  const closeTour = () => {
+    // You may want to store in local storage or state that the user has completed the tour
+  };
+  // ------------------------------------------------------------------
 
   return (
     <div>
       {isLoading && salon && loadingView()}
+
+      {/* For explaining the website */}
+      {<TourModal steps={tourSteps} onRequestClose={closeTour} />}
+
       <Navbar hideSearchBar={true} />
 
       {/* RETOUR AU PROFIL */}
@@ -329,7 +367,7 @@ const BookSalon = () => {
               </div>
 
               <p className="font-semibold text-lg">Lieu: </p>
-              <div className="flex space-x-4 text-sm">
+              <div className="flex space-x-4 text-sm choice_place">
                 {/* Bouton personnalisé pour "À domicile" avec texte centré */}
                 <div className="flex items-center space-x-2">
                   <div
@@ -396,7 +434,7 @@ const BookSalon = () => {
 
 
         {/* PARTIE STAFF DU SALON */}
-        <div className="w-full lg:w-auto lg:mt-0 z-50">
+        <div className="w-full lg:w-auto lg:mt-0 z-50 pictures_hairdresser">
           {hairDressers && hairDressers.length > 1 && (
             <p className="text-lg text-black font-semibold text-center lg:text-left">
               Choisissez votre coiffeur
@@ -476,7 +514,7 @@ const BookSalon = () => {
               <div className="flex flex-col sm:flex-row items-center justify-evenly px-1 sm:px-10">
                 {/* DATEPICKER */}
                 <div className="relative">
-                  <div className="cursor-pointer hover:scale-110 transition duration-300 mr-4" onClick={() => setShowCalender(!showCalender)}>
+                  <div className="cursor-pointer hover:scale-110 transition duration-300 mr-4 button_calender" onClick={() => setShowCalender(!showCalender)}>
                     <CalenderIcon />
                   </div>
                   {showCalender &&
@@ -513,7 +551,7 @@ const BookSalon = () => {
                   {/* Flèche Droite */}
                   <button
                     id="bookingCalendarRightArrow"
-                    className="cursor-pointer hover:scale-110 transition duration-300 ml-4"
+                    className="cursor-pointer hover:scale-110 transition duration-300 ml-4 button_arrow_right"
                     onClick={() => handleChangeDate(1)}>
                     <RightArrowIcon />
                   </button>
@@ -550,12 +588,12 @@ const BookSalon = () => {
 
 
               {/* Bouton de réservation */}
-              <div className="flex justify-center mt-6 mb-4 ">
+              <div className="flex justify-center mt-6 mb-4">
                 <button
                   id="Reserver_ce_creneau"
                   disabled={!selectedSlot.length}
                   onClick={onContinue}
-                  className={`w-72 h-14 rounded-xl text-xl font-semibold text-white ${selectedSlot.length ? Theme_A.button.medBlackColoredButton : 'bg-[#bcbcbc] cursor-not-allowed'}`}
+                  className={`w-72 h-14 rounded-xl text-xl font-semibold text-white button_reservation ${selectedSlot.length ? Theme_A.button.medBlackColoredButton : 'bg-[#bcbcbc] cursor-not-allowed'}`}
                 >
                   Réserver ce créneau
                 </button>

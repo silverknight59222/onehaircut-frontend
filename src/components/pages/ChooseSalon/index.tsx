@@ -19,6 +19,7 @@ import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 import { salonApi } from '@/api/salonSide';
 import BaseModal from '@/components/UI/BaseModal';
 import CustomInput from '@/components/UI/CustomInput';
+import TourModal, { Steps } from "@/components/UI/TourModal";
 
 
 // TODO IMPORT TO USE ADRESSES
@@ -619,312 +620,342 @@ const SalonChoice = () => {
     }
 
 
+    // ------------------------------------------------------------------
+    // For Tour
+    const tourSteps: Steps[] = [
+        {
+            selector: '',
+            content: 'Vous voici dans la page de recherche de salon',
+        },
+        {
+            selector: '.thumbnails_salons',
+            content: 'Tu peux simplement cliquer sur le salon qui t\'interesse',
+        },
+        {
+            selector: '.button_continue',
+            content: 'Et ensuite sur continuer',
+        },
+        {
+            selector: '',
+            content: 'Tu peux toujours utiliser les filtres pour t\aider',
+        },
+    ];
+
+    const closeTour = () => {
+        // You may want to store in local storage or state that the user has completed the tour
+    };
+    // ------------------------------------------------------------------
+
 
     // Rendu du composant
     return (
-        <div className='w-full h-screen  overflow-hidden'>
-            {/* Modal qui s'affiche si moins de 10 salons */}
-            {isCustomerInfoModalOpen && (
-                <BaseModal close={closeModalCustomerInfo} opacity={20}>
-                    <div className="text-center">
-                        <h2 className="text-3xl font-bold mb-4 text-gradient">Onehaircut est en plein essor !</h2>
-                        <p className="mb-8">
-                            Il y a moins de 10 salons qui correspondent à vos critères.<br />
-                            Nous travaillons activement pour ajouter plus de salons.<br />
-                        </p>
-                        <p className="mb-8 font-semibold">Merci de votre patience et de votre soutien !</p>
+        <>
+            {/* For explaining the website */}
+            {<TourModal steps={tourSteps} onRequestClose={closeTour} />}
 
-                        {/* Afficher l'input uniquement si l'utilisateur n'est pas connecté */}
-                        {isLoggedIn && (
-                            <div className="flex-grow mb-4">
-                                <CustomInput
-                                    id="email"
-                                    label="Adresse e-mail"
-                                    value={guestEmail}
-                                    onChange={handleGuestEmail}
-                                    type="text"
-                                    isEmail={true}
-                                />
-                            </div>
-                        )}
+            <div className='w-full h-screen  overflow-hidden'>
+                {/* Modal qui s'affiche si moins de 10 salons */}
+                {isCustomerInfoModalOpen && (
+                    <BaseModal close={closeModalCustomerInfo} opacity={20}>
+                        <div className="text-center">
+                            <h2 className="text-3xl font-bold mb-4 text-gradient">Onehaircut est en plein essor !</h2>
+                            <p className="mb-8">
+                                Il y a moins de 10 salons qui correspondent à vos critères.<br />
+                                Nous travaillons activement pour ajouter plus de salons.<br />
+                            </p>
+                            <p className="mb-8 font-semibold">Merci de votre patience et de votre soutien !</p>
 
-                        {/* Conteneur flex pour les boutons */}
-                        <div className="flex justify-center items-center space-x-4 mt-8">
-                            {/* Bouton Fermer */}
-                            <button
-                                className={`${Theme_A.button.medBlackColoredButton}`}
-                                onClick={closeModalCustomerInfo}
-                            >
-                                Fermer
-                            </button>
-
-                            {/* Afficher le bouton "Me tenir informé" uniquement si l'utilisateur n'est pas connecté */}
+                            {/* Afficher l'input uniquement si l'utilisateur n'est pas connecté */}
                             {isLoggedIn && (
-                                <button
-                                    disabled={!guestEmail} // Désactiver le bouton si guestEmail est vide
-                                    className={`${guestEmail ? Theme_A.button.mediumGradientButton : Theme_A.button.medGreyColoredButton} text-white font-bold py-2 px-4 rounded`} // Changer la classe en fonction de l'état du bouton
-                                    onClick={saveToNewsLetters}
-                                >
-                                    Me tenir informé
-                                </button>
+                                <div className="flex-grow mb-4">
+                                    <CustomInput
+                                        id="email"
+                                        label="Adresse e-mail"
+                                        value={guestEmail}
+                                        onChange={handleGuestEmail}
+                                        type="text"
+                                        isEmail={true}
+                                    />
+                                </div>
                             )}
-                        </div>
-                    </div>
-                </BaseModal>
-            )}
 
-            {/* Entête du composant */}
-            {/* <Navbar isSalonPage={true} /> */}
-            <Navbar
-                isSalonPage={true}
-                onSearch={handleAllFilter}
-                onCityMapSearch={(value: any) => {
-                    // console.log('map search', value.geometry.location.lat())
-                    const cityParam = {
-                        lat: value.geometry.location.lat(),
-                        long: value.geometry.location.lng()
-                    }
-                    setCitySearch(cityParam)
-                    // setCitySearch((pre) => {
-                    //     if (value != pre) {
-                    //         return value
-                    //     }
-                    //     return pre
-                    // })
-                }}
-                onNameSearch={(value: string) => {
-                    setNameSearch((pre) => {
-                        if (value != pre) {
-                            return value
-                        }
-                        return pre
-                    })
-                }}
-                onMobileFilters={(mobile) => {
-                    setFilteredMobile((pre) => {
-                        if (mobile == "") {
-                            return []
-                        }
-                        if (JSON.stringify([mobile]) != JSON.stringify(pre)) {
-                            return [mobile]
-                        }
-                        return pre
-                    })
-                }}
-                onRangeFilters={(range: string[]) => {
-                    const numberArray = range.map(item => parseInt(item, 10));
-                    setRangeFilter((pre) => {
-                        if (JSON.stringify(numberArray) != JSON.stringify(pre)) {
-                            return numberArray
-                        }
-                        return pre
-                    });
-                }}
-                onRatingFilter={(rating: number[]) => setRatingFilter(rating)}
-                onCountryFilter={(country: string) => setCountryFilter(country)}
-                onAvailabilityFilter={(availability: string[]) => setAvailabilityFilter(availability)}
-                onNewSalonFilter={(newSalon: boolean) => setNewSalonFilter(newSalon)}
-            />
-
-            {/* Corps du composant */}
-            <div className='w-full flex-col items-center justify-center px-6'>
-                {isLoading && loadingView()}
-
-                {/* Texte indiquant le nombre de salons */}
-                <p className='text-md lg:text-4xl font-medium text-black text-center md:mt-6'>
-                    {filteredSalons.length} <span className='font-bold text-gradient'>{filteredSalons.length === 1 ? 'Salon' : 'Salons'}</span> {filteredSalons.length === 1 ? 'correspond' : 'correspondent'} à vos critères
-                </p>
-
-                {/* Bouton retour et continuer */}
-                <div className='w-full flex items-end justify-between mt-2 md:mt-4 px-4'>
-                    {/* Bouton pour retourner aux services */}
-                    <div className='flex items-center cursor-pointer md:mt-4 mb-2 sm:mx-10 2xl:mx-14 text-stone-800' onClick={() => router.push('/services')}>
-                        <BackArrow />
-                        <p className={`text-xs md:text-xl text-stone-600 justify-center font-medium`}>Retour aux services</p>
-                    </div>
-
-                    {/* Bouton pour continuer */}
-                    <button disabled={!selectedSalon.id} onClick={onContinue}
-                        className={`flex items-center justify-center text-lg text-white font-medium w-full md:w-52 h-10 md:h-14 rounded-xl px-4 ${selectedSalon.id ? Theme_A.button.medLargeGradientButton : 'bg-[#D9D9D9]'}`}>
-                        Continuer
-                    </button>
-                </div>
-
-                {/***************************************************************************************************************************************************************************************************************** */}
-
-                {/* Conteneur principal pour les salons et la carte */}
-                {isLoaded && positions.length > 0 &&
-                    <div
-                        className='w-full lg:h-screen mt-4  grid grid-rows-1 lg:grid-cols-2 gap-0 lg:gap-3 content-start '>
-
-                        {/* Carte Google affichée uniquement si des salons sont disponibles */}
-                        {
-                            positions.length > 0 &&
-                            <div
-                                style={{ height: getFilteredHeight() }}
-                                className={` lg:top-0 lg:left-0 w-full rounded-lg overflow-hidden lg:z-10`}>
-
-                                {/*TODO USE salon.position when data are available  */}
-                                <GoogleMap
-                                    onLoad={handleOnLoad}
-                                    center={center}
-                                    //zoom={8}
-                                    mapContainerStyle={{ width: '100%', height: '100%' }}
-                                    onZoomChanged={handleZoomChange}
-                                    options={{
-                                        minZoom: 2,  // ici, définissez votre zoom minimum
-                                        maxZoom: 18,   // et ici, votre zoom maximumyy
-                                        scrollwheel: allowScroll
-                                    }}
+                            {/* Conteneur flex pour les boutons */}
+                            <div className="flex justify-center items-center space-x-4 mt-8">
+                                {/* Bouton Fermer */}
+                                <button
+                                    className={`${Theme_A.button.medBlackColoredButton}`}
+                                    onClick={closeModalCustomerInfo}
                                 >
-                                    {(userData?.lat! && userData?.long && showMarker) && (
-                                        <MarkerF
-                                            position={{ lat: parseFloat(userData?.lat), lng: parseFloat(userData?.long) }}
-                                            options={{
-                                                icon: {
-                                                    url: HomeIconUrl,
-                                                    scaledSize: new window.google.maps.Size(50, 50),
-                                                    anchor: new window.google.maps.Point(25, 25),
-                                                }
-                                            }}
+                                    Fermer
+                                </button>
 
-                                        />
-                                    )}
-
-                                    {(filteredSalons.length > 0 && showMarker) && positions.map((position, index) => {
-                                        return (
-                                            <React.Fragment key={index}>
-
-                                                <MarkerF
-                                                    key={index}
-                                                    position={{ lat: position.lat, lng: position.lng }} // Utiliser la position du salon
-                                                    onClick={() => setSelectedSalon(filteredSalons[index] != null ? filteredSalons[index] : { "name": "Null", "id": 0 })}
-                                                    onMouseOver={(e) => {
-                                                        onMouseOverOnMarker(index)
-                                                    }}
-                                                    onMouseOut={(e) => {
-                                                        onMouseOutOnMarker(index)
-                                                    }}
-                                                    options={
-                                                        {
-                                                            icon: {
-                                                                url: filteredSalons[index]?.id === selectedSalon.id ? getRedSVGWithValue(`${filteredSalons[index]?.final_price}€`) : getSVGWithValue(`${filteredSalons[index]?.final_price}€`),
-                                                                scaledSize: filteredSalons[index]?.id === selectedSalon.id ? new window.google.maps.Size(70, 110) : new window.google.maps.Size(60, 100),
-                                                                origin: new window.google.maps.Point(0, -10),
-                                                                anchor: filteredSalons[index]?.id === selectedSalon.id ? new window.google.maps.Point(25, 37) : new window.google.maps.Point(20, 35),
-
-                                                            },
-                                                            zIndex: position.zIndex ? position.zIndex + 1 + index : 1 + index
-                                                        }
-                                                    }
-                                                    zIndex={position.zIndex ? position.zIndex + 1 + index : 1 + index}
-
-                                                />
-                                                {/*<OverlayViewF*/}
-                                                {/*    key={selectedSalon.id}*/}
-                                                {/*    position={position}*/}
-                                                {/*    mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}*/}
-                                                {/*    getPixelPositionOffset={(width, height) => ({ x: width - 20, y: height - 15 })}*/}
-                                                {/*>*/}
-                                                {/*    <div*/}
-                                                {/*      style={{*/}
-                                                {/*        color: filteredSalons[index]?.id === selectedSalon.id ? "#FFF" : "#000",*/}
-                                                {/*        whiteSpace: 'nowrap',*/}
-                                                {/*        fontSize: filteredSalons[index]?.id === selectedSalon.id ? '12px' : "12px",*/}
-                                                {/*        fontWeight: 'bold',*/}
-                                                {/*        zIndex:position.zIndex ? position.zIndex + index : index*/}
-                                                {/*    }}>*/}
-                                                {/*        {`${filteredSalons[index]?.final_price}€`}*/}
-
-                                                {/*    </div>*/}
-                                                {/*</OverlayViewF>*/}
-                                            </React.Fragment>
-                                        )
-                                    })}
-                                </GoogleMap>
-                            </div>
-                        }
-
-
-                        {/* Grid containing thumbnails */}
-                        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6 pb-52 lg:pb-36 overflow-y-scroll content-start overflow-x-hidden"
-                            style={{ maxHeight: getHeightThumbnails() }}
-                        >
-                            {/* VIGNETTES (ITERATIONS) */}
-                            {filteredSalons.length > 0 && filteredSalons.map((fsalon, index) => {
-                                return (
-                                    <div
-                                        key={index}
-                                        id={`Vignette-${index}`}
-                                        onClick={() => handleSolenSelected(fsalon)}
-                                        className={`relative flex w-full w-max[450px] h-56 h-max[300px] rounded-2xl border hover:border-stone-400 cursor-pointer
-                                        ${selectedSalon.id === fsalon.id ? 'border-4 border-red-400 shadow-xl' : ''}
-                                        ${fsalon.wishlist ? ColorsThemeA.OhcGradient_G : 'bg-stone-100'}`} // bg-green-100 est un exemple, choisissez la couleur que vous voulez
+                                {/* Afficher le bouton "Me tenir informé" uniquement si l'utilisateur n'est pas connecté */}
+                                {isLoggedIn && (
+                                    <button
+                                        disabled={!guestEmail} // Désactiver le bouton si guestEmail est vide
+                                        className={`${guestEmail ? Theme_A.button.mediumGradientButton : Theme_A.button.medGreyColoredButton} text-white font-bold py-2 px-4 rounded`} // Changer la classe en fonction de l'état du bouton
+                                        onClick={saveToNewsLetters}
                                     >
-                                        {selectedSalon.id === fsalon.id && (
-                                            <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 bg-white border-2 border-red-400 rounded-full mx-10 px-1">
-                                                {/* Mettez ici le style pour l'icône, vous pourriez avoir besoin d'ajuster le translate-y pour la centrer comme vous le souhaitez */}
-                                                <CheckOutlinedIcon style={{ color: 'red', width: '15px', height: '15px' }} />
-                                            </div>
+                                        Me tenir informé
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                    </BaseModal>
+                )}
+
+                {/* Entête du composant */}
+                <Navbar
+                    isSalonPage={true}
+                    onSearch={handleAllFilter}
+                    onCityMapSearch={(value: any) => {
+                        // console.log('map search', value.geometry.location.lat())
+                        const cityParam = {
+                            lat: value.geometry.location.lat(),
+                            long: value.geometry.location.lng()
+                        }
+                        setCitySearch(cityParam)
+                        // setCitySearch((pre) => {
+                        //     if (value != pre) {
+                        //         return value
+                        //     }
+                        //     return pre
+                        // })
+                    }}
+                    onNameSearch={(value: string) => {
+                        setNameSearch((pre) => {
+                            if (value != pre) {
+                                return value
+                            }
+                            return pre
+                        })
+                    }}
+                    onMobileFilters={(mobile) => {
+                        setFilteredMobile((pre) => {
+                            if (mobile == "") {
+                                return []
+                            }
+                            if (JSON.stringify([mobile]) != JSON.stringify(pre)) {
+                                return [mobile]
+                            }
+                            return pre
+                        })
+                    }}
+                    onRangeFilters={(range: string[]) => {
+                        const numberArray = range.map(item => parseInt(item, 10));
+                        setRangeFilter((pre) => {
+                            if (JSON.stringify(numberArray) != JSON.stringify(pre)) {
+                                return numberArray
+                            }
+                            return pre
+                        });
+                    }}
+                    onRatingFilter={(rating: number[]) => setRatingFilter(rating)}
+                    onCountryFilter={(country: string) => setCountryFilter(country)}
+                    onAvailabilityFilter={(availability: string[]) => setAvailabilityFilter(availability)}
+                    onNewSalonFilter={(newSalon: boolean) => setNewSalonFilter(newSalon)}
+                />
+
+                {/* Corps du composant */}
+                <div className='w-full flex-col items-center justify-center px-6'>
+                    {isLoading && loadingView()}
+
+                    {/* Texte indiquant le nombre de salons */}
+                    <p className='text-md lg:text-4xl font-medium text-black text-center md:mt-6'>
+                        {filteredSalons.length} <span className='font-bold text-gradient'>{filteredSalons.length === 1 ? 'Salon' : 'Salons'}</span> {filteredSalons.length === 1 ? 'correspond' : 'correspondent'} à vos critères
+                    </p>
+
+                    {/* Bouton retour et continuer */}
+                    <div className='w-full flex items-end justify-between mt-2 md:mt-4 px-4'>
+                        {/* Bouton pour retourner aux services */}
+                        <div className='flex items-center cursor-pointer md:mt-4 mb-2 sm:mx-10 2xl:mx-14 text-stone-800' onClick={() => router.push('/services')}>
+                            <BackArrow />
+                            <p className={`text-xs md:text-xl text-stone-600 justify-center font-medium`}>Retour aux services</p>
+                        </div>
+
+                        {/* Bouton pour continuer */}
+                        <button disabled={!selectedSalon.id} onClick={onContinue}
+                            className={`flex items-center justify-center text-lg text-white font-medium w-full md:w-52 h-10 md:h-14 rounded-xl px-4 button_continue ${selectedSalon.id ? Theme_A.button.medLargeGradientButton : 'bg-[#D9D9D9]'}`}>
+                            Continuer
+                        </button>
+                    </div>
+
+                    {/***************************************************************************************************************************************************************************************************************** */}
+
+                    {/* Conteneur principal pour les salons et la carte */}
+                    {isLoaded && positions.length > 0 &&
+                        <div
+                            className='w-full lg:h-screen mt-4  grid grid-rows-1 lg:grid-cols-2 gap-0 lg:gap-3 content-start '>
+
+                            {/* Carte Google affichée uniquement si des salons sont disponibles */}
+                            {
+                                positions.length > 0 &&
+                                <div
+                                    style={{ height: getFilteredHeight() }}
+                                    className={` lg:top-0 lg:left-0 w-full rounded-lg overflow-hidden lg:z-10`}>
+
+                                    {/*TODO USE salon.position when data are available  */}
+                                    <GoogleMap
+                                        onLoad={handleOnLoad}
+                                        center={center}
+                                        //zoom={8}
+                                        mapContainerStyle={{ width: '100%', height: '100%' }}
+                                        onZoomChanged={handleZoomChange}
+                                        options={{
+                                            minZoom: 2,  // ici, définissez votre zoom minimum
+                                            maxZoom: 18,   // et ici, votre zoom maximumyy
+                                            scrollwheel: allowScroll
+                                        }}
+                                    >
+                                        {(userData?.lat! && userData?.long && showMarker) && (
+                                            <MarkerF
+                                                position={{ lat: parseFloat(userData?.lat), lng: parseFloat(userData?.long) }}
+                                                options={{
+                                                    icon: {
+                                                        url: HomeIconUrl,
+                                                        scaledSize: new window.google.maps.Size(50, 50),
+                                                        anchor: new window.google.maps.Point(25, 25),
+                                                    }
+                                                }}
+
+                                            />
                                         )}
 
-                                        {/* Contenu de la vignette */}
-                                        <div className="flex flex-col p-1 md:p-2 shadow-md rounded-2xl " style={{ flexGrow: 1 }}>
-                                            <div className='relative mb-1 md:mb-4 hover:scale-105 transition duration-1000 m-2' style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                                                {!isLoggedIn &&
-                                                    <div onClick={(e) => onWishlist(e, fsalon)} className="absolute right-6 sm:right-2 top-6 sm:top-2 z-10 cursor-pointer hover:scale-150 transition duration-300">
-                                                        <StarIcon width='35' height='35'
-                                                            color={fsalon.wishlist == 1 ? "#FF5B5B" : ""}
-                                                            stroke={fsalon.wishlist == 1 ? "#FFFFFF" : ""} />
-                                                    </div>}
+                                        {(filteredSalons.length > 0 && showMarker) && positions.map((position, index) => {
+                                            return (
+                                                <React.Fragment key={index}>
 
-                                                {fsalon && fsalon.salon_cover_image &&
-                                                    <Image
-                                                        src={fsalon && fsalon.salon_cover_image ? fsalon.salon_cover_image?.image?.includes('api') ? fsalon.salon_cover_image.image : `https://api.onehaircut.com${fsalon.salon_cover_image.image}` : fsalon.logo.includes('api') ? fsalon.logo : `https://api.onehaircut.com${fsalon.logo}`}
-                                                        sizes="640w"
-                                                        fill={true}
-                                                        alt="image"
-                                                        style={{ objectFit: 'cover', height: '100%', width: '100%', display: 'block' }}
-                                                        className="rounded-2xl "
+                                                    <MarkerF
+                                                        key={index}
+                                                        position={{ lat: position.lat, lng: position.lng }} // Utiliser la position du salon
+                                                        onClick={() => setSelectedSalon(filteredSalons[index] != null ? filteredSalons[index] : { "name": "Null", "id": 0 })}
+                                                        onMouseOver={(e) => {
+                                                            onMouseOverOnMarker(index)
+                                                        }}
+                                                        onMouseOut={(e) => {
+                                                            onMouseOutOnMarker(index)
+                                                        }}
+                                                        options={
+                                                            {
+                                                                icon: {
+                                                                    url: filteredSalons[index]?.id === selectedSalon.id ? getRedSVGWithValue(`${filteredSalons[index]?.final_price}€`) : getSVGWithValue(`${filteredSalons[index]?.final_price}€`),
+                                                                    scaledSize: filteredSalons[index]?.id === selectedSalon.id ? new window.google.maps.Size(70, 110) : new window.google.maps.Size(60, 100),
+                                                                    origin: new window.google.maps.Point(0, -10),
+                                                                    anchor: filteredSalons[index]?.id === selectedSalon.id ? new window.google.maps.Point(25, 37) : new window.google.maps.Point(20, 35),
+
+                                                                },
+                                                                zIndex: position.zIndex ? position.zIndex + 1 + index : 1 + index
+                                                            }
+                                                        }
+                                                        zIndex={position.zIndex ? position.zIndex + 1 + index : 1 + index}
+
                                                     />
-                                                }
-                                            </div>
+                                                    {/*<OverlayViewF*/}
+                                                    {/*    key={selectedSalon.id}*/}
+                                                    {/*    position={position}*/}
+                                                    {/*    mapPaneName={OverlayView.OVERLAY_MOUSE_TARGET}*/}
+                                                    {/*    getPixelPositionOffset={(width, height) => ({ x: width - 20, y: height - 15 })}*/}
+                                                    {/*>*/}
+                                                    {/*    <div*/}
+                                                    {/*      style={{*/}
+                                                    {/*        color: filteredSalons[index]?.id === selectedSalon.id ? "#FFF" : "#000",*/}
+                                                    {/*        whiteSpace: 'nowrap',*/}
+                                                    {/*        fontSize: filteredSalons[index]?.id === selectedSalon.id ? '12px' : "12px",*/}
+                                                    {/*        fontWeight: 'bold',*/}
+                                                    {/*        zIndex:position.zIndex ? position.zIndex + index : index*/}
+                                                    {/*    }}>*/}
+                                                    {/*        {`${filteredSalons[index]?.final_price}€`}*/}
 
-                                            {/* Nom et prix du salon */}
-                                            {/* <div className="flex items-start justify-between  "> */}
-                                            <p className='text-black text-md md:text-lg font-semibold md:pt-2 overflow-auto'>{fsalon.name}</p>
-                                            <div className='flex justify-end'>
-                                                <p
-                                                    style={{ fontSize: getFontSize(fsalon.final_price) }}
-                                                    className={`px-2 py-1 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white font-semibold text-xs md:text-sm w-max`}>
-                                                    {fsalon.final_price} €
-                                                </p>
-                                            </div>
-                                            {/* </div> */}
+                                                    {/*    </div>*/}
+                                                    {/*</OverlayViewF>*/}
+                                                </React.Fragment>
+                                            )
+                                        })}
+                                    </GoogleMap>
+                                </div>
+                            }
 
-                                            {/* Évaluation et nombre d'avis */}
-                                            <div className='flex items-center text-xs text-[#7B7B7B] pr-1 pt-1 gap-1'>
-                                                <StarRatings
-                                                    rating={fsalon.salon_haircut ? fsalon.salon_haircut.rating : 0}
-                                                    starRatedColor="#FEDF10"
-                                                    starSpacing="4px"
-                                                    starDimension="12px"
-                                                    numberOfStars={5}
-                                                    name="rating"
-                                                />
-                                                <p>{fsalon.salon_haircut ? fsalon.salon_haircut.rating_counts : 0} avis</p>
+
+                            {/* Grid containing thumbnails */}
+                            <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3 gap-3 md:gap-6 pb-52 lg:pb-36 overflow-y-scroll content-start overflow-x-hidden thumbnails_salons"
+                                style={{ maxHeight: getHeightThumbnails() }}
+                            >
+                                {/* VIGNETTES (ITERATIONS) */}
+                                {filteredSalons.length > 0 && filteredSalons.map((fsalon, index) => {
+                                    return (
+                                        <div
+                                            key={index}
+                                            id={`Vignette-${index}`}
+                                            onClick={() => handleSolenSelected(fsalon)}
+                                            className={`relative flex w-full w-max[450px] h-56 h-max[300px] rounded-2xl border hover:border-stone-400 cursor-pointer
+                                        ${selectedSalon.id === fsalon.id ? 'border-4 border-red-400 shadow-xl' : ''}
+                                        ${fsalon.wishlist ? ColorsThemeA.OhcGradient_G : 'bg-stone-100'}`} // bg-green-100 est un exemple, choisissez la couleur que vous voulez
+                                        >
+                                            {selectedSalon.id === fsalon.id && (
+                                                <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2 bg-white border-2 border-red-400 rounded-full mx-10 px-1">
+                                                    {/* Mettez ici le style pour l'icône, vous pourriez avoir besoin d'ajuster le translate-y pour la centrer comme vous le souhaitez */}
+                                                    <CheckOutlinedIcon style={{ color: 'red', width: '15px', height: '15px' }} />
+                                                </div>
+                                            )}
+
+                                            {/* Contenu de la vignette */}
+                                            <div className="flex flex-col p-1 md:p-2 shadow-md rounded-2xl " style={{ flexGrow: 1 }}>
+                                                <div className='relative mb-1 md:mb-4 hover:scale-105 transition duration-1000 m-2' style={{ flexGrow: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                                                    {!isLoggedIn &&
+                                                        <div onClick={(e) => onWishlist(e, fsalon)} className="absolute right-6 sm:right-2 top-6 sm:top-2 z-10 cursor-pointer hover:scale-150 transition duration-300">
+                                                            <StarIcon width='35' height='35'
+                                                                color={fsalon.wishlist == 1 ? "#FF5B5B" : ""}
+                                                                stroke={fsalon.wishlist == 1 ? "#FFFFFF" : ""} />
+                                                        </div>}
+
+                                                    {fsalon && fsalon.salon_cover_image &&
+                                                        <Image
+                                                            src={fsalon && fsalon.salon_cover_image ? fsalon.salon_cover_image?.image?.includes('api') ? fsalon.salon_cover_image.image : `https://api.onehaircut.com${fsalon.salon_cover_image.image}` : fsalon.logo.includes('api') ? fsalon.logo : `https://api.onehaircut.com${fsalon.logo}`}
+                                                            sizes="640w"
+                                                            fill={true}
+                                                            alt="image"
+                                                            style={{ objectFit: 'cover', height: '100%', width: '100%', display: 'block' }}
+                                                            className="rounded-2xl "
+                                                        />
+                                                    }
+                                                </div>
+
+                                                {/* Nom et prix du salon */}
+                                                {/* <div className="flex items-start justify-between  "> */}
+                                                <p className='text-black text-md md:text-lg font-semibold md:pt-2 overflow-auto'>{fsalon.name}</p>
+                                                <div className='flex justify-end'>
+                                                    <p
+                                                        style={{ fontSize: getFontSize(fsalon.final_price) }}
+                                                        className={`px-2 py-1 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white font-semibold text-xs md:text-sm w-max`}>
+                                                        {fsalon.final_price} €
+                                                    </p>
+                                                </div>
+                                                {/* </div> */}
+
+                                                {/* Évaluation et nombre d'avis */}
+                                                <div className='flex items-center text-xs text-[#7B7B7B] pr-1 pt-1 gap-1'>
+                                                    <StarRatings
+                                                        rating={fsalon.salon_haircut ? fsalon.salon_haircut.rating : 0}
+                                                        starRatedColor="#FEDF10"
+                                                        starSpacing="4px"
+                                                        starDimension="12px"
+                                                        numberOfStars={5}
+                                                        name="rating"
+                                                    />
+                                                    <p>{fsalon.salon_haircut ? fsalon.salon_haircut.rating_counts : 0} avis</p>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                )
-                            })}
+                                    )
+                                })}
+                            </div>
                         </div>
-                    </div>
-                }
+                    }
+                </div>
+                {/* Pied de page du composant */}
+                <Footer />
             </div>
-            {/* Pied de page du composant */}
-            <Footer />
-        </div>
+        </>
     );
 };
 

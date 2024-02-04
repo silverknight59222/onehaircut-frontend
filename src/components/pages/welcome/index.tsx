@@ -17,6 +17,7 @@ import InfoModal from "@/components/UI/InfoModal";
 import InfoButton from "@/components/UI/InfoButton";
 import { user_api } from "@/api/clientSide";
 import DropdownMenu from "@/components/UI/DropDownMenu";
+import TourModal, { Steps } from "@/components/UI/TourModal";
 
 // to avoid modifying the theme
 const DemoButton = `text-white font-normal md:font-medium text-md md:text-lg ml-2 mr-2 mb-3 rounded-md w-[278px] py-2 bg-black border border-x-red-500 border-y-orange-500 transform hover:scale-105 transition-transform hover:shadow-md cursor-pointer`
@@ -28,7 +29,7 @@ const Welcome = () => {
   const { loadingView } = userLoader(); // Using a custom hook to load user data
   const [salonHaircut, setSalonHaircut] = useState<Haircut[]>([]); // Store haircut data fetched from the API
   const [isLoading, setIsLoading] = useState(false); // Loading state for asynchronous operations
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // User login state
+  const [isGuest, setisGuest] = useState(false); // User login state
   const router = useRouter() // Next.js Router for navigation
   // Retrieve user and haircut information from local storage
   const user = getLocalStorage("user");
@@ -383,12 +384,12 @@ const Welcome = () => {
     const user = getLocalStorage("user");
     const userId = user ? Number(JSON.parse(user).id) : null;
     if (!userId) {
-      setIsLoggedIn(true);
+      setisGuest(true);
     }
   }, []);
 
   useEffect(() => {
-    if (!isLoggedIn) {
+    if (!isGuest) {
       getHaircutsWishlist()
       getHasPreviewList()
     }
@@ -474,8 +475,45 @@ const Welcome = () => {
     setSelectedHairLength(value);
   };
 
+
+  // ------------------------------------------------------------------
+  // For Tour
+  const tourSteps: Steps[] = [
+    {
+      selector: '',
+      content: 'Bienvenue sur la page de reservation de Onehaircut',
+    },
+    {
+      selector: '.zone_haircuts',
+      content: 'Pour commencer, cherche la coiffure que tu voudrais',
+    },
+    {
+      selector: '.zone_filtres',
+      content: 'Tu peux filtrer les coiffures',
+    },
+    {
+      selector: '.thumbnail_haircut',
+      content: 'Clique ensuite sur la coiffure que tu as choisi.',
+    },
+    {
+      selector: '.zone_filters',
+      content: 'Une fois selectionnée, tu peux aussi visualiser la coiffure sur ta tête, si tu as apporté tes photos de profil dans la section portrait. Pour ce faire clique sur "Prévisualiser sur moi',
+    },
+    {
+      selector: '.bouton_generic_haircut',
+      content: 'Si tu n\'as pas trouvé ce que cherchais ou que tu veux une coiffure plus générique, clique là!',
+    },
+  ];
+
+  const closeTour = () => {
+    // You may want to store in local storage or state that the user has completed the tour
+  };
+  // ------------------------------------------------------------------
+
   return (
     <>
+      {/* For explaining the website */}
+      {!isGuest && (<TourModal steps={tourSteps} onRequestClose={closeTour} />)}
 
       {/* Modal pour choix générique de coiffure */}
       {isGenericHaircutModalOpen && (
@@ -533,8 +571,9 @@ const Welcome = () => {
       )}
 
 
-
-      <Navbar isWelcomePage={true} onSearch={(value: string) => setSearch(value)} onGenderFilter={(gender) => setGenderFilters(gender)} onEthnicityFilters={(groups) => setEthnicityFilters(groups)} onLengthFilters={(length) => setLengthFilters(length)} onHairNameFilters={(hairname) => setHairNameFilters(hairname)} />
+      <div className="zone_filtres">
+        <Navbar isWelcomePage={true} onSearch={(value: string) => setSearch(value)} onGenderFilter={(gender) => setGenderFilters(gender)} onEthnicityFilters={(groups) => setEthnicityFilters(groups)} onLengthFilters={(length) => setLengthFilters(length)} onHairNameFilters={(hairname) => setHairNameFilters(hairname)} />
+      </div>
       <div className="flex flex-col items-center justify-center w-full overflow-hidden">
 
         {isLoading && loadingView()}
@@ -551,7 +590,7 @@ const Welcome = () => {
 
           {/* Bouton Coiffure Simple */}
           <div
-            className={`${Theme_A.button.bigWhiteColoredButton} cursor-pointer mr-4`}
+            className={`${Theme_A.button.bigWhiteColoredButton} cursor-pointer mr-4 bouton_generic_haircut`}
             onClick={openGenericHaircutModal}
           >
             Choix générique de coiffure
@@ -573,11 +612,11 @@ const Welcome = () => {
         </div>
 
         {/*Affichage des carte coiffure  */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 md:gap-12 mb-32 ">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8 md:gap-12 mb-16 zone_haircuts">
           {haircuts().map((item, index) => {
             return (
               <div key={index} onClick={() => onClickHaircut(item.id, item.name, item.image)}
-                className={`shadow-md rounded-xl cursor-pointer border hover:outline outline-1 outline-stone-400 mb-2  ${item.id === haircut?.id}`}
+                className={`shadow-md rounded-xl cursor-pointer border hover:outline outline-1 outline-stone-400 mb-2  ${item.id === haircut?.id} thumbnail_haircut`}
               >
 
                 <div id={`hairStyleCard-${index}`}
@@ -590,12 +629,12 @@ const Welcome = () => {
                     <Image src={item.image.includes('http') ? item.image : `https://api.onehaircut.com${item.image}`}
                       fill={true} alt="" className="rounded-t-xl "
                     />
-                    {!isLoggedIn &&
+                    {!isGuest &&
                       <div className="absolute top-2 left-2 pb-2 pr-2 z-10"> {/* Positionne l'icône en bas à droite */}
                         {hasPreview.includes(String(item.id)) ? <AiOhcIcon /> : ""}
                       </div>
                     }
-                    {!isLoggedIn &&
+                    {!isGuest &&
                       <div onClick={(e) => onWishlist(e, item.id)} className="absolute right-2 top-2 cursor-pointer hover:scale-150 transition duration-300">
                         <StarIcon
                           color={wishlist.includes(String(item.id)) ? "#FF5B5B" : ""}
@@ -621,8 +660,8 @@ const Welcome = () => {
 
         </div>
 
-        {isLoggedIn && (
-          <div className="flex text-sm p-1 sm:p-4 md:p-5 mx-2 gap-3 sm:gap-12 md:gap-20 items-center justify-center bg-white w-full fixed bottom-8 border-2 border-t-slate-300 ">
+        {isGuest && (
+          <div className="flex text-sm p-1 sm:p-4 md:p-5 mx-2 gap-3 sm:gap-12 md:gap-20 items-center justify-center bg-white w-full fixed bottom-8 border-2 border-t-slate-300">
             <div className={` text-center ${DemoButton}`}>
               Démonstration d’utilisation
             </div>
