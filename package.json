@@ -88,6 +88,7 @@
     "react-google-autocomplete": "^2.7.3",
     "react-hot-toast": "^2.4.1",
     "react-i18next": "^13.5.0",
+    "react-icons": "^5.0.1",
     "react-live": "2.3.0",
     "react-loader-spinner": "^5.3.4",
     "react-minimal-pie-chart": "^8.4.0",

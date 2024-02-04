@@ -29,6 +29,8 @@ import InfoButton from "@/components/UI/InfoButton";
 import { getLocalStorage } from "@/api/storage";
 import TourModal, { Steps, TourModalType } from "@/components/UI/TourModal";
 import { t } from "i18next";
+import Image from "next/image";
+import Player from "@/components/UI/PlayerForTour"
 
 
 const Dashboard = () => {
@@ -116,10 +118,23 @@ const Dashboard = () => {
 
     // ------------------------------------------------------------------
     // For Tour
+    const tourContent_Start =
+        <div>
+            <p>Bienvenue dans la présentation du dashboard</p>
+        </div>
+
+    const tourContent_logo =
+        <div>
+            <p>Et n'oublier pas de mettre le logo de votre salon dans le round, en haut à droite.</p>
+            <div className="justify-center flex">
+                <Image src='/assets/website/salon_logo.png' alt='' className='rounded-3xl ' width='200' height='200'></Image>
+            </div>
+        </div>
+
     const tourSteps: Steps[] = [
         {
             selector: '',
-            content: 'Bienvenue dans la présentation du dashboard',
+            content: tourContent_Start,
         },
         {
             selector: '',
@@ -139,7 +154,7 @@ const Dashboard = () => {
         },
         {
             selector: '',
-            content: 'Et n\'oublier pas de mettre le logo de votre salon dans le round, en haut à droite.',
+            content: tourContent_logo,
         },
     ];
 
@@ -154,7 +169,7 @@ const Dashboard = () => {
             <Footer />
 
             {/* For explaining the website */}
-            <TourModal steps={tourSteps} onRequestClose={closeTour} />
+            <TourModal steps={tourSteps} onRequestClose={closeTour} audioPath="/assets/audio/tour/salon/dashboard/dashboard1.mp3" />
 
             {proSubscription && <div>
                 <Grid container spacing={6} className='match-height  '>
@@ -490,8 +505,8 @@ const Dashboard = () => {
 
                     {/* Info icon for free user  */}
                     {(proSubscription == false) && <div className="pr-4 info_button">
-                        <InfoButton title_1={"Dashboard"} content_1={"Cette page contient les informations concernant votre salon. Les boutons au dessus des graphiques peuvent être cliqués pour afficher plus de détails."} 
-                        onOpenModal={undefined} />
+                        <InfoButton title_1={"Dashboard"} content_1={"Cette page contient les informations concernant votre salon. Les boutons au dessus des graphiques peuvent être cliqués pour afficher plus de détails."}
+                            onOpenModal={undefined} />
                     </div>}
 
                     <DropdownMenu dropdownItems={DisplayedMonths} backgroundColor="bg-white" selectId={selectedMonthTransactions} menuName="Période d'observation"
