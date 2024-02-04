@@ -150,30 +150,47 @@ function StripePayment() {
     }
   };
 
+  const CARD_ELEMENT_OPTIONS = {
+    style: {
+      base: {
+        color: "#32325d",
+        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
+        fontSmoothing: "antialiased",
+        fontSize: "16px",
+        '::placeholder': {
+          color: '#CFD7DF',
+        },
+        boxShadow: '0 3px 0 0 #e3e3e3',
+        border: '0 transparent',
+        borderRadius: '4px',
+        padding: '10px 12px',
+      },
+      invalid: {
+        color: "#fa755a",
+        iconColor: "#fa755a",
+      },
+      // Focus state styles
+      focus: {
+        color: "#424770",
+        '::placeholder': {
+          color: '#CFD7DF',
+        },
+        boxShadow: '0 3px 0 0 #e3e3e3',
+        border: '1px solid #FFA500', // Outline color on focus
+        borderRadius: '4px',
+      },
+    },
+  };
+
   return (
     <div>
       {isLoading && loadingView()}
       <form onSubmit={handleSubmit}>
-
-        <div className="card-element">
-          <CardElement
-            options={{
-              style: {
-                base: {
-                  fontSize: '16px',
-                  color: '#424770',
-                  '::placeholder': {
-                    color: '#aab7c4',
-                  },
-                },
-              },
-            }}
-          />
-        </div>
+        <PaymentElement />
         <button
-          className={`w-full h-14 mt-8 text-white text-xl font-semibold rounded-xl bg-background-gradient shadow-md shadow-stone-300 hover:scale-95 transition duration-300`}
+          className="w-full h-14 mt-8 text-white text-xl font-semibold rounded-xl bg-background-gradient shadow-md shadow-stone-300 hover:scale-95 transition duration-300"
           type="submit"
-          disabled={!stripe || !elements}
+          disabled={!stripe || !elements || !clientSecret}
         >
           Confirmer
         </button>

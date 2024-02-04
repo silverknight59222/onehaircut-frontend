@@ -77,7 +77,7 @@ const Step5 = () => {
                 </div>
               </div>
               <div className="bg-white px-4 py-8 mt-7 w-full rounded-lg">
-                <p className="text-lg font-semibold text-black">
+                <p className="text-lg font-semibold text-black mb-4">
                   Moyen de paiement
                 </p>
                 {options.clientSecret && mounted && (
@@ -104,7 +104,7 @@ const Step5 = () => {
               <p>{planType ? planType.price : '-'} €</p>
             </div>
             <div className="mt-10">
-              <p className="text-lg font-semibold text-black">Salon</p>
+              <p className="text-lg font-semibold text-black">Nom de votre Salon</p>
               <div className="text-black text-lg mt-5">
                 <p>{salonInfo ? `${salonInfo}` : '-'}</p>
               </div>
