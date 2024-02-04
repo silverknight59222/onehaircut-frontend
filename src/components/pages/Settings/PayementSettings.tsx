@@ -13,17 +13,28 @@ import { salonApi } from "@/api/salonSide";
 import DatePicker from "@/components/UI/DatePicker";
 import TourModal, { Steps } from "@/components/UI/TourModal";
 import { BankAccountStripe } from "@/types";
+import PaymentFormSetting from "@/components/pages/settings/PaymentformSetting";
+import { loadStripe } from '@stripe/stripe-js';
+import userLoader from "@/hooks/useLoader";
+import { Elements } from "@stripe/react-stripe-js";
+const { loadingView } = userLoader();
 
 const PayementSettings = () => {
     const payementMethodStruct: string[] = [
         "Carte bancaire", "Paypal",
     ]
 
+
     // TODO: get from the backend the payement method 
     // state for knowing the execution periode of the bot
+    const { loadingView } = userLoader();
+    const [isLoading, setIsLoading] = useState(false);
+
+    const [stripeKey, setStripeKey] = useState("");
     const [payMethod, setPayMethod] = useState(payementMethodStruct[0])
-    const currentCardNb: string = "2453 1245 7745 20" // TODO: get from backend
+    const [currentCardNb, setCurrentCardNb] = useState("2453 1245 7745 2052")
     const PaypalAccount: string = "leLascar" // TODO: get from backend
+    let stripePromise = loadStripe(stripeKey);  // public key for stripe
     // state for showing the pop up to change the payement info
     const [showPaymentModal, setShowPaymentModal] = useState(false)
     // state for knowing where the user clicked
@@ -41,7 +52,27 @@ const PayementSettings = () => {
         let resp = await salonApi.updateBankAccount(data);
         console.log(resp);
     }
-
+    const [accountPaymentName, setAccountPaymentName] = useState('');
+    const [accountPaymentNumber, setAccountPaymentNumber] = useState('');
+    const [accountPaymentExpMonth, setAccountPaymentExpMonth] = useState('');
+    const [accountPaymentExpYear, setAccountPaymentExpYear] = useState('');
+    const [clientSecret, setClientSecret] = useState("");
+    const appearance = {
+        theme: 'stripe',
+    };
+    const options = {
+        clientSecret,
+        // appearance,
+    };
+    const getStripeKey = async () => {
+        let resp_intent = await salonApi.submitNewPaymentMethod({});
+        setClientSecret(resp_intent.data.clientSecret)
+        setIsLoading(true)
+        let resp = await salonApi.getStripeKey();
+        stripePromise = loadStripe(resp.data.pk)
+        setStripeKey(resp.data.pk)
+        setIsLoading(false)
+    }
 
 
     // Function change the banking informations
@@ -49,9 +80,29 @@ const PayementSettings = () => {
         setClickedMethod(method) // remomber the payement wished
         setShowPaymentModal(true) // show popup
     }
+    const handleCardNumberChange = (newCardNumber: string) => {
+        setAccountPaymentNumber(newCardNumber);
+    };
+    const handleCardExpMonthChange = (expMonth: string) => {
+        setAccountPaymentExpMonth(expMonth);
+    };
+    const handleCardExpYearChange = (expYear: string) => {
+        setAccountPaymentExpYear(expYear);
+    };
+    const handleCardNameChange = (name: string) => {
+        setAccountPaymentName(name);
+    };
+
     const modifBankCard: React.JSX.Element =
         <div>
-            <PaymentForm />
+            <Elements options={options} stripe={stripePromise}>
+                {/* <PaymentForm onCardNumberChange={handleCardNumberChange}
+                    onCardExpMonthChange={handleCardExpMonthChange}
+                    onCardExpYearChange={handleCardExpYearChange}
+                    onCardNameChange={handleCardNameChange}
+                /> */}
+                <PaymentFormSetting />
+            </Elements>
         </div >;
 
     // État pour afficher le modal d'ajout de compte bancaire
@@ -182,6 +233,17 @@ const PayementSettings = () => {
         setShowAddBankAccountModal(false);
     };
 
+    const getCustomerStripeInformation = async () => {
+        let resp = await salonApi.getSalonCustomerStripeInformation();
+        console.log(resp.data)
+        if (resp.data.current_pm_list.data.length > 0) {
+            const card_information = resp.data.current_pm_list.data[0].card;
+            setCurrentCardNb('**** **** **** ' + card_information.last4)
+        }
+        // setAccountPaymentName()
+        // setAccountPaymentNumber()
+        // setAccountPaymentExpDate()
+    }
 
     // État pour le solde du compte - TODO LINK ACCOUNT BALANCE
     const [accountBalance, setAccountBalance] = useState('100.00'); // Mettez à jour avec la logique appropriée
@@ -245,7 +307,9 @@ const PayementSettings = () => {
     }
 
     useEffect(() => {
+        getStripeKey()
         getSalonStripeInformation()
+        getCustomerStripeInformation()
     }, [])
 
     const [birthdate, setBirthdate] = useState(new Date());
@@ -281,6 +345,7 @@ const PayementSettings = () => {
 
     return (
         <div className={`w-[400px] h-max bg-white rounded-2xl py-4 shadow-lg mb-4`}>
+            {isLoading && loadingView()}
             {showPaymentModal &&
                 <BaseModal close={() => setShowPaymentModal(false)}>
                     {modifBankCard}
@@ -349,7 +414,7 @@ const PayementSettings = () => {
                 </p>
                 {payMethod == payementMethodStruct[0] &&
                     <p className="text-sm md:text-sm justify-center text-zinc-600  font-normal items-start my-1">
-                        {currentCardNb[0] + currentCardNb[1] + currentCardNb[2] + currentCardNb[3]} **** **** ****
+                        **** **** **** {currentCardNb.slice(-4)}
                     </p>
                 }
                 {payMethod == payementMethodStruct[1] &&
@@ -358,6 +423,7 @@ const PayementSettings = () => {
                     </p>
                 }
             </div>
+            {clientSecret && 
             <div className="flex flex-col items-center mt-4 button_add_bank_card">
                 <p
                     className={`w-max justify-center py-2 px-3 text-sm mb-6 ${Theme_A.button.medBlackColoredButton}`}
@@ -366,6 +432,8 @@ const PayementSettings = () => {
                     Mettre à jour
                 </p>
             </div>
+            }
+
 
             {/* Séparation */}
             <hr className=" mx-16 border-gray-300 h-4 mt-4" />
