@@ -33,6 +33,7 @@ const SubUnselected_text = "text-black"
 const SubUnselected_recommended = `${ColorsThemeA.OhcGradient_D} text-black`
 const SubUnselected_BG = `bg-white`
 
+
 const Subscription = () => {
   const showSnackbar = useSnackbar();
   const router = useRouter();
@@ -53,6 +54,7 @@ const Subscription = () => {
     user_id: 0,
     readable_trial_period: ''
   }
+
   const [isAutomaticRenewal, setIsAutomaticRenewal] = useState(true);
   const [currentPlan, setCurrentPlan] = useState<Subscription>(defaultSubscription);
   const packageNames = [
@@ -79,7 +81,7 @@ const Subscription = () => {
     const { data } = await dashboard.salonNotification()
     setNotifications(data)
   }
-  
+
 
   useEffect(() => {
     fetchSubscription();
@@ -103,41 +105,18 @@ const Subscription = () => {
   //       <PaymentModal handleClickPay={handleClickPay} />
   //   </div >;
 
-  const handleClickPro = async () => {
-    // const accountSid = 'AC99a58b7c8d4cdeab1c149da8f1d02afe';
-    // const authToken = '383a31d3080accbe3a0c3f992eeb6854';
-    // const data = {
-    //   accountSid: accountSid,
-    //   authToken: authToken
-    // }    
-    // await dashboard.sendWhatsapp(data).then((resp) => {
-    //   console.log(resp.data.data);
-    // });
-
-
-    // const client = twilio(accountSid, authToken);
-    // const client = require('twilio')(accountSid, authToken);
-
-
-    // client.messages.create({
-    //   body: 'Booking Success!',
-    //   from: 'whatsapp:+14155238886', // Your Twilio WhatsApp-enabled phone number
-    //   to: 'whatsapp:+1234567890', // The recipient's WhatsApp number
-    // })
-    // .then(message => //console.log(message.sid))
-    // .catch(error => console.error(error));
-
-    setIsModal(true);
-  }
-
   // when clicking on the "choisir" button
   const handleClickChoose = () => {
     console.log(isCurrSubscriptionPro);
 
     if (isCurrSubscriptionPro) {
-      downgradePlan()
+      closeConfirmationDowngradeModal();
+      downgradePlan();
+      //TODO REFRESH PAGE HERE
     } else {
-      upgradePlan()
+      handleCloseUpgradeModal();
+      upgradePlan();
+      //TODO REFRESH PAGE HERE
     }
     //setIsCurrSubscriptionPro(!isCurrSubscriptionPro)
 
@@ -176,7 +155,7 @@ const Subscription = () => {
     let answer = confirm('Les données de votre compte seront dans le système pendant 30 jours, vous pourrez vous connecter et réactiver votre compte pendant cette période. Après les 30 jours, les données seront définitivement supprimées et vous ne pourrez plus les récupérer. Êtes-vous sûr de vouloir fermer le compte ?')
 
     if (answer) {
-      let data: DeactivateAccountParams = 
+      let data: DeactivateAccountParams =
       {
         user_id: ""
       }
@@ -201,6 +180,30 @@ const Subscription = () => {
       });
     }
   }
+
+  // DOWNGRADE CONFIRMATION MODAL 
+  const [isConfirmationDowngradeModalOpen, setisConfirmationDowngradeModalOpen] = useState(false);
+
+  // Fonction appelée lorsque l'utilisateur clique sur "Choisir" pour passer à l'abonnement gratuit
+  const handleDowngradeToFree = () => {
+    // Affiche le modal de confirmation
+    setisConfirmationDowngradeModalOpen(true);
+  };
+  // Fonction pour fermer le modal de confirmation
+  const closeConfirmationDowngradeModal = () => {
+    setisConfirmationDowngradeModalOpen(false);
+  };
+
+
+  // UPGRADE CONFIRMATION MODAL
+  const [isUpgradeModalOpen, setIsUpgradeModalOpen] = React.useState(false);
+  const handleCloseUpgradeModal = () => {
+    setIsUpgradeModalOpen(false);
+  };
+  const handleConfirmUpgrade = () => {
+    // Logique pour gérer l'upgrade
+    setIsUpgradeModalOpen(true);
+  };
 
   return (
     <div>
@@ -261,8 +264,7 @@ const Subscription = () => {
                       );
                     })}
                     <div className="mt-1 h-7">
-                      <button className={` font-semibold text-center pt-2 ${isCurrSubscriptionPro ? SubSelected_text : SubUnselected_text}`}
-                        onClick={handleClickPro}>
+                      <button className={` font-semibold text-center pt-2 ${isCurrSubscriptionPro ? SubSelected_text : SubUnselected_text}`}>
                         <span className="text-2xl">79€ /mois</span>
                       </button>
                     </div>
@@ -271,8 +273,8 @@ const Subscription = () => {
                     {/* <div className={`${Theme_A.button.medBlackColoredButton} w-52 absolute left-[224px] top-[650px]  flex items-center justify-center`}> */}
                     Abo actuel
                   </div>}
-                  {!isCurrSubscriptionPro && <div className="z-10 w-48 absolute left-[230px] top-[650px]  flex items-center justify-center text-black font-semibold border border-[#000000] rounded-3xl -mb-12 h-12 bg-white hover:scale-105 transition-transform hover:shadow-md"
-                    onClick={() => handleClickChoose()}>
+                  {!isCurrSubscriptionPro && <div className="z-10 w-48 absolute left-[230px] top-[650px]  flex items-center justify-center text-black font-semibold border border-[#000000] rounded-3xl -mb-12 h-12 bg-white hover:scale-105 transition-transform hover:shadow-md cursor-pointer"
+                    onClick={() => handleConfirmUpgrade()}>
                     Choisir
                   </div>}
                   {/* Regular side */}
@@ -307,8 +309,8 @@ const Subscription = () => {
                     {/* <div className={`${Theme_A.button.medBlackColoredButton} w-52 absolute left-[224px] top-[650px]  flex items-center justify-center`}> */}
                     Abo actuel
                   </div>}
-                  {isCurrSubscriptionPro && <div className="z-10 w-48 absolute left-[450px] top-[650px]  flex items-center justify-center text-black font-semibold border border-[#000000] rounded-3xl -mb-12 h-12 bg-white hover:scale-105 transition-transform hover:shadow-md"
-                    onClick={() => handleClickChoose()}>
+                  {isCurrSubscriptionPro && <div className="z-10 w-48 absolute left-[450px] top-[650px]  flex items-center justify-center text-black font-semibold border border-[#000000] rounded-3xl -mb-12 h-12 bg-white hover:scale-105 transition-transform hover:shadow-md cursor-pointer"
+                    onClick={() => handleDowngradeToFree()}>
                     Choisir
                   </div>}
                 </div>
@@ -343,14 +345,63 @@ const Subscription = () => {
         </div>
       </DashboardLayout >
       <Footer />
-      {
-        isModal && (
-          <BaseModal close={() => setIsModal(false)}>
-            <div>
-              <PaymentModal />
+
+      {/* Modal de confirmation pour le DOWNGRADE d'abonnement */}
+      {isConfirmationDowngradeModalOpen && (
+        <BaseModal close={closeConfirmationDowngradeModal}>
+          <div className="modal-content text-center p-6">
+            <p className="text-xl font-semibold mb-4">Changement d'abonnement</p>
+            <p className="mb-4">Êtes-vous sûr de vouloir passer à l'abonnement gratuit ?</p>
+            <p className="">Vous perdrez tous les avantages liés à l'abonnement Pro,</p>
+            <p className="mb-4">y compris le nombre d'images que vous présentez aux clients.</p>
+            <div className="flex justify-center gap-4 mt-8"> {/* Ajout de flex et gap */}
+              <button
+                className={`${Theme_A.button.medWhiteColoredButton}`}
+                onClick={closeConfirmationDowngradeModal}
+              >
+                Annuler
+              </button>
+              <button
+                className={`${Theme_A.button.mediumGradientButton}`}
+                onClick={handleClickChoose}
+              >
+                Confirmer
+              </button>
             </div>
-          </BaseModal>)
-      }
+          </div>
+        </BaseModal>
+      )}
+      {/* Modal de confirmation pour l'UPGRADE d'abonnement */}
+      {isUpgradeModalOpen && (
+        <BaseModal close={handleCloseUpgradeModal}>
+          <div className="modal-content text-center p-6">
+            <p className="text-xl font-semibold mb-4">Changement d'abonnement</p>
+            <p className="mb-4">Félicitation, vous êtes sur le point de booster votre affaire</p>
+            <img
+              src='/assets/DefaultPictures/Boost_Plan.png'
+              alt="Description de l'image" // Fournissez une description alternative pour l'image
+              className="mx-auto mb-4 h-48 w-48 rounded-full" // Centrer l'image et ajouter une marge en bas
+            />
+            <p className="">De nouveaux horizons s'offrent à vous !</p>
+
+            <div className="flex justify-center gap-4 mt-8"> {/* Ajout de flex et gap */}
+              <button
+                className={`${Theme_A.button.medWhiteColoredButton}`}
+                onClick={handleCloseUpgradeModal}
+              >
+                Annuler
+              </button>
+              <button
+                className={`${Theme_A.button.mediumGradientButton}`}
+                onClick={handleClickChoose}
+              >
+                Confirmer
+              </button>
+            </div>
+          </div>
+        </BaseModal>
+      )}
+
     </div >
   );
 };
