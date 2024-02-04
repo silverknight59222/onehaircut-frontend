@@ -112,11 +112,12 @@ const Subscription = () => {
     if (isCurrSubscriptionPro) {
       closeConfirmationDowngradeModal();
       downgradePlan();
+      window.location.reload(); // Rafraîchit la page
       //TODO REFRESH PAGE HERE
     } else {
       handleCloseUpgradeModal();
       upgradePlan();
-      //TODO REFRESH PAGE HERE
+      //TODO REFRESH PAGE HERE OR LOGOUT
     }
     //setIsCurrSubscriptionPro(!isCurrSubscriptionPro)
 
