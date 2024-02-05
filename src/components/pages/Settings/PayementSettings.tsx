@@ -17,8 +17,8 @@ import PaymentFormSetting from "@/components/pages/Settings/PaymentformSetting";
 import { loadStripe } from '@stripe/stripe-js';
 import userLoader from "@/hooks/useLoader";
 import { Elements } from "@stripe/react-stripe-js";
-import {Auth} from "@/api/auth";
-import {removeFromLocalStorage, setLocalStorage} from "@/api/storage";
+import { Auth } from "@/api/auth";
+import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/storage";
 const { loadingView } = userLoader();
 
 const PayementSettings = () => {
@@ -43,6 +43,7 @@ const PayementSettings = () => {
     const [clickedMethod, setClickedMethod] = useState(payementMethodStruct[0])
     // state for the card number
     const [cardNb, setCardNb] = useState(0)
+    const [pageDone, setPageDone] = useState<String[]>([]);
 
 
 
@@ -228,12 +229,12 @@ const PayementSettings = () => {
             currency: 'eur',
         }
         updateBankingSettings(bankData).then(async () => {
-          const {data} = await Auth.getUser()
-          setLocalStorage("user", JSON.stringify(data.user));
-          if (data.user.hair_salon) {
-            setLocalStorage("hair_salon", JSON.stringify(data.user.hair_salon));
-          }
-          window.location.reload();
+            const { data } = await Auth.getUser()
+            setLocalStorage("user", JSON.stringify(data.user));
+            if (data.user.hair_salon) {
+                setLocalStorage("hair_salon", JSON.stringify(data.user.hair_salon));
+            }
+            window.location.reload();
         })
         // Mettre à jour l'affichage du compte bancaire avec l'IBAN
         setBankAccountDisplay(iban);
@@ -319,6 +320,9 @@ const PayementSettings = () => {
         getStripeKey()
         getSalonStripeInformation()
         getCustomerStripeInformation()
+        const pages_done = getLocalStorage('pages_done')
+        setPageDone(pages_done!.split(',').map((item) => item.trim()))
+        console.log(pages_done)
     }, [])
 
     const [birthdate, setBirthdate] = useState(new Date());
@@ -345,8 +349,16 @@ const PayementSettings = () => {
         },
     ];
 
-    const closeTour = () => {
+    const closeTour = async () => {
         // You may want to store in local storage or state that the user has completed the tour
+        setIsLoading(true)
+        if (!pageDone.includes('salon_payment')) {
+            let resp = await salonApi.assignStepDone({ page: 'salon_payment' });
+            removeFromLocalStorage('pages_done');
+            setLocalStorage('pages_done', resp.data.pages_done);
+            setPageDone((prevArray) => [...prevArray, 'salon_payment'])
+        }
+        setIsLoading(false);
     };
     // ------------------------------------------------------------------
 
@@ -363,7 +375,8 @@ const PayementSettings = () => {
 
 
             {/* For explaining the website */}
-            <TourModal steps={tourSteps} onRequestClose={closeTour} />
+            {!pageDone.includes('salon_payment') &&
+                <TourModal steps={tourSteps} onRequestClose={closeTour} />}
 
 
             {/* Nouvelle section pour le solde du compte */}
@@ -433,14 +446,14 @@ const PayementSettings = () => {
                 }
             </div>
             {clientSecret &&
-            <div className="flex flex-col items-center mt-4 button_add_bank_card">
-                <p
-                    className={`w-max justify-center py-2 px-3 text-sm mb-6 ${Theme_A.button.medBlackColoredButton}`}
-                    onClick={() => setShowPaymentModal(true)}
-                >
-                    Mettre à jour
-                </p>
-            </div>
+                <div className="flex flex-col items-center mt-4 button_add_bank_card">
+                    <p
+                        className={`w-max justify-center py-2 px-3 text-sm mb-6 ${Theme_A.button.medBlackColoredButton}`}
+                        onClick={() => setShowPaymentModal(true)}
+                    >
+                        Mettre à jour
+                    </p>
+                </div>
             }
 
 
