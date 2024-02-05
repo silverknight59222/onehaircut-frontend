@@ -563,8 +563,7 @@ const Hairdressers = () => {
 
 
       {/* For explaining the website */}
-      {!pageDone.includes('salon_hairdressers') &&
-        <TourModal steps={tourSteps} onRequestClose={closeTour} />}
+        <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('salon_hairdressers')}/>
 
 
       {isLoading && loadingView()}

@@ -300,8 +300,7 @@ const BookSalon = () => {
       {isLoading && salon && loadingView()}
 
       {/* For explaining the website */}
-      {!pageDone.includes('book_time_salon') &&
-        <TourModal steps={tourSteps} onRequestClose={closeTour} />}
+        <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('book_time_salon')} />
 
       <Navbar hideSearchBar={true} />
 
