@@ -48,7 +48,15 @@ const Page = () => {
 
   const [sidebarItems, setSidebarItems] = useState([
     { icon: "DashboardIcon", title: "Dashboard", route: "/dashboard" },
-    // Add other sidebar items as needed
+    // { icon: "ClientActivityIcon", title: "Client Activité", route: "/dashboard/client-activity" },
+    // { icon: "StatsIcon", title: "Visites / Stats", route: "/dashboard/visites" },
+    // { icon: "RevenueIcon", title: "Revenue", route:"/dashboard/revenue" },
+    { icon: "MessageIcon", title: "Message", route: "/dashboard/messages" },
+    { icon: "SettingsIcon", title: "Réglages", permission: "Reglages", route: "/dashboard/settings" },
+    { icon: "PersonalizationIcon", title: "Abonnement", route: "/dashboard/subscription" },
+    // { icon: "BoostIcon", title: "Boost", route: "" },
+    // { icon: "BotIcon", title: "OnehairBot", permission: "Onehairbot", route: "/dashboard/bot" },
+    { icon: "ContactIcon", title: "Contactez-nous", route: "/dashboard/contactUs" },
   ]);
 
   const SidebarHandler = () => {
