@@ -4,8 +4,9 @@ import {
   useStripe,
   useElements
 } from "@stripe/react-stripe-js";
+import { Theme_A } from "@/components/utilis/Themes";
 
-const PaymentFormSetting = () => {
+const PaymentFormSetting = ({ showConfirmButton = true }) => {
   const stripe = useStripe();
   const elements = useElements();
 
@@ -82,19 +83,36 @@ const PaymentFormSetting = () => {
     layout: "tabs"
   }
 
+  const buttonClassNames = [
+    "flex", "items-center", "justify-center", "text-white", "font-semibold",
+    "text-lg", // Taille du texte plus petite
+    "rounded-md", "px-4", "py-2", // Padding plus petit
+    "mt-2", "shadow-md", "transform", "hover:scale-105",
+    "transition-transform", "hover:shadow-md",
+    Theme_A.button.mediumGradientButton // ceci appliquera les gradients de couleur
+  ].join(' ');
+
+  // ...
   return (
     <form id="payment-form" onSubmit={handleSubmit}>
-
-      <PaymentElement id="payment-element" options={paymentElementOptions} />
-      <button disabled={isLoading || !stripe || !elements} id="submit">
-        <span id="button-text">
-          {isLoading ? <div className="spinner" id="spinner"></div> : "Pay now"}
-        </span>
-      </button>
-      {/* Show any error or success messages */}
+      <PaymentElement id="payment-element" options={{ layout: "tabs" }} />
+      <div className="flex justify-center w-full"> {/* Centrer le bouton dans ce div */}
+        {showConfirmButton && (
+          <button
+            disabled={isLoading || !stripe || !elements}
+            id="submit"
+            className={buttonClassNames}
+          >
+            <span id="button-text">
+              {isLoading ? <div className='spinner' id="spinner"></div> : "Confirmer"}
+            </span>
+          </button>
+        )}
+      </div>
       {message && <div id="payment-message">{message}</div>}
     </form>
   );
+
 }
 
 export default PaymentFormSetting;

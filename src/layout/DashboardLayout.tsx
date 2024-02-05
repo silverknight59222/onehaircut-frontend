@@ -18,13 +18,14 @@ const DashboardLayout = ({ children, notifications }: DashboardLayout) => {
   const [tab, setTab] = useState("Dashboard");
   const user = getLocalStorage('user');
   const user_data = user ? JSON.parse(user) : null;
+  const [showWarningForBankAccount, setShowWarningForBankAccount] = useState<boolean>(!user_data?.bank_acc_stripe_id)
   const [sidebarItems, setSidebarItems] = useState([
     { icon: "DashboardIcon", title: "Dashboard", route: "/dashboard" },
     // { icon: "ClientActivityIcon", title: "Client Activité", route: "/dashboard/client-activity" },
     // { icon: "StatsIcon", title: "Visites / Stats", route: "/dashboard/visites" },
     // { icon: "RevenueIcon", title: "Revenue", route:"/dashboard/revenue" },
     { icon: "MessageIcon", title: "Message", route: "/dashboard/messages" },
-    { icon: "SettingsIcon", title: "Réglages", permission: "Reglages", route: "/dashboard/settings" },
+    { icon: "SettingsIcon", title: "Réglages", permission: "Reglages", route: "/dashboard/settings", showWarning: showWarningForBankAccount },
     { icon: "PersonalizationIcon", title: "Abonnement", route: "/dashboard/subscription" },
     // { icon: "BoostIcon", title: "Boost", route: "" },
     // { icon: "BotIcon", title: "OnehairBot", permission: "Onehairbot", route: "/dashboard/bot" },
@@ -33,7 +34,7 @@ const DashboardLayout = ({ children, notifications }: DashboardLayout) => {
 
   const getStatusSubscription = () => {
     // Update sidebarItems based on user subscription
-    const isProSubscription = user_data ? user_data.subscription.name.includes("Pro") : false;
+    const isProSubscription = user_data ? user_data.subscription?.name?.includes("Pro") : false;
 
     setSidebarItems((prevSidebarItems) => {
       // Create a new array with the existing items
