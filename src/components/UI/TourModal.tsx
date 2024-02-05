@@ -15,11 +15,9 @@ export interface Steps {
 export type TourModalType = {
   steps: Steps[],
   onRequestClose?: () => void;
-  children?: JSX.Element,
-  audioPath?: string
 }
 
-const TourModal = ({ steps, onRequestClose, children, audioPath }: TourModalType) => {
+const TourModal = ({ steps, onRequestClose }: TourModalType) => {
   const disableBody = target => disableBodyScroll(target);
   const enableBody = target => enableBodyScroll(target);
   const [isTourOpen, setIsTourOpen] = useState(true);
@@ -28,16 +26,6 @@ const TourModal = ({ steps, onRequestClose, children, audioPath }: TourModalType
     onRequestClose && onRequestClose();
   };
 
-  const modalContent = (
-    <div className='relative top-0 left-0 pr-1 pb-1'>
-      {audioPath && (
-        <Player
-          src={audioPath}
-        />
-      )}
-      {children}
-    </div>
-  );
 
 
   // Composant de bouton avec effet de survol
@@ -80,8 +68,7 @@ const TourModal = ({ steps, onRequestClose, children, audioPath }: TourModalType
         nextButton={<HoverButton text="Suivant" baseBgColor="#FF7B20" hoverBgColor="#FE5019" />}
         lastStepNextButton={<HoverButton text="C'est parti !" baseBgColor="#FF7B20" hoverBgColor="#FE5019" />}
         showNumber={false}
-      >
-      </Tour>
+      />
     </>
   )
 }
