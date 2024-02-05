@@ -2,17 +2,18 @@ import React, { useState } from "react";
 import QRCode from "qrcode.react";
 
 const QRCodeGenerator = ({ url }) => {
-    const [isQRCodeVisible, setQRCodeVisible] = useState(false);
-
     return (
-        <div className="items-center justify-center mb-2">
-            <button onClick={() => setQRCodeVisible(!isQRCodeVisible)}>
-                <p className="mb-6 ">
-                    Votre QRC
+        <div className="flex flex-col items-center justify-center">
+            <div>
+                <p className="mb-2 font-semibold">
+                    Soyez le salon favoris des clients
                 </p>
-            </button>
+            </div>
+            <p className="mb-2 text-xs italic ">
+                a faire scanner par vos clients
+            </p>
 
-            {isQRCodeVisible && <QRCode value={url} />}
+            <QRCode value={url} />
         </div>
     );
 };

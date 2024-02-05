@@ -464,21 +464,21 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
                       < hr className="border-t border-gray-300 my-12 mt-2 mb-4" />
 
 
-                      <div className="flex items-center justify-center mb-2 ">
+                      <div className="flex items-center justify-center mb-8">
                         <QRCodeGenerator url={QRWishlistURL} />
                       </div>
-                      <div className="flex items-center justify-center mb-2">
-                        <p className="mb-2">Ou bien partagez ce lien : </p>
+                      <div className="flex items-center justify-center font-semibold ">
+                        <p className="mb-2">Ou bien partagez ce lien sur vos réseaux: </p>
                       </div>
-                      <div className="flex items-center justify-center mb-2">
+                      <div className="flex items-center justify-center mb-2 italic text-xs">
                         <p className="mb-2">{QRWishlistURL}</p>
                       </div>
 
                       {/* Line separator */}
-                      < hr className="border-t border-gray-300 my-12 mt-2 mb-12" />
+                      < hr className="border-t border-gray-300 my-2" />
 
                       <h2 className="text-center text-lg font-bold mb-4 mt-12">
-                        Modifiez votre description
+                        Décrivez votre salon
                       </h2>
                       {/* Description */}
                       <div className="relative ">
