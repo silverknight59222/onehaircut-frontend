@@ -13,7 +13,7 @@ import { salonApi } from "@/api/salonSide";
 import DatePicker from "@/components/UI/DatePicker";
 import TourModal, { Steps } from "@/components/UI/TourModal";
 import { BankAccountStripe } from "@/types";
-import PaymentFormSetting from "@/components/pages/settings/PaymentformSetting";
+import PaymentFormSetting from "@/components/pages/Settings/PaymentformSetting";
 import { loadStripe } from '@stripe/stripe-js';
 import userLoader from "@/hooks/useLoader";
 import { Elements } from "@stripe/react-stripe-js";
