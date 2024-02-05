@@ -186,7 +186,7 @@ const Dashboard = () => {
 
             {isLoading && loadingView()}
             {/* For explaining the website */}
-            {!pageDone.includes('dashboard_salon') && <TourModal steps={tourSteps} onRequestClose={closeTour} audioPath="/assets/audio/tour/salon/dashboard/dashboard1.mp3" />}
+            <TourModal steps={tourSteps} onRequestClose={closeTour} />
 
             {proSubscription && <div>
                 <Grid container spacing={6} className='match-height  '>
