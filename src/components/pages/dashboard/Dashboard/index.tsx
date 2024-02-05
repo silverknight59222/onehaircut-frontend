@@ -146,7 +146,7 @@ const Dashboard = () => {
         },
         {
             selector: '',
-            content: 'Il regroupe toutes les informations importantes concernant votre salon et vos clients.',
+            content: 'Il regroupe toutes les informations importantes concernant votre salon et vos clients. ',
         },
         {
             selector: '.button_transaction',
