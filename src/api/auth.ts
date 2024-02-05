@@ -34,6 +34,9 @@ const Auth = {
   login: async (params: LoginParams) => {
     return await request.post<LoginResponse>(`/login`, params);
   },
+  getUser: async () => {
+    return await request.get('/user')
+  },
   forgot: async (params: ForgotParams) => {
     return await request.post(`/forgot-password`, params);
   },

@@ -17,6 +17,8 @@ import PaymentFormSetting from "@/components/pages/Settings/PaymentformSetting";
 import { loadStripe } from '@stripe/stripe-js';
 import userLoader from "@/hooks/useLoader";
 import { Elements } from "@stripe/react-stripe-js";
+import {Auth} from "@/api/auth";
+import {removeFromLocalStorage, setLocalStorage} from "@/api/storage";
 const { loadingView } = userLoader();
 
 const PayementSettings = () => {
@@ -25,7 +27,7 @@ const PayementSettings = () => {
     ]
 
 
-    // TODO: get from the backend the payement method 
+    // TODO: get from the backend the payement method
     // state for knowing the execution periode of the bot
     const { loadingView } = userLoader();
     const [isLoading, setIsLoading] = useState(false);
@@ -225,7 +227,14 @@ const PayementSettings = () => {
             iban: iban,
             currency: 'eur',
         }
-        updateBankingSettings(bankData);
+        updateBankingSettings(bankData).then(async () => {
+          const {data} = await Auth.getUser()
+          setLocalStorage("user", JSON.stringify(data.user));
+          if (data.user.hair_salon) {
+            setLocalStorage("hair_salon", JSON.stringify(data.user.hair_salon));
+          }
+          window.location.reload();
+        })
         // Mettre à jour l'affichage du compte bancaire avec l'IBAN
         setBankAccountDisplay(iban);
 
@@ -423,7 +432,7 @@ const PayementSettings = () => {
                     </p>
                 }
             </div>
-            {clientSecret && 
+            {clientSecret &&
             <div className="flex flex-col items-center mt-4 button_add_bank_card">
                 <p
                     className={`w-max justify-center py-2 px-3 text-sm mb-6 ${Theme_A.button.medBlackColoredButton}`}
