@@ -81,7 +81,6 @@ const TourModal = ({ steps, onRequestClose, children, audioPath }: TourModalType
         lastStepNextButton={<HoverButton text="C'est parti !" baseBgColor="#FF7B20" hoverBgColor="#FE5019" />}
         showNumber={false}
       >
-        {/* {modalContent} */}
       </Tour>
     </>
   )
