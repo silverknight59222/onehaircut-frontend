@@ -7,11 +7,12 @@ import ClientDashboardLayout from "@/layout/ClientDashboardLayout";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import Footer from '@/components/UI/Footer';
-import { client } from "@/api/clientSide";
+import { client, user_api } from "@/api/clientSide";
 import useSnackbar from "@/hooks/useSnackbar";
 import InfoButton from "@/components/UI/InfoButton";
-import { getLocalStorage, setLocalStorage } from "@/api/storage";
+import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/storage";
 import TourModal, { Steps } from "@/components/UI/TourModal";
+import userLoader from "@/hooks/useLoader";
 
 // default text if no picture to display
 const TextToDsplayifNoPic =
@@ -60,6 +61,8 @@ const Portrait = () => {
     const [gender, setGender] = useState('');
     const [ethnicGroup, setethnicGroup] = useState('');
     const [hairLength, sethairLength] = useState('');
+    const [pageDone, setPageDone] = useState<String[]>([]);
+    const { loadingView } = userLoader();
 
     // functions for filters
     // handling the change of gender
@@ -330,6 +333,9 @@ const Portrait = () => {
     useEffect(() => {
         fetchPotraits();
         fetchUserNotifications();
+        const pages_done = getLocalStorage('pages_done')
+        setPageDone(pages_done!.split(',').map((item) => item.trim()))
+        console.log(pages_done)
     }, []);
 
     // ------------------------------------------------------------------
@@ -353,17 +359,28 @@ const Portrait = () => {
         },
     ];
 
-    const closeTour = () => {
+    const closeTour = async () => {
         // You may want to store in local storage or state that the user has completed the tour
+        setIsLoading(true)
+        if (!pageDone.includes('portrait')) {
+            let resp = await user_api.assignStepDone({ page: 'portrait' });
+            removeFromLocalStorage('pages_done');
+            setLocalStorage('pages_done', resp.data.pages_done);
+            setPageDone((prevArray) => [...prevArray, 'portrait'])
+        }
+        setIsLoading(false);
     };
     // ------------------------------------------------------------------
 
 
     return (
         <div>
+            {isLoading && loadingView()}
 
             {/* For explaining the website */}
-            <TourModal steps={tourSteps} onRequestClose={closeTour} />
+            {!pageDone.includes('portrait') &&
+                <TourModal steps={tourSteps} onRequestClose={closeTour} />
+            }
 
             <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-0">
                 <LogoCircleFixRight />

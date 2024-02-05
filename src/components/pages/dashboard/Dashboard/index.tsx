@@ -24,13 +24,14 @@ import { Theme_A } from "@/components/utilis/Themes";
 import ConversionChart from "@/views/charts/chartjs/ConversionChart";
 import HairdresserRevenueBarChart from "./ModalComponent/HairdresserRevenueBarChart";
 import { Auth } from "@/api/auth";
-import { client } from "@/api/clientSide";
+import { client, user_api } from "@/api/clientSide";
 import InfoButton from "@/components/UI/InfoButton";
-import { getLocalStorage } from "@/api/storage";
+import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/storage";
 import TourModal, { Steps, TourModalType } from "@/components/UI/TourModal";
 import { t } from "i18next";
 import Image from "next/image";
 import Player from "@/components/UI/PlayerForTour"
+import userLoader from "@/hooks/useLoader";
 
 
 const Dashboard = () => {
@@ -61,6 +62,10 @@ const Dashboard = () => {
     const [selectedMonthTransactions, setSelectedMonthTransactions] = useState(DisplayedMonths[0]);
     const [selectedMonthPayload, setSelectedMonthPayload] = useState(DisplayedMonths[0]);
     const [proSubscription, setProSubscription] = useState(false);
+    const [pageDone, setPageDone] = useState<String[]>([]);
+    const { loadingView } = userLoader();
+    const [isLoading, setIsLoading] = useState(false);
+
 
     const handleNewMonthRevenu = (item: string) => {
         // Mettez à jour l'état avec la nouvelle valeur sélectionnée
@@ -112,6 +117,9 @@ const Dashboard = () => {
     useEffect(() => {
         fetchStats()
         setProSubscription(user ? user.subscription.name.includes("Pro") : false);
+        const pages_done = getLocalStorage('pages_done')
+        setPageDone(pages_done!.split(',').map((item) => item.trim()))
+        console.log(pages_done)
     }, [])
 
     // TODO EMAIL ADDRESS VEIRIFICATION DONE : 
@@ -158,8 +166,16 @@ const Dashboard = () => {
         },
     ];
 
-    const closeTour = () => {
+    const closeTour = async () => {
         // You may want to store in local storage or state that the user has completed the tour
+        setIsLoading(true)
+        if (!pageDone.includes('dashboard_salon')) {
+            let resp = await user_api.assignStepDone({ page: 'dashboard_salon' });
+            removeFromLocalStorage('pages_done');
+            setLocalStorage('pages_done', resp.data.pages_done);
+            setPageDone((prevArray) => [...prevArray, 'dashboard_salon'])
+        }
+        setIsLoading(false);
     };
     // ------------------------------------------------------------------
 
@@ -168,8 +184,9 @@ const Dashboard = () => {
         <div className="px-4 lg:px-6">
             <Footer />
 
+            {isLoading && loadingView()}
             {/* For explaining the website */}
-            <TourModal steps={tourSteps} onRequestClose={closeTour} audioPath="/assets/audio/tour/salon/dashboard/dashboard1.mp3" />
+            {!pageDone.includes('dashboard_salon') && <TourModal steps={tourSteps} onRequestClose={closeTour} audioPath="/assets/audio/tour/salon/dashboard/dashboard1.mp3" />}
 
             {proSubscription && <div>
                 <Grid container spacing={6} className='match-height  '>

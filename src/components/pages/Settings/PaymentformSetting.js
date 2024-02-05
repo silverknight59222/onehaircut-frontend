@@ -5,7 +5,7 @@ import {
   useElements
 } from "@stripe/react-stripe-js";
 
-export default function PaymentFormSetting() {
+const PaymentFormSetting = () => {
   const stripe = useStripe();
   const elements = useElements();
 
@@ -58,9 +58,9 @@ export default function PaymentFormSetting() {
       elements,
       confirmParams: {
         // Make sure to change this to your payment completion page
-        return_url: window.location.origin.includes('http') ? 
-                    'http://127.0.0.1:8000/api/web/stripe/processPM' : 
-                    'https://api.onehaircut.com/api/web/stripe/processPM',
+        return_url: window.location.origin.includes('http') ?
+          'http://127.0.0.1:8000/api/web/stripe/processPM' :
+          'https://api.onehaircut.com/api/web/stripe/processPM',
       },
     });
 
@@ -96,3 +96,5 @@ export default function PaymentFormSetting() {
     </form>
   );
 }
+
+export default PaymentFormSetting;
