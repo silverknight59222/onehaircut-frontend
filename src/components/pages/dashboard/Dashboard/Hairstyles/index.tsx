@@ -3,8 +3,10 @@ import Footer from "@/components/UI/Footer";
 import HairStyleList from "./HairStyleList";
 import HairStylesModal from "./HairStylesModal";
 import HairStyleListHeader from "./HairStyleListHeader";
-import { getLocalStorage } from "@/api/storage";
+import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/storage";
 import TourModal, { Steps } from "@/components/UI/TourModal";
+import { salonApi } from "@/api/salonSide";
+import userLoader from "@/hooks/useLoader";
 // For update commit
 const hairStyleSelectEvent = {
   on: () => { }
@@ -44,6 +46,9 @@ const Hairstyles = () => {
   const [baseGender, setBaseGender] = useState("");
   const salon = getLocalStorage("hair_salon")
   const salonData = salon ? JSON.parse(salon) : null;
+  const [pageDone, setPageDone] = useState<String[]>([]);
+  const { loadingView } = userLoader();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     params.genderFilters = "";
@@ -53,6 +58,9 @@ const Hairstyles = () => {
     if (salonData.type.includes("women") || salonData.type.includes("woman")) {
       params.genderFilters = "Women";
     }
+    const pages_done = getLocalStorage('pages_done')
+    setPageDone(pages_done!.split(',').map((item) => item.trim()))
+    console.log(pages_done)
   }, [])
 
   useEffect(() => {
@@ -82,15 +90,25 @@ const Hairstyles = () => {
     },
   ];
 
-  const closeTour = () => {
+  const closeTour = async () => {
     // You may want to store in local storage or state that the user has completed the tour
+    setIsLoading(true)
+    if (!pageDone.includes('salon_hairstyles')) {
+      let resp = await salonApi.assignStepDone({ page: 'salon_hairstyles' });
+      removeFromLocalStorage('pages_done');
+      setLocalStorage('pages_done', resp.data.pages_done);
+      setPageDone((prevArray) => [...prevArray, 'salon_hairstyles'])
+    }
+    setIsLoading(false);
   };
   // ------------------------------------------------------------------
 
   return (
     <div>
+      {isLoading && loadingView()}
       {/* For explaining the website */}
-      <TourModal steps={tourSteps} onRequestClose={closeTour} />
+      {!pageDone.includes('salon_hairstyles') &&
+        <TourModal steps={tourSteps} onRequestClose={closeTour} />}
       <div className="hairStyles_filter">
         <HairStyleListHeader onListCountShow={listCountShow} isd={isSelectedDelete} selectAllEvent={selectAll} params={params} onFilterSelect={onFilterSelect} setActiveMenu={setActiveMenu} activeMenu={activeMenu} setFinalItems={setFinalSelectedItems}></HairStyleListHeader>
       </div>

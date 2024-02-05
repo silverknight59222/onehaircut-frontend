@@ -7,13 +7,14 @@ import { useRouter } from 'next/navigation';
 import { dashboard } from '@/api/dashboard';
 import userLoader from "@/hooks/useLoader";
 import { Services } from '@/types';
-import { getLocalStorage, setLocalStorage } from '@/api/storage';
+import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from '@/api/storage';
 import BaseModal from '@/components/UI/BaseModal';
 import { Theme_A } from '@/components/utilis/Themes';
 import { ColorsThemeA } from '@/components/utilis/Themes';
 import Footer from "@/components/UI/Footer";
 import InfoButton from '@/components/UI/InfoButton';
 import TourModal, { Steps } from "@/components/UI/TourModal";
+import { user_api } from '@/api/clientSide';
 
 // Définition des interfaces pour typer les données manipulées dans le composant.
 interface Requirements {
@@ -71,6 +72,7 @@ const ServiceChoose = () => {
     const { loadingView } = userLoader();
     const [lengthSelect, setLengthFilters] = useState<string[]>([]);
     const router = useRouter()
+    const [pageDone, setPageDone] = useState<String[]>([]);
     // useRef est utilisé pour créer une référence mutable qui conserve la même .current entre les renders
     const dropdownRef = React.useRef() as React.MutableRefObject<HTMLInputElement>
     const temp = getLocalStorage("haircut")
@@ -266,6 +268,9 @@ const ServiceChoose = () => {
     useEffect(() => {
         getAllServices()
         // getBasedFilter()
+        const pages_done = getLocalStorage('pages_done')
+        setPageDone(pages_done!.split(',').map((item) => item.trim()))
+        console.log(pages_done)
         document.addEventListener('click', closeSelectBox);
         return () => {
             document.removeEventListener('click', closeSelectBox);
@@ -321,16 +326,27 @@ const ServiceChoose = () => {
         },
     ];
 
-    const closeTour = () => {
+    const closeTour = async () => {
         // You may want to store in local storage or state that the user has completed the tour
+        setIsLoading(true)
+        if (!pageDone.includes('services')) {
+            let resp = await user_api.assignStepDone({ page: 'services' });
+            removeFromLocalStorage('pages_done');
+            setLocalStorage('pages_done', resp.data.pages_done);
+            setPageDone((prevArray) => [...prevArray, 'services'])
+        }
+        setIsLoading(false);
     };
     // ------------------------------------------------------------------
 
     // JSX retourné pour le rendu du composant.
     return (
         <div>
+            {isLoading && loadingView()}
             {/* For explaining the website */}
-            {<TourModal steps={tourSteps} onRequestClose={closeTour} />}
+
+            {!pageDone.includes('services') &&
+                <TourModal steps={tourSteps} onRequestClose={closeTour} />}
 
             <Navbar
                 isServicesPage={true}

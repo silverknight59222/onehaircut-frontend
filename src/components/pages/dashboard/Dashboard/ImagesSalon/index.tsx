@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { dashboard } from '@/api/dashboard';
-import { getLocalStorage } from '@/api/storage';
+import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from '@/api/storage';
 import userLoader from '@/hooks/useLoader';
 import { ImageSalon } from '@/types';
 import ImagesContainer from './ImagesContainer';
@@ -8,6 +8,7 @@ import { EditIcon, LogoCircleFixLeft } from "@/components/utilis/Icons";
 import Footer from "@/components/UI/Footer";
 import { Theme_A } from '@/components/utilis/Themes';
 import TourModal, { Steps } from '@/components/UI/TourModal';
+import { salonApi } from '@/api/salonSide';
 
 
 const pulseAnimation = `
@@ -23,6 +24,7 @@ const Images = () => {
 
 	const [isLoading, setIsLoading] = useState(false);
 	const [salonImages, setSalonImages] = useState<ImageSalon[]>([]);
+	const [pageDone, setPageDone] = useState<String[]>([]);
 	useEffect(() => {
 		// window.location.reload()
 	}, [salonImages])
@@ -45,6 +47,9 @@ const Images = () => {
 
 	useEffect(() => {
 		getAllSalonImages();
+		const pages_done = getLocalStorage('pages_done')
+		setPageDone(pages_done!.split(',').map((item) => item.trim()))
+		console.log(pages_done)
 	}, [])
 
 	// ------------------------------------------------------------------
@@ -60,8 +65,16 @@ const Images = () => {
 		},
 	];
 
-	const closeTour = () => {
+	const closeTour = async () => {
 		// You may want to store in local storage or state that the user has completed the tour
+		setIsLoading(true)
+		if (!pageDone.includes('salon_images')) {
+			let resp = await salonApi.assignStepDone({ page: 'salon_images' });
+			removeFromLocalStorage('pages_done');
+			setLocalStorage('pages_done', resp.data.pages_done);
+			setPageDone((prevArray) => [...prevArray, 'salon_images'])
+		}
+		setIsLoading(false);
 	};
 	// ------------------------------------------------------------------
 
@@ -69,7 +82,8 @@ const Images = () => {
 		<>
 			{isLoading && loadingView()}
 			{/* For explaining the website */}
-			<TourModal steps={tourSteps} onRequestClose={closeTour} />
+			{!pageDone.includes('salon_images') &&
+				<TourModal steps={tourSteps} onRequestClose={closeTour} />}
 			<div className="w-full flex flex-col xl:flex-row items-center justify-center gap-4 mt-8 mb-20">
 
 				<div className="h-[940px] w-full xl:w-1/2 2xl:w-2/5 overflow-auto flex flex-col items-center gap-8 bg-lightGrey rounded-3xl p-4 md:px-12 md:pt-12 md:pb-0 opacity-95 pic_salon">

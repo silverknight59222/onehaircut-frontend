@@ -9,9 +9,10 @@ import "./style.css";
 import { dashboard } from "@/api/dashboard";
 import EventDetailsModal from "./EventDetails";
 import { Booking, Coiffeur } from "./types";
-import { getLocalStorage } from "@/api/storage";
+import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/storage";
 import frLocale from '@fullcalendar/core/locales/fr'; // Importez la locale française
 import TourModal, { Steps } from "@/components/UI/TourModal";
+import { salonApi } from "@/api/salonSide";
 
 
 const Agenda = () => {
@@ -22,6 +23,7 @@ const Agenda = () => {
   const [hairDressers, setHairDressers] = useState([]);
   const [selectedEventDetails, setSelectedEventDetails] = useState<Booking>();
   const calendarRef = useRef<FullCalendar | null>(null);
+  const [pageDone, setPageDone] = useState<String[]>([]);
 
 
   const couleurs = [
@@ -143,6 +145,9 @@ const Agenda = () => {
   // Utilisation du hook useEffect pour charger toutes les réservations au montage du composant
   useEffect(() => {
     getHairDresser();
+    const pages_done = getLocalStorage('pages_done')
+    setPageDone(pages_done!.split(',').map((item) => item.trim()))
+    console.log(pages_done)
   }, []);
 
   // Fonction pour calculer le nombre d'événements à venir dans la plage visible
@@ -212,8 +217,16 @@ const Agenda = () => {
     },
   ];
 
-  const closeTour = () => {
+  const closeTour = async () => {
     // You may want to store in local storage or state that the user has completed the tour
+    setIsLoading(true)
+    if (!pageDone.includes('salon_agenda')) {
+      let resp = await salonApi.assignStepDone({ page: 'salon_agenda' });
+      removeFromLocalStorage('pages_done');
+      setLocalStorage('pages_done', resp.data.pages_done);
+      setPageDone((prevArray) => [...prevArray, 'salon_agenda'])
+    }
+    setIsLoading(false);
   };
   // ------------------------------------------------------------------
 
@@ -223,7 +236,8 @@ const Agenda = () => {
       {isLoading && loadingView()}
 
       {/* For explaining the website */}
-      <TourModal steps={tourSteps} onRequestClose={closeTour} />
+      {!pageDone.includes('salon_agenda') &&
+        <TourModal steps={tourSteps} onRequestClose={closeTour} />}
 
       <div className="calendar-header">
         <TotalEventsCounter totalEventsCount={totalEventsCount} />

@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { HairdresserSlots } from "./HairdresserSlots";
 import userLoader from "@/hooks/useLoader";
 import useSnackbar from "@/hooks/useSnackbar";
-import { getLocalStorage } from "@/api/storage";
+import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/storage";
 import { dashboard } from "@/api/dashboard";
 import { SalonDetails } from "@/types";
 import SlotDropdown from "./SlotsDropdown";
@@ -14,6 +14,7 @@ import { Theme_A } from "@/components/utilis/Themes";
 import { ColorsThemeA } from "@/components/utilis/Themes";
 import InfoButton from "@/components/UI/InfoButton";
 import TourModal, { Steps } from "@/components/UI/TourModal";
+import { salonApi } from "@/api/salonSide";
 export interface OpenTimes {
     available: boolean;
     day: string;
@@ -34,6 +35,7 @@ const OpenningHours = () => {
     const [updatedSlots, setUpdatedSlots] = useState<OpenTimes[]>([]);
     const [salonId, setSalonId] = useState(0);
     const [disableUpdate, setDisableUpdate] = useState(true);
+    const [pageDone, setPageDone] = useState<String[]>([]);
     const setHairSalonSlotList = (data: SalonwithSlots[]) => {
         let hairSalon;
         if (data.length > 1) {
@@ -138,6 +140,9 @@ const OpenningHours = () => {
     };
     useEffect(() => {
         getHairSalonSlot();
+        const pages_done = getLocalStorage('pages_done')
+        setPageDone(pages_done!.split(',').map((item) => item.trim()))
+        console.log(pages_done)
     }, []);
 
     // ------------------------------------------------------------------
@@ -165,8 +170,16 @@ const OpenningHours = () => {
         },
     ];
 
-    const closeTour = () => {
+    const closeTour = async () => {
         // You may want to store in local storage or state that the user has completed the tour
+        setIsLoading(true)
+        if (!pageDone.includes('salon_opening_hours')) {
+            let resp = await salonApi.assignStepDone({ page: 'salon_opening_hours' });
+            removeFromLocalStorage('pages_done');
+            setLocalStorage('pages_done', resp.data.pages_done);
+            setPageDone((prevArray) => [...prevArray, 'salon_opening_hours'])
+        }
+        setIsLoading(false);
     };
     // ------------------------------------------------------------------
 
@@ -177,7 +190,8 @@ const OpenningHours = () => {
             {isLoading && loadingView()}
 
             {/* For explaining the website */}
-            <TourModal steps={tourSteps} onRequestClose={closeTour} />
+            {!pageDone.includes('salon_opening_hours') &&
+                <TourModal steps={tourSteps} onRequestClose={closeTour} />}
 
             <div className="flex items-center flex-col justify-center w-max mb-4">
                 {!isLoading && (

@@ -5,6 +5,9 @@ import ComponentTheme from "@/components/UI/ComponentTheme";
 import BaseModal from "@/components/UI/BaseModal";
 import { user_api } from "@/api/clientSide";
 import TourModal, { Steps } from "@/components/UI/TourModal";
+import { salonApi } from "@/api/salonSide";
+import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/storage";
+import userLoader from "@/hooks/useLoader";
 interface RolePermissions {
     [role: string]: number[]; // Définir une signature d'index
 }
@@ -262,6 +265,9 @@ const RolesSettings = () => {
         setIsModal(false);
     };
 
+    const { loadingView } = userLoader();
+    const [isLoading, setIsLoading] = useState(false);
+    const [pageDone, setPageDone] = useState<String[]>([]);
     // Function to fetch permissions based on the role
     const fetchPermissions = async (role: string) => {
         try {
@@ -298,7 +304,11 @@ const RolesSettings = () => {
     useEffect(() => {
         fetchPermissions(selectedRole);
     }, [selectedRole]);
-
+    useEffect(() => {
+        const pages_done = getLocalStorage('pages_done')
+        setPageDone(pages_done!.split(',').map((item) => item.trim()))
+        console.log(pages_done)
+    }, [])
     const renderRoleContent = () => {
         return (
             // TO GET CUSTOMS COLORS ACCORDING TO COMPONENT THEM
@@ -379,8 +389,16 @@ const RolesSettings = () => {
         },
     ];
 
-    const closeTour = () => {
+    const closeTour = async () => {
         // You may want to store in local storage or state that the user has completed the tour
+        setIsLoading(true)
+        if (!pageDone.includes('salon_roles')) {
+            let resp = await salonApi.assignStepDone({ page: 'salon_roles' });
+            removeFromLocalStorage('pages_done');
+            setLocalStorage('pages_done', resp.data.pages_done);
+            setPageDone((prevArray) => [...prevArray, 'salon_roles'])
+        }
+        setIsLoading(false);
     };
     // ------------------------------------------------------------------
 
@@ -390,9 +408,10 @@ const RolesSettings = () => {
 
 
         <div className={`w-[500px] h-max bg-white rounded-2xl py-4 shadow-lg mb-4`}>
-
+            {isLoading && loadingView()}
             {/* For explaining the website */}
-            <TourModal steps={tourSteps} onRequestClose={closeTour} />
+            {!pageDone.includes('salon_roles') &&
+                <TourModal steps={tourSteps} onRequestClose={closeTour} />}
 
             {/* ADMIN / STAFF TITRE  */}
             <div className="flex justify-center items-center">

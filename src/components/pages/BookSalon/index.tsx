@@ -1,5 +1,5 @@
 "use client";
-import { client } from "@/api/clientSide";
+import { client, user_api } from "@/api/clientSide";
 import DatePicker from "@/components/UI/DatePicker";
 import Navbar from "@/components/shared/Navbar";
 import {
@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import userLoader from "@/hooks/useLoader";
 import { Hairdresser, Slot } from "@/types";
-import { getLocalStorage, setLocalStorage } from "@/api/storage";
+import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/storage";
 import { BackArrow } from "@/components/utilis/Icons";
 import { Theme_A, ColorsThemeA } from "@/components/utilis/Themes";
 import Footer from "@/components/UI/Footer";
@@ -46,6 +46,7 @@ const BookSalon = () => {
   const user = userData ? JSON.parse(userData) : null
   const services = service_ids ? JSON.parse(service_ids) : null
   const [travel_duration, setTravelDuration] = useState(0)
+  const [pageDone, setPageDone] = useState<String[]>([]);
   // TODO SEE IF THE SALON IS MOBILE - SELECT AT HOME OR IN SALON BOOKING 
   const [locationType, setLocationType] = useState('salon');
   const durationTime = salon?.total_duration
@@ -73,6 +74,9 @@ const BookSalon = () => {
   useEffect(() => {
     setSelectedDate(new Date())
     getAllHairDresser()
+    const pages_done = getLocalStorage('pages_done')
+    setPageDone(pages_done!.split(',').map((item) => item.trim()))
+    console.log(pages_done)
   }, [])
 
   useEffect(() => {
@@ -278,8 +282,16 @@ const BookSalon = () => {
     },
   ];
 
-  const closeTour = () => {
+  const closeTour = async () => {
     // You may want to store in local storage or state that the user has completed the tour
+    setIsLoading(true)
+    if (!pageDone.includes('book_time_salon')) {
+      let resp = await user_api.assignStepDone({ page: 'book_time_salon' });
+      removeFromLocalStorage('pages_done');
+      setLocalStorage('pages_done', resp.data.pages_done);
+      setPageDone((prevArray) => [...prevArray, 'book_time_salon'])
+    }
+    setIsLoading(false);
   };
   // ------------------------------------------------------------------
 
@@ -288,7 +300,8 @@ const BookSalon = () => {
       {isLoading && salon && loadingView()}
 
       {/* For explaining the website */}
-      {<TourModal steps={tourSteps} onRequestClose={closeTour} />}
+      {!pageDone.includes('book_time_salon') &&
+        <TourModal steps={tourSteps} onRequestClose={closeTour} />}
 
       <Navbar hideSearchBar={true} />
 
