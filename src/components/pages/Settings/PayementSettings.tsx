@@ -31,6 +31,7 @@ const PayementSettings = () => {
     // state for knowing the execution periode of the bot
     const { loadingView } = userLoader();
     const [isLoading, setIsLoading] = useState(false);
+    const showSnackbar = useSnackbar();
 
     const [stripeKey, setStripeKey] = useState("");
     const [payMethod, setPayMethod] = useState(payementMethodStruct[0])
@@ -208,6 +209,16 @@ const PayementSettings = () => {
             setIban(formattedIban); // Met à jour l'état de l'IBAN avec la valeur formatée et tronquée
         }
     };
+    const isFormValid = () => {
+        // Add your validation logic here
+        return (
+            accountName.trim() !== "" &&
+            accountOwner.trim() !== "" &&
+            bank.trim() !== "" &&
+            bankAccountType.trim() !== "" &&
+            iban.trim() !== ""
+        );
+    };
 
     const handleCloseBankAccountModal = () => {
         // Fermer le modal ici (ajuster selon votre logique existante)
@@ -218,29 +229,34 @@ const PayementSettings = () => {
     const [bankAccountDisplay, setBankAccountDisplay] = useState('Aucun compte paramétré');
     // Fonction pour simuler l'enregistrement des données
     const handleSaveBankAccountData = () => {
-        // Ici, vous pourriez avoir votre logique pour enregistrer les données de l'IBAN dans la base de données ou ailleurs
-        console.log("Données enregistrées (simulation)");
-        const bankData: BankAccountStripe = {
-            name: accountName,
-            owner: accountOwner,
-            bank_name: bank,
-            business_type: bankAccountType,
-            iban: iban,
-            currency: 'eur',
-        }
-        updateBankingSettings(bankData).then(async () => {
-            const { data } = await Auth.getUser()
-            setLocalStorage("user", JSON.stringify(data.user));
-            if (data.user.hair_salon) {
-                setLocalStorage("hair_salon", JSON.stringify(data.user.hair_salon));
+        if (isFormValid()) {
+            // Ici, vous pourriez avoir votre logique pour enregistrer les données de l'IBAN dans la base de données ou ailleurs
+            console.log("Données enregistrées (simulation)");
+            const bankData: BankAccountStripe = {
+                name: accountName,
+                owner: accountOwner,
+                bank_name: bank,
+                business_type: bankAccountType,
+                iban: iban,
+                currency: 'eur',
             }
-            window.location.reload();
-        })
-        // Mettre à jour l'affichage du compte bancaire avec l'IBAN
-        setBankAccountDisplay(iban);
+            updateBankingSettings(bankData).then(async () => {
+                const { data } = await Auth.getUser()
+                setLocalStorage("user", JSON.stringify(data.user));
+                if (data.user.hair_salon) {
+                    setLocalStorage("hair_salon", JSON.stringify(data.user.hair_salon));
+                }
+                window.location.reload();
+            })
+            // Mettre à jour l'affichage du compte bancaire avec l'IBAN
+            setBankAccountDisplay(iban);
 
-        // Fermez le modal après l'enregistrement
-        setShowAddBankAccountModal(false);
+            // Fermez le modal après l'enregistrement
+            setShowAddBankAccountModal(false);
+        }
+        else {
+            showSnackbar("error", "There are missing field. Please give a valid information");
+        }
     };
 
     const getCustomerStripeInformation = async () => {
@@ -553,6 +569,7 @@ const PayementSettings = () => {
                             <button
                                 onClick={handleSaveBankAccountData}
                                 className={`${Theme_A.button.mediumGradientButton} mr-10`} // Ajustez la marge à gauche si nécessaire
+                                // disabled={!isFormValid()}
                             >
                                 Enregistrer
                             </button>
