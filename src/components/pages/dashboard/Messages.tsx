@@ -1,6 +1,6 @@
 "use client";
 import { dashboard } from "@/api/dashboard";
-import { getLocalStorage } from "@/api/storage";
+import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/storage";
 import {
   LogoCircleFixRight,
   ChatSendIcon,
@@ -13,6 +13,7 @@ import { Chat, ClientChat } from "@/types";
 import { Theme_A, ColorsThemeA } from "@/components/utilis/Themes";
 import CustomInput from "@/components/UI/CustomInput";
 import TourModal, { Steps } from "@/components/UI/TourModal";
+import { salonApi } from "@/api/salonSide";
 
 const Messages = () => {
   const [clients, setClients] = useState<ClientChat[]>([])
@@ -24,6 +25,7 @@ const Messages = () => {
   const [selectedChat, setSelectedChat] = useState({ client_id: 0, client: { name: '', front_profile: '' } })
   const [chats, setChats] = useState<Chat[]>([])
   const [message, setMessage] = useState('')
+  const [pageDone, setPageDone] = useState<String[]>([]);
 
   const getClientsByProfessional = async () => {
     if (salonId) {
@@ -99,6 +101,9 @@ const Messages = () => {
 
   useEffect(() => {
     getClientsByProfessional();
+    const pages_done = getLocalStorage('pages_done')
+    setPageDone(pages_done!.split(',').map((item) => item.trim()))
+    console.log(pages_done)
   }, [])
 
 
@@ -143,8 +148,16 @@ const Messages = () => {
     },
   ];
 
-  const closeTour = () => {
+  const closeTour = async () => {
     // You may want to store in local storage or state that the user has completed the tour
+    setIsLoading(true)
+    if (!pageDone.includes('salon_message')) {
+      let resp = await salonApi.assignStepDone({ page: 'salon_message' });
+      removeFromLocalStorage('pages_done');
+      setLocalStorage('pages_done', resp.data.pages_done);
+      setPageDone((prevArray) => [...prevArray, 'salon_message'])
+    }
+    setIsLoading(false);
   };
   // ------------------------------------------------------------------
 
@@ -153,7 +166,8 @@ const Messages = () => {
     <div>
       {isLoading && loadingView()}
       {/* For explaining the website */}
-      <TourModal steps={tourSteps} onRequestClose={closeTour} />
+      {!pageDone.includes('salon_message') &&
+        <TourModal steps={tourSteps} onRequestClose={closeTour} />}
 
       <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
         <LogoCircleFixRight />

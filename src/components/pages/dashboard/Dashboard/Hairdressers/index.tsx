@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { dashboard } from "@/api/dashboard";
-import { getLocalStorage } from "@/api/storage";
+import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/storage";
 import userLoader from "@/hooks/useLoader";
 import useSnackbar from "@/hooks/useSnackbar";
 import { FileDetails, Hairdresser, Avatar } from "@/types";
@@ -18,6 +18,7 @@ import { ColorsThemeA } from "@/components/utilis/Themes";
 import CustomInput from "@/components/UI/CustomInput";
 import BaseModal from "@/components/UI/BaseModal";
 import TourModal, { Steps } from "@/components/UI/TourModal";
+import { salonApi } from "@/api/salonSide";
 
 
 interface AllAvatars {
@@ -63,6 +64,7 @@ const Hairdressers = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [hasHairDresser, setHasHairDresser] = useState(false);
+  const [pageDone, setPageDone] = useState<String[]>([]);
   const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
   const [error, setError] = useState({
     name: "",
@@ -397,6 +399,9 @@ const Hairdressers = () => {
   useEffect(() => {
     getAllHairDresser();
     getAllAvatars();
+    const pages_done = getLocalStorage('pages_done')
+    setPageDone(pages_done!.split(',').map((item) => item.trim()))
+    console.log(pages_done)
   }, []);
 
   // useEffect(() => {
@@ -491,8 +496,16 @@ const Hairdressers = () => {
     },
   ];
 
-  const closeTour = () => {
+  const closeTour = async () => {
     // You may want to store in local storage or state that the user has completed the tour
+    setIsLoading(true)
+    if (!pageDone.includes('salon_hairdressers')) {
+      let resp = await salonApi.assignStepDone({ page: 'salon_hairdressers' });
+      removeFromLocalStorage('pages_done');
+      setLocalStorage('pages_done', resp.data.pages_done);
+      setPageDone((prevArray) => [...prevArray, 'salon_hairdressers'])
+    }
+    setIsLoading(false);
   };
   // ------------------------------------------------------------------
 
@@ -550,7 +563,8 @@ const Hairdressers = () => {
 
 
       {/* For explaining the website */}
-      <TourModal steps={tourSteps} onRequestClose={closeTour} />
+      {!pageDone.includes('salon_hairdressers') &&
+        <TourModal steps={tourSteps} onRequestClose={closeTour} />}
 
 
       {isLoading && loadingView()}

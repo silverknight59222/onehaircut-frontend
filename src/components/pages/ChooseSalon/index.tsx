@@ -7,7 +7,7 @@ import Image from 'next/image';
 import StarRatings from 'react-star-ratings';
 import { useRouter } from 'next/navigation';
 import { dashboard } from '@/api/dashboard';
-import { getLocalStorage, setLocalStorage } from '@/api/storage';
+import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from '@/api/storage';
 import { SalonDetails } from '@/types';
 import userLoader from "@/hooks/useLoader";
 import useSnackbar from '@/hooks/useSnackbar';
@@ -20,6 +20,7 @@ import { salonApi } from '@/api/salonSide';
 import BaseModal from '@/components/UI/BaseModal';
 import CustomInput from '@/components/UI/CustomInput';
 import TourModal, { Steps } from "@/components/UI/TourModal";
+import { user_api } from '@/api/clientSide';
 
 
 // TODO IMPORT TO USE ADRESSES
@@ -60,6 +61,7 @@ const SalonChoice = () => {
     const [positions, setPositions] = useState<Position[]>([])
     const [center, setCenter] = useState<Position>()
     const [map, setMap] = useState<google.maps.Map>();
+    const [pageDone, setPageDone] = useState<String[]>([]);
 
 
     const [mapBound, setMapBound] = useState<any>();
@@ -456,6 +458,9 @@ const SalonChoice = () => {
         if (!userId) {
             setIsLoggedIn(true);
         }
+        const pages_done = getLocalStorage('pages_done')
+        setPageDone(pages_done!.split(',').map((item) => item.trim()))
+        console.log(pages_done)
     }, [])
 
     const handleSolenSelected = (salon: SalonDetails) => {
@@ -641,8 +646,16 @@ const SalonChoice = () => {
         },
     ];
 
-    const closeTour = () => {
+    const closeTour = async () => {
         // You may want to store in local storage or state that the user has completed the tour
+        setIsLoading(true)
+        if (!pageDone.includes('choose_salon')) {
+            let resp = await user_api.assignStepDone({ page: 'choose_salon' });
+            removeFromLocalStorage('pages_done');
+            setLocalStorage('pages_done', resp.data.pages_done);
+            setPageDone((prevArray) => [...prevArray, 'choose_salon'])
+        }
+        setIsLoading(false);
     };
     // ------------------------------------------------------------------
 
@@ -650,8 +663,10 @@ const SalonChoice = () => {
     // Rendu du composant
     return (
         <>
+            {isLoading && loadingView()}
             {/* For explaining the website */}
-            {<TourModal steps={tourSteps} onRequestClose={closeTour} />}
+            {!pageDone.includes('choose_salon')
+                && <TourModal steps={tourSteps} onRequestClose={closeTour} />}
 
             <div className='w-full h-screen  overflow-hidden'>
                 {/* Modal qui s'affiche si moins de 10 salons */}

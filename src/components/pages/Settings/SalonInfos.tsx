@@ -15,6 +15,7 @@ import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/
 import { ErrorBar } from "recharts";
 import InfoButton from "@/components/UI/InfoButton";
 import TourModal, { Steps } from "@/components/UI/TourModal";
+import userLoader from "@/hooks/useLoader";
 
 const tempSalon = getLocalStorage('hair_salon');
 let salonInfo = tempSalon ? JSON.parse(tempSalon) : null;
@@ -40,6 +41,8 @@ const SalonInfos = () => {
     const showSnackbar = useSnackbar();
     const [ZonePrice, setZonePrice] = useState(0);
     const [ZoneDuration, setZoneDuration] = useState(0);
+    const [pageDone, setPageDone] = useState<String[]>([]);
+    const { loadingView } = userLoader();
     const [addressResponse, setAddressResponse] = useState({
         street: "",
         city: "",
@@ -118,6 +121,9 @@ const SalonInfos = () => {
             setIsMobilityAllowed(salonInfo.is_mobile)
             setSiretNumber(salonInfo.company_id_number)
         }
+        const pages_done = getLocalStorage('pages_done')
+        setPageDone(pages_done!.split(',').map((item) => item.trim()))
+        console.log(pages_done)
     }, []);
 
     const saveSalonType = async (item) => {
@@ -520,8 +526,16 @@ const SalonInfos = () => {
         },
     ];
 
-    const closeTour = () => {
+    const closeTour = async () => {
         // You may want to store in local storage or state that the user has completed the tour
+        setIsLoading(true)
+        if (!pageDone.includes('salon_info')) {
+            let resp = await salonApi.assignStepDone({ page: 'salon_info' });
+            removeFromLocalStorage('pages_done');
+            setLocalStorage('pages_done', resp.data.pages_done);
+            setPageDone((prevArray) => [...prevArray, 'salon_info'])
+        }
+        setIsLoading(false);
     };
     // ------------------------------------------------------------------
 
@@ -530,9 +544,10 @@ const SalonInfos = () => {
     return (
         // ...
         <div className={`w-[500px] h-max bg-white rounded-2xl py-4 shadow-lg mb-12`}>
-
+            {isLoading && loadingView()}
             {/* For explaining the website */}
-            <TourModal steps={tourSteps} onRequestClose={closeTour} />
+            {!pageDone.includes('salon_info') &&
+                <TourModal steps={tourSteps} onRequestClose={closeTour} />}
 
             {isModal && (
                 <BaseModal close={() => setIsModal(false)} width="w-[600px]">

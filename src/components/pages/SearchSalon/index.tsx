@@ -1,5 +1,5 @@
 "use client";
-import { client } from "@/api/clientSide";
+import { client, user_api } from "@/api/clientSide";
 import Navbar from "@/components/shared/Navbar";
 import {
   LogoCircleFixLeft,
@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 import React, { useEffect, useState, useRef } from "react";
 import StarRatings from "react-star-ratings";
 import userLoader from "@/hooks/useLoader";
-import { getLocalStorage, setLocalStorage } from "@/api/storage";
+import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/storage";
 import { Theme_A } from "@/components/utilis/Themes";
 import ChatModal from "./ChatModal";
 import { GoogleMap, Marker, useJsApiLoader, LoadScript, MarkerF } from '@react-google-maps/api';
@@ -67,6 +67,7 @@ const SearchSalon = () => {
   const [salonProfile, setSalonProfile] = useState<SalonProfile>()
   const router = useRouter();
   const { loadingView } = userLoader();
+  const [pageDone, setPageDone] = useState<String[]>([]);
 
   const haircut = getLocalStorage("haircut")
   const haircutData = haircut ? JSON.parse(haircut) : null
@@ -91,8 +92,11 @@ const SearchSalon = () => {
     let tempSalon = getLocalStorage('selectedSalon')
     const salon = tempSalon ? JSON.parse(tempSalon) : null
     setSalonProfile(salon)
-    console.log(selectedImage)
-    console.log(salonProfile)
+    // console.log(selectedImage)
+    // console.log(salonProfile)
+    const pages_done = getLocalStorage('pages_done')
+    setPageDone(pages_done!.split(',').map((item) => item.trim()))
+    console.log(pages_done)
   }, [])
 
   useEffect(() => {
@@ -196,8 +200,16 @@ const SearchSalon = () => {
     },
   ];
 
-  const closeTour = () => {
+  const closeTour = async () => {
     // You may want to store in local storage or state that the user has completed the tour
+    setIsLoading(true)
+    if (!pageDone.includes('salon_profile')) {
+      let resp = await user_api.assignStepDone({ page: 'salon_profile' });
+      removeFromLocalStorage('pages_done');
+      setLocalStorage('pages_done', resp.data.pages_done);
+      setPageDone((prevArray) => [...prevArray, 'salon_profile'])
+    }
+    setIsLoading(false);
   };
   // ------------------------------------------------------------------
 
@@ -209,7 +221,8 @@ const SearchSalon = () => {
       {isLoading && loadingView()}
 
       {/* For explaining the website */}
-      {<TourModal steps={tourSteps} onRequestClose={closeTour} />}
+      {!pageDone.includes('salon_profile') &&
+        <TourModal steps={tourSteps} onRequestClose={closeTour} />}
 
       {/* Barre de navigation */}
       <Navbar hideSearchBar={true} />

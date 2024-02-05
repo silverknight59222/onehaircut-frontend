@@ -7,12 +7,13 @@ import { Theme_A, ColorsThemeA } from "@/components/utilis/Themes";
 import CustomizedTable from "@/components/UI/CustomizedTable";
 import CustomInput from "@/components/UI/CustomInput";
 import { dashboard } from "@/api/dashboard";
-import { getLocalStorage, setLocalStorage } from "@/api/storage";
+import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/storage";
 import { salonApi } from "@/api/salonSide";
 import useSnackbar from '@/hooks/useSnackbar';
 import OpenningHours from "./OpenningHours";
 import InfoButton from "@/components/UI/InfoButton";
 import TourModal, { Steps } from "@/components/UI/TourModal";
+import userLoader from "@/hooks/useLoader";
 
 // Définissez un type ou une interface pour les données d'indisponibilité
 interface UnavailabilityData {
@@ -66,6 +67,8 @@ const defaultHairDresser = {
 
 const Unavailability = () => {
     const showSnackbar = useSnackbar();
+    const { loadingView } = userLoader();
+    const [isLoading, setIsLoading] = useState(false);
     const salonData = getLocalStorage('hair_salon')
 
     const salon = salonData ? JSON.parse(salonData) : null
@@ -90,6 +93,7 @@ const Unavailability = () => {
     const [selectedDates, setSelectedDates] = useState<Date[]>([]);
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
+    const [pageDone, setPageDone] = useState<String[]>([]);
 
     const onDatesSelect = (dates: Date[]) => {
         setSelectedDates(dates);
@@ -112,6 +116,9 @@ const Unavailability = () => {
         // setSelectedDate(new Date())
         getHairDresser()
         getSalonInfo()
+        const pages_done = getLocalStorage('pages_done')
+        setPageDone(pages_done!.split(',').map((item) => item.trim()))
+        console.log(pages_done)
     }, [])
 
     useEffect(() => {
@@ -356,8 +363,16 @@ const Unavailability = () => {
         },
     ];
 
-    const closeTour = () => {
+    const closeTour = async () => {
         // You may want to store in local storage or state that the user has completed the tour
+        setIsLoading(true)
+        if (!pageDone.includes('salon_unavailability')) {
+            let resp = await salonApi.assignStepDone({ page: 'salon_unavailability' });
+            removeFromLocalStorage('pages_done');
+            setLocalStorage('pages_done', resp.data.pages_done);
+            setPageDone((prevArray) => [...prevArray, 'salon_unavailability'])
+        }
+        setIsLoading(false);
     };
     // ------------------------------------------------------------------
 
@@ -367,9 +382,11 @@ const Unavailability = () => {
 
         <div className={`w-[500px] mb-2 bg-white rounded-2xl py-4 shadow-lg overflow-hidden z-50 ${mainContainerClass}`}>
 
+            {isLoading && loadingView()}
 
             {/* For explaining the website */}
-            <TourModal steps={tourSteps} onRequestClose={closeTour} />
+            {!pageDone.includes('salon_unavailability') &&
+                <TourModal steps={tourSteps} onRequestClose={closeTour} />}
 
             {/* MODAL POUR AFFICHER LES PERIODES D'INDISPONIBILITE ENREGISTREES */}
             {

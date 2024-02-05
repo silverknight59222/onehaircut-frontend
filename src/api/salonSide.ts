@@ -128,8 +128,11 @@ const salonApi = {
   getSalonCustomerStripeInformation: async () => {
     return await request.get('stripe/getCustomerInformation');
   },
-  submitNewPaymentMethod: async(params: any) => {
+  submitNewPaymentMethod: async (params: any) => {
     return await request.post('stripe/updateNewPaymentMethod');
+  },
+  assignStepDone: async (params: any) => {
+    return await request.post('assign_step', params);
   }
 
 }
