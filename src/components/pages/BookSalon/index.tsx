@@ -329,7 +329,7 @@ const BookSalon = () => {
 
               <div className="flex items-center gap-1 border-b-2 border-[#DBDBDB] text-xl 2xl:text-2xl font-semibold text-black pb-3 mt-1">
                 <StarRatings
-                  rating={salon?.salon_haircut == null ? 0 : salon?.salon_haircut.rating}
+                  rating={haircutData ? salon?.salon_haircut.rating : salon?.rating}
                   starRatedColor="#FEDF10"
                   starSpacing="1px"
                   starDimension="20px"
@@ -337,7 +337,8 @@ const BookSalon = () => {
                   name="rating"
                 />
                 {/* TODO use salon's rating of the selected haircut {salonProfile.rating}*/}
-                <p className="-mb-2"> {salon?.salon_haircut == null ? 0 : salon?.salon_haircut.rating.toFixed(1)}</p> <br /> <small><small>  ({salon?.salon_haircut == null ? 0 : salon?.salon_haircut.rating_counts} avis</small></small> <p className="font-normal"><small><small><small>* sur cette coiffure</small></small></small> <br /></p> <small><small> ) </small></small>
+                <p className="-mb-2"> {haircutData ? salon?.salon_haircut.rating.toFixed(1) : salon?.rating.toFixed(1)}</p> <br /> <small><small>
+                  ({haircutData ? salon?.salon_haircut.rating_counts : salon?.rating_counts} avis</small></small> <p className="font-normal"><small><small><small>* sur cette coiffure</small></small></small> <br /></p> <small><small> ) </small></small>
               </div>
             </div>
           )}
