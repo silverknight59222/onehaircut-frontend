@@ -107,8 +107,7 @@ const Hairstyles = () => {
     <div>
       {isLoading && loadingView()}
       {/* For explaining the website */}
-      {!pageDone.includes('salon_hairstyles') &&
-        <TourModal steps={tourSteps} onRequestClose={closeTour} />}
+      <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('salon_hairstyles')} />
       <div className="hairStyles_filter">
         <HairStyleListHeader onListCountShow={listCountShow} isd={isSelectedDelete} selectAllEvent={selectAll} params={params} onFilterSelect={onFilterSelect} setActiveMenu={setActiveMenu} activeMenu={activeMenu} setFinalItems={setFinalSelectedItems}></HairStyleListHeader>
       </div>

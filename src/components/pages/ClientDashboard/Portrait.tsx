@@ -1,4 +1,5 @@
 "use client";
+import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import { dashboard } from "@/api/dashboard";
 import DropdownMenu from "@/components/UI/DropDownMenu";
 import { CrossIcon, LogoCircleFixRight } from "@/components/utilis/Icons";
@@ -378,9 +379,7 @@ const Portrait = () => {
             {isLoading && loadingView()}
 
             {/* For explaining the website */}
-            {!pageDone.includes('portrait') &&
-                <TourModal steps={tourSteps} onRequestClose={closeTour} />
-            }
+            <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('portrait')} />
 
             <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-0">
                 <LogoCircleFixRight />

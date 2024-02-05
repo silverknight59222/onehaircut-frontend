@@ -174,9 +174,7 @@ const Messages = () => {
             {isLoading && loadingView()}
 
             {/* For explaining the website */}
-            {!pageDone.includes('message') &&
-                <TourModal steps={tourSteps} onRequestClose={closeTour} />
-            }
+                <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('message')}/>
 
             <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
                 <LogoCircleFixRight />

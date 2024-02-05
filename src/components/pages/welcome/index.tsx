@@ -368,8 +368,8 @@ const Welcome = () => {
     removeFromLocalStorage('ServiceIds')
     removeFromLocalStorage('haircut') // reset hair cut when user land on welcome page every time
     const pages_done = getLocalStorage('pages_done')
-        setPageDone(pages_done!.split(',').map((item) => item.trim()))
-        console.log(pages_done)
+    setPageDone(pages_done!.split(',').map((item) => item.trim()))
+    console.log(pages_done)
   }, [])
 
   useEffect(() => {
@@ -509,7 +509,7 @@ const Welcome = () => {
     },
   ];
 
-  const closeTour = async() => {
+  const closeTour = async () => {
     // You may want to store in local storage or state that the user has completed the tour
     setIsLoading(true)
     if (!pageDone.includes('dashboard')) {
@@ -525,7 +525,7 @@ const Welcome = () => {
   return (
     <>
       {/* For explaining the website */}
-      {!isGuest && !pageDone.includes('dashboard') && (<TourModal steps={tourSteps} onRequestClose={closeTour} />)}
+      (<TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('dashboard') || isGuest} />)
 
       {/* Modal pour choix générique de coiffure */}
       {isGenericHaircutModalOpen && (

@@ -665,8 +665,7 @@ const SalonChoice = () => {
         <>
             {isLoading && loadingView()}
             {/* For explaining the website */}
-            {!pageDone.includes('choose_salon')
-                && <TourModal steps={tourSteps} onRequestClose={closeTour} />}
+            <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('choose_salon')} />
 
             <div className='w-full h-screen  overflow-hidden'>
                 {/* Modal qui s'affiche si moins de 10 salons */}
