@@ -236,8 +236,7 @@ const Agenda = () => {
       {isLoading && loadingView()}
 
       {/* For explaining the website */}
-      {!pageDone.includes('salon_agenda') &&
-        <TourModal steps={tourSteps} onRequestClose={closeTour} />}
+        <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('salon_agenda')} />
 
       <div className="calendar-header">
         <TotalEventsCounter totalEventsCount={totalEventsCount} />

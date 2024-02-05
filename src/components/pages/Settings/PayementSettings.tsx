@@ -391,8 +391,7 @@ const PayementSettings = () => {
 
 
             {/* For explaining the website */}
-            {!pageDone.includes('salon_payment') &&
-                <TourModal steps={tourSteps} onRequestClose={closeTour} />}
+            <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('salon_payment')} />
 
 
             {/* Nouvelle section pour le solde du compte */}
@@ -569,7 +568,7 @@ const PayementSettings = () => {
                             <button
                                 onClick={handleSaveBankAccountData}
                                 className={`${Theme_A.button.mediumGradientButton} mr-10`} // Ajustez la marge à gauche si nécessaire
-                                // disabled={!isFormValid()}
+                            // disabled={!isFormValid()}
                             >
                                 Enregistrer
                             </button>

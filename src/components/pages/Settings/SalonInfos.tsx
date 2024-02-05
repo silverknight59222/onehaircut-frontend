@@ -546,8 +546,7 @@ const SalonInfos = () => {
         <div className={`w-[500px] h-max bg-white rounded-2xl py-4 shadow-lg mb-12`}>
             {isLoading && loadingView()}
             {/* For explaining the website */}
-            {!pageDone.includes('salon_info') &&
-                <TourModal steps={tourSteps} onRequestClose={closeTour} />}
+            <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('salon_info')} />
 
             {isModal && (
                 <BaseModal close={() => setIsModal(false)} width="w-[600px]">

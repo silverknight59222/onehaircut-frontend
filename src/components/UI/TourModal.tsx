@@ -1,6 +1,6 @@
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import dynamic from "next/dynamic";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 // const Tour = dynamic(() => import("reactour"), { ssr: false });
 import Player from "@/components/UI/PlayerForTour"
 import Tour from "reactour"
@@ -15,9 +15,10 @@ export interface Steps {
 export type TourModalType = {
   steps: Steps[],
   onRequestClose?: () => void;
+  doneTour: boolean
 }
 
-const TourModal = ({ steps, onRequestClose }: TourModalType) => {
+const TourModal = ({ steps, onRequestClose, doneTour }: TourModalType) => {
   const disableBody = target => disableBodyScroll(target);
   const enableBody = target => enableBodyScroll(target);
   const [isTourOpen, setIsTourOpen] = useState(true);
@@ -26,7 +27,12 @@ const TourModal = ({ steps, onRequestClose }: TourModalType) => {
     onRequestClose && onRequestClose();
   };
 
-
+  useEffect(() => {
+    // Close the tour when showTour becomes false
+    if (doneTour) {
+      closeTour();
+    }
+  }, [doneTour]);
 
   // Composant de bouton avec effet de survol
   const HoverButton = ({ text, baseBgColor, hoverBgColor, textColor = "white" }) => {

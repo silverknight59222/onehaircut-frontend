@@ -385,8 +385,7 @@ const Unavailability = () => {
             {isLoading && loadingView()}
 
             {/* For explaining the website */}
-            {!pageDone.includes('salon_unavailability') &&
-                <TourModal steps={tourSteps} onRequestClose={closeTour} />}
+            <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('salon_unavailability')} />
 
             {/* MODAL POUR AFFICHER LES PERIODES D'INDISPONIBILITE ENREGISTREES */}
             {

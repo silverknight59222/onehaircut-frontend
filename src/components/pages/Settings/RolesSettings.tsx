@@ -410,8 +410,7 @@ const RolesSettings = () => {
         <div className={`w-[500px] h-max bg-white rounded-2xl py-4 shadow-lg mb-4`}>
             {isLoading && loadingView()}
             {/* For explaining the website */}
-            {!pageDone.includes('salon_roles') &&
-                <TourModal steps={tourSteps} onRequestClose={closeTour} />}
+            <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('salon_roles')} />
 
             {/* ADMIN / STAFF TITRE  */}
             <div className="flex justify-center items-center">

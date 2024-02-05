@@ -186,7 +186,7 @@ const Dashboard = () => {
 
             {isLoading && loadingView()}
             {/* For explaining the website */}
-            <TourModal steps={tourSteps} onRequestClose={closeTour} />
+            <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('dashboard_salon')} />
 
             {proSubscription && <div>
                 <Grid container spacing={6} className='match-height  '>

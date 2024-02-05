@@ -221,8 +221,7 @@ const SearchSalon = () => {
       {isLoading && loadingView()}
 
       {/* For explaining the website */}
-      {!pageDone.includes('salon_profile') &&
-        <TourModal steps={tourSteps} onRequestClose={closeTour} />}
+      <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('salon_profile')} />
 
       {/* Barre de navigation */}
       <Navbar hideSearchBar={true} />

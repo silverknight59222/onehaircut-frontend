@@ -345,8 +345,7 @@ const ServiceChoose = () => {
             {isLoading && loadingView()}
             {/* For explaining the website */}
 
-            {!pageDone.includes('services') &&
-                <TourModal steps={tourSteps} onRequestClose={closeTour} />}
+            <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('services')} />
 
             <Navbar
                 isServicesPage={true}

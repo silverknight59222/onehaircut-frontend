@@ -190,8 +190,7 @@ const OpenningHours = () => {
             {isLoading && loadingView()}
 
             {/* For explaining the website */}
-            {!pageDone.includes('salon_opening_hours') &&
-                <TourModal steps={tourSteps} onRequestClose={closeTour} />}
+            <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('salon_opening_hours')} />
 
             <div className="flex items-center flex-col justify-center w-max mb-4">
                 {!isLoading && (

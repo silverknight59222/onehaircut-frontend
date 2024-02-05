@@ -1073,10 +1073,7 @@ const Account = () => {
             </div>
 
             {/* For explaining the website */}
-            {
-                !pageDone.includes('account') &&
-                <TourModal steps={tourSteps} onRequestClose={closeTour} />
-            }
+                <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('account')}/>
 
             <ClientDashboardLayout notifications={globalNotifications}>
                 <div className="mt-4 lg:mt-14 mb-5 px-6">
