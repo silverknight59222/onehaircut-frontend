@@ -497,7 +497,7 @@ const Welcome = () => {
     },
     {
       selector: '.zone_filters',
-      content: 'Une fois selectionnée, tu peux aussi visualiser la coiffure sur ta tête, si tu as apporté tes photos de profil dans la section portrait. Pour ce faire clique sur "Prévisualiser sur moi',
+      content: 'Une fois selectionnée, tu peux aussi visualiser la coiffure sur ta tête, si tu as apporté tes photos de profil dans la section portrait. Pour ce faire clique sur "Prévisualiser sur moi"',
     },
     {
       selector: '.bouton_generic_haircut',
