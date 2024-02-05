@@ -54,7 +54,8 @@ interface SalonProfile {
   total_duration: number,
   rating_counts: number,
   haircut: any,
-  total_service_duration: number
+  total_service_duration: number,
+  salon_haircut: any,
 }
 
 
@@ -258,7 +259,7 @@ const SearchSalon = () => {
             {/*TODO import real rating on the selected haircut {salonProfile.rating} */}
             {salonProfile && <div className="flex items-center gap-1 border-b-2 border-[#DBDBDB] text-xl 2xl:text-2xl font-semibold text-black pb-3 mt-1">
               <StarRatings
-                rating={salonProfile.haircut ? salonProfile.haircut.rating : salonProfile.rating}
+                rating={haircutData ? salonProfile.salon_haircut.rating : salonProfile.rating}
                 starRatedColor="#FEDF10"
                 starSpacing="4px"
                 starDimension="25px"
@@ -267,12 +268,12 @@ const SearchSalon = () => {
               />
               {/* TODO use salon's rating of the selected haircut {salonProfile.rating}*/}
               <p className="-mb-2">
-                {salonProfile.haircut ? salonProfile.haircut.rating.toFixed(1) : salonProfile.rating.toFixed(1)}
+                {haircutData ? salonProfile.salon_haircut.rating.toFixed(1) : salonProfile.rating.toFixed(1)}
               </p>
               <br />
               <small>
                 <small>
-                  ({salonProfile.haircut ? salonProfile.haircut.rating_counts : salonProfile.rating_counts} avis
+                  ({haircutData ? salonProfile.salon_haircut.rating_counts : salonProfile.rating_counts} avis
                 </small>
               </small>
               <p className="font-normal">
