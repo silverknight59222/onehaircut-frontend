@@ -57,6 +57,7 @@ const Welcome = () => {
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(5);
   const [previewImage, setPreviewImage] = useState<string>('');
+  const [pageDone, setPageDone] = useState<String[]>([]);
 
   const getAllHaircuts = async () => {
     // Fetch all available haircuts from the API
@@ -366,6 +367,9 @@ const Welcome = () => {
   useEffect(() => {
     removeFromLocalStorage('ServiceIds')
     removeFromLocalStorage('haircut') // reset hair cut when user land on welcome page every time
+    const pages_done = getLocalStorage('pages_done')
+        setPageDone(pages_done!.split(',').map((item) => item.trim()))
+        console.log(pages_done)
   }, [])
 
   useEffect(() => {
@@ -505,15 +509,23 @@ const Welcome = () => {
     },
   ];
 
-  const closeTour = () => {
+  const closeTour = async() => {
     // You may want to store in local storage or state that the user has completed the tour
+    setIsLoading(true)
+    if (!pageDone.includes('dashboard')) {
+      let resp = await user_api.assignStepDone({ page: 'dashboard' });
+      removeFromLocalStorage('pages_done');
+      setLocalStorage('pages_done', resp.data.pages_done);
+      setPageDone((prevArray) => [...prevArray, 'dashboard'])
+    }
+    setIsLoading(false);
   };
   // ------------------------------------------------------------------
 
   return (
     <>
       {/* For explaining the website */}
-      {!isGuest && (<TourModal steps={tourSteps} onRequestClose={closeTour} />)}
+      {!isGuest && !pageDone.includes('dashboard') && (<TourModal steps={tourSteps} onRequestClose={closeTour} />)}
 
       {/* Modal pour choix générique de coiffure */}
       {isGenericHaircutModalOpen && (
