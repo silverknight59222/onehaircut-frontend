@@ -17,17 +17,22 @@ import RolesSettings from "./RolesSettings";
 import Unavailability from "./Unavailability";
 import PasswordSettings from "./PasswordSettings";
 export interface settingsStruct {
-  name: string;
+  name: string,
   permission: string,
-  display: () => React.JSX.Element;
+  display: () => React.JSX.Element,
+  showWarning?: boolean
 }
+
+
+const user = getLocalStorage('user');
+const user_data = user ? JSON.parse(user) : null;
 
 const settingsMenu: settingsStruct[] = [
   { name: "Générales", permission: "Générales", display: SalonInfos },
   { name: "Horaires", permission: "Horaires",display: OpenningHours },
   { name: "Indisponibilités", permission: "Indisponibilités",display: Unavailability },
   { name: "Réglage des roles", permission: "Réglage des roles",display: RolesSettings },
-  { name: "Paiements", permission: "Paiements",display: PayementSettings },
+  { name: "Paiements", permission: "Paiements",display: PayementSettings, showWarning: !user_data?.bank_acc_stripe_id },
   { name: "Mot de passe", permission: "",display: PasswordSettings },
   //{ name: "Taxes", display: TaxesSettings },
   // { name: "Notifications", display: NotificationsSettings }, // not needed for the salon
@@ -91,15 +96,25 @@ const Settings = () => {
             <div className="max-w-[300px] h-max flex flex-col items-left justify-center text-center px-1 md:px-2 py-6 gap-8 rounded-2xl bg-white text-sm md:text-lg font-medium text-[#909090] shadow-md">
               {currentMenu.map((item, index) => {
                 return (
-                  <p
-                    key={index}
-                    className={` cursor-pointer md:ml-2 md:mr-2 ${activeMenu === item.name &&
+                  <div key={index} className="relative">
+                    <p
+                      className={` cursor-pointer md:ml-2 md:mr-2 ${activeMenu === item.name &&
                       " text-black "
                       }`}
-                    onClick={() => setActiveMenu(item.name)}
-                  >
-                    {item.name}
-                  </p>
+                      onClick={() => setActiveMenu(item.name)}
+                    >
+                      {item.name}
+                      {item.showWarning && <>
+                      <span
+                        className="absolute transform top-1/2 right-6 translate-x-1/2 -translate-y-1/2 h-3 w-3">
+                          <span
+                            className="absolute top-0 right-0  animate-ping inline-flex h-full w-full rounded-full bg-stone-800 opacity-75"></span>
+                          <span
+                            className="absolute top-0 right-0 inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                      </span>
+                      </>}
+                    </p>
+                  </div>
                 )
               })}
             </div>
@@ -110,17 +125,18 @@ const Settings = () => {
             return (
               <>
                 {activeMenu === item.name && !isLoading && (
-                  <div key={index} className="relative flex z-10 md:pl-auto overflow-auto bg-transparent rounded-2xl px-2">
-                    <item.display />
+                  <div key={index}
+                       className="relative flex z-10 md:pl-auto overflow-auto bg-transparent rounded-2xl px-2">
+                    <item.display/>
                   </div>
                 )}
               </>
             )
           })}
         </div>
-      </DashboardLayout >
-      <Footer />
-    </div >
+      </DashboardLayout>
+      <Footer/>
+    </div>
   );
 };
 

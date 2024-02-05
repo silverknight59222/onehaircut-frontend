@@ -45,6 +45,8 @@ const Page = () => {
   const [notifications, setNotifications] = useState({} as any);
   const [isSidebar, setIsSidebar] = useState(true);
   const [tab, setTab] = useState("Dashboard");
+  const [showWarningForBankAccount, setShowWarningForBankAccount] = useState<boolean>(!user_data?.bank_acc_stripe_id)
+
 
   const [sidebarItems, setSidebarItems] = useState([
     { icon: "DashboardIcon", title: "Dashboard", route: "/dashboard" },
@@ -52,7 +54,7 @@ const Page = () => {
     // { icon: "StatsIcon", title: "Visites / Stats", route: "/dashboard/visites" },
     // { icon: "RevenueIcon", title: "Revenue", route:"/dashboard/revenue" },
     { icon: "MessageIcon", title: "Message", route: "/dashboard/messages" },
-    { icon: "SettingsIcon", title: "Réglages", permission: "Reglages", route: "/dashboard/settings" },
+    { icon: "SettingsIcon", title: "Réglages", permission: "Reglages", route: "/dashboard/settings", showWarning: showWarningForBankAccount },
     { icon: "PersonalizationIcon", title: "Abonnement", route: "/dashboard/subscription" },
     // { icon: "BoostIcon", title: "Boost", route: "" },
     // { icon: "BotIcon", title: "OnehairBot", permission: "Onehairbot", route: "/dashboard/bot" },
@@ -74,7 +76,7 @@ const Page = () => {
 
   const getStatusSubscription = () => {
     // Update sidebarItems based on user subscription
-    const isProSubscription = user_data ? user_data.subscription.name.includes("Pro") : false;
+    const isProSubscription = user_data ? user_data.subscription?.name?.includes("Pro") : false;
 
     setSidebarItems((prevSidebarItems) => {
       // Create a new array with the existing items
@@ -97,9 +99,11 @@ const Page = () => {
   return (
     <>
       {tab === "Dashboard" && (
-        <Sidebar notifications={notifications} sidebarItems={sidebarItems} isSidebar={isSidebar} SidebarHandler={SidebarHandler} />
+        <Sidebar notifications={notifications} sidebarItems={sidebarItems} isSidebar={isSidebar}
+                 SidebarHandler={SidebarHandler}/>
       )}
-      <div className={`h-screen px-4 lg:px-8 py-5 overflow-x-hidden ${tab === "Dashboard" && `${ColorsThemeA.pageBgColorLight} ml-0 lg:ml-72`}`}>
+      <div
+        className={`h-screen px-4 lg:px-8 py-5 overflow-x-hidden ${tab === "Dashboard" && `${ColorsThemeA.pageBgColorLight} ml-0 lg:ml-72`}`}>
         <Topbar
           isDashboard={tab !== "Dashboard"}
           SidebarHandler={SidebarHandler}

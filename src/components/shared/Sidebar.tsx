@@ -38,7 +38,7 @@ interface SidebarItems {
   icon: string;
   title: string;
   route: string;
-
+  showWarning?: boolean;
 }
 
 interface NotificationsParams {
@@ -529,31 +529,47 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
                 return (
                   <div key={index}>
                     <div
-                      onClick={() => { SidebarHandler(false); onSelectItem(item.route, index) }}
+                      onClick={() => {
+                        SidebarHandler(false);
+                        onSelectItem(item.route, index)
+                      }}
                       className={
-                        `flex items-center my-2 pl-8 py-4 gap-2 cursor-pointer transition ease-in-out duration-100 border-l-4 
+                        `flex items-center my-2 pl-8 py-4 gap-2 cursor-pointer transition ease-in-out duration-100 border-l-4
                         ${path === item.route && "border-rose-600 bg-gradient-to-r from-zinc-800 via-zinc-600 to-zinc-400 font-bold"}`}
                     >
                       <div className="relative flex justify-content-right">
                         {setIcon(item.icon, path === item.route ? item.icon : "")}
                         {/* Condition pour ne pas afficher l'icône si le compteur est à 0 */}
                         {item.title === 'Message' && notifications.chat_count > 0 && (
-                          <p className="absolute left-56 top-[2.6px] flex items-center justify-center w-5 h-5 rounded-full bg-[#F44336] text-white text-[10px] font-semibold">
+                          <p
+                            className="absolute left-56 top-[2.6px] flex items-center justify-center w-5 h-5 rounded-full bg-[#F44336] text-white text-[10px] font-semibold">
                             {notifications.chat_count}
                           </p>
                         )}
                         {item.title === 'Réservations en cours' && notifications.reservation_count > 0 && (
-                          <p className="absolute left-56 top-[2.6px] flex items-center justify-center w-5 h-5 rounded-full bg-[#F44336] text-white text-[10px] font-semibold">
+                          <p
+                            className="absolute left-56 top-[2.6px] flex items-center justify-center w-5 h-5 rounded-full bg-[#F44336] text-white text-[10px] font-semibold">
                             {notifications.reservation_count}
                           </p>
                         )}
                       </div>
-                      <p
-                        className={`text-base ${path === item.route && "text-white"
+                      <div className="relative">
+                        <p
+                          className={`text-base ${path === item.route && "text-white"
                           }`}
-                      >
-                        {item.title}
-                      </p>
+                        >
+                          {item.title}
+                        </p>
+                        {item.showWarning && <>
+                        <span
+                          className="absolute top-1/2 -right-5  transform translate-x-1/2 -translate-y-1/2 h-3 w-3">
+                          <span
+                            className="absolute top-0 right-0  animate-ping inline-flex h-full w-full rounded-full bg-stone-800 opacity-75"></span>
+                          <span
+                            className="absolute top-0 right--100  inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+									      </span></>
+                        }
+                      </div>
                     </div>
                   </div>
                 );

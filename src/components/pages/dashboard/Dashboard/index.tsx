@@ -37,7 +37,7 @@ import userLoader from "@/hooks/useLoader";
 const Dashboard = () => {
     const temp = getLocalStorage("user");
     const user = temp ? JSON.parse(temp) : null;
-    type ModalName = 'TransactionfullTable' | 'Incomes' | 'clientActivity' | 'staff' | 'topClient' | 'goals'; // Add more modal keys as needed    
+    type ModalName = 'TransactionfullTable' | 'Incomes' | 'clientActivity' | 'staff' | 'topClient' | 'goals'; // Add more modal keys as needed
     const [modals, setModals] = useState<{ [key in ModalName]?: boolean }>({
         TransactionfullTable: false,
         Incomes: false,
@@ -92,7 +92,7 @@ const Dashboard = () => {
         "Dernière commande", "Details dernière commande", "Status dernière commande", "Total payé"];
 
 
-    // CONVERSION DATA 
+    // CONVERSION DATA
 
     //TODO IMPORT TRUE DATA AND REMOVE FAKE VALUES
     function genererValeurAleatoire() {
@@ -116,13 +116,13 @@ const Dashboard = () => {
     }
     useEffect(() => {
         fetchStats()
-        setProSubscription(user ? user.subscription.name.includes("Pro") : false);
+        setProSubscription(user ? user.subscription?.name?.includes("Pro") : false);
         const pages_done = getLocalStorage('pages_done')
         setPageDone(pages_done!.split(',').map((item) => item.trim()))
         console.log(pages_done)
     }, [])
 
-    // TODO EMAIL ADDRESS VEIRIFICATION DONE : 
+    // TODO EMAIL ADDRESS VEIRIFICATION DONE :
 
     // ------------------------------------------------------------------
     // For Tour
