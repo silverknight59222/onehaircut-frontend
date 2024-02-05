@@ -21,7 +21,7 @@ import { user_api } from "@/api/clientSide";
 import { DeactivateAccountParams } from "@/api/clientSide";
 import { Subscription } from "../../../types";
 import { Auth } from "@/api/auth";
-import { getLocalStorage } from "@/api/storage";
+import {getLocalStorage, setLocalStorage} from "@/api/storage";
 import useSnackbar from "@/hooks/useSnackbar";
 import { dashboard } from "@/api/dashboard";
 import userLoader from "@/hooks/useLoader";
@@ -93,17 +93,21 @@ const Subscription = () => {
 
   const fetchSubscription = async () => {
     setIsLoading(true)
-    const resp = await salonApi.getSubscription()
-    console.log(resp.data.data)
-    if (resp.data.data) {
-      setCurrentPlan(resp.data.data)
+    try {
+      const resp = await salonApi.getSubscription()
+      if (resp.data.data) {
+        setCurrentPlan(resp.data.data)
+      }
+      if (resp.data.data && resp.data.data.name == 'OneHaircut Pro') {
+        setIsCurrSubscriptionPro(true)
+      } else {
+        setIsCurrSubscriptionPro(false)
+      }
+    } catch (e) {
+      //
+    } finally {
+      setIsLoading(false)
     }
-    if (resp.data.data && resp.data.data.name == 'OneHaircut Pro') {
-      setIsCurrSubscriptionPro(true)
-    } else {
-      setIsCurrSubscriptionPro(false)
-    }
-    setIsLoading(false)
   }
   // const modifBankCard: React.JSX.Element =
   //   <div>
@@ -111,53 +115,63 @@ const Subscription = () => {
   //   </div >;
 
   // when clicking on the "choisir" button
-  const handleClickChoose = () => {
-    console.log(isCurrSubscriptionPro);
-
+  const handleClickChoose = async () => {
     if (isCurrSubscriptionPro) {
       closeConfirmationDowngradeModal();
-      downgradePlan();
-      window.location.reload(); // Rafraîchit la page
-      //TODO REFRESH PAGE HERE
+      await downgradePlan();// Rafraîchit la page
     } else {
       handleCloseUpgradeModal();
-      upgradePlan();
-      //TODO REFRESH PAGE HERE OR LOGOUT
+      await upgradePlan();
     }
-    //setIsCurrSubscriptionPro(!isCurrSubscriptionPro)
-
   }
 
   const upgradePlan = async () => {
     setIsLoading(true)
-    const resp = await salonApi.upgradeToProPlan()
-    console.log(resp.data)
-    if (resp.data.data.subscription) {
-      setCurrentPlan(resp.data.data.subscription)
+    try {
+      const resp = await salonApi.upgradeToProPlan()
+      if (resp.data.data.subscription) {
+        setCurrentPlan(resp.data.data.subscription)
+      }
+      if (resp.data.data.subscription && resp.data.data.subscription.name == 'OneHaircut Pro') {
+        setIsCurrSubscriptionPro(true)
+      } else {
+        setIsCurrSubscriptionPro(false)
+      }
+      await updateUserDataInLocalStorage();
+    } catch {
+      //
+    } finally {
+      setIsLoading(false)
     }
-    if (resp.data.data.subscription && resp.data.data.subscription.name == 'OneHaircut Pro') {
+  }
 
-      setIsCurrSubscriptionPro(true)
-    } else {
-      setIsCurrSubscriptionPro(false)
+  const updateUserDataInLocalStorage = async () => {
+    const {data} = await Auth.getUser()
+    setLocalStorage("user", JSON.stringify(data.user));
+    if (data.user.hair_salon) {
+      setLocalStorage("hair_salon", JSON.stringify(data.user.hair_salon));
     }
-    setIsLoading(false)
+    window.location.reload();
   }
 
   const downgradePlan = async () => {
     setIsLoading(true)
-    console.log('downgrading plan')
-    const resp = await salonApi.downgradeToFreePlan()
-    console.log(resp.data)
-    if (resp.data.data.subscription) {
-      setCurrentPlan(resp.data.data.subscription)
+    try {
+      const resp = await salonApi.downgradeToFreePlan()
+      if (resp.data.data.subscription) {
+        setCurrentPlan(resp.data.data.subscription)
+      }
+      if (resp.data.data.subscription && resp.data.data.subscription.name == 'OneHaircut Pro') {
+        setIsCurrSubscriptionPro(true)
+      } else {
+        setIsCurrSubscriptionPro(false)
+      }
+      await updateUserDataInLocalStorage();
+    } catch {
+
+    } finally {
+      setIsLoading(false)
     }
-    if (resp.data.data.subscription && resp.data.data.subscription.name == 'OneHaircut Pro') {
-      setIsCurrSubscriptionPro(true)
-    } else {
-      setIsCurrSubscriptionPro(false)
-    }
-    setIsLoading(false)
   }
 
   const handleCloseAccount = async () => {
@@ -191,7 +205,7 @@ const Subscription = () => {
     }
   }
 
-  // DOWNGRADE CONFIRMATION MODAL 
+  // DOWNGRADE CONFIRMATION MODAL
   const [isConfirmationDowngradeModalOpen, setisConfirmationDowngradeModalOpen] = useState(false);
 
   // Fonction appelée lorsque l'utilisateur clique sur "Choisir" pour passer à l'abonnement gratuit
@@ -215,8 +229,13 @@ const Subscription = () => {
     setIsUpgradeModalOpen(true);
   };
 
+  if (isLoading) {
+    return loadingView();
+  }
+
   return (
     <div>
+      {isLoading && loadingView()}
       <div className="hidden sm:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
         <LogoCircleFixRight />
       </div>
