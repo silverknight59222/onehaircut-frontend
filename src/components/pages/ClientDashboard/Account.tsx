@@ -1048,7 +1048,7 @@ const Account = () => {
         },
         {
             selector: '',
-            content: 'Vous trouverez dans cette page les informations concernant votre compte.',
+            content: 'Tu trouveras dans cette page les informations concernant ton compte.',
         },
         {
             selector: '.button_modify',
@@ -1060,7 +1060,7 @@ const Account = () => {
         },
         {
             selector: '.info_button',
-            content: 'Vous pouvez aussi consulter les aides reparties sur tout le site.',
+            content: 'Tu peux aussi consulter les aides reparties sur tout le site.',
         },
         {
             selector: '',
