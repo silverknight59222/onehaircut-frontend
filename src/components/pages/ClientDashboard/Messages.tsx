@@ -26,8 +26,7 @@ const Messages = () => {
     const [chats, setChats] = useState<Chat[]>([])
     const { loadingView } = userLoader();
     const [isLoading, setIsLoading] = useState(false);
-    const [pageDone, setPageDone] = useState<String[]>([]);
-    const [isLoaded, setIsLoaded] = useState(false);
+    const [pageDone, setPageDone] = useState<String[]>(['message']);
 
     // Récupère les salons liés à l'utilisateur
     const getSalonsByUser = async () => {
@@ -108,9 +107,8 @@ const Messages = () => {
     useEffect(() => {
         getSalonsByUser()
         const pages_done = getLocalStorage('pages_done')
-        setPageDone(pages_done!.split(',').map((item) => item.trim()))
+        setPageDone(pages_done ? JSON.parse(pages_done) : [])
         console.log(pages_done)
-        setIsLoaded(true)
     }, [])
 
 
@@ -161,8 +159,10 @@ const Messages = () => {
         setIsLoading(true)
         if (!pageDone.includes('message')) {
             let resp = await user_api.assignStepDone({ page: 'message' });
-            removeFromLocalStorage('pages_done');
-            setLocalStorage('pages_done', resp.data.pages_done);
+
+      if(resp.data?.pages_done) {
+      setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+}
             setPageDone((prevArray) => [...prevArray, 'message'])
         }
         setIsLoading(false);
@@ -176,8 +176,7 @@ const Messages = () => {
             {isLoading && loadingView()}
 
             {/* For explaining the website */}
-            {isLoaded && !pageDone.includes('message') &&
-                <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('message')} />}
+                <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('message')} />
 
             <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
                 <LogoCircleFixRight />
@@ -283,9 +282,9 @@ const Messages = () => {
                                         onEnterPress={onSendMessage}
                                     />
                                     {/*
-                                    <input onChange={(e) => setMessage(e.target.value)} 
-                                    value={message} 
-                                    className={`w-full shadow-inner border border:bg-stone-300 ${Theme_A.behaviour.fieldFocused_C} rounded-xl h-12 outline-none px-3`} 
+                                    <input onChange={(e) => setMessage(e.target.value)}
+                                    value={message}
+                                    className={`w-full shadow-inner border border:bg-stone-300 ${Theme_A.behaviour.fieldFocused_C} rounded-xl h-12 outline-none px-3`}
                                     />
                                     */}
                                 </div>

@@ -97,6 +97,9 @@ const Login = () => {
 				if (res.user.hair_salon) {
 					setLocalStorage("hair_salon", JSON.stringify(res.user.hair_salon));
 				}
+        if(res.user?.tour_pages_done) {
+          setLocalStorage('pages_done', JSON.stringify(res.user.tour_pages_done))
+        }
 				setLocalStorage("auth-token", res.token);
 				if (searchParams.get('redirect') === 'payment') {
 					router.push("/payment");

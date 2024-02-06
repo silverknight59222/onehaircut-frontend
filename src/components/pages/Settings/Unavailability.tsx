@@ -93,15 +93,12 @@ const Unavailability = () => {
     const [selectedDates, setSelectedDates] = useState<Date[]>([]);
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
-    const [pageDone, setPageDone] = useState<String[]>([]);
+    const [pageDone, setPageDone] = useState<String[]>(['salon_unavailability']);
 
     const onDatesSelect = (dates: Date[]) => {
         setSelectedDates(dates);
         let start = formatSingleDate([dates[0]])
         let end = formatSingleDate([dates[dates.length - 1]])
-        console.log(start)
-        console.log(end)
-        console.log(start == end)
         if (start == end && selectedHD) {
             setTimeState(true);
         }
@@ -117,7 +114,7 @@ const Unavailability = () => {
         getHairDresser()
         getSalonInfo()
         const pages_done = getLocalStorage('pages_done')
-        setPageDone(pages_done!.split(',').map((item) => item.trim()))
+        setPageDone(pages_done ? JSON.parse(pages_done) : [])
         console.log(pages_done)
     }, [])
 
@@ -248,7 +245,7 @@ const Unavailability = () => {
         }
     };
 
-    //DATA UNAVALABILITY TO SAVE 
+    //DATA UNAVALABILITY TO SAVE
     const SalonColumns = ['id', 'Start Date', 'End Date', 'Reason', 'Actions'];
     const HairdresserColumns = ['uv_id', 'Start Date', 'End Date', 'Start Time', 'End Time', 'Reason', 'Actions'];
     const [unavailabilities, setUnavailabilities] = useState<UnavailabilityData[]>([]); // Déclaration de la variable unavailabilities
@@ -368,8 +365,10 @@ const Unavailability = () => {
         setIsLoading(true)
         if (!pageDone.includes('salon_unavailability')) {
             let resp = await salonApi.assignStepDone({ page: 'salon_unavailability' });
-            removeFromLocalStorage('pages_done');
-            setLocalStorage('pages_done', resp.data.pages_done);
+
+      if(resp.data?.pages_done) {
+      setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+}
             setPageDone((prevArray) => [...prevArray, 'salon_unavailability'])
         }
         setIsLoading(false);

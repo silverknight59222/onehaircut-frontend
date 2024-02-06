@@ -35,7 +35,7 @@ const OpenningHours = () => {
     const [updatedSlots, setUpdatedSlots] = useState<OpenTimes[]>([]);
     const [salonId, setSalonId] = useState(0);
     const [disableUpdate, setDisableUpdate] = useState(true);
-    const [pageDone, setPageDone] = useState<String[]>([]);
+    const [pageDone, setPageDone] = useState<String[]>(['salon_opening_hours']);
     const setHairSalonSlotList = (data: SalonwithSlots[]) => {
         let hairSalon;
         if (data.length > 1) {
@@ -141,7 +141,7 @@ const OpenningHours = () => {
     useEffect(() => {
         getHairSalonSlot();
         const pages_done = getLocalStorage('pages_done')
-        setPageDone(pages_done!.split(',').map((item) => item.trim()))
+        setPageDone(pages_done ? JSON.parse(pages_done) : [])
         console.log(pages_done)
     }, []);
 
@@ -175,8 +175,9 @@ const OpenningHours = () => {
         setIsLoading(true)
         if (!pageDone.includes('salon_opening_hours')) {
             let resp = await salonApi.assignStepDone({ page: 'salon_opening_hours' });
-            removeFromLocalStorage('pages_done');
-            setLocalStorage('pages_done', resp.data.pages_done);
+            if(resp.data?.pages_done) {
+              setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+            }
             setPageDone((prevArray) => [...prevArray, 'salon_opening_hours'])
         }
         setIsLoading(false);
