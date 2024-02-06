@@ -65,6 +65,7 @@ const Dashboard = () => {
     const [pageDone, setPageDone] = useState<String[]>([]);
     const { loadingView } = userLoader();
     const [isLoading, setIsLoading] = useState(false);
+    const [isLoaded, setIsLoaded] = useState(false);
 
 
     const handleNewMonthRevenu = (item: string) => {
@@ -120,6 +121,7 @@ const Dashboard = () => {
         const pages_done = getLocalStorage('pages_done')
         setPageDone(pages_done!.split(',').map((item) => item.trim()))
         console.log(pages_done)
+        setIsLoaded(true)
     }, [])
 
     // TODO EMAIL ADDRESS VEIRIFICATION DONE :
@@ -186,7 +188,8 @@ const Dashboard = () => {
 
             {isLoading && loadingView()}
             {/* For explaining the website */}
-            <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('dashboard_salon')} />
+            {isLoaded && !pageDone.includes('dashboard_salon') &&
+                <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('dashboard_salon')} />}
 
             {proSubscription && <div>
                 <Grid container spacing={6} className='match-height  '>

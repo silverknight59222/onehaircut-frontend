@@ -21,17 +21,19 @@ export type TourModalType = {
 const TourModal = ({ steps, onRequestClose, doneTour }: TourModalType) => {
   const disableBody = target => disableBodyScroll(target);
   const enableBody = target => enableBodyScroll(target);
-  const [isTourOpen, setIsTourOpen] = useState(doneTour);
+  const [isTourOpen, setIsTourOpen] = useState(!doneTour);
   const [tourisDone, setTourIsDone] = useState(doneTour);
   const closeTour = () => {
     setIsTourOpen(false)
     onRequestClose && onRequestClose();
   };
-
   useEffect(() => {
-    // Close the tour when showTour becomes false
+    console.log("IS DONE : " + tourisDone + doneTour)
+  }, []);
+  useEffect(() => {
     if (doneTour) {
-      closeTour();
+      setIsTourOpen(false);
+      // closeTour();
     }
   }, [doneTour]);
 
@@ -61,7 +63,7 @@ const TourModal = ({ steps, onRequestClose, doneTour }: TourModalType) => {
 
   return (
     <>
-      {!tourisDone && <Tour
+      {!doneTour && <Tour
         // @ts-ignore
         steps={steps}
         showNavigation={true}

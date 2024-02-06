@@ -73,6 +73,7 @@ const ServiceChoose = () => {
     const [lengthSelect, setLengthFilters] = useState<string[]>([]);
     const router = useRouter()
     const [pageDone, setPageDone] = useState<String[]>([]);
+    const [isLoaded, setIsLoaded] = useState(false);
     // useRef est utilisé pour créer une référence mutable qui conserve la même .current entre les renders
     const dropdownRef = React.useRef() as React.MutableRefObject<HTMLInputElement>
     const temp = getLocalStorage("haircut")
@@ -345,7 +346,8 @@ const ServiceChoose = () => {
             {isLoading && loadingView()}
             {/* For explaining the website */}
 
-            <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('services')} />
+            {isLoaded && !pageDone.includes('services') &&
+                <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('services')} />}
 
             <Navbar
                 isServicesPage={true}

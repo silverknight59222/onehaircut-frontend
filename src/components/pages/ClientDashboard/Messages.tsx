@@ -27,6 +27,7 @@ const Messages = () => {
     const { loadingView } = userLoader();
     const [isLoading, setIsLoading] = useState(false);
     const [pageDone, setPageDone] = useState<String[]>([]);
+    const [isLoaded, setIsLoaded] = useState(false);
 
     // Récupère les salons liés à l'utilisateur
     const getSalonsByUser = async () => {
@@ -109,6 +110,7 @@ const Messages = () => {
         const pages_done = getLocalStorage('pages_done')
         setPageDone(pages_done!.split(',').map((item) => item.trim()))
         console.log(pages_done)
+        setIsLoaded(true)
     }, [])
 
 
@@ -157,7 +159,7 @@ const Messages = () => {
     const closeTour = async () => {
         // You may want to store in local storage or state that the user has completed the tour
         setIsLoading(true)
-        if(!pageDone.includes('message')){
+        if (!pageDone.includes('message')) {
             let resp = await user_api.assignStepDone({ page: 'message' });
             removeFromLocalStorage('pages_done');
             setLocalStorage('pages_done', resp.data.pages_done);
@@ -174,7 +176,8 @@ const Messages = () => {
             {isLoading && loadingView()}
 
             {/* For explaining the website */}
-                <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('message')}/>
+            {isLoaded && !pageDone.includes('message') &&
+                <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('message')} />}
 
             <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
                 <LogoCircleFixRight />

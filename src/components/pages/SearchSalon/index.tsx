@@ -97,6 +97,7 @@ const SearchSalon = () => {
     const pages_done = getLocalStorage('pages_done')
     setPageDone(pages_done!.split(',').map((item) => item.trim()))
     console.log(pages_done)
+    setIsLoadedPages(true)
   }, [])
 
   useEffect(() => {
@@ -123,6 +124,7 @@ const SearchSalon = () => {
   const [isChatModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('');
   const [messages, setMessages] = useState<Array<{ content: string, sent: boolean }>>([]);
+  const [isLoadedPages, setIsLoadedPages] = useState(false);
   const closeChatModal = () => {
     setIsModalOpen(false);
   };
@@ -221,7 +223,8 @@ const SearchSalon = () => {
       {isLoading && loadingView()}
 
       {/* For explaining the website */}
-      <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('salon_profile')} />
+      {isLoadedPages && !pageDone.includes('salon_profile') &&
+        <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('salon_profile')} />}
 
       {/* Barre de navigation */}
       <Navbar hideSearchBar={true} />

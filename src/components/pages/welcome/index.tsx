@@ -525,7 +525,8 @@ const Welcome = () => {
   return (
     <>
       {/* For explaining the website */}
-      (<TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('dashboard') || isGuest} />)
+      {pageDone.includes('dashboard') && !isGuest &&
+        (<TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('dashboard') || isGuest} />)}
 
       {/* Modal pour choix générique de coiffure */}
       {isGenericHaircutModalOpen && (

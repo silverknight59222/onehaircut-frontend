@@ -62,6 +62,7 @@ const SalonChoice = () => {
     const [center, setCenter] = useState<Position>()
     const [map, setMap] = useState<google.maps.Map>();
     const [pageDone, setPageDone] = useState<String[]>([]);
+    const [isLoadedPages, setIsLoadedPages] = useState(false);
 
 
     const [mapBound, setMapBound] = useState<any>();
@@ -461,6 +462,7 @@ const SalonChoice = () => {
         const pages_done = getLocalStorage('pages_done')
         setPageDone(pages_done!.split(',').map((item) => item.trim()))
         console.log(pages_done)
+        setIsLoadedPages(true)
     }, [])
 
     const handleSolenSelected = (salon: SalonDetails) => {
@@ -665,7 +667,8 @@ const SalonChoice = () => {
         <>
             {isLoading && loadingView()}
             {/* For explaining the website */}
-            <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('choose_salon')} />
+            {isLoadedPages && !pageDone.includes('choose_salon') &&
+                <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('choose_salon')} />}
 
             <div className='w-full h-screen  overflow-hidden'>
                 {/* Modal qui s'affiche si moins de 10 salons */}
