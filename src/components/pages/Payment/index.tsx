@@ -233,7 +233,7 @@ const Index = () => {
   const formattedBookingDate = bookingDate ? formatDate(bookingDate) : "";
 
 
-  const updatedOHCfees = (salonData?.final_price + KmPrice) * OnehaircutFees;
+  const updatedOHCfees = (salonData?.final_price + KmPrice) * OnehaircutFees; 
   const bookingCost = salonData?.final_price + KmPrice;
   const updatedTransactionFees = (((bookingCost) + ((bookingCost) * OnehaircutFees)) * PaymentGatewayVariableFees + PaymentGatewayFixFees);
   const totalUpdatedCost = parseFloat(bookingCost + updatedOHCfees + updatedTransactionFees).toFixed(2);
