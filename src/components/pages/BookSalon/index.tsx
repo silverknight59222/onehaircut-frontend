@@ -257,7 +257,7 @@ const BookSalon = () => {
   const tourSteps: Steps[] = [
     {
       selector: '',
-      content: 'Dernière étape avant le paiement: le choix de la date et de l\'heure.',
+      content: 'Dernière étape avant le paiement: le choix de la date et de l’heure.',
     },
     {
       selector: '.pictures_hairdresser',
@@ -269,7 +269,7 @@ const BookSalon = () => {
     },
     {
       selector: '.button_arrow_right',
-      content: 'Tu peux parcourir les dates avec la flêche.',
+      content: 'Tu peux parcourir les dates avec la fleche.',
     },
     {
       selector: '.button_calender',
@@ -287,8 +287,8 @@ const BookSalon = () => {
     if (!pageDone.includes('book_time_salon')) {
       let resp = await user_api.assignStepDone({ page: 'book_time_salon' });
 
-      if(resp.data?.pages_done) {
-            setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+      if (resp.data?.pages_done) {
+        setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
       }
       setPageDone((prevArray) => [...prevArray, 'book_time_salon'])
     }
@@ -301,7 +301,7 @@ const BookSalon = () => {
       {isLoading && salon && loadingView()}
 
       {/* For explaining the website */}
-        <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('book_time_salon')} />
+      <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('book_time_salon')} />
 
       <Navbar hideSearchBar={true} />
 

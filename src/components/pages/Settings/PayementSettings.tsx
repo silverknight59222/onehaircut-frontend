@@ -360,7 +360,7 @@ const PayementSettings = () => {
         },
         {
             selector: '.button_add_bank_card',
-            content: 'Ce bouton vous permettra d\'ajouter ou modifier votre moyen de paiement pour l\'abonnement pro.',
+            content: 'Ce bouton vous permettra d’ajouter ou modifier votre moyen de paiement pour l’abonnement pro.',
         },
     ];
 

@@ -26,6 +26,7 @@ import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/
 import { useRouter } from "next/navigation";
 import { dashboard } from "@/api/dashboard";
 import TourModal, { Steps } from "@/components/UI/TourModal";
+import { TbHelpSquareRoundedFilled } from "react-icons/tb";
 
 interface infoInterface {
     name: string;
@@ -939,9 +940,9 @@ const Account = () => {
         setShowItem(informations);
         setLocationLatitude(lat);
         setLocationLongitude(long);
-        if(resp.data?.tour_pages_done) {
-          setPageDone(resp.data.tour_pages_done)
-          setLocalStorage('pages_done', JSON.stringify(resp.data.tour_pages_done))
+        if (resp.data?.tour_pages_done) {
+            setPageDone(resp.data.tour_pages_done)
+            setLocalStorage('pages_done', JSON.stringify(resp.data.tour_pages_done))
         }
         if (resp.data.email_verified_at) {
             setIsEmailVerified(true)
@@ -1030,6 +1031,16 @@ const Account = () => {
 
     // ------------------------------------------------------------------
     // For Tour
+    const tourContent_tourIcon =
+        <div>
+            <p>Au fait, si tu veux me retrouver, tu peux cliquer sur cette icône!</p>
+            <div className="justify-center flex pt-2">
+                <div className={`bg-stone-800 text-sm text-white px-2 py-2 rounded-full`}>
+                    <TbHelpSquareRoundedFilled size={38} />
+                </div>
+            </div>
+        </div>
+
     const tourSteps: Steps[] = [
         {
             selector: '',
@@ -1037,7 +1048,7 @@ const Account = () => {
         },
         {
             selector: '',
-            content: 'Vous trouverez dans cette page les informations concernant votre compte.',
+            content: 'Tu trouveras dans cette page les informations concernant ton compte.',
         },
         {
             selector: '.button_modify',
@@ -1049,7 +1060,11 @@ const Account = () => {
         },
         {
             selector: '.info_button',
-            content: 'Vous pouvez aussi consulter les aides reparties sur tout le site.',
+            content: 'Tu peux aussi consulter les aides reparties sur tout le site.',
+        },
+        {
+            selector: '',
+            content: tourContent_tourIcon,
         },
     ];
 
@@ -1059,9 +1074,9 @@ const Account = () => {
         console.log(pageDone)
         if (!pageDone.includes('account')) {
             let resp = await user_api.assignStepDone({ page: 'account' });
-      if(resp.data?.pages_done) {
-      setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
-}
+            if (resp.data?.pages_done) {
+                setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+            }
             setPageDone((prevArray) => [...prevArray, 'account'])
         }
         setIsLoading(false);
@@ -1075,7 +1090,7 @@ const Account = () => {
             </div>
 
             {/* For explaining the website */}
-                <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('account')} />
+            <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('account')} />
 
             <ClientDashboardLayout notifications={globalNotifications}>
                 <div className="mt-4 lg:mt-14 mb-5 px-6">

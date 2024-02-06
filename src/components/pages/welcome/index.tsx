@@ -500,11 +500,11 @@ const Welcome = () => {
     },
     {
       selector: '.zone_filters',
-      content: 'Une fois selectionnée, tu peux aussi visualiser la coiffure sur ta tête, si tu as apporté tes photos de profil dans la section portrait. Pour ce faire clique sur "Prévisualiser sur moi"',
+      content: 'Une fois sélectionnée, tu peux aussi visualiser la coiffure sur ta tête, si tu as apporté tes photos de profil dans la section portrait. Pour ce faire clique sur "Prévisualiser sur moi"',
     },
     {
       selector: '.bouton_generic_haircut',
-      content: 'Si tu n\'as pas trouvé ce que cherchais ou que tu veux une coiffure plus générique, clique là!',
+      content: 'Si tu n’as pas trouvé ce que cherchais ou que tu veux une coiffure plus générique, clique là!',
     },
   ];
 
@@ -514,9 +514,9 @@ const Welcome = () => {
     if (!pageDone.includes('dashboard')) {
       let resp = await user_api.assignStepDone({ page: 'dashboard' });
 
-if(resp.data?.pages_done) {
-      setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
-}
+      if (resp.data?.pages_done) {
+        setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+      }
       setPageDone((prevArray) => [...prevArray, 'dashboard'])
     }
     setIsLoading(false);
@@ -526,7 +526,7 @@ if(resp.data?.pages_done) {
   return (
     <>
       {/* For explaining the website */}
-        <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('dashboard') || isGuest} />
+      <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('dashboard') || isGuest} />
 
       {/* Modal pour choix générique de coiffure */}
       {isGenericHaircutModalOpen && (

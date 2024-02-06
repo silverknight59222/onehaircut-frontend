@@ -174,7 +174,7 @@ const SearchSalon = () => {
   const tourSteps: Steps[] = [
     {
       selector: '',
-      content: 'Te voici sur la page de presentation du salon.',
+      content: 'Te voici sur la page de présentation du salon.',
     },
     {
       selector: '.pictures_salon',
@@ -186,7 +186,7 @@ const SearchSalon = () => {
     },
     {
       selector: '.recap',
-      content: 'Voici le recapitulatif de ton choix',
+      content: 'Voici le récapitulatif de ton choix',
     },
     {
       selector: '.button_reservation',
@@ -204,9 +204,9 @@ const SearchSalon = () => {
     if (!pageDone.includes('salon_profile')) {
       let resp = await user_api.assignStepDone({ page: 'salon_profile' });
 
-if(resp.data?.pages_done) {
-      setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
-}
+      if (resp.data?.pages_done) {
+        setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+      }
       setPageDone((prevArray) => [...prevArray, 'salon_profile'])
     }
     setIsLoading(false);
@@ -221,7 +221,7 @@ if(resp.data?.pages_done) {
       {isLoading && loadingView()}
 
       {/* For explaining the website */}
-        <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('salon_profile')} />
+      <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('salon_profile')} />
 
       {/* Barre de navigation */}
       <Navbar hideSearchBar={true} />
