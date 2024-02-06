@@ -370,9 +370,9 @@ const PayementSettings = () => {
         if (!pageDone.includes('salon_payment')) {
             let resp = await salonApi.assignStepDone({ page: 'salon_payment' });
 
-      if(resp.data?.pages_done) {
-      setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
-}
+            if (resp.data?.pages_done) {
+                setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+            }
             setPageDone((prevArray) => [...prevArray, 'salon_payment'])
         }
         setIsLoading(false);

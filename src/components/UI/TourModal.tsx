@@ -1,9 +1,9 @@
 "use client"
-import {disableBodyScroll, enableBodyScroll} from "body-scroll-lock";
+import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import dynamic from "next/dynamic";
-import React, {useEffect, useRef, useState} from "react";
-import {Theme_A} from "@/components/utilis/Themes";
-import {BoostIcon} from "@/components/utilis/Icons";
+import React, { useEffect, useRef, useState } from "react";
+import { Theme_A } from "@/components/utilis/Themes";
+import { BoostIcon } from "@/components/utilis/Icons";
 const Tour = dynamic(() => import("reactour"), { ssr: false });
 
 
@@ -20,7 +20,7 @@ export type TourModalType = {
   showTourButton?: boolean,
 }
 
-const TourModal = ({ steps, onRequestClose, doneTour = true, showTourButton = true}: TourModalType) => {
+const TourModal = ({ steps, onRequestClose, doneTour = true, showTourButton = true }: TourModalType) => {
   const disableBody = target => disableBodyScroll(target);
   const tourModal = useRef(null)
   const enableBody = target => enableBodyScroll(target);
@@ -76,7 +76,7 @@ const TourModal = ({ steps, onRequestClose, doneTour = true, showTourButton = tr
         onClick={() => setIsTourOpen(true)}
         className={`${Theme_A.button.tourModalButton}`}
       >
-        <BoostIcon/>
+        <BoostIcon />
 
       </button>}
       <Tour
@@ -91,9 +91,9 @@ const TourModal = ({ steps, onRequestClose, doneTour = true, showTourButton = tr
         accentColor={'#ef4444'}
         onAfterOpen={disableBody}
         onBeforeClose={enableBody}
-        prevButton={<HoverButton text="Retour" baseBgColor="#000000" hoverBgColor="#4F4F4F" textColor="#ffffff"/>}
-        nextButton={<HoverButton text="Suivant" baseBgColor="#FF7B20" hoverBgColor="#FE5019"/>}
-        lastStepNextButton={<HoverButton text="C'est parti !" baseBgColor="#FF7B20" hoverBgColor="#FE5019"/>}
+        prevButton={<HoverButton text="Retour" baseBgColor="#000000" hoverBgColor="#4F4F4F" textColor="#ffffff" />}
+        nextButton={<HoverButton text="Suivant" baseBgColor="#FF7B20" hoverBgColor="#FE5019" />}
+        lastStepNextButton={<HoverButton text="C'est parti !" baseBgColor="#FF7B20" hoverBgColor="#FE5019" />}
         showNumber={false}
       />
     </>
