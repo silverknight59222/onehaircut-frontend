@@ -154,9 +154,9 @@ const Messages = () => {
     if (!pageDone.includes('salon_message')) {
       let resp = await salonApi.assignStepDone({ page: 'salon_message' });
 
-if(resp.data?.pages_done) {
-      setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
-}
+      if (resp.data?.pages_done) {
+        setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+      }
       setPageDone((prevArray) => [...prevArray, 'salon_message'])
     }
     setIsLoading(false);
