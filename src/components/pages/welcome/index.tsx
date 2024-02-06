@@ -678,7 +678,7 @@ const Welcome = () => {
         {isGuest && (
           <div className="flex text-sm p-1 sm:p-4 md:p-5 mx-2 gap-3 sm:gap-12 md:gap-20 items-center justify-center bg-white w-full fixed bottom-8 border-2 border-t-slate-300">
             <div className={` text-center ${DemoButton}`}>
-              Démonstration d’utilisation
+              Onehaircut, C'est quoi ?
             </div>
             <div onClick={() => router.push('/login')}
               id="Connexion - Inscription"
