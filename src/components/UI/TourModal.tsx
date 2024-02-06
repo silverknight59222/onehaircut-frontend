@@ -3,7 +3,6 @@ import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import dynamic from "next/dynamic";
 import React, { useEffect, useRef, useState } from "react";
 import { Theme_A } from "@/components/utilis/Themes";
-import { BoostIcon } from "@/components/utilis/Icons";
 import { TbHelpSquareRoundedFilled } from "react-icons/tb";
 const Tour = dynamic(() => import("reactour"), { ssr: false });
 
@@ -85,7 +84,7 @@ const TourModal = ({ steps, onRequestClose, doneTour = true, showTourButton = tr
         steps={steps}
         showNavigation={true}
         onRequestClose={closeTour}
-        rounded={5}
+        rounded={15}
         isOpen={isTourOpen}
         accentColor={'#ef4444'}
         onAfterOpen={disableBody}
