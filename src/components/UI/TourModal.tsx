@@ -24,15 +24,13 @@ const TourModal = ({ steps, onRequestClose, doneTour = true, showTourButton = tr
   const disableBody = target => disableBodyScroll(target);
   const tourModal = useRef(null)
   const enableBody = target => enableBodyScroll(target);
-  const [isTourOpen, setIsTourOpen] = useState(!doneTour);
+  const [isTourOpen, setIsTourOpen] = useState(false);
   const closeTour = () => {
     setIsTourOpen(false)
     onRequestClose && onRequestClose();
   };
   useEffect(() => {
-    if (doneTour) {
-      setIsTourOpen(false);
-    }
+    setIsTourOpen(!doneTour)
   }, [doneTour]);
 
 

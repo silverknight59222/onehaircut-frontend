@@ -69,8 +69,9 @@ const Images = () => {
 		setIsLoading(true)
 		if (!pageDone.includes('salon_images')) {
 			let resp = await salonApi.assignStepDone({ page: 'salon_images' });
-
-			setLocalStorage('pages_done', resp.data.pages_done);
+      if(resp.data?.pages_done) {
+        setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+      }
 			setPageDone((prevArray) => [...prevArray, 'salon_images'])
 		}
 		setIsLoading(false);
