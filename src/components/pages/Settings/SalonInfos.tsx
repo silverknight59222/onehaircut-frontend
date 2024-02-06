@@ -41,7 +41,7 @@ const SalonInfos = () => {
     const showSnackbar = useSnackbar();
     const [ZonePrice, setZonePrice] = useState(0);
     const [ZoneDuration, setZoneDuration] = useState(0);
-    const [pageDone, setPageDone] = useState<String[]>([]);
+    const [pageDone, setPageDone] = useState<String[]>(['salon_info']);
     const { loadingView } = userLoader();
     const [addressResponse, setAddressResponse] = useState({
         street: "",
@@ -122,8 +122,7 @@ const SalonInfos = () => {
             setSiretNumber(salonInfo.company_id_number)
         }
         const pages_done = getLocalStorage('pages_done')
-        setPageDone(pages_done!.split(',').map((item) => item.trim()))
-        console.log(pages_done)
+        setPageDone(pages_done ? JSON.parse(pages_done) : [])
     }, []);
 
     const saveSalonType = async (item) => {
@@ -171,7 +170,7 @@ const SalonInfos = () => {
                 setIsLoading(false);
             })
     }
-    // handling the change of Salon type change    
+    // handling the change of Salon type change
 
     //For mobility checkbox
     const [isMobilityAllowed, setIsMobilityAllowed] = useState(false); // État de la checkbox
@@ -531,8 +530,10 @@ const SalonInfos = () => {
         setIsLoading(true)
         if (!pageDone.includes('salon_info')) {
             let resp = await salonApi.assignStepDone({ page: 'salon_info' });
-            removeFromLocalStorage('pages_done');
-            setLocalStorage('pages_done', resp.data.pages_done);
+
+      if(resp.data?.pages_done) {
+      setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+}
             setPageDone((prevArray) => [...prevArray, 'salon_info'])
         }
         setIsLoading(false);
@@ -895,7 +896,7 @@ const SalonInfos = () => {
 
                 {/* Checkbox et label "Autoriser la mobilité" */}
                 <div className="flex-1 py-5 pl-5 ml-8 flex items-center"> {/* Utilisez flex items-center ici */}
-                    <div onClick={() => handleCheckboxChange(isMobilityAllowed)} className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded 
+                    <div onClick={() => handleCheckboxChange(isMobilityAllowed)} className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded
                     ${isMobilityAllowed
                             ? ColorsThemeA.ohcVerticalGradient_A
                             : "bg-[#D6D6D6]"

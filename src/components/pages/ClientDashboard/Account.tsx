@@ -70,8 +70,7 @@ const Account = () => {
     // Modal for messages notification
     const [isModalNotifMsg, setIsModalNotifMsg] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [pageDone, setPageDone] = useState<String[]>([]);
-    const [isLoaded, setIsLoaded] = useState(false);
+    const [pageDone, setPageDone] = useState<String[]>(['account']);
 
 
     //Variables for address
@@ -160,7 +159,7 @@ const Account = () => {
         }
         return address
     }
-    // function to handle the click on the modify 
+    // function to handle the click on the modify
     const handleModifierClick = (item: infoInterface) => {
         if (item.name == "Adresse") {
             setIsModalAdd(true); // Show the modal to modify add
@@ -188,7 +187,7 @@ const Account = () => {
 
 
     ////////////////////////////////////////////////////
-    ///////////////////// PASSWORD 
+    ///////////////////// PASSWORD
     ////////////////////////////////////////////////////
     const [passwordField, renewPassword] = useState({
         oldPassword: "",
@@ -196,7 +195,7 @@ const Account = () => {
         confirmPassword: "",
     });
 
-    // TODO EMAIL ADDRESS VERIFICATION DONE : 
+    // TODO EMAIL ADDRESS VERIFICATION DONE :
     const [isEmailVerified, setIsEmailVerified] = useState(true);
 
 
@@ -371,7 +370,7 @@ const Account = () => {
             </div>
         </div>
     ////////////////////////////////////////////////////
-    ///////////////////// ADDRESS 
+    ///////////////////// ADDRESS
     ////////////////////////////////////////////////////
     const onSubmitAddress = async () => {
         setIsLoading(true)
@@ -509,7 +508,7 @@ const Account = () => {
         ;
 
     ////////////////////////////////////////////////////
-    ///////////////////// PHONE 
+    ///////////////////// PHONE
     ////////////////////////////////////////////////////
     const [phoneField, setPhoneField] = useState("");
     const setNewPhone = (value?: Value) => {
@@ -595,7 +594,7 @@ const Account = () => {
         </div>;
 
     ////////////////////////////////////////////////////
-    ///////////////////// Bank card 
+    ///////////////////// Bank card
     ////////////////////////////////////////////////////
     const [BankCardExpMonth, setBankCardExpMonth] = useState("");
     const [BankCardExpYear, setBankCardExpYear] = useState("");
@@ -650,7 +649,7 @@ const Account = () => {
 
 
     ////////////////////////////////////////////////////
-    ///////////////////// Reminder Notification  
+    ///////////////////// Reminder Notification
     ////////////////////////////////////////////////////
 
     const [NotifReminderEmail, setPNotifReminderEmail] = useState(false);
@@ -739,7 +738,7 @@ const Account = () => {
         </div>;
 
     ////////////////////////////////////////////////////
-    ///////////////////// Reminder Notification  
+    ///////////////////// Reminder Notification
     ////////////////////////////////////////////////////
 
     const [NotifMsgEmail, setPNotifMsgEmail] = useState(false);
@@ -940,10 +939,10 @@ const Account = () => {
         setShowItem(informations);
         setLocationLatitude(lat);
         setLocationLongitude(long);
-        setPageDone(resp.data.steps_done.split(',').map((item) => item.trim()))
-        setLocalStorage('pages_done', resp.data.steps_done)
-        console.log(resp.data.steps_done)
-        setIsLoaded(true)
+        if(resp.data?.tour_pages_done) {
+          setPageDone(resp.data.tour_pages_done)
+          setLocalStorage('pages_done', JSON.stringify(resp.data.tour_pages_done))
+        }
         if (resp.data.email_verified_at) {
             setIsEmailVerified(true)
         } else {
@@ -1060,7 +1059,9 @@ const Account = () => {
         console.log(pageDone)
         if (!pageDone.includes('account')) {
             let resp = await user_api.assignStepDone({ page: 'account' });
-            setLocalStorage('pages_done', resp.data.pages_done);
+      if(resp.data?.pages_done) {
+      setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+}
             setPageDone((prevArray) => [...prevArray, 'account'])
         }
         setIsLoading(false);
@@ -1074,9 +1075,7 @@ const Account = () => {
             </div>
 
             {/* For explaining the website */}
-            {isLoaded && !pageDone.includes('account') &&
                 <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('account')} />
-            }
 
             <ClientDashboardLayout notifications={globalNotifications}>
                 <div className="mt-4 lg:mt-14 mb-5 px-6">

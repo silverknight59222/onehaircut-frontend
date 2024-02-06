@@ -46,9 +46,8 @@ const BookSalon = () => {
   const user = userData ? JSON.parse(userData) : null
   const services = service_ids ? JSON.parse(service_ids) : null
   const [travel_duration, setTravelDuration] = useState(0)
-  const [pageDone, setPageDone] = useState<String[]>([]);
-  const [isLoaded, setIsLoaded] = useState(false);
-  // TODO SEE IF THE SALON IS MOBILE - SELECT AT HOME OR IN SALON BOOKING 
+  const [pageDone, setPageDone] = useState<String[]>(['book_time_salon']);
+  // TODO SEE IF THE SALON IS MOBILE - SELECT AT HOME OR IN SALON BOOKING
   const [locationType, setLocationType] = useState('salon');
   const durationTime = salon?.total_duration
   const items = [
@@ -76,9 +75,7 @@ const BookSalon = () => {
     setSelectedDate(new Date())
     getAllHairDresser()
     const pages_done = getLocalStorage('pages_done')
-    setPageDone(pages_done!.split(',').map((item) => item.trim()))
-    console.log(pages_done)
-    setIsLoaded(true)
+    setPageDone(pages_done ? JSON.parse(pages_done) : [])
   }, [])
 
   useEffect(() => {
@@ -289,8 +286,10 @@ const BookSalon = () => {
     setIsLoading(true)
     if (!pageDone.includes('book_time_salon')) {
       let resp = await user_api.assignStepDone({ page: 'book_time_salon' });
-      removeFromLocalStorage('pages_done');
-      setLocalStorage('pages_done', resp.data.pages_done);
+
+      if(resp.data?.pages_done) {
+            setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+      }
       setPageDone((prevArray) => [...prevArray, 'book_time_salon'])
     }
     setIsLoading(false);
@@ -302,8 +301,7 @@ const BookSalon = () => {
       {isLoading && salon && loadingView()}
 
       {/* For explaining the website */}
-      {isLoaded && !pageDone.includes('book_time_salon') &&
-        <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('book_time_salon')} />}
+        <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('book_time_salon')} />
 
       <Navbar hideSearchBar={true} />
 

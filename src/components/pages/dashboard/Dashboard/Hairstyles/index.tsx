@@ -46,10 +46,9 @@ const Hairstyles = () => {
   const [baseGender, setBaseGender] = useState("");
   const salon = getLocalStorage("hair_salon")
   const salonData = salon ? JSON.parse(salon) : null;
-  const [pageDone, setPageDone] = useState<String[]>([]);
+  const [pageDone, setPageDone] = useState<String[]>(['salon_hairstyles']);
   const { loadingView } = userLoader();
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     params.genderFilters = "";
@@ -60,9 +59,7 @@ const Hairstyles = () => {
       params.genderFilters = "Women";
     }
     const pages_done = getLocalStorage('pages_done')
-    setPageDone(pages_done!.split(',').map((item) => item.trim()))
-    console.log(pages_done)
-    setIsLoaded(true)
+    setPageDone(pages_done ? JSON.parse(pages_done) : [])
   }, [])
 
   useEffect(() => {
@@ -97,8 +94,10 @@ const Hairstyles = () => {
     setIsLoading(true)
     if (!pageDone.includes('salon_hairstyles')) {
       let resp = await salonApi.assignStepDone({ page: 'salon_hairstyles' });
-      removeFromLocalStorage('pages_done');
-      setLocalStorage('pages_done', resp.data.pages_done);
+
+if(resp.data?.pages_done) {
+      setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+}
       setPageDone((prevArray) => [...prevArray, 'salon_hairstyles'])
     }
     setIsLoading(false);
@@ -109,8 +108,7 @@ const Hairstyles = () => {
     <div>
       {isLoading && loadingView()}
       {/* For explaining the website */}
-      {isLoaded && !pageDone.includes('salon_hairstyles') &&
-        <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('salon_hairstyles')} />}
+        <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('salon_hairstyles')} />
       <div className="hairStyles_filter">
         <HairStyleListHeader onListCountShow={listCountShow} isd={isSelectedDelete} selectAllEvent={selectAll} params={params} onFilterSelect={onFilterSelect} setActiveMenu={setActiveMenu} activeMenu={activeMenu} setFinalItems={setFinalSelectedItems}></HairStyleListHeader>
       </div>

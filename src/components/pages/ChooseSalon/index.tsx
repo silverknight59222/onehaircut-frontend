@@ -61,8 +61,7 @@ const SalonChoice = () => {
     const [positions, setPositions] = useState<Position[]>([])
     const [center, setCenter] = useState<Position>()
     const [map, setMap] = useState<google.maps.Map>();
-    const [pageDone, setPageDone] = useState<String[]>([]);
-    const [isLoadedPages, setIsLoadedPages] = useState(false);
+    const [pageDone, setPageDone] = useState<String[]>(['choose_salon']);
 
 
     const [mapBound, setMapBound] = useState<any>();
@@ -460,9 +459,7 @@ const SalonChoice = () => {
             setIsLoggedIn(true);
         }
         const pages_done = getLocalStorage('pages_done')
-        setPageDone(pages_done!.split(',').map((item) => item.trim()))
-        console.log(pages_done)
-        setIsLoadedPages(true)
+        setPageDone(pages_done ? JSON.parse(pages_done) : [])
     }, [])
 
     const handleSolenSelected = (salon: SalonDetails) => {
@@ -653,8 +650,10 @@ const SalonChoice = () => {
         setIsLoading(true)
         if (!pageDone.includes('choose_salon')) {
             let resp = await user_api.assignStepDone({ page: 'choose_salon' });
-            removeFromLocalStorage('pages_done');
-            setLocalStorage('pages_done', resp.data.pages_done);
+
+      if(resp.data?.pages_done) {
+      setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+}
             setPageDone((prevArray) => [...prevArray, 'choose_salon'])
         }
         setIsLoading(false);
@@ -667,8 +666,7 @@ const SalonChoice = () => {
         <>
             {isLoading && loadingView()}
             {/* For explaining the website */}
-            {isLoadedPages && !pageDone.includes('choose_salon') &&
-                <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('choose_salon')} />}
+                <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('choose_salon')} />
 
             <div className='w-full h-screen  overflow-hidden'>
                 {/* Modal qui s'affiche si moins de 10 salons */}

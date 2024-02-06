@@ -62,10 +62,9 @@ const Dashboard = () => {
     const [selectedMonthTransactions, setSelectedMonthTransactions] = useState(DisplayedMonths[0]);
     const [selectedMonthPayload, setSelectedMonthPayload] = useState(DisplayedMonths[0]);
     const [proSubscription, setProSubscription] = useState(false);
-    const [pageDone, setPageDone] = useState<String[]>([]);
+    const [pageDone, setPageDone] = useState<String[]>(['dashboard_salon']);
     const { loadingView } = userLoader();
     const [isLoading, setIsLoading] = useState(false);
-    const [isLoaded, setIsLoaded] = useState(false);
 
 
     const handleNewMonthRevenu = (item: string) => {
@@ -119,9 +118,7 @@ const Dashboard = () => {
         fetchStats()
         setProSubscription(user ? user.subscription?.name?.includes("Pro") : false);
         const pages_done = getLocalStorage('pages_done')
-        setPageDone(pages_done!.split(',').map((item) => item.trim()))
-        console.log(pages_done)
-        setIsLoaded(true)
+        setPageDone(pages_done ? JSON.parse(pages_done) : [])
     }, [])
 
     // TODO EMAIL ADDRESS VEIRIFICATION DONE :
@@ -173,8 +170,9 @@ const Dashboard = () => {
         setIsLoading(true)
         if (!pageDone.includes('dashboard_salon')) {
             let resp = await user_api.assignStepDone({ page: 'dashboard_salon' });
-            removeFromLocalStorage('pages_done');
-            setLocalStorage('pages_done', resp.data.pages_done);
+
+            if(resp.data?.pages_done) {setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+}
             setPageDone((prevArray) => [...prevArray, 'dashboard_salon'])
         }
         setIsLoading(false);
@@ -188,8 +186,7 @@ const Dashboard = () => {
 
             {isLoading && loadingView()}
             {/* For explaining the website */}
-            {isLoaded && !pageDone.includes('dashboard_salon') &&
-                <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('dashboard_salon')} />}
+                <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('dashboard_salon')} />
 
             {proSubscription && <div>
                 <Grid container spacing={6} className='match-height  '>
