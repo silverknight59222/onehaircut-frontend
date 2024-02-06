@@ -72,13 +72,13 @@ const TourModal = ({ steps, onRequestClose, doneTour = true, showTourButton = tr
 
   return (
     <>
-      {showTourButton && (<button
+      {showTourButton && <button
         onClick={() => setIsTourOpen(true)}
         className={`${Theme_A.button.tourModalButton}`}
       >
         <BoostIcon/>
 
-      </button>)}
+      </button>}
       <Tour
         // @ts-ignore
         startAt={0}
