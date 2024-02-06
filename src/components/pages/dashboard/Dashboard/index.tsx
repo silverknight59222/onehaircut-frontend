@@ -133,7 +133,7 @@ const Dashboard = () => {
 
     const tourContent_logo =
         <div>
-            <p>Et n'oublier pas de mettre le logo de votre salon dans le round, en haut à droite.</p>
+            <p>Et n'oublier pas de mettre le logo de votre salon dans le rond, en haut à droite.</p>
             <div className="justify-center flex">
                 <Image src='/assets/website/salon_logo.png' alt='' className='rounded-3xl ' width='200' height='200'></Image>
             </div>

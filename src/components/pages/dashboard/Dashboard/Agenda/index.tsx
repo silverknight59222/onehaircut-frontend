@@ -213,7 +213,7 @@ const Agenda = () => {
     },
     {
       selector: '.legend',
-      content: 'Les couleurs sur l\'agenda correspondent au coiffeur qui est assigné au rendez-vous.',
+      content: 'Les couleurs sur l’agenda correspondent au coiffeur qui est assigné au rendez-vous.',
     },
   ];
 
@@ -223,9 +223,9 @@ const Agenda = () => {
     if (!pageDone.includes('salon_agenda')) {
       let resp = await salonApi.assignStepDone({ page: 'salon_agenda' });
 
-if(resp.data?.pages_done) {
-      setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
-}
+      if (resp.data?.pages_done) {
+        setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+      }
       setPageDone((prevArray) => [...prevArray, 'salon_agenda'])
     }
     setIsLoading(false);
@@ -238,7 +238,7 @@ if(resp.data?.pages_done) {
       {isLoading && loadingView()}
 
       {/* For explaining the website */}
-        <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('salon_agenda')} />
+      <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('salon_agenda')} />
 
       <div className="calendar-header">
         <TotalEventsCounter totalEventsCount={totalEventsCount} />

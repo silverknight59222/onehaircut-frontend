@@ -372,11 +372,11 @@ const RolesSettings = () => {
     const tourSteps: Steps[] = [
         {
             selector: '.button_admin_access',
-            content: 'Dans la partie admin, vous pouvez paramétrer les accès de l\'administrateur aux différentes pages du site.',
+            content: 'Dans la partie admin, vous pouvez paramétrer les accès de l’administrateur aux différentes pages du site.',
         },
         {
             selector: '.toggleSwitch_access',
-            content: 'Un bouton sur la droite donne l\'accès à la page correspondante.',
+            content: 'Un bouton sur la droite donne l’accès à la page correspondante.',
         },
         {
             selector: '.button_staff_access',
@@ -394,9 +394,9 @@ const RolesSettings = () => {
         if (!pageDone.includes('salon_roles')) {
             let resp = await salonApi.assignStepDone({ page: 'salon_roles' });
 
-      if(resp.data?.pages_done) {
-      setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
-}
+            if (resp.data?.pages_done) {
+                setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+            }
             setPageDone((prevArray) => [...prevArray, 'salon_roles'])
         }
         setIsLoading(false);
