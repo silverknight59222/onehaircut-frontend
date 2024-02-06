@@ -23,6 +23,7 @@ export type UserType = {
   role: string;
   hair_salon: any | null;
   hair_salon2: any | null;
+  tour_pages_done?: string[]
 };
 
 export type LoginResponse = {

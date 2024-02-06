@@ -25,7 +25,7 @@ const Messages = () => {
   const [selectedChat, setSelectedChat] = useState({ client_id: 0, client: { name: '', front_profile: '' } })
   const [chats, setChats] = useState<Chat[]>([])
   const [message, setMessage] = useState('')
-  const [pageDone, setPageDone] = useState<String[]>([]);
+  const [pageDone, setPageDone] = useState<String[]>(['salon_message']);
 
   const getClientsByProfessional = async () => {
     if (salonId) {
@@ -102,7 +102,7 @@ const Messages = () => {
   useEffect(() => {
     getClientsByProfessional();
     const pages_done = getLocalStorage('pages_done')
-    setPageDone(pages_done!.split(',').map((item) => item.trim()))
+    setPageDone(pages_done ? JSON.parse(pages_done) : [])
     console.log(pages_done)
   }, [])
 
@@ -153,8 +153,10 @@ const Messages = () => {
     setIsLoading(true)
     if (!pageDone.includes('salon_message')) {
       let resp = await salonApi.assignStepDone({ page: 'salon_message' });
-      removeFromLocalStorage('pages_done');
-      setLocalStorage('pages_done', resp.data.pages_done);
+
+if(resp.data?.pages_done) {
+      setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+}
       setPageDone((prevArray) => [...prevArray, 'salon_message'])
     }
     setIsLoading(false);
@@ -275,7 +277,7 @@ const Messages = () => {
                     onEnterPress={onSendMessage}
                   />
 
-                  {/* 
+                  {/*
                   <input onChange={(e) => setMessage(e.target.value)} value={message} className={`w-full shadow-inner border border:bg-stone-300 ${Theme_A.behaviour.fieldFocused_C} rounded-xl h-12 outline-none px-3`} />
                   */}
                 </div>

@@ -21,7 +21,7 @@ import { user_api } from "@/api/clientSide";
 import { DeactivateAccountParams } from "@/api/clientSide";
 import { Subscription } from "../../../types";
 import { Auth } from "@/api/auth";
-import {getLocalStorage, setLocalStorage} from "@/api/storage";
+import { getLocalStorage, setLocalStorage } from "@/api/storage";
 import useSnackbar from "@/hooks/useSnackbar";
 import { dashboard } from "@/api/dashboard";
 import userLoader from "@/hooks/useLoader";
@@ -146,7 +146,7 @@ const Subscription = () => {
   }
 
   const updateUserDataInLocalStorage = async () => {
-    const {data} = await Auth.getUser()
+    const { data } = await Auth.getUser()
     setLocalStorage("user", JSON.stringify(data.user));
     if (data.user.hair_salon) {
       setLocalStorage("hair_salon", JSON.stringify(data.user.hair_salon));
@@ -356,9 +356,12 @@ const Subscription = () => {
                 {currentPlan.trial_ends_at && (
                   <div className="py-4 px-5 2xl:text-xl text-center text-black whitespace-nowrap bg-[#F4F4F6] font-medium border border-[#9B9B9B] rounded-xl">
                     <p>Votre contrat sera renouvelé le: </p>
-                    <p>{currentPlan.trial_ends_at}</p>
+                    <p className="text-sm font-light italic">à {currentPlan.trial_ends_at}</p>
                     {currentPlan.stripe_status && currentPlan.stripe_status === 'trialing' &&
-                      <p>L'essai se termine le : {currentPlan.trial_ends_at}</p>
+                      <p className="">
+                        L'essai se termine le :<br />
+                        <span className="text-sm font-light italic">{currentPlan.trial_ends_at}</span>
+                      </p>
                     }
                   </div>
                 )}

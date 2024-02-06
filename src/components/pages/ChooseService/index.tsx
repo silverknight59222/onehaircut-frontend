@@ -72,8 +72,7 @@ const ServiceChoose = () => {
     const { loadingView } = userLoader();
     const [lengthSelect, setLengthFilters] = useState<string[]>([]);
     const router = useRouter()
-    const [pageDone, setPageDone] = useState<String[]>([]);
-    const [isLoaded, setIsLoaded] = useState(false);
+    const [pageDone, setPageDone] = useState<String[]>(['services']);
     // useRef est utilisé pour créer une référence mutable qui conserve la même .current entre les renders
     const dropdownRef = React.useRef() as React.MutableRefObject<HTMLInputElement>
     const temp = getLocalStorage("haircut")
@@ -270,7 +269,7 @@ const ServiceChoose = () => {
         getAllServices()
         // getBasedFilter()
         const pages_done = getLocalStorage('pages_done')
-        setPageDone(pages_done!.split(',').map((item) => item.trim()))
+        setPageDone(pages_done ? JSON.parse(pages_done) : [])
         console.log(pages_done)
         document.addEventListener('click', closeSelectBox);
         return () => {
@@ -332,8 +331,10 @@ const ServiceChoose = () => {
         setIsLoading(true)
         if (!pageDone.includes('services')) {
             let resp = await user_api.assignStepDone({ page: 'services' });
-            removeFromLocalStorage('pages_done');
-            setLocalStorage('pages_done', resp.data.pages_done);
+
+      if(resp.data?.pages_done) {
+      setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+}
             setPageDone((prevArray) => [...prevArray, 'services'])
         }
         setIsLoading(false);
@@ -346,8 +347,7 @@ const ServiceChoose = () => {
             {isLoading && loadingView()}
             {/* For explaining the website */}
 
-            {isLoaded && !pageDone.includes('services') &&
-                <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('services')} />}
+                <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('services')} />
 
             <Navbar
                 isServicesPage={true}

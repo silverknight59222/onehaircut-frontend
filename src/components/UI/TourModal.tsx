@@ -1,9 +1,10 @@
-import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
+"use client"
+import {disableBodyScroll, enableBodyScroll} from "body-scroll-lock";
 import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
-// const Tour = dynamic(() => import("reactour"), { ssr: false });
-import Player from "@/components/UI/PlayerForTour"
-import Tour from "reactour"
+import React, {useEffect, useRef, useState} from "react";
+import {Theme_A} from "@/components/utilis/Themes";
+import {BoostIcon} from "@/components/utilis/Icons";
+const Tour = dynamic(() => import("reactour"), { ssr: false });
 
 
 export interface Steps {
@@ -14,28 +15,36 @@ export interface Steps {
 
 export type TourModalType = {
   steps: Steps[],
-  onRequestClose?: () => void;
-  doneTour: boolean
+  onRequestClose?: () => void,
+  doneTour: boolean,
+  showTourButton?: boolean,
 }
 
-const TourModal = ({ steps, onRequestClose, doneTour }: TourModalType) => {
+const TourModal = ({ steps, onRequestClose, doneTour = true, showTourButton = true}: TourModalType) => {
   const disableBody = target => disableBodyScroll(target);
+  const tourModal = useRef(null)
   const enableBody = target => enableBodyScroll(target);
   const [isTourOpen, setIsTourOpen] = useState(!doneTour);
-  const [tourisDone, setTourIsDone] = useState(doneTour);
   const closeTour = () => {
     setIsTourOpen(false)
     onRequestClose && onRequestClose();
   };
   useEffect(() => {
-    console.log("IS DONE : " + tourisDone + doneTour)
-  }, []);
-  useEffect(() => {
     if (doneTour) {
       setIsTourOpen(false);
-      // closeTour();
     }
   }, [doneTour]);
+
+
+  // useEffect(() => {
+  //   if (isTourOpen) {
+  //     document.documentElement.style.overflowX = 'inherit';
+  //     document.documentElement.style.scrollBehavior = 'inherit';
+  //   } else {
+  //     document.documentElement.style.overflowX = 'hidden';
+  //     document.documentElement.style.scrollBehavior = 'smooth';
+  //   }
+  // }, [isTourOpen]);
 
   // Composant de bouton avec effet de survol
   const HoverButton = ({ text, baseBgColor, hoverBgColor, textColor = "white" }) => {
@@ -63,8 +72,17 @@ const TourModal = ({ steps, onRequestClose, doneTour }: TourModalType) => {
 
   return (
     <>
-      {!doneTour && <Tour
+      {showTourButton && <button
+        onClick={() => setIsTourOpen(true)}
+        className={`${Theme_A.button.tourModalButton}`}
+      >
+        <BoostIcon/>
+
+      </button>}
+      <Tour
         // @ts-ignore
+        startAt={0}
+        ref={tourModal}
         steps={steps}
         showNavigation={true}
         onRequestClose={closeTour}
@@ -73,11 +91,11 @@ const TourModal = ({ steps, onRequestClose, doneTour }: TourModalType) => {
         accentColor={'#ef4444'}
         onAfterOpen={disableBody}
         onBeforeClose={enableBody}
-        prevButton={<HoverButton text="Retour" baseBgColor="#000000" hoverBgColor="#4F4F4F" textColor="#ffffff" />}
-        nextButton={<HoverButton text="Suivant" baseBgColor="#FF7B20" hoverBgColor="#FE5019" />}
-        lastStepNextButton={<HoverButton text="C'est parti !" baseBgColor="#FF7B20" hoverBgColor="#FE5019" />}
+        prevButton={<HoverButton text="Retour" baseBgColor="#000000" hoverBgColor="#4F4F4F" textColor="#ffffff"/>}
+        nextButton={<HoverButton text="Suivant" baseBgColor="#FF7B20" hoverBgColor="#FE5019"/>}
+        lastStepNextButton={<HoverButton text="C'est parti !" baseBgColor="#FF7B20" hoverBgColor="#FE5019"/>}
         showNumber={false}
-      />}
+      />
     </>
   )
 }
@@ -85,8 +103,7 @@ const TourModal = ({ steps, onRequestClose, doneTour }: TourModalType) => {
 export default TourModal
 
 
-
-/* README 
+/* README
 Aim:
 Give instructions or present a page. As argument buttons/elements can be highlighted
 
@@ -118,7 +135,7 @@ Give instructions or present a page. As argument buttons/elements can be highlig
       {isLoading && loadingView()}
 
       <TourModal steps={tourSteps} onRequestClose={closeTour} />
-  ... 
+  ...
 
 
 

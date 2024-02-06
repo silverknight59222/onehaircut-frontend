@@ -239,7 +239,7 @@ const AddServiceModal = (props: AddServiceModalType) => {
 
     if (typeFilters.length > 0) {
       list.forEach((service) => {
-        if(service.type !== 'discount'){
+        if (service.type !== 'discount') {
           typeFilters.forEach((filter) => {
             if (service.type === filter) {
               filteredServices.push(service);
@@ -377,13 +377,13 @@ const AddServiceModal = (props: AddServiceModalType) => {
                               Color
                             </p>
                             <div
-                              className="text-xs mt-1 py-1 px-2 border-2 border-gray-400 rounded-lg bg-[#D6D6D6]"
+                              className="text-xs mt-1 py-1 px-2 border-2 border-gray-400 rounded-lg bg-[#D6D6D6] "
                               onMouseEnter={(e) => {
                                 e.stopPropagation();
                                 // setShowColors(item.id);
                               }}
                             >
-                              <>Available Soon</>
+                              <>Couleurs bientôt dispo</>
                               {/* {item.colors[0].color} */}
                             </div>
                           </div>

@@ -44,7 +44,7 @@ const RolesSettings = () => {
         staff: [],
     };
 
-    //stocker les états des commutateurs pour chaque rôle. 
+    //stocker les états des commutateurs pour chaque rôle.
     //TODO : REPLACE STATE WITH SAVED VALUES
     const [roleSwitches, setRoleSwitches] = useState<{ [key: string]: { [key: number]: boolean } }>({
         admin: {
@@ -254,7 +254,7 @@ const RolesSettings = () => {
     };
 
 
-    // To open the modal when clic on EDIT 
+    // To open the modal when clic on EDIT
     const [isModal, setIsModal] = useState(false);
 
     const openModal = () => {
@@ -267,7 +267,7 @@ const RolesSettings = () => {
 
     const { loadingView } = userLoader();
     const [isLoading, setIsLoading] = useState(false);
-    const [pageDone, setPageDone] = useState<String[]>([]);
+    const [pageDone, setPageDone] = useState<String[]>(['salon_roles']);
     // Function to fetch permissions based on the role
     const fetchPermissions = async (role: string) => {
         try {
@@ -306,8 +306,7 @@ const RolesSettings = () => {
     }, [selectedRole]);
     useEffect(() => {
         const pages_done = getLocalStorage('pages_done')
-        setPageDone(pages_done!.split(',').map((item) => item.trim()))
-        console.log(pages_done)
+        setPageDone(pages_done ? JSON.parse(pages_done) : [])
     }, [])
     const renderRoleContent = () => {
         return (
@@ -394,8 +393,10 @@ const RolesSettings = () => {
         setIsLoading(true)
         if (!pageDone.includes('salon_roles')) {
             let resp = await salonApi.assignStepDone({ page: 'salon_roles' });
-            removeFromLocalStorage('pages_done');
-            setLocalStorage('pages_done', resp.data.pages_done);
+
+      if(resp.data?.pages_done) {
+      setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+}
             setPageDone((prevArray) => [...prevArray, 'salon_roles'])
         }
         setIsLoading(false);

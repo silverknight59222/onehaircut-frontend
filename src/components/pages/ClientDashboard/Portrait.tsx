@@ -62,9 +62,8 @@ const Portrait = () => {
     const [gender, setGender] = useState('');
     const [ethnicGroup, setethnicGroup] = useState('');
     const [hairLength, sethairLength] = useState('');
-    const [pageDone, setPageDone] = useState<String[]>([]);
+    const [pageDone, setPageDone] = useState<String[]>(['portrait']);
     const { loadingView } = userLoader();
-    const [isLoaded, setIsLoaded] = useState(false);
 
     // functions for filters
     // handling the change of gender
@@ -336,9 +335,7 @@ const Portrait = () => {
         fetchPotraits();
         fetchUserNotifications();
         const pages_done = getLocalStorage('pages_done')
-        setPageDone(pages_done!.split(',').map((item) => item.trim()))
-        console.log(pages_done)
-        setIsLoaded(true)
+        setPageDone(pages_done ? JSON.parse(pages_done) : [])
     }, []);
 
     // ------------------------------------------------------------------
@@ -367,8 +364,9 @@ const Portrait = () => {
         setIsLoading(true)
         if (!pageDone.includes('portrait')) {
             let resp = await user_api.assignStepDone({ page: 'portrait' });
-            removeFromLocalStorage('pages_done');
-            setLocalStorage('pages_done', resp.data.pages_done);
+            if(resp.data?.pages_done) {
+              setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+            }
             setPageDone((prevArray) => [...prevArray, 'portrait'])
         }
         setIsLoading(false);
@@ -380,8 +378,7 @@ const Portrait = () => {
         <div>
             {isLoading && loadingView()}
 
-            {/* For explaining the website */}
-            {isLoaded && !pageDone.includes('portrait') && <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('portrait')} />}
+            {/* For explaining the website */}<TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('portrait')} />
 
             <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-0">
                 <LogoCircleFixRight />

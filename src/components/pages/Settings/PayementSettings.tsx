@@ -44,7 +44,7 @@ const PayementSettings = () => {
     const [clickedMethod, setClickedMethod] = useState(payementMethodStruct[0])
     // state for the card number
     const [cardNb, setCardNb] = useState(0)
-    const [pageDone, setPageDone] = useState<String[]>([]);
+    const [pageDone, setPageDone] = useState<String[]>(['salon_payment']);
 
 
 
@@ -337,8 +337,7 @@ const PayementSettings = () => {
         getSalonStripeInformation()
         getCustomerStripeInformation()
         const pages_done = getLocalStorage('pages_done')
-        setPageDone(pages_done!.split(',').map((item) => item.trim()))
-        console.log(pages_done)
+        setPageDone(pages_done ? JSON.parse(pages_done) : [])
     }, [])
 
     const [birthdate, setBirthdate] = useState(new Date());
@@ -370,8 +369,10 @@ const PayementSettings = () => {
         setIsLoading(true)
         if (!pageDone.includes('salon_payment')) {
             let resp = await salonApi.assignStepDone({ page: 'salon_payment' });
-            removeFromLocalStorage('pages_done');
-            setLocalStorage('pages_done', resp.data.pages_done);
+
+      if(resp.data?.pages_done) {
+      setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+}
             setPageDone((prevArray) => [...prevArray, 'salon_payment'])
         }
         setIsLoading(false);

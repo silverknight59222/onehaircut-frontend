@@ -86,11 +86,11 @@ const Step3 = () => {
   //     setError((prev) => {
   //       return { ...prev, phone: "Entrer un numéro valide" };
   //     });
-  //   }    
+  //   }
 
   // }
 
-  // const setFocus = () => {    
+  // const setFocus = () => {
   //   document.querySelector<HTMLInputElement>(`div[id=phone-custom]`)?.focus()
   // }
 
@@ -156,7 +156,7 @@ const Step3 = () => {
 
   const onPhoneCheck = () => {
     const phone = userDetails.phone
-    let valid = false; // 
+    let valid = false; //
     // check first numbers
     console.log(phone[0])
     console.log(phone[1])
@@ -296,6 +296,9 @@ const Step3 = () => {
       setLocalStorage("user", JSON.stringify(res.data.user));
       if (res.data.intent.client_secret) {
         setLocalStorage('secret_key', res.data.intent.client_secret);
+      }
+      if(res.data?.user?.tour_pages_done) {
+        setLocalStorage('pages_done', JSON.stringify(res.data.user.tour_pages_done))
       }
       const planType = JSON.parse(getLocalStorage('plan_type') as string);
       if (planType && planType.name === 'OneHaircut Regular') {
