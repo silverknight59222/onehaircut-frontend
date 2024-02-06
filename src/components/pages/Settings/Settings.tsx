@@ -29,11 +29,11 @@ const user_data = user ? JSON.parse(user) : null;
 
 const settingsMenu: settingsStruct[] = [
   { name: "Générales", permission: "Générales", display: SalonInfos },
-  { name: "Horaires", permission: "Horaires",display: OpenningHours },
-  { name: "Indisponibilités", permission: "Indisponibilités",display: Unavailability },
-  { name: "Réglage des roles", permission: "Réglage des roles",display: RolesSettings },
-  { name: "Paiements", permission: "Paiements",display: PayementSettings, showWarning: !user_data?.bank_acc_stripe_id },
-  { name: "Mot de passe", permission: "",display: PasswordSettings },
+  { name: "Horaires", permission: "Horaires", display: OpenningHours },
+  { name: "Indisponibilités", permission: "Indisponibilités", display: Unavailability },
+  { name: "Réglage des roles", permission: "Réglage des roles", display: RolesSettings },
+  { name: "Paiements", permission: "Paiements", display: PayementSettings, showWarning: !user_data?.bank_acc_stripe_id },
+  { name: "Mot de passe", permission: "", display: PasswordSettings },
   //{ name: "Taxes", display: TaxesSettings },
   // { name: "Notifications", display: NotificationsSettings }, // not needed for the salon
   //{ name: "OnehairBot", display: BotSettings },
@@ -66,12 +66,10 @@ const Settings = () => {
         }
       });
     }
-    else if(user.role == 'salon_professional')
-    {
+    else if (user.role == 'salon_professional') {
       currentMenuCopy = [...settingsMenu];
     }
-    else
-    {
+    else {
       currentMenuCopy.push(settingsMenu[5]);
     }
 
@@ -80,6 +78,13 @@ const Settings = () => {
   }
   useEffect(() => {
     applyPermissions(settingsMenu)
+    const url = new URL(window.location.href);
+    const searchParams = url.searchParams.has('setup_intent');
+    if (searchParams) {
+      url.search = '';
+      window.history.replaceState({}, document.title, url.toString());
+      setActiveMenu('Paiements');
+    }
     fetchSalonNotifications()
   }, []);
 
@@ -99,19 +104,19 @@ const Settings = () => {
                   <div key={index} className="relative">
                     <p
                       className={` cursor-pointer md:ml-2 md:mr-2 ${activeMenu === item.name &&
-                      " text-black "
-                      }`}
+                        " text-black "
+                        }`}
                       onClick={() => setActiveMenu(item.name)}
                     >
                       {item.name}
                       {item.showWarning && <>
-                      <span
-                        className="absolute transform top-1/2 right-6 translate-x-1/2 -translate-y-1/2 h-3 w-3">
+                        <span
+                          className="absolute transform top-1/2 right-6 translate-x-1/2 -translate-y-1/2 h-3 w-3">
                           <span
                             className="absolute top-0 right-0  animate-ping inline-flex h-full w-full rounded-full bg-stone-800 opacity-75"></span>
                           <span
                             className="absolute top-0 right-0 inline-flex rounded-full h-3 w-3 bg-red-500"></span>
-                      </span>
+                        </span>
                       </>}
                     </p>
                   </div>
@@ -126,8 +131,8 @@ const Settings = () => {
               <>
                 {activeMenu === item.name && !isLoading && (
                   <div key={index}
-                       className="relative flex z-10 md:pl-auto overflow-auto bg-transparent rounded-2xl px-2">
-                    <item.display/>
+                    className="relative flex z-10 md:pl-auto overflow-auto bg-transparent rounded-2xl px-2">
+                    <item.display />
                   </div>
                 )}
               </>
@@ -135,7 +140,7 @@ const Settings = () => {
           })}
         </div>
       </DashboardLayout>
-      <Footer/>
+      <Footer />
     </div>
   );
 };
