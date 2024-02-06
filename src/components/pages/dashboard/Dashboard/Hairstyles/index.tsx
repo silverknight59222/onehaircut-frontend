@@ -49,6 +49,7 @@ const Hairstyles = () => {
   const [pageDone, setPageDone] = useState<String[]>([]);
   const { loadingView } = userLoader();
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     params.genderFilters = "";
@@ -61,6 +62,7 @@ const Hairstyles = () => {
     const pages_done = getLocalStorage('pages_done')
     setPageDone(pages_done!.split(',').map((item) => item.trim()))
     console.log(pages_done)
+    setIsLoaded(true)
   }, [])
 
   useEffect(() => {
@@ -107,7 +109,8 @@ const Hairstyles = () => {
     <div>
       {isLoading && loadingView()}
       {/* For explaining the website */}
-      <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('salon_hairstyles')} />
+      {isLoaded && !pageDone.includes('salon_hairstyles') &&
+        <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('salon_hairstyles')} />}
       <div className="hairStyles_filter">
         <HairStyleListHeader onListCountShow={listCountShow} isd={isSelectedDelete} selectAllEvent={selectAll} params={params} onFilterSelect={onFilterSelect} setActiveMenu={setActiveMenu} activeMenu={activeMenu} setFinalItems={setFinalSelectedItems}></HairStyleListHeader>
       </div>

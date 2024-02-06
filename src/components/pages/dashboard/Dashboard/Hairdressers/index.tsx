@@ -65,6 +65,7 @@ const Hairdressers = () => {
   const [isEdit, setIsEdit] = useState(false);
   const [hasHairDresser, setHasHairDresser] = useState(false);
   const [pageDone, setPageDone] = useState<String[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
   const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
   const [error, setError] = useState({
     name: "",
@@ -402,6 +403,7 @@ const Hairdressers = () => {
     const pages_done = getLocalStorage('pages_done')
     setPageDone(pages_done!.split(',').map((item) => item.trim()))
     console.log(pages_done)
+    setIsLoaded(true)
   }, []);
 
   // useEffect(() => {
@@ -563,7 +565,8 @@ const Hairdressers = () => {
 
 
       {/* For explaining the website */}
-        <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('salon_hairdressers')}/>
+      {isLoaded && !pageDone.includes('salon_hairdressers') &&
+        <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('salon_hairdressers')} />}
 
 
       {isLoading && loadingView()}

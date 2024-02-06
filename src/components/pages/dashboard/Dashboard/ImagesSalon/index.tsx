@@ -25,6 +25,7 @@ const Images = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [salonImages, setSalonImages] = useState<ImageSalon[]>([]);
 	const [pageDone, setPageDone] = useState<String[]>([]);
+	const [isLoaded, setIsLoaded] = useState(false);
 	useEffect(() => {
 		// window.location.reload()
 	}, [salonImages])
@@ -50,6 +51,7 @@ const Images = () => {
 		const pages_done = getLocalStorage('pages_done')
 		setPageDone(pages_done!.split(',').map((item) => item.trim()))
 		console.log(pages_done)
+		setIsLoaded(true)
 	}, [])
 
 	// ------------------------------------------------------------------
@@ -82,7 +84,8 @@ const Images = () => {
 		<>
 			{isLoading && loadingView()}
 			{/* For explaining the website */}
-			<TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('salon_images')} />
+			{isLoaded && !pageDone.includes('salon_images') &&
+				<TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('salon_images')} />}
 			<div className="w-full flex flex-col xl:flex-row items-center justify-center gap-4 mt-8 mb-20">
 
 				<div className="h-[940px] w-full xl:w-1/2 2xl:w-2/5 overflow-auto flex flex-col items-center gap-8 bg-lightGrey rounded-3xl p-4 md:px-12 md:pt-12 md:pb-0 opacity-95 pic_salon">

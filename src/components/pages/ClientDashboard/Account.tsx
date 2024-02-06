@@ -71,6 +71,7 @@ const Account = () => {
     const [isModalNotifMsg, setIsModalNotifMsg] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const [pageDone, setPageDone] = useState<String[]>([]);
+    const [isLoaded, setIsLoaded] = useState(false);
 
 
     //Variables for address
@@ -940,8 +941,9 @@ const Account = () => {
         setLocationLatitude(lat);
         setLocationLongitude(long);
         setPageDone(resp.data.steps_done.split(',').map((item) => item.trim()))
-        removeFromLocalStorage('pages_done')
         setLocalStorage('pages_done', resp.data.steps_done)
+        console.log(resp.data.steps_done)
+        setIsLoaded(true)
         if (resp.data.email_verified_at) {
             setIsEmailVerified(true)
         } else {
@@ -1056,9 +1058,8 @@ const Account = () => {
         setIsLoading(true)
         console.log("Page Done")
         console.log(pageDone)
-        if(!pageDone.includes('account')){
+        if (!pageDone.includes('account')) {
             let resp = await user_api.assignStepDone({ page: 'account' });
-            removeFromLocalStorage('pages_done');
             setLocalStorage('pages_done', resp.data.pages_done);
             setPageDone((prevArray) => [...prevArray, 'account'])
         }
@@ -1073,7 +1074,9 @@ const Account = () => {
             </div>
 
             {/* For explaining the website */}
-                <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('account')}/>
+            {isLoaded && !pageDone.includes('account') &&
+                <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('account')} />
+            }
 
             <ClientDashboardLayout notifications={globalNotifications}>
                 <div className="mt-4 lg:mt-14 mb-5 px-6">

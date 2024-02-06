@@ -64,6 +64,7 @@ const Portrait = () => {
     const [hairLength, sethairLength] = useState('');
     const [pageDone, setPageDone] = useState<String[]>([]);
     const { loadingView } = userLoader();
+    const [isLoaded, setIsLoaded] = useState(false);
 
     // functions for filters
     // handling the change of gender
@@ -337,6 +338,7 @@ const Portrait = () => {
         const pages_done = getLocalStorage('pages_done')
         setPageDone(pages_done!.split(',').map((item) => item.trim()))
         console.log(pages_done)
+        setIsLoaded(true)
     }, []);
 
     // ------------------------------------------------------------------
@@ -379,7 +381,7 @@ const Portrait = () => {
             {isLoading && loadingView()}
 
             {/* For explaining the website */}
-            <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('portrait')} />
+            {isLoaded && !pageDone.includes('portrait') && <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('portrait')} />}
 
             <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-0">
                 <LogoCircleFixRight />
