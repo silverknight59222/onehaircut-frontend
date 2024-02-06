@@ -58,6 +58,7 @@ const Welcome = () => {
   const [maxPage, setMaxPage] = useState(5);
   const [previewImage, setPreviewImage] = useState<string>('');
   const [pageDone, setPageDone] = useState<String[]>([]);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const getAllHaircuts = async () => {
     // Fetch all available haircuts from the API
@@ -370,6 +371,7 @@ const Welcome = () => {
     const pages_done = getLocalStorage('pages_done')
     setPageDone(pages_done!.split(',').map((item) => item.trim()))
     console.log(pages_done)
+    setIsLoaded(true)
   }, [])
 
   useEffect(() => {
@@ -525,8 +527,8 @@ const Welcome = () => {
   return (
     <>
       {/* For explaining the website */}
-      {pageDone.includes('dashboard') && !isGuest &&
-        (<TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('dashboard') || isGuest} />)}
+      {isLoaded && !pageDone.includes('dashboard') && !isGuest &&
+        (<TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('dashboard') || isGuest || isLoaded} />)}
 
       {/* Modal pour choix générique de coiffure */}
       {isGenericHaircutModalOpen && (
