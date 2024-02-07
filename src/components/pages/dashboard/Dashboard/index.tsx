@@ -133,7 +133,7 @@ const Dashboard = () => {
 
     const tourContent_logo =
         <div>
-            <p>Et n'oublier pas de mettre le logo de votre salon dans le rond, en haut à droite.</p>
+            <p>Et n'oubliez pas de mettre le logo de votre salon dans le rond, en haut à droite.</p>
             <div className="justify-center flex">
                 <Image src='/assets/website/salon_logo.png' alt='' className='rounded-3xl ' width='200' height='200'></Image>
             </div>
@@ -141,7 +141,7 @@ const Dashboard = () => {
 
     const tourContent_tourIcon =
         <div>
-            <p>Au fait, si vous voulez me retrouver, cliquer sur cette icône!</p>
+            <p>Au fait, si vous voulez me retrouver, cliquez sur cette icône!</p>
             <div className="justify-center flex pt-2">
                 <div className={`bg-stone-800 text-sm text-white px-2 py-2 rounded-full`}>
                     <TbHelpSquareRoundedFilled size={38} />
