@@ -4,6 +4,7 @@ import dynamic from "next/dynamic";
 import React, { useEffect, useRef, useState } from "react";
 import { Theme_A } from "@/components/utilis/Themes";
 import { TbHelpSquareRoundedFilled } from "react-icons/tb";
+import {getLocalStorage} from "@/api/storage";
 const Tour = dynamic(() => import("reactour"), { ssr: false });
 
 
@@ -22,6 +23,9 @@ export type TourModalType = {
 
 const TourModal = ({ steps, onRequestClose, doneTour = true, showTourButton = true }: TourModalType) => {
   const disableBody = target => disableBodyScroll(target);
+  const tempUser = getLocalStorage('user')
+  const user = tempUser ? JSON.parse(tempUser) : {}
+  const [isGuest, setIsGuest] = useState(!user.id); // User login state
   const tourModal = useRef(null)
   const enableBody = target => enableBodyScroll(target);
   const [isTourOpen, setIsTourOpen] = useState(false);
@@ -30,7 +34,11 @@ const TourModal = ({ steps, onRequestClose, doneTour = true, showTourButton = tr
     onRequestClose && onRequestClose();
   };
   useEffect(() => {
-    setIsTourOpen(!doneTour)
+    if(doneTour) {
+      setIsTourOpen(false)
+    } else if (!doneTour && !isGuest) {
+      setIsTourOpen(true)
+    }
   }, [doneTour]);
 
 
