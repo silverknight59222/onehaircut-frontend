@@ -170,6 +170,10 @@ const dashboard = {
   getChat: async (clientId: number, professionalId:number) => {
     return await request.get(`/fetch_chat/${clientId}/${professionalId}`);
   },
+  deleteChat: async (clientId: number) => {
+    console.log(clientId)
+    return await request.delete(`/delete_chat/${clientId}}`);
+  },
   setChatRead: async (data:SetChatReadParam) => {
     return await request.post(`/set_chat_read`, data);
   },

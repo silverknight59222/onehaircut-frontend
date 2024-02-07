@@ -1,5 +1,5 @@
 "use client";
-import { LogoCircleFixRight, ChatSendIcon } from "@/components/utilis/Icons";
+import {LogoCircleFixRight, ChatSendIcon, DeleteIcon} from "@/components/utilis/Icons";
 import ClientDashboardLayout from "@/layout/ClientDashboardLayout";
 import Image from "next/image";
 import React, { useEffect, useState, useRef } from "react";
@@ -13,6 +13,8 @@ import { Theme_A, ColorsThemeA } from "@/components/utilis/Themes";
 import CustomInput from "@/components/UI/CustomInput";
 import TourModal, { Steps } from "@/components/UI/TourModal";
 import { user_api } from "@/api/clientSide";
+import {toast} from "react-toastify";
+import BaseModal from "@/components/UI/BaseModal";
 
 
 
@@ -27,6 +29,7 @@ const Messages = () => {
     const { loadingView } = userLoader();
     const [isLoading, setIsLoading] = useState(false);
     const [pageDone, setPageDone] = useState<String[]>(['message']);
+    const [isDeleteModal, setIsDeleteModal] = useState(false);
 
     // Récupère les salons liés à l'utilisateur
     const getSalonsByUser = async () => {
@@ -66,7 +69,7 @@ const Messages = () => {
 
     // Envoie un message et recharge le chat
     const onSendMessage = async () => {
-        if (userId) {
+        if (userId && selectedChat.user_id && message) {
             setIsLoading(true)
             const data = {
                 client_id: userId,
@@ -153,6 +156,21 @@ const Messages = () => {
             content: 'Puis cliquer ici pour envoyer votre message.',
         },
     ];
+
+  const deleteChat = async () => {
+    setIsLoading(true)
+    try {
+      await dashboard.deleteChat(selectedChat.user_id)
+      setIsDeleteModal(false);
+      setSelectedChat({ user_id: 0, name: '' })
+      setChats([]);
+      getSalonsByUser()
+    } catch (e) {
+      toast.error('Error delete messaging!')
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
     const closeTour = async () => {
         // You may want to store in local storage or state that the user has completed the tour
@@ -271,36 +289,63 @@ const Messages = () => {
 
 
                             {/* Input et Bouton d'Envoi */}
-                            <div className="w-full flex items-center justify-center mt-auto mb-6">
-                                <div className="relative w-9/12 mt-4 champs_envoi">
-                                    {/* Champ de texte pour entrer un message */}
-                                    <CustomInput
-                                        id="sendMessageInput"
-                                        label="Ecrire un message"
-                                        value={message}
-                                        onChange={(e) => setMessage(e.target.value)}
-                                        onEnterPress={onSendMessage}
-                                    />
-                                    {/*
+                          <div className="w-full flex items-center justify-center mt-auto mb-6">
+                            <div className="relative w-9/12 mt-4 champs_envoi">
+                              {/* Champ de texte pour entrer un message */}
+                              <CustomInput
+                                id="sendMessageInput"
+                                label="Ecrire un message"
+                                value={message}
+                                onChange={(e) => setMessage(e.target.value)}
+                                onEnterPress={onSendMessage}
+                                disable={!selectedChat.user_id}
+                              />
+                              {/*
                                     <input onChange={(e) => setMessage(e.target.value)}
                                     value={message}
                                     className={`w-full shadow-inner border border:bg-stone-300 ${Theme_A.behaviour.fieldFocused_C} rounded-xl h-12 outline-none px-3`}
                                     />
                                     */}
-                                </div>
-
-                                {/* Bouton d'envoi de message */}
-                                <div id="ChatSendIcon" className="ml-4 mt-4 hover:scale-125 transform transition-transform duration-300 bouton_envoi" onClick={onSendMessage}>
-                                    <ChatSendIcon />
-                                </div>
                             </div>
+
+                            {/* Bouton d'envoi de message */}
+                            <div id="ChatSendIcon"
+                                 className="ml-4 mt-4 hover:scale-125 transform transition-transform duration-300 bouton_envoi"
+                                 onClick={onSendMessage}>
+                              <ChatSendIcon/>
+                            </div>
+                              <button
+                                onClick={() => {
+                                  if (selectedChat.user_id) {
+                                    setIsDeleteModal(true)
+                                  }
+                                }}
+                                className={`rounded-md ml-4 mt-4 hover:scale-125  ${Theme_A.button.mediumGradientButton} shadow-md `}
+                              >
+                                <DeleteIcon/>
+                              </button>
+                          </div>
 
                         </div>
 
                     </div>
                 </div>
             </ClientDashboardLayout>
-            <Footer />
+          {isDeleteModal && (
+            <BaseModal close={() => setIsDeleteModal(false)}>
+              <div>
+                <p>Confirm Chat Deletion</p>
+                <p>Are you sure you want to delete chat?</p>
+                <div className={'flex justify-end gap-5 mt-5'}>
+                  <button className={`${Theme_A.button.smallGradientButton}`} onClick={deleteChat}>Confirm</button>
+                  <button className={`${Theme_A.button.smallBlackColoredButton}`}
+                          onClick={() => setIsDeleteModal(false)}>Cancel
+                  </button>
+                </div>
+              </div>
+            </BaseModal>
+          )}
+          <Footer/>
         </div>
     );
 };
