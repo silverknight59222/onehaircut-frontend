@@ -52,6 +52,8 @@ const Index = () => {
   const PaymentGatewayVariableFees = 0.008; //TODO LINK WITH ACTUAL FEES
   const PaymentGatewayFixFees = 0.11;
   let stripePromise = loadStripe(stripeKey);  // public key for stripe
+  const [clientSecret, setClientSecret] = useState("");
+  const [paymentTraceID, setPaymentTraceID] = useState("");
   const items = [
     { name: "Salon", desc: "Le Bon Coiffeur" },
     { name: "Type de coiffure", desc: "Curly" },
@@ -59,8 +61,9 @@ const Index = () => {
     { name: "Temps", desc: "2 heures " },
     { name: "Lieu", desc: "à domicile" },
   ];
-  let options = {
-    clientSecret: ""
+  const options = {
+    clientSecret,
+    // appearance,
   };
 
   const getHaircutPrize = async () => {
@@ -162,10 +165,13 @@ const Index = () => {
   }, [KmPrice])
 
   const getStripeKey = async () => {
+    let clientSecret = getLocalStorage('client_payment_secret');
+    let paymentTraceID = getLocalStorage('client_stripe_trace_id')
+    setClientSecret(clientSecret ? clientSecret : '');
+    setPaymentTraceID(paymentTraceID ? paymentTraceID : '')
     setIsLoading(true)
     let resp = await salonApi.getStripeKey();
     stripePromise = loadStripe(resp.data.pk)
-    options.clientSecret = resp.data.sk
     setStripeKey(resp.data.pk)
     setIsLoading(false)
   }
@@ -233,7 +239,7 @@ const Index = () => {
   const formattedBookingDate = bookingDate ? formatDate(bookingDate) : "";
 
 
-  const updatedOHCfees = (salonData?.final_price + KmPrice) * OnehaircutFees; 
+  const updatedOHCfees = (salonData?.final_price + KmPrice) * OnehaircutFees;
   const bookingCost = salonData?.final_price + KmPrice;
   const updatedTransactionFees = (((bookingCost) + ((bookingCost) * OnehaircutFees)) * PaymentGatewayVariableFees + PaymentGatewayFixFees);
   const totalUpdatedCost = parseFloat(bookingCost + updatedOHCfees + updatedTransactionFees).toFixed(2);
@@ -291,8 +297,8 @@ const Index = () => {
 
           <div className="flex mx-4 mt-4 mb-8 w-max md:w-[750px] lg:w-[940px] px-4 sm:px-14 bg-[#F8F8F8] rounded-[22px] border border-[#ECECEC] shadow-sm shadow-stone-600 justify-center">
 
-            <div className="mt-7 mb-8 w-full md:w-5/12 lg:w-4/12  items-center justify-center">
-              <Elements stripe={stripePromise}>
+            <div className="mt-7 mb-8 w-full md:w-12/12 lg:w-8/12  items-center justify-center">
+              <Elements stripe={stripePromise} options={options} >
                 <PaymentForm onSuccess={onBooking} />
               </Elements>
             </div>

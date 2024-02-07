@@ -62,7 +62,7 @@ const PaymentFormSetting = ({ showConfirmButton = true }) => {
         // return_url: window.location.origin.includes('http') ?
         //   'http://127.0.0.1:8000/api/web/stripe/processPM' :
         //   'https://api.onehaircut.com/api/web/stripe/processPM',
-        return_url : window.location.href
+        return_url: window.location.href
       },
     });
 

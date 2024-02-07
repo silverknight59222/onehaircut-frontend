@@ -133,6 +133,9 @@ const salonApi = {
   },
   assignStepDone: async (params: any) => {
     return await request.post('assign_step', params);
+  },
+  createPaymentIntent: async (params: any) => {
+    return await request.post('stripe/paymentIntent', params);
   }
 
 }
