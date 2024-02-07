@@ -1,20 +1,20 @@
 "use client";
-import {dashboard} from "@/api/dashboard";
-import {CircleRight, CrossIcon, LogoCircleFixRight, RegistrationCheckedIcon} from "@/components/utilis/Icons";
+import { dashboard } from "@/api/dashboard";
+import { CircleRight, CrossIcon, LogoCircleFixRight, RegistrationCheckedIcon } from "@/components/utilis/Icons";
 import ClientDashboardLayout from "@/layout/ClientDashboardLayout";
 import Image from "next/image";
 import React from "react";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import userLoader from "@/hooks/useLoader";
-import {SalonWishlist, WishlistHaircuts} from "@/types";
-import {getLocalStorage} from "@/api/storage";
-import {ColorsThemeA, Theme_A} from "@/components/utilis/Themes";
+import { SalonWishlist, WishlistHaircuts } from "@/types";
+import { getLocalStorage } from "@/api/storage";
+import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 import Footer from "@/components/UI/Footer";
 import useSnackbar from "@/hooks/useSnackbar";
-import {ColorRing} from "react-loader-spinner";
+import { ColorRing } from "react-loader-spinner";
 
 const Favorites = () => {
-  const {loadingView} = userLoader();
+  const { loadingView } = userLoader();
   const [isLoading, setIsLoading] = useState(false);
   const [haircuts, setHaircuts] = useState<WishlistHaircuts[]>([]);
   const [salons, setSalons] = useState<SalonWishlist[]>([]);
@@ -52,8 +52,8 @@ const Favorites = () => {
         .catch(error => {
           //
         }).finally(() => {
-        setIsLoading(false);
-      })
+          setIsLoading(false);
+        })
     }
   }
 
@@ -90,7 +90,7 @@ const Favorites = () => {
       await dashboard.removeFromSalonWishList(hairsalonId, userId)
         .then(response => {
           getSalonsWishlist()
-          showSnackbar('succès', 'Salon supprimé des préférences')
+          showSnackbar('success', 'Salon supprimé des préférences')
         })
         .catch(error => {
           showSnackbar('erreur', 'Salon non supprimé')
@@ -100,7 +100,7 @@ const Favorites = () => {
   }
   const [notifications, setNotifications] = useState({} as any);
   const fetchUserNotifications = async () => {
-    const {data} = await dashboard.userNotification();
+    const { data } = await dashboard.userNotification();
     setNotifications(data);
   }
 
@@ -114,7 +114,7 @@ const Favorites = () => {
   return (
     <div>
       <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 -z-10">
-        <LogoCircleFixRight/>
+        <LogoCircleFixRight />
       </div>
       <ClientDashboardLayout notifications={notifications}>
         <div className="flex flex-col items-center justify-center mt-10 mb-5 px-8">
@@ -134,33 +134,33 @@ const Favorites = () => {
             <div className="lg:absolute -top-10 md:ml-72  w-9/12 overflow-auto mt-3 md:mr-48">
               <table>
                 <tbody className="flex items-center md:flex-nowrap justify-center  gap-8 pb-2">
-                {haircuts.map((item, index) => {
-                  return (
-                    <tr key={index} className="flex flex-col items-center justify-center">
-                      <div
+                  {haircuts.map((item, index) => {
+                    return (
+                      <tr key={index} className="flex flex-col items-center justify-center">
+                        <div
 
-                        className={`${Theme_A.hairstyleCards.cardgradientTop} rounded-xl`}>
-                        <div className="relative w-max  bg-[#F5F5F5] ">
-                          <div className="relative w-32 h-32">
-                            <Image
-                              src={item.haircut.image.includes('http') ? item.haircut.image : `https://api.onehaircut.com${item.haircut.image}`}
-                              fill={true} alt="" className="rounded-t-xl"/>
+                          className={`${Theme_A.hairstyleCards.cardgradientTop} rounded-xl`}>
+                          <div className="relative w-max  bg-[#F5F5F5] ">
+                            <div className="relative w-32 h-32">
+                              <Image
+                                src={item.haircut.image.includes('http') ? item.haircut.image : `https://api.onehaircut.com${item.haircut.image}`}
+                                fill={true} alt="" className="rounded-t-xl" />
+                            </div>
+                          </div>
+                          <div className="rounded-xl ">
+                            <p className={`${Theme_A.hairstyleCards.cardText}`}>
+                              {item.haircut.name}
+                            </p>
+                          </div>
+                          <div
+                            onClick={(e) => RemoveHaircutWishlist(e, item.haircut.id)}
+                            className={`absolute top-1 right-1 flex items-center justify-center w-6 h-6 cursor-pointer rounded-md ${Theme_A.button.crossButtonSmall}`}>
+                            <CrossIcon width="18" height="18" />
                           </div>
                         </div>
-                        <div className="rounded-xl ">
-                          <p className={`${Theme_A.hairstyleCards.cardText}`}>
-                            {item.haircut.name}
-                          </p>
-                        </div>
-                        <div
-                          onClick={(e) => RemoveHaircutWishlist(e, item.haircut.id)}
-                          className={`absolute top-1 right-1 flex items-center justify-center w-6 h-6 cursor-pointer rounded-md ${Theme_A.button.crossButtonSmall}`}>
-                          <CrossIcon width="18" height="18"/>
-                        </div>
-                      </div>
-                    </tr>
-                  );
-                })}
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -178,41 +178,41 @@ const Favorites = () => {
             <div className="lg:absolute -top-10 md:ml-72  w-9/12 overflow-auto mt-3 md:mr-48">
               <table>
                 <tbody className="flex items-center justify-center  gap-8 pb-2">
-                {salons.map((item, index) => {
-                  return (
-                    <tr key={index} className="flex flex-col items-center justify-center">
-                      <div
+                  {salons.map((item, index) => {
+                    return (
+                      <tr key={index} className="flex flex-col items-center justify-center">
+                        <div
 
-                        className={`relative w-52 px-4 pt-4 rounded-xl ${ColorsThemeA.pageBgColorLight}`}>
-                        <div className="relative w-max px-4 pt-4  rounded-xl">
-                          <div className="relative w-36 h-36">
-                            <Image
-                              src={item.hairsalon.logo.includes('http') ? item.hairsalon.logo : `https://api.onehaircut.com${item.hairsalon.logo}`}
-                              fill={true} alt="" className="rounded-t-xl"/>
+                          className={`relative w-52 px-4 pt-4 rounded-xl ${ColorsThemeA.pageBgColorLight}`}>
+                          <div className="relative w-max px-4 pt-4  rounded-xl">
+                            <div className="relative w-36 h-36">
+                              <Image
+                                src={item.hairsalon.logo.includes('http') ? item.hairsalon.logo : `https://api.onehaircut.com${item.hairsalon.logo}`}
+                                fill={true} alt="" className="rounded-t-xl" />
+                            </div>
+                          </div>
+                          <div className="rounded-b-xl">
+                            <p
+                              className={`rounded-b-xl flex items-center justify-center py-2 text-lg text-black font-bold `}>
+                              {item.hairsalon.name}
+                            </p>
+                          </div>
+                          <div className="rounded-b-xl">
+                            <p
+                              className={`rounded-b-xl flex items-center text-center justify-center py-2 text-lg ${ColorsThemeA.textSecondary} font-normal overflow-clip`}>
+                              {item.hairsalon.address.city + " " + item.hairsalon.address.state + " " + item.hairsalon.address.country}
+                              {/* 63a rue Dietwiller 68440 Schlierbach  comment */}
+                            </p>
+                          </div>
+                          <div
+                            onClick={(e) => RemoveSalonFromFavorites(e, item.hairsalon.id)}
+                            className={`absolute top-1 right-1 flex items-center justify-center w-6 h-6 cursor-pointer rounded-md ${Theme_A.button.crossButtonSmall}`}>
+                            <CrossIcon width="9" height="9" />
                           </div>
                         </div>
-                        <div className="rounded-b-xl">
-                          <p
-                            className={`rounded-b-xl flex items-center justify-center py-2 text-lg text-black font-bold `}>
-                            {item.hairsalon.name}
-                          </p>
-                        </div>
-                        <div className="rounded-b-xl">
-                          <p
-                            className={`rounded-b-xl flex items-center text-center justify-center py-2 text-lg ${ColorsThemeA.textSecondary} font-normal overflow-clip`}>
-                            {item.hairsalon.address.city + " " + item.hairsalon.address.state + " " + item.hairsalon.address.country}
-                            {/* 63a rue Dietwiller 68440 Schlierbach  comment */}
-                          </p>
-                        </div>
-                        <div
-                          onClick={(e) => RemoveSalonFromFavorites(e, item.hairsalon.id)}
-                          className={`absolute top-1 right-1 flex items-center justify-center w-6 h-6 cursor-pointer rounded-md ${Theme_A.button.crossButtonSmall}`}>
-                          <CrossIcon width="9" height="9"/>
-                        </div>
-                      </div>
-                    </tr>
-                  );
-                })}
+                      </tr>
+                    );
+                  })}
                 </tbody>
               </table>
             </div>
@@ -252,7 +252,7 @@ const Favorites = () => {
                     </div> */}
         </div>
       </ClientDashboardLayout>
-      <Footer/>
+      <Footer />
     </div>
   );
 };
