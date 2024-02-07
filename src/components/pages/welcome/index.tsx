@@ -704,7 +704,7 @@ const Welcome = () => {
                       <InfoButton title_1={InfoTitle_3} content_1={InfoContent_3} title_2={InfoTitle_4} content_2={InfoContent_4} onOpenModal={openInfoModal} />
                     </div>
 
-                    <p className='flex space-x-2 justify-center items-center bg-white h-96'>
+                    <p className='flex space-x-2 justify-center items-center bg-white h-96 mb-8'>
                       <p className='h-5 w-5 bg-red-600 rounded-full animate-bounce [animation-delay:-0.9s]'></p>
                       <p className='h-5 w-5 bg-red-600 rounded-full animate-bounce [animation-delay:-0.75s]'></p>
                       <p className='h-5 w-5 bg-red-500 rounded-full animate-bounce [animation-delay:-0.6s]'></p>
