@@ -351,11 +351,11 @@ const Portrait = () => {
         },
         {
             selector: '.pic_left_profil',
-            content: 'Cliquer ici pour selectionner une de vos photos.',
+            content: 'Cliquer ici pour sélectionner une de vos photos.',
         },
         {
             selector: '.zone_filters',
-            content: 'Indiquer vos préférences pour vos recherches de coiffures.',
+            content: 'Indiquer vos préférences pour vos recherches de coiffure.',
         },
     ];
 
@@ -364,8 +364,8 @@ const Portrait = () => {
         setIsLoading(true)
         if (!pageDone.includes('portrait')) {
             let resp = await user_api.assignStepDone({ page: 'portrait' });
-            if(resp.data?.pages_done) {
-              setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+            if (resp.data?.pages_done) {
+                setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
             }
             setPageDone((prevArray) => [...prevArray, 'portrait'])
         }

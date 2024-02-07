@@ -356,7 +356,7 @@ const Unavailability = () => {
         },
         {
             selector: '.button_display_absences',
-            content: 'Pour voir les indisponibilités déjà programmées.',
+            content: 'Pour voir les indisponibilités déjà programmées, c’est là.',
         },
     ];
 
@@ -366,9 +366,9 @@ const Unavailability = () => {
         if (!pageDone.includes('salon_unavailability')) {
             let resp = await salonApi.assignStepDone({ page: 'salon_unavailability' });
 
-      if(resp.data?.pages_done) {
-      setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
-}
+            if (resp.data?.pages_done) {
+                setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+            }
             setPageDone((prevArray) => [...prevArray, 'salon_unavailability'])
         }
         setIsLoading(false);

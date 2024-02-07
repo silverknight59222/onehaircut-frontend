@@ -1,4 +1,6 @@
 import { request } from "./Request";
+import {getLocalStorage} from "@/api/storage";
+import {AxiosResponse} from "axios";
 
 interface SlotParam {
     date: string
@@ -136,6 +138,11 @@ const user_api = {
         return await request.post('/user_salon_filter', params);
     },
     assignStepDone: async(params : any) => {
+        const tempUser = getLocalStorage('user')
+        const user = tempUser ? JSON.parse(tempUser) : {}
+        if(!user.id) {
+          return {resp: {data: null}} as unknown as AxiosResponse
+        }
         return await request.post('assign_step', params);
     }
 }

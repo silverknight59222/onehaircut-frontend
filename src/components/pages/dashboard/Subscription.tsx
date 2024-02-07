@@ -360,7 +360,7 @@ const Subscription = () => {
                     {currentPlan.stripe_status && currentPlan.stripe_status === 'trialing' &&
                       <p className="">
                         L'essai se termine le :<br />
-                        <span className="text-sm font-light italic">{currentPlan.trial_ends_at}</span>
+                        <span className="text-sm font-lig">{currentPlan.trial_ends_at}</span>
                       </p>
                     }
                   </div>

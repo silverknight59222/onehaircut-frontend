@@ -480,9 +480,10 @@ const SalonInfos = () => {
         }
     };
 
-
-    const [siretNumber, setSiretNumber] = useState('');
+    // ------------------------------------------------------------------
     // Gérez le changement du numéro de SIRET
+    const [siretNumber, setSiretNumber] = useState('');
+
     const handleSiretNumberChange = (e) => {
         setSiretNumber(e.target.value);
     };
@@ -503,6 +504,21 @@ const SalonInfos = () => {
         })
     }
 
+    const [isSiretUpdateModalOpen, setIsSiretUpdateModalOpen] = useState(false);
+    const openSiretUpdateModal = () => {
+        setIsSiretUpdateModalOpen(true);
+    };
+
+    const closeSiretUpdateModal = () => {
+        setIsSiretUpdateModalOpen(false);
+    };
+
+    const [isSiretCheckboxChecked, setIsSiretCheckboxChecked] = useState(false);
+
+    // Fonction pour gérer le changement d'état de la checkbox
+    const handleSiretCheckboxChange = () => {
+        setIsSiretCheckboxChecked(!isSiretCheckboxChecked);
+    };
 
     // ------------------------------------------------------------------
     // For Tour
@@ -531,9 +547,9 @@ const SalonInfos = () => {
         if (!pageDone.includes('salon_info')) {
             let resp = await salonApi.assignStepDone({ page: 'salon_info' });
 
-      if(resp.data?.pages_done) {
-      setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
-}
+            if (resp.data?.pages_done) {
+                setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+            }
             setPageDone((prevArray) => [...prevArray, 'salon_info'])
         }
         setIsLoading(false);
@@ -765,6 +781,9 @@ const SalonInfos = () => {
                     </div>
                 </BaseModal>
             )}
+
+
+
             {/* Affichage des adresses dans la vignette principale */}
             <div className="flex">
                 <h4 className="flex items-center justify- ml-6 mb-2 font-semibold text-lg">
@@ -857,6 +876,54 @@ const SalonInfos = () => {
                 </div>
             </div>
 
+            {isSiretUpdateModalOpen && (
+                <BaseModal close={closeSiretUpdateModal} width="md:w-[auto]" opacity={60}>
+                    {/* Contenu du modal */}
+                    <div>
+                        <h4 className="flex items-center justify-center ml-6 mb-8 font-semibold text-xl">
+                            Numéro d'identification
+                        </h4>
+                        <div className="text-center text-sm">
+                            <p>Vous êtes sur le point de mettre à jour votre numéro d'identification.</p>
+                            <p>Celui-ci sera contrôlé.</p>
+                            <p>Onehaircut se réserve le droit de bloquer temporairement votre compte en cas d'information erronée.</p>
+                            <p>Vous serez notifié par email en cas de problème.</p>
+                        </div>
+
+                        {/* Checkbox et label "Je certifie que mes informations sont correctes" */}
+                        <div className="flex items-center justify-center py-5">
+                            <label htmlFor="SiretCertification" className="text-md font-semibold text-gray-900">
+                                Je certifie que mes informations sont correctes
+                            </label>
+                            <div className={`w-6 h-6 ml-4 rounded ${isSiretCheckboxChecked ? ColorsThemeA.ohcVerticalGradient_A : "bg-[#D6D6D6]"} flex items-center justify-center cursor-pointer`}
+                                onClick={() => handleSiretCheckboxChange()}>
+                                {isSiretCheckboxChecked && <CheckedIcon />}
+                            </div>
+                        </div>
+
+                        {/* Conteneur pour les boutons */}
+                        <div className="flex justify-center items-center gap-4 mt-4">
+                            {/* Bouton Annuler */}
+                            <button
+                                onClick={closeSiretUpdateModal}
+                                className={`px-4 py-2 rounded-md ${Theme_A.button.medWhiteColoredButton} shadow-md`}
+                            >
+                                Annuler
+                            </button>
+
+                            {/* Bouton Confirmer */}
+                            <button
+                                onClick={() => isSiretCheckboxChecked && updateSiretNumber(siretNumber)}
+                                disabled={!isSiretCheckboxChecked}
+                                className={`px-4 py-2 rounded-md ${isSiretCheckboxChecked ? Theme_A.button.mediumGradientButton : 'bg-gray-300 text-gray-500 cursor-not-allowed'} shadow-md`}
+                            >
+                                Confirmer
+                            </button>
+                        </div>
+                    </div>
+                </BaseModal>
+            )}
+
 
             <h4 className="flex items-center justify-start ml-10 mt-6 mb-8 font-semibold text-sm">
                 Numéros d'identification d'entreprise (SIRET, UID, CIF etc)*
@@ -871,7 +938,8 @@ const SalonInfos = () => {
 
                 />
                 <button className={`ml-8 flex gap-4 items-center justify-center w-22 ${Theme_A.button.medBlackColoredButton}`}
-                    onClick={() => updateSiretNumber(siretNumber)}> Update</button>
+                    /* onClick={() => updateSiretNumber(siretNumber)}> Mettre à jour</button> */
+                    onClick={() => openSiretUpdateModal()}> Mettre à jour</button>
             </div>
 
             {/* Séparation */}

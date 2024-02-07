@@ -629,11 +629,11 @@ const SalonChoice = () => {
     const tourSteps: Steps[] = [
         {
             selector: '',
-            content: 'Vous voici dans la page de recherche de salon',
+            content: 'Te voici dans la page de recherche de salon',
         },
         {
             selector: '.thumbnails_salons',
-            content: 'Tu peux simplement cliquer sur le salon qui t\'interesse',
+            content: 'Tu peux simplement cliquer sur le salon qui t’intéresse',
         },
         {
             selector: '.button_continue',
@@ -641,7 +641,7 @@ const SalonChoice = () => {
         },
         {
             selector: '',
-            content: 'Tu peux toujours utiliser les filtres pour t\aider',
+            content: 'Tu peux toujours utiliser les filtres en haut pour t’aider',
         },
     ];
 
@@ -651,9 +651,9 @@ const SalonChoice = () => {
         if (!pageDone.includes('choose_salon')) {
             let resp = await user_api.assignStepDone({ page: 'choose_salon' });
 
-      if(resp.data?.pages_done) {
-      setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
-}
+            if (resp.data?.pages_done) {
+                setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+            }
             setPageDone((prevArray) => [...prevArray, 'choose_salon'])
         }
         setIsLoading(false);
@@ -666,7 +666,7 @@ const SalonChoice = () => {
         <>
             {isLoading && loadingView()}
             {/* For explaining the website */}
-                <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('choose_salon')} />
+            <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('choose_salon')} />
 
             <div className='w-full h-screen  overflow-hidden'>
                 {/* Modal qui s'affiche si moins de 10 salons */}

@@ -314,15 +314,15 @@ const ServiceChoose = () => {
     const tourSteps: Steps[] = [
         {
             selector: '',
-            content: 'Ici tu peux rajouter un service à votre coiffure',
+            content: 'Ici tu peux rajouter un service à ta coiffure',
         },
         {
             selector: '.thumbnails_services',
-            content: 'Les services sont optionels et peuvent être choisis en cliquant sur ceux qui t\'intéressent',
+            content: 'Les services sont optionnels et peuvent être choisis en cliquant sur ceux qui t\'intéressent',
         },
         {
             selector: '.button_continue',
-            content: 'Si tu veux seulement la coupe de cheveux, tu peux cliquer là',
+            content: 'Si tu veux seulement la coupe de cheveux, tu peux directement cliquer là',
         },
     ];
 
@@ -332,9 +332,9 @@ const ServiceChoose = () => {
         if (!pageDone.includes('services')) {
             let resp = await user_api.assignStepDone({ page: 'services' });
 
-      if(resp.data?.pages_done) {
-      setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
-}
+            if (resp.data?.pages_done) {
+                setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+            }
             setPageDone((prevArray) => [...prevArray, 'services'])
         }
         setIsLoading(false);
@@ -347,7 +347,7 @@ const ServiceChoose = () => {
             {isLoading && loadingView()}
             {/* For explaining the website */}
 
-                <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('services')} />
+            <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('services')} />
 
             <Navbar
                 isServicesPage={true}
