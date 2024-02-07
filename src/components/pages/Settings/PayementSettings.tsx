@@ -55,6 +55,7 @@ const PayementSettings = () => {
         console.log(data);
         let resp = await salonApi.updateBankAccount(data);
         console.log(resp);
+
     }
     const [accountPaymentName, setAccountPaymentName] = useState('');
     const [accountPaymentNumber, setAccountPaymentNumber] = useState('');
@@ -240,14 +241,17 @@ const PayementSettings = () => {
                 iban: iban,
                 currency: 'eur',
             }
-            updateBankingSettings(bankData).then(async () => {
+            updateBankingSettings(bankData).then(async (e) => {
+                console.log(e)
                 const { data } = await Auth.getUser()
                 setLocalStorage("user", JSON.stringify(data.user));
                 if (data.user.hair_salon) {
                     setLocalStorage("hair_salon", JSON.stringify(data.user.hair_salon));
                 }
-                window.location.reload();
-            })
+                showSnackbar('success', 'Bank Account Data Stored')
+            }).catch((e) => {
+                showSnackbar('error', "Please Check Your Identity : Such as valid phone number, bank account number , etc")
+            });
             // Mettre à jour l'affichage du compte bancaire avec l'IBAN
             setBankAccountDisplay(iban);
 
