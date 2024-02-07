@@ -56,7 +56,7 @@ const Images = () => {
 	const tourSteps: Steps[] = [
 		{
 			selector: '.pic_salon',
-			content: 'Cliquer sur le carré blanc pour ajouter une photo de votre salon \n puis le + pour l\'ajouter',
+			content: 'Cliquer sur le carré blanc pour ajouter une photo de votre salon \n puis sur le + pour l\'ajouter',
 		},
 		{
 			selector: '.pic_haircut',

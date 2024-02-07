@@ -421,7 +421,7 @@ const Welcome = () => {
   const InfoTitle_3 = "Visualisation";
   const InfoContent_3 = "Vous pouvez patienter pour observer la coiffure sur vous <br /> Vous pouvez également continuer de parcourir les coiffures <br /> et vous rendre dans la cabine d'essayage pour observer le résultat";
   const InfoTitle_4 = "Résultat";
-  const InfoContent_4 = "Le résultat peut être plus ou moins précis et convainquant. <br /> Il ne s'agit que d'un apperçu vous permettant de mieux vous projeter. <br /> Une image de profil de qualité vous permettra d'obtenir de meilleurs résultats. <br /> Nous travaillons pour améliorer notre système continuellement";
+  const InfoContent_4 = "Le résultat peut être plus ou moins précis et convainquant. <br /> Il ne s'agit que d'un aperçu vous permettant de mieux vous projeter. <br /> Une image de profil de qualité vous permettra d'obtenir de meilleurs résultats. <br /> Nous travaillons pour améliorer notre système continuellement";
 
   // TODO Delete picture in S3
   const DeleteS3Picture = async () => {
