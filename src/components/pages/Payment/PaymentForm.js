@@ -19,6 +19,7 @@ const PaymentForm = ({ onSuccess, showConfirmButton = true }) => {
   const amount = salonData ? salonData.final_price * 100 : 0
   const datetime = getLocalStorage('selectDate')
   const slot = getLocalStorage('slotData')
+  const stripe_trace_id = getLocalStorage('client_stripe_trace_id')
   const slotData = slot ? JSON.parse(slot) : null
   const haircut = getLocalStorage("haircut")
   const [haircutPrize, setHaircutPrize] = useState(0)
@@ -73,7 +74,6 @@ const PaymentForm = ({ onSuccess, showConfirmButton = true }) => {
         case "succeeded":
           // setMessage("Payment succeeded!");
           showSnackbar("success", "Payment Succeeded !")
-          createBooking()
           router.push('/confirm-payment')
           break;
         case "processing":
@@ -116,14 +116,14 @@ const PaymentForm = ({ onSuccess, showConfirmButton = true }) => {
       slot_ids: slotData.slot.map((prevSlot) => prevSlot.id),
       hair_dresser_id: slotData.hairDresser.id,
       amount: salonData.final_price,
-      salon_haircut_id: salonData.haircut ? salonData.haircut.id : null,
+      salon_haircut_id: salonData.salon_haircut ? salonData.salon_haircut.id : null,
       services: salonData.services || [],
       date: bookingDate,
       clientId: userData == null ? null : userData.id,
       salonId: salonData.id,
-      go_home: getLocalStorage("go_home") == "salon" ? false : true
+      go_home: getLocalStorage("go_home") == "salon" ? false : true,
+      stripe_trace_id: stripe_trace_id,
     }
-    setLoading(true)
     await client.createBooking(data).then((resp) => {
       if (resp.data.status == 200) {
         showSnackbar("success", resp.data.message);
@@ -143,7 +143,7 @@ const PaymentForm = ({ onSuccess, showConfirmButton = true }) => {
     if (!stripe || !elements) {
       return;
     }
-
+    createBooking();
     setLoading(true);
     let payment_success = 1;
     const { error } = await stripe.confirmPayment({
