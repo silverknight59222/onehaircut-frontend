@@ -15,7 +15,7 @@ import CustomInput from "@/components/UI/CustomInput";
 import TourModal, { Steps } from "@/components/UI/TourModal";
 import { salonApi } from "@/api/salonSide";
 import BaseModal from "@/components/UI/BaseModal";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 
 const Messages = () => {
   const [clients, setClients] = useState<ClientChat[]>([])
@@ -303,19 +303,19 @@ const Messages = () => {
 
                 {/* Bouton d'envoi de message */}
                 <div id="ChatSendIcon"
-                     className="ml-4 mt-4 hover:scale-125 transform transition-transform duration-300 bouton_envoi"
-                     onClick={onSendMessage}>
-                  <ChatSendIcon/>
+                  className="ml-4 mt-4 hover:scale-125 transform transition-transform duration-300 bouton_envoi"
+                  onClick={onSendMessage}>
+                  <ChatSendIcon />
                 </div>
                 <button
                   onClick={() => {
-                    if(selectedChat.client_id) {
+                    if (selectedChat.client_id) {
                       setIsDeleteModal(true)
                     }
                   }}
-                  className={`rounded-md ml-4 mt-4 hover:scale-125  ${Theme_A.button.mediumGradientButton} shadow-md `}
+                  className={`rounded-md ml-4 mt-4 hover:scale-110 duration-300  ${Theme_A.button.mediumGradientButton} shadow-md `}
                 >
-                  <DeleteIcon/>
+                  <DeleteIcon />
                 </button>
               </div>
             </div>
@@ -325,13 +325,16 @@ const Messages = () => {
       {isDeleteModal && (
         <BaseModal close={() => setIsDeleteModal(false)}>
           <div>
-            <p>Confirm Chat Deletion</p>
-            <p>Are you sure you want to delete chat?</p>
-            <div className={'flex justify-end gap-5 mt-5'}>
-              <button className={`${Theme_A.button.smallGradientButton}`} onClick={deleteChat}>Confirm</button>
-              <button className={`${Theme_A.button.smallBlackColoredButton}`}
-                      onClick={() => setIsDeleteModal(false)}>Cancel
+            <h1 className="items-center justify-center text-center font-semibold text-lg mb-6">Suppression de la discussion</h1>
+            <p className="items-center justify-center text-center">Êtes-vous certain de vouloir supprimer la discussion ? </p>
+            <p className="items-center justify-center text-center">Ce processus est irreversible. </p>
+
+            <div className={'flex justify-center gap-5 mt-5'}>
+              <button className={`${Theme_A.button.smallBlackColoredButton} py-2`}
+                onClick={() => setIsDeleteModal(false)}>Annuler
               </button>
+              <button className={`${Theme_A.button.smallGradientButton}`} onClick={deleteChat}>Confirmer</button>
+
             </div>
           </div>
         </BaseModal>

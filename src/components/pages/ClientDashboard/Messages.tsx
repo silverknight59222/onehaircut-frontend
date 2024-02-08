@@ -1,5 +1,5 @@
 "use client";
-import {LogoCircleFixRight, ChatSendIcon, DeleteIcon} from "@/components/utilis/Icons";
+import { LogoCircleFixRight, ChatSendIcon, DeleteIcon } from "@/components/utilis/Icons";
 import ClientDashboardLayout from "@/layout/ClientDashboardLayout";
 import Image from "next/image";
 import React, { useEffect, useState, useRef } from "react";
@@ -13,7 +13,7 @@ import { Theme_A, ColorsThemeA } from "@/components/utilis/Themes";
 import CustomInput from "@/components/UI/CustomInput";
 import TourModal, { Steps } from "@/components/UI/TourModal";
 import { user_api } from "@/api/clientSide";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 import BaseModal from "@/components/UI/BaseModal";
 
 
@@ -157,20 +157,20 @@ const Messages = () => {
         },
     ];
 
-  const deleteChat = async () => {
-    setIsLoading(true)
-    try {
-      await dashboard.deleteChat(selectedChat.user_id)
-      setIsDeleteModal(false);
-      setSelectedChat({ user_id: 0, name: '' })
-      setChats([]);
-      getSalonsByUser()
-    } catch (e) {
-      toast.error('Error delete messaging!')
-    } finally {
-      setIsLoading(false)
+    const deleteChat = async () => {
+        setIsLoading(true)
+        try {
+            await dashboard.deleteChat(selectedChat.user_id)
+            setIsDeleteModal(false);
+            setSelectedChat({ user_id: 0, name: '' })
+            setChats([]);
+            getSalonsByUser()
+        } catch (e) {
+            toast.error('Error delete messaging!')
+        } finally {
+            setIsLoading(false)
+        }
     }
-  }
 
     const closeTour = async () => {
         // You may want to store in local storage or state that the user has completed the tour
@@ -178,9 +178,9 @@ const Messages = () => {
         if (!pageDone.includes('message')) {
             let resp = await user_api.assignStepDone({ page: 'message' });
 
-      if(resp.data?.pages_done) {
-      setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
-}
+            if (resp.data?.pages_done) {
+                setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+            }
             setPageDone((prevArray) => [...prevArray, 'message'])
         }
         setIsLoading(false);
@@ -194,7 +194,7 @@ const Messages = () => {
             {isLoading && loadingView()}
 
             {/* For explaining the website */}
-                <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('message')} />
+            <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('message')} />
 
             <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
                 <LogoCircleFixRight />
@@ -289,63 +289,66 @@ const Messages = () => {
 
 
                             {/* Input et Bouton d'Envoi */}
-                          <div className="w-full flex items-center justify-center mt-auto mb-6">
-                            <div className="relative w-9/12 mt-4 champs_envoi">
-                              {/* Champ de texte pour entrer un message */}
-                              <CustomInput
-                                id="sendMessageInput"
-                                label="Ecrire un message"
-                                value={message}
-                                onChange={(e) => setMessage(e.target.value)}
-                                onEnterPress={onSendMessage}
-                                disable={!selectedChat.user_id}
-                              />
-                              {/*
+                            <div className="w-full flex items-center justify-center mt-auto mb-6">
+                                <div className="relative w-9/12 mt-4 champs_envoi">
+                                    {/* Champ de texte pour entrer un message */}
+                                    <CustomInput
+                                        id="sendMessageInput"
+                                        label="Ecrire un message"
+                                        value={message}
+                                        onChange={(e) => setMessage(e.target.value)}
+                                        onEnterPress={onSendMessage}
+                                        disable={!selectedChat.user_id}
+                                    />
+                                    {/*
                                     <input onChange={(e) => setMessage(e.target.value)}
                                     value={message}
                                     className={`w-full shadow-inner border border:bg-stone-300 ${Theme_A.behaviour.fieldFocused_C} rounded-xl h-12 outline-none px-3`}
                                     />
                                     */}
-                            </div>
+                                </div>
 
-                            {/* Bouton d'envoi de message */}
-                            <div id="ChatSendIcon"
-                                 className="ml-4 mt-4 hover:scale-125 transform transition-transform duration-300 bouton_envoi"
-                                 onClick={onSendMessage}>
-                              <ChatSendIcon/>
+                                {/* Bouton d'envoi de message */}
+                                <div id="ChatSendIcon"
+                                    className="ml-4 mt-4 hover:scale-125 transform transition-transform duration-300 bouton_envoi"
+                                    onClick={onSendMessage}>
+                                    <ChatSendIcon />
+                                </div>
+                                <button
+                                    onClick={() => {
+                                        if (selectedChat.user_id) {
+                                            setIsDeleteModal(true)
+                                        }
+                                    }}
+                                    className={`rounded-md ml-4 mt-4 hover:scale-110 duration-300  ${Theme_A.button.mediumGradientButton} shadow-md `}
+                                >
+                                    <DeleteIcon />
+                                </button>
                             </div>
-                              <button
-                                onClick={() => {
-                                  if (selectedChat.user_id) {
-                                    setIsDeleteModal(true)
-                                  }
-                                }}
-                                className={`rounded-md ml-4 mt-4 hover:scale-125  ${Theme_A.button.mediumGradientButton} shadow-md `}
-                              >
-                                <DeleteIcon/>
-                              </button>
-                          </div>
 
                         </div>
 
                     </div>
                 </div>
             </ClientDashboardLayout>
-          {isDeleteModal && (
-            <BaseModal close={() => setIsDeleteModal(false)}>
-              <div>
-                <p>Confirm Chat Deletion</p>
-                <p>Are you sure you want to delete chat?</p>
-                <div className={'flex justify-end gap-5 mt-5'}>
-                  <button className={`${Theme_A.button.smallGradientButton}`} onClick={deleteChat}>Confirm</button>
-                  <button className={`${Theme_A.button.smallBlackColoredButton}`}
-                          onClick={() => setIsDeleteModal(false)}>Cancel
-                  </button>
-                </div>
-              </div>
-            </BaseModal>
-          )}
-          <Footer/>
+            {isDeleteModal && (
+                <BaseModal close={() => setIsDeleteModal(false)}>
+                    <div>
+                        <h1 className="items-center justify-center text-center font-semibold text-lg mb-6">Suppression de la discussion</h1>
+                        <p className="items-center justify-center text-center">Êtes-vous certain de vouloir supprimer la discussion ? </p>
+                        <p className="items-center justify-center text-center">Ce processus est irreversible. </p>
+
+                        <div className={'flex justify-center gap-5 mt-8'}>
+                            <button className={`${Theme_A.button.smallBlackColoredButton}`}
+                                onClick={() => setIsDeleteModal(false)}>Annuler
+                            </button>
+                            <button className={`${Theme_A.button.smallGradientButton}`} onClick={deleteChat}>Confirmer</button>
+
+                        </div>
+                    </div>
+                </BaseModal>
+            )}
+            <Footer />
         </div>
     );
 };
