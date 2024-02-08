@@ -47,13 +47,14 @@ const Index = () => {
   const [mounted, setMounted] = useState(false);
   const [serviceIds, setServiceIds] = useState<number[]>([])
   const [stripeKey, setStripeKey] = useState("");
-  const [KmPrice, setPrice] = useState(0);
+  const [KmPrice, setKMPrice] = useState(0.00);
   const OnehaircutFees = 0.09;
-  const PaymentGatewayVariableFees = 0.008; //TODO LINK WITH ACTUAL FEES
-  const PaymentGatewayFixFees = 0.11;
+  const PaymentGatewayVariableFees = 0.029; //TODO LINK WITH ACTUAL FEES
+  const PaymentGatewayFixFees = 0.3;
   let stripePromise = loadStripe(stripeKey);  // public key for stripe
   const [clientSecret, setClientSecret] = useState("");
   const [paymentTraceID, setPaymentTraceID] = useState("");
+  const mobile_type = getLocalStorage('go_home') ?? "";
   const items = [
     { name: "Salon", desc: "Le Bon Coiffeur" },
     { name: "Type de coiffure", desc: "Curly" },
@@ -143,17 +144,22 @@ const Index = () => {
 
   const getBillKMPrice = async () => {
     setIsLoading(true)
-    await salonApi.getBillPerKM(user?.id, salonData.id)
-      .then(resp => {
-        console.log(resp.data.data.price);
-        setPrice(Math.round(resp.data.data.price * 100) / 100)
-      })
-      .catch(err => {
-        //console.log(err)
-      })
-      .finally(() => {
-        setIsLoading(false)
-      })
+    let resp = await salonApi.getBillPerKM(user?.id, salonData.id)
+    console.log(resp.data.data.price);
+    setKMPrice(Math.round(resp.data.data.price * 100) / 100)
+    console.log(mobile_type)
+    if (mobile_type != 'domicile') {
+      setKMPrice(0)
+    }
+    setIsLoading(false)
+      // .then(resp => {
+      // })
+      // .catch(err => {
+      //   //console.log(err)
+      // })
+      // .finally(() => {
+      //   setIsLoading(false)
+      // })
     // const resp = await salonApi.getBillPerKM(user?.id, salonData.user_id);
     // console.log(resp.data.data.price);
     // setPrice(Math.round(resp.data.data.price * 100) / 100)
@@ -184,7 +190,6 @@ const Index = () => {
     }
     getHaircutPrize()
     getServicesPrize()
-    getBillKMPrice()
     const arr: number[] = []
     servicesData.forEach((service: { name: string, id: number }) => {
       arr.push(service.id)
@@ -213,6 +218,7 @@ const Index = () => {
       // setDuration(newTime)
     }
     getStripeKey()
+    getBillKMPrice()
   }, [])
 
   function calculateTimeAfterSeparatingMinutes(timeString: any, minutesToSeparate: any) {
@@ -241,7 +247,7 @@ const Index = () => {
 
   const updatedOHCfees = (salonData?.final_price + KmPrice) * OnehaircutFees;
   const bookingCost = salonData?.final_price + KmPrice;
-  const updatedTransactionFees = (((bookingCost) + ((bookingCost) * OnehaircutFees)) * PaymentGatewayVariableFees + PaymentGatewayFixFees);
+  const updatedTransactionFees = ((bookingCost + updatedOHCfees) * PaymentGatewayVariableFees + PaymentGatewayFixFees);
   const totalUpdatedCost = parseFloat(bookingCost + updatedOHCfees + updatedTransactionFees).toFixed(2);
 
   return (
@@ -272,7 +278,7 @@ const Index = () => {
                 {slotData && <p className="text-base"><span className="font-bold text-sm ">Durée totale: </span>{salonData.total_duration} Minutes</p>}
                 {/* Les frais de déplacement ne doivent apparaître que si le client a choisi une coiffure à domicile */}
                 {slotData && <p className="text-base"><span className="font-bold text-sm ">Prix de la coiffure et services: </span> {salonData?.final_price.toFixed(2)}€</p>}
-                {slotData && <p className="text-base"><span className="font-bold text-sm ">Frais de déplacement: </span> {KmPrice.toFixed(2)}€ </p>}
+                {slotData && <p className="text-base"><span className="font-bold text-sm ">Frais de déplacement: </span> {KmPrice}€ </p>}
                 {slotData && <p className="text-base"><span className="font-bold text-sm ">Frais de fonctionnement Onehaircut: </span> {updatedOHCfees.toFixed(2)}€ </p>}
                 {slotData && <p className="text-base"><span className="font-bold text-sm ">Frais de transaction : </span> {updatedTransactionFees.toFixed(2)}€ </p>}
               </div>

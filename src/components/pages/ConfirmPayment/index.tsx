@@ -17,38 +17,47 @@ const Index = () => {
   const planType = getLocalStorage("plan_type") ? JSON.parse(getLocalStorage("plan_type") as string) : null;
   const priceData = getLocalStorage('servicePrice')
   const [isLoading, setIsLoading] = useState(false);
-  const [KmPrice, setPrice] = useState(0);
+  const [KmPrice, setKMPrice] = useState(0.00);
+  const OnehaircutFees = 0.09;
+  const PaymentGatewayVariableFees = 0.029; //TODO LINK WITH ACTUAL FEES
+  const PaymentGatewayFixFees = 0.3;
   const servicePrice = priceData ? JSON.parse(priceData) : null
-  const items = [
-    { name: "Client", desc: userInfo ? userInfo?.name : '-' },
-    { name: "Salon", desc: salon?.name },
-    { name: "Adresse du salon", desc: `${salon?.address?.city}, ${salon?.address?.state}, ${salon?.address?.country}` },
-    { name: "Type de salon", desc: salon?.type?.replace("_", " ") },
-    { name: "Frais de déplacement", desc: "€" + KmPrice }
-  ];
+  const mobile_type = getLocalStorage('go_home') ?? "";
 
   const getBillKMPrice = async () => {
     setIsLoading(true)
-    await salonApi.getBillPerKM(userInfo?.id, salon.id)
-      .then(resp => {
-        console.log(resp.data.data.price);
-        setPrice(Math.round(resp.data.data.price * 100) / 100)
-      })
-      .catch(err => {
-        //console.log(err)
-      })
-      .finally(() => {
-        setIsLoading(false)
-      })
+    let resp = await salonApi.getBillPerKM(userInfo?.id, salon.id)
+    console.log(resp.data.data.price);
+    setKMPrice(Math.round(resp.data.data.price * 100) / 100)
+    let fetch_km_price = Math.round(resp.data.data.price * 100) / 100;
+    console.log(mobile_type)
+    if (mobile_type != 'domicile') {
+      setKMPrice(0)
+    }
+    setIsLoading(false)
     // const resp = await salonApi.getBillPerKM(user?.id, salonData.user_id);
     // console.log(resp.data.data.price);
-    // setPrice(Math.round(resp.data.data.price * 100) / 100)
+    // setKMPrice(Math.round(resp.data.data.price * 100) / 100)
     // console.log(price)
   }
 
   useEffect(() => {
     getBillKMPrice();
   }, [])
+  const updatedOHCfees = (salon?.final_price + KmPrice) * OnehaircutFees;
+  const bookingCost = salon?.final_price + KmPrice;
+  const updatedTransactionFees = ((bookingCost + updatedOHCfees) * PaymentGatewayVariableFees + PaymentGatewayFixFees);
+  const totalUpdatedCost = parseFloat(bookingCost + updatedOHCfees + updatedTransactionFees).toFixed(2);
+  const items = [
+    { name: "Client", desc: userInfo ? userInfo?.name : '-' },
+    { name: "Salon", desc: salon?.name },
+    { name: "Adresse du salon", desc: `${salon?.address?.city}, ${salon?.address?.state}, ${salon?.address?.country}` },
+    { name: "Type de salon", desc: salon?.type?.replace("_", " ") },
+    { name: "Frais de salon service", desc: "€" + salon?.final_price.toFixed(2) },
+    { name: "Frais de déplacement", desc: "€" + KmPrice },
+    { name: "Frais de fonctionnement Onehaircut", desc: "€" + updatedOHCfees.toFixed(2) },
+    { name: "Frais de transaction", desc: "€" + updatedTransactionFees.toFixed(2) },
+  ];
 
   return (
     <div>
@@ -91,7 +100,7 @@ const Index = () => {
               </div>
               <div className="flex items-center justify-end mt-4">
                 <p className="text-black text-3xl font-medium ">
-                  Total: <span className="text-4xl font-semibold">€{parseFloat(salon?.final_price + KmPrice).toFixed(2)}</span>
+                  Total: <span className="text-4xl font-semibold">€{(totalUpdatedCost)}</span>
                 </p>
               </div>
               <div className="border-t-2 border-[#CBCBCB] pt-9 mt-4">
@@ -107,7 +116,7 @@ const Index = () => {
             </div>
             <div className="w-full flex justify-center mt-4"> {/* Ajouter un conteneur avec flex et justify-center */}
               <button onClick={() => {
-                if(userInfo){
+                if (userInfo) {
                   router.push('/client/currentreservation')
                 }
                 else {
