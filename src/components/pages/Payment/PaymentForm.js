@@ -26,8 +26,8 @@ const PaymentForm = ({ onSuccess, showConfirmButton = true }) => {
   const router = useRouter();
   const [message, setMessage] = useState(null);
   const getHaircutPrize = async () => {
+    setLoading(true)
     if (haircut) {
-      setLoading(true)
       const selectedHaircutId = JSON.parse(haircut).id
       await dashboard.getAllSalonHaircuts(Number(salonData.id))
         .then(resp => {
@@ -64,6 +64,7 @@ const PaymentForm = ({ onSuccess, showConfirmButton = true }) => {
     );
 
     if (!clientSecret) {
+      setLoading(false)
       return;
     }
 
@@ -72,16 +73,17 @@ const PaymentForm = ({ onSuccess, showConfirmButton = true }) => {
         case "succeeded":
           // setMessage("Payment succeeded!");
           showSnackbar("success", "Payment Succeeded !")
-        // break;
+          createBooking()
+          router.push('/confirm-payment')
+          break;
         case "processing":
           // setMessage("Your payment is processing.");
           showSnackbar("warning", "Your payment is processing!")
-          router.push('/confirm-payment')
-        // break;
+          break;
         case "requires_payment_method":
           setMessage("Your payment was not successful, please try again.");
           showSnackbar("error", "Your payment was not successful, please try again.")
-        // break;
+          break;
         default:
           showSnackbar("error", "Payment Failed ! Something Went Wrong")
           // break;
@@ -90,6 +92,50 @@ const PaymentForm = ({ onSuccess, showConfirmButton = true }) => {
     });
     setLoading(false)
   }, [stripe]);
+
+  const createBooking = async () => {
+    setLoading(true)
+    const targetDayOfWeek = slotData.slot[0].day;
+
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const number = daysOfWeek.indexOf(targetDayOfWeek);
+    const today = new Date();
+    const currentDayOfWeek = today.getDay();
+    let difference = number - currentDayOfWeek;
+    if (difference < 0) {
+      difference += 7;
+    }
+    const targetDate = new Date(today);
+    targetDate.setDate(today.getDate() + difference);
+
+    const formattedDate = targetDate.toISOString().split('T')[0];
+    const bookingDate = getLocalStorage('selectDate');
+    const data = {
+      user_id: userData ? userData.id : null,
+      hair_salon_id: Number(salonData.id),
+      slot_ids: slotData.slot.map((prevSlot) => prevSlot.id),
+      hair_dresser_id: slotData.hairDresser.id,
+      amount: salonData.final_price,
+      salon_haircut_id: salonData.haircut ? salonData.haircut.id : null,
+      services: salonData.services || [],
+      date: bookingDate,
+      clientId: userData == null ? null : userData.id,
+      salonId: salonData.id,
+      go_home: getLocalStorage("go_home") == "salon" ? false : true
+    }
+    setLoading(true)
+    await client.createBooking(data).then((resp) => {
+      if (resp.data.status == 200) {
+        showSnackbar("success", resp.data.message);
+        continue_payment = 1;
+      }
+      else {
+        showSnackbar("error", resp.data.message);
+      }
+    })
+    setLocalStorage("plan_type", haircutPrize)
+    setLoading(false)
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -115,51 +161,7 @@ const PaymentForm = ({ onSuccess, showConfirmButton = true }) => {
       console.error(error);
       showSnackbar('error', error.message)
       setLoading(false);
-      payment_success = 0;
       // return;
-    }
-    if (payment_success) {
-      const targetDayOfWeek = slotData.slot[0].day;
-
-      const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-      const number = daysOfWeek.indexOf(targetDayOfWeek);
-      const today = new Date();
-      const currentDayOfWeek = today.getDay();
-      let difference = number - currentDayOfWeek;
-      if (difference < 0) {
-        difference += 7;
-      }
-      const targetDate = new Date(today);
-      targetDate.setDate(today.getDate() + difference);
-
-      const formattedDate = targetDate.toISOString().split('T')[0];
-      const bookingDate = getLocalStorage('selectDate');
-      const data = {
-        user_id: userData ? userData.id : null,
-        hair_salon_id: Number(salonData.id),
-        slot_ids: slotData.slot.map((prevSlot) => prevSlot.id),
-        hair_dresser_id: slotData.hairDresser.id,
-        amount: salonData.final_price,
-        salon_haircut_id: salonData.haircut ? salonData.haircut.id : null,
-        services: salonData.services || [],
-        date: bookingDate,
-        clientId: userData == null ? null : userData.id,
-        salonId: salonData.id,
-        go_home: getLocalStorage("go_home") == "salon" ? false : true
-      }
-      await client.createBooking(data).then((resp) => {
-        if (resp.data.status == 200) {
-          showSnackbar("success", resp.data.message);
-          continue_payment = 1;
-        }
-        else {
-          showSnackbar("error", resp.data.message);
-        }
-      })
-      setLocalStorage("plan_type", haircutPrize)
-    }
-    else {
-      showSnackbar("error", "Booking failed due to error payment")
     }
 
     // const response = await client.paymentIntent(
@@ -190,7 +192,6 @@ const PaymentForm = ({ onSuccess, showConfirmButton = true }) => {
     //   router.push('/confirm-payment')
     //   onSuccess()
     // }
-    setLoading(false);
   };
 
   const buttonClassNames = [
