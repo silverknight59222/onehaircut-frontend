@@ -330,7 +330,7 @@ const Messages = () => {
             <p className="items-center justify-center text-center">Ce processus est irreversible. </p>
 
             <div className={'flex justify-center gap-5 mt-5'}>
-              <button className={`${Theme_A.button.smallBlackColoredButton}`}
+              <button className={`${Theme_A.button.smallBlackColoredButton} py-2`}
                 onClick={() => setIsDeleteModal(false)}>Annuler
               </button>
               <button className={`${Theme_A.button.smallGradientButton}`} onClick={deleteChat}>Confirmer</button>
