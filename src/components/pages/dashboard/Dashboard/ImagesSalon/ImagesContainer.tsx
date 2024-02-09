@@ -64,6 +64,11 @@ const ImagesContainer = ({
     setUploadedImage(fileUploaded);
     setSelectedImage(URL.createObjectURL(fileUploaded));
   };
+
+  const canAddImage = () => {
+    return images?.filter((image) => image.type === type).length < limit
+  }
+
   const addImage = async () => {
     if (uploadedImage.size === 0) {
       setValidationErrors({
@@ -223,7 +228,7 @@ const ImagesContainer = ({
                   </button>
                 </>
               )}
-              {!updateMode && (
+              {!updateMode && canAddImage() && (
                 <button
                   onClick={addImage}
                   className={`flex items-center justify-center px-4 py-2 gap-4 rounded-md ${Theme_A.button.mediumGradientButton} shadow-md `}
