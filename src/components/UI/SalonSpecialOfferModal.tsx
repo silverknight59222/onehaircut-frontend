@@ -34,7 +34,7 @@ const SpecialOfferModal: React.FC<SpecialOfferModalProps> = ({ close, proSalonCo
                         {/* TODO UPDATE WITH THE NUMBER OF SALON REGISTERED */}
                         <p className={`text-black font-semibold ${ColorsThemeA.OhcGradient_E}  rounded-2xl p-2`}>
                             <span className="text-sm">Vous êtes </span>
-                            <span className="text-sm">{proSalonCount}/1000 !</span>
+                            <span className="text-sm">{proSalonCount < 1000 ? proSalonCount : 1000}/1000 !</span>
 
                         </p>
 
