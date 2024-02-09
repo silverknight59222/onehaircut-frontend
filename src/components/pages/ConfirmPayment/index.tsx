@@ -7,8 +7,10 @@ import { useRouter } from "next/navigation";
 import { getLocalStorage } from "@/api/storage";
 import { Theme_A } from "@/components/utilis/Themes";
 import { salonApi } from "@/api/salonSide";
+import userLoader from "@/hooks/useLoader";
 
 const Index = () => {
+  const { loadingView } = userLoader();
   const router = useRouter();
   const userInfo = getLocalStorage("user") ? JSON.parse(getLocalStorage("user") as string) : null;
   const salonName = getLocalStorage("salon_name") as string;
@@ -22,45 +24,41 @@ const Index = () => {
   const PaymentGatewayVariableFees = 0.029; //TODO LINK WITH ACTUAL FEES
   const PaymentGatewayFixFees = 0.3;
   const servicePrice = priceData ? JSON.parse(priceData) : null
-  const mobile_type = getLocalStorage('go_home') ?? "";
 
   const getBillKMPrice = async () => {
     setIsLoading(true)
     let resp = await salonApi.getBillPerKM(userInfo?.id, salon.id)
-    console.log(resp.data.data.price);
-    setKMPrice(Math.round(resp.data.data.price * 100) / 100)
-    let fetch_km_price = Math.round(resp.data.data.price * 100) / 100;
-    console.log(mobile_type)
+    if(resp.data?.data) {
+      setKMPrice(Math.round(resp.data.data.price * 100) / 100)
+    }
+    const mobile_type = getLocalStorage('go_home') ?? "";
     if (mobile_type != 'domicile') {
       setKMPrice(0)
     }
     setIsLoading(false)
-    // const resp = await salonApi.getBillPerKM(user?.id, salonData.user_id);
-    // console.log(resp.data.data.price);
-    // setKMPrice(Math.round(resp.data.data.price * 100) / 100)
-    // console.log(price)
   }
 
   useEffect(() => {
     getBillKMPrice();
   }, [])
-  const updatedOHCfees = (salon?.final_price + KmPrice) * OnehaircutFees;
-  const bookingCost = salon?.final_price + KmPrice;
+  const updatedOHCfees = ((salon?.final_price || 0) + KmPrice) * OnehaircutFees;
+  const bookingCost = (salon?.final_price || 0) + KmPrice;
   const updatedTransactionFees = ((bookingCost + updatedOHCfees) * PaymentGatewayVariableFees + PaymentGatewayFixFees);
-  const totalUpdatedCost = parseFloat(bookingCost + updatedOHCfees + updatedTransactionFees).toFixed(2);
   const items = [
     { name: "Client", desc: userInfo ? userInfo?.name : '-' },
     { name: "Salon", desc: salon?.name },
-    { name: "Adresse du salon", desc: `${salon?.address?.city}, ${salon?.address?.state}, ${salon?.address?.country}` },
+    { name: "Adresse du salon", desc: `${salon?.address?.city || ''}, ${salon?.address?.state || ''}, ${salon?.address?.country || ''}` },
     { name: "Type de salon", desc: salon?.type?.replace("_", " ") },
-    { name: "Frais de salon service", desc: "€" + salon?.final_price.toFixed(2) },
+    { name: "Frais de salon service", desc: "€" + (salon?.final_price?.toFixed(2) || 0) },
     { name: "Frais de déplacement", desc: "€" + KmPrice },
-    { name: "Frais de fonctionnement Onehaircut", desc: "€" + updatedOHCfees.toFixed(2) },
-    { name: "Frais de transaction", desc: "€" + updatedTransactionFees.toFixed(2) },
+    { name: "Frais de fonctionnement Onehaircut", desc: "€" + (updatedOHCfees?.toFixed(2) || 0) },
+    { name: "Frais de transaction", desc: "€" + (updatedTransactionFees?.toFixed(2) || 0) },
   ];
+  const totalUpdatedCost = parseFloat(bookingCost + updatedOHCfees + updatedTransactionFees).toFixed(2);
 
   return (
     <div>
+      {isLoading && loadingView()}
       <div
         onClick={() => router.push("/")}
         className="py-5 cursor-pointer w-full flex items-center justify-center"
