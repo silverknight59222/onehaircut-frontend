@@ -347,18 +347,22 @@ const Step3 = () => {
         salonData.isMobile = salonAddress.isMobile;
         salonData.country_code = salonAddress.country_code;
         salonData.dob = userInfo?.dob
+        console.log(salonData)
         await registration
           .registerSalon(salonData)
           .then((res) => {
+            console.log(res)
             showSnackbar("success", "Salon successfully created");
             router.push("/verification");
           })
           .catch((err) => {
+            console.log(err)
             showSnackbar("error", "Error Occured!");
           }).finally(() => {
             setIsLoading(false);
           });
       } else {
+        console.log("DONE PUSH")
         router.push("/registration/steps/4");
       }
     }).catch(err => {

@@ -93,13 +93,16 @@ const Login = () => {
 		await Auth.login(userInfo)
 			.then((resp) => {
 				const res = resp.data;
+				if(res.status == 400){
+					showSnackbar('error', res.message)
+				}
 				setLocalStorage("user", JSON.stringify(res.user));
 				if (res.user.hair_salon) {
 					setLocalStorage("hair_salon", JSON.stringify(res.user.hair_salon));
 				}
-        if(res.user?.tour_pages_done) {
-          setLocalStorage('pages_done', JSON.stringify(res.user.tour_pages_done))
-        }
+				if (res.user?.tour_pages_done) {
+					setLocalStorage('pages_done', JSON.stringify(res.user.tour_pages_done))
+				}
 				setLocalStorage("auth-token", res.token);
 				if (searchParams.get('redirect') === 'payment') {
 					router.push("/payment");
@@ -112,9 +115,9 @@ const Login = () => {
 						router.push("/client/dashboard");
 					}
 				}
-
 			})
 			.catch((err) => {
+				console.log(err)
 				showSnackbar('error', err.response.data.message)
 			})
 			.finally(() => {

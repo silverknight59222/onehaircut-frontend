@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useStripe, useElements, CardElement, PaymentElement, CardNumberElement, CardExpiryElement, CardCvcElement } from "@stripe/react-stripe-js";
 import userLoader from "@/hooks/useLoader";
 import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/storage";
@@ -40,36 +40,6 @@ function StripePayment() {
   // const options = useOptions();
   const router = useRouter();
   const clientSecret = getLocalStorage("secret_key")?.toString();
-
-  const appearance = {
-    theme: 'flat',
-    variables: { colorPrimaryText: '#262626' }
-  };
-  const options = {
-    style: {
-      base: {
-        color: "#32325d",
-        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-        fontSmoothing: "antialiased",
-        fontSize: "16px",
-        focus: {
-          backgroundColor: "#F3D3E3",
-        },
-        "::placeholder": {
-          color: "#aab7c4",
-        },
-      },
-      invalid: {
-        color: "#fa755a",
-        iconColor: "#fa755a",
-      },
-    },
-    value: {
-      postalCode: salonAddress.postalCode,
-    },
-    // iconStyle : 'solid',
-  };
-  const elements = useElements();
 
   const registerSalon = async (paymentMethod?: string) => {
     setIsLoading(true);
@@ -129,72 +99,14 @@ function StripePayment() {
         setIsLoading(false);
       });
   };
-  const handleSubmit = async (e: any) => {
-    const userInfo = JSON.parse(getLocalStorage("user_Info") as string);
-    e.preventDefault();
-    if (!stripe || !elements) {
-      return;
-    }
-    setIsLoading(true);
-    const cardElement = elements.getElement(CardElement);
-    console.log(cardElement)
-    if (clientSecret && cardElement) {
 
-      const { paymentMethod, error } = await stripe.createPaymentMethod({
-        type: 'card',
-        card: cardElement,
-      });
-      // const { token, error } = await stripe.createToken(cardElement);
-      console.log(paymentMethod)
-      registerSalon(paymentMethod?.id)
-    }
-  };
-
-  const CARD_ELEMENT_OPTIONS = {
-    style: {
-      base: {
-        color: "#32325d",
-        fontFamily: '"Helvetica Neue", Helvetica, sans-serif',
-        fontSmoothing: "antialiased",
-        fontSize: "16px",
-        '::placeholder': {
-          color: '#CFD7DF',
-        },
-        boxShadow: '0 3px 0 0 #e3e3e3',
-        border: '0 transparent',
-        borderRadius: '4px',
-        padding: '10px 12px',
-      },
-      invalid: {
-        color: "#fa755a",
-        iconColor: "#fa755a",
-      },
-      // Focus state styles
-      focus: {
-        color: "#424770",
-        '::placeholder': {
-          color: '#CFD7DF',
-        },
-        boxShadow: '0 3px 0 0 #e3e3e3',
-        border: '1px solid #FFA500', // Outline color on focus
-        borderRadius: '4px',
-      },
-    },
-  };
+  useEffect((){
+    registerSalon()
+  },[]);
 
   return (
     <div>
-      {isLoading && loadingView()}
-      <form onSubmit={handleSubmit}>
-        <PaymentElement />
-        <button
-          className="w-full h-14 mt-8 text-white text-xl font-semibold rounded-xl bg-background-gradient shadow-md shadow-stone-300 hover:scale-95 transition duration-300"
-          type="submit"
-          disabled={!stripe || !elements || !clientSecret}
-        >
-          Confirmer
-        </button>
-      </form>
+      
     </div>
 
   );
