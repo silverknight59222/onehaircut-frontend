@@ -98,7 +98,7 @@ const Subscription = () => {
       if (resp.data.data) {
         setCurrentPlan(resp.data.data)
       }
-      if (resp.data.data && resp.data.data.name == 'OneHaircut Pro') {
+      if (resp.data.data && resp.data.data.name.includes("Pro")) {
         setIsCurrSubscriptionPro(true)
       } else {
         setIsCurrSubscriptionPro(false)
@@ -356,7 +356,7 @@ const Subscription = () => {
                 {currentPlan.trial_ends_at && (
                   <div className="py-4 px-5 2xl:text-xl text-center text-black whitespace-nowrap bg-[#F4F4F6] font-medium border border-[#9B9B9B] rounded-xl">
                     <p>Votre contrat sera renouvelé le: </p>
-                    <p className="text-sm font-light italic">à {currentPlan.trial_ends_at}</p>
+                    <p className="text-sm font-light italic">à {currentPlan.ends_at}</p>
                     {currentPlan.stripe_status && currentPlan.stripe_status === 'trialing' &&
                       <p className="">
                         L'essai se termine le :<br />
