@@ -100,10 +100,6 @@ function StripePayment() {
       });
   };
 
-  useEffect((){
-    registerSalon()
-  },[]);
-
   return (
     <div>
       
