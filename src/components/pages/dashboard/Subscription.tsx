@@ -60,6 +60,8 @@ const Subscription = () => {
 
   const [isAutomaticRenewal, setIsAutomaticRenewal] = useState(true);
   const [currentPlan, setCurrentPlan] = useState<Subscription>(defaultSubscription);
+  const [currentPlanDate, setCurrentPlanDate] = useState('');
+  const [currentPlanTime, setCurrentPlanTime] = useState('');
   const packageNames = [
     "Agenda dynamique",
     "Mise en avant de votre salon",
@@ -98,6 +100,9 @@ const Subscription = () => {
       if (resp.data.data) {
         setCurrentPlan(resp.data.data)
       }
+      const endsAtDate = new Date(resp.data.data.ends_at);
+      setCurrentPlanDate(endsAtDate.toLocaleDateString());
+      setCurrentPlanTime(endsAtDate.toLocaleTimeString());
       if (resp.data.data && resp.data.data.name.includes("Pro")) {
         setIsCurrSubscriptionPro(true)
       } else {
@@ -129,15 +134,21 @@ const Subscription = () => {
     setIsLoading(true)
     try {
       const resp = await salonApi.upgradeToProPlan()
-      if (resp.data.data.subscription) {
-        setCurrentPlan(resp.data.data.subscription)
+      console.log(resp.data);
+      if (resp.data.status == 400) {
+        showSnackbar('error', resp.data.message)
       }
-      if (resp.data.data.subscription && resp.data.data.subscription.name == 'OneHaircut Pro') {
-        setIsCurrSubscriptionPro(true)
-      } else {
-        setIsCurrSubscriptionPro(false)
+      else {
+        if (resp.data.data.subscription) {
+          setCurrentPlan(resp.data.data.subscription)
+        }
+        if (resp.data.data.subscription && resp.data.data.subscription.name == 'OneHaircut Pro') {
+          setIsCurrSubscriptionPro(true)
+        } else {
+          setIsCurrSubscriptionPro(false)
+        }
+        await updateUserDataInLocalStorage();
       }
-      await updateUserDataInLocalStorage();
     } catch {
       //
     } finally {
@@ -356,7 +367,7 @@ const Subscription = () => {
                 {currentPlan.trial_ends_at && (
                   <div className="py-4 px-5 2xl:text-xl text-center text-black whitespace-nowrap bg-[#F4F4F6] font-medium border border-[#9B9B9B] rounded-xl">
                     <p>Votre contrat sera renouvelé le: </p>
-                    <p className="text-sm font-light italic">à {currentPlan.ends_at}</p>
+                    <p className="text-sm font-light italic">{currentPlanDate} à {currentPlanTime}</p>
                     {currentPlan.stripe_status && currentPlan.stripe_status === 'trialing' &&
                       <p className="">
                         L'essai se termine le :<br />

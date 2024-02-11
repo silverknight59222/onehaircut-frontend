@@ -11,6 +11,7 @@ import React, { useEffect, useState } from "react";
 import { getLocalStorage, setLocalStorage } from "@/api/storage";
 import UserProfile from "@/components/UI/UserProfile";
 import { Theme_A } from "@/components/utilis/Themes";
+import { salonApi } from "@/api/salonSide";
 
 interface PlanDetails {
   plan_id: string;
@@ -27,7 +28,7 @@ const Step4 = () => {
   const defaultPlan: PlanDetails[] = [{ plan_id: "", name: "", price: "", description: "", plan_slug: "" }];
   const [plans, setPlans] = useState<PlanDetails[]>(defaultPlan);
 
-  const onClickNext = () => {
+  const onClickNext = async() => {
     const selectedPlan = selectedBox === 0 ? plans[1] : plans[2];
     setLocalStorage('plan_type', JSON.stringify(selectedPlan));
     route.push("/registration/steps/5");
