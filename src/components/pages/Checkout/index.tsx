@@ -14,6 +14,7 @@ import { salonApi } from "@/api/salonSide";
 import userLoader from "@/hooks/useLoader";
 import { SalonRegisterParams, registration } from "@/api/registration";
 import useSnackbar from "@/hooks/useSnackbar";
+import '../../shared/index.css';
 
 const Step5 = () => {
   const router = useRouter();
@@ -26,6 +27,7 @@ const Step5 = () => {
   const planType = getLocalStorage("plan_type") ? JSON.parse(getLocalStorage("plan_type") as string) : null;
   const salonInfo = getLocalStorage("salon_name") as string;
   const [isLoading, setIsLoading] = useState(false);
+  const [totalProSalon, setTotalProSalon] = useState(0);
 
   const getStripeKey = async () => {
     setIsLoading(true)
@@ -99,19 +101,21 @@ const Step5 = () => {
       }).finally(() => {
         setIsLoading(false);
       });
-
   };
 
   useEffect(() => {
+    const total_pro_salon = getLocalStorage('pro_salon') ? getLocalStorage('pro_salon') : 0;
+    setTotalProSalon(total_pro_salon as number);
     const url = new URL(window.location.href);
     const searchParams = url.searchParams.has('setup_intent');
-    if(searchParams){
+    if (searchParams) {
       registerSalon();
     }
     else {
       setMounted(true)
       getStripeKey();
     }
+
   }, [])
 
   const options = {
@@ -169,15 +173,27 @@ const Step5 = () => {
                 <p>{salonInfo ? `${salonInfo}` : '-'}</p>
               </div>
 
-              <div className="flex items-center justify-between gap-3">
+              <div className={"strikethrough flex items-center justify-between gap-3"}>
                 <p>{planType ? '• ' + planType.name : '-'}</p>
                 <p className="whitespace-nowrap">{planType ? planType.price : '-'} €</p>
               </div>
+
+              {totalProSalon <= 1000 && planType.name == 'OneHaircut Pro' &&
+                <div className={"flex items-center justify-between gap-3"}>
+                  <p>{'• Free OneHaircut Pro 6 months'}</p>
+                  <p className="whitespace-nowrap">0 €</p>
+                </div>}
+
+              {totalProSalon >= 1000 && planType.name == 'OneHaircut Pro' &&
+                <div className={"flex items-center justify-between gap-3"}>
+                  <p>{'• Free OneHaircut Trial 1 months'}</p>
+                  <p className="whitespace-nowrap">0 €</p>
+                </div>}
             </div>
 
-            <div className="flex items-center justify-between mt-5">
+            <div className={"flex items-center justify-between mt-5"}>
               <p className="text-black font-bold text-lg">Total</p>
-              <p>{planType ? planType.price : '-'} €</p>
+              <p>{totalProSalon <= 1000 ? 0 : (planType ? planType.price : '-')} €</p>
             </div>
 
           </div>

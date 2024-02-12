@@ -1,3 +1,6 @@
 .no-scrollbar::-webkit-scrollbar {
     display: none;
-  }
+}
+.strikethrough {
+  text-decoration: line-through;
+}

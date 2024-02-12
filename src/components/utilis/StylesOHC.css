@@ -5,3 +5,7 @@
     gap: 1px;
     overflow: auto;
 }
+
+.strikethrough {
+    text-decoration: line-through;
+}

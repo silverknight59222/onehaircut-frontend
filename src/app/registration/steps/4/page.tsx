@@ -36,6 +36,7 @@ const Step4 = () => {
 
   useEffect(() => {
     setIsLoading(true);
+    
     registration
       .getAllPlans()
       .then((res) => {
