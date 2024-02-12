@@ -16,6 +16,8 @@ import { ErrorBar } from "recharts";
 import InfoButton from "@/components/UI/InfoButton";
 import TourModal, { Steps } from "@/components/UI/TourModal";
 import userLoader from "@/hooks/useLoader";
+import { dashboard } from "@/api/dashboard";
+import { Auth } from "@/api/auth";
 
 const tempSalon = getLocalStorage('hair_salon');
 let salonInfo = tempSalon ? JSON.parse(tempSalon) : null;
@@ -126,6 +128,7 @@ const SalonInfos = () => {
     }, []);
 
     const saveSalonType = async (item) => {
+        setIsLoading(true)
         await salonApi.saveSalonType({ type: item })
             .then((resp) => {
                 removeFromLocalStorage("hair_salon");
@@ -193,14 +196,18 @@ const SalonInfos = () => {
     ];
 
     const [selectedImageUrl, setSelectedImageUrl] = useState('/assets/DefaultPictures/Profil.png');
-    const HandleSelectedSalonType = (item: string) => {
+    const HandleSelectedSalonType = async (item: string) => {
+        setIsLoading(true)
         setSelectedSalonType(item);
         setTypeImage(item);
         saveSalonType(item);
         // Utilisez setTimeout pour retarder le rechargement, permettant à l'UI de se mettre à jour.
-        setTimeout(() => {
-            window.location.reload();
-        }, 2000); // Rafraîchit la page après un délai de 1000 millisecondes (1 seconde)
+        const { data } = await Auth.getUser()
+        setLocalStorage("user", JSON.stringify(data.user));
+        if (data.user.hair_salon) {
+            setLocalStorage("hair_salon", JSON.stringify(data.user.hair_salon));
+        }
+        setIsLoading(false)
 
     }
 
