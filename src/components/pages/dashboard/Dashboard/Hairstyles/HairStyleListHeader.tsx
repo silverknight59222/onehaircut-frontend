@@ -252,12 +252,13 @@ const HairStyleListHeader = React.memo(({ setActiveMenu, isd_value, activeMenu, 
     onListCountShow.on = setListCount
 
     useEffect(() => {
-        setGenderFilters(params != null ? params.genderFilters : "");
+        setGenderFilters(params.genderFilters != "" ? params.genderFilters : "");
         setEthnicityFilters([]);
         setLengthFilters([]);
     }, [activeMenu]);
 
     useEffect(() => {
+        setGenderFilters(params.genderFilters != "" ? params.genderFilters : "");
         getFilteredCuts()
         console.log("Params")
         console.log(params)
