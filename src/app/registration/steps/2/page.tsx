@@ -221,7 +221,9 @@ const Step2 = () => {
     setCountryCode(country_code || "")
     setIsMobile(isMobile || false)
     setIamMobile(isMobile || false)
-    setLocation({ lat: lat, lng: long })
+    if(lat && long){
+      setLocation({ lat: lat, lng: long })
+    }
     setZone(zone || 10)
     zoomHandler(zone);
     if(street && city && country){
