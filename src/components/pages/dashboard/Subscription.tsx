@@ -92,7 +92,6 @@ const Subscription = () => {
   const fetchSalonNotifications = async () => {
     const { data } = await dashboard.salonNotification()
     setNotifications(data)
-    const [clientSecret, setClientSecret] = useState("");
   }
   const options = {
     clientSecret,
