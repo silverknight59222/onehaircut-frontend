@@ -58,7 +58,7 @@ const PaymentFormSetting = ({ showConfirmButton = true }) => {
     const { error } = await stripe.confirmSetup({
       elements,
       confirmParams: {
-        return_url: window.location.origin.includes('http') ?
+        return_url: window.location.origin.includes('127.0.0.1') ?
           'http://127.0.0.1:8000/api/web/stripe/processPM' :
           'https://api.onehaircut.com/api/web/stripe/processPM',
         // return_url: window.location.href
