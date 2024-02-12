@@ -25,6 +25,9 @@ import { getLocalStorage, setLocalStorage } from "@/api/storage";
 import useSnackbar from "@/hooks/useSnackbar";
 import { dashboard } from "@/api/dashboard";
 import userLoader from "@/hooks/useLoader";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from '@stripe/stripe-js';
+import PaymentFormSetting from "../Settings/PaymentformSetting";
 
 const SubSelected_text = "text-white"
 const SubSelected_recommended = "bg-[rgba(255,255,255,0.53)] text-white"
@@ -40,6 +43,10 @@ const Subscription = () => {
   const router = useRouter();
   const { loadingView } = userLoader();
   const [isLoading, setIsLoading] = useState(false);
+  const [stripeKey, setStripeKey] = useState("");
+  let stripePromise = loadStripe(stripeKey);  // public key for stripe
+  const [clientSecret, setClientSecret] = useState("");
+  const [showPaymentModal, setShowPaymentModal] = useState(false)
   const defaultSubscription = {
     created_at: '',
     current_period_end: '',
@@ -85,10 +92,25 @@ const Subscription = () => {
   const fetchSalonNotifications = async () => {
     const { data } = await dashboard.salonNotification()
     setNotifications(data)
+    const [clientSecret, setClientSecret] = useState("");
+  }
+  const options = {
+    clientSecret,
+    // appearance,
+  };
+  const getStripeKey = async () => {
+    let resp_intent = await salonApi.submitNewPaymentMethod({});
+    setClientSecret(resp_intent.data.clientSecret)
+    setIsLoading(true)
+    let resp = await salonApi.getStripeKey();
+    stripePromise = loadStripe(resp.data.pk)
+    setStripeKey(resp.data.pk)
+    setIsLoading(false)
   }
 
 
   useEffect(() => {
+    getStripeKey()
     fetchSubscription();
     fetchSalonNotifications();
   }, []);
@@ -114,10 +136,17 @@ const Subscription = () => {
       setIsLoading(false)
     }
   }
-  // const modifBankCard: React.JSX.Element =
-  //   <div>
-  //       <PaymentModal handleClickPay={handleClickPay} />
-  //   </div >;
+  const modifBankCard: React.JSX.Element =
+    <div>
+      <Elements options={options} stripe={stripePromise}>
+        {/* <PaymentForm onCardNumberChange={handleCardNumberChange}
+                    onCardExpMonthChange={handleCardExpMonthChange}
+                    onCardExpYearChange={handleCardExpYearChange}
+                    onCardNameChange={handleCardNameChange}
+                /> */}
+        <PaymentFormSetting />
+      </Elements>
+    </div >;
 
   // when clicking on the "choisir" button
   const handleClickChoose = async () => {
@@ -137,6 +166,7 @@ const Subscription = () => {
       console.log(resp.data);
       if (resp.data.status == 400) {
         showSnackbar('error', resp.data.message)
+        setShowPaymentModal(true)
       }
       else {
         if (resp.data.data.subscription) {
@@ -247,6 +277,11 @@ const Subscription = () => {
   return (
     <div>
       {isLoading && loadingView()}
+      {showPaymentModal &&
+        <BaseModal close={() => setShowPaymentModal(false)}>
+          {modifBankCard}
+        </BaseModal>
+      }
       <div className="hidden sm:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
         <LogoCircleFixRight />
       </div>
