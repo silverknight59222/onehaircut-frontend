@@ -225,7 +225,9 @@ const Step2 = () => {
       setLocation({ lat: lat, lng: long })
     }
     setZone(zone || 10)
-    zoomHandler(zone);
+    if(zone) {
+      zoomHandler(zone);
+    }
     if(street && city && country){
       setDefaultValue(street + ", " + city + ", " + country)
     }
