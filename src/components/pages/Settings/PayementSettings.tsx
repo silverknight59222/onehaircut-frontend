@@ -70,13 +70,8 @@ const PayementSettings = () => {
         // appearance,
     };
     const getStripeKey = async () => {
-        const url = new URL(window.location.href);
-        const searchParams = url.searchParams.has('setup_intent');
-        console.log("SEARCH : " + searchParams);
-        if (!searchParams) {
-            let resp_intent = await salonApi.submitNewPaymentMethod({});
-            setClientSecret(resp_intent.data.clientSecret)
-        }
+        let resp_intent = await salonApi.submitNewPaymentMethod({});
+        setClientSecret(resp_intent.data.clientSecret)
         setIsLoading(true)
         let resp = await salonApi.getStripeKey();
         stripePromise = loadStripe(resp.data.pk)
