@@ -1,7 +1,7 @@
 "use client";
 import Footer from '@/components/UI/Footer';
 import { LogoCircleFixRight } from '@/components/utilis/Icons';
-import { Theme_A } from '@/components/utilis/Themes';
+import { ColorsThemeA, Theme_A } from '@/components/utilis/Themes';
 import DashboardLayout from '@/layout/DashboardLayout';
 import React, { useEffect, useState } from "react";
 import DropdownMenu from "@/components/UI/DropDownMenu";
@@ -16,7 +16,8 @@ const ContactUs = () => {
     const contactType = [
         "Signaler un problème",
         "Feedback",
-        "Suggestion d'amélioration"
+        "Suggestion d'amélioration",
+        "Devenir Ambassadeur"
     ];
 
     const [SelectedContactType, setSelectedContactType] = useState<string>('');
@@ -59,6 +60,7 @@ const ContactUs = () => {
     }
 
     useEffect(() => { fetchSalonNotifications(); }, [])
+
     return (
         <div>
             <DashboardLayout notifications={notifications}>
@@ -91,8 +93,9 @@ const ContactUs = () => {
                                         height: '4px',
                                         backgroundColor: SelectedContactType === 'Signaler un problème' ? '#e84f4a' :
                                             SelectedContactType === 'Feedback' ? '#58bf54'
-                                                : SelectedContactType === "Suggestion d'amélioration" ? '#4a91e8'
-                                                    : "#ccc", // Separation line color
+                                                : SelectedContactType === "Suggestion d'amélioration" ? '#4a91e8' :
+                                                    SelectedContactType === "Devenir Ambassadeur" ? '#eda153' :
+                                                        "#ccc", // Separation line color
                                         margin: '2px auto', // Margin above and below the line and horizontal centering
                                         borderRadius: '5px', // Adds rounded border to round the line
                                         boxShadow: '0px 2px 4px rgba(0, 0, 0, 0.2)', // Ajoute une ombre
