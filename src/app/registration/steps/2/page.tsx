@@ -3,7 +3,7 @@ import MapIcon, { AddIcon, CheckedIcon, LogoIcon, MinusIcon } from "@/components
 import { useRouter } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import Autocomplete, { usePlacesWidget } from "react-google-autocomplete";
-import { setLocalStorage } from "@/api/storage";
+import { getLocalStorage, setLocalStorage } from "@/api/storage";
 import userLoader from "@/hooks/useLoader";
 import {
   useJsApiLoader,
@@ -37,6 +37,7 @@ const Step2 = () => {
   const [country, setCountry] = useState("");
   const [countryCode, setCountryCode] = useState("");
   const [isMobile, setIsMobile] = useState(false);
+  const [defaultValue, setDefaultValue] = useState("");
 
   const [location, setLocation] = useState({ lat: 48.8584, lng: 2.2945 });
 
@@ -62,18 +63,12 @@ const Step2 = () => {
   const mapIconSvg = ReactDOMServer.renderToStaticMarkup(<MapIcon />);
   const mapIconUrl = `data:image/svg+xml;base64,${btoa(mapIconSvg)}`;
 
-  if (!isLoaded) {
-    loadingView()
-
-    return
-  }
-
   const onClickNext = () => {
     let toSave: Address_int = {
       country: country,
       street: street,
       city: city,
-      number: "",
+      number: streetNb,
       lat: location.lat,
       long: location.lng,
       zone: zone,
@@ -85,7 +80,7 @@ const Step2 = () => {
 
     setLocalStorage('salon_address', JSON.stringify(toSave));
     route.push("/registration/steps/3");
-  }
+  };
 
   const setAddressFields = (address: any, arg: string, value: string) => {
     switch (arg) {
@@ -114,6 +109,8 @@ const Step2 = () => {
 
 
   const setAddressData = (place: any,) => {
+    // console.log(place);
+
     setStreet("")
     setCity("")
     setState("")
@@ -211,11 +208,43 @@ const Step2 = () => {
     route.push(`/`)
   }
 
+  useEffect(() => {
+    let salonAddressString = getLocalStorage('salon_address')  || ""
+    const salonAddress = salonAddressString ? JSON.parse(salonAddressString) : {}
+    const {city, state, country, postalCode, street, number, country_code, isMobile, lat, long, zone, } = salonAddress
+    setCity(city || "")
+    setState(state || "")
+    setCountry(country || "")
+    setPostalCode(postalCode || "")
+    setStreet(street  || "")
+    setStreetNb(number || "")
+    setCountryCode(country_code || "")
+    setIsMobile(isMobile || false)
+    setIamMobile(isMobile || false)
+    if(lat && long){
+      setLocation({ lat: lat, lng: long })
+    }
+    setZone(zone || 10)
+    if(zone) {
+      zoomHandler(zone);
+    }
+    if(street && city && country){
+      setDefaultValue(street + ", " + city + ", " + country)
+    }
+
+  }, []);
+
+  if (!isLoaded) {
+    loadingView()
+
+    return
+  }
+
   return (
     <div>
       <div className="flex items-center justify-center border-b border-[#EBF0F2] mt-5 pb-3">
         <button className="cursor-pointer"
-          onClick={() => onOHCLogoClick()}
+                onClick={() => onOHCLogoClick()}
         >
           <LogoIcon className={''} />
         </button>
@@ -231,6 +260,7 @@ const Step2 = () => {
             <Autocomplete
               className="text-black placeholder-gray-600 w-full px-2 mx-2 py-2.5 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-Gray-500 focus:bg-gray-900 focus:text-white focus:placeholder-white focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400"
               apiKey={"AIzaSyAJiOb1572yF7YbApKjwe5E9L2NfzkH51E"}
+              defaultValue={defaultValue}
               style={{ padding: '16px 24px', outline: 'none', }}
               onPlaceSelected={(place) => setAddressData(place)}
               placeholder="Adresse"
@@ -253,7 +283,7 @@ const Step2 = () => {
                 <div className={`w-6 h-6 pt-2 pl-1.5 rounded-[4px] border ${IamMobile
                   ? ColorsThemeA.ohcVerticalGradient_A
                   : "border-[#767676]"
-                  }`}
+                }`}
                 >
                   {IamMobile && (
                     <CheckedIcon width="15" height="10" />)}

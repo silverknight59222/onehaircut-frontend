@@ -13,6 +13,7 @@ import { Theme_A } from "@/components/utilis/Themes";
 import CustomInput from "@/components/UI/CustomInput";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/material.css';
+import { salonApi } from "@/api/salonSide";
 
 
 const inputFieldsDesignNoW = `border-2 border-stone-200 p-1 placeholder:text-[#959595] placeholder:text-base ${Theme_A.behaviour.fieldFocused}${Theme_A.fields.inputField}`
@@ -288,6 +289,11 @@ const Step3 = () => {
       return;
     }
     setIsLoading(true);
+    let resp = await salonApi.getProSalonCount();
+    if (resp.data.pro_salon_count) {
+      setLocalStorage("pro_salon", resp.data.pro_salon_count);
+    }
+
     await registration.createIntent(userDetails).then(async (res) => {
       let data: any = userDetails;
       data.id = res.data.user.id;
@@ -297,7 +303,7 @@ const Step3 = () => {
       if (res.data.intent.client_secret) {
         setLocalStorage('secret_key', res.data.intent.client_secret);
       }
-      if(res.data?.user?.tour_pages_done) {
+      if (res.data?.user?.tour_pages_done) {
         setLocalStorage('pages_done', JSON.stringify(res.data.user.tour_pages_done))
       }
       const planType = JSON.parse(getLocalStorage('plan_type') as string);

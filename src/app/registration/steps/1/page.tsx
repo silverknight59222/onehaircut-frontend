@@ -1,9 +1,9 @@
 "use client";
 import { BackArrow, LogoIcon } from "@/components/utilis/Icons";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import { RegistrationCheckedIcon } from "@/components/utilis/Icons";
-import { setLocalStorage } from "@/api/storage";
+import {getLocalStorage, setLocalStorage} from "@/api/storage";
 import { Theme_A } from "@/components/utilis/Themes";
 
 
@@ -35,6 +35,35 @@ const Step1 = () => {
       img: "/assets/salon_types/Coiffeur Independant.png",
     },
   ];
+
+  useEffect(() => {
+    const salonType = getLocalStorage('salon_type')
+    if(salonType) {
+      switch (salonType) {
+        case "barber_shop":
+          setSelectedType("Barber Shop")
+          break;
+        case "women_hair_salon":
+          setSelectedType("Salon de coiffure pour femme")
+          break;
+        case "men_hair_salon":
+          setSelectedType("Salon de coiffure mixte")
+          break;
+        case "unisex_hair_salon":
+          setSelectedType("Coiffeuse indépendante")
+          break;
+        case "independent_woman_mobile_hairdresser":
+          setSelectedType("Coiffeuse indépendante")
+          break;
+        case "independent_man_mobile_hairdresser":
+          setSelectedType("Coiffeur Independant")
+          break;
+      }
+    }
+    if(getLocalStorage('salon_name')) {
+      setSalonName(getLocalStorage('salon_name') as string)
+    }
+  }, []);
 
   const onClickNext = () => {
     let salonType = '';
@@ -92,7 +121,7 @@ const Step1 = () => {
           <div className="flex items-center justify-end mb-5 mt-10 w-full sm:w-auto">
             <button
               onClick={() => onClickNext()}
-              disabled={selectedType && salonName ? false : true}
+              disabled={(!(selectedType && salonName))}
               className={`${selectedType && salonName ? Theme_A.button.bigGradientButton : Theme_A.button.bigGreyButton} `}>
 
               Continuons !
