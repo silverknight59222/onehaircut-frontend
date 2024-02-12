@@ -289,10 +289,6 @@ const Step3 = () => {
       return;
     }
     setIsLoading(true);
-    let resp = await salonApi.getProSalonCount();
-    if (resp.data.pro_salon_count) {
-      setLocalStorage("pro_salon", resp.data.pro_salon_count);
-    }
 
     await registration.createIntent(userDetails).then(async (res) => {
       let data: any = userDetails;
