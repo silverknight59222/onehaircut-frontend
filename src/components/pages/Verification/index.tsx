@@ -1,11 +1,23 @@
 "use client";
-import React from 'react'
+import React, { useEffect } from 'react'
 import { LogoIcon, LogoCircleFixRight } from "@/components/utilis/Icons";
 import { useRouter } from "next/navigation";
 
 const Verification = () => {
 
   const router = useRouter();
+
+  useEffect(() => {
+    window.history.pushState(null, '', window.location.href);
+    window.onpopstate = () => {
+      window.history.go(1);
+    };
+
+    // Clean up when the component unmounts
+    return () => {
+      window.onpopstate = null;
+    };
+  }, []);
 
   const onOHCLogoClick = () => {
     router.push(`/`)
