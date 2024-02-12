@@ -180,18 +180,18 @@ const Step5 = () => {
                 <p>{salonInfo ? `${salonInfo}` : '-'}</p>
               </div>
 
-              <div className={(totalProSalon <= 1000 && planType.name == 'OneHaircut Pro' ? "strikethrough" : "") + " flex items-center justify-between gap-3"}>
+              <div className={(totalProSalon <= 1000 && planType && planType.name == 'OneHaircut Pro' ? "strikethrough" : "") + " flex items-center justify-between gap-3"}>
                 <p>{planType ? '• ' + planType.name : '-'}</p>
                 <p className="whitespace-nowrap">{planType ? planType.price : '-'} €</p>
               </div>
 
-              {totalProSalon <= 1000 && planType.name == 'OneHaircut Pro' &&
+              {totalProSalon <= 1000 && planType && planType.name == 'OneHaircut Pro' &&
                 <div className={"flex items-center justify-between gap-3"}>
                   <p>{'• Free OneHaircut Pro 6 months'}</p>
                   <p className="whitespace-nowrap">0 €</p>
                 </div>}
 
-              {planType.name == 'OneHaircut Regular' &&
+              {planType && planType.name == 'OneHaircut Regular' &&
                 <div className={"flex items-center justify-between gap-3"}>
                   <p>{'• Free OneHaircut Trial 1 months'}</p>
                   <p className="whitespace-nowrap">0 €</p>

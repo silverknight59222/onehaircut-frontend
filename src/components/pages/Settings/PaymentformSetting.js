@@ -59,8 +59,8 @@ const PaymentFormSetting = ({ showConfirmButton = true }) => {
       elements,
       confirmParams: {
         return_url: window.location.origin.includes('127.0.0.1') ?
-          'http://127.0.0.1:8000/api/web/stripe/processPM' :
-          'https://api.onehaircut.com/api/web/stripe/processPM',
+          'http://127.0.0.1:8000/api/web/stripe/processPM?origin=' + window.location.href :
+          'https://api.onehaircut.com/api/web/stripe/processPM?origin=' + window.location.href,
         // return_url: window.location.href
       },
     });
