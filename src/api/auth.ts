@@ -29,6 +29,8 @@ export type UserType = {
 export type LoginResponse = {
   token: string;
   user: UserType;
+  status: number | null;
+  message: any | null;
 };
 
 const Auth = {
