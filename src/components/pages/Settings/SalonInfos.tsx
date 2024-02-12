@@ -203,7 +203,7 @@ const SalonInfos = () => {
         saveSalonType(item);
         // Utilisez setTimeout pour retarder le rechargement, permettant à l'UI de se mettre à jour.
         const { data } = await Auth.getUser()
-        setLocalStorage("user", JSON.stringify(data.user));
+        salonInfo = data.user.hair_salon;
         if (data.user.hair_salon) {
             setLocalStorage("hair_salon", JSON.stringify(data.user.hair_salon));
         }
