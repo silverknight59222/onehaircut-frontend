@@ -160,14 +160,16 @@ const Step5 = () => {
                 <p className="text-lg font-semibold text-black mb-4">
                   Moyen de paiement
                 </p>
-                {options.clientSecret && mounted && (
-                  <Elements
-                    stripe={stripePromise ? loadStripe(stripePromise) : null}
-                    options={options}
-                  >
-                    <StripePayment />
-                  </Elements>
-                )}
+                <div style={{ maxWidth: '500px', margin: 'auto' }}>
+                  {options.clientSecret && mounted && (
+                    <Elements
+                      stripe={stripePromise ? loadStripe(stripePromise) : null}
+                      options={options}
+                    >
+                      <StripePayment />
+                    </Elements>
+                  )}
+                </div>
               </div>
             </div>
           </div>
