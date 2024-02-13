@@ -122,6 +122,9 @@ const salonApi = {
   updateSiretNumber: async (params: any) => {
     return await request.post('updateSiretNumber', params);
   },
+  updatePhoneNumber: async (params: any) => {
+    return await request.post('updatePhoneNumber', params);
+  },
   updateBankAccount: async (params: BankAccountStripe) => {
     return await request.post('stripe/bankUpdate', params);
   },

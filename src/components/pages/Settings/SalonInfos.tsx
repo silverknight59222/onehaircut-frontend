@@ -21,6 +21,8 @@ import { Auth } from "@/api/auth";
 
 const tempSalon = getLocalStorage('hair_salon');
 let salonInfo = tempSalon ? JSON.parse(tempSalon) : null;
+const user = getLocalStorage('user');
+const userData = user ? JSON.parse(user) : null;
 
 const SalonInfos = () => {
     const [isModal, setIsModal] = useState(false);
@@ -45,6 +47,8 @@ const SalonInfos = () => {
     const [ZoneDuration, setZoneDuration] = useState(0);
     const [pageDone, setPageDone] = useState<String[]>(['salon_info']);
     const { loadingView } = userLoader();
+    const [siretNumber, setSiretNumber] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState<string>('');
     const [addressResponse, setAddressResponse] = useState({
         street: "",
         city: "",
@@ -104,9 +108,27 @@ const SalonInfos = () => {
 
 
     const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+    // ------------------------------------------------------------------
+    // Gérez le changement du numéro de SIRET
+    const handleSiretNumberChange = (e) => {
+        setSiretNumber(e.target.value);
+    };
+    const handlePhoneNumberChange = (e) => {
+        setPhoneNumber(e.target.value);
+    };
+    const getUserInformation = async () => {
+        if (userData == null) {
+            let resp = await Auth.getUser();
+            console.log(resp)
+        }
+        else {
+            setPhoneNumber(userData.phone as string)
+        }
+    }
     // Utilisez useEffect pour déclencher la recherche de la ville lorsque le code postal change
     useEffect(() => {
         fetchAdress();
+        getUserInformation();
         if (salonInfo) {
             console.log("Salon Type Real : " + salonInfo.type)
             typesSalon.find(type => {
@@ -487,14 +509,6 @@ const SalonInfos = () => {
         }
     };
 
-    // ------------------------------------------------------------------
-    // Gérez le changement du numéro de SIRET
-    const [siretNumber, setSiretNumber] = useState('');
-
-    const handleSiretNumberChange = (e) => {
-        setSiretNumber(e.target.value);
-    };
-
     const updateSiretNumber = async (siretNumber) => {
         await salonApi.updateSiretNumber({ siretNumber: siretNumber }).then((res) => {
             if (res.data.status == 200) {
@@ -508,6 +522,22 @@ const SalonInfos = () => {
             }
         }).catch((reason) => {
             showSnackbar("error", "Erreur, verifier le format du numéro de SIRET");
+        })
+    }
+
+    const updatePhoneNumber = async (phoneNumber) => {
+        await salonApi.updatePhoneNumber({ phoneNumber: phoneNumber }).then((res) => {
+            if (res.data.status == 200) {
+                setPhoneNumber(res.data.data.phone);
+                removeFromLocalStorage("user");
+                setLocalStorage("user", JSON.stringify(res.data.data));
+                showSnackbar("success", res.data.message)
+            }
+            else {
+                showSnackbar("error", "Error on updating phone number");
+            }
+        }).catch((reason) => {
+            showSnackbar("error", reason);
         })
     }
 
@@ -930,7 +960,21 @@ const SalonInfos = () => {
                     </div>
                 </BaseModal>
             )}
-
+            <h4 className="flex items-center justify-start ml-10 mt-6 mb-8 font-semibold text-sm">
+                Phone Number (Please Enter Valid Phone Number)*
+            </h4>
+            <div className="flex-inputs flex justify-center mb-8 field_ID_salon">
+                <CustomInput
+                    id="phoneNumber"
+                    label="Phone Number*"
+                    value={phoneNumber}
+                    onChange={handlePhoneNumberChange}
+                    type="text"
+                />
+                <button className={`ml-8 flex gap-4 items-center justify-center w-22 ${Theme_A.button.medBlackColoredButton}`}
+                    /* onClick={() => updateSiretNumber(siretNumber)}> Mettre à jour</button> */
+                    onClick={() => updatePhoneNumber(phoneNumber)}> Mettre à jour</button>
+            </div>
 
             <h4 className="flex items-center justify-start ml-10 mt-6 mb-8 font-semibold text-sm">
                 Numéros d'identification d'entreprise (SIRET, UID, CIF etc)*
