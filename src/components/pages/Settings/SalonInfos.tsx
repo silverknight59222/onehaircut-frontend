@@ -522,6 +522,8 @@ const SalonInfos = () => {
             }
         }).catch((reason) => {
             showSnackbar("error", "Erreur, verifier le format du numéro de SIRET");
+        }).finally(() => {
+            closeSiretUpdateModal()
         })
     }
 
