@@ -99,8 +99,8 @@ const PayementSettings = () => {
     };
 
     const modifBankCard: React.JSX.Element =
-        <div>
-            <Elements options={options} stripe={stripePromise}>
+        <div style={{ maxWidth: '500px', margin: 'auto' }}>
+            <Elements options={options} stripe={stripePromise} >
                 {/* <PaymentForm onCardNumberChange={handleCardNumberChange}
                     onCardExpMonthChange={handleCardExpMonthChange}
                     onCardExpYearChange={handleCardExpYearChange}
