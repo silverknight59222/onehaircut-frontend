@@ -381,7 +381,7 @@ const Sidebar = ({isSidebar, SidebarHandler, sidebarItems, isClientDashboard, no
   return (
     <>
       {(
-        <div className={`${isSidebar ? 'fixed z-20' : 'hidden lg:flex lg:fixed z-20'}`}>
+        <div className={`${isSidebar ? 'fixed z-20' : 'hidden lg:flex lg:fixed z-10'}`}>
           <div
             className="lg:hidden fixed top-0 left-0 h-full w-screen bg-[#2E465C] bg-opacity-90 cursor-pointer"
             onClick={() => SidebarHandler(!isSidebar)}
