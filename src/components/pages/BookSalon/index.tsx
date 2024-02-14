@@ -46,8 +46,8 @@ const BookSalon = () => {
   const user = userData ? JSON.parse(userData) : null
   const services = service_ids ? JSON.parse(service_ids) : null
   const [travel_duration, setTravelDuration] = useState(0)
-  const [pageDone, setPageDone] = useState<String[]>([]);
-  // TODO SEE IF THE SALON IS MOBILE - SELECT AT HOME OR IN SALON BOOKING 
+  const [pageDone, setPageDone] = useState<String[]>(['book_time_salon']);
+  // TODO SEE IF THE SALON IS MOBILE - SELECT AT HOME OR IN SALON BOOKING
   const [locationType, setLocationType] = useState('salon');
   const durationTime = salon?.total_duration
   const items = [
@@ -75,8 +75,7 @@ const BookSalon = () => {
     setSelectedDate(new Date())
     getAllHairDresser()
     const pages_done = getLocalStorage('pages_done')
-    setPageDone(pages_done!.split(',').map((item) => item.trim()))
-    console.log(pages_done)
+    setPageDone(pages_done ? JSON.parse(pages_done) : [])
   }, [])
 
   useEffect(() => {
@@ -170,14 +169,28 @@ const BookSalon = () => {
   }
 
 
-  const onContinue = () => {
+  const onContinue = async () => {
     setLocalStorage('slotData', JSON.stringify({ hairDresser: selectedHairdresser, slot: selectedSlot }))
     const year = selectedDate ? String(selectedDate?.getFullYear()) : '';
     const month = selectedDate ? String(selectedDate?.getMonth() + 1).padStart(2, '0') : '';  // Month is zero-indexed
     const day = selectedDate ? String(selectedDate?.getDate()).padStart(2, '0') : '';
     setLocalStorage('selectDate', `${year}-${month}-${day}`)
     setLocalStorage("go_home", locationType)
-
+    let pay_price = salon.final_price;
+    console.log("Price : " + pay_price)
+    if (locationType == 'domicile') {
+      pay_price += price
+      console.log("Price Include Travel : " + pay_price)
+    }
+    let resp = await salonApi.createPaymentIntent({
+      price: pay_price,
+      user_id: user.id,
+      salon_id: salon.id,
+      currency: "eur",
+      email: user.email,
+    });
+    setLocalStorage("client_payment_secret", resp.data.clientSecret)
+    setLocalStorage("client_stripe_trace_id", resp.data.stripe_trace_id)
     route.push('/payment')
   }
 
@@ -258,7 +271,7 @@ const BookSalon = () => {
   const tourSteps: Steps[] = [
     {
       selector: '',
-      content: 'Dernière étape avant le paiement: le choix de la date et de l\'heure.',
+      content: 'Dernière étape avant le paiement: le choix de la date et de l’heure.',
     },
     {
       selector: '.pictures_hairdresser',
@@ -270,7 +283,7 @@ const BookSalon = () => {
     },
     {
       selector: '.button_arrow_right',
-      content: 'Tu peux parcourir les dates avec la flêche.',
+      content: 'Tu peux parcourir les dates avec la fleche.',
     },
     {
       selector: '.button_calender',
@@ -287,8 +300,10 @@ const BookSalon = () => {
     setIsLoading(true)
     if (!pageDone.includes('book_time_salon')) {
       let resp = await user_api.assignStepDone({ page: 'book_time_salon' });
-      removeFromLocalStorage('pages_done');
-      setLocalStorage('pages_done', resp.data.pages_done);
+
+      if (resp.data?.pages_done) {
+        setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+      }
       setPageDone((prevArray) => [...prevArray, 'book_time_salon'])
     }
     setIsLoading(false);
@@ -300,8 +315,7 @@ const BookSalon = () => {
       {isLoading && salon && loadingView()}
 
       {/* For explaining the website */}
-      {!pageDone.includes('book_time_salon') &&
-        <TourModal steps={tourSteps} onRequestClose={closeTour} />}
+      <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('book_time_salon')} />
 
       <Navbar hideSearchBar={true} />
 

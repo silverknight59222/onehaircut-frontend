@@ -57,7 +57,7 @@ const Welcome = () => {
   const [page, setPage] = useState(1);
   const [maxPage, setMaxPage] = useState(5);
   const [previewImage, setPreviewImage] = useState<string>('');
-  const [pageDone, setPageDone] = useState<String[]>([]);
+  const [pageDone, setPageDone] = useState<String[]>(['dashboard']);
 
   const getAllHaircuts = async () => {
     // Fetch all available haircuts from the API
@@ -368,8 +368,7 @@ const Welcome = () => {
     removeFromLocalStorage('ServiceIds')
     removeFromLocalStorage('haircut') // reset hair cut when user land on welcome page every time
     const pages_done = getLocalStorage('pages_done')
-        setPageDone(pages_done!.split(',').map((item) => item.trim()))
-        console.log(pages_done)
+    setPageDone(pages_done ? JSON.parse(pages_done) : [])
   }, [])
 
   useEffect(() => {
@@ -422,7 +421,7 @@ const Welcome = () => {
   const InfoTitle_3 = "Visualisation";
   const InfoContent_3 = "Vous pouvez patienter pour observer la coiffure sur vous <br /> Vous pouvez également continuer de parcourir les coiffures <br /> et vous rendre dans la cabine d'essayage pour observer le résultat";
   const InfoTitle_4 = "Résultat";
-  const InfoContent_4 = "Le résultat peut être plus ou moins précis et convainquant. <br /> Il ne s'agit que d'un apperçu vous permettant de mieux vous projeter. <br /> Une image de profil de qualité vous permettra d'obtenir de meilleurs résultats. <br /> Nous travaillons pour améliorer notre système continuellement";
+  const InfoContent_4 = "Le résultat peut être plus ou moins précis et convainquant. <br /> Il ne s'agit que d'un aperçu vous permettant de mieux vous projeter. <br /> Une image de profil de qualité vous permettra d'obtenir de meilleurs résultats. <br /> Nous travaillons pour améliorer notre système continuellement";
 
   // TODO Delete picture in S3
   const DeleteS3Picture = async () => {
@@ -501,21 +500,23 @@ const Welcome = () => {
     },
     {
       selector: '.zone_filters',
-      content: 'Une fois selectionnée, tu peux aussi visualiser la coiffure sur ta tête, si tu as apporté tes photos de profil dans la section portrait. Pour ce faire clique sur "Prévisualiser sur moi"',
+      content: 'Une fois sélectionnée, tu peux aussi visualiser la coiffure sur ta tête, si tu as apporté tes photos de profil dans la section portrait. Pour ce faire clique sur "Prévisualiser sur moi"',
     },
     {
       selector: '.bouton_generic_haircut',
-      content: 'Si tu n\'as pas trouvé ce que cherchais ou que tu veux une coiffure plus générique, clique là!',
+      content: 'Si tu n’as pas trouvé ce que cherchais ou que tu veux une coiffure plus générique, clique là!',
     },
   ];
 
-  const closeTour = async() => {
+  const closeTour = async () => {
     // You may want to store in local storage or state that the user has completed the tour
     setIsLoading(true)
     if (!pageDone.includes('dashboard')) {
       let resp = await user_api.assignStepDone({ page: 'dashboard' });
-      removeFromLocalStorage('pages_done');
-      setLocalStorage('pages_done', resp.data.pages_done);
+
+      if (resp.data?.pages_done) {
+        setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+      }
       setPageDone((prevArray) => [...prevArray, 'dashboard'])
     }
     setIsLoading(false);
@@ -525,7 +526,7 @@ const Welcome = () => {
   return (
     <>
       {/* For explaining the website */}
-      {!isGuest && !pageDone.includes('dashboard') && (<TourModal steps={tourSteps} onRequestClose={closeTour} />)}
+      <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('dashboard') || isGuest} />
 
       {/* Modal pour choix générique de coiffure */}
       {isGenericHaircutModalOpen && (
@@ -675,7 +676,7 @@ const Welcome = () => {
         {isGuest && (
           <div className="flex text-sm p-1 sm:p-4 md:p-5 mx-2 gap-3 sm:gap-12 md:gap-20 items-center justify-center bg-white w-full fixed bottom-8 border-2 border-t-slate-300">
             <div className={` text-center ${DemoButton}`}>
-              Démonstration d’utilisation
+              Onehaircut, C'est quoi ?
             </div>
             <div onClick={() => router.push('/login')}
               id="Connexion - Inscription"
@@ -703,7 +704,7 @@ const Welcome = () => {
                       <InfoButton title_1={InfoTitle_3} content_1={InfoContent_3} title_2={InfoTitle_4} content_2={InfoContent_4} onOpenModal={openInfoModal} />
                     </div>
 
-                    <p className='flex space-x-2 justify-center items-center bg-white h-96'>
+                    <p className='flex space-x-2 justify-center items-center bg-white h-96 mb-8'>
                       <p className='h-5 w-5 bg-red-600 rounded-full animate-bounce [animation-delay:-0.9s]'></p>
                       <p className='h-5 w-5 bg-red-600 rounded-full animate-bounce [animation-delay:-0.75s]'></p>
                       <p className='h-5 w-5 bg-red-500 rounded-full animate-bounce [animation-delay:-0.6s]'></p>

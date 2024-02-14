@@ -6,7 +6,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { Theme_A } from "@/components/utilis/Themes";
 
-const PaymentFormSetting = ({ showConfirmButton = true }) => {
+const StripePayment = ({ showConfirmButton = true }) => {
   const stripe = useStripe();
   const elements = useElements();
 
@@ -59,17 +59,12 @@ const PaymentFormSetting = ({ showConfirmButton = true }) => {
       elements,
       confirmParams: {
         return_url: window.location.origin.includes('127.0.0.1') ?
-          'http://127.0.0.1:8000/api/web/stripe/processPM?origin=' + window.location.href :
-          'https://api.onehaircut.com/api/web/stripe/processPM?origin=' + window.location.href,
+          'http://127.0.0.1:8000/api/web/stripe/processPMPublic' :
+          'https://api.onehaircut.com/api/web/stripe/processPMPublic',
         // return_url: window.location.href
       },
     });
 
-    // This point will only be reached if there is an immediate error when
-    // confirming the payment. Otherwise, your customer will be redirected to
-    // your `return_url`. For some payment methods like iDEAL, your customer will
-    // be redirected to an intermediate site first to authorize the payment, then
-    // redirected to the `return_url`.
     if (error.type === "card_error" || error.type === "validation_error") {
       setMessage(error.message);
     } else {
@@ -115,4 +110,4 @@ const PaymentFormSetting = ({ showConfirmButton = true }) => {
 
 }
 
-export default PaymentFormSetting;
+export default StripePayment;

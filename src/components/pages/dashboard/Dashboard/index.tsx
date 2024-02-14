@@ -32,6 +32,7 @@ import { t } from "i18next";
 import Image from "next/image";
 import Player from "@/components/UI/PlayerForTour"
 import userLoader from "@/hooks/useLoader";
+import { TbHelpSquareRoundedFilled } from "react-icons/tb";
 
 
 const Dashboard = () => {
@@ -62,7 +63,7 @@ const Dashboard = () => {
     const [selectedMonthTransactions, setSelectedMonthTransactions] = useState(DisplayedMonths[0]);
     const [selectedMonthPayload, setSelectedMonthPayload] = useState(DisplayedMonths[0]);
     const [proSubscription, setProSubscription] = useState(false);
-    const [pageDone, setPageDone] = useState<String[]>([]);
+    const [pageDone, setPageDone] = useState<String[]>(['dashboard_salon']);
     const { loadingView } = userLoader();
     const [isLoading, setIsLoading] = useState(false);
 
@@ -118,8 +119,7 @@ const Dashboard = () => {
         fetchStats()
         setProSubscription(user ? user.subscription?.name?.includes("Pro") : false);
         const pages_done = getLocalStorage('pages_done')
-        setPageDone(pages_done!.split(',').map((item) => item.trim()))
-        console.log(pages_done)
+        setPageDone(pages_done ? JSON.parse(pages_done) : [])
     }, [])
 
     // TODO EMAIL ADDRESS VEIRIFICATION DONE :
@@ -133,9 +133,19 @@ const Dashboard = () => {
 
     const tourContent_logo =
         <div>
-            <p>Et n'oublier pas de mettre le logo de votre salon dans le round, en haut à droite.</p>
+            <p>Et n'oubliez pas de mettre le logo de votre salon dans le rond, en haut à droite.</p>
             <div className="justify-center flex">
                 <Image src='/assets/website/salon_logo.png' alt='' className='rounded-3xl ' width='200' height='200'></Image>
+            </div>
+        </div>
+
+    const tourContent_tourIcon =
+        <div>
+            <p>Au fait, si vous voulez me retrouver, cliquez sur cette icône!</p>
+            <div className="justify-center flex pt-2">
+                <div className={`bg-stone-800 text-sm text-white px-2 py-2 rounded-full`}>
+                    <TbHelpSquareRoundedFilled size={38} />
+                </div>
             </div>
         </div>
 
@@ -146,7 +156,7 @@ const Dashboard = () => {
         },
         {
             selector: '',
-            content: 'Il regroupe toutes les informations importantes concernant votre salon et vos clients.',
+            content: 'Il regroupe toutes les informations importantes concernant votre salon et vos clients. ',
         },
         {
             selector: '.button_transaction',
@@ -164,6 +174,10 @@ const Dashboard = () => {
             selector: '',
             content: tourContent_logo,
         },
+        {
+            selector: '',
+            content: tourContent_tourIcon,
+        },
     ];
 
     const closeTour = async () => {
@@ -171,8 +185,10 @@ const Dashboard = () => {
         setIsLoading(true)
         if (!pageDone.includes('dashboard_salon')) {
             let resp = await user_api.assignStepDone({ page: 'dashboard_salon' });
-            removeFromLocalStorage('pages_done');
-            setLocalStorage('pages_done', resp.data.pages_done);
+
+            if (resp.data?.pages_done) {
+                setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+            }
             setPageDone((prevArray) => [...prevArray, 'dashboard_salon'])
         }
         setIsLoading(false);
@@ -186,7 +202,7 @@ const Dashboard = () => {
 
             {isLoading && loadingView()}
             {/* For explaining the website */}
-            {!pageDone.includes('dashboard_salon') && <TourModal steps={tourSteps} onRequestClose={closeTour} audioPath="/assets/audio/tour/salon/dashboard/dashboard1.mp3" />}
+            <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('dashboard_salon')} />
 
             {proSubscription && <div>
                 <Grid container spacing={6} className='match-height  '>

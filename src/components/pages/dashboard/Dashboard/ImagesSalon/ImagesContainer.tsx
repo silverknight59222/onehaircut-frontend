@@ -35,6 +35,10 @@ const ImagesContainer = ({
     type: "",
     webkitRelativePath: "",
   };
+  const user = getLocalStorage('user');
+  const user_data = user ? JSON.parse(user) : null;
+  const isProSubscription = user_data ? user_data.subscription?.name?.includes("Pro") : false;
+  const limit = isProSubscription ? 25 : 5;
   const hiddenFileInput = React.useRef<any>(null);
   const [selectedImage, setSelectedImage] = useState<string>("");
   const [images, setImages] = useState<ImageSalon[]>(salonImages);
@@ -60,6 +64,11 @@ const ImagesContainer = ({
     setUploadedImage(fileUploaded);
     setSelectedImage(URL.createObjectURL(fileUploaded));
   };
+
+  const canAddImage = () => {
+    return images?.filter((image) => image.type === type).length < limit
+  }
+
   const addImage = async () => {
     if (uploadedImage.size === 0) {
       setValidationErrors({
@@ -73,8 +82,7 @@ const ImagesContainer = ({
     const formData = new FormData();
     const hairSalon = getLocalStorage("hair_salon");
     const hairSalonId = hairSalon ? JSON.parse(hairSalon).id : null;
-    const limit = hairSalonId === 3 ? 5 : 20
-    if (images.length < limit) {
+    if (images?.filter((image) => image.type === type).length < limit) {
       if (hairSalonId) {
         formData.append("hair_salon_id", hairSalonId);
       }
@@ -220,7 +228,7 @@ const ImagesContainer = ({
                   </button>
                 </>
               )}
-              {!updateMode && (
+              {!updateMode && canAddImage() && (
                 <button
                   onClick={addImage}
                   className={`flex items-center justify-center px-4 py-2 gap-4 rounded-md ${Theme_A.button.mediumGradientButton} shadow-md `}
@@ -246,9 +254,9 @@ const ImagesContainer = ({
                         }`}
                     >
                       <div className="relative w-32 h-32">
-                        <Image 
-                        fill={true} 
-                        src={item.image.includes('http') ? item.image : `https://api.onehaircut.com${item.image}`} 
+                        <Image
+                        fill={true}
+                        src={item.image.includes('http') ? item.image : `https://api.onehaircut.com${item.image}`}
                         alt="image"
                         layout="fill"
                         objectFit="cover" />
@@ -265,7 +273,7 @@ const ImagesContainer = ({
                   </div>
                 );
               })}
-            <div className="absolute right-2 bottom-1 text-sm">{images.filter(image => image.type === type).length}/25</div>
+            <div className="absolute right-2 bottom-1 text-sm">{images.filter(image => image.type === type).length}/{limit}</div>
           </div>
         </div>
       </div>

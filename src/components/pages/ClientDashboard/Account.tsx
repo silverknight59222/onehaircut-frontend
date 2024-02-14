@@ -26,6 +26,7 @@ import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/
 import { useRouter } from "next/navigation";
 import { dashboard } from "@/api/dashboard";
 import TourModal, { Steps } from "@/components/UI/TourModal";
+import { TbHelpSquareRoundedFilled } from "react-icons/tb";
 
 interface infoInterface {
     name: string;
@@ -70,7 +71,7 @@ const Account = () => {
     // Modal for messages notification
     const [isModalNotifMsg, setIsModalNotifMsg] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
-    const [pageDone, setPageDone] = useState<String[]>([]);
+    const [pageDone, setPageDone] = useState<String[]>(['account']);
 
 
     //Variables for address
@@ -159,7 +160,7 @@ const Account = () => {
         }
         return address
     }
-    // function to handle the click on the modify 
+    // function to handle the click on the modify
     const handleModifierClick = (item: infoInterface) => {
         if (item.name == "Adresse") {
             setIsModalAdd(true); // Show the modal to modify add
@@ -187,7 +188,7 @@ const Account = () => {
 
 
     ////////////////////////////////////////////////////
-    ///////////////////// PASSWORD 
+    ///////////////////// PASSWORD
     ////////////////////////////////////////////////////
     const [passwordField, renewPassword] = useState({
         oldPassword: "",
@@ -195,7 +196,7 @@ const Account = () => {
         confirmPassword: "",
     });
 
-    // TODO EMAIL ADDRESS VERIFICATION DONE : 
+    // TODO EMAIL ADDRESS VERIFICATION DONE :
     const [isEmailVerified, setIsEmailVerified] = useState(true);
 
 
@@ -370,7 +371,7 @@ const Account = () => {
             </div>
         </div>
     ////////////////////////////////////////////////////
-    ///////////////////// ADDRESS 
+    ///////////////////// ADDRESS
     ////////////////////////////////////////////////////
     const onSubmitAddress = async () => {
         setIsLoading(true)
@@ -508,7 +509,7 @@ const Account = () => {
         ;
 
     ////////////////////////////////////////////////////
-    ///////////////////// PHONE 
+    ///////////////////// PHONE
     ////////////////////////////////////////////////////
     const [phoneField, setPhoneField] = useState("");
     const setNewPhone = (value?: Value) => {
@@ -594,7 +595,7 @@ const Account = () => {
         </div>;
 
     ////////////////////////////////////////////////////
-    ///////////////////// Bank card 
+    ///////////////////// Bank card
     ////////////////////////////////////////////////////
     const [BankCardExpMonth, setBankCardExpMonth] = useState("");
     const [BankCardExpYear, setBankCardExpYear] = useState("");
@@ -649,7 +650,7 @@ const Account = () => {
 
 
     ////////////////////////////////////////////////////
-    ///////////////////// Reminder Notification  
+    ///////////////////// Reminder Notification
     ////////////////////////////////////////////////////
 
     const [NotifReminderEmail, setPNotifReminderEmail] = useState(false);
@@ -738,7 +739,7 @@ const Account = () => {
         </div>;
 
     ////////////////////////////////////////////////////
-    ///////////////////// Reminder Notification  
+    ///////////////////// Reminder Notification
     ////////////////////////////////////////////////////
 
     const [NotifMsgEmail, setPNotifMsgEmail] = useState(false);
@@ -939,9 +940,10 @@ const Account = () => {
         setShowItem(informations);
         setLocationLatitude(lat);
         setLocationLongitude(long);
-        setPageDone(resp.data.steps_done.split(',').map((item) => item.trim()))
-        removeFromLocalStorage('pages_done')
-        setLocalStorage('pages_done', resp.data.steps_done)
+        if (resp.data?.tour_pages_done) {
+            setPageDone(resp.data.tour_pages_done)
+            setLocalStorage('pages_done', JSON.stringify(resp.data.tour_pages_done))
+        }
         if (resp.data.email_verified_at) {
             setIsEmailVerified(true)
         } else {
@@ -1029,6 +1031,16 @@ const Account = () => {
 
     // ------------------------------------------------------------------
     // For Tour
+    const tourContent_tourIcon =
+        <div>
+            <p>Au fait, si tu veux me retrouver, tu peux cliquer sur cette icône!</p>
+            <div className="justify-center flex pt-2">
+                <div className={`bg-stone-800 text-sm text-white px-2 py-2 rounded-full`}>
+                    <TbHelpSquareRoundedFilled size={38} />
+                </div>
+            </div>
+        </div>
+
     const tourSteps: Steps[] = [
         {
             selector: '',
@@ -1036,7 +1048,7 @@ const Account = () => {
         },
         {
             selector: '',
-            content: 'Vous trouverez dans cette page les informations concernant votre compte.',
+            content: 'Tu trouveras dans cette page les informations concernant ton compte.',
         },
         {
             selector: '.button_modify',
@@ -1048,7 +1060,11 @@ const Account = () => {
         },
         {
             selector: '.info_button',
-            content: 'Vous pouvez aussi consulter les aides reparties sur tout le site.',
+            content: 'Tu peux aussi consulter les aides reparties sur tout le site.',
+        },
+        {
+            selector: '',
+            content: tourContent_tourIcon,
         },
     ];
 
@@ -1056,10 +1072,11 @@ const Account = () => {
         setIsLoading(true)
         console.log("Page Done")
         console.log(pageDone)
-        if(!pageDone.includes('account')){
+        if (!pageDone.includes('account')) {
             let resp = await user_api.assignStepDone({ page: 'account' });
-            removeFromLocalStorage('pages_done');
-            setLocalStorage('pages_done', resp.data.pages_done);
+            if (resp.data?.pages_done) {
+                setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+            }
             setPageDone((prevArray) => [...prevArray, 'account'])
         }
         setIsLoading(false);
@@ -1073,10 +1090,7 @@ const Account = () => {
             </div>
 
             {/* For explaining the website */}
-            {
-                !pageDone.includes('account') &&
-                <TourModal steps={tourSteps} onRequestClose={closeTour} />
-            }
+            <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('account')} />
 
             <ClientDashboardLayout notifications={globalNotifications}>
                 <div className="mt-4 lg:mt-14 mb-5 px-6">

@@ -319,7 +319,19 @@ const Currentreservation = () => {
                                         </div>}
                                         {item.salon_haircut && <div>
                                             <p className='text-[#444343] font-bold text-start'>Prix coiffure</p>
-                                            <p className='text-[#666] text-sm text-start'>{item.salon_haircut.base_price}€</p>
+                                            <p className='text-[#666] text-sm text-start'>{item.salon_haircut.base_price} €</p>
+                                        </div>}
+                                        {item.cost_coming_home && <div>
+                                            <p className='text-[#444343] font-bold text-start'>Prix du voyage</p>
+                                            <p className='text-[#666] text-sm text-start'>{(item.cost_coming_home)} €</p>
+                                        </div>}
+                                        {item.total_amount && <div>
+                                            <p className='text-[#444343] font-bold text-start'>Prix total (frais compris)</p>
+                                            <p className='text-[#666] text-sm text-start'>{item.total_amount} €</p>
+                                        </div>}
+                                        {item.payment_status && <div>
+                                            <p className='text-[#444343] font-bold text-start'>Statut de paiement</p>
+                                            <p className='text-[#666] text-sm text-start'>{item.payment_status}</p>
                                         </div>}
                                         <div>
                                             <p className='text-[#444343] font-bold text-start'>Prestation</p>

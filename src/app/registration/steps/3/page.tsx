@@ -13,6 +13,7 @@ import { Theme_A } from "@/components/utilis/Themes";
 import CustomInput from "@/components/UI/CustomInput";
 import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/material.css';
+import { salonApi } from "@/api/salonSide";
 
 
 const inputFieldsDesignNoW = `border-2 border-stone-200 p-1 placeholder:text-[#959595] placeholder:text-base ${Theme_A.behaviour.fieldFocused}${Theme_A.fields.inputField}`
@@ -86,11 +87,11 @@ const Step3 = () => {
   //     setError((prev) => {
   //       return { ...prev, phone: "Entrer un numéro valide" };
   //     });
-  //   }    
+  //   }
 
   // }
 
-  // const setFocus = () => {    
+  // const setFocus = () => {
   //   document.querySelector<HTMLInputElement>(`div[id=phone-custom]`)?.focus()
   // }
 
@@ -156,7 +157,7 @@ const Step3 = () => {
 
   const onPhoneCheck = () => {
     const phone = userDetails.phone
-    let valid = false; // 
+    let valid = false; //
     // check first numbers
     console.log(phone[0])
     console.log(phone[1])
@@ -288,6 +289,7 @@ const Step3 = () => {
       return;
     }
     setIsLoading(true);
+
     await registration.createIntent(userDetails).then(async (res) => {
       let data: any = userDetails;
       data.id = res.data.user.id;
@@ -296,6 +298,9 @@ const Step3 = () => {
       setLocalStorage("user", JSON.stringify(res.data.user));
       if (res.data.intent.client_secret) {
         setLocalStorage('secret_key', res.data.intent.client_secret);
+      }
+      if (res.data?.user?.tour_pages_done) {
+        setLocalStorage('pages_done', JSON.stringify(res.data.user.tour_pages_done))
       }
       const planType = JSON.parse(getLocalStorage('plan_type') as string);
       if (planType && planType.name === 'OneHaircut Regular') {
@@ -344,18 +349,22 @@ const Step3 = () => {
         salonData.isMobile = salonAddress.isMobile;
         salonData.country_code = salonAddress.country_code;
         salonData.dob = userInfo?.dob
+        console.log(salonData)
         await registration
           .registerSalon(salonData)
           .then((res) => {
+            console.log(res)
             showSnackbar("success", "Salon successfully created");
             router.push("/verification");
           })
           .catch((err) => {
+            console.log(err)
             showSnackbar("error", "Error Occured!");
           }).finally(() => {
             setIsLoading(false);
           });
       } else {
+        console.log("DONE PUSH")
         router.push("/registration/steps/4");
       }
     }).catch(err => {

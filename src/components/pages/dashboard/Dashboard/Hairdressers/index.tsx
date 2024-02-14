@@ -64,7 +64,7 @@ const Hairdressers = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
   const [hasHairDresser, setHasHairDresser] = useState(false);
-  const [pageDone, setPageDone] = useState<String[]>([]);
+  const [pageDone, setPageDone] = useState<String[]>(['salon_hairdressers']);
   const regex = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
   const [error, setError] = useState({
     name: "",
@@ -400,8 +400,7 @@ const Hairdressers = () => {
     getAllHairDresser();
     getAllAvatars();
     const pages_done = getLocalStorage('pages_done')
-    setPageDone(pages_done!.split(',').map((item) => item.trim()))
-    console.log(pages_done)
+    setPageDone(pages_done ? JSON.parse(pages_done) : [])
   }, []);
 
   // useEffect(() => {
@@ -410,7 +409,7 @@ const Hairdressers = () => {
   // },[hasHairDresser])
 
 
-  // To open the modal when clic on EDIT 
+  // To open the modal when clic on EDIT
   const [isModal, setIsModal] = useState(false);
 
   const openModal = () => {
@@ -425,7 +424,7 @@ const Hairdressers = () => {
   const inputFieldsDesignNoW = `border-2 border-red-500 p-3 placeholder:text-[#959595] placeholder:text-base ${Theme_A.behaviour.fieldFocused_B}${Theme_A.fields.inputField}`
 
   ////////////////////////////////////////////////////
-  ///////////////////// PASSWORD 
+  ///////////////////// PASSWORD
   ////////////////////////////////////////////////////
   const [passwordField, renewPassword] = useState({
     old: "",
@@ -501,8 +500,10 @@ const Hairdressers = () => {
     setIsLoading(true)
     if (!pageDone.includes('salon_hairdressers')) {
       let resp = await salonApi.assignStepDone({ page: 'salon_hairdressers' });
-      removeFromLocalStorage('pages_done');
-      setLocalStorage('pages_done', resp.data.pages_done);
+
+if(resp.data?.pages_done) {
+      setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+}
       setPageDone((prevArray) => [...prevArray, 'salon_hairdressers'])
     }
     setIsLoading(false);
@@ -511,6 +512,7 @@ const Hairdressers = () => {
 
   return (
     <>
+      <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('salon_hairdressers')} />
       {isModalPswrd && (
         <BaseModal close={() => setIsModalPswrd(false)}>
           <div className="flex flex-col items-center mt-4 mx-4">
@@ -563,8 +565,6 @@ const Hairdressers = () => {
 
 
       {/* For explaining the website */}
-      {!pageDone.includes('salon_hairdressers') &&
-        <TourModal steps={tourSteps} onRequestClose={closeTour} />}
 
 
       {isLoading && loadingView()}
@@ -572,7 +572,7 @@ const Hairdressers = () => {
         <div className="bg-gradient-to-l  md:block fixed -left-32 md:-left-8 -bottom-32 md:-bottom-8 z-0 mix-blend-overlay ">
           <LogoCircleFixLeft />
         </div>
-        <div className="h-full w-full xl:w-2/5 overflow-auto flex flex-col items-center gap-8 bg-lightGrey rounded-3xl p-4 md:px-12 md:pt-12 md:pb-0 opacity-90 shadow-sm shadow-stone-300">
+        <div className="h-full w-full xl:w-2/5 flex flex-col items-center gap-8 bg-lightGrey rounded-3xl p-4 md:px-12 md:pt-12 md:pb-0 opacity-90 shadow-sm shadow-stone-300">
 
           {/* TODO MESSAGE NOTIFICATION WHEN NO HAIRDRESSER SET */}
           {!hasHairDresser && (

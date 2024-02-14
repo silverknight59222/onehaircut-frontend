@@ -23,7 +23,7 @@ const Agenda = () => {
   const [hairDressers, setHairDressers] = useState([]);
   const [selectedEventDetails, setSelectedEventDetails] = useState<Booking>();
   const calendarRef = useRef<FullCalendar | null>(null);
-  const [pageDone, setPageDone] = useState<String[]>([]);
+  const [pageDone, setPageDone] = useState<String[]>(['salon_agenda']);
 
 
   const couleurs = [
@@ -146,7 +146,7 @@ const Agenda = () => {
   useEffect(() => {
     getHairDresser();
     const pages_done = getLocalStorage('pages_done')
-    setPageDone(pages_done!.split(',').map((item) => item.trim()))
+    setPageDone(pages_done ? JSON.parse(pages_done) : [])
     console.log(pages_done)
   }, []);
 
@@ -213,7 +213,7 @@ const Agenda = () => {
     },
     {
       selector: '.legend',
-      content: 'Les couleurs sur l\'agenda correspondent au coiffeur qui est assigné au rendez-vous.',
+      content: 'Les couleurs sur l’agenda correspondent au coiffeur qui est assigné au rendez-vous.',
     },
   ];
 
@@ -222,8 +222,10 @@ const Agenda = () => {
     setIsLoading(true)
     if (!pageDone.includes('salon_agenda')) {
       let resp = await salonApi.assignStepDone({ page: 'salon_agenda' });
-      removeFromLocalStorage('pages_done');
-      setLocalStorage('pages_done', resp.data.pages_done);
+
+      if (resp.data?.pages_done) {
+        setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+      }
       setPageDone((prevArray) => [...prevArray, 'salon_agenda'])
     }
     setIsLoading(false);
@@ -236,8 +238,7 @@ const Agenda = () => {
       {isLoading && loadingView()}
 
       {/* For explaining the website */}
-      {!pageDone.includes('salon_agenda') &&
-        <TourModal steps={tourSteps} onRequestClose={closeTour} />}
+      <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('salon_agenda')} />
 
       <div className="calendar-header">
         <TotalEventsCounter totalEventsCount={totalEventsCount} />

@@ -67,7 +67,7 @@ const SearchSalon = () => {
   const [salonProfile, setSalonProfile] = useState<SalonProfile>()
   const router = useRouter();
   const { loadingView } = userLoader();
-  const [pageDone, setPageDone] = useState<String[]>([]);
+  const [pageDone, setPageDone] = useState<String[]>(['salon_profile']);
 
   const haircut = getLocalStorage("haircut")
   const haircutData = haircut ? JSON.parse(haircut) : null
@@ -92,11 +92,8 @@ const SearchSalon = () => {
     let tempSalon = getLocalStorage('selectedSalon')
     const salon = tempSalon ? JSON.parse(tempSalon) : null
     setSalonProfile(salon)
-    // console.log(selectedImage)
-    // console.log(salonProfile)
     const pages_done = getLocalStorage('pages_done')
-    setPageDone(pages_done!.split(',').map((item) => item.trim()))
-    console.log(pages_done)
+    setPageDone(pages_done ? JSON.parse(pages_done) : [])
   }, [])
 
   useEffect(() => {
@@ -118,11 +115,12 @@ const SearchSalon = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [salonProfile])
 
-  // FOR CHAT MODAL 
+  // FOR CHAT MODAL
   // Créez un état pour suivre si le Chat modal est ouvert ou fermé
   const [isChatModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [message, setMessage] = useState<string>('');
   const [messages, setMessages] = useState<Array<{ content: string, sent: boolean }>>([]);
+  const [isLoadedPages, setIsLoadedPages] = useState(false);
   const closeChatModal = () => {
     setIsModalOpen(false);
   };
@@ -131,7 +129,7 @@ const SearchSalon = () => {
     setIsModalOpen(true);
   };
 
-  //FOR SALON PIC MODAL 
+  //FOR SALON PIC MODAL
   // Créez un état pour suivre si le Salon Pic modal est ouvert ou fermé
   const [isSalonPicModalOpen, setIsSalonPicModalOpen] = useState<boolean>(false);
   const closeSalonPicModal = () => {
@@ -142,7 +140,7 @@ const SearchSalon = () => {
     setIsSalonPicModalOpen(true);
   };
 
-  //FOR PERF SAMPLES MODAL 
+  //FOR PERF SAMPLES MODAL
   // Créez un état pour suivre si le Chat modal est ouvert ou fermé
   const [isPerfSampleModalOpen, setIsPerfSampleModalOpen] = useState<boolean>(false);
   const closePerfSampleModal = () => {
@@ -154,7 +152,7 @@ const SearchSalon = () => {
   };
 
 
-  //GOOGLE MAP 
+  //GOOGLE MAP
   const mapStyles = {
     height: "500px",
     width: "100%",
@@ -176,7 +174,7 @@ const SearchSalon = () => {
   const tourSteps: Steps[] = [
     {
       selector: '',
-      content: 'Te voici sur la page de presentation du salon.',
+      content: 'Te voici sur la page de présentation du salon.',
     },
     {
       selector: '.pictures_salon',
@@ -188,7 +186,7 @@ const SearchSalon = () => {
     },
     {
       selector: '.recap',
-      content: 'Voici le recapitulatif de ton choix',
+      content: 'Voici le récapitulatif de ton choix',
     },
     {
       selector: '.button_reservation',
@@ -205,8 +203,10 @@ const SearchSalon = () => {
     setIsLoading(true)
     if (!pageDone.includes('salon_profile')) {
       let resp = await user_api.assignStepDone({ page: 'salon_profile' });
-      removeFromLocalStorage('pages_done');
-      setLocalStorage('pages_done', resp.data.pages_done);
+
+      if (resp.data?.pages_done) {
+        setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+      }
       setPageDone((prevArray) => [...prevArray, 'salon_profile'])
     }
     setIsLoading(false);
@@ -221,8 +221,7 @@ const SearchSalon = () => {
       {isLoading && loadingView()}
 
       {/* For explaining the website */}
-      {!pageDone.includes('salon_profile') &&
-        <TourModal steps={tourSteps} onRequestClose={closeTour} />}
+      <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('salon_profile')} />
 
       {/* Barre de navigation */}
       <Navbar hideSearchBar={true} />

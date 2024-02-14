@@ -122,6 +122,9 @@ const salonApi = {
   updateSiretNumber: async (params: any) => {
     return await request.post('updateSiretNumber', params);
   },
+  updatePhoneNumber: async (params: any) => {
+    return await request.post('updatePhoneNumber', params);
+  },
   updateBankAccount: async (params: BankAccountStripe) => {
     return await request.post('stripe/bankUpdate', params);
   },
@@ -133,7 +136,12 @@ const salonApi = {
   },
   assignStepDone: async (params: any) => {
     return await request.post('assign_step', params);
-  }
+  },
+  createPaymentIntent: async (params: any) => {
+    return await request.post('stripe/paymentIntent', params);
+  },
+  getProSalonCount: async () => request.get('/hair_salon/count'),
 
+  getZonesInfo: async () => request.get(`/hair_salon/zone_list`)
 }
 export { salonApi };

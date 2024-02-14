@@ -197,7 +197,7 @@ const EditServiceModal = (props: EditServiceModalType) => {
                       // setShowColors(props.service.service.id);
                     }}
                   >
-                  <>Available Soon</>
+                    <>Couleurs bientôt dispo</>
                     {/* {props.service.service.colors[0].color} */}
                   </div>
                 </div>

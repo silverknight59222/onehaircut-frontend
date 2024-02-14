@@ -47,11 +47,14 @@ const Index = () => {
   const [mounted, setMounted] = useState(false);
   const [serviceIds, setServiceIds] = useState<number[]>([])
   const [stripeKey, setStripeKey] = useState("");
-  const [KmPrice, setPrice] = useState(0);
+  const [KmPrice, setKMPrice] = useState(0.00);
   const OnehaircutFees = 0.09;
-  const PaymentGatewayVariableFees = 0.008; //TODO LINK WITH ACTUAL FEES
-  const PaymentGatewayFixFees = 0.11;
+  const PaymentGatewayVariableFees = 0.029; //TODO LINK WITH ACTUAL FEES
+  const PaymentGatewayFixFees = 0.3;
   let stripePromise = loadStripe(stripeKey);  // public key for stripe
+  const [clientSecret, setClientSecret] = useState("");
+  const [paymentTraceID, setPaymentTraceID] = useState("");
+  const mobile_type = getLocalStorage('go_home') ?? "";
   const items = [
     { name: "Salon", desc: "Le Bon Coiffeur" },
     { name: "Type de coiffure", desc: "Curly" },
@@ -59,8 +62,9 @@ const Index = () => {
     { name: "Temps", desc: "2 heures " },
     { name: "Lieu", desc: "à domicile" },
   ];
-  let options = {
-    clientSecret: ""
+  const options = {
+    clientSecret,
+    // appearance,
   };
 
   const getHaircutPrize = async () => {
@@ -140,17 +144,22 @@ const Index = () => {
 
   const getBillKMPrice = async () => {
     setIsLoading(true)
-    await salonApi.getBillPerKM(user?.id, salonData.id)
-      .then(resp => {
-        console.log(resp.data.data.price);
-        setPrice(Math.round(resp.data.data.price * 100) / 100)
-      })
-      .catch(err => {
-        //console.log(err)
-      })
-      .finally(() => {
-        setIsLoading(false)
-      })
+    let resp = await salonApi.getBillPerKM(user?.id, salonData.id)
+    console.log(resp.data.data.price);
+    setKMPrice(Math.round(resp.data.data.price * 100) / 100)
+    console.log(mobile_type)
+    if (mobile_type != 'domicile') {
+      setKMPrice(0)
+    }
+    setIsLoading(false)
+      // .then(resp => {
+      // })
+      // .catch(err => {
+      //   //console.log(err)
+      // })
+      // .finally(() => {
+      //   setIsLoading(false)
+      // })
     // const resp = await salonApi.getBillPerKM(user?.id, salonData.user_id);
     // console.log(resp.data.data.price);
     // setPrice(Math.round(resp.data.data.price * 100) / 100)
@@ -162,10 +171,13 @@ const Index = () => {
   }, [KmPrice])
 
   const getStripeKey = async () => {
+    let clientSecret = getLocalStorage('client_payment_secret');
+    let paymentTraceID = getLocalStorage('client_stripe_trace_id')
+    setClientSecret(clientSecret ? clientSecret : '');
+    setPaymentTraceID(paymentTraceID ? paymentTraceID : '')
     setIsLoading(true)
     let resp = await salonApi.getStripeKey();
     stripePromise = loadStripe(resp.data.pk)
-    options.clientSecret = resp.data.sk
     setStripeKey(resp.data.pk)
     setIsLoading(false)
   }
@@ -178,7 +190,6 @@ const Index = () => {
     }
     getHaircutPrize()
     getServicesPrize()
-    getBillKMPrice()
     const arr: number[] = []
     servicesData.forEach((service: { name: string, id: number }) => {
       arr.push(service.id)
@@ -207,6 +218,7 @@ const Index = () => {
       // setDuration(newTime)
     }
     getStripeKey()
+    getBillKMPrice()
   }, [])
 
   function calculateTimeAfterSeparatingMinutes(timeString: any, minutesToSeparate: any) {
@@ -235,7 +247,7 @@ const Index = () => {
 
   const updatedOHCfees = (salonData?.final_price + KmPrice) * OnehaircutFees;
   const bookingCost = salonData?.final_price + KmPrice;
-  const updatedTransactionFees = (((bookingCost) + ((bookingCost) * OnehaircutFees)) * PaymentGatewayVariableFees + PaymentGatewayFixFees);
+  const updatedTransactionFees = ((bookingCost + updatedOHCfees) * PaymentGatewayVariableFees + PaymentGatewayFixFees);
   const totalUpdatedCost = parseFloat(bookingCost + updatedOHCfees + updatedTransactionFees).toFixed(2);
 
   return (
@@ -266,7 +278,7 @@ const Index = () => {
                 {slotData && <p className="text-base"><span className="font-bold text-sm ">Durée totale: </span>{salonData.total_duration} Minutes</p>}
                 {/* Les frais de déplacement ne doivent apparaître que si le client a choisi une coiffure à domicile */}
                 {slotData && <p className="text-base"><span className="font-bold text-sm ">Prix de la coiffure et services: </span> {salonData?.final_price.toFixed(2)}€</p>}
-                {slotData && <p className="text-base"><span className="font-bold text-sm ">Frais de déplacement: </span> {KmPrice.toFixed(2)}€ </p>}
+                {slotData && <p className="text-base"><span className="font-bold text-sm ">Frais de déplacement: </span> {KmPrice}€ </p>}
                 {slotData && <p className="text-base"><span className="font-bold text-sm ">Frais de fonctionnement Onehaircut: </span> {updatedOHCfees.toFixed(2)}€ </p>}
                 {slotData && <p className="text-base"><span className="font-bold text-sm ">Frais de transaction : </span> {updatedTransactionFees.toFixed(2)}€ </p>}
               </div>
@@ -291,8 +303,8 @@ const Index = () => {
 
           <div className="flex mx-4 mt-4 mb-8 w-max md:w-[750px] lg:w-[940px] px-4 sm:px-14 bg-[#F8F8F8] rounded-[22px] border border-[#ECECEC] shadow-sm shadow-stone-600 justify-center">
 
-            <div className="mt-7 mb-8 w-full md:w-5/12 lg:w-4/12  items-center justify-center">
-              <Elements stripe={stripePromise}>
+            <div className="mt-7 mb-8 w-full md:w-12/12 lg:w-8/12  items-center justify-center">
+              <Elements stripe={stripePromise} options={options} >
                 <PaymentForm onSuccess={onBooking} />
               </Elements>
             </div>

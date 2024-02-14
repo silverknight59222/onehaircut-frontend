@@ -13,7 +13,7 @@ import userLoader from "@/hooks/useLoader";
 import "./index.css";
 import Link from "next/link";
 import { registration } from "@/api/registration";
-import { setLocalStorage } from "@/api/storage";
+import {getLocalStorage, setLocalStorage} from "@/api/storage";
 import UserProfile from "@/components/UI/UserProfile";
 import { Theme_A } from "@/components/utilis/Themes";
 
@@ -94,6 +94,18 @@ const Page = ({ params }: Params) => {
     setIsLoading(true);
     registration.getAllPlans().then(res => {
       setPlans(res.data.data);
+
+      if(!!getLocalStorage('plan_type')) {
+        const plan = JSON.parse(getLocalStorage('plan_type') as string)
+        if(plan?.slug) {
+          if(plan.slug.includes('pro')) {
+            setSelectedPlan("pro")
+          } else {
+            setSelectedPlan("standard")
+          }
+        }
+      }
+
     }).finally(() => setIsLoading(false))
   }, [])
 
@@ -209,8 +221,8 @@ const Page = ({ params }: Params) => {
               poster="assets/poster.jpg"
               width="auto"
               height="auto"
-              
-            /> 
+
+            />
           </div> */}
           <div className='my-12 p-6 rounded-2xl bg-stone-900 shadow-lg shadow-slate-700 w-[400px] h-[250px] md:w-[500px] md:h-[300px] lg:w-[600px] lg:h-[360px] xl:w-[800px] xl:h-[500px]'>
             <iframe

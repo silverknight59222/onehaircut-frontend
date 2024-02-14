@@ -3,7 +3,7 @@ import { dashboard } from "@/api/dashboard";
 import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/storage";
 import {
   LogoCircleFixRight,
-  ChatSendIcon,
+  ChatSendIcon, DeleteIcon,
 } from "@/components/utilis/Icons";
 import DashboardLayout from "@/layout/DashboardLayout";
 import Image from "next/image";
@@ -14,6 +14,8 @@ import { Theme_A, ColorsThemeA } from "@/components/utilis/Themes";
 import CustomInput from "@/components/UI/CustomInput";
 import TourModal, { Steps } from "@/components/UI/TourModal";
 import { salonApi } from "@/api/salonSide";
+import BaseModal from "@/components/UI/BaseModal";
+import { toast } from "react-toastify";
 
 const Messages = () => {
   const [clients, setClients] = useState<ClientChat[]>([])
@@ -25,7 +27,8 @@ const Messages = () => {
   const [selectedChat, setSelectedChat] = useState({ client_id: 0, client: { name: '', front_profile: '' } })
   const [chats, setChats] = useState<Chat[]>([])
   const [message, setMessage] = useState('')
-  const [pageDone, setPageDone] = useState<String[]>([]);
+  const [pageDone, setPageDone] = useState<String[]>(['salon_message']);
+  const [isDeleteModal, setIsDeleteModal] = useState(false);
 
   const getClientsByProfessional = async () => {
     if (salonId) {
@@ -65,7 +68,7 @@ const Messages = () => {
   }
 
   const onSendMessage = async () => {
-    if (salonId) {
+    if (salonId && selectedChat.client_id && message) {
       setIsLoading(true)
       const data = {
         client_id: selectedChat.client_id,
@@ -102,8 +105,7 @@ const Messages = () => {
   useEffect(() => {
     getClientsByProfessional();
     const pages_done = getLocalStorage('pages_done')
-    setPageDone(pages_done!.split(',').map((item) => item.trim()))
-    console.log(pages_done)
+    setPageDone(pages_done ? JSON.parse(pages_done) : [])
   }, [])
 
 
@@ -125,6 +127,22 @@ const Messages = () => {
     fetchSalonNotifications();
     endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chats]);
+
+
+  const deleteChat = async () => {
+    setIsLoading(true)
+    try {
+      await dashboard.deleteChat(selectedChat.client_id)
+      setIsDeleteModal(false);
+      setSelectedChat({ client_id: 0, client: { name: '', front_profile: '' } })
+      setChats([]);
+      getClientsByProfessional();
+    } catch (e) {
+      toast.error('Error delete messaging!')
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
 
   // ------------------------------------------------------------------
@@ -153,8 +171,10 @@ const Messages = () => {
     setIsLoading(true)
     if (!pageDone.includes('salon_message')) {
       let resp = await salonApi.assignStepDone({ page: 'salon_message' });
-      removeFromLocalStorage('pages_done');
-      setLocalStorage('pages_done', resp.data.pages_done);
+
+      if (resp.data?.pages_done) {
+        setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+      }
       setPageDone((prevArray) => [...prevArray, 'salon_message'])
     }
     setIsLoading(false);
@@ -166,8 +186,7 @@ const Messages = () => {
     <div>
       {isLoading && loadingView()}
       {/* For explaining the website */}
-      {!pageDone.includes('salon_message') &&
-        <TourModal steps={tourSteps} onRequestClose={closeTour} />}
+      <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('salon_message')} />
 
       <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
         <LogoCircleFixRight />
@@ -269,6 +288,7 @@ const Messages = () => {
                 <div className="relative w-9/12 mt-4 champs_envoi">
                   {/* Champ de texte pour entrer un message */}
                   <CustomInput
+                    disable={!selectedChat.client_id}
                     id="sendMessageInput"
                     label="Ecrire un message"
                     value={message}
@@ -276,20 +296,49 @@ const Messages = () => {
                     onEnterPress={onSendMessage}
                   />
 
-                  {/* 
+                  {/*
                   <input onChange={(e) => setMessage(e.target.value)} value={message} className={`w-full shadow-inner border border:bg-stone-300 ${Theme_A.behaviour.fieldFocused_C} rounded-xl h-12 outline-none px-3`} />
                   */}
                 </div>
 
                 {/* Bouton d'envoi de message */}
-                <div id="ChatSendIcon" className="ml-4 mt-4 hover:scale-125 transform transition-transform duration-300 bouton_envoi" onClick={onSendMessage}>
+                <div id="ChatSendIcon"
+                  className="ml-4 mt-4 hover:scale-125 transform transition-transform duration-300 bouton_envoi"
+                  onClick={onSendMessage}>
                   <ChatSendIcon />
                 </div>
+                <button
+                  onClick={() => {
+                    if (selectedChat.client_id) {
+                      setIsDeleteModal(true)
+                    }
+                  }}
+                  className={`rounded-md ml-4 mt-4 hover:scale-110 duration-300  ${Theme_A.button.mediumGradientButton} shadow-md `}
+                >
+                  <DeleteIcon />
+                </button>
               </div>
             </div>
           </div>
         </div>
       </DashboardLayout>
+      {isDeleteModal && (
+        <BaseModal close={() => setIsDeleteModal(false)}>
+          <div>
+            <h1 className="items-center justify-center text-center font-semibold text-lg mb-6">Suppression de la discussion</h1>
+            <p className="items-center justify-center text-center">Êtes-vous certain de vouloir supprimer la discussion ? </p>
+            <p className="items-center justify-center text-center">Ce processus est irreversible. </p>
+
+            <div className={'flex justify-center gap-5 mt-5'}>
+              <button className={`${Theme_A.button.smallBlackColoredButton} py-2`}
+                onClick={() => setIsDeleteModal(false)}>Annuler
+              </button>
+              <button className={`${Theme_A.button.smallGradientButton}`} onClick={deleteChat}>Confirmer</button>
+
+            </div>
+          </div>
+        </BaseModal>
+      )}
     </div>
   );
 };

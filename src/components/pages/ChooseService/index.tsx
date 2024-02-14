@@ -72,7 +72,7 @@ const ServiceChoose = () => {
     const { loadingView } = userLoader();
     const [lengthSelect, setLengthFilters] = useState<string[]>([]);
     const router = useRouter()
-    const [pageDone, setPageDone] = useState<String[]>([]);
+    const [pageDone, setPageDone] = useState<String[]>(['services']);
     // useRef est utilisé pour créer une référence mutable qui conserve la même .current entre les renders
     const dropdownRef = React.useRef() as React.MutableRefObject<HTMLInputElement>
     const temp = getLocalStorage("haircut")
@@ -269,7 +269,7 @@ const ServiceChoose = () => {
         getAllServices()
         // getBasedFilter()
         const pages_done = getLocalStorage('pages_done')
-        setPageDone(pages_done!.split(',').map((item) => item.trim()))
+        setPageDone(pages_done ? JSON.parse(pages_done) : [])
         console.log(pages_done)
         document.addEventListener('click', closeSelectBox);
         return () => {
@@ -314,15 +314,15 @@ const ServiceChoose = () => {
     const tourSteps: Steps[] = [
         {
             selector: '',
-            content: 'Ici tu peux rajouter un service à votre coiffure',
+            content: 'Ici tu peux rajouter un service à ta coiffure',
         },
         {
             selector: '.thumbnails_services',
-            content: 'Les services sont optionels et peuvent être choisis en cliquant sur ceux qui t\'intéressent',
+            content: 'Les services sont optionnels et peuvent être choisis en cliquant sur ceux qui t\'intéressent',
         },
         {
             selector: '.button_continue',
-            content: 'Si tu veux seulement la coupe de cheveux, tu peux cliquer là',
+            content: 'Si tu veux seulement la coupe de cheveux, tu peux directement cliquer là',
         },
     ];
 
@@ -331,8 +331,10 @@ const ServiceChoose = () => {
         setIsLoading(true)
         if (!pageDone.includes('services')) {
             let resp = await user_api.assignStepDone({ page: 'services' });
-            removeFromLocalStorage('pages_done');
-            setLocalStorage('pages_done', resp.data.pages_done);
+
+            if (resp.data?.pages_done) {
+                setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+            }
             setPageDone((prevArray) => [...prevArray, 'services'])
         }
         setIsLoading(false);
@@ -345,8 +347,7 @@ const ServiceChoose = () => {
             {isLoading && loadingView()}
             {/* For explaining the website */}
 
-            {!pageDone.includes('services') &&
-                <TourModal steps={tourSteps} onRequestClose={closeTour} />}
+            <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('services')} />
 
             <Navbar
                 isServicesPage={true}

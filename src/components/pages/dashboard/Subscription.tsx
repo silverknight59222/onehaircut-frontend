@@ -21,10 +21,13 @@ import { user_api } from "@/api/clientSide";
 import { DeactivateAccountParams } from "@/api/clientSide";
 import { Subscription } from "../../../types";
 import { Auth } from "@/api/auth";
-import {getLocalStorage, setLocalStorage} from "@/api/storage";
+import { getLocalStorage, setLocalStorage } from "@/api/storage";
 import useSnackbar from "@/hooks/useSnackbar";
 import { dashboard } from "@/api/dashboard";
 import userLoader from "@/hooks/useLoader";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from '@stripe/stripe-js';
+import PaymentFormSetting from "../Settings/PaymentformSetting";
 
 const SubSelected_text = "text-white"
 const SubSelected_recommended = "bg-[rgba(255,255,255,0.53)] text-white"
@@ -40,6 +43,10 @@ const Subscription = () => {
   const router = useRouter();
   const { loadingView } = userLoader();
   const [isLoading, setIsLoading] = useState(false);
+  const [stripeKey, setStripeKey] = useState("");
+  let stripePromise = loadStripe(stripeKey);  // public key for stripe
+  const [clientSecret, setClientSecret] = useState("");
+  const [showPaymentModal, setShowPaymentModal] = useState(false)
   const defaultSubscription = {
     created_at: '',
     current_period_end: '',
@@ -60,6 +67,8 @@ const Subscription = () => {
 
   const [isAutomaticRenewal, setIsAutomaticRenewal] = useState(true);
   const [currentPlan, setCurrentPlan] = useState<Subscription>(defaultSubscription);
+  const [currentPlanDate, setCurrentPlanDate] = useState('');
+  const [currentPlanTime, setCurrentPlanTime] = useState('');
   const packageNames = [
     "Agenda dynamique",
     "Mise en avant de votre salon",
@@ -84,9 +93,27 @@ const Subscription = () => {
     const { data } = await dashboard.salonNotification()
     setNotifications(data)
   }
+  const options = {
+    clientSecret,
+    // appearance,
+  };
+  const getStripeKey = async () => {
+    const url = new URL(window.location.href);
+    const searchParams = url.searchParams.has('setup_intent');
+    if (!searchParams) {
+      let resp_intent = await salonApi.submitNewPaymentMethod({});
+      setClientSecret(resp_intent.data.clientSecret)
+    }
+    setIsLoading(true)
+    let resp = await salonApi.getStripeKey();
+    stripePromise = loadStripe(resp.data.pk)
+    setStripeKey(resp.data.pk)
+    setIsLoading(false)
+  }
 
 
   useEffect(() => {
+    getStripeKey()
     fetchSubscription();
     fetchSalonNotifications();
   }, []);
@@ -98,7 +125,10 @@ const Subscription = () => {
       if (resp.data.data) {
         setCurrentPlan(resp.data.data)
       }
-      if (resp.data.data && resp.data.data.name == 'OneHaircut Pro') {
+      const endsAtDate = new Date(resp.data.data.ends_at);
+      setCurrentPlanDate(endsAtDate.toLocaleDateString());
+      setCurrentPlanTime(endsAtDate.toLocaleTimeString());
+      if (resp.data.data && resp.data.data.name.includes("Pro")) {
         setIsCurrSubscriptionPro(true)
       } else {
         setIsCurrSubscriptionPro(false)
@@ -109,10 +139,17 @@ const Subscription = () => {
       setIsLoading(false)
     }
   }
-  // const modifBankCard: React.JSX.Element =
-  //   <div>
-  //       <PaymentModal handleClickPay={handleClickPay} />
-  //   </div >;
+  const modifBankCard: React.JSX.Element =
+    <div>
+      <Elements options={options} stripe={stripePromise}>
+        {/* <PaymentForm onCardNumberChange={handleCardNumberChange}
+                    onCardExpMonthChange={handleCardExpMonthChange}
+                    onCardExpYearChange={handleCardExpYearChange}
+                    onCardNameChange={handleCardNameChange}
+                /> */}
+        <PaymentFormSetting />
+      </Elements>
+    </div >;
 
   // when clicking on the "choisir" button
   const handleClickChoose = async () => {
@@ -129,15 +166,22 @@ const Subscription = () => {
     setIsLoading(true)
     try {
       const resp = await salonApi.upgradeToProPlan()
-      if (resp.data.data.subscription) {
-        setCurrentPlan(resp.data.data.subscription)
+      console.log(resp.data);
+      if (resp.data.status == 400) {
+        showSnackbar('error', resp.data.message)
+        setShowPaymentModal(true)
       }
-      if (resp.data.data.subscription && resp.data.data.subscription.name == 'OneHaircut Pro') {
-        setIsCurrSubscriptionPro(true)
-      } else {
-        setIsCurrSubscriptionPro(false)
+      else {
+        if (resp.data.data.subscription) {
+          setCurrentPlan(resp.data.data.subscription)
+        }
+        if (resp.data.data.subscription && resp.data.data.subscription.name == 'OneHaircut Pro') {
+          setIsCurrSubscriptionPro(true)
+        } else {
+          setIsCurrSubscriptionPro(false)
+        }
+        await updateUserDataInLocalStorage();
       }
-      await updateUserDataInLocalStorage();
     } catch {
       //
     } finally {
@@ -146,7 +190,7 @@ const Subscription = () => {
   }
 
   const updateUserDataInLocalStorage = async () => {
-    const {data} = await Auth.getUser()
+    const { data } = await Auth.getUser()
     setLocalStorage("user", JSON.stringify(data.user));
     if (data.user.hair_salon) {
       setLocalStorage("hair_salon", JSON.stringify(data.user.hair_salon));
@@ -236,6 +280,11 @@ const Subscription = () => {
   return (
     <div>
       {isLoading && loadingView()}
+      {showPaymentModal &&
+        <BaseModal close={() => setShowPaymentModal(false)}>
+          {modifBankCard}
+        </BaseModal>
+      }
       <div className="hidden sm:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
         <LogoCircleFixRight />
       </div>
@@ -356,9 +405,12 @@ const Subscription = () => {
                 {currentPlan.trial_ends_at && (
                   <div className="py-4 px-5 2xl:text-xl text-center text-black whitespace-nowrap bg-[#F4F4F6] font-medium border border-[#9B9B9B] rounded-xl">
                     <p>Votre contrat sera renouvelé le: </p>
-                    <p>{currentPlan.trial_ends_at}</p>
+                    <p className="text-sm font-light italic">{currentPlanDate} à {currentPlanTime}</p>
                     {currentPlan.stripe_status && currentPlan.stripe_status === 'trialing' &&
-                      <p>L'essai se termine le : {currentPlan.trial_ends_at}</p>
+                      <p className="">
+                        L'essai se termine le :<br />
+                        <span className="text-sm font-lig">{currentPlan.trial_ends_at}</span>
+                      </p>
                     }
                   </div>
                 )}

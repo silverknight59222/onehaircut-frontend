@@ -13,8 +13,12 @@ import {
 import PricingTable from "./PricingTable";
 import MobilePricingTable from "./MobilePricingTable";
 import SpecialOfferModal from "@/components/UI/SalonSpecialOfferModal";
+import userLoader from "@/hooks/useLoader";
+import {salonApi} from "@/api/salonSide";
 
 const Registration = () => {
+  const { loadingView } = userLoader();
+
   const items = [
     {
       text: "Un processus de réservation révolutionnaire",
@@ -97,6 +101,8 @@ const Registration = () => {
     },
   ];
   const [openQuestion, setOpenQuestion] = useState<number | null>(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [salonCount, setSalonCount] = useState(249);
   const questionToggle = (index: number) => {
     if (openQuestion === index) {
       setOpenQuestion(null);
@@ -119,7 +125,15 @@ const Registration = () => {
   };
   useEffect(() => {
     console.log('Montage de la page, ouverture du modal');
-    setIsSpecialOfferModalOpen(true);
+    setIsLoading(true)
+    salonApi.getProSalonCount().then(({data}) => {
+      if(data.pro_salon_count) {
+        setSalonCount(data.pro_salon_count)
+      }
+      setIsSpecialOfferModalOpen(true);
+    }).finally(() => {
+      setIsLoading(false)
+    })
 
     // Ajouter un nettoyage au cas où
     return () => {
@@ -130,6 +144,7 @@ const Registration = () => {
 
   return (
     <div className="relative">
+      {isLoading && loadingView()}
       <div>
         <img
           src="/assets/registration_bg_top.png"
@@ -139,7 +154,7 @@ const Registration = () => {
 
           {/* Modal pour l'offre spéciale du salon */}
           {isSpecialOfferModalOpen && (
-            <SpecialOfferModal close={closeSpecialOfferModal} />
+            <SpecialOfferModal proSalonCount={salonCount} close={closeSpecialOfferModal} />
           )}
 
           <div className="flex flex-col items-center justify-center mt-14">

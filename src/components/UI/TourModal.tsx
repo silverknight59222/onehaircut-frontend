@@ -1,9 +1,11 @@
+"use client"
 import { disableBodyScroll, enableBodyScroll } from "body-scroll-lock";
 import dynamic from "next/dynamic";
-import { useState } from "react";
-// const Tour = dynamic(() => import("reactour"), { ssr: false });
-import Player from "@/components/UI/PlayerForTour"
-import Tour from "reactour"
+import React, { useEffect, useRef, useState } from "react";
+import { Theme_A } from "@/components/utilis/Themes";
+import { TbHelpSquareRoundedFilled } from "react-icons/tb";
+import {getLocalStorage} from "@/api/storage";
+const Tour = dynamic(() => import("reactour"), { ssr: false });
 
 
 export interface Steps {
@@ -14,31 +16,41 @@ export interface Steps {
 
 export type TourModalType = {
   steps: Steps[],
-  onRequestClose?: () => void;
-  children?: JSX.Element,
-  audioPath?: string
+  onRequestClose?: () => void,
+  doneTour: boolean,
+  showTourButton?: boolean,
 }
 
-const TourModal = ({ steps, onRequestClose, children, audioPath }: TourModalType) => {
+const TourModal = ({ steps, onRequestClose, doneTour = true, showTourButton = true }: TourModalType) => {
   const disableBody = target => disableBodyScroll(target);
+  const tempUser = getLocalStorage('user')
+  const user = tempUser ? JSON.parse(tempUser) : {}
+  const [isGuest, setIsGuest] = useState(!user.id); // User login state
+  const tourModal = useRef(null)
   const enableBody = target => enableBodyScroll(target);
-  const [isTourOpen, setIsTourOpen] = useState(true);
+  const [isTourOpen, setIsTourOpen] = useState(false);
   const closeTour = () => {
     setIsTourOpen(false)
     onRequestClose && onRequestClose();
   };
+  useEffect(() => {
+    if(doneTour) {
+      setIsTourOpen(false)
+    } else if (!doneTour && !isGuest) {
+      setIsTourOpen(true)
+    }
+  }, [doneTour]);
 
-  const modalContent = (
-    <div className='relative top-0 left-0 pr-1 pb-1'>
-      {audioPath && (
-        <Player
-          src={audioPath}
-        />
-      )}
-      {children}
-    </div>
-  );
 
+  // useEffect(() => {
+  //   if (isTourOpen) {
+  //     document.documentElement.style.overflowX = 'inherit';
+  //     document.documentElement.style.scrollBehavior = 'inherit';
+  //   } else {
+  //     document.documentElement.style.overflowX = 'hidden';
+  //     document.documentElement.style.scrollBehavior = 'smooth';
+  //   }
+  // }, [isTourOpen]);
 
   // Composant de bouton avec effet de survol
   const HoverButton = ({ text, baseBgColor, hoverBgColor, textColor = "white" }) => {
@@ -66,12 +78,21 @@ const TourModal = ({ steps, onRequestClose, children, audioPath }: TourModalType
 
   return (
     <>
+      {showTourButton && <button
+        onClick={() => setIsTourOpen(true)}
+        className={`${Theme_A.button.tourModalButton}`}
+      >
+        <TbHelpSquareRoundedFilled size={38} />
+
+      </button>}
       <Tour
         // @ts-ignore
+        startAt={0}
+        ref={tourModal}
         steps={steps}
         showNavigation={true}
         onRequestClose={closeTour}
-        rounded={5}
+        rounded={15}
         isOpen={isTourOpen}
         accentColor={'#ef4444'}
         onAfterOpen={disableBody}
@@ -80,9 +101,7 @@ const TourModal = ({ steps, onRequestClose, children, audioPath }: TourModalType
         nextButton={<HoverButton text="Suivant" baseBgColor="#FF7B20" hoverBgColor="#FE5019" />}
         lastStepNextButton={<HoverButton text="C'est parti !" baseBgColor="#FF7B20" hoverBgColor="#FE5019" />}
         showNumber={false}
-      >
-        {/* {modalContent} */}
-      </Tour>
+      />
     </>
   )
 }
@@ -90,8 +109,7 @@ const TourModal = ({ steps, onRequestClose, children, audioPath }: TourModalType
 export default TourModal
 
 
-
-/* README 
+/* README
 Aim:
 Give instructions or present a page. As argument buttons/elements can be highlighted
 
@@ -123,7 +141,7 @@ Give instructions or present a page. As argument buttons/elements can be highlig
       {isLoading && loadingView()}
 
       <TourModal steps={tourSteps} onRequestClose={closeTour} />
-  ... 
+  ...
 
 
 

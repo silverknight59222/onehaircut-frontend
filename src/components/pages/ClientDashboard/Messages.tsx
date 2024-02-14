@@ -1,5 +1,5 @@
 "use client";
-import { LogoCircleFixRight, ChatSendIcon } from "@/components/utilis/Icons";
+import { LogoCircleFixRight, ChatSendIcon, DeleteIcon } from "@/components/utilis/Icons";
 import ClientDashboardLayout from "@/layout/ClientDashboardLayout";
 import Image from "next/image";
 import React, { useEffect, useState, useRef } from "react";
@@ -13,6 +13,8 @@ import { Theme_A, ColorsThemeA } from "@/components/utilis/Themes";
 import CustomInput from "@/components/UI/CustomInput";
 import TourModal, { Steps } from "@/components/UI/TourModal";
 import { user_api } from "@/api/clientSide";
+import { toast } from "react-toastify";
+import BaseModal from "@/components/UI/BaseModal";
 
 
 
@@ -26,7 +28,8 @@ const Messages = () => {
     const [chats, setChats] = useState<Chat[]>([])
     const { loadingView } = userLoader();
     const [isLoading, setIsLoading] = useState(false);
-    const [pageDone, setPageDone] = useState<String[]>([]);
+    const [pageDone, setPageDone] = useState<String[]>(['message']);
+    const [isDeleteModal, setIsDeleteModal] = useState(false);
 
     // Récupère les salons liés à l'utilisateur
     const getSalonsByUser = async () => {
@@ -66,7 +69,7 @@ const Messages = () => {
 
     // Envoie un message et recharge le chat
     const onSendMessage = async () => {
-        if (userId) {
+        if (userId && selectedChat.user_id && message) {
             setIsLoading(true)
             const data = {
                 client_id: userId,
@@ -107,7 +110,7 @@ const Messages = () => {
     useEffect(() => {
         getSalonsByUser()
         const pages_done = getLocalStorage('pages_done')
-        setPageDone(pages_done!.split(',').map((item) => item.trim()))
+        setPageDone(pages_done ? JSON.parse(pages_done) : [])
         console.log(pages_done)
     }, [])
 
@@ -154,13 +157,30 @@ const Messages = () => {
         },
     ];
 
+    const deleteChat = async () => {
+        setIsLoading(true)
+        try {
+            await dashboard.deleteChat(selectedChat.user_id)
+            setIsDeleteModal(false);
+            setSelectedChat({ user_id: 0, name: '' })
+            setChats([]);
+            getSalonsByUser()
+        } catch (e) {
+            toast.error('Error delete messaging!')
+        } finally {
+            setIsLoading(false)
+        }
+    }
+
     const closeTour = async () => {
         // You may want to store in local storage or state that the user has completed the tour
         setIsLoading(true)
-        if(!pageDone.includes('message')){
+        if (!pageDone.includes('message')) {
             let resp = await user_api.assignStepDone({ page: 'message' });
-            removeFromLocalStorage('pages_done');
-            setLocalStorage('pages_done', resp.data.pages_done);
+
+            if (resp.data?.pages_done) {
+                setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+            }
             setPageDone((prevArray) => [...prevArray, 'message'])
         }
         setIsLoading(false);
@@ -174,9 +194,7 @@ const Messages = () => {
             {isLoading && loadingView()}
 
             {/* For explaining the website */}
-            {!pageDone.includes('message') &&
-                <TourModal steps={tourSteps} onRequestClose={closeTour} />
-            }
+            <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('message')} />
 
             <div className="hidden lg:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
                 <LogoCircleFixRight />
@@ -280,19 +298,32 @@ const Messages = () => {
                                         value={message}
                                         onChange={(e) => setMessage(e.target.value)}
                                         onEnterPress={onSendMessage}
+                                        disable={!selectedChat.user_id}
                                     />
                                     {/*
-                                    <input onChange={(e) => setMessage(e.target.value)} 
-                                    value={message} 
-                                    className={`w-full shadow-inner border border:bg-stone-300 ${Theme_A.behaviour.fieldFocused_C} rounded-xl h-12 outline-none px-3`} 
+                                    <input onChange={(e) => setMessage(e.target.value)}
+                                    value={message}
+                                    className={`w-full shadow-inner border border:bg-stone-300 ${Theme_A.behaviour.fieldFocused_C} rounded-xl h-12 outline-none px-3`}
                                     />
                                     */}
                                 </div>
 
                                 {/* Bouton d'envoi de message */}
-                                <div id="ChatSendIcon" className="ml-4 mt-4 hover:scale-125 transform transition-transform duration-300 bouton_envoi" onClick={onSendMessage}>
+                                <div id="ChatSendIcon"
+                                    className="ml-4 mt-4 hover:scale-125 transform transition-transform duration-300 bouton_envoi"
+                                    onClick={onSendMessage}>
                                     <ChatSendIcon />
                                 </div>
+                                <button
+                                    onClick={() => {
+                                        if (selectedChat.user_id) {
+                                            setIsDeleteModal(true)
+                                        }
+                                    }}
+                                    className={`rounded-md ml-4 mt-4 hover:scale-110 duration-300  ${Theme_A.button.mediumGradientButton} shadow-md `}
+                                >
+                                    <DeleteIcon />
+                                </button>
                             </div>
 
                         </div>
@@ -300,6 +331,23 @@ const Messages = () => {
                     </div>
                 </div>
             </ClientDashboardLayout>
+            {isDeleteModal && (
+                <BaseModal close={() => setIsDeleteModal(false)}>
+                    <div>
+                        <h1 className="items-center justify-center text-center font-semibold text-lg mb-6">Suppression de la discussion</h1>
+                        <p className="items-center justify-center text-center">Êtes-vous certain de vouloir supprimer la discussion ? </p>
+                        <p className="items-center justify-center text-center">Ce processus est irreversible. </p>
+
+                        <div className={'flex justify-center gap-5 mt-8'}>
+                            <button className={`${Theme_A.button.smallBlackColoredButton}`}
+                                onClick={() => setIsDeleteModal(false)}>Annuler
+                            </button>
+                            <button className={`${Theme_A.button.smallGradientButton}`} onClick={deleteChat}>Confirmer</button>
+
+                        </div>
+                    </div>
+                </BaseModal>
+            )}
             <Footer />
         </div>
     );

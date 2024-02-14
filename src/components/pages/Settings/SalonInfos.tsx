@@ -16,9 +16,13 @@ import { ErrorBar } from "recharts";
 import InfoButton from "@/components/UI/InfoButton";
 import TourModal, { Steps } from "@/components/UI/TourModal";
 import userLoader from "@/hooks/useLoader";
+import { dashboard } from "@/api/dashboard";
+import { Auth } from "@/api/auth";
 
 const tempSalon = getLocalStorage('hair_salon');
 let salonInfo = tempSalon ? JSON.parse(tempSalon) : null;
+const user = getLocalStorage('user');
+const userData = user ? JSON.parse(user) : null;
 
 const SalonInfos = () => {
     const [isModal, setIsModal] = useState(false);
@@ -41,8 +45,10 @@ const SalonInfos = () => {
     const showSnackbar = useSnackbar();
     const [ZonePrice, setZonePrice] = useState(0);
     const [ZoneDuration, setZoneDuration] = useState(0);
-    const [pageDone, setPageDone] = useState<String[]>([]);
+    const [pageDone, setPageDone] = useState<String[]>(['salon_info']);
     const { loadingView } = userLoader();
+    const [siretNumber, setSiretNumber] = useState('');
+    const [phoneNumber, setPhoneNumber] = useState<string>('');
     const [addressResponse, setAddressResponse] = useState({
         street: "",
         city: "",
@@ -102,9 +108,27 @@ const SalonInfos = () => {
 
 
     const wait = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+    // ------------------------------------------------------------------
+    // Gérez le changement du numéro de SIRET
+    const handleSiretNumberChange = (e) => {
+        setSiretNumber(e.target.value);
+    };
+    const handlePhoneNumberChange = (e) => {
+        setPhoneNumber(e.target.value);
+    };
+    const getUserInformation = async () => {
+        if (userData == null) {
+            let resp = await Auth.getUser();
+            console.log(resp)
+        }
+        else {
+            setPhoneNumber(userData.phone as string)
+        }
+    }
     // Utilisez useEffect pour déclencher la recherche de la ville lorsque le code postal change
     useEffect(() => {
         fetchAdress();
+        getUserInformation();
         if (salonInfo) {
             console.log("Salon Type Real : " + salonInfo.type)
             typesSalon.find(type => {
@@ -122,11 +146,11 @@ const SalonInfos = () => {
             setSiretNumber(salonInfo.company_id_number)
         }
         const pages_done = getLocalStorage('pages_done')
-        setPageDone(pages_done!.split(',').map((item) => item.trim()))
-        console.log(pages_done)
+        setPageDone(pages_done ? JSON.parse(pages_done) : [])
     }, []);
 
     const saveSalonType = async (item) => {
+        setIsLoading(true)
         await salonApi.saveSalonType({ type: item })
             .then((resp) => {
                 removeFromLocalStorage("hair_salon");
@@ -171,7 +195,7 @@ const SalonInfos = () => {
                 setIsLoading(false);
             })
     }
-    // handling the change of Salon type change    
+    // handling the change of Salon type change
 
     //For mobility checkbox
     const [isMobilityAllowed, setIsMobilityAllowed] = useState(false); // État de la checkbox
@@ -194,14 +218,18 @@ const SalonInfos = () => {
     ];
 
     const [selectedImageUrl, setSelectedImageUrl] = useState('/assets/DefaultPictures/Profil.png');
-    const HandleSelectedSalonType = (item: string) => {
+    const HandleSelectedSalonType = async (item: string) => {
+        setIsLoading(true)
         setSelectedSalonType(item);
         setTypeImage(item);
         saveSalonType(item);
         // Utilisez setTimeout pour retarder le rechargement, permettant à l'UI de se mettre à jour.
-        setTimeout(() => {
-            window.location.reload();
-        }, 2000); // Rafraîchit la page après un délai de 1000 millisecondes (1 seconde)
+        const { data } = await Auth.getUser()
+        salonInfo = data.user.hair_salon;
+        if (data.user.hair_salon) {
+            setLocalStorage("hair_salon", JSON.stringify(data.user.hair_salon));
+        }
+        setIsLoading(false)
 
     }
 
@@ -481,13 +509,6 @@ const SalonInfos = () => {
         }
     };
 
-
-    const [siretNumber, setSiretNumber] = useState('');
-    // Gérez le changement du numéro de SIRET
-    const handleSiretNumberChange = (e) => {
-        setSiretNumber(e.target.value);
-    };
-
     const updateSiretNumber = async (siretNumber) => {
         await salonApi.updateSiretNumber({ siretNumber: siretNumber }).then((res) => {
             if (res.data.status == 200) {
@@ -501,9 +522,42 @@ const SalonInfos = () => {
             }
         }).catch((reason) => {
             showSnackbar("error", "Erreur, verifier le format du numéro de SIRET");
+        }).finally(() => {
+            closeSiretUpdateModal()
         })
     }
 
+    const updatePhoneNumber = async (phoneNumber) => {
+        await salonApi.updatePhoneNumber({ phoneNumber: phoneNumber }).then((res) => {
+            if (res.data.status == 200) {
+                setPhoneNumber(res.data.data.phone);
+                removeFromLocalStorage("user");
+                setLocalStorage("user", JSON.stringify(res.data.data));
+                showSnackbar("success", res.data.message)
+            }
+            else {
+                showSnackbar("error", "Error on updating phone number");
+            }
+        }).catch((reason) => {
+            showSnackbar("error", reason);
+        })
+    }
+
+    const [isSiretUpdateModalOpen, setIsSiretUpdateModalOpen] = useState(false);
+    const openSiretUpdateModal = () => {
+        setIsSiretUpdateModalOpen(true);
+    };
+
+    const closeSiretUpdateModal = () => {
+        setIsSiretUpdateModalOpen(false);
+    };
+
+    const [isSiretCheckboxChecked, setIsSiretCheckboxChecked] = useState(false);
+
+    // Fonction pour gérer le changement d'état de la checkbox
+    const handleSiretCheckboxChange = () => {
+        setIsSiretCheckboxChecked(!isSiretCheckboxChecked);
+    };
 
     // ------------------------------------------------------------------
     // For Tour
@@ -531,8 +585,10 @@ const SalonInfos = () => {
         setIsLoading(true)
         if (!pageDone.includes('salon_info')) {
             let resp = await salonApi.assignStepDone({ page: 'salon_info' });
-            removeFromLocalStorage('pages_done');
-            setLocalStorage('pages_done', resp.data.pages_done);
+
+            if (resp.data?.pages_done) {
+                setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+            }
             setPageDone((prevArray) => [...prevArray, 'salon_info'])
         }
         setIsLoading(false);
@@ -546,8 +602,7 @@ const SalonInfos = () => {
         <div className={`w-[500px] h-max bg-white rounded-2xl py-4 shadow-lg mb-12`}>
             {isLoading && loadingView()}
             {/* For explaining the website */}
-            {!pageDone.includes('salon_info') &&
-                <TourModal steps={tourSteps} onRequestClose={closeTour} />}
+            <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('salon_info')} />
 
             {isModal && (
                 <BaseModal close={() => setIsModal(false)} width="w-[600px]">
@@ -765,6 +820,9 @@ const SalonInfos = () => {
                     </div>
                 </BaseModal>
             )}
+
+
+
             {/* Affichage des adresses dans la vignette principale */}
             <div className="flex">
                 <h4 className="flex items-center justify- ml-6 mb-2 font-semibold text-lg">
@@ -857,6 +915,68 @@ const SalonInfos = () => {
                 </div>
             </div>
 
+            {isSiretUpdateModalOpen && (
+                <BaseModal close={closeSiretUpdateModal} width="md:w-[auto]" opacity={60}>
+                    {/* Contenu du modal */}
+                    <div>
+                        <h4 className="flex items-center justify-center ml-6 mb-8 font-semibold text-xl">
+                            Numéro d'identification
+                        </h4>
+                        <div className="text-center text-sm">
+                            <p>Vous êtes sur le point de mettre à jour votre numéro d'identification.</p>
+                            <p>Celui-ci sera contrôlé.</p>
+                            <p>Onehaircut se réserve le droit de bloquer temporairement votre compte en cas d'information erronée.</p>
+                            <p>Vous serez notifié par email en cas de problème.</p>
+                        </div>
+
+                        {/* Checkbox et label "Je certifie que mes informations sont correctes" */}
+                        <div className="flex items-center justify-center py-5">
+                            <label htmlFor="SiretCertification" className="text-md font-semibold text-gray-900">
+                                Je certifie que mes informations sont correctes
+                            </label>
+                            <div className={`w-6 h-6 ml-4 rounded ${isSiretCheckboxChecked ? ColorsThemeA.ohcVerticalGradient_A : "bg-[#D6D6D6]"} flex items-center justify-center cursor-pointer`}
+                                onClick={() => handleSiretCheckboxChange()}>
+                                {isSiretCheckboxChecked && <CheckedIcon />}
+                            </div>
+                        </div>
+
+                        {/* Conteneur pour les boutons */}
+                        <div className="flex justify-center items-center gap-4 mt-4">
+                            {/* Bouton Annuler */}
+                            <button
+                                onClick={closeSiretUpdateModal}
+                                className={`px-4 py-2 rounded-md ${Theme_A.button.medWhiteColoredButton} shadow-md`}
+                            >
+                                Annuler
+                            </button>
+
+                            {/* Bouton Confirmer */}
+                            <button
+                                onClick={() => isSiretCheckboxChecked && updateSiretNumber(siretNumber)}
+                                disabled={!isSiretCheckboxChecked}
+                                className={`px-4 py-2 rounded-md ${isSiretCheckboxChecked ? Theme_A.button.mediumGradientButton : 'bg-gray-300 text-gray-500 cursor-not-allowed'} shadow-md`}
+                            >
+                                Confirmer
+                            </button>
+                        </div>
+                    </div>
+                </BaseModal>
+            )}
+            <h4 className="flex items-center justify-start ml-10 mt-6 mb-8 font-semibold text-sm">
+                Phone Number (Please Enter Valid Phone Number)*
+            </h4>
+            <div className="flex-inputs flex justify-center mb-8 field_ID_salon">
+                <CustomInput
+                    id="phoneNumber"
+                    label="Phone Number*"
+                    value={phoneNumber}
+                    onChange={handlePhoneNumberChange}
+                    type="text"
+                />
+                <button className={`ml-8 flex gap-4 items-center justify-center w-22 ${Theme_A.button.medBlackColoredButton}`}
+                    /* onClick={() => updateSiretNumber(siretNumber)}> Mettre à jour</button> */
+                    onClick={() => updatePhoneNumber(phoneNumber)}> Mettre à jour</button>
+            </div>
 
             <h4 className="flex items-center justify-start ml-10 mt-6 mb-8 font-semibold text-sm">
                 Numéros d'identification d'entreprise (SIRET, UID, CIF etc)*
@@ -871,7 +991,8 @@ const SalonInfos = () => {
 
                 />
                 <button className={`ml-8 flex gap-4 items-center justify-center w-22 ${Theme_A.button.medBlackColoredButton}`}
-                    onClick={() => updateSiretNumber(siretNumber)}> Update</button>
+                    /* onClick={() => updateSiretNumber(siretNumber)}> Mettre à jour</button> */
+                    onClick={() => openSiretUpdateModal()}> Mettre à jour</button>
             </div>
 
             {/* Séparation */}
@@ -896,7 +1017,7 @@ const SalonInfos = () => {
 
                 {/* Checkbox et label "Autoriser la mobilité" */}
                 <div className="flex-1 py-5 pl-5 ml-8 flex items-center"> {/* Utilisez flex items-center ici */}
-                    <div onClick={() => handleCheckboxChange(isMobilityAllowed)} className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded 
+                    <div onClick={() => handleCheckboxChange(isMobilityAllowed)} className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded
                     ${isMobilityAllowed
                             ? ColorsThemeA.ohcVerticalGradient_A
                             : "bg-[#D6D6D6]"

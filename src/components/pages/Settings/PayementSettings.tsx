@@ -31,6 +31,7 @@ const PayementSettings = () => {
     // state for knowing the execution periode of the bot
     const { loadingView } = userLoader();
     const [isLoading, setIsLoading] = useState(false);
+    const showSnackbar = useSnackbar();
 
     const [stripeKey, setStripeKey] = useState("");
     const [payMethod, setPayMethod] = useState(payementMethodStruct[0])
@@ -43,7 +44,7 @@ const PayementSettings = () => {
     const [clickedMethod, setClickedMethod] = useState(payementMethodStruct[0])
     // state for the card number
     const [cardNb, setCardNb] = useState(0)
-    const [pageDone, setPageDone] = useState<String[]>([]);
+    const [pageDone, setPageDone] = useState<String[]>(['salon_payment']);
 
 
 
@@ -54,6 +55,7 @@ const PayementSettings = () => {
         console.log(data);
         let resp = await salonApi.updateBankAccount(data);
         console.log(resp);
+
     }
     const [accountPaymentName, setAccountPaymentName] = useState('');
     const [accountPaymentNumber, setAccountPaymentNumber] = useState('');
@@ -97,8 +99,8 @@ const PayementSettings = () => {
     };
 
     const modifBankCard: React.JSX.Element =
-        <div>
-            <Elements options={options} stripe={stripePromise}>
+        <div style={{ maxWidth: '500px', margin: 'auto' }}>
+            <Elements options={options} stripe={stripePromise} >
                 {/* <PaymentForm onCardNumberChange={handleCardNumberChange}
                     onCardExpMonthChange={handleCardExpMonthChange}
                     onCardExpYearChange={handleCardExpYearChange}
@@ -208,6 +210,16 @@ const PayementSettings = () => {
             setIban(formattedIban); // Met à jour l'état de l'IBAN avec la valeur formatée et tronquée
         }
     };
+    const isFormValid = () => {
+        // Add your validation logic here
+        return (
+            accountName.trim() !== "" &&
+            accountOwner.trim() !== "" &&
+            bank.trim() !== "" &&
+            bankAccountType.trim() !== "" &&
+            iban.trim() !== ""
+        );
+    };
 
     const handleCloseBankAccountModal = () => {
         // Fermer le modal ici (ajuster selon votre logique existante)
@@ -218,29 +230,37 @@ const PayementSettings = () => {
     const [bankAccountDisplay, setBankAccountDisplay] = useState('Aucun compte paramétré');
     // Fonction pour simuler l'enregistrement des données
     const handleSaveBankAccountData = () => {
-        // Ici, vous pourriez avoir votre logique pour enregistrer les données de l'IBAN dans la base de données ou ailleurs
-        console.log("Données enregistrées (simulation)");
-        const bankData: BankAccountStripe = {
-            name: accountName,
-            owner: accountOwner,
-            bank_name: bank,
-            business_type: bankAccountType,
-            iban: iban,
-            currency: 'eur',
-        }
-        updateBankingSettings(bankData).then(async () => {
-            const { data } = await Auth.getUser()
-            setLocalStorage("user", JSON.stringify(data.user));
-            if (data.user.hair_salon) {
-                setLocalStorage("hair_salon", JSON.stringify(data.user.hair_salon));
+        if (isFormValid()) {
+            // Ici, vous pourriez avoir votre logique pour enregistrer les données de l'IBAN dans la base de données ou ailleurs
+            console.log("Données enregistrées (simulation)");
+            const bankData: BankAccountStripe = {
+                name: accountName,
+                owner: accountOwner,
+                bank_name: bank,
+                business_type: bankAccountType,
+                iban: iban,
+                currency: 'eur',
             }
-            window.location.reload();
-        })
-        // Mettre à jour l'affichage du compte bancaire avec l'IBAN
-        setBankAccountDisplay(iban);
+            updateBankingSettings(bankData).then(async (e) => {
+                console.log(e)
+                const { data } = await Auth.getUser()
+                setLocalStorage("user", JSON.stringify(data.user));
+                if (data.user.hair_salon) {
+                    setLocalStorage("hair_salon", JSON.stringify(data.user.hair_salon));
+                }
+                showSnackbar('success', 'Bank Account Data Stored')
+            }).catch((e) => {
+                showSnackbar('error', "Please Check Your Identity : Such as valid phone number, bank account number , etc")
+            });
+            // Mettre à jour l'affichage du compte bancaire avec l'IBAN
+            setBankAccountDisplay(iban);
 
-        // Fermez le modal après l'enregistrement
-        setShowAddBankAccountModal(false);
+            // Fermez le modal après l'enregistrement
+            setShowAddBankAccountModal(false);
+        }
+        else {
+            showSnackbar("error", "There are missing field. Please give a valid information");
+        }
     };
 
     const getCustomerStripeInformation = async () => {
@@ -321,8 +341,7 @@ const PayementSettings = () => {
         getSalonStripeInformation()
         getCustomerStripeInformation()
         const pages_done = getLocalStorage('pages_done')
-        setPageDone(pages_done!.split(',').map((item) => item.trim()))
-        console.log(pages_done)
+        setPageDone(pages_done ? JSON.parse(pages_done) : [])
     }, [])
 
     const [birthdate, setBirthdate] = useState(new Date());
@@ -345,7 +364,7 @@ const PayementSettings = () => {
         },
         {
             selector: '.button_add_bank_card',
-            content: 'Ce bouton vous permettra d\'ajouter ou modifier votre moyen de paiement pour l\'abonnement pro.',
+            content: 'Ce bouton vous permettra d’ajouter ou modifier votre moyen de paiement pour l’abonnement pro.',
         },
     ];
 
@@ -354,8 +373,10 @@ const PayementSettings = () => {
         setIsLoading(true)
         if (!pageDone.includes('salon_payment')) {
             let resp = await salonApi.assignStepDone({ page: 'salon_payment' });
-            removeFromLocalStorage('pages_done');
-            setLocalStorage('pages_done', resp.data.pages_done);
+
+            if (resp.data?.pages_done) {
+                setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+            }
             setPageDone((prevArray) => [...prevArray, 'salon_payment'])
         }
         setIsLoading(false);
@@ -375,8 +396,7 @@ const PayementSettings = () => {
 
 
             {/* For explaining the website */}
-            {!pageDone.includes('salon_payment') &&
-                <TourModal steps={tourSteps} onRequestClose={closeTour} />}
+            <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('salon_payment')} />
 
 
             {/* Nouvelle section pour le solde du compte */}
@@ -553,6 +573,7 @@ const PayementSettings = () => {
                             <button
                                 onClick={handleSaveBankAccountData}
                                 className={`${Theme_A.button.mediumGradientButton} mr-10`} // Ajustez la marge à gauche si nécessaire
+                            // disabled={!isFormValid()}
                             >
                                 Enregistrer
                             </button>
