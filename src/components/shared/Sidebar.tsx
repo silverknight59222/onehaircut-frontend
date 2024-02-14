@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState, ChangeEvent, useRef } from "react";
+import React, {useEffect, useState, ChangeEvent, useRef} from "react";
 import "./index.css";
 import {
   BoostIcon,
@@ -22,17 +22,18 @@ import {
   FilterIcon,
   ContactIcon,
 } from "../utilis/Icons";
-import { SalonDetails } from "@/types";
-import { getLocalStorage, setLocalStorage } from "@/api/storage";
-import { dashboard } from "@/api/dashboard";
-import { usePathname, useRouter } from "next/navigation";
-import { ColorsThemeA, Theme_A } from "../utilis/Themes";
+import {SalonDetails} from "@/types";
+import {getLocalStorage, setLocalStorage} from "@/api/storage";
+import {dashboard} from "@/api/dashboard";
+import {usePathname, useRouter} from "next/navigation";
+import {ColorsThemeA, Theme_A} from "../utilis/Themes";
 import BaseModal from "../UI/BaseModal";
-import { client, user_api } from "@/api/clientSide";
-import { salonApi } from '@/api/salonSide'
-import { Auth } from "@/api/auth";
+import {client, user_api} from "@/api/clientSide";
+import {salonApi} from '@/api/salonSide'
+import {Auth} from "@/api/auth";
 import useSnackbar from "@/hooks/useSnackbar";
 import QRCodeGenerator from "@/@core/components/qrcode";
+import AnimatedSalonZones from "../pages/dashboard/AnimatedSalonZones";
 
 interface SidebarItems {
   icon: string;
@@ -59,7 +60,7 @@ type SidebarType = {
 const colorIcon = "#FFFFFF"
 
 // Define the Sidebar component
-const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, notifications }: SidebarType) => {
+const Sidebar = ({isSidebar, SidebarHandler, sidebarItems, isClientDashboard, notifications}: SidebarType) => {
   const showSnackbar = useSnackbar();
   // State to store salon details
   const [salonDetail, setSalonDetails] = useState<SalonDetails[]>();
@@ -163,52 +164,52 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
         break;
       case "BotIcon":
         Icon = (
-          <BotIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="28" height="28" />
+          <BotIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="28" height="28"/>
         );
         break;
       case "StarGreyIcon":
         Icon = (
-          <StarGreyIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="28" height="28" />
+          <StarGreyIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="28" height="28"/>
         );
         break;
       case "PortraitIcon":
         Icon = (
-          <PortraitIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="24" height="24" />
+          <PortraitIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="24" height="24"/>
         );
         break;
       case "HistoryIcon":
         Icon = (
-          <HistoryIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="24" height="24" />
+          <HistoryIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="24" height="24"/>
         );
         break;
       case "HelpIcon":
         Icon = (
-          <HelpIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="24" height="24" />
+          <HelpIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="24" height="24"/>
         );
         break;
       case "ReservationIcon":
         Icon = (
-          <ReservationIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="30" height="28" />
+          <ReservationIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="30" height="28"/>
         );
         break;
       case "CabineIcon":
         Icon = (
-          <CabineIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="28" height="28" />
+          <CabineIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="28" height="28"/>
         );
         break;
       case "FilterIcon":
         Icon = (
-          <FilterIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="28" height="28" />
+          <FilterIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="28" height="28"/>
         );
         break;
       case "ContactIcon":
         Icon = (
-          <ContactIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="32" height="32" />
+          <ContactIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="32" height="32"/>
         );
         break;
       case "ContactIcon_Client":
         Icon = (
-          <ContactIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="32" height="32" />
+          <ContactIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="32" height="32"/>
         );
         break;
     }
@@ -321,7 +322,8 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
 
   /* For The Logo */
 
-  {/* Importation du logo  */ }
+  {/* Importation du logo  */
+  }
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [logoPath, setLogoPath] = useState(""); // pour conserver le chemin du logo une fois chargé
   const handleLogoClick = () => {
@@ -357,6 +359,8 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
       showSnackbar("succès", "Cannot send Verification Email");
     }
   }
+
+
   const SetCurrentDescription = () => {
 
   }
@@ -382,7 +386,8 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
             className="lg:hidden fixed top-0 left-0 h-full w-screen bg-[#2E465C] bg-opacity-90 cursor-pointer"
             onClick={() => SidebarHandler(!isSidebar)}
           />
-          <div className="w-72 h-screen fixed bg-white shadow-[0_1px_30px_0px_rgba(0,0,0,0.3)] pt-4 overflow-auto no-scrollbar">
+          <div
+            className="w-72 h-screen fixed bg-white shadow-[0_1px_30px_0px_rgba(0,0,0,0.3)] pt-4 overflow-auto no-scrollbar">
             <div
               className="lg:hidden absolute top-2 right-3 text-2xl cursor-pointer"
               onClick={() => SidebarHandler(!isSidebar)}
@@ -392,23 +397,25 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
 
             {/* Section Salon LOGO On top of the Sidebar */}
             <div className="relative w-full flex flex-col items-center justify-center lg:mt-0 mt-10 group">
-              {!isClientDashboard && <p className="text-xl font-bold mb-5">{activeSalon?.name ? activeSalon.name : '-'}</p>}
+              {!isClientDashboard &&
+                <p className="text-xl font-bold mb-5">{activeSalon?.name ? activeSalon.name : '-'}</p>}
 
 
               {/* Conteneur de l'image et de l'icone */}
               <div
                 className="relative cursor-pointer group"
                 onClick={openModal}
-                style={{ width: '160px', height: '160px' }}
+                style={{width: '160px', height: '160px'}}
               >
                 {/* Icone around the logo*/}
-                <div className="absolute inset-0 flex items-center justify-center transition-transform duration-500 group-hover:rotate-90"
+                <div
+                  className="absolute inset-0 flex items-center justify-center transition-transform duration-500 group-hover:rotate-90"
                   style={{
                     left: '-15px',
                     transition: 'transform 500ms',
                     transformOrigin: '54% center', // ajustez selon vos besoins
                   }}> {/* Ajustement ici */}
-                  <ProfileImageBorderIcon />
+                  <ProfileImageBorderIcon/>
                 </div>
 
                 {/* Salon Logo*/}
@@ -435,10 +442,11 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
                           type="file"
                           ref={fileInputRef}
                           onChange={handleFileChange}
-                          style={{ display: 'none' }}
+                          style={{display: 'none'}}
                           accept="image/*"
                         />
-                        <div className="w-48 h-48 rounded-full overflow-hidden shadow-md transform transition-transform duration-300 hover:scale-105 hover:shadow-lg cursor-pointer">
+                        <div
+                          className="w-48 h-48 rounded-full overflow-hidden shadow-md transform transition-transform duration-300 hover:scale-105 hover:shadow-lg cursor-pointer">
                           {image || imageUrl ? (
                             <img
                               src={image || imageUrl}
@@ -451,8 +459,9 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
                               className="w-full h-full rounded-full flex items-center justify-center border-2 border-stone-200 transform transition-transform duration-300 hover:scale-105 hover:shadow-lg cursor-pointer"
                               onClick={handleLogoClick}
                             >
-                              <div className="flex items-center justify-center w-24 h- transition-transform duration-500 hover:rotate-90">
-                                <AddPlusIcon />
+                              <div
+                                className="flex items-center justify-center w-24 h- transition-transform duration-500 hover:rotate-90">
+                                <AddPlusIcon/>
                               </div>
                             </div>
                           )}
@@ -461,11 +470,11 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
 
 
                       {/* Line separator */}
-                      < hr className="border-t border-gray-300 my-12 mt-2 mb-4" />
+                      < hr className="border-t border-gray-300 my-12 mt-2 mb-4"/>
 
 
                       <div className="flex items-center justify-center mb-8">
-                        <QRCodeGenerator url={QRWishlistURL} />
+                        <QRCodeGenerator url={QRWishlistURL}/>
                       </div>
                       <div className="flex items-center justify-center font-semibold ">
                         <p className="mb-2">Ou bien partagez ce lien sur vos réseaux: </p>
@@ -475,7 +484,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
                       </div>
 
                       {/* Line separator */}
-                      < hr className="border-t border-gray-300 my-2" />
+                      < hr className="border-t border-gray-300 my-2"/>
 
                       <h2 className="text-center text-lg font-bold mb-4 mt-12">
                         Décrivez votre salon
@@ -499,7 +508,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
                     {/* Bouton Enregistrer */}
                     <div className="flex justify-center pb-2">
                       <button className={`${Theme_A.button.smallGradientButton}`}
-                        onClick={handleClick}
+                              onClick={handleClick}
                       >
                         Enregistrer
                       </button>
@@ -520,7 +529,9 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
             </div>}
             {!isEmailVerified && (
               <p className="text-red-600 text-center mt-2">
-                Adresse email non vérifiée <button className={'underline hover:scale-105 transition duration-300 cursor-pointer'} onClick={() => resendVerification()}> Renvoyer le lien de vérification</button>
+                Adresse email non vérifiée <button
+                className={'underline hover:scale-105 transition duration-300 cursor-pointer'}
+                onClick={() => resendVerification()}> Renvoyer le lien de vérification</button>
               </p>
             )}
             {/* Sidebar items display - mb-12 added to be able to see the last element due to the bottom-bar */}
@@ -575,6 +586,9 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
                 );
               })}
             </div>
+            {!isClientDashboard && (
+              <AnimatedSalonZones />
+            )}
           </div>
         </div>
       )}
