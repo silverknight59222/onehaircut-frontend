@@ -184,10 +184,10 @@ const BookSalon = () => {
     }
     let resp = await salonApi.createPaymentIntent({
       price: pay_price,
-      user_id: user.id,
+      user_id: user ? user.id : null,
       salon_id: salon.id,
       currency: "eur",
-      email: user.email,
+      email: user ? user.email : null,
     });
     setLocalStorage("client_payment_secret", resp.data.clientSecret)
     setLocalStorage("client_stripe_trace_id", resp.data.stripe_trace_id)

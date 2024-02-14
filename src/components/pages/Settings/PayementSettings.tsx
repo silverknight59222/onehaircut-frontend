@@ -281,7 +281,16 @@ const PayementSettings = () => {
 
     // État pour le popup de frais de transaction
     const [showTransactionFeePopup, setShowTransactionFeePopup] = useState(false);
-
+    const doPayout = async () => {
+        let resp = await salonApi.doPayout();
+        console.log(resp);
+        if (resp.data.status == 200) {
+            showSnackbar('success', resp.data.message)
+        }
+        else {
+            showSnackbar('error', resp.data.message)
+        }
+    }
     // Fonction appelée lors du clic sur le bouton de paiement
     const handlePayoutClick = () => {
         // Afficher le popup de frais de transaction
@@ -296,6 +305,12 @@ const PayementSettings = () => {
     // Fonction pour valider le paiement (incluant les frais de transaction)
     const validatePayout = () => {
         console.log("Paiement validé, frais de transaction inclus");
+        if(parseFloat(accountBalance) == 0.00 ? "disabled" : "") {
+            showSnackbar('error', 'Balance is not enough to payout')  
+        } 
+        else {
+            doPayout();
+        }
         // Ici, vous pouvez intégrer la logique pour traiter le paiement
         // N'oubliez pas de fermer le popup après le traitement
         closeTransactionFeePopup();

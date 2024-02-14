@@ -140,6 +140,9 @@ const salonApi = {
   createPaymentIntent: async (params: any) => {
     return await request.post('stripe/paymentIntent', params);
   },
+  doPayout: async () => {
+    return await request.post('stripe/doPayout');
+  },
   getProSalonCount: async () => request.get('/hair_salon/count'),
 
   getZonesInfo: async () => request.get(`/hair_salon/zone_list`)
