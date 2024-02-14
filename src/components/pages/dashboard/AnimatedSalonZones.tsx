@@ -1,0 +1,80 @@
+"use client";
+import {salonApi} from "@/api/salonSide";
+import React, {useEffect, useState} from "react";
+
+const AnimatedSalonZones = () => {
+
+  const [selectedZoneIndex, setSelectedZoneIndex] = useState<number>(0);
+  const [intervalVar, setIntervalVar] = useState<any>(null);
+  const [selectedZone, setSelectedZone] = useState<any>(null);
+  const getZonesData = async () => {
+    try {
+      const {data: {data}} = await salonApi.getZonesInfo()
+      if (data?.length) {
+        let index = 0
+        setSelectedZone(data[index])
+        if(data.length > 1) {
+          const interval = setInterval(() => {
+            if(data[index + 1]) {
+              index++
+            } else {
+              index = 0
+            }
+            setSelectedZone(data[index])
+          }, 5000)
+          setIntervalVar(interval)
+        } else {
+          setSelectedZone(data[0])
+        }
+      }
+    } catch (e) {
+      //
+    }
+  }
+
+  useEffect(() => {
+    getZonesData()
+    return () => {
+      if(intervalVar) {
+        clearInterval(intervalVar)
+      }
+    }
+  }, []);
+
+
+  return (<>
+      {selectedZone && (
+        <div key={selectedZoneIndex} className={'flex justify-center'}>
+          <div className="flex w-3/4 h-[100px] p-2 bg-[rgba(255,255,255,0.69)] rounded-2xl shadow-sm shadow-stone-500">
+            {(selectedZone.type  === 'in_trial') && (
+              <div className="w-full flex flex-col justify-center items-center">
+                <p className="text-black font-medium text-sm mt-2">Trial duration left</p>
+                <p className="text-black text-3xl font-semibold">
+                  {selectedZone.days_left} days
+                </p>
+              </div>
+            )}
+            {(selectedZone.type === 'in_free_6_months') && (
+              <div className="w-full flex flex-col justify-center items-center">
+                <p className="text-black font-medium text-sm mt-2">Free {selectedZone.days_left > 30 ? 'months' : 'days'} remaining</p>
+                <p className="text-black text-3xl font-semibold">
+                  {selectedZone.days_left > 30 ? Math.floor(selectedZone.days_left/30) + ' months' : selectedZone.days_left + ' days'}
+                </p>
+              </div>
+            )}
+            {(selectedZone.type === 'bookings_count') && (
+              <div className="w-full flex flex-col justify-center items-center">
+                <p className="text-black font-medium text-sm mt-2">Booking left for free month</p>
+                <p className="text-black text-3xl font-semibold">
+                  {selectedZone.count}/200
+                </p>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </>
+  )
+}
+
+export default AnimatedSalonZones;
