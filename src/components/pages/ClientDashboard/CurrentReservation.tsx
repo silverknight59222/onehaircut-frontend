@@ -10,6 +10,7 @@ import { client } from "@/api/clientSide";
 import BaseModal from "@/components/UI/BaseModal";
 import { dashboard } from "@/api/dashboard";
 import useSnackbar from "@/hooks/useSnackbar";
+import userLoader from "@/hooks/useLoader";
 
 interface selectedSalonInterface {
     name: string, id: number
@@ -25,6 +26,7 @@ const Currentreservation = () => {
     const [message, setMessage] = useState<string>('');
     const [messages, setMessages] = useState<Array<{ content: string, sent: boolean }>>([]);
     const showSnackbar = useSnackbar();
+    const { loadingView } = userLoader();
     const closeChatModal = () => {
         setActiveSalon(null)
         setIsModalOpen(false);
@@ -148,6 +150,8 @@ const Currentreservation = () => {
     // function to cancel the booking
     const onConfirm = async () => {
         // TODO add Backend
+        setIsModalCancel(false);
+        setIsLoading(true);
         console.log(itemToCancel)
         let resp = await dashboard.cancelBooking(itemToCancel.id);
         if (resp.data.status == 200) {
@@ -161,6 +165,7 @@ const Currentreservation = () => {
         // setItemToCancel({})
         localStorage.setItem("rv_after", items.length)
         setIsModalCancel(false); // start modal
+        setIsLoading(false)
     }
 
 
@@ -267,6 +272,7 @@ const Currentreservation = () => {
 
     return (
         <div>
+            {isLoading && loadingView()}
             <div className="hidden lg:block fixed -right-2 md:-right-2 -bottom-2 md:-bottom-2 z-10">
                 <LogoCircleFixRight />
             </div>

@@ -19,7 +19,6 @@ import userLoader from "@/hooks/useLoader";
 import { Elements } from "@stripe/react-stripe-js";
 import { Auth } from "@/api/auth";
 import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/storage";
-const { loadingView } = userLoader();
 
 const PayementSettings = () => {
     const payementMethodStruct: string[] = [
@@ -46,15 +45,12 @@ const PayementSettings = () => {
     const [cardNb, setCardNb] = useState(0)
     const [pageDone, setPageDone] = useState<String[]>(['salon_payment']);
 
-
-
-
     // Function to send the new settings values into backend
     const updateBankingSettings = async (data) => {
         // TODO add backend
-        console.log(data);
+        setIsLoading(true)
         let resp = await salonApi.updateBankAccount(data);
-        console.log(resp);
+        setIsLoading(false);
 
     }
     const [accountPaymentName, setAccountPaymentName] = useState('');
@@ -242,6 +238,7 @@ const PayementSettings = () => {
                 currency: 'eur',
             }
             updateBankingSettings(bankData).then(async (e) => {
+                setIsLoading(true)
                 console.log(e)
                 const { data } = await Auth.getUser()
                 setLocalStorage("user", JSON.stringify(data.user));
@@ -249,6 +246,7 @@ const PayementSettings = () => {
                     setLocalStorage("hair_salon", JSON.stringify(data.user.hair_salon));
                 }
                 showSnackbar('success', 'Bank Account Data Stored')
+                setIsLoading(false)
             }).catch((e) => {
                 showSnackbar('error', "Please Check Your Identity : Such as valid phone number, bank account number , etc")
             });
@@ -282,6 +280,7 @@ const PayementSettings = () => {
     // État pour le popup de frais de transaction
     const [showTransactionFeePopup, setShowTransactionFeePopup] = useState(false);
     const doPayout = async () => {
+        setIsLoading(true)
         let resp = await salonApi.doPayout();
         console.log(resp);
         if (resp.data.status == 200) {
@@ -290,6 +289,8 @@ const PayementSettings = () => {
         else {
             showSnackbar('error', resp.data.message)
         }
+        setAccountBalance("0.00");
+        setIsLoading(false)
     }
     // Fonction appelée lors du clic sur le bouton de paiement
     const handlePayoutClick = () => {
@@ -305,10 +306,11 @@ const PayementSettings = () => {
     // Fonction pour valider le paiement (incluant les frais de transaction)
     const validatePayout = () => {
         console.log("Paiement validé, frais de transaction inclus");
-        if(parseFloat(accountBalance) == 0.00 ? "disabled" : "") {
-            showSnackbar('error', 'Balance is not enough to payout')  
-        } 
+        if (parseFloat(accountBalance) == 0.00 ? "disabled" : "") {
+            showSnackbar('error', 'Balance is not enough to payout')
+        }
         else {
+            closeTransactionFeePopup();
             doPayout();
         }
         // Ici, vous pouvez intégrer la logique pour traiter le paiement
