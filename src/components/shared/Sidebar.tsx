@@ -1,5 +1,5 @@
 "use client";
-import React, {useEffect, useState, ChangeEvent, useRef} from "react";
+import React, { useEffect, useState, ChangeEvent, useRef } from "react";
 import "./index.css";
 import {
   BoostIcon,
@@ -22,15 +22,15 @@ import {
   FilterIcon,
   ContactIcon,
 } from "../utilis/Icons";
-import {SalonDetails} from "@/types";
-import {getLocalStorage, setLocalStorage} from "@/api/storage";
-import {dashboard} from "@/api/dashboard";
-import {usePathname, useRouter} from "next/navigation";
-import {ColorsThemeA, Theme_A} from "../utilis/Themes";
+import { SalonDetails } from "@/types";
+import { getLocalStorage, setLocalStorage } from "@/api/storage";
+import { dashboard } from "@/api/dashboard";
+import { usePathname, useRouter } from "next/navigation";
+import { ColorsThemeA, Theme_A } from "../utilis/Themes";
 import BaseModal from "../UI/BaseModal";
-import {client, user_api} from "@/api/clientSide";
-import {salonApi} from '@/api/salonSide'
-import {Auth} from "@/api/auth";
+import { client, user_api } from "@/api/clientSide";
+import { salonApi } from '@/api/salonSide'
+import { Auth } from "@/api/auth";
 import useSnackbar from "@/hooks/useSnackbar";
 import QRCodeGenerator from "@/@core/components/qrcode";
 import AnimatedSalonZones from "../pages/dashboard/AnimatedSalonZones";
@@ -60,7 +60,7 @@ type SidebarType = {
 const colorIcon = "#FFFFFF"
 
 // Define the Sidebar component
-const Sidebar = ({isSidebar, SidebarHandler, sidebarItems, isClientDashboard, notifications}: SidebarType) => {
+const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, notifications }: SidebarType) => {
   const showSnackbar = useSnackbar();
   // State to store salon details
   const [salonDetail, setSalonDetails] = useState<SalonDetails[]>();
@@ -164,52 +164,52 @@ const Sidebar = ({isSidebar, SidebarHandler, sidebarItems, isClientDashboard, no
         break;
       case "BotIcon":
         Icon = (
-          <BotIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="28" height="28"/>
+          <BotIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="28" height="28" />
         );
         break;
       case "StarGreyIcon":
         Icon = (
-          <StarGreyIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="28" height="28"/>
+          <StarGreyIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="28" height="28" />
         );
         break;
       case "PortraitIcon":
         Icon = (
-          <PortraitIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="24" height="24"/>
+          <PortraitIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="24" height="24" />
         );
         break;
       case "HistoryIcon":
         Icon = (
-          <HistoryIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="24" height="24"/>
+          <HistoryIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="24" height="24" />
         );
         break;
       case "HelpIcon":
         Icon = (
-          <HelpIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="24" height="24"/>
+          <HelpIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="24" height="24" />
         );
         break;
       case "ReservationIcon":
         Icon = (
-          <ReservationIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="30" height="28"/>
+          <ReservationIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="30" height="28" />
         );
         break;
       case "CabineIcon":
         Icon = (
-          <CabineIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="28" height="28"/>
+          <CabineIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="28" height="28" />
         );
         break;
       case "FilterIcon":
         Icon = (
-          <FilterIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="28" height="28"/>
+          <FilterIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="28" height="28" />
         );
         break;
       case "ContactIcon":
         Icon = (
-          <ContactIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="32" height="32"/>
+          <ContactIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="32" height="32" />
         );
         break;
       case "ContactIcon_Client":
         Icon = (
-          <ContactIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="32" height="32"/>
+          <ContactIcon color={activeIcon === SidebarIcon ? colorIcon : "#989898"} width="32" height="32" />
         );
         break;
     }
@@ -387,7 +387,7 @@ const Sidebar = ({isSidebar, SidebarHandler, sidebarItems, isClientDashboard, no
             onClick={() => SidebarHandler(!isSidebar)}
           />
           <div
-            className="w-72 h-screen fixed bg-white shadow-[0_1px_30px_0px_rgba(0,0,0,0.3)] pt-4 overflow-auto no-scrollbar">
+            className="w-72 pb-20 h-screen fixed bg-white shadow-[0_1px_30px_0px_rgba(0,0,0,0.3)] pt-4 overflow-auto no-scrollbar">
             <div
               className="lg:hidden absolute top-2 right-3 text-2xl cursor-pointer"
               onClick={() => SidebarHandler(!isSidebar)}
@@ -405,7 +405,7 @@ const Sidebar = ({isSidebar, SidebarHandler, sidebarItems, isClientDashboard, no
               <div
                 className="relative cursor-pointer group"
                 onClick={openModal}
-                style={{width: '160px', height: '160px'}}
+                style={{ width: '160px', height: '160px' }}
               >
                 {/* Icone around the logo*/}
                 <div
@@ -415,7 +415,7 @@ const Sidebar = ({isSidebar, SidebarHandler, sidebarItems, isClientDashboard, no
                     transition: 'transform 500ms',
                     transformOrigin: '54% center', // ajustez selon vos besoins
                   }}> {/* Ajustement ici */}
-                  <ProfileImageBorderIcon/>
+                  <ProfileImageBorderIcon />
                 </div>
 
                 {/* Salon Logo*/}
@@ -442,7 +442,7 @@ const Sidebar = ({isSidebar, SidebarHandler, sidebarItems, isClientDashboard, no
                           type="file"
                           ref={fileInputRef}
                           onChange={handleFileChange}
-                          style={{display: 'none'}}
+                          style={{ display: 'none' }}
                           accept="image/*"
                         />
                         <div
@@ -461,7 +461,7 @@ const Sidebar = ({isSidebar, SidebarHandler, sidebarItems, isClientDashboard, no
                             >
                               <div
                                 className="flex items-center justify-center w-24 h- transition-transform duration-500 hover:rotate-90">
-                                <AddPlusIcon/>
+                                <AddPlusIcon />
                               </div>
                             </div>
                           )}
@@ -470,11 +470,11 @@ const Sidebar = ({isSidebar, SidebarHandler, sidebarItems, isClientDashboard, no
 
 
                       {/* Line separator */}
-                      < hr className="border-t border-gray-300 my-12 mt-2 mb-4"/>
+                      < hr className="border-t border-gray-300 my-12 mt-2 mb-4" />
 
 
                       <div className="flex items-center justify-center mb-8">
-                        <QRCodeGenerator url={QRWishlistURL}/>
+                        <QRCodeGenerator url={QRWishlistURL} />
                       </div>
                       <div className="flex items-center justify-center font-semibold ">
                         <p className="mb-2">Ou bien partagez ce lien sur vos réseaux: </p>
@@ -484,7 +484,7 @@ const Sidebar = ({isSidebar, SidebarHandler, sidebarItems, isClientDashboard, no
                       </div>
 
                       {/* Line separator */}
-                      < hr className="border-t border-gray-300 my-2"/>
+                      < hr className="border-t border-gray-300 my-2" />
 
                       <h2 className="text-center text-lg font-bold mb-4 mt-12">
                         Décrivez votre salon
@@ -508,7 +508,7 @@ const Sidebar = ({isSidebar, SidebarHandler, sidebarItems, isClientDashboard, no
                     {/* Bouton Enregistrer */}
                     <div className="flex justify-center pb-2">
                       <button className={`${Theme_A.button.smallGradientButton}`}
-                              onClick={handleClick}
+                        onClick={handleClick}
                       >
                         Enregistrer
                       </button>
@@ -530,8 +530,8 @@ const Sidebar = ({isSidebar, SidebarHandler, sidebarItems, isClientDashboard, no
             {!isEmailVerified && (
               <p className="text-red-600 text-center mt-2">
                 Adresse email non vérifiée <button
-                className={'underline hover:scale-105 transition duration-300 cursor-pointer'}
-                onClick={() => resendVerification()}> Renvoyer le lien de vérification</button>
+                  className={'underline hover:scale-105 transition duration-300 cursor-pointer'}
+                  onClick={() => resendVerification()}> Renvoyer le lien de vérification</button>
               </p>
             )}
             {/* Sidebar items display - mb-12 added to be able to see the last element due to the bottom-bar */}
@@ -567,18 +567,18 @@ const Sidebar = ({isSidebar, SidebarHandler, sidebarItems, isClientDashboard, no
                       <div className="relative">
                         <p
                           className={`text-base ${path === item.route && "text-white"
-                          }`}
+                            }`}
                         >
                           {item.title}
                         </p>
                         {item.showWarning && <>
-                        <span
-                          className="absolute top-1/2 -right-5  transform translate-x-1/2 -translate-y-1/2 h-3 w-3">
                           <span
-                            className="absolute top-0 right-0  animate-ping inline-flex h-full w-full rounded-full bg-stone-800 opacity-75"></span>
-                          <span
-                            className="absolute top-0 right--100  inline-flex rounded-full h-3 w-3 bg-red-500"></span>
-									      </span></>
+                            className="absolute top-1/2 -right-5  transform translate-x-1/2 -translate-y-1/2 h-3 w-3">
+                            <span
+                              className="absolute top-0 right-0  animate-ping inline-flex h-full w-full rounded-full bg-stone-800 opacity-75"></span>
+                            <span
+                              className="absolute top-0 right--100  inline-flex rounded-full h-3 w-3 bg-red-500"></span>
+                          </span></>
                         }
                       </div>
                     </div>
