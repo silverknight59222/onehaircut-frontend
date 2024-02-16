@@ -445,6 +445,8 @@ const SalonInfos = () => {
         setAddressResponse(resp.data);
         setName(resp.data.name);
         setStreet(resp.data.street);
+        setLocationLatitude(resp.data.lat);
+        setLocationLongitude(resp.data.long);
         setPostalCode(resp.data.zipcode);
         setCity(resp.data.city);
         setState(resp.data.state);
