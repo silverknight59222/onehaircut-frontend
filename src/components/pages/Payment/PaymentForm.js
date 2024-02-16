@@ -74,6 +74,7 @@ const PaymentForm = ({ onSuccess, showConfirmButton = true }) => {
         case "succeeded":
           // setMessage("Payment succeeded!");
           showSnackbar("success", "Payment Succeeded !")
+          createBooking();
           router.push('/confirm-payment')
           break;
         case "processing":
@@ -143,7 +144,6 @@ const PaymentForm = ({ onSuccess, showConfirmButton = true }) => {
     if (!stripe || !elements) {
       return;
     }
-    createBooking();
     setLoading(true);
     let payment_success = 1;
     const { error } = await stripe.confirmPayment({
