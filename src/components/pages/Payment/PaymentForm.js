@@ -79,6 +79,7 @@ const PaymentForm = ({ onSuccess, showConfirmButton = true }) => {
           break;
         case "processing":
           // setMessage("Your payment is processing.");
+          createBooking();
           showSnackbar("warning", "Your payment is processing!")
           break;
         case "requires_payment_method":
