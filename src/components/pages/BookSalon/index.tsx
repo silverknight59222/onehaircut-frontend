@@ -21,6 +21,7 @@ import { salonApi } from "@/api/salonSide";
 import useSnackbar from "@/hooks/useSnackbar";
 import TourModal, { Steps } from "@/components/UI/TourModal";
 import AudioPlayerForTour from "@/components/UI/PlayerForTour";
+import { convertAmount, getCurrencySymbol, getUserCurrency } from "@/utils/currency";
 
 const BookSalon = () => {
   const [selectedImage, setSelectedImage] = useState("");
@@ -44,6 +45,9 @@ const BookSalon = () => {
   const showSnackbar = useSnackbar();
 
   const salon = salonData ? JSON.parse(salonData) : null
+  const salonCurrency = salon?.user?.currency || 'EUR'
+  const userCurrency = getUserCurrency();
+  const currencySymbol = getCurrencySymbol()
   const user = userData ? JSON.parse(userData) : null
   const services = service_ids ? JSON.parse(service_ids) : null
   const [travel_duration, setTravelDuration] = useState(0)
@@ -466,7 +470,7 @@ const BookSalon = () => {
                   <p className="text-xs text-stone-600 italic">{user?.street}<br />{user?.zipcode} {user?.city}<br />{user?.country}<br /></p>
                   <p className="font-semibold text-lg">Prix du déplacement :</p>
                   <div className="flex justify-center items-center bg-white border border-stone-400 rounded-lg px-4 py-2 mt-2">
-                    <p className="text-stone-600 text-xl font-bold">{`+ ${price} €`} </p> {/* TODO UPDATE THE PRICE WITH THE MOBILITY COST OF THE SALON */}
+                    <p className="text-stone-600 text-xl font-bold">{`+ ${convertAmount(salonCurrency, userCurrency, price)} ${currencySymbol}`} </p> {/* TODO UPDATE THE PRICE WITH THE MOBILITY COST OF THE SALON */}
                   </div>
                 </>
               )}

@@ -21,6 +21,7 @@ import BaseModal from '@/components/UI/BaseModal';
 import CustomInput from '@/components/UI/CustomInput';
 import TourModal, { Steps } from "@/components/UI/TourModal";
 import { user_api } from '@/api/clientSide';
+import {convertAmount, getCurrencySymbol, getUserCurrency} from "@/utils/currency";
 
 
 // TODO IMPORT TO USE ADRESSES
@@ -39,6 +40,8 @@ const SalonChoice = () => {
     const router = useRouter();
     let user = getLocalStorage("user");
     const userData = user ? JSON.parse(user) : null;
+    const userCurrency = getUserCurrency();
+    const currencySymbol = getCurrencySymbol()
     const userId = user ? Number(JSON.parse(user).id) : null;
     const getHaircut = getLocalStorage("haircut") as string;
     const haircut = getHaircut ? JSON.parse(getHaircut) : null;
@@ -853,7 +856,7 @@ const SalonChoice = () => {
                                                         options={
                                                             {
                                                                 icon: {
-                                                                    url: filteredSalons[index]?.id === selectedSalon.id ? getRedSVGWithValue(`${filteredSalons[index]?.final_price}€`) : getSVGWithValue(`${filteredSalons[index]?.final_price}€`),
+                                                                    url: filteredSalons[index]?.id === selectedSalon.id ? getRedSVGWithValue(`${convertAmount(filteredSalons[index]['user']['currency'],userCurrency,filteredSalons[index]?.final_price) + currencySymbol}`) : getSVGWithValue(`${convertAmount(filteredSalons[index]['user']['currency'],userCurrency,filteredSalons[index]?.final_price) + currencySymbol}`),
                                                                     scaledSize: filteredSalons[index]?.id === selectedSalon.id ? new window.google.maps.Size(70, 110) : new window.google.maps.Size(60, 100),
                                                                     origin: new window.google.maps.Point(0, -10),
                                                                     anchor: filteredSalons[index]?.id === selectedSalon.id ? new window.google.maps.Point(25, 37) : new window.google.maps.Point(20, 35),
@@ -949,9 +952,9 @@ const SalonChoice = () => {
                                                 <p className='text-black text-md md:text-lg font-semibold md:pt-2 overflow-auto'>{fsalon.name}</p>
                                                 <div className='flex justify-end'>
                                                     <p
-                                                        style={{ fontSize: getFontSize(fsalon.final_price) }}
+                                                        style={{ fontSize: getFontSize(convertAmount(fsalon.user.currency, userCurrency, fsalon.final_price)) }}
                                                         className={`px-2 py-1 ${ColorsThemeA.OhcGradient_B} rounded-full border border-stone-300 text-white font-semibold text-xs md:text-sm w-max`}>
-                                                        {fsalon.final_price} €
+                                                        {convertAmount(fsalon.user.currency, userCurrency, fsalon.final_price)} {currencySymbol}
                                                     </p>
                                                 </div>
                                                 {/* </div> */}

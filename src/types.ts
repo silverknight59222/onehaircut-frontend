@@ -43,6 +43,9 @@ export type SalonDetails = {
 	openTimes: any[],
 	chat_status: number,
 	wishlist : number,
+  user:{
+    currency: string
+  }
 };
 
 export type FileDetails = {

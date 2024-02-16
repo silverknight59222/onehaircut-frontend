@@ -24,6 +24,7 @@ import { elements } from "chart.js";
 import { Address } from "@/types"
 import TourModal, { Steps } from "@/components/UI/TourModal";
 import AudioPlayerForTour from "@/components/UI/PlayerForTour";
+import { convertAmount, getCurrencySymbol, getUserCurrency } from "@/utils/currency";
 
 
 const temp = getLocalStorage("haircut")
@@ -57,6 +58,9 @@ interface SalonProfile {
   haircut: any,
   total_service_duration: number,
   salon_haircut: any,
+  user?: {
+    currency: string
+  }
 }
 
 
@@ -64,6 +68,8 @@ const SearchSalon = () => {
   const [selectedImage, setSelectedImage] = useState("");
   const [serviceDuration, setServiceDuration] = useState<Number>(0);
   const [servicePrice, setServicePrice] = useState<Number>(0);
+  const userCurrency = getUserCurrency();
+  const currencySymbol = getCurrencySymbol();
   const [isLoading, setIsLoading] = useState(false);
   const [salonProfile, setSalonProfile] = useState<SalonProfile>()
   const router = useRouter();
@@ -452,7 +458,7 @@ const SearchSalon = () => {
             </p>
 
             {/* Conteneur pour les informations */}
-            <div className="flex flex-col items-center gap-6 bg-white opacity-90 w-[420px] xl:max-w-[420px] 2xl:max-w-[500px] border border-[#E1E1E1] rounded-3xl py-6 px-8 2xl:px-10 shadow-sm shadow-stone-600 mt-6 ">
+            <div className="flex flex-col items-center gap-6 bg-white opacity-90 w-[420px] xl:max-w-[420px] 2xl:max-w-[500px] border border-[#E1E1E1] rounded-3xl py-6 px-6 2xl:px-6 shadow-sm shadow-stone-600 mt-6 ">
 
               {/* Ligne d'information avec titre et valeur */}
               {/* Ligne avec Prix et Durée totale */}
@@ -463,7 +469,7 @@ const SearchSalon = () => {
                     Prix total :
                   </p>
                   {salonProfile && <p className="text-xl font-normal text-stone-700">
-                    {salonProfile.final_price}€
+                    {convertAmount(salonProfile.user?.currency || 'EUR', userCurrency, salonProfile.final_price)} {currencySymbol}
                   </p>}
                 </div>
 

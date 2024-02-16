@@ -3198,7 +3198,7 @@ export const MapIconWithValue: React.FC<any> = ({ value }: { value: string }) =>
         <stop offset="1" stopColor="#FFE90B" />
       </linearGradient>
     </defs>
-    <text x="49%" y="38%" alignmentBaseline="middle" textAnchor="middle" fontFamily="Arial" fontWeight="bold" fontSize="15" fill="black">{value}</text>
+    <text x="49%" y="38%" alignmentBaseline="middle" textAnchor="middle" fontFamily="Arial" fontWeight="bold" fontSize="10" fill="black">{value}</text>
   </svg>)
 }
 
@@ -3240,7 +3240,7 @@ export const MapIconRedWithValue: React.FC<any> = ({ value }: { value: string })
       <rect x="20.667" y="71.5026" width="3.95352" height="3.34604" transform="rotate(-62.3685 20.667 71.5026)"
         fill="#D25353" />
       <text x="49%" y="38%" alignmentBaseline="middle" textAnchor="middle" fontFamily="Arial" fontWeight="bold"
-        fontSize="15" fill="white">{value}
+        fontSize="10" fill="white">{value}
       </text>
     </svg>
   )
