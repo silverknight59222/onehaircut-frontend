@@ -7,6 +7,7 @@ import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/
 import TourModal, { Steps } from "@/components/UI/TourModal";
 import { salonApi } from "@/api/salonSide";
 import userLoader from "@/hooks/useLoader";
+import AudioPlayerForTour from "@/components/UI/PlayerForTour";
 // For update commit
 const hairStyleSelectEvent = {
   on: () => { }
@@ -73,21 +74,38 @@ const Hairstyles = () => {
   const tourSteps: Steps[] = [
     {
       selector: '',
-      content: 'Dans cette page, vous pouvez indiquer les coiffures que vous souhaitez proposer à vos clients.',
+      content:
+        <div key="/assets/audio/tour/salon/Coiffures_men_1.mp3">
+          <AudioPlayerForTour src="/assets/audio/tour/salon/Coiffures_men_1.mp3" />
+          <p>Dans cette page, vous pouvez indiquer les coiffures que vous souhaitez proposer à vos clients.</p>
+        </div>,
     },
     {
       selector: '.hairStyles_list',
-      content: 'Sélectionner une ou plusieurs coiffures à ajouter.',
+      content:
+        <div key="/assets/audio/tour/salon/Coiffures_men_2.mp3">
+          <AudioPlayerForTour src="/assets/audio/tour/salon/Coiffures_men_2.mp3" />
+          <p>Sélectionner une ou plusieurs coiffures à ajouter.</p>
+        </div>,
     },
     {
       selector: '.hairStyles_modal',
-      content: 'Entrer ensuite les détails qui seront liés à ces coiffures.',
+      content:
+        <div key="/assets/audio/tour/salon/Coiffures_men_3.mp3">
+          <AudioPlayerForTour src="/assets/audio/tour/salon/Coiffures_men_3.mp3" />
+          <p>Entrer ensuite les détails qui seront liés à ces coiffures.</p>
+        </div>,
     },
     {
       selector: '.hairStyles_filter',
-      content: 'Aider vous des filtres. ',
+      content:
+        <div key="/assets/audio/tour/salon/Coiffures_men_4.mp3">
+          <AudioPlayerForTour src="/assets/audio/tour/salon/Coiffures_men_4.mp3" />
+          <p>Aider vous des filtres.</p>
+        </div>,
     },
   ];
+
 
   const closeTour = async () => {
     // You may want to store in local storage or state that the user has completed the tour
@@ -95,9 +113,9 @@ const Hairstyles = () => {
     if (!pageDone.includes('salon_hairstyles')) {
       let resp = await salonApi.assignStepDone({ page: 'salon_hairstyles' });
 
-if(resp.data?.pages_done) {
-      setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
-}
+      if (resp.data?.pages_done) {
+        setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+      }
       setPageDone((prevArray) => [...prevArray, 'salon_hairstyles'])
     }
     setIsLoading(false);
@@ -108,7 +126,7 @@ if(resp.data?.pages_done) {
     <div>
       {isLoading && loadingView()}
       {/* For explaining the website */}
-        <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('salon_hairstyles')} />
+      <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('salon_hairstyles')} />
       <div className="hairStyles_filter">
         <HairStyleListHeader onListCountShow={listCountShow} isd={isSelectedDelete} selectAllEvent={selectAll} params={params} onFilterSelect={onFilterSelect} setActiveMenu={setActiveMenu} activeMenu={activeMenu} setFinalItems={setFinalSelectedItems}></HairStyleListHeader>
       </div>
