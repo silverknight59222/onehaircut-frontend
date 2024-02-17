@@ -32,7 +32,7 @@ const AddPartner = dynamic(() => import('@/components/pages/dashboard/Dashboard/
 });
 
 const Agenda = dynamic(() => import('@/components/pages/dashboard/Dashboard/Agenda'), {
-	ssr: false,
+  ssr: false,
 });
 
 const UsersPage = dynamic(() => import('@/components/pages/dashboard/Dashboard/Users'), {
@@ -47,18 +47,17 @@ const Page = () => {
   const [tab, setTab] = useState("Dashboard");
   const [showWarningForBankAccount, setShowWarningForBankAccount] = useState<boolean>(!user_data?.bank_acc_stripe_id)
 
-
   const [sidebarItems, setSidebarItems] = useState([
-    { icon: "DashboardIcon", title: "Dashboard", route: "/dashboard" },
+    { icon: "DashboardIcon", title: "Dashboard", permission: "Dashboard", route: "/dashboard" },
     // { icon: "ClientActivityIcon", title: "Client Activité", route: "/dashboard/client-activity" },
     // { icon: "StatsIcon", title: "Visites / Stats", route: "/dashboard/visites" },
     // { icon: "RevenueIcon", title: "Revenue", route:"/dashboard/revenue" },
-    { icon: "MessageIcon", title: "Message", route: "/dashboard/messages" },
-    { icon: "SettingsIcon", title: "Réglages", permission: "Reglages", route: "/dashboard/settings", showWarning: showWarningForBankAccount },
-    { icon: "PersonalizationIcon", title: "Abonnement", route: "/dashboard/subscription" },
+    { icon: "MessageIcon", title: "Message", permission: "Message", route: "/dashboard/messages" },
+    { icon: "SettingsIcon", title: "Réglages", permission: null, route: "/dashboard/settings", showWarning: showWarningForBankAccount },
+    { icon: "PersonalizationIcon", title: "Abonnement", permission: "Abonnement", route: "/dashboard/subscription" },
     // { icon: "BoostIcon", title: "Boost", route: "" },
     // { icon: "BotIcon", title: "OnehairBot", permission: "Onehairbot", route: "/dashboard/bot" },
-    { icon: "ContactIcon", title: "Contactez-nous", route: "/dashboard/contactUs" },
+    { icon: "ContactIcon", title: "Contactez-nous", permission: null, route: "/dashboard/contactUs" },
   ]);
 
   const SidebarHandler = () => {
@@ -83,7 +82,7 @@ const Page = () => {
       let updatedSidebarItems = [...prevSidebarItems];
 
       if (isProSubscription) {
-        updatedSidebarItems.splice(4, 0, { icon: "BotIcon", title: "OnehairBot", route: "/dashboard/bot" });
+        updatedSidebarItems.splice(4, 0, { icon: "BotIcon", title: "OnehairBot", permission: "Onehairbot", route: "/dashboard/bot" });
       }
 
       // Return the updated array
@@ -92,15 +91,15 @@ const Page = () => {
   };
 
   useEffect(() => {
-    fetchSalonNotifications();
     getStatusSubscription();
+    fetchSalonNotifications();
   }, []);
 
   return (
     <>
       {tab === "Dashboard" && (
         <Sidebar notifications={notifications} sidebarItems={sidebarItems} isSidebar={isSidebar}
-                 SidebarHandler={SidebarHandler}/>
+          SidebarHandler={SidebarHandler} />
       )}
       <div
         className={`h-screen px-4 lg:px-8 py-5 overflow-x-hidden ${tab === "Dashboard" && `${ColorsThemeA.pageBgColorLight} ml-0 lg:ml-72`}`}>
