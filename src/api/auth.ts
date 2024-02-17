@@ -61,6 +61,7 @@ const Auth = {
   resendVerifyEmailNotification: async () => {
     return await request.get(`/resend-verification`);
   },
+  getExchangeRates: async () => request.get('/exchange-rates')
 };
 
 export { Auth };

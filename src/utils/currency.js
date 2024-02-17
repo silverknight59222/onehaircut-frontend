@@ -4,23 +4,29 @@ export const currency = {
   EUR: {
     symbol: '€',
     name: 'Euro',
-    conversion: {
-      CHF: 1.06,
-      EUR: 1,
-    }
   },
   CHF: {
     symbol: 'CHF',
     name: 'Swiss Franc',
-    conversion: {
-      CHF: 1,
-      EUR: 0.95,
-    }
-  }
+  },
+  USD: {
+    symbol: '$',
+    name: 'US Dollar',
+  },
+  CAD: {
+    symbol: 'C$',
+    name: 'Canadian Dollar',
+  },
 }
 
 export const convertAmount = (from, to, amount) => {
-  return Number((amount * currency[from].conversion[to]).toFixed(2))
+  const exchangeRates = getLocalStorage("exchangeRates");
+  if(from === to) return Number(amount.toFixed(2))
+  if (exchangeRates) {
+    const rates = JSON.parse(exchangeRates);
+    return Number((amount * rates[from][to]).toFixed(2))
+  }
+  return amount
 }
 
 export const getUserCurrency = () => {

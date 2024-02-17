@@ -6,6 +6,9 @@ import 'react-toastify/dist/ReactToastify.css';
 import './globals.css'
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import {useEffect} from "react";
+import {Auth} from "@/api/auth";
+import {setLocalStorage} from "@/api/storage";
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -14,6 +17,13 @@ export default function RootLayout({
 }: {
 	children: React.ReactNode
 }) {
+
+  useEffect(() => {
+    Auth.getExchangeRates().then(({data}) => {
+      setLocalStorage('exchangeRates', JSON.stringify(data))
+    })
+  },[])
+
 	return (
 		<html lang="en">
 			<RouteGuard>

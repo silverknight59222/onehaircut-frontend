@@ -458,7 +458,7 @@ const SearchSalon = () => {
             </p>
 
             {/* Conteneur pour les informations */}
-            <div className="flex flex-col items-center gap-6 bg-white opacity-90 w-[420px] xl:max-w-[420px] 2xl:max-w-[500px] border border-[#E1E1E1] rounded-3xl py-6 px-6 2xl:px-6 shadow-sm shadow-stone-600 mt-6 ">
+            <div className="flex flex-col items-center gap-6 bg-white opacity-90 w-[420px] xl:max-w-[420px] 2xl:max-w-[500px] border border-[#E1E1E1] rounded-3xl py-6 px-4 2xl:px-4 shadow-sm shadow-stone-600 mt-6 ">
 
               {/* Ligne d'information avec titre et valeur */}
               {/* Ligne avec Prix et Durée totale */}
