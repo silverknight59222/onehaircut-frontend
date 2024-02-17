@@ -39,6 +39,7 @@ interface SidebarItems {
   icon: string;
   title: string;
   route: string;
+  permission: string | null,
   showWarning?: boolean;
 }
 
@@ -75,6 +76,8 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
   // Define routes that require a pro subscription
   const proRoutes = ['/dashboard/client-activity', '/dashboard/visites']
 
+  const temp = getLocalStorage("user");
+  const user = temp ? JSON.parse(temp) : null;
 
   // Function to determine which icon to display on the sidebar
   const setIcon = (SidebarIcon: string, activeIcon: string) => {
@@ -247,10 +250,6 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
   const [isEmailVerified, setIsEmailVerified] = useState(true);
   // Use effect to fetch data on component mount
   useEffect(() => {
-
-    const temp = getLocalStorage("user");
-    const user = temp ? JSON.parse(temp) : null;
-
     const tempSalon = getLocalStorage('hair_salon');
 
     const salonInfo = tempSalon ? JSON.parse(tempSalon) : null;
@@ -290,6 +289,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
     } else {
       setIsEmailVerified(false)
     }
+    console.log(sidebarItems);
 
   }, []);
 
@@ -536,7 +536,25 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
             )}
             {/* Sidebar items display - mb-12 added to be able to see the last element due to the bottom-bar */}
             <div className="mt-8 mb-12">
-              {sidebarItems.map((item, index) => {
+              {sidebarItems.filter((item) => {
+                console.log(item.permission)
+                if (item.permission != null) {
+                  if (user && user.permissions && user.permissions.indexOf(item.permission) != -1) {
+                    console.log(sidebarItems)
+                    console.log(user.permissions)
+                    return true
+                  } else {
+                    if (user && user.permissions && user.permissions.length == 0) {
+                      return true
+                    } else {
+                      return false
+                    }
+                  }
+                }
+                else {
+                  return true;
+                }
+              }).map((item, index) => {
                 return (
                   <div key={index}>
                     <div
