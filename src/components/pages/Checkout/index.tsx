@@ -15,6 +15,7 @@ import userLoader from "@/hooks/useLoader";
 import { SalonRegisterParams, registration } from "@/api/registration";
 import useSnackbar from "@/hooks/useSnackbar";
 import '../../shared/index.css';
+import * as crypto from 'crypto';
 
 const Step5 = () => {
   const router = useRouter();
@@ -28,6 +29,19 @@ const Step5 = () => {
   const salonInfo = getLocalStorage("salon_name") as string;
   const [isLoading, setIsLoading] = useState(false);
   const [totalProSalon, setTotalProSalon] = useState(0);
+
+  const decryptKey = (pk) => {
+    const encryptedValue = pk;
+    const laravelAppKey = 'base64:oMANBtJYNincT0T+NXZzSUM3nKEaKdEDEuiINW7S6kg=';
+    const algorithm = 'aes-256-cbc';
+    const iv = Buffer.from('your-laravel-iv', 'hex');
+    const key = Buffer.from(laravelAppKey, 'hex');
+    const decipher = crypto.createDecipheriv(algorithm, key, iv);
+    let decryptedValue = decipher.update(encryptedValue, 'hex', 'utf-8');
+    decryptedValue += decipher.final('utf-8');
+    console.log(decryptedValue);
+    setStripePromise(decryptedValue);
+  }
 
   const getStripeKey = async () => {
     setIsLoading(true)
