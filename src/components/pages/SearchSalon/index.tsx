@@ -23,6 +23,7 @@ import { dashboard } from '@/api/dashboard';
 import { elements } from "chart.js";
 import { Address } from "@/types"
 import TourModal, { Steps } from "@/components/UI/TourModal";
+import AudioPlayerForTour from "@/components/UI/PlayerForTour";
 
 
 const temp = getLocalStorage("haircut")
@@ -174,29 +175,54 @@ const SearchSalon = () => {
   const tourSteps: Steps[] = [
     {
       selector: '',
-      content: 'Te voici sur la page de présentation du salon.',
+      content:
+        <div key="/assets/audio/tour/client/SearchSalon_woman_1.mp3">
+          <AudioPlayerForTour src="/assets/audio/tour/client/SearchSalon_woman_1.mp3" />
+          <p>Te voici sur la page de présentation du salon.</p>
+        </div>,
     },
     {
       selector: '.pictures_salon',
-      content: 'En cliquant ici, tu peux voir les autres photos de ce salon',
+      content:
+        <div key="/assets/audio/tour/client/SearchSalon_woman_2.mp3">
+          <AudioPlayerForTour src="/assets/audio/tour/client/SearchSalon_woman_2.mp3" />
+          <p>En cliquant ici, tu peux voir les autres images de ce salon.</p>
+        </div>,
     },
     {
       selector: '.pictures_hairstyles',
-      content: 'Et ici des exemples de coiffures que le salon sait faire',
+      content:
+        <div key="/assets/audio/tour/client/SearchSalon_woman_3.mp3">
+          <AudioPlayerForTour src="/assets/audio/tour/client/SearchSalon_woman_3.mp3" />
+          <p>Et ici des exemples de coiffures que le salon sait faire.</p>
+        </div>,
     },
     {
       selector: '.recap',
-      content: 'Voici le récapitulatif de ton choix',
+      content:
+        <div key="/assets/audio/tour/client/SearchSalon_woman_4.mp3">
+          <AudioPlayerForTour src="/assets/audio/tour/client/SearchSalon_woman_4.mp3" />
+          <p>Voici le récapitulatif de ton choix.</p>
+        </div>,
     },
     {
       selector: '.button_reservation',
-      content: 'Si tout est bon, tu peux passer à la suite.',
+      content:
+        <div key="/assets/audio/tour/client/SearchSalon_woman_5.mp3">
+          <AudioPlayerForTour src="/assets/audio/tour/client/SearchSalon_woman_5.mp3" />
+          <p>Si tout est bon, tu peux passer à la suite.</p>
+        </div>,
     },
     {
       selector: '.button_contact',
-      content: 'Tu peux aussi envoyer un message au salon avant de réserver.',
+      content:
+        <div key="/assets/audio/tour/client/SearchSalon_woman_6.mp3">
+          <AudioPlayerForTour src="/assets/audio/tour/client/SearchSalon_woman_6.mp3" />
+          <p>Tu peux aussi envoyer un message au salon avant de réserver.</p>
+        </div>,
     },
   ];
+
 
   const closeTour = async () => {
     // You may want to store in local storage or state that the user has completed the tour
