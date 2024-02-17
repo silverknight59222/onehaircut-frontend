@@ -18,6 +18,7 @@ import TourModal, { Steps } from "@/components/UI/TourModal";
 import userLoader from "@/hooks/useLoader";
 import { dashboard } from "@/api/dashboard";
 import { Auth } from "@/api/auth";
+import AudioPlayerForTour from "@/components/UI/PlayerForTour";
 
 const tempSalon = getLocalStorage('hair_salon');
 let salonInfo = tempSalon ? JSON.parse(tempSalon) : null;
@@ -566,21 +567,38 @@ const SalonInfos = () => {
     const tourSteps: Steps[] = [
         {
             selector: '.zone_address',
-            content: 'Vous pouvez changer l\'adresse de facturation ou de l’établissement.',
+            content:
+                <div key="/assets/audio/tour/salon/Settings-Info_men_1.mp3">
+                    <AudioPlayerForTour src="/assets/audio/tour/salon/Settings-Info_men_1.mp3" />
+                    <p>Vous pouvez changer l'adresse de facturation ou de l’établissement.</p>
+                </div>,
         },
         {
             selector: '.button_type_salon',
-            content: 'L\'adaptation du type d\'établissement se fait là.',
+            content:
+                <div key="/assets/audio/tour/salon/Settings-Info_men_2.mp3">
+                    <AudioPlayerForTour src="/assets/audio/tour/salon/Settings-Info_men_2.mp3" />
+                    <p>L'adaptation du type d'établissement se fait là.</p>
+                </div>,
         },
         {
             selector: '.field_ID_salon',
-            content: 'Entrer ensuite votre numéro d\'identification.',
+            content:
+                <div key="/assets/audio/tour/salon/Settings-Info_men_3.mp3">
+                    <AudioPlayerForTour src="/assets/audio/tour/salon/Settings-Info_men_3.mp3" />
+                    <p>Entrer ensuite votre numéro d'identification.</p>
+                </div>,
         },
         {
             selector: '.field_mobility',
-            content: 'Vous pouvez paramétrer la mobilité de votre établissement.',
+            content:
+                <div key="/assets/audio/tour/salon/Settings-Info_men_4.mp3">
+                    <AudioPlayerForTour src="/assets/audio/tour/salon/Settings-Info_men_4.mp3" />
+                    <p>Vous pouvez paramétrer la mobilité de votre établissement.</p>
+                </div>,
         },
     ];
+
 
     const closeTour = async () => {
         // You may want to store in local storage or state that the user has completed the tour

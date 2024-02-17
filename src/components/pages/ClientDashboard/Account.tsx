@@ -27,6 +27,7 @@ import { useRouter } from "next/navigation";
 import { dashboard } from "@/api/dashboard";
 import TourModal, { Steps } from "@/components/UI/TourModal";
 import { TbHelpSquareRoundedFilled } from "react-icons/tb";
+import AudioPlayerForTour from "@/components/UI/PlayerForTour";
 
 interface infoInterface {
     name: string;
@@ -1044,29 +1045,59 @@ const Account = () => {
     const tourSteps: Steps[] = [
         {
             selector: '',
-            content: 'Bienvenue dans la présentation de Onehaircut',
+            content:
+                <div key="/assets/audio/tour/client/Account_woman_1.mp3">
+                    <AudioPlayerForTour src="/assets/audio/tour/client/Account_woman_1.mp3" />
+                    <p>Bienvenue dans la présentation de Onehaircut.</p>
+                </div>,
         },
         {
             selector: '',
-            content: 'Tu trouveras dans cette page les informations concernant ton compte.',
+            content:
+                <div key="/assets/audio/tour/client/Account_woman_2.mp3">
+                    <AudioPlayerForTour src="/assets/audio/tour/client/Account_woman_2.mp3" />
+                    <p>Tu trouveras dans cette page les informations concernant ton compte.</p>
+                </div>,
         },
         {
             selector: '.button_modify',
-            content: 'Les éléments modifiables peuvent être édités en cliquant sur ce bouton',
+            content:
+                <div key="/assets/audio/tour/client/Account_woman_3.mp3">
+                    <AudioPlayerForTour src="/assets/audio/tour/client/Account_woman_3.mp3" />
+                    <p>Les éléments modifiables peuvent être édités en cliquant sur ce bouton.</p>
+                </div>,
         },
         {
             selector: '',
-            content: 'La navigation se fait avec le menu de gauche.',
+            content:
+                <div key="/assets/audio/tour/client/Account_woman_4.mp3">
+                    <AudioPlayerForTour src="/assets/audio/tour/client/Account_woman_4.mp3" />
+                    <p>La navigation se fait avec le menu de gauche.</p>
+                </div>,
         },
         {
             selector: '.info_button',
-            content: 'Tu peux aussi consulter les aides reparties sur tout le site.',
+            content:
+                <div key="/assets/audio/tour/client/Account_woman_5.mp3">
+                    <AudioPlayerForTour src="/assets/audio/tour/client/Account_woman_5.mp3" />
+                    <p>Tu peux aussi consulter les aides reparties sur tout le site.</p>
+                </div>,
         },
         {
             selector: '',
-            content: tourContent_tourIcon,
+            content:
+                <div key="/assets/audio/tour/client/Account_woman_6.mp3">
+                    <AudioPlayerForTour src="/assets/audio/tour/client/Account_woman_6.mp3" />
+                    <p>Au fait, si tu veux me retrouver, tu peux cliquer sur cette icône!</p>
+                    <div className="justify-center flex pt-2">
+                        <div className={`bg-stone-800 text-sm text-white px-2 py-2 rounded-full`}>
+                            <TbHelpSquareRoundedFilled size={38} />
+                        </div>
+                    </div>
+                </div>,
         },
     ];
+
 
     const closeTour = async () => {
         setIsLoading(true)

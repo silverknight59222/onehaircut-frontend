@@ -20,6 +20,7 @@ import StarRatings from "react-star-ratings";
 import { salonApi } from "@/api/salonSide";
 import useSnackbar from "@/hooks/useSnackbar";
 import TourModal, { Steps } from "@/components/UI/TourModal";
+import AudioPlayerForTour from "@/components/UI/PlayerForTour";
 
 const BookSalon = () => {
   const [selectedImage, setSelectedImage] = useState("");
@@ -271,29 +272,54 @@ const BookSalon = () => {
   const tourSteps: Steps[] = [
     {
       selector: '',
-      content: 'Dernière étape avant le paiement: le choix de la date et de l’heure.',
+      content:
+        <div key="/assets/audio/tour/client/BookSalon_woman_1.mp3">
+          <AudioPlayerForTour src="/assets/audio/tour/client/BookSalon_woman_1.mp3" />
+          <p>Dernière étape avant le paiement: le choix de la date et de l’heure.</p>
+        </div>,
     },
     {
       selector: '.pictures_hairdresser',
-      content: 'Tu peux choisir ici le coiffeur que tu aimerais en cliquant dessus. Le salon se laisse toutefois le droit d\'assigner un autre coiffeur, si nécessaire.',
+      content:
+        <div key="/assets/audio/tour/client/BookSalon_woman_2.mp3">
+          <AudioPlayerForTour src="/assets/audio/tour/client/BookSalon_woman_2.mp3" />
+          <p>Tu peux choisir ici le coiffeur que tu aimerais en cliquant dessus. Le salon se laisse toutefois le droit d'assigner un autre coiffeur, si nécessaire.</p>
+        </div>,
     },
     {
       selector: '.choice_place',
-      content: 'Si le salon est mobile, tu peux choisir d\'avoir la prestation à domicile',
+      content:
+        <div key="/assets/audio/tour/client/BookSalon_woman_3.mp3">
+          <AudioPlayerForTour src="/assets/audio/tour/client/BookSalon_woman_3.mp3" />
+          <p>Si le salon est mobile, tu peux choisir d'avoir la prestation à domicile.</p>
+        </div>,
     },
     {
       selector: '.button_arrow_right',
-      content: 'Tu peux parcourir les dates avec la fleche.',
+      content:
+        <div key="/assets/audio/tour/client/BookSalon_woman_4.mp3">
+          <AudioPlayerForTour src="/assets/audio/tour/client/BookSalon_woman_4.mp3" />
+          <p>Tu peux parcourir les dates avec la fleche.</p>
+        </div>,
     },
     {
       selector: '.button_calender',
-      content: 'Ou choisir un jour dans le mois.',
+      content:
+        <div key="/assets/audio/tour/client/BookSalon_woman_5.mp3">
+          <AudioPlayerForTour src="/assets/audio/tour/client/BookSalon_woman_5.mp3" />
+          <p>Ou choisir un jour dans le mois.</p>
+        </div>,
     },
     {
       selector: '.button_reservation',
-      content: 'Une fois ton choix valider, clique là!',
+      content:
+        <div key="/assets/audio/tour/client/BookSalon_woman_6.mp3">
+          <AudioPlayerForTour src="/assets/audio/tour/client/BookSalon_woman_6.mp3" />
+          <p>Une fois ton choix valider, clique là!</p>
+        </div>,
     },
   ];
+
 
   const closeTour = async () => {
     // You may want to store in local storage or state that the user has completed the tour

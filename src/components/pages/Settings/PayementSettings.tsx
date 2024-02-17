@@ -19,6 +19,7 @@ import userLoader from "@/hooks/useLoader";
 import { Elements } from "@stripe/react-stripe-js";
 import { Auth } from "@/api/auth";
 import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/storage";
+<<<<<<< HEAD
 import CustomizedTable from "@/components/UI/CustomizedTable";
 
 interface PayoutsData {
@@ -29,6 +30,9 @@ interface PayoutsData {
     to_bank: string,
     created_at: string,
 }
+=======
+import AudioPlayerForTour from "@/components/UI/PlayerForTour";
+>>>>>>> origin/dev
 
 const PayementSettings = () => {
     const payementMethodStruct: string[] = [
@@ -406,21 +410,38 @@ const PayementSettings = () => {
     const tourSteps: Steps[] = [
         {
             selector: '.balance_display',
-            content: 'Vous trouverez ici le solde provenant de vos prestations.',
+            content:
+                <div key="/assets/audio/tour/salon/Settings-Payements_men_1.mp3">
+                    <AudioPlayerForTour src="/assets/audio/tour/salon/Settings-Payements_men_1.mp3" />
+                    <p>Vous trouverez ici le solde provenant de vos prestations.</p>
+                </div>,
         },
         {
             selector: '.button_withdraw',
-            content: 'En cliquant sur ce bouton, vous pouvez transferer cette somme vers votre compte bancaire.',
+            content:
+                <div key="/assets/audio/tour/salon/Settings-Payements_men_2.mp3">
+                    <AudioPlayerForTour src="/assets/audio/tour/salon/Settings-Payements_men_2.mp3" />
+                    <p>En cliquant sur ce bouton, vous pouvez transférer cette somme vers votre compte bancaire.</p>
+                </div>,
         },
         {
             selector: '.button_add_bank_account',
-            content: 'Pour entrer ou modifier vos informations bancaires, vous pouvez cliquer ici.',
+            content:
+                <div key="/assets/audio/tour/salon/Settings-Payements_men_3.mp3">
+                    <AudioPlayerForTour src="/assets/audio/tour/salon/Settings-Payements_men_3.mp3" />
+                    <p>Pour entrer ou modifier vos informations bancaires, vous pouvez cliquer ici.</p>
+                </div>,
         },
         {
             selector: '.button_add_bank_card',
-            content: 'Ce bouton vous permettra d’ajouter ou modifier votre moyen de paiement pour l’abonnement pro.',
+            content:
+                <div key="/assets/audio/tour/salon/Settings-Payements_men_4.mp3">
+                    <AudioPlayerForTour src="/assets/audio/tour/salon/Settings-Payements_men_4.mp3" />
+                    <p>Ce bouton vous permettra d’ajouter ou modifier votre moyen de paiement pour l’abonnement pro.</p>
+                </div>,
         },
     ];
+
 
     const closeTour = async () => {
         // You may want to store in local storage or state that the user has completed the tour

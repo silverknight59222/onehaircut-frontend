@@ -19,6 +19,7 @@ import CustomInput from "@/components/UI/CustomInput";
 import BaseModal from "@/components/UI/BaseModal";
 import TourModal, { Steps } from "@/components/UI/TourModal";
 import { salonApi } from "@/api/salonSide";
+import AudioPlayerForTour from "@/components/UI/PlayerForTour";
 
 
 interface AllAvatars {
@@ -483,17 +484,30 @@ const Hairdressers = () => {
   const tourSteps: Steps[] = [
     {
       selector: '.field_name',
-      content: 'Vous pouvez ajouter un coiffeur sur cette page en rentrant les informations requises',
+      content:
+        <div key="/assets/audio/tour/salon/Coiffeurs_men_1.mp3">
+          <AudioPlayerForTour src="/assets/audio/tour/salon/Coiffeurs_men_1.mp3" />
+          <p>Vous pouvez ajouter un coiffeur sur cette page en rentrant les informations requises.</p>
+        </div>,
     },
     {
       selector: '.button_add_profil_picture',
-      content: 'Vous pouvez apporter sa photo de profil',
+      content:
+        <div key="/assets/audio/tour/salon/Coiffeurs_men_2.mp3">
+          <AudioPlayerForTour src="/assets/audio/tour/salon/Coiffeurs_men_2.mp3" />
+          <p>Vous pouvez apporter sa photo de profil.</p>
+        </div>,
     },
     {
       selector: '.avatar_select',
-      content: 'Ou lui assigner plutôt un avatar',
+      content:
+        <div key="/assets/audio/tour/salon/Coiffeurs_men_3.mp3">
+          <AudioPlayerForTour src="/assets/audio/tour/salon/Coiffeurs_men_3.mp3" />
+          <p>Ou lui assigner plutôt un avatar.</p>
+        </div>,
     },
   ];
+
 
   const closeTour = async () => {
     // You may want to store in local storage or state that the user has completed the tour
@@ -501,9 +515,9 @@ const Hairdressers = () => {
     if (!pageDone.includes('salon_hairdressers')) {
       let resp = await salonApi.assignStepDone({ page: 'salon_hairdressers' });
 
-if(resp.data?.pages_done) {
-      setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
-}
+      if (resp.data?.pages_done) {
+        setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+      }
       setPageDone((prevArray) => [...prevArray, 'salon_hairdressers'])
     }
     setIsLoading(false);

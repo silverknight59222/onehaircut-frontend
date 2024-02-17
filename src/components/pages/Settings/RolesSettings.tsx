@@ -8,6 +8,7 @@ import TourModal, { Steps } from "@/components/UI/TourModal";
 import { salonApi } from "@/api/salonSide";
 import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/storage";
 import userLoader from "@/hooks/useLoader";
+import AudioPlayerForTour from "@/components/UI/PlayerForTour";
 interface RolePermissions {
     [role: string]: number[]; // Définir une signature d'index
 }
@@ -372,21 +373,38 @@ const RolesSettings = () => {
     const tourSteps: Steps[] = [
         {
             selector: '.button_admin_access',
-            content: 'Dans la partie admin, vous pouvez paramétrer les accès de l’administrateur aux différentes pages du site.',
+            content:
+                <div key="/assets/audio/tour/salon/Settings-Roles_men_1.mp3">
+                    <AudioPlayerForTour src="/assets/audio/tour/salon/Settings-Roles_men_1.mp3" />
+                    <p>Dans la partie admin, vous pouvez paramétrer les accès de l’administrateur aux différentes pages du site.</p>
+                </div>,
         },
         {
             selector: '.toggleSwitch_access',
-            content: 'Un bouton sur la droite donne l’accès à la page correspondante.',
+            content:
+                <div key="/assets/audio/tour/salon/Settings-Roles_men_2.mp3">
+                    <AudioPlayerForTour src="/assets/audio/tour/salon/Settings-Roles_men_2.mp3" />
+                    <p>Un bouton sur la droite donne l’accès à la page correspondante.</p>
+                </div>,
         },
         {
             selector: '.button_staff_access',
-            content: 'La même chose peut être fait pour les autres coiffeurs.',
+            content:
+                <div key="/assets/audio/tour/salon/Settings-Roles_men_3.mp3">
+                    <AudioPlayerForTour src="/assets/audio/tour/salon/Settings-Roles_men_3.mp3" />
+                    <p>La même chose peut être fait pour les autres coiffeurs.</p>
+                </div>,
         },
         {
             selector: '.button_edit_access_settings',
-            content: 'Pour un paramétrage plus fin, vous pouvez cliquer ici.',
+            content:
+                <div key="/assets/audio/tour/salon/Settings-Roles_men_4.mp3">
+                    <AudioPlayerForTour src="/assets/audio/tour/salon/Settings-Roles_men_4.mp3" />
+                    <p>Pour un paramétrage plus fin, vous pouvez cliquer ici.</p>
+                </div>,
         },
     ];
+
 
     const closeTour = async () => {
         // You may want to store in local storage or state that the user has completed the tour
