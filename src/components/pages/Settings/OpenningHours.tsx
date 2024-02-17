@@ -15,6 +15,7 @@ import { ColorsThemeA } from "@/components/utilis/Themes";
 import InfoButton from "@/components/UI/InfoButton";
 import TourModal, { Steps } from "@/components/UI/TourModal";
 import { salonApi } from "@/api/salonSide";
+import AudioPlayerForTour from "@/components/UI/PlayerForTour";
 export interface OpenTimes {
     available: boolean;
     day: string;
@@ -147,36 +148,68 @@ const OpenningHours = () => {
 
     // ------------------------------------------------------------------
     // For Tour
+    const tourContent_1 =
+        // key needed to have React updating the audio with the step
+        <div key="/assets/audio/tour/salon/Settings-Horaires_men_1.mp3">
+            <AudioPlayerForTour src="/assets/audio/tour/salon/Settings-Horaires_men_1.mp3" />
+            <p>Dans cette partie, vous pouvez paramétrer les horaires de votre établissement.</p>
+        </div>
+
+    const tourContent_2 =
+        <div key="/assets/audio/tour/salon/Settings-Horaires_men_2.mp3">
+            <AudioPlayerForTour src="/assets/audio/tour/salon/Settings-Horaires_men_2.mp3" />
+            <p>Ici les horaires des coiffeurs de votre salon.</p>
+        </div>
+
+    const tourContent_3 =
+        <div key="/assets/audio/tour/salon/Settings-Horaires_men_3.mp3">
+            <AudioPlayerForTour src="/assets/audio/tour/salon/Settings-Horaires_men_3.mp3" />
+            <p>En sélectionnant un jour, vous indiquerez que votre salon est ouvert pour ce jour.</p>
+        </div>
+
+    const tourContent_4 =
+        <div key="/assets/audio/tour/salon/Settings-Horaires_men_4.mp3">
+            <AudioPlayerForTour src="/assets/audio/tour/salon/Settings-Horaires_men_4.mp3" />
+            <p>Vous rentrez ici les horaires d'ouverture du jour correspondant.</p>
+        </div>
+
+    const tourContent_5 =
+        <div key="/assets/audio/tour/salon/Settings-Horaires_men_5.mp3">
+            <AudioPlayerForTour src="/assets/audio/tour/salon/Settings-Horaires_men_5.mp3" />
+            <p>N'oubliez pas de valider vos modifications.</p>
+        </div>
+
     const tourSteps: Steps[] = [
         {
             selector: '.button_openings',
-            content: 'Dans cette partie, vous pouvez paramétrer les horaires de votre établissement.',
+            content: tourContent_1,
         },
         {
             selector: '.button_hairdresser_available',
-            content: 'Ici les horaires des coiffeurs de votre salon.',
+            content: tourContent_2,
         },
         {
             selector: '.checkbox_days',
-            content: 'En sélectionnant un jour, vous indiquerez que votre salon est ouvert pour ce jour.',
+            content: tourContent_3,
         },
         {
             selector: '.dropbox_time',
-            content: 'Vous rentrez ici les horaires d\'ouverture du jour correspondant.',
+            content: tourContent_4,
         },
         {
             selector: '.button_validate',
-            content: 'N\'oubliez pas de valider vos modifications.',
+            content: tourContent_5,
         },
     ];
+
 
     const closeTour = async () => {
         // You may want to store in local storage or state that the user has completed the tour
         setIsLoading(true)
         if (!pageDone.includes('salon_opening_hours')) {
             let resp = await salonApi.assignStepDone({ page: 'salon_opening_hours' });
-            if(resp.data?.pages_done) {
-              setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
+            if (resp.data?.pages_done) {
+                setLocalStorage('pages_done', JSON.stringify(resp.data.pages_done));
             }
             setPageDone((prevArray) => [...prevArray, 'salon_opening_hours'])
         }
