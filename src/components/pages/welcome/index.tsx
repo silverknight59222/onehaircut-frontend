@@ -18,6 +18,7 @@ import InfoButton from "@/components/UI/InfoButton";
 import { user_api } from "@/api/clientSide";
 import DropdownMenu from "@/components/UI/DropDownMenu";
 import TourModal, { Steps } from "@/components/UI/TourModal";
+import AudioPlayerForTour from "@/components/UI/PlayerForTour";
 
 // to avoid modifying the theme
 const DemoButton = `text-white font-normal md:font-medium text-md md:text-lg ml-2 mr-2 mb-3 rounded-md w-[278px] py-2 bg-black border border-x-red-500 border-y-orange-500 transform hover:scale-105 transition-transform hover:shadow-md cursor-pointer`
@@ -484,29 +485,55 @@ const Welcome = () => {
   const tourSteps: Steps[] = [
     {
       selector: '',
-      content: 'Bienvenue sur la page de reservation de Onehaircut',
+      content:
+        // key needed to oblige React to update the audio with the step
+        <div key="/assets/audio/tour/client/Welcome_woman_1.mp3">
+          <AudioPlayerForTour src="/assets/audio/tour/client/Welcome_woman_1.mp3" />
+          <p>Bienvenue sur la page de reservation de Onehaircut.</p>
+        </div>,
     },
     {
       selector: '.zone_haircuts',
-      content: 'Pour commencer, cherche la coiffure que tu voudrais',
+      content:
+        <div key="/assets/audio/tour/client/Welcome_woman_2.mp3">
+          <AudioPlayerForTour src="/assets/audio/tour/client/Welcome_woman_2.mp3" />
+          <p>Pour commencer, cherche la coiffure que tu voudrais.</p>
+        </div>,
     },
     {
       selector: '.zone_filtres',
-      content: 'Tu peux filtrer les coiffures',
+      content:
+        <div key="/assets/audio/tour/client/Welcome_woman_3.mp3">
+          <AudioPlayerForTour src="/assets/audio/tour/client/Welcome_woman_3.mp3" />
+          <p>Tu peux filtrer les coiffures.</p>
+        </div>,
     },
     {
       selector: '.thumbnail_haircut',
-      content: 'Clique ensuite sur la coiffure que tu as choisi.',
+      content:
+        <div key="/assets/audio/tour/client/Welcome_woman_4.mp3">
+          <AudioPlayerForTour src="/assets/audio/tour/client/Welcome_woman_4.mp3" />
+          <p>Clique ensuite sur la coiffure que tu as choisi.</p>
+        </div>,
     },
     {
       selector: '.zone_filters',
-      content: 'Une fois sélectionnée, tu peux aussi visualiser la coiffure sur ta tête, si tu as apporté tes photos de profil dans la section portrait. Pour ce faire clique sur "Prévisualiser sur moi"',
+      content:
+        <div key="/assets/audio/tour/client/Welcome_woman_5.mp3">
+          <AudioPlayerForTour src="/assets/audio/tour/client/Welcome_woman_5.mp3" />
+          <p>Une fois sélectionnée, tu peux aussi visualiser la coiffure sur ta tête, si tu as apporté tes photos de profil dans la section portrait. Pour ce faire clique sur "Prévisualiser sur moi".</p>
+        </div>,
     },
     {
       selector: '.bouton_generic_haircut',
-      content: 'Si tu n’as pas trouvé ce que cherchais ou que tu veux une coiffure plus générique, clique là!',
+      content:
+        <div key="/assets/audio/tour/client/Welcome_woman_6.mp3">
+          <AudioPlayerForTour src="/assets/audio/tour/client/Welcome_woman_6.mp3" />
+          <p>Si tu n’as pas trouvé ce que cherchais ou que tu veux une coiffure plus générique, clique là!</p>
+        </div>,
     },
   ];
+
 
   const closeTour = async () => {
     // You may want to store in local storage or state that the user has completed the tour

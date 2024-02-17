@@ -14,6 +14,7 @@ import OpenningHours from "./OpenningHours";
 import InfoButton from "@/components/UI/InfoButton";
 import TourModal, { Steps } from "@/components/UI/TourModal";
 import userLoader from "@/hooks/useLoader";
+import AudioPlayerForTour from "@/components/UI/PlayerForTour";
 
 // Définissez un type ou une interface pour les données d'indisponibilité
 interface UnavailabilityData {
@@ -337,26 +338,57 @@ const Unavailability = () => {
 
     // ------------------------------------------------------------------
     // For Tour
+    const tourContent_1 =
+        // key needed to have React updating the audio with the step
+        <div key="/assets/audio/tour/salon/Settings-Indispo_men_1.mp3">
+            <AudioPlayerForTour src="/assets/audio/tour/salon/Settings-Indispo_men_1.mp3" />
+            <p>Ici, vous pouvez ajouter des indisponibilités à votre salon.</p>
+        </div>
+
+    const tourContent_2 =
+        <div key="/assets/audio/tour/salon/Settings-Indispo_men_2.mp3">
+            <AudioPlayerForTour src="/assets/audio/tour/salon/Settings-Indispo_men_2.mp3" />
+            <p>Et ici ceux de vos coiffeurs.</p>
+        </div>
+
+    const tourContent_3 =
+        <div key="/assets/audio/tour/salon/Settings-Indispo_men_3.mp3">
+            <AudioPlayerForTour src="/assets/audio/tour/salon/Settings-Indispo_men_3.mp3" />
+            <p>Sélectionner une date ou une plage de dates, où vous serez fermé.</p>
+        </div>
+
+    const tourContent_4 =
+        <div key="/assets/audio/tour/salon/Settings-Indispo_men_4.mp3">
+            <AudioPlayerForTour src="/assets/audio/tour/salon/Settings-Indispo_men_4.mp3" />
+            <p>Puis valider.</p>
+        </div>
+
+    const tourContent_5 =
+        <div key="/assets/audio/tour/salon/Settings-Indispo_men_5.mp3">
+            <AudioPlayerForTour src="/assets/audio/tour/salon/Settings-Indispo_men_5.mp3" />
+            <p>Pour voir les indisponibilités déjà programmées, c’est là.</p>
+        </div>
+
     const tourSteps: Steps[] = [
         {
             selector: '.button_establishment_unavailability',
-            content: 'Ici, vous pouvez ajouter des indisponibilités à votre salon.',
+            content: tourContent_1,
         },
         {
             selector: '.button_hairdresser_unavailability',
-            content: 'Et ici ceux de vos coiffeurs.',
+            content: tourContent_2
         },
         {
             selector: '.button_calender',
-            content: 'Sélectionner une date ou une plage de dates, où vous serez fermé.',
+            content: tourContent_3
         },
         {
             selector: '.button_validate',
-            content: 'Puis valider.',
+            content: tourContent_4
         },
         {
             selector: '.button_display_absences',
-            content: 'Pour voir les indisponibilités déjà programmées, c’est là.',
+            content: tourContent_5
         },
     ];
 

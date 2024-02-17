@@ -14,6 +14,7 @@ import InfoButton from "@/components/UI/InfoButton";
 import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/storage";
 import TourModal, { Steps } from "@/components/UI/TourModal";
 import userLoader from "@/hooks/useLoader";
+import AudioPlayerForTour from "@/components/UI/PlayerForTour";
 
 // default text if no picture to display
 const TextToDsplayifNoPic =
@@ -343,21 +344,38 @@ const Portrait = () => {
     const tourSteps: Steps[] = [
         {
             selector: '',
-            content: 'Vous pouvez ici entrer vos photos de profil qui seront utilisées lors de la génération d\'une coiffure sur votre tête',
+            content:
+                <div key="/assets/audio/tour/client/Portrait_woman_1.mp3">
+                    <AudioPlayerForTour src="/assets/audio/tour/client/Portrait_woman_1.mp3" />
+                    <p>Tu peux entrer ici tes photos de profil qui seront utilisées lors de la génération d'une coiffure sur ta tête.</p>
+                </div>,
         },
         {
             selector: '.zone_left_profil',
-            content: 'La photo doit correspondre au titre placé dessous',
+            content:
+                <div key="/assets/audio/tour/client/Portrait_woman_2.mp3">
+                    <AudioPlayerForTour src="/assets/audio/tour/client/Portrait_woman_2.mp3" />
+                    <p>La photo doit correspondre au titre placé dessous.</p>
+                </div>,
         },
         {
             selector: '.pic_left_profil',
-            content: 'Cliquer ici pour sélectionner une de vos photos.',
+            content:
+                <div key="/assets/audio/tour/client/Portrait_woman_3.mp3">
+                    <AudioPlayerForTour src="/assets/audio/tour/client/Portrait_woman_3.mp3" />
+                    <p>Cliquer ici pour sélectionner une de tes photos.</p>
+                </div>,
         },
         {
             selector: '.zone_filters',
-            content: 'Indiquer vos préférences pour vos recherches de coiffure.',
+            content:
+                <div key="/assets/audio/tour/client/Portrait_woman_4.mp3">
+                    <AudioPlayerForTour src="/assets/audio/tour/client/Portrait_woman_4.mp3" />
+                    <p>Indique tes préférences pour tes recherches de coiffure.</p>
+                </div>,
         },
     ];
+
 
     const closeTour = async () => {
         // You may want to store in local storage or state that the user has completed the tour
