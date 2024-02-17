@@ -32,16 +32,16 @@ const ClientDashboardLayout = ({ children, notifications }: DashboardLayout) => 
   const router = useRouter()
   const [isSidebar, setIsSidebar] = useState(false);
   const sidebarItems = [
-    { icon: "DashboardIcon", title: "Compte", route: "/client/dashboard" },
-    { icon: "MessageIcon", title: "Message", route: "/client/messages" },
-    { icon: "StarGreyIcon", title: "Favoris", route: "/client/favorites" },
-    { icon: "PortraitIcon", title: "Portrait", route: "/client/portrait" },
-    { icon: "CabineIcon", title: "Cabine d'essayage", route: "/client/processed" },
-    { icon: "FilterIcon", title: "Filtres", route: "/client/filters" },
-    { icon: "ReservationIcon", title: "Réservations en cours", route: "/client/currentreservation" },
-    { icon: "HistoryIcon", title: "Historique", route: "/client/history" },
-    { icon: "HelpIcon", title: "Aide", route: "/client/help" },
-    { icon: "ContactIcon_Client", title: "Contactez-nous", route: "/client/contactUs" },
+    { icon: "DashboardIcon", title: "Compte", permission: null, route: "/client/dashboard" },
+    { icon: "MessageIcon", title: "Message", permission: null, route: "/client/messages" },
+    { icon: "StarGreyIcon", title: "Favoris", permission: null, route: "/client/favorites" },
+    { icon: "PortraitIcon", title: "Portrait", permission: null, route: "/client/portrait" },
+    { icon: "CabineIcon", title: "Cabine d'essayage", permission: null, route: "/client/processed" },
+    { icon: "FilterIcon", title: "Filtres", permission: null, route: "/client/filters" },
+    { icon: "ReservationIcon", title: "Réservations en cours", permission: null, route: "/client/currentreservation" },
+    { icon: "HistoryIcon", title: "Historique", permission: null, route: "/client/history" },
+    { icon: "HelpIcon", title: "Aide", permission: null, route: "/client/help" },
+    { icon: "ContactIcon_Client", permission: null, title: "Contactez-nous", route: "/client/contactUs" },
   ];
   const SidebarHandler = (state: boolean) => {
     setIsSidebar(state);

@@ -19,9 +19,7 @@ import userLoader from "@/hooks/useLoader";
 import { Elements } from "@stripe/react-stripe-js";
 import { Auth } from "@/api/auth";
 import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/storage";
-<<<<<<< HEAD
 import CustomizedTable from "@/components/UI/CustomizedTable";
-
 interface PayoutsData {
     id: number,
     date: string,
@@ -30,9 +28,7 @@ interface PayoutsData {
     to_bank: string,
     created_at: string,
 }
-=======
 import AudioPlayerForTour from "@/components/UI/PlayerForTour";
->>>>>>> origin/dev
 
 const PayementSettings = () => {
     const payementMethodStruct: string[] = [
