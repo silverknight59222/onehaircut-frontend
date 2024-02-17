@@ -470,7 +470,7 @@ const BookSalon = () => {
                   <p className="text-xs text-stone-600 italic">{user?.street}<br />{user?.zipcode} {user?.city}<br />{user?.country}<br /></p>
                   <p className="font-semibold text-lg">Prix du déplacement :</p>
                   <div className="flex justify-center items-center bg-white border border-stone-400 rounded-lg px-4 py-2 mt-2">
-                    <p className="text-stone-600 text-xl font-bold">{`+ ${convertAmount(salonCurrency, userCurrency, price)} ${currencySymbol}`} </p> {/* TODO UPDATE THE PRICE WITH THE MOBILITY COST OF THE SALON */}
+                    <p className="text-stone-600 text-xl font-bold">{`+ ${convertAmount(salonCurrency, userCurrency, )} ${currencySymbol}`} </p> {/* TODO UPDATE THE PRICE WITH THE MOBILITY COST OF THE SALON */}
                   </div>
                 </>
               )}

@@ -31,6 +31,7 @@ interface PayoutsData {
     created_at: string,
 }
 import AudioPlayerForTour from "@/components/UI/PlayerForTour";
+import { getCurrencySymbol } from "@/utils/currency";
 
 const PayementSettings = () => {
     const payementMethodStruct: string[] = [
@@ -69,6 +70,8 @@ const PayementSettings = () => {
         'arrival_date',
         'status',
     ];
+    const currencySymbol = getCurrencySymbol();
+
     // Function to send the new settings values into backend
     const updateBankingSettings = async (data) => {
         // TODO add backend

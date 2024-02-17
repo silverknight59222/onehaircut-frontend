@@ -28,6 +28,7 @@ import userLoader from "@/hooks/useLoader";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from '@stripe/stripe-js';
 import PaymentFormSetting from "../Settings/PaymentformSetting";
+import {getUserCurrency, getCurrencySymbol, convertAmount} from "@/utils/currency";
 
 const SubSelected_text = "text-white"
 const SubSelected_recommended = "bg-[rgba(255,255,255,0.53)] text-white"
@@ -69,6 +70,8 @@ const Subscription = () => {
   const [currentPlan, setCurrentPlan] = useState<Subscription>(defaultSubscription);
   const [currentPlanDate, setCurrentPlanDate] = useState('');
   const [currentPlanTime, setCurrentPlanTime] = useState('');
+  const userCurrency = getUserCurrency();
+  const currencySymbol = getCurrencySymbol();
   const packageNames = [
     "Agenda dynamique",
     "Mise en avant de votre salon",
@@ -343,7 +346,7 @@ const Subscription = () => {
                     })}
                     <div className="mt-1 h-7">
                       <button className={` font-semibold text-center pt-2 ${isCurrSubscriptionPro ? SubSelected_text : SubUnselected_text}`}>
-                        <span className="text-2xl">79€ /mois</span>
+                        <span className="text-2xl">{convertAmount('EUR', userCurrency, 79)} {currencySymbol} /mois</span>
                       </button>
                     </div>
                   </div>

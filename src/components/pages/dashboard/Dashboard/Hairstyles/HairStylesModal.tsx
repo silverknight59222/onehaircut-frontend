@@ -13,6 +13,7 @@ import {
 import { Haircut, SalonHaircut } from "@/types";
 import { salonApi } from '@/api/salonSide';
 import InfoButton from '@/components/UI/InfoButton';
+import {getCurrencySymbol} from "@/utils/currency";
 
 export interface HaircutDetails {
     id: number;
@@ -86,6 +87,7 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
     const [noHaircut, setNoHaircut] = useState(true)
     const [startPrice, setStartPrice] = useState(0)
     const [baseDuration, setBaseDuration] = useState(0)
+    const currencySymbol = getCurrencySymbol();
 
 
     const onHairStyleSelect = async (payload) => {
@@ -436,7 +438,7 @@ const HairStylesModal = React.memo(({ activeMenu, setISD, selectAllEvent, hairSt
                         <input
                             type="number"
                             name="prix"
-                            placeholder={"40 eur"}
+                            placeholder={"40" + currencySymbol}
                             className={`${Theme_A.fields.configurationField2}`}
                             value={form.base_price}
                             onChange={(e) => onChangeInput(e.target.value, "base_price")}

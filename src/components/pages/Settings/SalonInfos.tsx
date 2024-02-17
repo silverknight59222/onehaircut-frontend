@@ -422,11 +422,13 @@ const SalonInfos = () => {
             .catch(err => {
                 //console.log(err);
             })
-            .finally(() => {
+            .finally(async () => {
                 let user_info: any = getLocalStorage("user")
                 removeFromLocalStorage("user");
+                const { data } = await Auth.getUser()
                 user_info = user_info ? JSON.parse(user_info) : null;
                 user_info.name = name;
+                user_info.currency = data?.user?.currency || user_info.currency;
                 user_info.hair_salon.name = name;
                 setLocalStorage("user", JSON.stringify(user_info))
                 let salon_info: any = getLocalStorage("hair_salon")
