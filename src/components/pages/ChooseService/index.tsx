@@ -15,6 +15,7 @@ import Footer from "@/components/UI/Footer";
 import InfoButton from '@/components/UI/InfoButton';
 import TourModal, { Steps } from "@/components/UI/TourModal";
 import { user_api } from '@/api/clientSide';
+import AudioPlayerForTour from '@/components/UI/PlayerForTour';
 
 // Définition des interfaces pour typer les données manipulées dans le composant.
 interface Requirements {
@@ -314,17 +315,30 @@ const ServiceChoose = () => {
     const tourSteps: Steps[] = [
         {
             selector: '',
-            content: 'Ici tu peux rajouter un service à ta coiffure',
+            content:
+                <div key="/assets/audio/tour/client/ChooseService_woman_1.mp3">
+                    <AudioPlayerForTour src="/assets/audio/tour/client/ChooseService_woman_1.mp3" />
+                    <p>Tu peux rajouter ici un service à ta coiffure.</p>
+                </div>,
         },
         {
             selector: '.thumbnails_services',
-            content: 'Les services sont optionnels et peuvent être choisis en cliquant sur ceux qui t\'intéressent',
+            content:
+                <div key="/assets/audio/tour/client/ChooseService_woman_2.mp3">
+                    <AudioPlayerForTour src="/assets/audio/tour/client/ChooseService_woman_2.mp3" />
+                    <p>Les services sont optionnels et peuvent être choisis en cliquant sur ceux qui t'intéressent.</p>
+                </div>,
         },
         {
             selector: '.button_continue',
-            content: 'Si tu veux seulement la coupe de cheveux, tu peux directement cliquer là',
+            content:
+                <div key="/assets/audio/tour/client/ChooseService_woman_3.mp3">
+                    <AudioPlayerForTour src="/assets/audio/tour/client/ChooseService_woman_3.mp3" />
+                    <p>Si tu veux seulement la coupe de cheveux, tu peux directement cliquer là.</p>
+                </div>,
         },
     ];
+
 
     const closeTour = async () => {
         // You may want to store in local storage or state that the user has completed the tour

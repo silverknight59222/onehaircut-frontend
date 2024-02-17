@@ -15,6 +15,7 @@ import TourModal, { Steps } from "@/components/UI/TourModal";
 import { user_api } from "@/api/clientSide";
 import { toast } from "react-toastify";
 import BaseModal from "@/components/UI/BaseModal";
+import AudioPlayerForTour from "@/components/UI/PlayerForTour";
 
 
 
@@ -141,21 +142,38 @@ const Messages = () => {
     const tourSteps: Steps[] = [
         {
             selector: '.zone_contact',
-            content: 'Dans la partie de gauche, vous trouverez les salons',
+            content:
+                <div key="/assets/audio/tour/client/Messages_woman_1.mp3">
+                    <AudioPlayerForTour src="/assets/audio/tour/client/Messages_woman_1.mp3" />
+                    <p>Dans la partie de gauche, tu trouveras les salons.</p>
+                </div>,
         },
         {
             selector: '.champs_discussion',
-            content: 'Vous trouverez ici la discussion avec le salon selectionné.',
+            content:
+                <div key="/assets/audio/tour/client/Messages_woman_2.mp3">
+                    <AudioPlayerForTour src="/assets/audio/tour/client/Messages_woman_2.mp3" />
+                    <p>Tu trouveras ici la discussion avec le salon sélectionné.</p>
+                </div>,
         },
         {
             selector: '.champs_envoi',
-            content: 'Entrer ici votre message.',
+            content:
+                <div key="/assets/audio/tour/client/Messages_woman_3.mp3">
+                    <AudioPlayerForTour src="/assets/audio/tour/client/Messages_woman_3.mp3" />
+                    <p>Entrer ici ton message.</p>
+                </div>,
         },
         {
             selector: '.bouton_envoi',
-            content: 'Puis cliquer ici pour envoyer votre message.',
+            content:
+                <div key="/assets/audio/tour/client/Messages_woman_4.mp3">
+                    <AudioPlayerForTour src="/assets/audio/tour/client/Messages_woman_4.mp3" />
+                    <p>Puis clique ici pour envoyer ton message.</p>
+                </div>,
         },
     ];
+
 
     const deleteChat = async () => {
         setIsLoading(true)

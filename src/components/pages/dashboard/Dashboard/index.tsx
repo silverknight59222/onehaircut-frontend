@@ -33,6 +33,7 @@ import Image from "next/image";
 import Player from "@/components/UI/PlayerForTour"
 import userLoader from "@/hooks/useLoader";
 import { TbHelpSquareRoundedFilled } from "react-icons/tb";
+import AudioPlayerForTour from "@/components/UI/PlayerForTour";
 
 
 const Dashboard = () => {
@@ -126,13 +127,39 @@ const Dashboard = () => {
 
     // ------------------------------------------------------------------
     // For Tour
-    const tourContent_Start =
-        <div>
+    const tourContent_1 =
+        <div key="/assets/audio/tour/salon/Dashboard_men_1.mp3">
+            <AudioPlayerForTour src="/assets/audio/tour/salon/Dashboard_men_1.mp3" />
             <p>Bienvenue dans la présentation du dashboard</p>
         </div>
 
+    const tourContent_2 =
+        <div key="/assets/audio/tour/salon/Dashboard_men_2.mp3">
+            <AudioPlayerForTour src="/assets/audio/tour/salon/Dashboard_men_2.mp3" />
+            <p>Il regroupe toutes les informations importantes concernant votre salon et vos clients.</p>
+        </div>
+
+    const tourContent_3 =
+        <div key="/assets/audio/tour/salon/Dashboard_men_3.mp3">
+            <AudioPlayerForTour src="/assets/audio/tour/salon/Dashboard_men_3.mp3" />
+            <p>En cliquant sur ce type de bouton, vous pourrez afficher plus de détails sur le graphique qui suit.</p>
+        </div>
+
+    const tourContent_4 =
+        <div key="/assets/audio/tour/salon/Dashboard_men_4.mp3">
+            <AudioPlayerForTour src="/assets/audio/tour/salon/Dashboard_men_4.mp3" />
+            <p>La navigation se fait avec le menu de gauche et du haut.</p>
+        </div>
+
+    const tourContent_5 =
+        <div key="/assets/audio/tour/salon/Dashboard_men_5.mp3">
+            <AudioPlayerForTour src="/assets/audio/tour/salon/Dashboard_men_5.mp3" />
+            <p>Vous pouvez aussi consulter les aides réparties sur tout le site.</p>
+        </div>
+
     const tourContent_logo =
-        <div>
+        <div key="/assets/audio/tour/salon/Dashboard_men_6.mp3">
+            <AudioPlayerForTour src="/assets/audio/tour/salon/Dashboard_men_6.mp3" />
             <p>Et n'oubliez pas de mettre le logo de votre salon dans le rond, en haut à droite.</p>
             <div className="justify-center flex">
                 <Image src='/assets/website/salon_logo.png' alt='' className='rounded-3xl ' width='200' height='200'></Image>
@@ -140,7 +167,8 @@ const Dashboard = () => {
         </div>
 
     const tourContent_tourIcon =
-        <div>
+        <div key="/assets/audio/tour/salon/Dashboard_men_7.mp3">
+            <AudioPlayerForTour src="/assets/audio/tour/salon/Dashboard_men_7.mp3" />
             <p>Au fait, si vous voulez me retrouver, cliquez sur cette icône!</p>
             <div className="justify-center flex pt-2">
                 <div className={`bg-stone-800 text-sm text-white px-2 py-2 rounded-full`}>
@@ -149,26 +177,27 @@ const Dashboard = () => {
             </div>
         </div>
 
+
     const tourSteps: Steps[] = [
         {
             selector: '',
-            content: tourContent_Start,
+            content: tourContent_1,
         },
         {
             selector: '',
-            content: 'Il regroupe toutes les informations importantes concernant votre salon et vos clients. ',
+            content: tourContent_2,
         },
         {
             selector: '.button_transaction',
-            content: 'En cliquant sur ce type de bouton, vous pourrez afficher plus de détails sur le graphique qui suit.',
+            content: tourContent_3,
         },
         {
             selector: '',
-            content: 'La navigation se fait avec le menu de gauche et du haut.',
+            content: tourContent_4,
         },
         {
             selector: '.info_button',
-            content: 'Vous pouvez aussi consulter les aides reparties sur tout le site.',
+            content: tourContent_5,
         },
         {
             selector: '',

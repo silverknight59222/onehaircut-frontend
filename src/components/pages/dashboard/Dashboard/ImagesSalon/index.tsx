@@ -9,6 +9,7 @@ import Footer from "@/components/UI/Footer";
 import { Theme_A } from '@/components/utilis/Themes';
 import TourModal, { Steps } from '@/components/UI/TourModal';
 import { salonApi } from '@/api/salonSide';
+import AudioPlayerForTour from '@/components/UI/PlayerForTour';
 
 
 const pulseAnimation = `
@@ -56,13 +57,22 @@ const Images = () => {
 	const tourSteps: Steps[] = [
 		{
 			selector: '.pic_salon',
-			content: 'Cliquer sur le carré blanc pour ajouter une photo de votre salon \n puis sur le + pour l\'ajouter',
+			content:
+				<div key="/assets/audio/tour/salon/ImagesSalon_men_1.mp3">
+					<AudioPlayerForTour src="/assets/audio/tour/salon/ImagesSalon_men_1.mp3" />
+					<p>Cliquer sur le carré blanc pour ajouter une photo de votre salon puis sur le "+" pour l'ajouter.</p>
+				</div>,
 		},
 		{
 			selector: '.pic_haircut',
-			content: 'Pareil pour tous vos exemples de coiffures',
+			content:
+				<div key="/assets/audio/tour/salon/ImagesSalon_men_2.mp3">
+					<AudioPlayerForTour src="/assets/audio/tour/salon/ImagesSalon_men_2.mp3" />
+					<p>Pareil pour tous vos exemples de coiffures.</p>
+				</div>,
 		},
 	];
+
 
 	const closeTour = async () => {
 		// You may want to store in local storage or state that the user has completed the tour
