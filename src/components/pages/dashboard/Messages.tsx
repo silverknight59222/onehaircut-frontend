@@ -16,6 +16,7 @@ import TourModal, { Steps } from "@/components/UI/TourModal";
 import { salonApi } from "@/api/salonSide";
 import BaseModal from "@/components/UI/BaseModal";
 import { toast } from "react-toastify";
+import AudioPlayerForTour from "@/components/UI/PlayerForTour";
 
 const Messages = () => {
   const [clients, setClients] = useState<ClientChat[]>([])
@@ -147,22 +148,47 @@ const Messages = () => {
 
   // ------------------------------------------------------------------
   // For Tour
+  const tourContent_1 =
+    <div key="/assets/audio/tour/salon/Messages_men_1.mp3">
+      <AudioPlayerForTour src="/assets/audio/tour/salon/Messages_men_1.mp3" />
+      <p>Dans la partie de gauche, vous pouvez sélectionner un client.</p>
+    </div>
+
+  const tourContent_2 =
+    <div key="/assets/audio/tour/salon/Messages_men_2.mp3">
+      <AudioPlayerForTour src="/assets/audio/tour/salon/Messages_men_2.mp3" />
+      <p>Vous trouverez ici la discussion avec le client.</p>
+    </div>
+
+  const tourContent_3 =
+    <div key="/assets/audio/tour/salon/Messages_men_3.mp3">
+      <AudioPlayerForTour src="/assets/audio/tour/salon/Messages_men_3.mp3" />
+      <p>Entrer ici votre message.</p>
+    </div>
+
+  const tourContent_4 =
+    <div key="/assets/audio/tour/salon/Messages_men_4.mp3">
+      <AudioPlayerForTour src="/assets/audio/tour/salon/Messages_men_4.mp3" />
+      <p>Puis cliquer ici pour envoyer votre message.</p>
+    </div>
+
+
   const tourSteps: Steps[] = [
     {
       selector: '.zone_contact',
-      content: 'Dans la partie de gauche, vous pouvez sélectionner un client.',
+      content: tourContent_1,
     },
     {
       selector: '.champs_discussion',
-      content: 'Vous trouverez ici la discussion avec le client.',
+      content: tourContent_2
     },
     {
       selector: '.champs_envoi',
-      content: 'Entrer ici votre message.',
+      content: tourContent_3
     },
     {
       selector: '.bouton_envoi',
-      content: 'Puis cliquer ici pour envoyer votre message.',
+      content: tourContent_4
     },
   ];
 

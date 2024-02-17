@@ -13,6 +13,7 @@ import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/
 import frLocale from '@fullcalendar/core/locales/fr'; // Importez la locale française
 import TourModal, { Steps } from "@/components/UI/TourModal";
 import { salonApi } from "@/api/salonSide";
+import AudioPlayerForTour from "@/components/UI/PlayerForTour";
 
 
 const Agenda = () => {
@@ -198,22 +199,46 @@ const Agenda = () => {
 
   // ------------------------------------------------------------------
   // For Tour
+  const tourContent_1 =
+    <div key="/assets/audio/tour/salon/Agenda_men_1.mp3">
+      <AudioPlayerForTour src="/assets/audio/tour/salon/Agenda_men_1.mp3" />
+      <p>Bienvenue dans votre agenda.</p>
+    </div>
+
+  const tourContent_2 =
+    <div key="/assets/audio/tour/salon/Agenda_men_2.mp3">
+      <AudioPlayerForTour src="/assets/audio/tour/salon/Agenda_men_2.mp3" />
+      <p>Il regroupe tous les rendez-vous de la semaine indiquée.</p>
+    </div>
+
+  const tourContent_3 =
+    <div key="/assets/audio/tour/salon/Agenda_men_3.mp3">
+      <AudioPlayerForTour src="/assets/audio/tour/salon/Agenda_men_3.mp3" />
+      <p>En cliquant sur un rendez-vous, vous pouvez consulter les détails de la réservation.</p>
+    </div>
+
+  const tourContent_4 =
+    <div key="/assets/audio/tour/salon/Agenda_men_4.mp3">
+      <AudioPlayerForTour src="/assets/audio/tour/salon/Agenda_men_4.mp3" />
+      <p>Les couleurs sur l’agenda correspondent au coiffeur qui est assigné au rendez-vous.</p>
+    </div>
+
   const tourSteps: Steps[] = [
     {
       selector: '',
-      content: 'Bienvenue dans votre agenda',
+      content: tourContent_1
     },
     {
       selector: '.calendar_container',
-      content: 'Il regroupe tous les rendez-vous de la semaine indiquée.',
+      content: tourContent_2
     },
     {
       selector: '.calendar_container',
-      content: 'En cliquant sur un rendez-vous, vous pouvez consulter les détails de la réservation.',
+      content: tourContent_3
     },
     {
       selector: '.legend',
-      content: 'Les couleurs sur l’agenda correspondent au coiffeur qui est assigné au rendez-vous.',
+      content: tourContent_4
     },
   ];
 
