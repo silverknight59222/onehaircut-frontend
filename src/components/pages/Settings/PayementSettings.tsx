@@ -19,6 +19,15 @@ import userLoader from "@/hooks/useLoader";
 import { Elements } from "@stripe/react-stripe-js";
 import { Auth } from "@/api/auth";
 import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from "@/api/storage";
+import CustomizedTable from "@/components/UI/CustomizedTable";
+interface PayoutsData {
+    id: number,
+    date: string,
+    amount: string,
+    status: string,
+    to_bank: string,
+    created_at: string,
+}
 import AudioPlayerForTour from "@/components/UI/PlayerForTour";
 
 const PayementSettings = () => {
@@ -36,6 +45,8 @@ const PayementSettings = () => {
     const [stripeKey, setStripeKey] = useState("");
     const [payMethod, setPayMethod] = useState(payementMethodStruct[0])
     const [currentCardNb, setCurrentCardNb] = useState("2453 1245 7745 2052")
+    const [showModal, setShowModal] = useState(false); // Initialize showModal state
+    const [payoutsData, setPayoutsData] = useState<PayoutsData[]>([]); // Déclaration de la variable unavailabilities
     const PaypalAccount: string = "leLascar" // TODO: get from backend
     let stripePromise = loadStripe(stripeKey);  // public key for stripe
     // state for showing the pop up to change the payement info
@@ -45,7 +56,14 @@ const PayementSettings = () => {
     // state for the card number
     const [cardNb, setCardNb] = useState(0)
     const [pageDone, setPageDone] = useState<String[]>(['salon_payment']);
-
+    const columnsToDisplay = [
+        '#',
+        'Date',
+        'Amount',
+        'Status',
+        'To Bank',
+        'Created At'
+    ];
     // Function to send the new settings values into backend
     const updateBankingSettings = async (data) => {
         // TODO add backend
@@ -360,6 +378,24 @@ const PayementSettings = () => {
         getCustomerStripeInformation()
         const pages_done = getLocalStorage('pages_done')
         setPageDone(pages_done ? JSON.parse(pages_done) : [])
+        setPayoutsData([
+            {
+                id: 1,
+                amount: "22.22",
+                date: '2024-02-15',
+                status: 'Pending',
+                to_bank: 'France Bank (8902)',
+                created_at: '2024-01-15',
+            },
+            {
+                id: 2,
+                amount: "22.22",
+                date: '2024-02-15',
+                status: 'Pending',
+                to_bank: 'France Bank (8902)',
+                created_at: '2024-01-15',
+            }
+        ])
     }, [])
 
     const [birthdate, setBirthdate] = useState(new Date());
@@ -433,7 +469,14 @@ const PayementSettings = () => {
             {/* For explaining the website */}
             <TourModal steps={tourSteps} onRequestClose={closeTour} doneTour={pageDone.includes('salon_payment')} />
 
-
+            {showModal && (
+                <BaseModal
+                    close={() => setShowModal(false)}
+                >
+                    {/* Contenu du Modal ici. Assurez-vous que c'est un seul élément JSX ou un fragment */}
+                    <CustomizedTable columns={columnsToDisplay} data={payoutsData} cB={() => { }} />
+                </BaseModal>
+            )}
             {/* Nouvelle section pour le solde du compte */}
             <div className="flex flex-col items-center mt-4 balance_display">
                 <h3 className={`${Theme_A.textFont.headerH2} mb-2`}>Solde du compte</h3>
@@ -443,6 +486,10 @@ const PayementSettings = () => {
                     className={`w-max justify-center py-2 px-3 text-sm mb-6 ${Theme_A.button.mediumGradientButton} button_withdraw`}
                 >
                     Réceptionner le solde
+                </button>
+                <button className={`${Theme_A.button.medWhiteColoredButton}`}
+                    onClick={() => setShowModal(true)}>
+                    Show Payout History
                 </button>
             </div>
 
