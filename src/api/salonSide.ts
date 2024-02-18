@@ -143,8 +143,11 @@ const salonApi = {
   doPayout: async () => {
     return await request.post('stripe/doPayout');
   },
+  getPayoutsData: async () => {
+    return await request.get('payout_history');
+  },
   getProSalonCount: async () => request.get('/hair_salon/count'),
 
-  getZonesInfo: async () => request.get(`/hair_salon/zone_list`)
+  getZonesInfo: async () => request.get(`/hair_salon/zone_list`),
 }
 export { salonApi };

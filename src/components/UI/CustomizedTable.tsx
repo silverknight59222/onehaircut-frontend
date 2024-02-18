@@ -96,6 +96,11 @@ const CustomizedTable: React.FC<CustomizedTableProps> = ({ columns, data, cB }) 
 
   const visibleColumns = columns.slice(1);
 
+  function capitalizeAndSplit(str: string): string {
+    // Capitalize the first letter of each word and split by underscores
+    return str.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+  }
+
   return (
     <TableContainer component={Paper}>
       {isLoading && loadingView()}
@@ -103,7 +108,7 @@ const CustomizedTable: React.FC<CustomizedTableProps> = ({ columns, data, cB }) 
         <TableHead>
           <TableRow>
             {visibleColumns.map((column) => (
-              <StyledTableCell key={column}>{column === 'Actions' ? 'Actions' : column}</StyledTableCell>
+              <StyledTableCell key={column}>{column === 'Actions' ? 'Actions' : capitalizeAndSplit(column)}</StyledTableCell>
             ))}
           </TableRow>
         </TableHead>

@@ -23,9 +23,11 @@ import CustomizedTable from "@/components/UI/CustomizedTable";
 interface PayoutsData {
     id: number,
     date: string,
+    currency: string,
     amount: string,
     status: string,
     to_bank: string,
+    reason: string,
     created_at: string,
 }
 import AudioPlayerForTour from "@/components/UI/PlayerForTour";
@@ -57,12 +59,15 @@ const PayementSettings = () => {
     const [cardNb, setCardNb] = useState(0)
     const [pageDone, setPageDone] = useState<String[]>(['salon_payment']);
     const columnsToDisplay = [
-        '#',
-        'Date',
-        'Amount',
-        'Status',
-        'To Bank',
-        'Created At'
+        'id',
+        'request_date',
+        'currency',
+        'amount',
+        'to_bank',
+        'rate',
+        'reason',
+        'arrival_date',
+        'status',
     ];
     // Function to send the new settings values into backend
     const updateBankingSettings = async (data) => {
@@ -207,7 +212,8 @@ const PayementSettings = () => {
         'SK': 24, // Slovaquie
         'SI': 19, // Slovénie
         'SE': 24, // Suède
-        'CH': 21  // Suisse
+        // 'CH': 21,  // Suisse
+        'CH': 30,  // Suisse
     };
 
     const handleIbanChange = (e) => {
@@ -372,30 +378,24 @@ const PayementSettings = () => {
 
     }
 
+    const getPayoutsData = async () => {
+        let resp = await salonApi.getPayoutsData();
+        if(resp.data.status == 400){
+            showSnackbar('error', resp.data.message)
+        }
+        else {
+            const payouts_data = resp.data.data;
+            setPayoutsData(payouts_data);
+        }
+    }
+
     useEffect(() => {
         getStripeKey()
         getSalonStripeInformation()
         getCustomerStripeInformation()
+        getPayoutsData();
         const pages_done = getLocalStorage('pages_done')
         setPageDone(pages_done ? JSON.parse(pages_done) : [])
-        setPayoutsData([
-            {
-                id: 1,
-                amount: "22.22",
-                date: '2024-02-15',
-                status: 'Pending',
-                to_bank: 'France Bank (8902)',
-                created_at: '2024-01-15',
-            },
-            {
-                id: 2,
-                amount: "22.22",
-                date: '2024-02-15',
-                status: 'Pending',
-                to_bank: 'France Bank (8902)',
-                created_at: '2024-01-15',
-            }
-        ])
     }, [])
 
     const [birthdate, setBirthdate] = useState(new Date());
