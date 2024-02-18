@@ -12,7 +12,7 @@ import { ColorsThemeA } from "@/components/utilis/Themes";
 
 // For update commit
 
-const HairStyleListHeader = React.memo(({ setActiveMenu, isd_value, activeMenu, onFilterSelect, params, selectAllEvent, onListCountShow, setFinalItems}: any) => {
+const HairStyleListHeader = React.memo(({ setActiveMenu, isd_value, activeMenu, onFilterSelect, params, selectAllEvent, onListCountShow, setFinalItems }: any) => {
     // //console.log("in HairStyleListHeader")
 
 
@@ -378,7 +378,7 @@ const HairStyleListHeader = React.memo(({ setActiveMenu, isd_value, activeMenu, 
                         }
                         onClick={() => { selectAllHaircuts() }}
                     >
-                        <div className={`${Theme_A.behaviour.buttonHoverBehaviour_2}`}>Select All</div>
+                        <div className={`${Theme_A.behaviour.buttonHoverBehaviour_2}`}>Tout selectionner</div>
                     </div>
                 </div>
                 <div className="relative flex">
