@@ -380,7 +380,7 @@ const PayementSettings = () => {
 
     const getPayoutsData = async () => {
         let resp = await salonApi.getPayoutsData();
-        if(resp.data.status == 400){
+        if (resp.data.status == 400) {
             showSnackbar('error', resp.data.message)
         }
         else {
@@ -472,6 +472,7 @@ const PayementSettings = () => {
             {showModal && (
                 <BaseModal
                     close={() => setShowModal(false)}
+                    styles={{ maxWidth: '80%', margin: '0 auto' }}
                 >
                     {/* Contenu du Modal ici. Assurez-vous que c'est un seul élément JSX ou un fragment */}
                     <CustomizedTable columns={columnsToDisplay} data={payoutsData} cB={() => { }} />
