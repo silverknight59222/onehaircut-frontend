@@ -7,25 +7,25 @@ import { Theme_A } from '../utilis/Themes';
 
 const LegalNoticesPage = () => {
 
-   // for Icon size change:
-   const [screenSize, setScreenSize] = useState<number>(0);
+  // for Icon size change:
+  const [screenSize, setScreenSize] = useState<number>(0);
 
-   useEffect(() => {
-     const handleResize = () => {
-       setScreenSize(window.innerWidth);
-     };
- 
-     // Initial screen size check
-     handleResize();
- 
-     // Event listener for window resize
-     window.addEventListener('resize', handleResize);
- 
-     // Cleanup the event listener on component unmount
-     return () => {
-       window.removeEventListener('resize', handleResize);
-     };
-   }, []);
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenSize(window.innerWidth);
+    };
+
+    // Initial screen size check
+    handleResize();
+
+    // Event listener for window resize
+    window.addEventListener('resize', handleResize);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return (
     <div>
@@ -41,7 +41,7 @@ const LegalNoticesPage = () => {
         <div className="flex items-center justify-end gap-4">
           <div className="w-14 h-14 flex items-center justify-center pb-1 border-2 border-secondary rounded-full cursor-pointer transform hover:scale-110 transition-transform"
           >
-            <UserIcon size={screenSize}/>
+            <UserIcon size={screenSize} />
           </div>
         </div>
       </div>
@@ -84,7 +84,7 @@ const LegalNoticesPage = () => {
           7. Conditions générales de ventes :</h1>
         <p className='pb-6'>
           Clients particuliers: <br />
-          L'accès au site est gratuit pour le client. Les frais de réservation s'élèvent à 5% du prix de la réservation pour la plateforme OneHairCut et 1% pour le moyen de paiement Stripe.
+          L'accès au site est gratuit pour le client. Les frais de réservation s'élèvent à 6,1% du prix de la réservation pour la plateforme OneHairCut et 1% pour le moyen de paiement Stripe.
           Le client n'est pas lié dans le temps à un contrat et peut demander la fermeture de son compte, si toutefois aucune réservation n'est présente à une date postérieure à la demande fermeture. La fermeture du compte se fait directement sur le site de la plateforme.<br />
           Le paiement se fait par le biais de la plateforme Stripe.<br />
           Concernant les garanties et responsabilités, voir le chapitre Responsabilités des conditions générales d'utilisation.<br />
