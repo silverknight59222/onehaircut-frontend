@@ -6,6 +6,10 @@ import useSnackbar from "@/hooks/useSnackbar";
 import { FileDetails, ImageSalon } from "@/types";
 import { AddIcon, DeleteIcon } from "@/components/utilis/Icons";
 import { Theme_A } from "@/components/utilis/Themes";
+import { TbPhotoCheck } from "react-icons/tb";
+
+
+
 interface ImagesContainerProps {
   title: string;
   type: "showcase" | "hairstyle";
@@ -161,6 +165,9 @@ const ImagesContainer = ({
   useEffect(() => {
     setImages(salonImages);
   }, [salonImages]);
+
+
+
   return (
     <>
       <h2 className="text-3xl font-medium">{title}</h2>
@@ -253,20 +260,31 @@ const ImagesContainer = ({
                       className={`p-4 shadow-lg h-max flex flex-col justify-between cursor-pointer border-2 transition rounded-xl hover:border-secondary ${item.id === updateMode?.id && "border-secondary"
                         }`}
                     >
-                      <div className="relative w-32 h-32">
+                      <div className="relative w-32 h-32 shadow-inner rounded-lg ">
                         <Image
-                        fill={true}
-                        src={item.image.includes('http') ? item.image : `https://api.onehaircut.com${item.image}`}
-                        alt="image"
-                        layout="fill"
-                        objectFit="cover" />
+                          fill={true}
+                          src={item.image.includes('http') ? item.image : `https://api.onehaircut.com${item.image}`}
+                          alt="image"
+                          layout="fill"
+                          objectFit="cover" />
                       </div>
+
+
                       {!item.is_cover && type === "showcase" && (
                         <div
-                          className={`cursor-pointer h-8 mt-2 text-sm flex items-center justify-center text-white px-4 py-1 gap-4 rounded-md ${Theme_A.button.mediumGradientButton} shadow-md`}
-                          onClick={() => makeCover(item.id)}
+                          className="flex justify-end mt-2" // Ceci aligne le bouton à droite
                         >
-                          Image de couverture
+                          <button
+                            className={`flex items-center justify-center text-white px-2 py-1 gap-2 rounded-md ${Theme_A.button.smallBlackColoredButton} shadow-md`}
+                            onClick={() => makeCover(item.id)}
+                            style={{ width: 'auto' }} // Ceci empêche le bouton de prendre toute la largeur disponible
+                          >
+                            <TbPhotoCheck
+                              size={16}
+                              strokeWidth={2}
+                              color={'white'}
+                            />
+                          </button>
                         </div>
                       )}
                     </div>
