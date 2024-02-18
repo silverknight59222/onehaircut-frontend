@@ -11,6 +11,7 @@ import StarRatings from "react-star-ratings";
 import Footer from '@/components/UI/Footer';
 import { client } from '@/api/clientSide';
 import { dashboard } from '@/api/dashboard';
+import jsPDF from 'jspdf';
 
 const History = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -105,9 +106,52 @@ const History = () => {
 
   // ++++++++++ BILL +++++++++++++++
   // function to download the bill liked to the booking in argument
-  const downloadBill = (booking: BookingInfoStruct) => {
-    //TODO add backend function
+  const downloadBill = (item: BookingInfoStruct) => {
+    // Create a new PDF document
+    const doc = new jsPDF();
+
+    // Logo URL
+    const logoUrl = '/assets/DefaultPictures/Onehaircut_Logo.png';
+
+    // Font sizes
+    const titleFontSize = 30;
+    const contentFontSize = 12;
+    const totalFontSize = 20;
+
+    doc.setLineWidth(0.5); // Adjust line width
+
+    // Add logo
+    doc.addImage(logoUrl, 'PNG', 20, 10, 75, 15); // Adjust position and size as needed
+
+    // Add title
+    doc.setFontSize(titleFontSize);
+    doc.text('Facture', 20, 60); // Adjust position as needed
+
+    // Add address
+    const addressY = 80;
+    doc.setFontSize(contentFontSize);
+    doc.text('Onehaircut', 20, addressY);
+    doc.text('7901 4TH ST N STE', 20, addressY + 5);
+    doc.text('300 ST. PETERSBURG, FL. US 33702', 20, addressY + 10);
+
+    const contentY = addressY + 30;
+    // Add content
+    doc.text(`Numéro de réservation: ${item.booking_number}`, 20, contentY);
+    doc.line(10, contentY + 5, 200, contentY + 5); // Add a horizontal line
+    doc.text(`Date de réservation: ${item.redable_date}`, 20, contentY + 10);
+    doc.text(`Salon: ${item.hair_salon && item.hair_salon.name}`, 20, contentY + 20);
+    doc.text(`Coiffure demandée: ${item.salon_haircut.haircut.name}`, 20, contentY + 30);
+    doc.line(10, contentY + 35, 200, contentY + 35); // Add a horizontal line
+    doc.setFontSize(totalFontSize);
+    doc.text(`Total: ${item.total_amount}`, 20, contentY + 50);
+
+    // Add design elements (lines, borders, etc.)
+
+    // Save the PDF as a file
+    doc.save('reservation_bill.pdf');
   };
+
+
 
   // ++++++++++ REBOOKING +++++++++++++++
   // function to jump to the reservation page with the same haircut and salon
