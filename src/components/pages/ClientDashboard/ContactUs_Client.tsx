@@ -84,6 +84,9 @@ const ContactUs_Client = () => {
         data.title = 'Client - ' + title; //specify that it comes from client for email filtering
         data.message = multilineText;
         data.feedback_type = SelectedContactType;
+        if(selectedSecondOption != ""){
+            data.message += '\nBooking Number : ' + selectedSecondOption;
+        }
         setIsLoading(true)
         await dashboard.sendFeedback(data).then((res) => { 
             if (res.data.status == 200) {
