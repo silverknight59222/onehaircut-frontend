@@ -19,6 +19,7 @@ import { user_api } from "@/api/clientSide";
 import DropdownMenu from "@/components/UI/DropDownMenu";
 import TourModal, { Steps } from "@/components/UI/TourModal";
 import AudioPlayerForTour from "@/components/UI/PlayerForTour";
+import { InfoContent_1, InfoContent_2, InfoContent_3, InfoContent_4, InfoTitle_1, InfoTitle_2, InfoTitle_3, InfoTitle_4 } from "@/utils/constants";
 
 // to avoid modifying the theme
 const DemoButton = `text-white font-normal md:font-medium text-md md:text-lg ml-2 mr-2 mb-3 rounded-md w-[278px] py-2 bg-black border border-x-red-500 border-y-orange-500 transform hover:scale-105 transition-transform hover:shadow-md cursor-pointer`
@@ -311,10 +312,13 @@ const Welcome = () => {
   };
 
   const onClickHaircut = (id: number, name: string, image?: string) => {
-    setIsModal(true)
-    setSelectedHaircut({ id: id, name: name, image: image ? image : '' })
-    setIsPreview(false); // Initialisez isPreview à false avant d'ouvrir le modal
-    setIsModal(true);
+    if(user) {
+      setSelectedHaircut({ id: id, name: name, image: image ? image : '' })
+      setIsPreview(false); // Initialisez isPreview à false avant d'ouvrir le modal
+      setIsModal(true);
+    } else {
+      showSnackbar("warning", "Veuillez vous connecter.");
+    }
   }
 
   const onContinue = () => {
@@ -412,17 +416,7 @@ const Welcome = () => {
   const openInfoModal = () => {
     setIsInfoModalOpen(true);
   };
-  const InfoTitle_1 = "Selection d'une coiffure";
-  const InfoContent_1 = "Vous trouverez tous type de coiffure, pour tous les goût <br /> Vous pouvez ajouter une coiffure à vos favoris, et aussi prévisualiser une coiffure sur vous,  <br />  si vous avez ajouté vos photos dans la section portrait";
-  const InfoTitle_2 = "Utilisation";
-  const InfoContent_2 = `● Le choix d'une coiffure n'est pas obligatoire,<br /> Vous pouvez continuer et sélectionner une prestation.<br /> ● Il n'est pas possible de réserver un coiffeur sans avoir sélection soit une coiffure, soit une prestation. <br /> ● Si vous ne trouvez pas la coiffure qu'il vous faut, vous pouvez toujours opter pour une coiffure générique <br /> et expliquer vos attente au salon de coiffure.`;
   const VideoUrl = "";
-
-
-  const InfoTitle_3 = "Visualisation";
-  const InfoContent_3 = "Vous pouvez patienter pour observer la coiffure sur vous <br /> Vous pouvez également continuer de parcourir les coiffures <br /> et vous rendre dans la cabine d'essayage pour observer le résultat";
-  const InfoTitle_4 = "Résultat";
-  const InfoContent_4 = "Le résultat peut être plus ou moins précis et convainquant. <br /> Il ne s'agit que d'un aperçu vous permettant de mieux vous projeter. <br /> Une image de profil de qualité vous permettra d'obtenir de meilleurs résultats. <br /> Nous travaillons pour améliorer notre système continuellement";
 
   // TODO Delete picture in S3
   const DeleteS3Picture = async () => {

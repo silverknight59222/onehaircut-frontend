@@ -47,7 +47,7 @@
     "@types/react-dom": "18.2.7",
     "@typescript-eslint/eslint-plugin": "5.55.0",
     "@vercel/analytics": "^1.1.1",
-    "@vercel/speed-insights": "^1.0.2",
+    "@vercel/speed-insights": "^1.0.10",
     "apexcharts": "^3.44.0",
     "apexcharts-clevision": "3.28.5",
     "autoprefixer": "10.4.14",
