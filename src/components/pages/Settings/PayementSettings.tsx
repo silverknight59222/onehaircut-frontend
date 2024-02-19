@@ -77,6 +77,12 @@ const PayementSettings = () => {
         // TODO add backend
         setIsLoading(true)
         let resp = await salonApi.updateBankAccount(data);
+        if (resp.data.status == 400) {
+            showSnackbar('error', resp.data.message)
+        }
+        else {
+            showSnackbar('success', 'Bank Account Data Stored')
+        }
         setIsLoading(false);
 
     }
@@ -273,10 +279,10 @@ const PayementSettings = () => {
                 if (data.user.hair_salon) {
                     setLocalStorage("hair_salon", JSON.stringify(data.user.hair_salon));
                 }
-                showSnackbar('success', 'Bank Account Data Stored')
                 setIsLoading(false)
             }).catch((e) => {
-                showSnackbar('error', "Please Check Your Identity : Such as valid phone number, bank account number , etc")
+            }).finally(() => {
+                setIsLoading(false)
             });
             // Mettre à jour l'affichage du compte bancaire avec l'IBAN
             setBankAccountDisplay(iban);
