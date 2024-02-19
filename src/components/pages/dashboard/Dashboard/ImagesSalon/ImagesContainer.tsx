@@ -259,7 +259,7 @@ const ImagesContainer = ({
                     <div
                       onClick={() => selectImage(item)}
                       className={`p-4 shadow-lg h-max flex flex-col justify-between cursor-pointer border-2 border-stone-300 transition rounded-xl ${item.is_cover && type === "showcase"
-                        ? "border-x-orange-400 border-y-red-400"
+                        ? "border-x-orange-400 border-y-red-400 "
                         : "hover:border-stone-400"
                         } 
                         ${item.id === updateMode?.id ? "border-stone-400" : ""}
@@ -273,13 +273,6 @@ const ImagesContainer = ({
                           layout="fill"
                           objectFit="cover" />
                       </div>
-
-
-                      {item.is_cover && (
-                        <div className={`absolute bottom-0 right-1/2 transform -translate-x-10 -translate-y-1/3 ${ColorsThemeA.OhcGradient_B} rounded-full p-2 px-2 border-2 border-white`}>
-                          <TbPhotoCheck style={{ color: 'white', fontSize: '1rem' }} />
-                        </div>
-                      )}
 
                       {!item.is_cover && type === "showcase" && (
                         <div
