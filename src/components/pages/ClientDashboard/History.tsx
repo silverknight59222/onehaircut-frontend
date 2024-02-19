@@ -115,35 +115,39 @@ const History = () => {
 
     // Font sizes
     const titleFontSize = 30;
-    const contentFontSize = 12;
+    const contentFontSize = 10;
     const totalFontSize = 20;
+
+    const leftMargin = 20;
 
     doc.setLineWidth(0.5); // Adjust line width
 
-    // Add logo
-    doc.addImage(logoUrl, 'PNG', 20, 10, 75, 15); // Adjust position and size as needed
+    // logo OneHaircut
+    doc.addImage(logoUrl, 'PNG', leftMargin, 10, 75, 15); // Adjust position and size as needed
 
-    // Add title
+    // title
     doc.setFontSize(titleFontSize);
-    doc.text('Facture', 20, 60); // Adjust position as needed
+    doc.text('Facture', leftMargin, 60); // Adjust position as needed
 
     // Add address
     const addressY = 80;
     doc.setFontSize(contentFontSize);
-    doc.text('Onehaircut', 20, addressY);
-    doc.text('7901 4TH ST N STE', 20, addressY + 5);
-    doc.text('300 ST. PETERSBURG, FL. US 33702', 20, addressY + 10);
+    doc.text('Onehaircut', leftMargin, addressY);
+    doc.text('7901 4TH ST N STE', leftMargin, addressY + 5);
+    doc.text('300 ST. PETERSBURG, FL. US 33702', leftMargin, addressY + 10);
 
     const contentY = addressY + 30;
-    // Add content
+    doc.setFontSize(12);
     doc.text(`Numéro de réservation: ${item.booking_number}`, 20, contentY);
-    doc.line(10, contentY + 5, 200, contentY + 5); // Add a horizontal line
-    doc.text(`Date de réservation: ${item.redable_date}`, 20, contentY + 10);
-    doc.text(`Salon: ${item.hair_salon && item.hair_salon.name}`, 20, contentY + 20);
-    doc.text(`Coiffure demandée: ${item.salon_haircut.haircut.name}`, 20, contentY + 30);
-    doc.line(10, contentY + 35, 200, contentY + 35); // Add a horizontal line
+
+    doc.setFontSize(contentFontSize);
+    doc.line(leftMargin, contentY + 5, 200, contentY + 5); // Add a horizontal line
+    doc.text(`Date de réservation: ${item.redable_date}`, leftMargin, contentY + 15);
+    doc.text(`Salon: ${item.hair_salon && item.hair_salon.name}`, leftMargin, contentY + 25);
+    doc.text(`Coiffure demandée: ${item.salon_haircut.haircut.name}`, leftMargin, contentY + 35);
+    doc.line(leftMargin, contentY + 40, 200, contentY + 40); // Add a horizontal line
     doc.setFontSize(totalFontSize);
-    doc.text(`Total: ${item.total_amount}`, 20, contentY + 50);
+    doc.text(`Total payé: ${item.total_amount}`, leftMargin, contentY + 50);
 
     // Add design elements (lines, borders, etc.)
 
