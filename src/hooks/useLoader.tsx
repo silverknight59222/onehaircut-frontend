@@ -1,17 +1,15 @@
-import React from 'react';
-import { TailSpin } from "react-loader-spinner";
+import React from "react";
 
 const useLoading = () => {
+  const loadingView = () => {
+    return (
+      <div className="fixed top-0 left-0 overflow-hidden bg-white bg-opacity-40 flex items-center justify-center w-full h-full z-50">
+        <div className="sp-loader-circle"></div>
+      </div>
+    );
+  };
 
-    const loadingView = () => {
-        return (
-            <div className="fixed top-0 left-0 overflow-hidden bg-black bg-opacity-40 flex items-center justify-center w-full h-full z-50">
-                <TailSpin height="60" width="60" color="#ffffff" visible={true} radius="1" />
-            </div>
-        );
-    };
-
-    return { loadingView };
+  return { loadingView };
 };
 
 export default useLoading;

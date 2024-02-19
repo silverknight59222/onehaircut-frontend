@@ -5,8 +5,9 @@ import { dashboard } from "@/api/dashboard";
 import useSnackbar from "@/hooks/useSnackbar";
 import { FileDetails, ImageSalon } from "@/types";
 import { AddIcon, DeleteIcon } from "@/components/utilis/Icons";
-import { Theme_A } from "@/components/utilis/Themes";
+import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 import { TbPhotoCheck } from "react-icons/tb";
+import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
 
 
 
@@ -257,9 +258,11 @@ const ImagesContainer = ({
                   <div key={index} className="flex justify-center">
                     <div
                       onClick={() => selectImage(item)}
-                      className={`p-4 shadow-lg h-max flex flex-col justify-between cursor-pointer border-2 border-stone-300 transition rounded-xl hover:border-stone-400 
-                      ${item.id === updateMode?.id && "border-stone-400"}
-                      ${item.is_cover && type === "showcase" && "border-x-orange-400 border-y-red-400"}
+                      className={`p-4 shadow-lg h-max flex flex-col justify-between cursor-pointer border-2 border-stone-300 transition rounded-xl ${item.is_cover && type === "showcase"
+                        ? "border-x-orange-400 border-y-red-400"
+                        : "hover:border-stone-400"
+                        } 
+                        ${item.id === updateMode?.id ? "border-stone-400" : ""}
                         `}
                     >
                       <div className="relative w-32 h-32 shadow-inner border-2 border-stone-200 rounded-lg ">
@@ -271,6 +274,12 @@ const ImagesContainer = ({
                           objectFit="cover" />
                       </div>
 
+
+                      {item.is_cover && (
+                        <div className={`absolute bottom-0 right-1/2 transform -translate-x-10 -translate-y-1/3 ${ColorsThemeA.OhcGradient_B} rounded-full p-2 px-2 border-2 border-white`}>
+                          <TbPhotoCheck style={{ color: 'white', fontSize: '1rem' }} />
+                        </div>
+                      )}
 
                       {!item.is_cover && type === "showcase" && (
                         <div
