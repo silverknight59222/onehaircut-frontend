@@ -8,6 +8,7 @@ import { getLocalStorage } from "@/api/storage";
 import { Theme_A } from "@/components/utilis/Themes";
 import { salonApi } from "@/api/salonSide";
 import userLoader from "@/hooks/useLoader";
+import {convertAmount, getCurrencySymbol, getUserCurrency} from "@/utils/currency";
 
 const Index = () => {
   const { loadingView } = userLoader();
@@ -15,6 +16,7 @@ const Index = () => {
   const userInfo = getLocalStorage("user") ? JSON.parse(getLocalStorage("user") as string) : null;
   const salonName = getLocalStorage("salon_name") as string;
   const salon = getLocalStorage("selectedSalon") ? JSON.parse(getLocalStorage("selectedSalon") as string) : null;
+  const salonCurrency = salon?.user?.currency || "EUR";
   const salonType = getLocalStorage("salon_type") as string;
   const planType = getLocalStorage("plan_type") ? JSON.parse(getLocalStorage("plan_type") as string) : null;
   const priceData = getLocalStorage('servicePrice')
@@ -44,17 +46,19 @@ const Index = () => {
   const updatedOHCfees = ((salon?.final_price || 0) + KmPrice) * OnehaircutFees;
   const bookingCost = (salon?.final_price || 0) + KmPrice;
   const updatedTransactionFees = ((bookingCost + updatedOHCfees) * PaymentGatewayVariableFees + PaymentGatewayFixFees);
+  const currencySymbol = getCurrencySymbol()
+  const userCurrency = getUserCurrency()
   const items = [
     { name: "Client", desc: userInfo ? userInfo?.name : '-' },
     { name: "Salon", desc: salon?.name },
     { name: "Adresse du salon", desc: `${salon?.address?.city || ''}, ${salon?.address?.state || ''}, ${salon?.address?.country || ''}` },
     { name: "Type de salon", desc: salon?.type?.replace("_", " ") },
-    { name: "Frais de salon service", desc: "€" + (salon?.final_price?.toFixed(2) || 0) },
-    { name: "Frais de déplacement", desc: "€" + KmPrice },
-    { name: "Frais de fonctionnement Onehaircut", desc: "€" + (updatedOHCfees?.toFixed(2) || 0) },
-    { name: "Frais de transaction", desc: "€" + (updatedTransactionFees?.toFixed(2) || 0) },
+    { name: "Frais de salon service", desc: currencySymbol + convertAmount(salonCurrency, userCurrency, (salon?.final_price || 0)) },
+    { name: "Frais de déplacement", desc: currencySymbol + convertAmount(salonCurrency, userCurrency, KmPrice) },
+    { name: "Frais de fonctionnement Onehaircut", desc: currencySymbol + convertAmount(salonCurrency, userCurrency, (updatedOHCfees || 0)) },
+    { name: "Frais de transaction", desc: currencySymbol + convertAmount(salonCurrency, userCurrency, (updatedTransactionFees || 0)) },
   ];
-  const totalUpdatedCost = parseFloat(bookingCost + updatedOHCfees + updatedTransactionFees).toFixed(2);
+  const totalUpdatedCost = parseFloat(bookingCost + updatedOHCfees + updatedTransactionFees)
 
   return (
     <div>
@@ -98,7 +102,7 @@ const Index = () => {
               </div>
               <div className="flex items-center justify-end mt-4">
                 <p className="text-black text-3xl font-medium ">
-                  Total: <span className="text-4xl font-semibold">€{(totalUpdatedCost)}</span>
+                  Total: <span className="text-4xl font-semibold">{userCurrency}{convertAmount(salonCurrency, userCurrency, (totalUpdatedCost || 0))}</span>
                 </p>
               </div>
               <div className="border-t-2 border-[#CBCBCB] pt-9 mt-4">

@@ -427,6 +427,12 @@ const SalonInfos = () => {
                 removeFromLocalStorage("user");
                 const { data } = await Auth.getUser()
                 user_info = user_info ? JSON.parse(user_info) : null;
+                if(user_info) {
+                  user_info = {
+                    ...user_info,
+                    ...data.user
+                  }
+                }
                 user_info.name = name;
                 user_info.currency = data?.user?.currency || user_info.currency;
                 user_info.hair_salon.name = name;
