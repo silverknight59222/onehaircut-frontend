@@ -28,7 +28,8 @@ import userLoader from "@/hooks/useLoader";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from '@stripe/stripe-js';
 import PaymentFormSetting from "../Settings/PaymentformSetting";
-import {getUserCurrency, getCurrencySymbol, convertAmount} from "@/utils/currency";
+import { getUserCurrency, getCurrencySymbol, convertAmount } from "@/utils/currency";
+import '../../utilis/StylesOHC.css';
 
 const SubSelected_text = "text-white"
 const SubSelected_recommended = "bg-[rgba(255,255,255,0.53)] text-white"
@@ -48,6 +49,9 @@ const Subscription = () => {
   let stripePromise = loadStripe(stripeKey);  // public key for stripe
   const [clientSecret, setClientSecret] = useState("");
   const [showPaymentModal, setShowPaymentModal] = useState(false)
+  const [hasTrial, setHasTrial] = useState(1)
+  const userData = getLocalStorage("user");
+  const user = userData ? JSON.parse(userData) : '';
   const defaultSubscription = {
     created_at: '',
     current_period_end: '',
@@ -131,6 +135,7 @@ const Subscription = () => {
       const endsAtDate = new Date(resp.data.data.ends_at);
       setCurrentPlanDate(endsAtDate.toLocaleDateString());
       setCurrentPlanTime(endsAtDate.toLocaleTimeString());
+      setHasTrial(user.has_trial as number)
       if (resp.data.data && resp.data.data.name.includes("Pro")) {
         setIsCurrSubscriptionPro(true)
       } else {
@@ -230,7 +235,6 @@ const Subscription = () => {
       {
         user_id: ""
       }
-      const user = JSON.parse(getLocalStorage("user") as string);
       data.user_id = user?.id;
       await user_api.deactivateUser(data).then((resp) => {
 
@@ -345,9 +349,13 @@ const Subscription = () => {
                       );
                     })}
                     <div className="mt-1 h-7">
-                      <button className={` font-semibold text-center pt-2 ${isCurrSubscriptionPro ? SubSelected_text : SubUnselected_text}`}>
+                      <button className={`font-semibold text-center pt-2 ${isCurrSubscriptionPro ? SubSelected_text : SubUnselected_text} 
+                                          ${!isCurrSubscriptionPro && hasTrial == 1 ? 'strikethrough' : ''}`}>
                         <span className="text-2xl">{convertAmount('EUR', userCurrency, 79)} {currencySymbol} /mois</span>
                       </button>
+                      {!isCurrSubscriptionPro && hasTrial == 1 && (
+                        <p>(Free Trial available)</p>
+                      )}
                     </div>
                   </div>
                   {isCurrSubscriptionPro && <div className="w-48 absolute left-[230px] top-[650px]  flex items-center justify-center text-white font-semibold rounded-3xl -mb-12 h-12 bg-black cursor-not-allowed">
