@@ -143,8 +143,9 @@ const History = () => {
     doc.setFontSize(contentFontSize);
     doc.line(leftMargin, contentY + 5, 200, contentY + 5); // Add a horizontal line
     doc.text(`Date de réservation: ${item.redable_date}`, leftMargin, contentY + 15);
-    doc.text(`Salon: ${item.hair_salon && item.hair_salon.name}`, leftMargin, contentY + 25);
-    doc.text(`Coiffure demandée: ${item.salon_haircut.haircut.name}`, leftMargin, contentY + 35);
+    doc.text(`Salon: ${item.hair_salon && item.hair_salon.name}`, leftMargin, contentY + 21);
+    doc.text(`Adresse du salon: ${item.hair_salon.address.street} ${item.hair_salon.address.city} ${item.hair_salon.address.country}`, leftMargin, contentY + 27)
+    doc.text(`Coiffure demandée: ${item.salon_haircut.haircut.name}`, leftMargin, contentY + 34);
     doc.line(leftMargin, contentY + 40, 200, contentY + 40); // Add a horizontal line
     doc.setFontSize(totalFontSize);
     doc.text(`Total payé: ${item.total_amount}`, leftMargin, contentY + 50);
