@@ -21,6 +21,9 @@ export const currency = {
 
 export const convertAmount = (from, to, amount) => {
   const exchangeRates = getLocalStorage("exchangeRates");
+  if(!exchangeRates || !amount) {
+    return amount;
+  }
   if(from === to) {
     amount ? Number(amount.toFixed(2)) : 0;
   }
