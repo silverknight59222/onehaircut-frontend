@@ -993,6 +993,9 @@ const Account = () => {
     }
     const setUserInfo = async (data: any) => {
 
+      const resp = await Auth.getUser()
+      setLocalStorage("user", JSON.stringify(resp?.data?.user));
+
         // to update informations description which is displayed
         informations[0].desc = data.name;
         let street_number = data.street_number ?? "";

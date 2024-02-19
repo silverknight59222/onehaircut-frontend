@@ -257,10 +257,12 @@ const ImagesContainer = ({
                   <div key={index} className="flex justify-center">
                     <div
                       onClick={() => selectImage(item)}
-                      className={`p-4 shadow-lg h-max flex flex-col justify-between cursor-pointer border-2 transition rounded-xl hover:border-secondary ${item.id === updateMode?.id && "border-secondary"
-                        }`}
+                      className={`p-4 shadow-lg h-max flex flex-col justify-between cursor-pointer border-2 border-stone-300 transition rounded-xl hover:border-stone-400 
+                      ${item.id === updateMode?.id && "border-stone-400"}
+                      ${item.is_cover && type === "showcase" && "border-x-orange-400 border-y-red-400"}
+                        `}
                     >
-                      <div className="relative w-32 h-32 shadow-inner rounded-lg ">
+                      <div className="relative w-32 h-32 shadow-inner border-2 border-stone-200 rounded-lg ">
                         <Image
                           fill={true}
                           src={item.image.includes('http') ? item.image : `https://api.onehaircut.com${item.image}`}
@@ -275,9 +277,9 @@ const ImagesContainer = ({
                           className="flex justify-end mt-2" // Ceci aligne le bouton à droite
                         >
                           <button
-                            className={`flex items-center justify-center text-white px-2 py-1 gap-2 rounded-md ${Theme_A.button.smallBlackColoredButton} shadow-md`}
+                            title="Définir comme image principale" // Ceci affiche le message au survol
+                            className={`text-white px-2 py-1 gap-2 rounded-md ${Theme_A.button.smallBlackColoredButton} shadow-md`}
                             onClick={() => makeCover(item.id)}
-                            style={{ width: 'auto' }} // Ceci empêche le bouton de prendre toute la largeur disponible
                           >
                             <TbPhotoCheck
                               size={16}
