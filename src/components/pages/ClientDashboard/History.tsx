@@ -333,13 +333,24 @@ const History = () => {
                         onClick={() => downloadBill(item)}
                         className={`${Theme_A.button.medWhiteColoredButton} mx-1`}
                       >
-                        Télecharger la facture
+                        Télécharger la facture
                       </button>
+
                       {/* TODO : re-enable once this functionality works */}
                       {/* <button
                           onClick={() => rebook(item)}
                           className={`${Theme_A.button.mediumGradientButton} mx-1`}>
                           Reserver à nouveau</button> */}
+                    </div>
+
+                    {/* TODO Bouton should be visible only for 1 week after the booking */}
+                    <div
+                      className="flex mt-6 items-center justify-center cursor-pointer "
+                    //onClick={() => redirect to Contact us with preset value "Déclarer un litige" + the correct booking number}
+                    >
+                      <p className="text-xs text-[#666] underline transform hover:scale-105 transition-transform hover:text-red-500 hover:font-medium">
+                        Signaler un problème{" "}
+                      </p>
                     </div>
                     {/* <p className='absolute bottom-8 right-4 text-xs text-[#666]'>23/24</p> */}
                   </div>
