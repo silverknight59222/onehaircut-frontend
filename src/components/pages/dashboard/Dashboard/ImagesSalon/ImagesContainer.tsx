@@ -1,15 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { getLocalStorage } from "@/api/storage";
 import { dashboard } from "@/api/dashboard";
 import useSnackbar from "@/hooks/useSnackbar";
 import { FileDetails, ImageSalon } from "@/types";
 import { AddIcon, DeleteIcon } from "@/components/utilis/Icons";
-import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
+import { Theme_A } from "@/components/utilis/Themes";
 import { TbPhotoCheck } from "react-icons/tb";
-import CheckOutlinedIcon from '@mui/icons-material/CheckOutlined';
-
-
 
 interface ImagesContainerProps {
   title: string;
@@ -23,6 +20,15 @@ interface ValidationErrorType {
   image: string;
 }
 
+const defaultUploadedImage: FileDetails = {
+  lastModified: 0,
+  lastModifiedDate: new Date(),
+  name: "",
+  size: 0,
+  type: "",
+  webkitRelativePath: "",
+};
+
 const ImagesContainer = ({
   title,
   type,
@@ -30,21 +36,9 @@ const ImagesContainer = ({
   setIsLoading,
   getAllSalonImages,
 }: ImagesContainerProps) => {
+  const hiddenFileInput = useRef<any>(null);
   const showSnackbar = useSnackbar();
 
-  const defaultUploadedImage: FileDetails = {
-    lastModified: 0,
-    lastModifiedDate: new Date(),
-    name: "",
-    size: 0,
-    type: "",
-    webkitRelativePath: "",
-  };
-  const user = getLocalStorage('user');
-  const user_data = user ? JSON.parse(user) : null;
-  const isProSubscription = user_data ? user_data.subscription?.name?.includes("Pro") : false;
-  const limit = isProSubscription ? 25 : 5;
-  const hiddenFileInput = React.useRef<any>(null);
   const [selectedImage, setSelectedImage] = useState<string>("");
   const [images, setImages] = useState<ImageSalon[]>(salonImages);
   const [uploadedImage, setUploadedImage] =
@@ -56,11 +50,20 @@ const ImagesContainer = ({
     }
   );
 
+  const user = getLocalStorage("user");
+  const user_data = user ? JSON.parse(user) : null;
+
+  const isProSubscription = user_data
+    ? user_data.subscription?.name?.includes("Pro")
+    : false;
+  const limit = isProSubscription ? 25 : 5;
+
   const handleClick = () => {
     if (hiddenFileInput.current) {
       hiddenFileInput.current?.click();
     }
   };
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (!event.target.files) {
       return;
@@ -70,9 +73,8 @@ const ImagesContainer = ({
     setSelectedImage(URL.createObjectURL(fileUploaded));
   };
 
-  const canAddImage = () => {
-    return images?.filter((image) => image.type === type).length < limit
-  }
+  const canAddImage =
+    images?.filter((image) => image.type === type).length < limit;
 
   const addImage = async () => {
     if (uploadedImage.size === 0) {
@@ -85,9 +87,11 @@ const ImagesContainer = ({
       image: "",
     });
     const formData = new FormData();
+
     const hairSalon = getLocalStorage("hair_salon");
     const hairSalonId = hairSalon ? JSON.parse(hairSalon).id : null;
-    if (images?.filter((image) => image.type === type).length < limit) {
+
+    if (canAddImage) {
       if (hairSalonId) {
         formData.append("hair_salon_id", hairSalonId);
       }
@@ -121,9 +125,11 @@ const ImagesContainer = ({
     }
   };
 
-  const selectImage = (image: ImageSalon) => {
+  const selectImage = (image: any) => {
+    console.log("imagessss", image);
     setUpdateMode(image);
   };
+
   const clearUpdateMode = () => {
     setUpdateMode(null);
   };
@@ -167,8 +173,6 @@ const ImagesContainer = ({
     setImages(salonImages);
   }, [salonImages]);
 
-
-
   return (
     <>
       <h2 className="text-3xl font-medium">{title}</h2>
@@ -177,13 +181,19 @@ const ImagesContainer = ({
           <div className="flex flex-col w-max gap-4">
             <div className="flex flex-col">
               <div
-                className={`flex items-center p-4 rounded-2xl border-2 bg-white shadow-lg cursor-pointer`}
+                className={`flex items-center p-10 rounded-2xl border-2 bg-white shadow-lg cursor-pointer`}
                 onClick={handleClick}
               >
                 <div className={`w-32 h-32 relative flex items-center`}>
                   {updateMode || selectedImage ? (
                     <Image
-                      src={updateMode ? (updateMode.image.includes('http') ? updateMode.image : `${updateMode.image}`) : selectedImage}
+                      src={
+                        updateMode
+                          ? updateMode.image.includes("http")
+                            ? updateMode.image
+                            : `https://api.onehaircut.com${updateMode.image}`
+                          : selectedImage
+                      }
                       // fill={true}
                       layout="fill"
                       objectFit="cover"
@@ -236,7 +246,7 @@ const ImagesContainer = ({
                   </button>
                 </>
               )}
-              {!updateMode && canAddImage() && (
+              {!updateMode && canAddImage && (
                 <button
                   onClick={addImage}
                   className={`flex items-center justify-center px-4 py-2 gap-4 rounded-md ${Theme_A.button.mediumGradientButton} shadow-md `}
@@ -250,28 +260,37 @@ const ImagesContainer = ({
         <div className="flex-1 flex justify-center sm:justify-end gap-4">
           <div className="relative grid grid-cols-1 sm:grid-cols-2 gap-2 w-max border-2 rounded-xl border-gray-300 p-5 min-h-[456px]">
             {images
-              .filter((item) => {
-                return item.type === type;
+              .filter((it) => {
+                return it.type === type;
               })
               .map((item, index) => {
                 return (
-                  <div key={index} className="flex justify-center">
+                  <div
+                    key={index}
+                    className="flex justify-center"
+                    onClick={() => selectImage(item)}
+                  >
                     <div
-                      onClick={() => selectImage(item)}
-                      className={`p-4 shadow-lg h-max flex flex-col justify-between cursor-pointer border-2 border-stone-300 transition rounded-xl ${item.is_cover && type === "showcase"
-                        ? "border-x-orange-400 border-y-red-400 "
-                        : "hover:border-stone-400"
-                        } 
+                      className={`p-4 shadow-lg h-max flex flex-col justify-between cursor-pointer border-2 border-stone-300 transition rounded-xl ${
+                        item.is_cover && type === "showcase"
+                          ? "border-x-orange-400 border-y-red-400 "
+                          : "hover:border-stone-400"
+                      } 
                         ${item.id === updateMode?.id ? "border-stone-400" : ""}
                         `}
                     >
                       <div className="relative w-32 h-32 shadow-inner border-2 border-stone-200 rounded-lg ">
                         <Image
                           fill={true}
-                          src={item.image.includes('http') ? item.image : `https://api.onehaircut.com${item.image}`}
+                          src={
+                            item.image.includes("http")
+                              ? item.image
+                              : `https://api.onehaircut.com${item.image}`
+                          }
                           alt="image"
                           layout="fill"
-                          objectFit="cover" />
+                          objectFit="cover"
+                        />
                       </div>
 
                       {!item.is_cover && type === "showcase" && (
@@ -286,7 +305,7 @@ const ImagesContainer = ({
                             <TbPhotoCheck
                               size={16}
                               strokeWidth={2}
-                              color={'white'}
+                              color={"white"}
                             />
                           </button>
                         </div>
@@ -295,7 +314,9 @@ const ImagesContainer = ({
                   </div>
                 );
               })}
-            <div className="absolute right-2 bottom-1 text-sm">{images.filter(image => image.type === type).length}/{limit}</div>
+            <div className="absolute right-2 bottom-1 text-sm">
+              {images.filter((image) => image.type === type).length}/{limit}
+            </div>
           </div>
         </div>
       </div>
