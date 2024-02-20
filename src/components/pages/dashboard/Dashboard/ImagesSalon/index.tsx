@@ -4,6 +4,7 @@ import { getLocalStorage, removeFromLocalStorage, setLocalStorage } from '@/api/
 import userLoader from '@/hooks/useLoader';
 import { ImageSalon } from '@/types';
 import ImagesContainer from './ImagesContainer';
+
 import { EditIcon, LogoCircleFixLeft } from "@/components/utilis/Icons";
 import Footer from "@/components/UI/Footer";
 import { Theme_A } from '@/components/utilis/Themes';
