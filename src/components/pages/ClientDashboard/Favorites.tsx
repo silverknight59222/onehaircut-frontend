@@ -1,6 +1,10 @@
 "use client";
 import { dashboard } from "@/api/dashboard";
-import { CrossIcon, LogoCircleFixRight } from "@/components/utilis/Icons";
+import {
+  CrossIcon,
+  EyeIcon,
+  LogoCircleFixRight,
+} from "@/components/utilis/Icons";
 import ClientDashboardLayout from "@/layout/ClientDashboardLayout";
 import Image from "next/image";
 import React from "react";
@@ -15,7 +19,12 @@ import BaseModal from "@/components/UI/BaseModal";
 import InfoButton from "@/components/UI/InfoButton";
 import { user_api } from "@/api/clientSide";
 import { useRouter } from "next/navigation";
-import { InfoContent_3, InfoContent_4, InfoTitle_3, InfoTitle_4 } from "@/utils/constants";
+import {
+  InfoContent_3,
+  InfoContent_4,
+  InfoTitle_3,
+  InfoTitle_4,
+} from "@/utils/constants";
 
 const Favorites = () => {
   const router = useRouter(); // Next.js Router for navigation
@@ -286,7 +295,7 @@ const Favorites = () => {
                               item.haircut.image
                             )
                           }
-                          className={`${Theme_A.hairstyleCards.cardgradientTop} rounded-xl`}
+                          className={`${Theme_A.hairstyleCards.cardgradientTop} rounded-xl relative group`}
                         >
                           <div className="relative w-max  bg-[#F5F5F5] ">
                             <div className="relative w-32 h-32">
@@ -314,6 +323,9 @@ const Favorites = () => {
                             className={`absolute top-1 right-1 flex items-center justify-center w-6 h-6 cursor-pointer rounded-md ${Theme_A.button.crossButtonSmall}`}
                           >
                             <CrossIcon width="18" height="18" />
+                          </div>
+                          <div className="group-hover:opacity-100 rounded-xl bg-black bg-opacity-40 opacity-0 absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center transition-opacity duration-300">
+                            <EyeIcon className="text-white w-8 h-8" />
                           </div>
                         </div>
                       </tr>
