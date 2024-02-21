@@ -44,7 +44,7 @@ const EUCountriesList = () => {
     'Serbie',
     'Slovaquie',
     'Slovénie',
-    'Suisse',
+    'Switzerland',
     'Suède',
     'Ukraine',
   ];
