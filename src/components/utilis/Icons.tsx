@@ -3428,7 +3428,7 @@ export const MapIconWithValue: React.FC<any> = ({
         textAnchor="middle"
         fontFamily="Arial"
         fontWeight="bold"
-        fontSize="10"
+        fontSize="14"
         fill="black"
       >
         {value}
@@ -3518,7 +3518,7 @@ export const MapIconRedWithValue: React.FC<any> = ({
         textAnchor="middle"
         fontFamily="Arial"
         fontWeight="bold"
-        fontSize="10"
+        fontSize="14"
         fill="white"
       >
         {value}

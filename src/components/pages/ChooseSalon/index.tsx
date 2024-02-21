@@ -856,7 +856,7 @@ const SalonChoice = () => {
                                                         options={
                                                             {
                                                                 icon: {
-                                                                    url: filteredSalons[index]?.id === selectedSalon.id ? getRedSVGWithValue(`${convertAmount(filteredSalons[index]['user']['currency'],userCurrency,filteredSalons[index]?.final_price) + currencySymbol}`) : getSVGWithValue(`${convertAmount(filteredSalons[index]['user']['currency'],userCurrency,filteredSalons[index]?.final_price) + currencySymbol}`),
+                                                                    url: filteredSalons[index]?.id === selectedSalon.id ? getRedSVGWithValue(`${convertAmount(filteredSalons[index]['user']['currency'],userCurrency,filteredSalons[index]?.final_price)}`) : getSVGWithValue(`${convertAmount(filteredSalons[index]['user']['currency'],userCurrency,filteredSalons[index]?.final_price)}`),
                                                                     scaledSize: filteredSalons[index]?.id === selectedSalon.id ? new window.google.maps.Size(70, 110) : new window.google.maps.Size(60, 100),
                                                                     origin: new window.google.maps.Point(0, -10),
                                                                     anchor: filteredSalons[index]?.id === selectedSalon.id ? new window.google.maps.Point(25, 37) : new window.google.maps.Point(20, 35),
@@ -929,12 +929,12 @@ const SalonChoice = () => {
                                                     {fsalon && fsalon.salon_cover_image &&
                                                         <Image
                                                             src={fsalon && fsalon.salon_cover_image ?
-                                                                fsalon.salon_cover_image?.image?.includes('api') 
-                                                                || fsalon.salon_cover_image?.image?.includes('127.0.0.1') 
+                                                                fsalon.salon_cover_image?.image?.includes('api')
+                                                                || fsalon.salon_cover_image?.image?.includes('127.0.0.1')
                                                                 ?
                                                                     fsalon.salon_cover_image.image :
                                                                     `https://api.onehaircut.com${fsalon.salon_cover_image.image}` :
-                                                                
+
                                                                 fsalon.logo.includes('api') ?
                                                                     fsalon.logo :
                                                                     `https://api.onehaircut.com${fsalon.logo}`}
