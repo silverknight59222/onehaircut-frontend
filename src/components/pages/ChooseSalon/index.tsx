@@ -21,7 +21,7 @@ import BaseModal from '@/components/UI/BaseModal';
 import CustomInput from '@/components/UI/CustomInput';
 import TourModal, { Steps } from "@/components/UI/TourModal";
 import { user_api } from '@/api/clientSide';
-import {convertAmount, getCurrencySymbol, getUserCurrency} from "@/utils/currency";
+import { convertAmount, getCurrencySymbol, getUserCurrency } from "@/utils/currency";
 
 
 // TODO IMPORT TO USE ADRESSES
@@ -465,11 +465,11 @@ const SalonChoice = () => {
         setPageDone(pages_done ? JSON.parse(pages_done) : [])
     }, [])
 
-    const handleSolenSelected = (salon: SalonDetails) => {
+    const handleSalonSelected = (salon: SalonDetails) => {
         setSelectedSalon(salon)
         if (salon.address?.lat && salon.address?.long) {
             setCenter({ lat: salon.address.lat, lng: salon.address.long })
-            map?.setZoom(8);
+            map?.setZoom(13);
         }
     }
 
@@ -856,7 +856,7 @@ const SalonChoice = () => {
                                                         options={
                                                             {
                                                                 icon: {
-                                                                    url: filteredSalons[index]?.id === selectedSalon.id ? getRedSVGWithValue(`${convertAmount(filteredSalons[index]['user']['currency'],userCurrency,filteredSalons[index]?.final_price) + currencySymbol}`) : getSVGWithValue(`${convertAmount(filteredSalons[index]['user']['currency'],userCurrency,filteredSalons[index]?.final_price) + currencySymbol}`),
+                                                                    url: filteredSalons[index]?.id === selectedSalon.id ? getRedSVGWithValue(`${convertAmount(filteredSalons[index]['user']['currency'], userCurrency, filteredSalons[index]?.final_price)}`) : getSVGWithValue(`${convertAmount(filteredSalons[index]['user']['currency'], userCurrency, filteredSalons[index]?.final_price)}`),
                                                                     scaledSize: filteredSalons[index]?.id === selectedSalon.id ? new window.google.maps.Size(70, 110) : new window.google.maps.Size(60, 100),
                                                                     origin: new window.google.maps.Point(0, -10),
                                                                     anchor: filteredSalons[index]?.id === selectedSalon.id ? new window.google.maps.Point(25, 37) : new window.google.maps.Point(20, 35),
@@ -904,7 +904,7 @@ const SalonChoice = () => {
                                         <div
                                             key={index}
                                             id={`Vignette-${index}`}
-                                            onClick={() => handleSolenSelected(fsalon)}
+                                            onClick={() => handleSalonSelected(fsalon)}
                                             className={`relative flex w-full w-max[450px] h-56 h-max[300px] rounded-2xl border hover:border-stone-400 cursor-pointer
                                         ${selectedSalon.id === fsalon.id ? 'border-4 border-red-400 shadow-xl' : ''}
                                         ${fsalon.wishlist ? ColorsThemeA.OhcGradient_G : 'bg-stone-100'}`} // bg-green-100 est un exemple, choisissez la couleur que vous voulez
@@ -929,12 +929,12 @@ const SalonChoice = () => {
                                                     {fsalon && fsalon.salon_cover_image &&
                                                         <Image
                                                             src={fsalon && fsalon.salon_cover_image ?
-                                                                fsalon.salon_cover_image?.image?.includes('api') 
-                                                                || fsalon.salon_cover_image?.image?.includes('127.0.0.1') 
-                                                                ?
+                                                                fsalon.salon_cover_image?.image?.includes('api')
+                                                                    || fsalon.salon_cover_image?.image?.includes('127.0.0.1')
+                                                                    ?
                                                                     fsalon.salon_cover_image.image :
                                                                     `https://api.onehaircut.com${fsalon.salon_cover_image.image}` :
-                                                                
+
                                                                 fsalon.logo.includes('api') ?
                                                                     fsalon.logo :
                                                                     `https://api.onehaircut.com${fsalon.logo}`}

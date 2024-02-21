@@ -132,7 +132,7 @@ const Settings = () => {
         {/*  DISPLAY SUB MENU */}
         {currentMenu.map((item, index) => {
           return (
-            <>
+            <div key={index}>
               {activeMenu === item.name && !isLoading && (
                 <div
                   key={index}
@@ -141,7 +141,7 @@ const Settings = () => {
                   <item.display />
                 </div>
               )}
-            </>
+            </div>
           );
         })}
       </div>

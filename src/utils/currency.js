@@ -21,15 +21,15 @@ export const currency = {
 
 export const convertAmount = (from, to, amount) => {
   const exchangeRates = getLocalStorage("exchangeRates");
-  if(!exchangeRates || !amount) {
+  if(!exchangeRates || !amount || !Number(amount)) {
     return amount;
   }
   if(from === to) {
-    amount ? Number(amount.toFixed(2)) : 0;
+    amount ? Number(Number(amount).toFixed(2)) : 0;
   }
   if (exchangeRates) {
     const rates = JSON.parse(exchangeRates);
-    return Number((amount * rates[from][to]).toFixed(2))
+    return Number((Number(amount) * rates[from][to]).toFixed(2))
   }
   return amount
 }
