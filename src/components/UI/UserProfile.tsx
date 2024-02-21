@@ -11,6 +11,7 @@ import {
   HistoryIcon,
   LogoutIcon,
   CabineIcon,
+  ContactIcon,
 }
   from "../utilis/Icons";
 import { useRouter } from "next/navigation";
@@ -77,6 +78,11 @@ const UserProfile = ({ isDashboard }: UserProfileProfile) => {
       icon: <HelpIcon width="20" height="20" color="#000000" />,
       route: "/client/help"
     },
+    {
+      name: "Contactez-nous",
+      icon: <ContactIcon width="25" height="25" color="#000000" />,
+      route: "/client/contactUs"
+    },
   ];
 
 
@@ -138,7 +144,7 @@ const UserProfile = ({ isDashboard }: UserProfileProfile) => {
         className={`w-10 lg:w-12 h-10 lg:h-12 flex items-center justify-center pb-1 ${ColorsThemeA.ohcBorder} hover:shadow-md rounded-full cursor-pointer transition-transform duration-300 transform hover:scale-110`}
         onClick={() => setIsDropdown(!isDropdown)}
       >
-        <UserIcon size={screenSize}/>
+        <UserIcon size={screenSize} />
       </div>
       {isDropdown && (
         <div

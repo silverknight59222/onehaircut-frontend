@@ -15,9 +15,12 @@ import { Theme_A } from "@/components/utilis/Themes";
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import { salonApi } from "@/api/salonSide";
+import {convertAmount, getCurrencySymbol, getUserCurrency} from "@/utils/currency";
 
 const Index = () => {
   const router = useRouter();
+  const userCurrency = getUserCurrency();
+  const currencySymbol = getCurrencySymbol()
   const showSnackbar = useSnackbar()
   const temp = getLocalStorage("user");
   const user = temp ? JSON.parse(temp) : null
@@ -32,6 +35,7 @@ const Index = () => {
   const haircutData = haircut ? JSON.parse(haircut) : null
   const salon = getLocalStorage('selectedSalon')
   const salonData = salon ? JSON.parse(salon) : null
+  const salonCurrency = salonData?.user?.currency || 'EUR'
   const services = getLocalStorage('ServiceIds')
   const servicesData = services ? JSON.parse(services) : null
   const datetime = getLocalStorage('selectDate')
@@ -145,9 +149,7 @@ const Index = () => {
   const getBillKMPrice = async () => {
     setIsLoading(true)
     let resp = await salonApi.getBillPerKM(user?.id, salonData.id)
-    console.log(resp.data.data.price);
-    setKMPrice(Math.round(resp.data.data.price * 100) / 100)
-    console.log(mobile_type)
+    setKMPrice(convertAmount(salonCurrency, userCurrency, Math.round(resp.data.data.price * 100) / 100))
     if (mobile_type != 'domicile') {
       setKMPrice(0)
     }
@@ -243,12 +245,13 @@ const Index = () => {
   };
   const bookingDate = getLocalStorage('selectDate');
   const formattedBookingDate = bookingDate ? formatDate(bookingDate) : "";
+  const finalPriceConverted = convertAmount(salonCurrency, userCurrency, salonData?.final_price)
 
 
-  const updatedOHCfees = (salonData?.final_price + KmPrice) * OnehaircutFees;
-  const bookingCost = salonData?.final_price + KmPrice;
-  const updatedTransactionFees = ((bookingCost + updatedOHCfees) * PaymentGatewayVariableFees + PaymentGatewayFixFees);
-  const totalUpdatedCost = parseFloat(bookingCost + updatedOHCfees + updatedTransactionFees).toFixed(2);
+  const updatedOHCfees = Number(((finalPriceConverted + KmPrice) * OnehaircutFees).toFixed(2));
+  const bookingCost = finalPriceConverted + KmPrice;
+  const updatedTransactionFees = Number(((bookingCost + updatedOHCfees) * PaymentGatewayVariableFees + PaymentGatewayFixFees).toFixed(2));
+  const totalUpdatedCost = (bookingCost + updatedOHCfees + updatedTransactionFees).toFixed(2);
 
   return (
     <div>
@@ -277,10 +280,10 @@ const Index = () => {
                 {slotData && <p className="text-base"><span className="font-bold text-sm ">Heure de fin: </span>{slotData.slot[slotData.slot.length - 1].end}</p>}
                 {slotData && <p className="text-base"><span className="font-bold text-sm ">Durée totale: </span>{salonData.total_duration} Minutes</p>}
                 {/* Les frais de déplacement ne doivent apparaître que si le client a choisi une coiffure à domicile */}
-                {slotData && <p className="text-base"><span className="font-bold text-sm ">Prix de la coiffure et services: </span> {salonData?.final_price.toFixed(2)}€</p>}
-                {slotData && <p className="text-base"><span className="font-bold text-sm ">Frais de déplacement: </span> {KmPrice}€ </p>}
-                {slotData && <p className="text-base"><span className="font-bold text-sm ">Frais de fonctionnement Onehaircut: </span> {updatedOHCfees.toFixed(2)}€ </p>}
-                {slotData && <p className="text-base"><span className="font-bold text-sm ">Frais de transaction : </span> {updatedTransactionFees.toFixed(2)}€ </p>}
+                {slotData && <p className="text-base"><span className="font-bold text-sm ">Prix de la coiffure et services: </span> {finalPriceConverted} {currencySymbol}</p>}
+                {slotData && <p className="text-base"><span className="font-bold text-sm ">Frais de déplacement: </span> {KmPrice} {currencySymbol} </p>}
+                {slotData && <p className="text-base"><span className="font-bold text-sm ">Frais de fonctionnement Onehaircut: </span> {updatedOHCfees} {currencySymbol} </p>}
+                {slotData && <p className="text-base"><span className="font-bold text-sm ">Frais de transaction : </span> {updatedTransactionFees} {currencySymbol} </p>}
               </div>
 
               {haircutData && haircutData.image &&
@@ -295,7 +298,7 @@ const Index = () => {
                 Modifier
               </button>
               <p className="text-3xl xl:text-4xl text-black font-semibold ml-8">
-                Prix total : {totalUpdatedCost}€
+                Prix total : {totalUpdatedCost} {currencySymbol}
               </p>
             </div>
           </div>

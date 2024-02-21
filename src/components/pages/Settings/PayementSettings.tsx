@@ -31,6 +31,7 @@ interface PayoutsData {
     created_at: string,
 }
 import AudioPlayerForTour from "@/components/UI/PlayerForTour";
+import { getCurrencySymbol } from "@/utils/currency";
 
 const PayementSettings = () => {
     const payementMethodStruct: string[] = [
@@ -69,11 +70,19 @@ const PayementSettings = () => {
         'arrival_date',
         'status',
     ];
+    const currencySymbol = getCurrencySymbol();
+
     // Function to send the new settings values into backend
     const updateBankingSettings = async (data) => {
         // TODO add backend
         setIsLoading(true)
         let resp = await salonApi.updateBankAccount(data);
+        if (resp.data.status == 400) {
+            showSnackbar('error', resp.data.message)
+        }
+        else {
+            showSnackbar('success', 'Bank Account Data Stored')
+        }
         setIsLoading(false);
 
     }
@@ -270,10 +279,10 @@ const PayementSettings = () => {
                 if (data.user.hair_salon) {
                     setLocalStorage("hair_salon", JSON.stringify(data.user.hair_salon));
                 }
-                showSnackbar('success', 'Bank Account Data Stored')
                 setIsLoading(false)
             }).catch((e) => {
-                showSnackbar('error', "Please Check Your Identity : Such as valid phone number, bank account number , etc")
+            }).finally(() => {
+                setIsLoading(false)
             });
             // Mettre à jour l'affichage du compte bancaire avec l'IBAN
             setBankAccountDisplay(iban);
@@ -380,7 +389,7 @@ const PayementSettings = () => {
 
     const getPayoutsData = async () => {
         let resp = await salonApi.getPayoutsData();
-        if(resp.data.status == 400){
+        if (resp.data.status == 400) {
             showSnackbar('error', resp.data.message)
         }
         else {
@@ -472,6 +481,7 @@ const PayementSettings = () => {
             {showModal && (
                 <BaseModal
                     close={() => setShowModal(false)}
+                    styles={{ maxWidth: '80%', margin: '0 auto' }}
                 >
                     {/* Contenu du Modal ici. Assurez-vous que c'est un seul élément JSX ou un fragment */}
                     <CustomizedTable columns={columnsToDisplay} data={payoutsData} cB={() => { }} />

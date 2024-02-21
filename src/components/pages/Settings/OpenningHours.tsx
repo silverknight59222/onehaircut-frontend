@@ -1,6 +1,5 @@
 "use client";
-import { CheckedIcon, LogoCircleFixRight } from "@/components/utilis/Icons";
-import DashboardLayout from "@/layout/DashboardLayout";
+import { CheckedIcon } from "@/components/utilis/Icons";
 import React, { useEffect, useState } from "react";
 import { HairdresserSlots } from "./HairdresserSlots";
 import userLoader from "@/hooks/useLoader";

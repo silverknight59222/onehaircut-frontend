@@ -7,17 +7,18 @@ interface ModalType {
     children: JSX.Element,
     close: () => void,
     width?: string,
+    styles?: any,
     opacity?: number // Ajout de la nouvelle prop pour l'opacité
 }
 
-const BaseModal = ({ children, close, width, opacity = 40 }: ModalType) => { // Valeur par défaut de 20% pour l'opacité
+const BaseModal = ({ children, close, width, opacity = 40, styles }: ModalType) => { // Valeur par défaut de 20% pour l'opacité
     const overlayStyle = `fixed top-0 left-0 h-full w-screen bg-black cursor-pointer` + (opacity ? ` bg-opacity-${opacity}` : '');
 
     return (
         <div className="relative z-50">
             <div className="fixed top-0 left-0 h-full w-screen overflow-y-auto flex justify-center items-center">
                 <div className={overlayStyle} onClick={close} />
-                <div className="relative">
+                <div className="relative" style={styles ? styles : {}}>
                     <div id="CrossIcon" className={`absolute -top-5 right-0 sm:-right-2 z-10 flex items-center justify-center w-12 h-12 text-darkBlue font-semibold cursor-pointer rounded-xl shadow-md ${ColorsThemeA.ohcVerticalGradient_A} transform transition-transform duration-300 hover:scale-75`} onClick={close}>
                         <CrossIcon />
                     </div>

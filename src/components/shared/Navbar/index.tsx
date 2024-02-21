@@ -25,6 +25,7 @@ import EUCountriesList from "./EUCountries";
 import StarRatings from "react-star-ratings";
 import Autocomplete from "react-google-autocomplete";
 import { user_api } from "@/api/clientSide";
+import {getCurrencySymbol} from "@/utils/currency";
 
 
 interface Navbar {
@@ -49,10 +50,11 @@ interface Navbar {
   onRatingFilter?: (arg0: number[]) => void,
   onCountryFilter?: (arg0: string) => void,
   onAvailabilityFilter?: (arg0: string[]) => void,
-  onNewSalonFilter?: (arg0: boolean) => void
+  onNewSalonFilter?: (arg0: boolean) => void,
 }
 
 const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideSearchBar, onHairNameFilters, onTypeSelect, onLengthSelect, onSearch, onServiceSearch, onGenderFilter, onEthnicityFilters, onLengthFilters, onMobileFilters, onCitySearch, onCityMapSearch, onNameSearch, onRangeFilters, onRatingFilter, onCountryFilter, onAvailabilityFilter, onNewSalonFilter }: Navbar) => {
+  const currencySymbol = getCurrencySymbol();
   const [isDropdown, setIsDropdown] = useState(false);
   const [showDesktopGender, setShowDesktopGender] = useState(false);
   const [showDesktopLength, setShowDesktopLength] = useState(false);
@@ -759,7 +761,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                           onChange={rangeSelector}
                           min={0}
                           max={500}
-                          unit="€"
+                          unit={currencySymbol}
                           label="Budget"
                           valueLabelDisplay="auto"
                           width="320px"
@@ -783,7 +785,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                                 className="w-20 p-1 border rounded-xl text-center"
                                 min={0}
                               />
-                              <span className="ml-1">€</span>
+                              <span className="ml-1"></span>
                             </div>
                           </div>
                           {/* Label et input pour la valeur maximale */}
@@ -803,7 +805,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                                 className="w-20 p-1 border rounded-xl text-center"
                                 max={500}
                               />
-                              <span className="ml-1">€</span>
+                              <span className="ml-1">{currencySymbol}</span>
                             </div>
                           </div>
                         </div>
@@ -1151,7 +1153,7 @@ const Navbar = ({ isWelcomePage, isServicesPage, isSalonPage, isBookSalon, hideS
                         onChange={rangeSelector}
                         min={0}
                         max={1000}
-                        unit="€"
+                        unit={currencySymbol}
                         label="Budget" // Provide a label prop if your CustomSlider component expects it
                         valueLabelDisplay="auto"
                         width="250%"

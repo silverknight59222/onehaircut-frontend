@@ -30,8 +30,8 @@ const InfoButton = ({
     top: '-15%',
     left: '-15%',
     transform: 'translate(-50%, -50%)',
-    width: '45px', // Taille du cercle
-    height: '45px', // Taille du cercle
+    width: '28px', // Taille du cercle
+    height: '28px', // Taille du cercle
     backgroundColor: 'white', // Couleur de fond blanche
     border: '8px solid #2f81d4', // Bordures rouges
     borderRadius: '50%',
@@ -81,7 +81,7 @@ const InfoButton = ({
       >
         <style dangerouslySetInnerHTML={{ __html: keyframesPulse }} />
         <div style={circleStyle} />
-        <InfoNodalIcon width="35px" height="35px" fill={iconColor} />
+        <InfoNodalIcon width="22px" height="22px" fill={iconColor} />
       </div>
     </div>
   );
