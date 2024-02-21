@@ -9,6 +9,7 @@ import BaseModal from "@/components/UI/BaseModal";
 import { dashboard } from "@/api/dashboard";
 import useSnackbar from "@/hooks/useSnackbar";
 import userLoader from "@/hooks/useLoader";
+import {convertAmount, getCurrencySymbol, getUserCurrency} from "@/utils/currency";
 
 const Currentreservation = () => {
   // FOR CHAT MODAL
@@ -34,6 +35,8 @@ const Currentreservation = () => {
   const [items, setItems] = useState<any>([]);
   const [itemCount, setItemCount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const userCurrency = getUserCurrency();
+  const currencySymbol = getCurrencySymbol();
 
   let page = 1;
   let isPageLoading = false;
@@ -348,7 +351,7 @@ const Currentreservation = () => {
                         Prix coiffure
                       </p>
                       <p className="text-[#666] text-sm text-start">
-                        {item.salon_haircut.base_price} €
+                        {convertAmount(item.hair_salon?.user?.currency, userCurrency, item.salon_haircut.base_price)} {currencySymbol}
                       </p>
                     </div>
                   )}
@@ -358,7 +361,7 @@ const Currentreservation = () => {
                         Prix du voyage
                       </p>
                       <p className="text-[#666] text-sm text-start">
-                        {item.cost_coming_home} €
+                        {convertAmount(item.hair_salon?.user?.currency, userCurrency, item.cost_coming_home)} {currencySymbol}
                       </p>
                     </div>
                   )}
@@ -368,7 +371,7 @@ const Currentreservation = () => {
                         Prix total (frais compris)
                       </p>
                       <p className="text-[#666] text-sm text-start">
-                        {item.total_amount} €
+                        {convertAmount(item.hair_salon?.user?.currency, userCurrency, item.total_amount)} {currencySymbol}
                       </p>
                     </div>
                   )}
@@ -421,7 +424,7 @@ const Currentreservation = () => {
                       Prix prestation
                     </p>
                     <p key={index} className="text-[#666] text-sm text-start">
-                      {item.total_service_price}€
+                      {convertAmount(item.hair_salon?.user?.currency, userCurrency, item.total_service_price)} {currencySymbol}
                     </p>
                     {/* {item.total_amount}</p> */}
                   </div>

@@ -6,6 +6,7 @@ import Image from "next/image";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import StarRatings from "react-star-ratings";
 import { client } from "@/api/clientSide";
+import {convertAmount, getCurrencySymbol, getUserCurrency} from "@/utils/currency";
 
 const History = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -47,6 +48,8 @@ const History = () => {
   // ++++++++++ RATING ++++++++
   const [isRatePopUp, setRatePopUp] = useState(false);
   const [rating, setRating] = useState(0);
+  const userCurrency = getUserCurrency();
+  const currencySymbol = getCurrencySymbol();
   const [itemToRate, setItemToRate] = useState<{
     booking: any;
     ratingReview: string;
@@ -267,7 +270,8 @@ const History = () => {
                         </div>
 
                         <p className="text-[#666] text-sm text-center sm:text-start">
-                          Prix: {item.total_amount} euro
+                          Prix:
+                          {convertAmount(item.hair_salon?.user?.currency, userCurrency, item.total_amount)} {currencySymbol}
                         </p>
                         <p className="text-[#666] text-sm text-center sm:text-start">
                           Salon: {item.hair_salon && item.hair_salon.name}
