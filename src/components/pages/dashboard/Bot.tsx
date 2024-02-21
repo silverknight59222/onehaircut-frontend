@@ -361,9 +361,8 @@ const Bot = () => {
                 <div
                   key={index}
                   onClick={() => onSelectTab(item.title, index)}
-                  className={`w-56 2xl:w-64 h-24 flex items-center justify-center bg-white rounded-2xl shadow-lg cursor-pointer border ${
-                    selectedTab === index && "border-secondary"
-                  }`}
+                  className={`w-56 2xl:w-64 h-24 flex items-center justify-center bg-white rounded-2xl shadow-lg cursor-pointer border ${selectedTab === index && "border-secondary"
+                    }`}
                 >
                   {item.title}
                 </div>
@@ -393,7 +392,7 @@ const Bot = () => {
             return (
               <div
                 key={index}
-                className="relative z-10 w-full md:w-[450px] xl:w-[690px] 2xl:w-[850px] py-6 flex flex-col xl:flex-row items-start xl:items-end justify-between rounded-xl bg-white mb-7 px-8 shadow-xl"
+                className="relative z-0 w-full md:w-[450px] xl:w-[690px] 2xl:w-[850px] py-6 flex flex-col xl:flex-row items-start xl:items-end justify-between rounded-xl bg-white mb-7 px-8 shadow-xl"
               >
                 <div
                   onClick={() => acknowledgeAdvise(item)}
