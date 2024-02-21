@@ -17,6 +17,13 @@ const ContactUs_Client = () => {
     "Déclarer un litige",
   ];
 
+  const issueReason = [
+    "Je n'ai pas pu me rendre au rendez-vous",
+    "Le salon était indisponible",
+    "Le professionnel n'est pas venu à domicile",
+    "Autre",
+  ];
+
   const [SelectedContactType, setSelectedContactType] = useState<string>("");
   // For input text field
   const [multilineText, setMultilineText] = useState("");
@@ -134,18 +141,18 @@ const ContactUs_Client = () => {
                     SelectedContactType === "Signaler un problème"
                       ? "#e84f4a"
                       : SelectedContactType === "Feedback"
-                      ? "#58bf54"
-                      : SelectedContactType === "Suggestion d'amélioration"
-                      ? "#4a91e8"
-                      : "#ccc", // Separation line color
+                        ? "#58bf54"
+                        : SelectedContactType === "Suggestion d'amélioration"
+                          ? "#4a91e8"
+                          : "#ccc", // Separation line color
                   margin: "2px auto", // Margin above and below the line and horizontal centering
                   borderRadius: "5px", // Adds rounded border to round the line
                   boxShadow: "0px 2px 4px rgba(0, 0, 0, 0.2)", // Ajoute une ombre
                 }}
               ></div>
 
-              <div className="flex flex-col items-center justify-center mt-8">
-                {/* Second Dropdown affiché conditionnellement */}
+              <div className="flex flex-row items-center justify-center mt-8 space-x-4">
+                {/* Second Dropdown displayed conditionally */}
                 {showSecondDropdown && (
                   <DropdownMenu
                     dropdownItems={secondDropdownOptions}
@@ -156,7 +163,17 @@ const ContactUs_Client = () => {
                     selectId={selectedSecondOption}
                   />
                 )}
+
+                {showSecondDropdown && (
+                  <DropdownMenu
+                    dropdownItems={issueReason}
+                    //fctToCallOnClick={}
+                    menuName="Raison"
+                  //selectId={}
+                  />
+                )}
               </div>
+
 
               <div className="flex-grow mb-2 mt-4">
                 <CustomInput
@@ -188,11 +205,10 @@ const ContactUs_Client = () => {
                 <button
                   onClick={() => onSend()}
                   disabled={multilineText === "" || title === ""} // Désactive le bouton si la zone de texte ou le titre sont vides
-                  className={`rounded-xl mt-6 w-2/5 h-16 ${
-                    multilineText === "" || title === ""
-                      ? Theme_A.button.medGreyColoredButton
-                      : Theme_A.button.mediumGradientButton
-                  }`}
+                  className={`rounded-xl mt-6 w-2/5 h-16 ${multilineText === "" || title === ""
+                    ? Theme_A.button.medGreyColoredButton
+                    : Theme_A.button.mediumGradientButton
+                    }`}
                 >
                   Envoyer
                 </button>
