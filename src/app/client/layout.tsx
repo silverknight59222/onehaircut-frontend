@@ -1,19 +1,18 @@
 "use client";
 import { useState, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Sidebar from "@/components/shared/Sidebar";
 import {
   HamburgerIcon,
   LogoIcon,
   UserIcon,
   LogoutIcon,
-  LogoCircleFixRight,
 } from "@/components/utilis/Icons";
 import { removeFromLocalStorage } from "@/api/storage";
 import { Auth } from "@/api/auth";
 import userLoader from "@/hooks/useLoader";
-import { dashboard } from "@/api/dashboard";
 import Footer from "@/components/UI/Footer";
+import { useNotification } from "@/hooks/useNotification";
 
 const ClientDashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
@@ -102,7 +101,7 @@ const ClientDashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const onLogout = () => {
     setIsLoading(true);
     Auth.logout()
-      .then((response) => {
+      .then(() => {
         removeFromLocalStorage("auth-token");
         removeFromLocalStorage("user");
         router.push("/");
@@ -117,7 +116,6 @@ const ClientDashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const [screenSize, setScreenSize] = useState<number>(0);
 
   useEffect(() => {
-    fetchSalonNotifications();
     const handleResize = () => {
       setScreenSize(window.innerWidth);
       if (window.innerWidth > 1024) {
@@ -137,11 +135,15 @@ const ClientDashboardLayout = ({ children }: { children: React.ReactNode }) => {
     };
   }, []);
 
-  const [notifications, setNotifications] = useState({} as any);
-  const fetchSalonNotifications = async () => {
-    const { data } = await dashboard.salonNotification();
-    setNotifications(data);
-  };
+  const { notifications, refetchUserNotifications, refetchSalonNotifications } =
+    useNotification();
+
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (pathname !== "/client/currentreservation") refetchUserNotifications();
+    else refetchSalonNotifications();
+  }, [pathname]);
 
   return (
     <div>

@@ -128,7 +128,7 @@ const PaymentForm = ({ onSuccess, showConfirmButton = true }) => {
     }
     await client.createBooking(data).then((resp) => {
       if (resp.data.status == 200) {
-        showSnackbar("success", resp.data.message);
+        showSnackbar("success", resp?.data?.message);
         continue_payment = 1;
       }
       else {

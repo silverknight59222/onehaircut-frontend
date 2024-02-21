@@ -5,10 +5,7 @@ import {
   DeleteIcon,
 } from "@/components/utilis/Icons";
 import React, { useEffect, useState, useRef } from "react";
-import {
-  getLocalStorage,
-  setLocalStorage,
-} from "@/api/storage";
+import { getLocalStorage, setLocalStorage } from "@/api/storage";
 import { clientDashboard } from "@/api/clientDashboard";
 import { SalonDetails, Chat } from "@/types";
 import { dashboard } from "@/api/dashboard";
@@ -20,6 +17,7 @@ import { user_api } from "@/api/clientSide";
 import { toast } from "react-toastify";
 import BaseModal from "@/components/UI/BaseModal";
 import AudioPlayerForTour from "@/components/UI/PlayerForTour";
+import { useNotification } from "@/hooks/useNotification";
 
 const Messages = () => {
   const [selectedChat, setSelectedChat] = useState({ user_id: 0, name: "" });
@@ -32,6 +30,8 @@ const Messages = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [pageDone, setPageDone] = useState<String[]>(["message"]);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
+
+  const { refetchUserNotifications } = useNotification();
 
   // Récupère les salons liés à l'utilisateur
   const getSalonsByUser = async () => {
@@ -113,7 +113,6 @@ const Messages = () => {
     getSalonsByUser();
     const pages_done = getLocalStorage("pages_done");
     setPageDone(pages_done ? JSON.parse(pages_done) : []);
-    console.log(pages_done);
   }, []);
 
   // For automatic scrolling down
@@ -123,8 +122,10 @@ const Messages = () => {
   const scrollToBottom = () => {
     endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
   // Appelle scrollToBottom chaque fois que les messages changent
   useEffect(() => {
+    refetchUserNotifications();
     scrollToBottom();
   }, [chats]); // chats est le tableau des messages
 
