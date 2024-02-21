@@ -336,11 +336,12 @@ const History = () => {
                           Coiffeur:{" "}
                           {item.hair_dresser && item.hair_dresser.name}
                         </p>
-                      </div>
-                      <div className="w-[150px] mr-3">
-                        <p className="text-[#666] text-sm text-start pb-1">
+                        <p className="text-[#666] text-sm text-center sm:text-start pb-1">
+                          N° Réservation:{" "}
                           {item.booking_number}
                         </p>
+                      </div>
+                      <div className="w-[150px] mr-3">
                         {item.salon_haircut && (
                           <Image
                             src={
