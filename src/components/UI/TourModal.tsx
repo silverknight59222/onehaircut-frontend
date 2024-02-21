@@ -26,7 +26,6 @@ const TourModal = ({ steps, onRequestClose, doneTour = true, showTourButton = tr
   const tempUser = getLocalStorage('user')
   const user = tempUser ? JSON.parse(tempUser) : {}
   const [isGuest, setIsGuest] = useState(!user.id); // User login state
-  const tourModal = useRef(null)
   const enableBody = target => enableBodyScroll(target);
   const [isTourOpen, setIsTourOpen] = useState(false);
   const closeTour = () => {
@@ -88,7 +87,6 @@ const TourModal = ({ steps, onRequestClose, doneTour = true, showTourButton = tr
       <Tour
         // @ts-ignore
         startAt={0}
-        ref={tourModal}
         steps={steps}
         showNavigation={true}
         onRequestClose={closeTour}
