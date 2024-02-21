@@ -19,6 +19,7 @@ import { salonApi } from "@/api/salonSide";
 import BaseModal from "@/components/UI/BaseModal";
 import { toast } from "react-toastify";
 import AudioPlayerForTour from "@/components/UI/PlayerForTour";
+import { useNotification } from "@/hooks/useNotification";
 
 const Messages = () => {
   const [clients, setClients] = useState<ClientChat[]>([]);
@@ -35,6 +36,8 @@ const Messages = () => {
   const [message, setMessage] = useState("");
   const [pageDone, setPageDone] = useState<String[]>(["salon_message"]);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
+
+  const {refetchSalonNotifications} = useNotification();
 
   const getClientsByProfessional = async () => {
     if (salonId) {
@@ -134,6 +137,7 @@ const Messages = () => {
 
   const endOfMessagesRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
+    refetchSalonNotifications();
     endOfMessagesRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [chats]);
 

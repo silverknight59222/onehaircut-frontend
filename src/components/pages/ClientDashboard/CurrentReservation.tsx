@@ -79,8 +79,16 @@ const Currentreservation = () => {
   useEffect(() => {
     allReservations(page);
     window.addEventListener("scroll", handleScroll);
+
+    // function to update the time every seconds
+    const intervalId = setInterval(() => {
+      const now = new Date();
+      setCurrentTime(now);
+    }, 1000); // Update every second
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
+      clearInterval(intervalId);
     };
   }, []);
 
@@ -92,15 +100,6 @@ const Currentreservation = () => {
   const [currentTime, setCurrentTime] = useState<Date | null>(null);
   const [cancelAccepted, setCancelAccepted] = useState(false);
   const [isModalCancelConfirm, setIsModalCancelConfirm] = useState(false);
-
-  // function to update the time every seconds
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      const now = new Date();
-      setCurrentTime(now);
-    }, 1000); // Update every second
-    return () => clearInterval(intervalId);
-  }, []);
 
   // function when pressing on the cancel button
   const startCancel = (reservation: any) => {
