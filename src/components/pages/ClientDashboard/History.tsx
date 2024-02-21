@@ -5,8 +5,11 @@ import { Theme_A } from "@/components/utilis/Themes";
 import Image from "next/image";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import StarRatings from "react-star-ratings";
-import { client } from "@/api/clientSide";
-import {convertAmount, getCurrencySymbol, getUserCurrency} from "@/utils/currency";
+import Footer from '@/components/UI/Footer';
+import { client } from '@/api/clientSide';
+import { dashboard } from '@/api/dashboard';
+import jsPDF from 'jspdf';
+import { convertAmount, getCurrencySymbol, getUserCurrency } from "@/utils/currency";
 
 const History = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -111,9 +114,62 @@ const History = () => {
 
   // ++++++++++ BILL +++++++++++++++
   // function to download the bill liked to the booking in argument
-  const downloadBill = (booking: BookingInfoStruct) => {
-    //TODO add backend function
+  const downloadBill = (item: BookingInfoStruct) => {
+    // Create a new PDF document
+    const doc = new jsPDF();
+
+    // Logo URL
+    const logoUrl = '/assets/DefaultPictures/Onehaircut_Logo.png';
+    const logoFooterUrl = '/assets/DefaultPictures/logoOHC_footer.png';
+
+    // Font sizes
+    const titleFontSize = 30;
+    const contentFontSize = 10;
+    const totalFontSize = 20;
+    const addSize = 8;
+
+    const leftMargin = 20;
+
+    doc.setLineWidth(0.5); // Adjust line width
+
+    // logo OneHaircut
+    doc.addImage(logoUrl, 'PNG', leftMargin, 10, 75, 15); // Adjust position and size as needed
+
+    // title
+    doc.setFontSize(titleFontSize);
+    doc.text('Facture', leftMargin, 60); // Adjust position as needed
+
+
+    const contentY = 80;
+    doc.setFontSize(12);
+    doc.text(`Numéro de réservation: ${item.booking_number}`, 20, contentY);
+
+    doc.setFontSize(contentFontSize);
+    doc.line(leftMargin, contentY + 5, 200, contentY + 5); // Add a horizontal line
+    doc.text(`Date de réservation: ${item.redable_date}`, leftMargin, contentY + 15);
+    doc.text(`Salon: ${item.hair_salon && item.hair_salon.name}`, leftMargin, contentY + 21);
+    doc.text(`Adresse du salon: ${item.hair_salon.address.street}, ${item.hair_salon.address.city} (${item.hair_salon.address.country})`, leftMargin, contentY + 27)
+    doc.text(`Coiffure demandée: ${item.salon_haircut.haircut.name}`, leftMargin, contentY + 34);
+    doc.line(leftMargin, contentY + 40, 200, contentY + 40); // Add a horizontal line
+    doc.setFontSize(totalFontSize);
+    doc.text(`Total payé: ${item.total_amount}`, leftMargin, contentY + 50);
+
+
+    // Add address
+    const addressY = 270;
+    doc.setFontSize(addSize);
+    doc.text('Onehaircut from Balextrade', leftMargin, addressY);
+    doc.text('7901 4TH ST N STE', leftMargin, addressY + 5);
+    doc.text('300 ST. PETERSBURG, FL. US 33702', leftMargin, addressY + 10);
+
+    // logo OneHaircut
+    doc.addImage(logoFooterUrl, 'PNG', 120, 200, 100, 100); // Adjust position and size as needed
+
+    // Save the PDF as a file
+    doc.save('reservation_bill.pdf');
   };
+
+
 
   // ++++++++++ REBOOKING +++++++++++++++
   // function to jump to the reservation page with the same haircut and salon
