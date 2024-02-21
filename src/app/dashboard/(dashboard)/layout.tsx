@@ -1,19 +1,11 @@
 "use client";
+
 import Sidebar from "@/components/shared/Sidebar";
 import Topbar from "@/components/shared/Topbar";
 import React, { useState, useEffect } from "react";
 import { getLocalStorage } from "@/api/storage";
-import { dashboard } from "@/api/dashboard";
-
-interface NotificationsParams {
-  chat_count: number;
-  reservation_count: number;
-}
-
-interface DashboardLayout {
-  children: JSX.Element;
-  notifications: NotificationsParams;
-}
+import { useNotification } from "@/hooks/useNotification";
+import { usePathname } from "next/navigation";
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
   const [isSidebar, setIsSidebar] = useState(false);
@@ -84,15 +76,16 @@ const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     });
   };
 
-  const [notifications, setNotifications] = useState({} as any);
-  const fetchSalonNotifications = async () => {
-    const { data } = await dashboard.salonNotification();
-    setNotifications(data);
-  };
+  const pathname = usePathname();
+  const { notifications, refetchSalonNotifications } = useNotification();
+
+  useEffect(() => {
+    refetchSalonNotifications();
+  }, [pathname]);
 
   useEffect(() => {
     getStatusSubscription();
-    fetchSalonNotifications();
+    refetchSalonNotifications();
   }, []);
 
   const SidebarHandler = (state: boolean) => {
