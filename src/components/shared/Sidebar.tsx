@@ -289,7 +289,7 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
     } else {
       setIsEmailVerified(false)
     }
-    console.log(sidebarItems);
+    // console.log(sidebarItems);
 
   }, []);
 
@@ -539,8 +539,8 @@ const Sidebar = ({ isSidebar, SidebarHandler, sidebarItems, isClientDashboard, n
               {sidebarItems.filter((item) => {
                 if (item.permission != null) {
                   if (user && user.permissions && user.permissions.indexOf(item.permission) != -1) {
-                    console.log(sidebarItems)
-                    console.log(user.permissions)
+                    // console.log(sidebarItems)
+                    // console.log(user.permissions)
                     return true
                   } else {
                     if (user && user.permissions && user.permissions.length == 0) {
