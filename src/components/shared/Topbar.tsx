@@ -76,13 +76,13 @@ const Topbar = ({ isDashboard, tabHandler, SidebarHandler, isSidebar }: TopbarTy
 		const user = getLocalStorage("user");
 		const userId = user ? Number(JSON.parse(user).id) : null;
 		const salonId = Number(getLocalStorage("salon_id"));
-		console.log(salonId)
+		// console.log(salonId)
 		if (userId) {
 			await dashboard
 				.checkTopBarStatus(salonId)
 				.then((resp) => {
 					if (resp.data) {
-						console.log(resp.data)
+						// console.log(resp.data)
 						setCheckTopbar(resp.data);
 					}
 				});
