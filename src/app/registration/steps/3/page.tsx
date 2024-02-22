@@ -339,6 +339,7 @@ const Step3 = () => {
         salonData.lat = salonAddress.lat
         salonData.long = salonAddress.long
         salonData.zone_radius = salonAddress.zone
+        salonData.currency = salonAddress.currency || undefined
         salonData.salon_type = salonType;
         salonData.payment_method = "NA";
         salonData.plan_id = planType.plan_id;

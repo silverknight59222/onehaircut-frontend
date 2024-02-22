@@ -9,7 +9,11 @@ import BaseModal from "@/components/UI/BaseModal";
 import { dashboard } from "@/api/dashboard";
 import useSnackbar from "@/hooks/useSnackbar";
 import userLoader from "@/hooks/useLoader";
-import {convertAmount, getCurrencySymbol, getUserCurrency} from "@/utils/currency";
+import {
+  convertAmount,
+  getCurrencySymbol,
+  getUserCurrency,
+} from "@/utils/currency";
 
 const Currentreservation = () => {
   // FOR CHAT MODAL
@@ -319,7 +323,7 @@ const Currentreservation = () => {
           return (
             <div
               key={index}
-              className={`relative z-10 w-full xl:w-[800px]  rounded-3xl bg-white border-2 border-zinc-100 py-6 px-12 shadow-sm shadow-stone-600 mb-12`}
+              className={`relative z-10 w-full xl:w-[800px]  rounded-3xl bg-white border-2 border-zinc-100 py-6 px-12 shadow-sm shadow-stone-600 mb-6`}
             >
               <div className="grid grid-cols-2 gap-4 ">
                 <div className="flex flex-col items-start justify-start gap-5 mt-5 sm:mt-0">
@@ -345,46 +349,24 @@ const Currentreservation = () => {
                       </p>
                     </div>
                   )}
+                  {/*
                   {item.salon_haircut && (
                     <div>
                       <p className="text-[#444343] font-bold text-start">
                         Prix coiffure
                       </p>
                       <p className="text-[#666] text-sm text-start">
-                        {convertAmount(item.hair_salon?.user?.currency, userCurrency, item.salon_haircut.base_price)} {currencySymbol}
+                        {convertAmount(
+                          item.hair_salon?.user?.currency ?? "EUR",
+                          userCurrency,
+                          item.salon_haircut.base_price
+                        )}{" "}
+                        {currencySymbol}
                       </p>
                     </div>
                   )}
-                  {item.cost_coming_home && (
-                    <div>
-                      <p className="text-[#444343] font-bold text-start">
-                        Prix du voyage
-                      </p>
-                      <p className="text-[#666] text-sm text-start">
-                        {convertAmount(item.hair_salon?.user?.currency, userCurrency, item.cost_coming_home)} {currencySymbol}
-                      </p>
-                    </div>
-                  )}
-                  {item.total_amount && (
-                    <div>
-                      <p className="text-[#444343] font-bold text-start">
-                        Prix total (frais compris)
-                      </p>
-                      <p className="text-[#666] text-sm text-start">
-                        {convertAmount(item.hair_salon?.user?.currency, userCurrency, item.total_amount)} {currencySymbol}
-                      </p>
-                    </div>
-                  )}
-                  {item.payment_status && (
-                    <div>
-                      <p className="text-[#444343] font-bold text-start">
-                        Statut de paiement
-                      </p>
-                      <p className="text-[#666] text-sm text-start">
-                        {item.payment_status}
-                      </p>
-                    </div>
-                  )}
+                        */}
+
                   <div>
                     <p className="text-[#444343] font-bold text-start">
                       Prestation
@@ -414,20 +396,71 @@ const Currentreservation = () => {
                       })}
                     {item.items.filter((ele) => ele.type == "service").length ==
                       0 && (
-                      <p key={index} className="text-[#666] text-sm text-start">
-                        -
-                      </p>
-                    )}
+                        <p key={index} className="text-[#666] text-sm text-start">
+                          -
+                        </p>
+                      )}
                   </div>
+
+
+                  {item.cost_coming_home && (
+                    <div>
+                      <p className="text-[#444343] font-bold text-start">
+                        Prix du voyage
+                      </p>
+                      <p className="text-[#666] text-sm text-start">
+                        {convertAmount(
+                          item.hair_salon?.user?.currency ?? "EUR",
+                          userCurrency,
+                          item.cost_coming_home
+                        )}{" "}
+                        {currencySymbol}
+                      </p>
+                    </div>
+                  )}
+                  {item.total_amount && (
+                    <div>
+                      <p className="text-[#444343] font-bold text-start">
+                        Prix total (frais compris)
+                      </p>
+                      <p className="text-[#666] text-sm text-start">
+                        {convertAmount(
+                          item.hair_salon?.user?.currency ?? "EUR",
+                          userCurrency,
+                          item.total_amount
+                        )}{" "}
+                        {currencySymbol}
+                      </p>
+                    </div>
+                  )}
+                  {item.payment_status && (
+                    <div>
+                      <p className="text-[#444343] font-bold text-start">
+                        Statut de paiement
+                      </p>
+                      <p className="text-[#666] text-sm text-start">
+                        {item.payment_status}
+                      </p>
+                    </div>
+                  )}
+
+                  {/*
                   <div>
                     <p className="text-[#444343] font-bold text-start">
                       Prix prestation
                     </p>
                     <p key={index} className="text-[#666] text-sm text-start">
-                      {convertAmount(item.hair_salon?.user?.currency, userCurrency, item.total_service_price)} {currencySymbol}
+                      {convertAmount(
+                        item.hair_salon?.user?.currency ?? "EUR",
+                        userCurrency,
+                        item.total_service_price
+                      )}{" "}
+                      {currencySymbol}
                     </p>
-                    {/* {item.total_amount}</p> */}
+                    // {item.total_amount}</p> 
                   </div>
+                  */}
+
                   <div>
                     <p className="text-[#444343] font-bold text-start">
                       Coiffeur
