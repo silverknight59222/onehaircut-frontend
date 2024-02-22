@@ -84,7 +84,7 @@ const Favorites = () => {
             }
           }
         })
-        .catch((_error) => {})
+        .catch((_error) => { })
         .finally(() => {
           setIsLoading(false);
         });
@@ -117,7 +117,7 @@ const Favorites = () => {
             setSalons(res.data.data);
           }
         })
-        .catch((_error) => {})
+        .catch((_error) => { })
         .finally(() => {
           setIsLoading(false);
         });
@@ -313,8 +313,12 @@ const Favorites = () => {
                         >
                           <CrossIcon width="18" height="18" />
                         </div>
-                        <div className="group-hover:opacity-100 rounded-xl bg-black bg-opacity-40 opacity-0 absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center transition-opacity duration-300">
-                          <EyeIcon className="text-white w-8 h-8" />
+                        <div className="group-hover:opacity-100 rounded-xl bg-black bg-opacity-40 opacity-0 absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center transition-opacity duration-300 cursor-pointer">
+                          <TbZoomInArea
+                            size={48}
+                            strokeWidth={2}
+                            color={'white'}
+                          />
                         </div>
                       </div>
                     </tr>
@@ -494,11 +498,10 @@ const Favorites = () => {
                 </button>
                 <button
                   onClick={checkPreview}
-                  className={`flex items-center justify-center font-medium w-full md:w-52 h-14 mb-4 ${
-                    isPreview
-                      ? Theme_A.button.medGreydButton
-                      : Theme_A.button.medWhiteColoredButton
-                  }`}
+                  className={`flex items-center justify-center font-medium w-full md:w-52 h-14 mb-4 ${isPreview
+                    ? Theme_A.button.medGreydButton
+                    : Theme_A.button.medWhiteColoredButton
+                    }`}
                 >
                   {isPreview ? "Image de référence" : "Prévisualiser sur moi"}
                 </button>
