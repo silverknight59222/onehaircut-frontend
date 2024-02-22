@@ -13,12 +13,14 @@ import {
 } from '@react-google-maps/api'
 import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 import ReactDOMServer from "react-dom/server";
+import {getCurrencyByCountryCode} from "@/utils/currency";
 
 interface Address_int {
   country: string,
   state?: string,
   city: string,
   street: string,
+  currency?: string,
   number: string,
   lat: number,
   long: number,
@@ -43,6 +45,7 @@ const Step2 = () => {
 
   const [zone, setZone] = useState(10)
   const [zoomMap, setZoomMap] = useState(10)
+  const [userCurrency, setUserCurrency] = useState("")
 
   const [IamMobile, setIamMobile] = useState(false);
 
@@ -67,6 +70,7 @@ const Step2 = () => {
     let toSave: Address_int = {
       country: country,
       street: street,
+      currency: userCurrency || undefined,
       city: city,
       number: streetNb,
       lat: location.lat,
@@ -119,7 +123,6 @@ const Step2 = () => {
     setCountryCode("")
 
 
-    //console.log(place.address_components)
     // Check if the variable is defined before using it
     if (place !== undefined && place.address_components !== undefined) {
 
@@ -129,6 +132,8 @@ const Step2 = () => {
       });
       const countryComponent = place.address_components.find(component => component.types.includes('country'));
       const countryCode = countryComponent ? countryComponent.short_name : null;
+      setUserCurrency(getCurrencyByCountryCode(countryCode))
+
       setCity(address.city || "")
       setState(address.administrative_area_level_1 || "")
       setCountry(address.country || "")
