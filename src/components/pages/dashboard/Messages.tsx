@@ -37,7 +37,7 @@ const Messages = () => {
   const [pageDone, setPageDone] = useState<String[]>(["salon_message"]);
   const [isDeleteModal, setIsDeleteModal] = useState(false);
 
-  const {refetchSalonNotifications} = useNotification();
+  const { refetchSalonNotifications } = useNotification();
 
   const getClientsByProfessional = async () => {
     if (salonId) {
@@ -253,10 +253,9 @@ const Messages = () => {
                 <div
                   key={index}
                   onClick={() => getChat(client)}
-                  className={`flex items-center justify-between py-2 px-5 hover:bg-[#F5F5F5] mb-2 rounded-3xl cursor-pointer ${
-                    selectedChat.client_id === client.client_id &&
+                  className={`flex items-center justify-between py-2 px-5 hover:bg-[#F5F5F5] mb-2 rounded-3xl cursor-pointer ${selectedChat.client_id === client.client_id &&
                     "bg-[#F5F5F5] outline outline-1 outline-stone-300"
-                  }`}
+                    }`}
                 >
                   <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row sm:items-center lg:items-start xl:items-center justify-center gap-2 sm:gap-4">
                     {/* Icône du client (décommentez si nécessaire) */}
@@ -264,8 +263,8 @@ const Messages = () => {
                       {/* Cercle ajouté */}
 
                       {client &&
-                      client.client &&
-                      client.client.front_profile ? (
+                        client.client &&
+                        client.client.front_profile ? (
                         <img
                           src={client.client.front_profile}
                           alt="profile"
@@ -298,7 +297,7 @@ const Messages = () => {
           </div>
 
           {/* Section de droite : Fenêtre de chat */}
-          <div className="relative z-10 w-full md:w-8/12 xl:w-9/12 min-h-[500px] md:min-h-[300px] overflow-y-auto flex flex-col justify-between rounded-3xl bg-white py-4 px-8 shadow-xl">
+          <div className="relative z-0 w-full md:w-8/12 xl:w-9/12 min-h-[500px] md:min-h-[300px] overflow-y-auto flex flex-col justify-between rounded-3xl bg-white py-4 px-8 shadow-xl">
             {/* Zone de Chat */}
             <div className="flex-grow overflow-auto mb-4 p-2 border border-gray-300 rounded-xl bg-stone-100 shadow-inner flex flex-col max-h-[700px] min-w-[200px] champs_discussion">
               {chats.length === 0 ? (
@@ -308,9 +307,8 @@ const Messages = () => {
               ) : (
                 chats.map((chat, index) => (
                   <div
-                    className={`mb-2 flex flex-col ${
-                      chat.by === "professional" ? "items-end" : "items-start"
-                    }`}
+                    className={`mb-2 flex flex-col ${chat.by === "professional" ? "items-end" : "items-start"
+                      }`}
                     key={index}
                   >
                     <p className="text-xs text-[#666] mb-1 italic">
@@ -319,11 +317,10 @@ const Messages = () => {
                       {formatDate(chat.created_at).time}
                     </p>
                     <div
-                      className={`max-w-2/3 inline-block p-2 text-base shadow-md ${
-                        chat.by === "professional"
+                      className={`max-w-2/3 inline-block p-2 text-base shadow-md ${chat.by === "professional"
                           ? `rounded-l-lg rounded-b-lg bg-stone-100 `
                           : `rounded-r-lg rounded-b-lg text-white ${ColorsThemeA.OhcGradient_D} `
-                      }`}
+                        }`}
                     >
                       <strong>
                         {chat.by === "professional"
