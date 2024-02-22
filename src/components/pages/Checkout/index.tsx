@@ -90,9 +90,11 @@ const Step5 = () => {
     data.salon_description = 'Description text here';
     data.country = salonAddress.country
     data.state = salonAddress.state
+    data.currency = salonAddress.currency || undefined
     data.city = salonAddress.city
     data.lat = salonAddress.lat
     data.long = salonAddress.long
+    data.currency = salonAddress.currency || undefined
     data.zone_radius = salonAddress.zone
     data.salon_type = salonType;
     data.payment_method = paymentMethod || "SI";
