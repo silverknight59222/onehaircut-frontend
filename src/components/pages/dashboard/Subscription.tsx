@@ -468,8 +468,12 @@ const Subscription = () => {
                     currentPlan.stripe_status === "trialing" && (
                       <p className="">
                         L'essai se termine le :<br />
-                        <span className="text-sm font-lig">
-                          {currentPlan.trial_ends_at}
+                        <span className="text-sm font-light italic">
+                          {/* Format the date string */}
+                          {new Intl.DateTimeFormat('fr-FR', {
+                            year: 'numeric', month: '2-digit', day: '2-digit',
+                            hour: '2-digit', minute: '2-digit', second: '2-digit'
+                          }).format(new Date(currentPlan.trial_ends_at))}
                         </span>
                       </p>
                     )}
