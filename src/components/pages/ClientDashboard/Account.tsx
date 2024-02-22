@@ -26,6 +26,7 @@ import { useRouter } from "next/navigation";
 import TourModal, { Steps } from "@/components/UI/TourModal";
 import { TbHelpSquareRoundedFilled } from "react-icons/tb";
 import AudioPlayerForTour from "@/components/UI/PlayerForTour";
+import {getCurrencyByCountryCode} from "@/utils/currency";
 
 interface infoInterface {
   name: string;
@@ -75,6 +76,7 @@ const Account = () => {
   const [isModalNotifMsg, setIsModalNotifMsg] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [pageDone, setPageDone] = useState<String[]>(["account"]);
+  const [userCurrency, setUserCurrency] = useState("");
 
   //Variables for address
   const [isModal, setIsModal] = useState(false);
@@ -104,13 +106,19 @@ const Account = () => {
     setError((prev) => {
       return { ...prev, text: "" };
     });
-    console.log(place);
     // take actions only if there is a place
     if (place != undefined) {
       let address = {} as any;
       place?.address_components?.map((item, index) => {
         setAddressFields(address, item.types[0], item.long_name);
       });
+
+      const countryShortName = place?.address_components?.find((e) => {
+        if(e.types[0] == "country") return e.short_name
+      })
+
+      // short name required to get currency
+      setUserCurrency(getCurrencyByCountryCode(countryShortName?.short_name))
 
       setCity(address.city || "");
       setState(address.administrative_area_level_1 || "");
@@ -387,6 +395,7 @@ const Account = () => {
       .updateUserProfile({
         type: "address",
         street_number: streetNumber,
+        currency: userCurrency || undefined,
         street: street,
         zipcode: postalCode,
         city: city,

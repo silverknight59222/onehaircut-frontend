@@ -28,6 +28,7 @@ import userLoader from "@/hooks/useLoader";
 import { dashboard } from "@/api/dashboard";
 import { Auth } from "@/api/auth";
 import AudioPlayerForTour from "@/components/UI/PlayerForTour";
+import {getCurrencyByCountryCode} from "@/utils/currency";
 
 const SalonInfos = () => {
   const [userData, setUserData] = useState<any>();
@@ -293,6 +294,7 @@ const SalonInfos = () => {
   //For the slider :
   // Reset the slider values
   const [zoneSliderRange, setZoneSliderRange] = useState([0, 15]);
+  const [userCurrency, setUserCurrency] = useState("");
   const handleZoneSliderChange = (newValue: any) => {
     // console.log(newValue);
     setZonePrice(ZonePrice);
@@ -349,6 +351,11 @@ const SalonInfos = () => {
       setState(address.administrative_area_level_1 || "");
       setCountry(address.country || "");
       setPostalCode(address.postal_code || "");
+
+      const countryShortName = place?.address_components?.find((e) => {
+        if(e.types[0] == "country") return e.short_name
+      })
+      setUserCurrency(getCurrencyByCountryCode(countryShortName?.short_name))
 
       setStreet(address.route || "");
       if (address.street_number && address.street_number != address.route) {
@@ -419,6 +426,7 @@ const SalonInfos = () => {
         name: name,
         street: street,
         zipcode: postalCode,
+        currency: userCurrency || undefined,
         city: city,
         state: state,
         country: country,

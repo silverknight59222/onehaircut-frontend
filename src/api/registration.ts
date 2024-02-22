@@ -16,6 +16,7 @@ export interface SalonRegisterParams {
   lat: number,
   long: number,
   zone_radius: number,
+  currency?: string,
   salon_type: string,
   payment_method: string,
   plan_id: string,

@@ -44,3 +44,16 @@ export const getUserCurrency = () => {
 export const getCurrencySymbol = () => {
   return currency[getUserCurrency()].symbol;
 }
+
+export const getCurrencyByCountryCode = (code) => {
+  switch(code) {
+    case "CH":
+      return "CHF";
+    case "US":
+      return "USD";
+    case "CA":
+      return "CAD";
+    default:
+      return "EUR";
+  }
+}
