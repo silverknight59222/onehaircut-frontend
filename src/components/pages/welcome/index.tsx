@@ -25,7 +25,7 @@ import { ColorsThemeA, Theme_A } from "@/components/utilis/Themes";
 import BaseModal from "@/components/UI/BaseModal";
 import InfoModal from "@/components/UI/InfoModal";
 import InfoButton from "@/components/UI/InfoButton";
-import { user_api } from "@/api/clientSide";
+import { client, user_api } from "@/api/clientSide";
 import DropdownMenu from "@/components/UI/DropDownMenu";
 import TourModal, { Steps } from "@/components/UI/TourModal";
 import AudioPlayerForTour from "@/components/UI/PlayerForTour";
@@ -484,6 +484,36 @@ const Welcome = () => {
     setIsGenericHaircutModalOpen(true);
   };
 
+  // États pour les options sélectionnées
+  const [selectedEthnicGroup, setSelectedEthnicGroup] = useState("");
+  const [selectedGender, setSelectedGender] = useState("");
+  const [selectedHairLength, setSelectedHairLength] = useState("");
+
+  const fetchGenericHaircut = async () => {
+    const generic_data = {
+      ethnic: selectedEthnicGroup,
+      gender: selectedGender,
+      length: selectedHairLength,
+    };
+    let resp = await client.getGenericHaircut(generic_data);
+    if (resp.data.status == 200) {
+      const haircut = resp.data.data
+      setLocalStorage(
+        "haircut",
+        JSON.stringify({
+          id: haircut.id,
+          name: haircut.name,
+          image: haircut.image,
+        })
+      );
+      router.push(`/services`);
+    }
+    else {
+
+    }
+    closeGenericHaircutModal()
+  }
+
   // Fonction pour fermer le modal
   const closeGenericHaircutModal = () => {
     setIsGenericHaircutModalOpen(false);
@@ -493,11 +523,6 @@ const Welcome = () => {
   const ethnicGroups = ["Afro", "Asiatique", "Occidental", "Orientale"];
   const genders = ["Homme", "Femme"];
   const hairLengths = ["Court", "Moyen", "Long"];
-
-  // États pour les options sélectionnées
-  const [selectedEthnicGroup, setSelectedEthnicGroup] = useState("");
-  const [selectedGender, setSelectedGender] = useState("");
-  const [selectedHairLength, setSelectedHairLength] = useState("");
 
   // Fonctions pour gérer la sélection des options
   const handleEthnicGroupChange = (value) => {
@@ -655,7 +680,7 @@ const Welcome = () => {
               className={`${Theme_A.button.mediumGradientButton}`}
               type="button"
               onClick={() => {
-                closeGenericHaircutModal();
+                fetchGenericHaircut();
               }} //TODO : CONTINUE WITH THE SELECTED GENERIC HAIRCUT
             >
               Valider
@@ -725,18 +750,16 @@ const Welcome = () => {
               <div
                 key={index}
                 onClick={() => onClickHaircut(item.id, item.name, item.image)}
-                className={`shadow-md rounded-xl cursor-pointer border hover:outline outline-1 outline-stone-400 mb-2  ${
-                  item.id === haircut?.id
-                } thumbnail_haircut`}
+                className={`shadow-md rounded-xl cursor-pointer border hover:outline outline-1 outline-stone-400 mb-2  ${item.id === haircut?.id
+                  } thumbnail_haircut`}
               >
                 <div
                   id={`hairStyleCard-${index}`}
                   className={`relative w-max px-4 pt-4
-                ${
-                  wishlist.includes(String(item.id))
-                    ? ` ${ColorsThemeA.OhcGradient_G} rounded-t-xl`
-                    : "bg-gradient-to-r from-white via-stone-50 to-zinc-200 rounded-t-xl"
-                }`}
+                ${wishlist.includes(String(item.id))
+                      ? ` ${ColorsThemeA.OhcGradient_G} rounded-t-xl`
+                      : "bg-gradient-to-r from-white via-stone-50 to-zinc-200 rounded-t-xl"
+                    }`}
                 >
                   <div className={`relative w-32 h-32 md:w-52 md:h-52 `}>
                     <Image
@@ -780,11 +803,10 @@ const Welcome = () => {
 
                 <div
                   className={`w-40 md:w-60 rounded-b-xl
-                ${
-                  wishlist.includes(String(item.id))
-                    ? `bg-gradient-to-r from-orange-200 via-orange-100 to-yellow-100 `
-                    : "bg-gradient-to-r from-white via-stone-50 to-zinc-200"
-                }`}
+                ${wishlist.includes(String(item.id))
+                      ? `bg-gradient-to-r from-orange-200 via-orange-100 to-yellow-100 `
+                      : "bg-gradient-to-r from-white via-stone-50 to-zinc-200"
+                    }`}
                 >
                   <p className="rounded-b-xl flex items-center justify-center py-2 text-black font-medium">
                     {item.name}
@@ -882,11 +904,10 @@ const Welcome = () => {
                 </button>
                 <button
                   onClick={checkPreview}
-                  className={`flex items-center justify-center font-medium w-full md:w-52 h-14 mb-4 ${
-                    isPreview
-                      ? Theme_A.button.medGreydButton
-                      : Theme_A.button.medWhiteColoredButton
-                  }`}
+                  className={`flex items-center justify-center font-medium w-full md:w-52 h-14 mb-4 ${isPreview
+                    ? Theme_A.button.medGreydButton
+                    : Theme_A.button.medWhiteColoredButton
+                    }`}
                 >
                   {isPreview ? "Image de référence" : "Prévisualiser sur moi"}
                 </button>

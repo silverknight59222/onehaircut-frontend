@@ -394,7 +394,7 @@ const SearchSalon = () => {
                   >
                     {/* TODO charger les images vitrines ici */}
                     {salonProfile && salonProfile.salon_images && <Image
-                      src={salonProfile.salon_images.length > 0 ? (salonProfile.salon_images.filter((image) => image.type == "hairstyle")[0]?.image.includes('http') ?
+                      src={salonProfile.salon_images.filter((image) => image.type == "hairstyle").length > 0 ? (salonProfile.salon_images.filter((image) => image.type == "hairstyle")[0]?.image.includes('http') ?
                         salonProfile.salon_images.filter((image) => image.type == "hairstyle")[0]?.image :
                         `https://api.onehaircut.com${salonProfile.salon_images.filter((image) => image.type == "hairstyle")[0]?.image}`) : defaultPicture}
                       alt="Image miniature droite"

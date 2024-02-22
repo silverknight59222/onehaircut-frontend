@@ -1,6 +1,6 @@
 import { request } from "./Request";
-import {getLocalStorage} from "@/api/storage";
-import {AxiosResponse} from "axios";
+import { getLocalStorage } from "@/api/storage";
+import { AxiosResponse } from "axios";
 
 interface SlotParam {
     date: string
@@ -83,7 +83,10 @@ const client = {
     },
     getBookingList: async () => {
         return await request.get('bookingByUserID');
-    }
+    },
+    getGenericHaircut: async (data: any) => {
+        return await request.post('getGenericHaircut', data)
+    },
 }
 const user_api = {
     getUsers: async () => {
@@ -137,11 +140,11 @@ const user_api = {
     setSalonFilter: async (params: any) => {
         return await request.post('/user_salon_filter', params);
     },
-    assignStepDone: async(params : any) => {
+    assignStepDone: async (params: any) => {
         const tempUser = getLocalStorage('user')
         const user = tempUser ? JSON.parse(tempUser) : {}
-        if(!user.id) {
-          return {resp: {data: null}} as unknown as AxiosResponse
+        if (!user.id) {
+            return { resp: { data: null } } as unknown as AxiosResponse
         }
         return await request.post('assign_step', params);
     }
