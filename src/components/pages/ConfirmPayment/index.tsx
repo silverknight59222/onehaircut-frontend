@@ -43,22 +43,26 @@ const Index = () => {
   useEffect(() => {
     getBillKMPrice();
   }, [])
-  const updatedOHCfees = ((salon?.final_price || 0) + KmPrice) * OnehaircutFees;
-  const bookingCost = (salon?.final_price || 0) + KmPrice;
-  const updatedTransactionFees = ((bookingCost + updatedOHCfees) * PaymentGatewayVariableFees + PaymentGatewayFixFees);
+
   const currencySymbol = getCurrencySymbol()
   const userCurrency = getUserCurrency()
+
+  const finalPriceConverted = convertAmount(salonCurrency, userCurrency, salon?.final_price)
+
+  const updatedOHCfees = Number(((finalPriceConverted + KmPrice) * OnehaircutFees).toFixed(2));
+  const bookingCost = finalPriceConverted + KmPrice;
+  const updatedTransactionFees = Number(((bookingCost + updatedOHCfees) * PaymentGatewayVariableFees + PaymentGatewayFixFees).toFixed(2));
+  const totalUpdatedCost = (bookingCost + updatedOHCfees + updatedTransactionFees).toFixed(2);
   const items = [
     { name: "Client", desc: userInfo ? userInfo?.name : '-' },
     { name: "Salon", desc: salon?.name },
     { name: "Adresse du salon", desc: `${salon?.address?.city || ''}, ${salon?.address?.state || ''}, ${salon?.address?.country || ''}` },
     { name: "Type de salon", desc: salon?.type?.replace("_", " ") },
-    { name: "Frais de salon service", desc: currencySymbol + convertAmount(salonCurrency, userCurrency, (salon?.final_price || 0)) },
-    { name: "Frais de déplacement", desc: currencySymbol + convertAmount(salonCurrency, userCurrency, KmPrice) },
-    { name: "Frais de fonctionnement Onehaircut", desc: currencySymbol + convertAmount(salonCurrency, userCurrency, (updatedOHCfees || 0)) },
-    { name: "Frais de transaction", desc: currencySymbol + convertAmount(salonCurrency, userCurrency, (updatedTransactionFees || 0)) },
+    { name: "Frais de salon service", desc: currencySymbol + finalPriceConverted },
+    { name: "Frais de déplacement", desc: currencySymbol + KmPrice },
+    { name: "Frais de fonctionnement Onehaircut", desc: currencySymbol + updatedOHCfees },
+    { name: "Frais de transaction", desc: currencySymbol + updatedTransactionFees },
   ];
-  const totalUpdatedCost = parseFloat(bookingCost + updatedOHCfees + updatedTransactionFees)
 
   return (
     <div>
@@ -102,7 +106,7 @@ const Index = () => {
               </div>
               <div className="flex items-center justify-end mt-4">
                 <p className="text-black text-3xl font-medium ">
-                  Total: <span className="text-4xl font-semibold">{userCurrency}{convertAmount(salonCurrency, userCurrency, (totalUpdatedCost || 0))}</span>
+                  Total: <span className="text-4xl font-semibold">{userCurrency}{totalUpdatedCost}</span>
                 </p>
               </div>
               <div className="border-t-2 border-[#CBCBCB] pt-9 mt-4">

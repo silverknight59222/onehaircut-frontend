@@ -867,11 +867,10 @@ const SalonInfos = () => {
                   }
                   type="button"
                   onClick={() => SaveAddress()}
-                  className={`${
-                    street == "" || error.text != "" || errorBilling.text != ""
-                      ? Theme_A.button.medGreyColoredButton
-                      : Theme_A.button.medBlackColoredButton
-                  } ease-in-out transition duration-300`}
+                  className={`${street == "" || error.text != "" || errorBilling.text != ""
+                    ? Theme_A.button.medGreyColoredButton
+                    : Theme_A.button.medBlackColoredButton
+                    } ease-in-out transition duration-300`}
                 >
                   <span>Enregistrer</span>
                 </button>
@@ -1016,11 +1015,10 @@ const SalonInfos = () => {
                 Je certifie que mes informations sont correctes
               </label>
               <div
-                className={`w-6 h-6 ml-4 rounded ${
-                  isSiretCheckboxChecked
-                    ? ColorsThemeA.ohcVerticalGradient_A
-                    : "bg-[#D6D6D6]"
-                } flex items-center justify-center cursor-pointer`}
+                className={`w-6 h-6 ml-4 rounded ${isSiretCheckboxChecked
+                  ? ColorsThemeA.ohcVerticalGradient_A
+                  : "bg-[#D6D6D6]"
+                  } flex items-center justify-center cursor-pointer`}
                 onClick={() => handleSiretCheckboxChange()}
               >
                 {isSiretCheckboxChecked && <CheckedIcon />}
@@ -1043,11 +1041,10 @@ const SalonInfos = () => {
                   isSiretCheckboxChecked && updateSiretNumber(siretNumber)
                 }
                 disabled={!isSiretCheckboxChecked}
-                className={`px-4 py-2 rounded-md ${
-                  isSiretCheckboxChecked
-                    ? Theme_A.button.mediumGradientButton
-                    : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                } shadow-md`}
+                className={`px-4 py-2 rounded-md ${isSiretCheckboxChecked
+                  ? Theme_A.button.mediumGradientButton
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  } shadow-md`}
               >
                 Confirmer
               </button>
@@ -1056,12 +1053,12 @@ const SalonInfos = () => {
         </BaseModal>
       )}
       <h4 className="flex items-center justify-start ml-10 mt-6 mb-8 font-semibold text-sm">
-        Phone Number (Please Enter Valid Phone Number)*
+        N° de téléphone (Entrez un numéro valide)*
       </h4>
       <div className="flex-inputs flex justify-center mb-8 field_ID_salon">
         <CustomInput
           id="phoneNumber"
-          label="Phone Number*"
+          label="N° de tel.*"
           value={phoneNumber}
           onChange={handlePhoneNumberChange}
           type="text"
@@ -1077,12 +1074,12 @@ const SalonInfos = () => {
       </div>
 
       <h4 className="flex items-center justify-start ml-10 mt-6 mb-8 font-semibold text-sm">
-        Numéros d'identification d'entreprise (SIRET, UID, CIF etc)*
+        N° d'identification d'entreprise (SIRET, UID, CIF etc)*
       </h4>
       <div className="flex-inputs flex justify-center mb-8 field_ID_salon">
         <CustomInput
           id="siretNumber"
-          label="Numéro d'identification *"
+          label="N° d'identification *"
           value={siretNumber}
           onChange={handleSiretNumberChange}
           type="number"
@@ -1127,11 +1124,10 @@ const SalonInfos = () => {
           <div
             onClick={() => handleCheckboxChange(isMobilityAllowed)}
             className={`w-6 h-6 flex items-center justify-center cursor-pointer rounded
-                    ${
-                      isMobilityAllowed
-                        ? ColorsThemeA.ohcVerticalGradient_A
-                        : "bg-[#D6D6D6]"
-                    }`}
+                    ${isMobilityAllowed
+                ? ColorsThemeA.ohcVerticalGradient_A
+                : "bg-[#D6D6D6]"
+              }`}
           >
             {isMobilityAllowed && <CheckedIcon />}
           </div>
@@ -1172,11 +1168,10 @@ const SalonInfos = () => {
                   {ZonePrice} €
                 </div>
                 <div
-                  className={`flex items-center justify-center py-1 rounded-md ${
-                    isMobilityAllowed
-                      ? ColorsThemeA.OhcGradient_A
-                      : ColorsThemeA.inactivButtonColor
-                  } shadow-lg`}
+                  className={`flex items-center justify-center py-1 rounded-md ${isMobilityAllowed
+                    ? ColorsThemeA.OhcGradient_A
+                    : ColorsThemeA.inactivButtonColor
+                    } shadow-lg`}
                 >
                   <div
                     onClick={() => zonePriceHandler("minus")}
@@ -1212,11 +1207,10 @@ const SalonInfos = () => {
                   {ZoneDuration} Min
                 </div>
                 <div
-                  className={`flex items-center justify-center py-1 rounded-md ${
-                    isMobilityAllowed
-                      ? ColorsThemeA.OhcGradient_A
-                      : ColorsThemeA.inactivButtonColor
-                  } shadow-lg`}
+                  className={`flex items-center justify-center py-1 rounded-md ${isMobilityAllowed
+                    ? ColorsThemeA.OhcGradient_A
+                    : ColorsThemeA.inactivButtonColor
+                    } shadow-lg`}
                 >
                   <div
                     onClick={() => zoneDurationHandler("minus")}
