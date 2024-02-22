@@ -9,7 +9,11 @@ import BaseModal from "@/components/UI/BaseModal";
 import { dashboard } from "@/api/dashboard";
 import useSnackbar from "@/hooks/useSnackbar";
 import userLoader from "@/hooks/useLoader";
-import {convertAmount, getCurrencySymbol, getUserCurrency} from "@/utils/currency";
+import {
+  convertAmount,
+  getCurrencySymbol,
+  getUserCurrency,
+} from "@/utils/currency";
 
 const Currentreservation = () => {
   // FOR CHAT MODAL
@@ -351,7 +355,12 @@ const Currentreservation = () => {
                         Prix coiffure
                       </p>
                       <p className="text-[#666] text-sm text-start">
-                        {convertAmount(item.hair_salon?.user?.currency, userCurrency, item.salon_haircut.base_price)} {currencySymbol}
+                        {convertAmount(
+                          item.hair_salon?.user?.currency ?? "EUR",
+                          userCurrency,
+                          item.salon_haircut.base_price
+                        )}{" "}
+                        {currencySymbol}
                       </p>
                     </div>
                   )}
@@ -361,7 +370,12 @@ const Currentreservation = () => {
                         Prix du voyage
                       </p>
                       <p className="text-[#666] text-sm text-start">
-                        {convertAmount(item.hair_salon?.user?.currency, userCurrency, item.cost_coming_home)} {currencySymbol}
+                        {convertAmount(
+                          item.hair_salon?.user?.currency ?? "EUR",
+                          userCurrency,
+                          item.cost_coming_home
+                        )}{" "}
+                        {currencySymbol}
                       </p>
                     </div>
                   )}
@@ -371,7 +385,12 @@ const Currentreservation = () => {
                         Prix total (frais compris)
                       </p>
                       <p className="text-[#666] text-sm text-start">
-                        {convertAmount(item.hair_salon?.user?.currency, userCurrency, item.total_amount)} {currencySymbol}
+                        {convertAmount(
+                          item.hair_salon?.user?.currency ?? "EUR",
+                          userCurrency,
+                          item.total_amount
+                        )}{" "}
+                        {currencySymbol}
                       </p>
                     </div>
                   )}
@@ -424,7 +443,12 @@ const Currentreservation = () => {
                       Prix prestation
                     </p>
                     <p key={index} className="text-[#666] text-sm text-start">
-                      {convertAmount(item.hair_salon?.user?.currency, userCurrency, item.total_service_price)} {currencySymbol}
+                      {convertAmount(
+                        item.hair_salon?.user?.currency ?? "EUR",
+                        userCurrency,
+                        item.total_service_price
+                      )}{" "}
+                      {currencySymbol}
                     </p>
                     {/* {item.total_amount}</p> */}
                   </div>
