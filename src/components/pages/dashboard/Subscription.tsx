@@ -244,9 +244,9 @@ const Subscription = () => {
               router.push("/");
             })
             .catch((error) => console.log(error))
-            .finally(() => {});
+            .finally(() => { });
         })
-        .catch((error) => {});
+        .catch((error) => { });
     }
   };
 
@@ -288,7 +288,7 @@ const Subscription = () => {
           {modifBankCard}
         </BaseModal>
       )}
-      <div className="hidden sm:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-10">
+      <div className="hidden sm:block fixed -right-32 md:-right-28 -bottom-32 md:-bottom-28 z-0">
         <LogoCircleFixRight />
       </div>
       <div className="mt-16 px-4 lg:px-11">
@@ -303,7 +303,7 @@ const Subscription = () => {
               </p>
             </div> */}
         </div>
-        <div className="z-10  flex-col xl:flex-row items-center xl:items-start justify-center gap-4 2xl:gap-12 mt-10 lg:mt-52">
+        <div className="z-0  flex-col xl:flex-row items-center xl:items-start justify-center gap-4 2xl:gap-12 mt-10 lg:mt-52">
           <div className="hidden lg:block relative">
             <BgDashboardPricingTable />
             <div className="rounded-xl py-4 px-5">
@@ -324,25 +324,22 @@ const Subscription = () => {
                   </div>
                 </div>
                 <div
-                  className={`${
-                    isCurrSubscriptionPro ? SubSelected_BG : SubUnselected_BG
-                  } w-56 absolute -top-40 left-[216px] flex flex-col items-center justify-center py-6 rounded-2xl border border-stone-300 border-1] `}
+                  className={`${isCurrSubscriptionPro ? SubSelected_BG : SubUnselected_BG
+                    } w-56 absolute -top-40 left-[216px] flex flex-col items-center justify-center py-6 rounded-2xl border border-stone-300 border-1] `}
                 >
                   <div
-                    className={`text-3xl font-semibold w-48 text-center ${
-                      isCurrSubscriptionPro
-                        ? SubSelected_text
-                        : SubUnselected_text
-                    }`}
+                    className={`text-3xl font-semibold w-48 text-center ${isCurrSubscriptionPro
+                      ? SubSelected_text
+                      : SubUnselected_text
+                      }`}
                   >
                     OneHaircut Pro
                   </div>
                   <div
-                    className={`flex items-center justify-center mb-5 mt-1 rounded-lg w-36 h-10  font-semibold ${
-                      isCurrSubscriptionPro
-                        ? SubSelected_recommended
-                        : SubUnselected_recommended
-                    }`}
+                    className={`flex items-center justify-center mb-5 mt-1 rounded-lg w-36 h-10  font-semibold ${isCurrSubscriptionPro
+                      ? SubSelected_recommended
+                      : SubUnselected_recommended
+                      }`}
                   >
                     recommandé
                   </div>
@@ -359,17 +356,15 @@ const Subscription = () => {
                   })}
                   <div className="mt-1 h-7">
                     <button
-                      className={`font-semibold text-center pt-2 ${
-                        isCurrSubscriptionPro
-                          ? SubSelected_text
-                          : SubUnselected_text
-                      } 
-                                          ${
-                                            !isCurrSubscriptionPro &&
-                                            hasTrial == 1
-                                              ? "strikethrough"
-                                              : ""
-                                          }`}
+                      className={`font-semibold text-center pt-2 ${isCurrSubscriptionPro
+                        ? SubSelected_text
+                        : SubUnselected_text
+                        } 
+                                          ${!isCurrSubscriptionPro &&
+                          hasTrial == 1
+                          ? "strikethrough"
+                          : ""
+                        }`}
                     >
                       <span className="text-2xl">
                         {convertAmount("EUR", userCurrency, 79)}{" "}
@@ -389,7 +384,7 @@ const Subscription = () => {
                 )}
                 {!isCurrSubscriptionPro && (
                   <div
-                    className="z-10 w-48 absolute left-[230px] top-[650px]  flex items-center justify-center text-black font-semibold border border-[#000000] rounded-3xl -mb-12 h-12 bg-white hover:scale-105 transition-transform hover:shadow-md cursor-pointer"
+                    className="z-0 w-48 absolute left-[230px] top-[650px]  flex items-center justify-center text-black font-semibold border border-[#000000] rounded-3xl -mb-12 h-12 bg-white hover:scale-105 transition-transform hover:shadow-md cursor-pointer"
                     onClick={() => handleConfirmUpgrade()}
                   >
                     Choisir
@@ -397,16 +392,14 @@ const Subscription = () => {
                 )}
                 {/* Regular side */}
                 <div
-                  className={`${
-                    !isCurrSubscriptionPro ? SubSelected_BG : SubUnselected_BG
-                  } z-10 w-52 absolute -top-40 left-[440px] flex flex-col items-center justify-center py-6 rounded-[20px] border border-stone-300 border-1`}
+                  className={`${!isCurrSubscriptionPro ? SubSelected_BG : SubUnselected_BG
+                    } z-0 w-52 absolute -top-40 left-[440px] flex flex-col items-center justify-center py-6 rounded-[20px] border border-stone-300 border-1`}
                 >
                   <div
-                    className={`text-3xl font-semibold  w-48 text-center mb-16 ${
-                      !isCurrSubscriptionPro
-                        ? SubSelected_text
-                        : SubUnselected_text
-                    }`}
+                    className={`text-3xl font-semibold  w-48 text-center mb-16 ${!isCurrSubscriptionPro
+                      ? SubSelected_text
+                      : SubUnselected_text
+                      }`}
                   >
                     OneHaircut Regular
                   </div>
@@ -432,11 +425,10 @@ const Subscription = () => {
                   </div>
                   <div className="w-full h-3 flex flex-col items-center justify-center py-4">
                     <button
-                      className={`font-medium text-2xl pt-6 ${
-                        !isCurrSubscriptionPro
-                          ? SubSelected_text
-                          : SubUnselected_text
-                      }`}
+                      className={`font-medium text-2xl pt-6 ${!isCurrSubscriptionPro
+                        ? SubSelected_text
+                        : SubUnselected_text
+                        }`}
                     >
                       Gratuit
                       <br />
@@ -451,7 +443,7 @@ const Subscription = () => {
                 )}
                 {isCurrSubscriptionPro && (
                   <div
-                    className="z-10 w-48 absolute left-[450px] top-[650px]  flex items-center justify-center text-black font-semibold border border-[#000000] rounded-3xl -mb-12 h-12 bg-white hover:scale-105 transition-transform hover:shadow-md cursor-pointer"
+                    className="z-0 w-48 absolute left-[450px] top-[650px]  flex items-center justify-center text-black font-semibold border border-[#000000] rounded-3xl -mb-12 h-12 bg-white hover:scale-105 transition-transform hover:shadow-md cursor-pointer"
                     onClick={() => handleDowngradeToFree()}
                   >
                     Choisir
@@ -460,11 +452,11 @@ const Subscription = () => {
               </div>
             </div>
           </div>
-          <div className="relative z-10 flex items-center justify-center w-full lg:hidden">
+          <div className="relative z-0 flex items-center justify-center w-full lg:hidden">
             <MobilePricingTable />
           </div>
 
-          <div className="relative z-10 w-full sm:w-[450px] flex flex-col  sm:-mt-5 lg:mt-20 xl:mt-20">
+          <div className="relative z-0 w-full sm:w-[450px] flex flex-col  sm:-mt-5 lg:mt-20 xl:mt-20">
             <div>
               {currentPlan.name.includes('Pro') && currentPlan.trial_ends_at && (
                 <div className="py-4 px-5 2xl:text-xl text-center text-black whitespace-nowrap bg-[#F4F4F6] font-medium border border-[#9B9B9B] rounded-xl">
