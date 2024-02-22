@@ -101,11 +101,14 @@ const TermsPage = () => {
           Lorsque vous réservez une prestation, Onehaircut met à votre disposition la plateforme dont elle est responsable, mais n’est pas responsable de l’expérience de coiffure. Le salon, barbier ou coiffeur indépendant est responsable de cette dite expérience. Un litige n’inclut donc que le client et le prestataire et exclut la plateforme Onehaircut.
           <br />
           Si vous arrivez en retard lors de votre rendez-vous, le prestataire de service est en capacité d'honorer la prestation ou de l'annuler. Il vous incombe de vous assurer d’arriver à l’heure; à défaut, nous ne sommes pas responsables des coûts associés. Dans le cas d’une annulation dûe à un retard, un remboursement de la part de la plateforme Onehaircut ne peut être demandé.<br />
+          Dans le cas où le client signale un litige à travers la plateforme et que le salon confirme, qu’il n’a pas pu honorer la prestation, alors le remboursement de la coiffure et du déplacement et des coûts de Onehaircut seront transférés sur le compte du client. <br />
+          Un litige ne peut être ouvert que 24 heures après le moment prévu de la prestation.
+          <br />
           <br />
           B. Pour le professionnel :<br />
           Lorsque vous effectuez une prestation, Onehaircut met à votre disposition la plateforme dont elle est responsable, mais n’est pas responsable de l’expérience client.
           <br />
-          Si vous n'êtes pas capable d'assurer la prestation demandée à l'heure convenue, le client est en droit de demander un remboursement du montant de cette prestation. La somme prévue pour cette prestation ne vous sera donc pas versée.
+          Si vous n'êtes pas capable d'assurer la prestation demandée à l'heure convenue, le client est en droit de demander un remboursement du montant de cette prestation. La somme prévue pour cette prestation ne vous sera donc pas versée. Lorsque le client signale ce genre de litige, le salon sera amené à confirmer son incapacité à honorer ladite prestation.<br />
         </p>
 
         <h1 className={`my-3 ${Theme_A.textFont.headerH4}`}>
@@ -184,6 +187,7 @@ const TermsPage = () => {
           Tout contact avec Onehaircut se fait à travers l'adresse email suivante:<br />
           contact@Onehaircut.com
         </p>
+
 
 
 
