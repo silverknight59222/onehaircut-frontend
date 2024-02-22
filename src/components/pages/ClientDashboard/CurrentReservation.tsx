@@ -323,7 +323,7 @@ const Currentreservation = () => {
           return (
             <div
               key={index}
-              className={`relative z-10 w-full xl:w-[800px]  rounded-3xl bg-white border-2 border-zinc-100 py-6 px-12 shadow-sm shadow-stone-600 mb-12`}
+              className={`relative z-10 w-full xl:w-[800px]  rounded-3xl bg-white border-2 border-zinc-100 py-6 px-12 shadow-sm shadow-stone-600 mb-6`}
             >
               <div className="grid grid-cols-2 gap-4 ">
                 <div className="flex flex-col items-start justify-start gap-5 mt-5 sm:mt-0">
@@ -349,6 +349,7 @@ const Currentreservation = () => {
                       </p>
                     </div>
                   )}
+                  {/*
                   {item.salon_haircut && (
                     <div>
                       <p className="text-[#444343] font-bold text-start">
@@ -364,6 +365,44 @@ const Currentreservation = () => {
                       </p>
                     </div>
                   )}
+                        */}
+
+                  <div>
+                    <p className="text-[#444343] font-bold text-start">
+                      Prestation
+                    </p>
+                    {item.items
+                      .filter((ele) => ele.type == "service")
+                      .map((ele, index) => {
+                        if (ele.name) {
+                          return (
+                            <p
+                              key={index}
+                              className="text-[#666] text-sm text-start"
+                            >
+                              {ele.name}.
+                            </p>
+                          );
+                        } else {
+                          return (
+                            <p
+                              key={index}
+                              className="text-[#666] text-sm text-start"
+                            >
+                              -
+                            </p>
+                          );
+                        }
+                      })}
+                    {item.items.filter((ele) => ele.type == "service").length ==
+                      0 && (
+                        <p key={index} className="text-[#666] text-sm text-start">
+                          -
+                        </p>
+                      )}
+                  </div>
+
+
                   {item.cost_coming_home && (
                     <div>
                       <p className="text-[#444343] font-bold text-start">
@@ -404,40 +443,8 @@ const Currentreservation = () => {
                       </p>
                     </div>
                   )}
-                  <div>
-                    <p className="text-[#444343] font-bold text-start">
-                      Prestation
-                    </p>
-                    {item.items
-                      .filter((ele) => ele.type == "service")
-                      .map((ele, index) => {
-                        if (ele.name) {
-                          return (
-                            <p
-                              key={index}
-                              className="text-[#666] text-sm text-start"
-                            >
-                              {ele.name}.
-                            </p>
-                          );
-                        } else {
-                          return (
-                            <p
-                              key={index}
-                              className="text-[#666] text-sm text-start"
-                            >
-                              -
-                            </p>
-                          );
-                        }
-                      })}
-                    {item.items.filter((ele) => ele.type == "service").length ==
-                      0 && (
-                      <p key={index} className="text-[#666] text-sm text-start">
-                        -
-                      </p>
-                    )}
-                  </div>
+
+                  {/*
                   <div>
                     <p className="text-[#444343] font-bold text-start">
                       Prix prestation
@@ -450,8 +457,10 @@ const Currentreservation = () => {
                       )}{" "}
                       {currencySymbol}
                     </p>
-                    {/* {item.total_amount}</p> */}
+                    // {item.total_amount}</p> 
                   </div>
+                  */}
+
                   <div>
                     <p className="text-[#444343] font-bold text-start">
                       Coiffeur
