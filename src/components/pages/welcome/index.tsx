@@ -902,7 +902,8 @@ const Welcome = () => {
                 >
                   Choisir cette coiffure
                 </button>
-                <button
+
+                {!selectedHaircut.image.includes('default') && <button
                   onClick={checkPreview}
                   className={`flex items-center justify-center font-medium w-full md:w-52 h-14 mb-4 ${isPreview
                     ? Theme_A.button.medGreydButton
@@ -910,7 +911,7 @@ const Welcome = () => {
                     }`}
                 >
                   {isPreview ? "Image de référence" : "Prévisualiser sur moi"}
-                </button>
+                </button>}
                 {/* Affichez le bouton "Supprimer" uniquement lorsque isPreview est vrai */}
                 {isPreview && (
                   <button
