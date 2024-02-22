@@ -44,6 +44,10 @@ import {
 const DemoButton = `text-white font-normal md:font-medium text-md md:text-lg ml-2 mr-2 mb-3 rounded-md w-[278px] py-2 bg-black border border-x-red-500 border-y-orange-500 transform hover:scale-105 transition-transform hover:shadow-md cursor-pointer`;
 const LogInButton = `text-white font-normal md:font-medium text-md md:text-lg ml-2 mr-2 mb-3 rounded-md w-[278px] py-2 ${ColorsThemeA.OhcGradient_A} transform hover:scale-105 transition-transform hover:shadow-[0px_7px_12px_0px_rgba(255,125,60,0.25)]`;
 const ServicesOnly_Classname = `flex items-center justify-center min-w-56 md:h-14 rounded-lg shadow-sm text-black font-medium text-sm md:text-xl px-1 md:px-8 py-1 md:py-2 mt-2 bg-white border border-x-stone-200 border-y-stone-100 hover:scale-105 transform transition-transform duration-300 hover:shadow-md`;
+const InfoTitle_5 = "Prévisualisation";
+const InfoContent_5 = "La prévisualisation est disponible aux horaires suivants : \n 9h-14h \n 18h-22h";
+const VideoUrl_5 = "";
+
 
 const Welcome = () => {
   // Define state variables
@@ -841,7 +845,8 @@ const Welcome = () => {
         <Footer />
         {isModal && (
           <BaseModal close={() => setIsModal(false)}>
-            <div className="flex flex-col items-center justify-center my-4 relative">
+            <div className="">
+
               <div className="relative w-52 h-52 sm:w-72 sm:h-72 md:w-96 md:h-96 mb-5">
                 {isPreview ? (
                   isOnPreview == true && previewImage.length == 0 ? (
@@ -896,6 +901,10 @@ const Welcome = () => {
                 )}
               </div>
               <div className="flex flex-col items-center">
+
+                <div className={`items-center justify-center mb-4 mt-4 font-semibold text-black text-lg text-center p-2 rounded-full shadow-inner shadow-stone-300 w-full ${ColorsThemeA.OhcGradient_E}`}>
+                  {selectedHaircut.name}
+                </div>
                 <button
                   onClick={onContinue}
                   className={`flex items-center justify-center font-medium w-full md:w-52 h-14 mb-4 ${Theme_A.button.smallGradientButton}`}
@@ -922,6 +931,7 @@ const Welcome = () => {
                   </button>
                 )}
               </div>
+
             </div>
           </BaseModal>
         )}
