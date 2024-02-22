@@ -902,7 +902,7 @@ const Welcome = () => {
               </div>
               <div className="flex flex-col items-center">
 
-                <div className={`items-center justify-center mb-4 mt-4 font-semibold text-black text-lg text-center p-2 rounded-full shadow-inner shadow-stone-300 w-full ${ColorsThemeA.OhcGradient_E}`}>
+                <div className={`items-center justify-center mb-4 font-semibold text-black text-lg text-center p-2 rounded-full shadow-inner shadow-stone-300 w-full ${ColorsThemeA.OhcGradient_E}`}>
                   {selectedHaircut.name}
                 </div>
                 <button
