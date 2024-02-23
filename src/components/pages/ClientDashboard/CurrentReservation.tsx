@@ -164,7 +164,7 @@ const Currentreservation = () => {
     setIsModalCancel(false); // start modal
     setIsLoading(false);
   };
-
+  
   function formaterDate(dateString: string) {
     const options: Intl.DateTimeFormatOptions = {
       weekday: "long",
@@ -357,7 +357,7 @@ const Currentreservation = () => {
                       </p>
                       <p className="text-[#666] text-sm text-start">
                         {convertAmount(
-                          item.hair_salon?.user?.currency ?? "EUR",
+                          item.hair_salon?.user?.currency,
                           userCurrency,
                           item.salon_haircut.base_price
                         )}{" "}
@@ -410,7 +410,7 @@ const Currentreservation = () => {
                       </p>
                       <p className="text-[#666] text-sm text-start">
                         {convertAmount(
-                          item.hair_salon?.user?.currency ?? "EUR",
+                          item.hair_salon?.user?.currency,
                           userCurrency,
                           item.cost_coming_home
                         )}{" "}
@@ -425,7 +425,7 @@ const Currentreservation = () => {
                       </p>
                       <p className="text-[#666] text-sm text-start">
                         {convertAmount(
-                          item.hair_salon?.user?.currency ?? "EUR",
+                          item.hair_salon?.user?.currency,
                           userCurrency,
                           item.total_amount
                         )}{" "}
@@ -451,7 +451,7 @@ const Currentreservation = () => {
                     </p>
                     <p key={index} className="text-[#666] text-sm text-start">
                       {convertAmount(
-                        item.hair_salon?.user?.currency ?? "EUR",
+                        item.hair_salon?.user?.currency,
                         userCurrency,
                         item.total_service_price
                       )}{" "}

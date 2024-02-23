@@ -772,7 +772,8 @@ const Welcome = () => {
                           ? item.image
                           : `https://api.onehaircut.com${item.image}`
                       }
-                      fill={true}
+                      width={208}
+                      height={208}
                       alt=""
                       className="rounded-t-xl "
                     />
@@ -881,7 +882,8 @@ const Welcome = () => {
                             ? previewImage
                             : `https://api.onehaircut.com/base_null_img.jpg`
                         }
-                        fill={true}
+                        width={208}
+                        height={208}
                         alt=""
                         className="rounded-xl w-full h-full object-cover"
                       />
@@ -894,7 +896,8 @@ const Welcome = () => {
                         ? selectedHaircut.image
                         : `https://api.onehaircut.com${selectedHaircut.image}`
                     }
-                    fill={true}
+                    width={208}
+                    height={208}
                     alt=""
                     className="rounded-xl w-full h-full object-cover"
                   />

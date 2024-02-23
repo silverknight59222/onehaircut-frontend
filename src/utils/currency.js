@@ -29,7 +29,7 @@ export const convertAmount = (from, to, amount) => {
   }
   if (exchangeRates) {
     const rates = JSON.parse(exchangeRates);
-    return Number((Number(amount) * rates[from][to]).toFixed(2))
+    return Number((Number(amount) * rates['currency_constants'][from][to]).toFixed(2))
   }
   return amount
 }
