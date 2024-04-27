@@ -20,6 +20,7 @@ export default function RootLayout({
 }) {
   useEffect(() => {
     Auth.getExchangeRates().then(({ data }) => {
+      console.log("dataaaaa", data)
       setLocalStorage("exchangeRates", JSON.stringify(data));
     });
   }, []);
